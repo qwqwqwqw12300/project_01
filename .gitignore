@@ -1,2 +1,4 @@
 # 忽略index.css
 index.css
+# 忽略tests文件夹
+tests/
