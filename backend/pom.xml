@@ -182,6 +182,7 @@
 
     <modules>
         <module>varyar-admin</module>
+        <module>varyar-api</module>
         <module>varyar-framework</module>
         <module>varyar-system</module>
         <module>varyar-quartz</module>
