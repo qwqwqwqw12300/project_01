@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<sql id="selectOrgVo">
-        select d.org_id, d.parent_id, d.ancestors, d.org_name, d.order_num, d.leader, d.phone, d.email, d.status, d.del_flag, d.create_by, d.create_time 
+        select d.org_id, d.parent_id, d.ancestors, d.org_name, d.order_num, d.leader, d.leaderphone, d.type, d.adress, d.phone1, d.phone2, d.phone3, d.status, d.del_flag, d.create_by, d.create_time
         from t_org d
     </sql>
     
@@ -63,7 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
     
     <select id="selectOrgById" parameterType="Long" resultMap="TOrgResult">
-		select d.org_id, d.parent_id, d.ancestors, d.org_name, d.order_num, d.leader, d.phone, d.email, d.status,
+		select d.org_id, d.parent_id, d.ancestors, d.org_name, d.order_num, d.leader, d.leaderphone, d.type, d.adress, d.phone1, d.phone2, d.phone3, d.status,
 			(select org_name from t_org where org_id = d.parent_id) parent_name
 		from t_org d
 		where d.org_id = #{orgId}
@@ -86,7 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from t_org where status = 0 and del_flag = '0' and find_in_set(#{orgId}, ancestors)
 	</select>
 	
-	<select id="checkorgNameUnique" resultMap="TOrgResult">
+	<select id="checkOrgNameUnique" resultMap="TOrgResult">
 	    <include refid="selectOrgVo"/>
 		where org_name=#{orgName} and parent_id = #{parentId} and del_flag = '0' limit 1
 	</select>
@@ -99,8 +99,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="ancestors != null and ancestors != ''">ancestors,</if>
  			<if test="orderNum != null">order_num,</if>
  			<if test="leader != null and leader != ''">leader,</if>
- 			<if test="phone != null and phone != ''">phone,</if>
- 			<if test="email != null and email != ''">email,</if>
+ 			<if test="leaderPhone != null and leaderPhone != ''">leaderphone,</if>
+ 			<if test="type != null and type != ''">type,</if>
+ 			<if test="address != null and address != ''">address,</if>
+ 			<if test="phone1 != null and phone1 != ''">phone1,</if>
+ 			<if test="phone2 != null and phone2 != ''">phone2,</if>
+ 			<if test="phone3 != null and phone3 != ''">phone3,</if>
  			<if test="status != null">status,</if>
  			<if test="createBy != null and createBy != ''">create_by,</if>
  			create_time
@@ -111,8 +115,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="ancestors != null and ancestors != ''">#{ancestors},</if>
  			<if test="orderNum != null">#{orderNum},</if>
  			<if test="leader != null and leader != ''">#{leader},</if>
- 			<if test="phone != null and phone != ''">#{phone},</if>
- 			<if test="email != null and email != ''">#{email},</if>
+		<if test="leaderPhone != null and leaderPhone != ''">#{leaderPhone},</if>
+		<if test="type != null and type != ''">#{type},</if>
+		<if test="address != null and address != ''">#{address},</if>
+		<if test="phone1 != null and phone1 != ''">#{phone1},</if>
+		<if test="phone2 != null and phone2 != ''">#{phone2},</if>
+		<if test="phone3 != null and phone3 != ''">#{phone3},</if>
  			<if test="status != null">#{status},</if>
  			<if test="createBy != null and createBy != ''">#{createBy},</if>
  			sysdate()
@@ -127,9 +135,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="ancestors != null and ancestors != ''">ancestors = #{ancestors},</if>
  			<if test="orderNum != null">order_num = #{orderNum},</if>
  			<if test="leader != null">leader = #{leader},</if>
- 			<if test="phone != null">phone = #{phone},</if>
- 			<if test="email != null">email = #{email},</if>
- 			<if test="status != null and status != ''">status = #{status},</if>
+ 			<if test="leaderPhone != null and leaderPhone != ''">leaderphone = #{leaderPhone},</if>
+			<if test="type != null and type != ''">type = #{type},</if>
+			<if test="address != null and address != ''">address = #{address},</if>
+			<if test="phone1 != null and phone1 != ''">phone1 = #{phone1},</if>
+			<if test="phone2 != null and phone2 != ''">phone2 = #{phone2},</if>
+			<if test="phone3 != null and phone3 != ''">phone3 = #{phone3},</if>
+			<if test="status != null and status != ''">status = #{status},</if>
  			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
  			update_time = sysdate()
  		</set>
