@@ -30,17 +30,17 @@ public class SecurityUtils
     }
 
     /**
-     * 获取部门ID
+     * 获取机构ID
      **/
-    public static Long getDeptId()
+    public static Long getOrgId()
     {
         try
         {
-            return getLoginUser().getDeptId();
+            return getLoginUser().getOrgId();
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取部门ID异常", HttpStatus.UNAUTHORIZED);
+            throw new ServiceException("获取机构ID异常", HttpStatus.UNAUTHORIZED);
         }
     }
     

@@ -17,7 +17,7 @@ import com.newlandnpt.varyar.common.annotation.Log;
 import com.newlandnpt.varyar.common.constant.UserConstants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.entity.SysDept;
+import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import com.newlandnpt.varyar.common.core.domain.entity.SysRole;
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
 import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
@@ -28,7 +28,7 @@ import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
 import com.newlandnpt.varyar.framework.web.service.SysPermissionService;
 import com.newlandnpt.varyar.framework.web.service.TokenService;
 import com.newlandnpt.varyar.system.domain.SysUserRole;
-import com.newlandnpt.varyar.system.service.ISysDeptService;
+import com.newlandnpt.varyar.system.service.ITOrgService;
 import com.newlandnpt.varyar.system.service.ISysRoleService;
 import com.newlandnpt.varyar.system.service.ISysUserService;
 
@@ -54,7 +54,7 @@ public class SysRoleController extends BaseController
     private ISysUserService userService;
 
     @Autowired
-    private ISysDeptService deptService;
+    private ITOrgService orgService;
 
     @PreAuthorize("@ss.hasPermi('system:role:list')")
     @GetMapping("/list")
@@ -249,15 +249,15 @@ public class SysRoleController extends BaseController
     }
 
     /**
-     * 获取对应角色部门树列表
+     * 获取对应角色机构树列表
      */
     @PreAuthorize("@ss.hasPermi('system:role:query')")
-    @GetMapping(value = "/deptTree/{roleId}")
-    public AjaxResult deptTree(@PathVariable("roleId") Long roleId)
+    @GetMapping(value = "/orgTree/{roleId}")
+    public AjaxResult orgTree(@PathVariable("roleId") Long roleId)
     {
         AjaxResult ajax = AjaxResult.success();
-        ajax.put("checkedKeys", deptService.selectDeptListByRoleId(roleId));
-        ajax.put("depts", deptService.selectDeptTreeList(new SysDept()));
+        ajax.put("checkedKeys", orgService.selectOrgListByRoleId(roleId));
+        ajax.put("orgs", orgService.selectOrgTreeList(new TOrg()));
         return ajax;
     }
 }

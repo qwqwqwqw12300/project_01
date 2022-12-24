@@ -20,7 +20,7 @@ import com.newlandnpt.varyar.common.annotation.Log;
 import com.newlandnpt.varyar.common.constant.UserConstants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.entity.SysDept;
+import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import com.newlandnpt.varyar.common.core.domain.entity.SysRole;
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
@@ -28,7 +28,7 @@ import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
-import com.newlandnpt.varyar.system.service.ISysDeptService;
+import com.newlandnpt.varyar.system.service.ITOrgService;
 import com.newlandnpt.varyar.system.service.ISysPostService;
 import com.newlandnpt.varyar.system.service.ISysRoleService;
 import com.newlandnpt.varyar.system.service.ISysUserService;
@@ -49,7 +49,7 @@ public class SysUserController extends BaseController
     private ISysRoleService roleService;
 
     @Autowired
-    private ISysDeptService deptService;
+    private ITOrgService orgService;
 
     @Autowired
     private ISysPostService postService;
@@ -245,12 +245,12 @@ public class SysUserController extends BaseController
     }
 
     /**
-     * 获取部门树列表
+     * 获取机构树列表
      */
     @PreAuthorize("@ss.hasPermi('system:user:list')")
-    @GetMapping("/deptTree")
-    public AjaxResult deptTree(SysDept dept)
+    @GetMapping("/orgTree")
+    public AjaxResult orgTree(TOrg org)
     {
-        return success(deptService.selectDeptTreeList(dept));
+        return success(orgService.selectOrgTreeList(org));
     }
 }

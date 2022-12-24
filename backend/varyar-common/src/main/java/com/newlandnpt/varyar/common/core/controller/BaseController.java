@@ -185,11 +185,11 @@ public class BaseController
     }
 
     /**
-     * 获取登录部门id
+     * 获取登录机构id
      */
-    public Long getDeptId()
+    public Long getOrgId()
     {
-        return getLoginUser().getDeptId();
+        return getLoginUser().getOrgId();
     }
 
     /**
