@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.TEventMapper">
+    
+    <resultMap type="TEvent" id="TEventResult">
+        <result property="eventId"    column="event_id"    />
+        <result property="no"    column="no"    />
+        <result property="level"    column="level"    />
+        <result property="content"    column="content"    />
+        <result property="operateType"    column="operate_type"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="memberPhone"    column="member_phone"    />
+        <result property="memberName"    column="member_name"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="operateTime"    column="operate_time"    />
+        <result property="operateFlag"    column="operate_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTEventVo">
+        select event_id, no, level, content, operate_type, member_id, member_phone, member_name, user_id, user_name, operate_time, operate_flag, create_time, update_time from t_event
+    </sql>
+
+    <select id="selectTEventList" parameterType="TEvent" resultMap="TEventResult">
+        <include refid="selectTEventVo"/>
+        <where>  
+            <if test="no != null  and no != ''"> and no = #{no}</if>
+            <if test="level != null  and level != ''"> and level = #{level}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="operateType != null  and operateType != ''"> and operate_type = #{operateType}</if>
+            <if test="memberId != null "> and member_id = #{memberId}</if>
+            <if test="memberPhone != null  and memberPhone != ''"> and member_phone = #{memberPhone}</if>
+            <if test="memberName != null  and memberName != ''"> and member_name like concat('%', #{memberName}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="operateTime != null "> and operate_time = #{operateTime}</if>
+            <if test="operateFlag != null  and operateFlag != ''"> and operate_flag = #{operateFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectTEventByEventId" parameterType="Long" resultMap="TEventResult">
+        <include refid="selectTEventVo"/>
+        where event_id = #{eventId}
+    </select>
+        
+    <insert id="insertTEvent" parameterType="TEvent" useGeneratedKeys="true" keyProperty="eventId">
+        insert into t_event
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="no != null">no,</if>
+            <if test="level != null">level,</if>
+            <if test="content != null">content,</if>
+            <if test="operateType != null">operate_type,</if>
+            <if test="memberId != null">member_id,</if>
+            <if test="memberPhone != null">member_phone,</if>
+            <if test="memberName != null">member_name,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="operateTime != null">operate_time,</if>
+            <if test="operateFlag != null">operate_flag,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="no != null">#{no},</if>
+            <if test="level != null">#{level},</if>
+            <if test="content != null">#{content},</if>
+            <if test="operateType != null">#{operateType},</if>
+            <if test="memberId != null">#{memberId},</if>
+            <if test="memberPhone != null">#{memberPhone},</if>
+            <if test="memberName != null">#{memberName},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="operateTime != null">#{operateTime},</if>
+            <if test="operateFlag != null">#{operateFlag},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTEvent" parameterType="TEvent">
+        update t_event
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="no != null">no = #{no},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="operateType != null">operate_type = #{operateType},</if>
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="memberPhone != null">member_phone = #{memberPhone},</if>
+            <if test="memberName != null">member_name = #{memberName},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="operateTime != null">operate_time = #{operateTime},</if>
+            <if test="operateFlag != null">operate_flag = #{operateFlag},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where event_id = #{eventId}
+    </update>
+
+    <delete id="deleteTEventByEventId" parameterType="Long">
+        delete from t_event where event_id = #{eventId}
+    </delete>
+
+    <delete id="deleteTEventByEventIds" parameterType="String">
+        delete from t_event where event_id in 
+        <foreach item="eventId" collection="array" open="(" separator="," close=")">
+            #{eventId}
+        </foreach>
+    </delete>
+</mapper>

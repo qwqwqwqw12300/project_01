@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.TVersionMapper">
+    
+    <resultMap type="TVersion" id="TVersionResult">
+        <result property="versionId"    column="version_id"    />
+        <result property="content"    column="content"    />
+        <result property="type"    column="type"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTVersionVo">
+        select version_id, content, type, del_flag, create_time, update_time from t_version
+    </sql>
+
+    <select id="selectTVersionList" parameterType="TVersion" resultMap="TVersionResult">
+        <include refid="selectTVersionVo"/>
+        <where>  
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectTVersionByVersionId" parameterType="Long" resultMap="TVersionResult">
+        <include refid="selectTVersionVo"/>
+        where version_id = #{versionId}
+    </select>
+        
+    <insert id="insertTVersion" parameterType="TVersion" useGeneratedKeys="true" keyProperty="versionId">
+        insert into t_version
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="content != null">content,</if>
+            <if test="type != null">type,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="content != null">#{content},</if>
+            <if test="type != null">#{type},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTVersion" parameterType="TVersion">
+        update t_version
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null">content = #{content},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where version_id = #{versionId}
+    </update>
+
+    <delete id="deleteTVersionByVersionId" parameterType="Long">
+        delete from t_version where version_id = #{versionId}
+    </delete>
+
+    <delete id="deleteTVersionByVersionIds" parameterType="String">
+        delete from t_version where version_id in 
+        <foreach item="versionId" collection="array" open="(" separator="," close=")">
+            #{versionId}
+        </foreach>
+    </delete>
+</mapper>

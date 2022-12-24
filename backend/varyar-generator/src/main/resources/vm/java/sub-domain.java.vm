@@ -5,8 +5,8 @@ import ${import};
 #end
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import annotation.com.newlandnpt.varyar.common.Excel;
-import domain.core.com.newlandnpt.varyar.common.BaseEntity;
+import com.newlandnpt.varyar.common.annotation.Excel;
+import com.newlandnpt.varyar.common.core.domain.BaseEntity;
 
 /**
  * ${subTable.functionName}对象 ${subTableName}

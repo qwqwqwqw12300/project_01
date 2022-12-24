@@ -5,9 +5,9 @@ import ${import};
 #end
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import annotation.com.newlandnpt.varyar.common.Excel;
+import com.newlandnpt.varyar.common.annotation.Excel;
 #if($table.crud || $table.sub)
-import domain.core.com.newlandnpt.varyar.common.BaseEntity;
+import com.newlandnpt.varyar.common.core.domain.BaseEntity;
 #elseif($table.tree)
 import domain.core.com.newlandnpt.varyar.common.TreeEntity;
 #end

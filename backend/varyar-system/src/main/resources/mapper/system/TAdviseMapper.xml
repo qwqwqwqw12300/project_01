@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.TAdviseMapper">
+    
+    <resultMap type="TAdvise" id="TAdviseResult">
+        <result property="adviseId"    column="advise_id"    />
+        <result property="content"    column="content"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="readFlag"    column="read_flag"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTAdviseVo">
+        select advise_id, content, member_id, read_flag, del_flag, create_time, update_time from t_advise
+    </sql>
+
+    <select id="selectTAdviseList" parameterType="TAdvise" resultMap="TAdviseResult">
+        <include refid="selectTAdviseVo"/>
+        <where>  
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="memberId != null "> and member_id = #{memberId}</if>
+            <if test="readFlag != null  and readFlag != ''"> and read_flag = #{readFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectTAdviseByAdviseId" parameterType="Long" resultMap="TAdviseResult">
+        <include refid="selectTAdviseVo"/>
+        where advise_id = #{adviseId}
+    </select>
+        
+    <insert id="insertTAdvise" parameterType="TAdvise" useGeneratedKeys="true" keyProperty="adviseId">
+        insert into t_advise
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="content != null">content,</if>
+            <if test="memberId != null">member_id,</if>
+            <if test="readFlag != null">read_flag,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="content != null">#{content},</if>
+            <if test="memberId != null">#{memberId},</if>
+            <if test="readFlag != null">#{readFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTAdvise" parameterType="TAdvise">
+        update t_advise
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null">content = #{content},</if>
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="readFlag != null">read_flag = #{readFlag},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where advise_id = #{adviseId}
+    </update>
+
+    <delete id="deleteTAdviseByAdviseId" parameterType="Long">
+        delete from t_advise where advise_id = #{adviseId}
+    </delete>
+
+    <delete id="deleteTAdviseByAdviseIds" parameterType="String">
+        delete from t_advise where advise_id in 
+        <foreach item="adviseId" collection="array" open="(" separator="," close=")">
+            #{adviseId}
+        </foreach>
+    </delete>
+</mapper>

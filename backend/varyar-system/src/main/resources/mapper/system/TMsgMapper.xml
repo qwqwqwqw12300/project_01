@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.TMsgMapper">
+    
+    <resultMap type="TMsg" id="TMsgResult">
+        <result property="msgId"    column="msg_id"    />
+        <result property="no"    column="no"    />
+        <result property="content"    column="content"    />
+        <result property="eventId"    column="event_id"    />
+        <result property="operateFlag"    column="operate_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTMsgVo">
+        select msg_id, no, content, event_id, operate_flag, create_time, update_time from t_msg
+    </sql>
+
+    <select id="selectTMsgList" parameterType="TMsg" resultMap="TMsgResult">
+        <include refid="selectTMsgVo"/>
+        <where>  
+            <if test="no != null  and no != ''"> and no = #{no}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="eventId != null "> and event_id = #{eventId}</if>
+            <if test="operateFlag != null  and operateFlag != ''"> and operate_flag = #{operateFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectTMsgByMsgId" parameterType="Long" resultMap="TMsgResult">
+        <include refid="selectTMsgVo"/>
+        where msg_id = #{msgId}
+    </select>
+        
+    <insert id="insertTMsg" parameterType="TMsg" useGeneratedKeys="true" keyProperty="msgId">
+        insert into t_msg
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="no != null">no,</if>
+            <if test="content != null">content,</if>
+            <if test="eventId != null">event_id,</if>
+            <if test="operateFlag != null">operate_flag,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="no != null">#{no},</if>
+            <if test="content != null">#{content},</if>
+            <if test="eventId != null">#{eventId},</if>
+            <if test="operateFlag != null">#{operateFlag},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTMsg" parameterType="TMsg">
+        update t_msg
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="no != null">no = #{no},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="eventId != null">event_id = #{eventId},</if>
+            <if test="operateFlag != null">operate_flag = #{operateFlag},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where msg_id = #{msgId}
+    </update>
+
+    <delete id="deleteTMsgByMsgId" parameterType="Long">
+        delete from t_msg where msg_id = #{msgId}
+    </delete>
+
+    <delete id="deleteTMsgByMsgIds" parameterType="String">
+        delete from t_msg where msg_id in 
+        <foreach item="msgId" collection="array" open="(" separator="," close=")">
+            #{msgId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.TFamilyMapper">
+    
+    <resultMap type="TFamily" id="TFamilyResult">
+        <result property="familyId"    column="family_id"    />
+        <result property="no"    column="no"    />
+        <result property="name"    column="name"    />
+        <result property="adress"    column="adress"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTFamilyVo">
+        select family_id, no, name, adress, del_flag, create_time, update_time from t_family
+    </sql>
+
+    <select id="selectTFamilyList" parameterType="TFamily" resultMap="TFamilyResult">
+        <include refid="selectTFamilyVo"/>
+        <where>  
+            <if test="no != null  and no != ''"> and no = #{no}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="adress != null  and adress != ''"> and adress = #{adress}</if>
+        </where>
+    </select>
+    
+    <select id="selectTFamilyByFamilyId" parameterType="Long" resultMap="TFamilyResult">
+        <include refid="selectTFamilyVo"/>
+        where family_id = #{familyId}
+    </select>
+        
+    <insert id="insertTFamily" parameterType="TFamily" useGeneratedKeys="true" keyProperty="familyId">
+        insert into t_family
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="no != null">no,</if>
+            <if test="name != null">name,</if>
+            <if test="adress != null">adress,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="no != null">#{no},</if>
+            <if test="name != null">#{name},</if>
+            <if test="adress != null">#{adress},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTFamily" parameterType="TFamily">
+        update t_family
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="no != null">no = #{no},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="adress != null">adress = #{adress},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where family_id = #{familyId}
+    </update>
+
+    <delete id="deleteTFamilyByFamilyId" parameterType="Long">
+        delete from t_family where family_id = #{familyId}
+    </delete>
+
+    <delete id="deleteTFamilyByFamilyIds" parameterType="String">
+        delete from t_family where family_id in 
+        <foreach item="familyId" collection="array" open="(" separator="," close=")">
+            #{familyId}
+        </foreach>
+    </delete>
+</mapper>

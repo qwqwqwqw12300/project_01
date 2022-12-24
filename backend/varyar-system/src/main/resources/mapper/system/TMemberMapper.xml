@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.TMemberMapper">
+    
+    <resultMap type="TMember" id="TMemberResult">
+        <result property="memberId"    column="member_id"    />
+        <result property="no"    column="no"    />
+        <result property="phone"    column="phone"    />
+        <result property="password"    column="password"    />
+        <result property="distributeFlag"    column="distribute_flag"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTMemberVo">
+        select member_id, no, phone, password, distribute_flag, user_id, user_name, del_flag, create_time, update_time from t_member
+    </sql>
+
+    <select id="selectTMemberList" parameterType="TMember" resultMap="TMemberResult">
+        <include refid="selectTMemberVo"/>
+        <where>  
+            <if test="no != null  and no != ''"> and no = #{no}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="distributeFlag != null  and distributeFlag != ''"> and distribute_flag = #{distributeFlag}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTMemberByMemberId" parameterType="Long" resultMap="TMemberResult">
+        <include refid="selectTMemberVo"/>
+        where member_id = #{memberId}
+    </select>
+        
+    <insert id="insertTMember" parameterType="TMember" useGeneratedKeys="true" keyProperty="memberId">
+        insert into t_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="no != null">no,</if>
+            <if test="phone != null">phone,</if>
+            <if test="password != null">password,</if>
+            <if test="distributeFlag != null">distribute_flag,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="no != null">#{no},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="password != null">#{password},</if>
+            <if test="distributeFlag != null">#{distributeFlag},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTMember" parameterType="TMember">
+        update t_member
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="no != null">no = #{no},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="distributeFlag != null">distribute_flag = #{distributeFlag},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where member_id = #{memberId}
+    </update>
+
+    <delete id="deleteTMemberByMemberId" parameterType="Long">
+        delete from t_member where member_id = #{memberId}
+    </delete>
+
+    <delete id="deleteTMemberByMemberIds" parameterType="String">
+        delete from t_member where member_id in 
+        <foreach item="memberId" collection="array" open="(" separator="," close=")">
+            #{memberId}
+        </foreach>
+    </delete>
+</mapper>
