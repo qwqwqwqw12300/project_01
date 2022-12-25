@@ -58,4 +58,12 @@ public interface ITMemberService
      * @return 结果
      */
     public int deleteTMemberByMemberId(Long memberId);
+
+    /**
+     * 分配运营给会员
+     * @param memberId
+     * @param userId
+     * @return
+     */
+    public int arrangeUserToMember(Long memberId,Long userId);
 }

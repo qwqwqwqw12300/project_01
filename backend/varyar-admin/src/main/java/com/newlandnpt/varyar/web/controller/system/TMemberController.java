@@ -2,6 +2,10 @@ package com.newlandnpt.varyar.web.controller.system;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.newlandnpt.varyar.system.domain.TFamily;
+import com.newlandnpt.varyar.system.service.ITFamilyService;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +37,8 @@ public class TMemberController extends BaseController
 {
     @Autowired
     private ITMemberService tMemberService;
+    @Autowired
+    private ITFamilyService tFamilyService;
 
     /**
      * 查询会员列表
@@ -47,19 +53,6 @@ public class TMemberController extends BaseController
     }
 
     /**
-     * 导出会员列表
-     */
-    @PreAuthorize("@ss.hasPermi('system:member:export')")
-    @Log(title = "会员", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, TMember tMember)
-    {
-        List<TMember> list = tMemberService.selectTMemberList(tMember);
-        ExcelUtil<TMember> util = new ExcelUtil<TMember>(TMember.class);
-        util.exportExcel(response, list, "会员数据");
-    }
-
-    /**
      * 获取会员详细信息
      */
     @PreAuthorize("@ss.hasPermi('system:member:query')")
@@ -69,36 +62,28 @@ public class TMemberController extends BaseController
         return success(tMemberService.selectTMemberByMemberId(memberId));
     }
 
-    /**
-     * 新增会员
-     */
-    @PreAuthorize("@ss.hasPermi('system:member:add')")
-    @Log(title = "会员", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody TMember tMember)
-    {
-        return toAjax(tMemberService.insertTMember(tMember));
-    }
 
     /**
-     * 修改会员
+     * 获取会员家庭信息
      */
-    @PreAuthorize("@ss.hasPermi('system:member:edit')")
-    @Log(title = "会员", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@RequestBody TMember tMember)
+    @PreAuthorize("@ss.hasPermi('system:member:query')")
+    @GetMapping(value = "/{memberId}/families")
+    public AjaxResult families(@PathVariable("memberId") Long memberId)
     {
-        return toAjax(tMemberService.updateTMember(tMember));
+
+        return success(tFamilyService.selectMembersFamilyList(memberId));
+    }
+    /**
+     * 给会员分配运营
+     */
+    @PreAuthorize("@ss.hasPermi('system:member:arrange')")
+    @GetMapping(value = "/{memberId}/arrange/user/{userId}")
+    public AjaxResult families(@PathVariable("memberId") Long memberId,
+                               @PathVariable("userId") Long userId)
+    {
+
+        return success(tMemberService.arrangeUserToMember(memberId,userId));
     }
 
-    /**
-     * 删除会员
-     */
-    @PreAuthorize("@ss.hasPermi('system:member:remove')")
-    @Log(title = "会员", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{memberIds}")
-    public AjaxResult remove(@PathVariable Long[] memberIds)
-    {
-        return toAjax(tMemberService.deleteTMemberByMemberIds(memberIds));
-    }
+
 }

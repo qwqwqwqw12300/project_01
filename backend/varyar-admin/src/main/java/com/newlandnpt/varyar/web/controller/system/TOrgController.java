@@ -1,6 +1,12 @@
 package com.newlandnpt.varyar.web.controller.system;
 
 import java.util.List;
+
+import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
+import com.newlandnpt.varyar.common.core.page.TableDataInfo;
+import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
+import com.newlandnpt.varyar.system.domain.TDevice;
+import com.newlandnpt.varyar.system.service.ITDeviceService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +27,9 @@ import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.system.service.ITOrgService;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 机构信息
@@ -33,6 +42,8 @@ public class TOrgController extends BaseController
 {
     @Autowired
     private ITOrgService orgService;
+    @Autowired
+    private ITDeviceService deviceService;
 
     /**
      * 获取机构列表
@@ -43,6 +54,17 @@ public class TOrgController extends BaseController
     {
         List<TOrg> orgs = orgService.selectOrgList(org);
         return success(orgs);
+    }
+    /**
+     * 获取机构分页
+     */
+    @PreAuthorize("@ss.hasPermi('system:org:list')")
+    @GetMapping("/page")
+    public TableDataInfo page(TOrg org)
+    {
+        startPage();
+        List<TOrg> orgs = orgService.selectOrgList(org);
+        return getDataTable(orgs);
     }
 
     /**
@@ -76,6 +98,7 @@ public class TOrgController extends BaseController
     @PostMapping
     public AjaxResult add(@Validated @RequestBody TOrg org)
     {
+        //todo 机构编号生成
         if (UserConstants.NOT_UNIQUE.equals(orgService.checkOrgNameUnique(org)))
         {
             return error("新增机构'" + org.getOrgName() + "'失败，机构名称已存在");
@@ -102,10 +125,6 @@ public class TOrgController extends BaseController
         {
             return error("修改机构'" + org.getOrgName() + "'失败，上级机构不能是自己");
         }
-        else if (StringUtils.equals(UserConstants.ORG_DISABLE, org.getStatus()) && orgService.selectNormalChildrenOrgById(orgId) > 0)
-        {
-            return error("该机构包含未停用的子机构！");
-        }
         org.setUpdateBy(getUsername());
         return toAjax(orgService.updateOrg(org));
     }
@@ -129,4 +148,29 @@ public class TOrgController extends BaseController
         orgService.checkOrgDataScope(orgId);
         return toAjax(orgService.deleteOrgById(orgId));
     }
+
+
+    /**
+     * 导入设备模板
+     * @param response
+     */
+    @PostMapping("/devices/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<TDevice> util = new ExcelUtil<TDevice>(TDevice.class);
+        util.importTemplateExcel(response, "设备数据");
+    }
+
+
+    @Log(title = "机构管理-导入设备", businessType = BusinessType.IMPORT)
+    @PreAuthorize("@ss.hasPermi('system:org-device:import')")
+    @PostMapping("/devices/importData")
+    public AjaxResult importData(MultipartFile file, Long orgId) throws Exception
+    {
+        ExcelUtil<TDevice> util = new ExcelUtil<TDevice>(TDevice.class);
+        List<TDevice> userList = util.importExcel(file.getInputStream());
+        String message = deviceService.importDevice(userList, orgId);
+        return success(message);
+    }
+
 }

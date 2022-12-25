@@ -58,4 +58,20 @@ public interface TDeviceMapper
      * @return 结果
      */
     public int deleteTDeviceByDeviceIds(Long[] deviceIds);
+
+    /**
+     * 根据设备号查询设备
+     * @param deviceNo
+     * @return
+     */
+    public TDevice selectByDeviceNo(String deviceNo);
+
+    /**
+     * 将设备分配给设备组
+     * @param deviceIds
+     * @param deviceGroupId
+     * @param updateBy
+     * @return
+     */
+    public int arrangeDeviceToGroup(Long[] deviceIds, Long deviceGroupId,String updateBy);
 }

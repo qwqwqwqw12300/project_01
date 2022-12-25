@@ -1,39 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newlandnpt.varyar.system.mapper.TMemberFamilyMapper">
-    
+
     <resultMap type="TMemberFamily" id="TMemberFamilyResult">
-        <result property="memberFamilyId"    column="member_family_id"    />
-        <result property="memberId"    column="member_id"    />
-        <result property="familyId"    column="family_id"    />
-        <result property="createMemberId"    column="create_member_id"    />
-        <result property="shareFlag"    column="share_flag"    />
-        <result property="delFlag"    column="del_flag"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="updateTime"    column="update_time"    />
+        <result property="memberFamilyId" column="member_family_id"/>
+        <result property="memberId" column="member_id"/>
+        <result property="familyId" column="family_id"/>
+        <result property="createMemberId" column="create_member_id"/>
+        <result property="shareFlag" column="share_flag"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <sql id="selectTMemberFamilyVo">
-        select member_family_id, member_id, family_id, create_member_id, share_flag, del_flag, create_time, update_time from t_member_family
+        select member_family_id,
+               member_id,
+               family_id,
+               create_member_id,
+               share_flag,
+               del_flag,
+               create_time,
+               update_time
+        from t_member_family mf
     </sql>
 
     <select id="selectTMemberFamilyList" parameterType="TMemberFamily" resultMap="TMemberFamilyResult">
         <include refid="selectTMemberFamilyVo"/>
-        <where>  
-            <if test="memberId != null "> and member_id = #{memberId}</if>
-            <if test="familyId != null "> and family_id = #{familyId}</if>
-            <if test="createMemberId != null "> and create_member_id = #{createMemberId}</if>
-            <if test="shareFlag != null  and shareFlag != ''"> and share_flag = #{shareFlag}</if>
+        <where>
+            <if test="memberId != null ">and member_id = #{memberId}</if>
+            <if test="familyId != null ">and family_id = #{familyId}</if>
+            <if test="createMemberId != null ">and create_member_id = #{createMemberId}</if>
+            <if test="shareFlag != null  and shareFlag != ''">and share_flag = #{shareFlag}</if>
+            and del_flag = '0'
         </where>
     </select>
-    
+
     <select id="selectTMemberFamilyByMemberFamilyId" parameterType="Long" resultMap="TMemberFamilyResult">
         <include refid="selectTMemberFamilyVo"/>
         where member_family_id = #{memberFamilyId}
     </select>
-        
+
     <insert id="insertTMemberFamily" parameterType="TMemberFamily" useGeneratedKeys="true" keyProperty="memberFamilyId">
         insert into t_member_family
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -44,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="delFlag != null">del_flag,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="memberId != null">#{memberId},</if>
             <if test="familyId != null">#{familyId},</if>
@@ -53,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="delFlag != null">#{delFlag},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateTMemberFamily" parameterType="TMemberFamily">
@@ -71,11 +80,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteTMemberFamilyByMemberFamilyId" parameterType="Long">
-        delete from t_member_family where member_family_id = #{memberFamilyId}
+    <!--> 中间表数据物理删除<-->
+        delete
+        from t_member_family
+        where member_family_id = #{memberFamilyId}
     </delete>
 
     <delete id="deleteTMemberFamilyByMemberFamilyIds" parameterType="String">
-        delete from t_member_family where member_family_id in 
+        delete from t_member_family where member_family_id in
         <foreach item="memberFamilyId" collection="array" open="(" separator="," close=")">
             #{memberFamilyId}
         </foreach>

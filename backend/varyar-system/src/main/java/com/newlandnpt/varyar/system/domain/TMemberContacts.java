@@ -11,12 +11,12 @@ import com.newlandnpt.varyar.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2022-12-24
  */
-public class TMembercontacts extends BaseEntity
+public class TMemberContacts extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 会员联络人id */
-    private Long membercontactsId;
+    private Long memberContactsId;
 
     /** 会员id */
     @Excel(name = "会员id")
@@ -37,14 +37,14 @@ public class TMembercontacts extends BaseEntity
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
-    public void setMembercontactsId(Long membercontactsId) 
+    public void setMemberContactsId(Long memberContactsId)
     {
-        this.membercontactsId = membercontactsId;
+        this.memberContactsId = memberContactsId;
     }
 
-    public Long getMembercontactsId() 
+    public Long getMemberContactsId()
     {
-        return membercontactsId;
+        return memberContactsId;
     }
     public void setMemberId(Long memberId) 
     {
@@ -95,7 +95,7 @@ public class TMembercontacts extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("membercontactsId", getMembercontactsId())
+            .append("memberContactsId", getMemberContactsId())
             .append("memberId", getMemberId())
             .append("name", getName())
             .append("phone", getPhone())

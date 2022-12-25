@@ -1,7 +1,8 @@
 package com.newlandnpt.varyar.web.controller.system;
 
 import java.util.List;
-import javax.servlet.http.HttpServletResponse;
+
+import com.newlandnpt.varyar.system.service.ITDeviceService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,8 @@ import com.newlandnpt.varyar.common.annotation.Log;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.enums.BusinessType;
-import com.newlandnpt.varyar.system.domain.TDevicegroup;
-import com.newlandnpt.varyar.system.service.ITDevicegroupService;
-import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
+import com.newlandnpt.varyar.system.domain.TDeviceGroup;
+import com.newlandnpt.varyar.system.service.ITDeviceGroupService;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 
 /**
@@ -29,34 +29,23 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/system/devicegroup")
-public class TDevicegroupController extends BaseController
+public class TDeviceGroupController extends BaseController
 {
     @Autowired
-    private ITDevicegroupService tDevicegroupService;
+    private ITDeviceGroupService tDeviceGroupService;
+    @Autowired
+    private ITDeviceService tDeviceService;
 
     /**
      * 查询设备组列表
      */
     @PreAuthorize("@ss.hasPermi('system:devicegroup:list')")
     @GetMapping("/list")
-    public TableDataInfo list(TDevicegroup tDevicegroup)
+    public TableDataInfo list(TDeviceGroup tDevicegroup)
     {
         startPage();
-        List<TDevicegroup> list = tDevicegroupService.selectTDevicegroupList(tDevicegroup);
+        List<TDeviceGroup> list = tDeviceGroupService.selectTDeviceGroupList(tDevicegroup);
         return getDataTable(list);
-    }
-
-    /**
-     * 导出设备组列表
-     */
-    @PreAuthorize("@ss.hasPermi('system:devicegroup:export')")
-    @Log(title = "设备组", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, TDevicegroup tDevicegroup)
-    {
-        List<TDevicegroup> list = tDevicegroupService.selectTDevicegroupList(tDevicegroup);
-        ExcelUtil<TDevicegroup> util = new ExcelUtil<TDevicegroup>(TDevicegroup.class);
-        util.exportExcel(response, list, "设备组数据");
     }
 
     /**
@@ -66,7 +55,7 @@ public class TDevicegroupController extends BaseController
     @GetMapping(value = "/{devicegroupId}")
     public AjaxResult getInfo(@PathVariable("devicegroupId") Long devicegroupId)
     {
-        return success(tDevicegroupService.selectTDevicegroupByDevicegroupId(devicegroupId));
+        return success(tDeviceGroupService.selectTDeviceGroupByDeviceGroupId(devicegroupId));
     }
 
     /**
@@ -75,9 +64,9 @@ public class TDevicegroupController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:devicegroup:add')")
     @Log(title = "设备组", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody TDevicegroup tDevicegroup)
+    public AjaxResult add(@RequestBody TDeviceGroup tDevicegroup)
     {
-        return toAjax(tDevicegroupService.insertTDevicegroup(tDevicegroup));
+        return toAjax(tDeviceGroupService.insertTDeviceGroup(tDevicegroup));
     }
 
     /**
@@ -86,9 +75,31 @@ public class TDevicegroupController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:devicegroup:edit')")
     @Log(title = "设备组", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody TDevicegroup tDevicegroup)
+    public AjaxResult edit(@RequestBody TDeviceGroup tDevicegroup)
     {
-        return toAjax(tDevicegroupService.updateTDevicegroup(tDevicegroup));
+        return toAjax(tDeviceGroupService.updateTDeviceGroup(tDevicegroup));
+    }
+
+    /**
+     * 修改运营人员
+     */
+    @PreAuthorize("@ss.hasPermi('system:devicegroup:arrangeUser')")
+    @Log(title = "设备组-运营人员", businessType = BusinessType.UPDATE)
+    @PutMapping("/arrange/user/{userId}")
+    public AjaxResult arrangeDeviceGroups(@RequestBody Long[] deviceGroupIds,@PathVariable Long userId)
+    {
+        return toAjax(tDeviceGroupService.arrangeDeviceGroups(deviceGroupIds,userId));
+    }
+
+    /**
+     * 设备组分配设备
+     */
+    @PreAuthorize("@ss.hasPermi('system:devicegroup:deviceArrange')")
+    @Log(title = "设备组-分配设备", businessType = BusinessType.UPDATE)
+    @PutMapping("devices/arrange/{deviceGroupId}")
+    public AjaxResult edit(@RequestBody Long[] deviceIds,@PathVariable Long deviceGroupId)
+    {
+        return toAjax(tDeviceService.arrangeDeviceToGroup(deviceIds,deviceGroupId));
     }
 
     /**
@@ -99,6 +110,6 @@ public class TDevicegroupController extends BaseController
 	@DeleteMapping("/{devicegroupIds}")
     public AjaxResult remove(@PathVariable Long[] devicegroupIds)
     {
-        return toAjax(tDevicegroupService.deleteTDevicegroupByDevicegroupIds(devicegroupIds));
+        return toAjax(tDeviceGroupService.deleteTDeviceGroupByDeviceGroupIds(devicegroupIds));
     }
 }

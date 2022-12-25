@@ -28,6 +28,14 @@ public interface TFamilyMapper
     public List<TFamily> selectTFamilyList(TFamily tFamily);
 
     /**
+     * 查询会员家庭列表
+     *
+     * @param memberId 会员id
+     * @return 家庭集合
+     */
+    public List<TFamily> selectMembersFamilyList(Long memberId);
+
+    /**
      * 新增家庭
      * 
      * @param tFamily 家庭

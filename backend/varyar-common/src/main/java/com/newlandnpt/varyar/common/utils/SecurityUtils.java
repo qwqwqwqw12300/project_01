@@ -7,6 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.Optional;
+
 /**
  * 安全服务工具类
  * 
@@ -72,6 +74,16 @@ public class SecurityUtils
         {
             throw new ServiceException("获取用户信息异常", HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    /**
+     * 获取用户名
+     * @return
+     */
+    public static String getLoginUserName(){
+        return Optional.ofNullable(SecurityUtils.getLoginUser())
+                .map(p -> p.getUsername())
+                .orElse("匿名");
     }
 
     /**

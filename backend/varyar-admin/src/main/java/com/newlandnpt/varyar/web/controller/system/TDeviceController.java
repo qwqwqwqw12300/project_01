@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar.web.controller.system;
 
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -62,7 +63,7 @@ public class TDeviceController extends BaseController
     /**
      * 获取设备详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:device:query')")
+    @PreAuthorize("@ss.hasAnyPermi('system:device:query,system:member:query')")
     @GetMapping(value = "/{deviceId}")
     public AjaxResult getInfo(@PathVariable("deviceId") Long deviceId)
     {
@@ -81,15 +82,29 @@ public class TDeviceController extends BaseController
     }
 
     /**
-     * 修改设备
+     * 分配设备组
      */
-    @PreAuthorize("@ss.hasPermi('system:device:edit')")
-    @Log(title = "设备", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@RequestBody TDevice tDevice)
+    @PreAuthorize("@ss.hasPermi('system:devicegroup:deviceArrange')")
+    @Log(title = "设备-分配设备组", businessType = BusinessType.UPDATE)
+    @PutMapping("{}/arrange/group/{deviceGroupId}")
+    public AjaxResult arrangeDeviceToGroup(@PathVariable Long deviceId,@PathVariable Long deviceGroupId)
     {
-        return toAjax(tDeviceService.updateTDevice(tDevice));
+        return toAjax(tDeviceService.arrangeDeviceToGroup(Arrays.asList(deviceId).toArray(new Long[1]),deviceGroupId));
     }
+
+
+    /**
+     * 设备配对
+     */
+    @PreAuthorize("@ss.hasPermi('system:devicegroup:deviceArrange')")
+    @Log(title = "设备-分配设备组", businessType = BusinessType.UPDATE)
+    @PutMapping("associate")
+    public AjaxResult associate(@RequestBody TDevice tDevice)
+    {
+        return toAjax(tDeviceService.associate(tDevice));
+    }
+
+
 
     /**
      * 删除设备

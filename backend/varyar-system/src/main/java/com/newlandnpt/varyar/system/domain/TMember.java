@@ -2,8 +2,10 @@ package com.newlandnpt.varyar.system.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
+import org.springframework.data.annotation.Transient;
+
+import java.util.List;
 
 /**
  * 会员对象 t_member
@@ -19,28 +21,30 @@ public class TMember extends BaseEntity
     private Long memberId;
 
     /** 会员编号 */
-    @Excel(name = "会员编号")
     private String no;
 
     /** 会员手机号 */
-    @Excel(name = "会员手机号")
     private String phone;
 
     /** 密码 */
-    @Excel(name = "密码")
     private String password;
 
     /** 分配标志（0未分配 1已分配） */
-    @Excel(name = "分配标志", readConverterExp = "0=未分配,1=已分配")
     private String distributeFlag;
 
     /** 运营者id */
-    @Excel(name = "运营者id")
     private Long userId;
 
     /** 运营者姓名 */
-    @Excel(name = "运营者姓名")
     private String userName;
+
+    /** 运营者手机号 */
+    @Transient
+    private String userPhone;
+
+    /** 联络人 */
+    @Transient
+    private List<TMemberContacts> contacts;
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
@@ -108,7 +112,24 @@ public class TMember extends BaseEntity
     {
         return userName;
     }
-    public void setDelFlag(String delFlag) 
+
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
+    public List<TMemberContacts> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<TMemberContacts> contacts) {
+        this.contacts = contacts;
+    }
+
+    public void setDelFlag(String delFlag)
     {
         this.delFlag = delFlag;
     }
@@ -121,16 +142,15 @@ public class TMember extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("memberId", getMemberId())
-            .append("no", getNo())
-            .append("phone", getPhone())
-            .append("password", getPassword())
-            .append("distributeFlag", getDistributeFlag())
-            .append("userId", getUserId())
-            .append("userName", getUserName())
-            .append("delFlag", getDelFlag())
-            .append("createTime", getCreateTime())
-            .append("updateTime", getUpdateTime())
-            .toString();
+                .append("memberId", memberId)
+                .append("no", no)
+                .append("phone", phone)
+                .append("password", password)
+                .append("distributeFlag", distributeFlag)
+                .append("userId", userId)
+                .append("userName", userName)
+                .append("userPhone", userPhone)
+                .append("delFlag", delFlag)
+                .toString();
     }
 }

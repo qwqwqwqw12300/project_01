@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.TDeviceGroupMapper">
+
+    <resultMap type="TDeviceGroup" id="TDeviceGroupResult">
+        <result property="deviceGroupId" column="devicegroup_id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="name" column="name"/>
+        <result property="no" column="no"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectTDeviceGroupVo">
+        select devicegroup_id,
+               org_id,
+               name, no, user_id, user_name, del_flag, create_by, create_time, update_by, update_time
+        from t_devicegroup
+    </sql>
+
+    <select id="selectTDeviceGroupList" parameterType="TDeviceGroup" resultMap="TDeviceGroupResult">
+        <include refid="selectTDeviceGroupVo"/>
+        <where>
+            <if test="orgId != null ">and org_id = #{orgId}</if>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="no != null  and no != ''">and no = #{no}</if>
+            <if test="userId != null ">and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''">and user_name like concat('%', #{userName}, '%')</if>
+            and del_flag = '0'
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
+        </where>
+    </select>
+
+    <select id="selectTDeviceGroupByDeviceGroupId" parameterType="Long" resultMap="TDeviceGroupResult">
+        <include refid="selectTDeviceGroupVo"/>
+        where devicegroup_id = #{deviceGroupId}
+        and del_flag = '0'
+    </select>
+
+    <insert id="insertTDeviceGroup" parameterType="TDeviceGroup" useGeneratedKeys="true" keyProperty="deviceGroupId">
+        insert into t_devicegroup
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">org_id,</if>
+            <if test="name != null">name,</if>
+            <if test="no != null">no,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="createBy != null">create_by,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">#{orgId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="no != null">#{no},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="createBy != null">#{createBy},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateTDeviceGroup" parameterType="TDeviceGroup">
+        update t_devicegroup
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <!--编号不能修改<if test="no != null">no = #{no},</if>-->
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </trim>
+        where devicegroup_id = #{deviceGroupId}
+    </update>
+
+    <delete id="deleteTDeviceGroupByDeviceGroupId" parameterType="Long">
+        update t_devicegroup
+        set del_flag = '2'
+        where devicegroup_id = #{deviceGroupId}
+    </delete>
+
+    <delete id="deleteTDeviceGroupByDeviceGroupIds" parameterType="String">
+        update t_devicegroup
+        set del_flag = '2'
+        where devicegroup_id in
+        <foreach item="deviceGroupId" collection="array" open="(" separator="," close=")">
+            #{deviceGroupId}
+        </foreach>
+    </delete>
+
+    <update id="arrangeTDeviceGroupsUser" parameterType="map">
+        update t_devicegroup
+        set user_id = #{userId},
+        user_name = #{userName},
+        <if test="updateBy != null and updateBy != ''">
+            update_by = #{updateBy},
+        </if>
+        update_time = sysdate()
+        where devicegroup_id in
+        <foreach item="deviceGroupId" collection="deviceGroupIds" open="(" separator="," close=")">
+            #{deviceGroupId}
+        </foreach>
+    </update>
+</mapper>

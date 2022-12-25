@@ -101,6 +101,20 @@ public interface TOrgMapper
     public void updateOrgStatusNormal(Long[] orgIds);
 
     /**
+     * 修改子机构开通状态
+     *
+     * @param orgId 机构Id
+     */
+    public void updateChildrenStatusOpen(Long orgId);
+
+    /**
+     * 修改子机构关闭状态
+     *
+     * @param orgId 机构Id
+     */
+    public void updateChildrenStatusClose(Long orgId);
+
+    /**
      * 修改子元素关系
      * 
      * @param orgs 子元素

@@ -44,6 +44,11 @@ public class TFamilyServiceImpl implements ITFamilyService
         return tFamilyMapper.selectTFamilyList(tFamily);
     }
 
+    @Override
+    public List<TFamily> selectMembersFamilyList(Long memberId) {
+        return tFamilyMapper.selectMembersFamilyList(memberId);
+    }
+
     /**
      * 新增家庭
      * 

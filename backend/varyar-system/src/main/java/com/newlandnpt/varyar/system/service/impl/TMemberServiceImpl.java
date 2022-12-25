@@ -1,7 +1,11 @@
 package com.newlandnpt.varyar.system.service.impl;
 
 import java.util.List;
+
+import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
+import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
+import com.newlandnpt.varyar.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TMemberMapper;
@@ -19,6 +23,8 @@ public class TMemberServiceImpl implements ITMemberService
 {
     @Autowired
     private TMemberMapper tMemberMapper;
+    @Autowired
+    private SysUserMapper sysUserMapper;
 
     /**
      * 查询会员
@@ -92,5 +98,23 @@ public class TMemberServiceImpl implements ITMemberService
     public int deleteTMemberByMemberId(Long memberId)
     {
         return tMemberMapper.deleteTMemberByMemberId(memberId);
+    }
+
+    @Override
+    public int arrangeUserToMember(Long memberId, Long userId) {
+
+        TMember member = tMemberMapper.selectTMemberByMemberId(memberId);
+        if(member == null){
+            throw new ServiceException("会员不存在");
+        }
+        SysUser user = sysUserMapper.selectUserById(userId);
+        if(user == null){
+            throw new ServiceException("运营不存在");
+        }
+
+        member.setUserId(user.getUserId());
+        member.setUserName(user.getUserName());
+        member.autoSetUpdateByLoginUser();
+        return this.updateTMember(member);
     }
 }

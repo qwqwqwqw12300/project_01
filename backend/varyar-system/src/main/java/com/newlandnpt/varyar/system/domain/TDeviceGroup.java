@@ -11,44 +11,39 @@ import com.newlandnpt.varyar.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2022-12-24
  */
-public class TDevicegroup extends BaseEntity
+public class TDeviceGroup extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 设备组id */
-    private Long devicegroupId;
+    private Long deviceGroupId;
 
     /** 机构id */
-    @Excel(name = "机构id")
     private Long orgId;
 
     /** 设备组名称 */
-    @Excel(name = "设备组名称")
     private String name;
 
     /** 设备组编号 */
-    @Excel(name = "设备组编号")
     private String no;
 
     /** 运营者id */
-    @Excel(name = "运营者id")
     private Long userId;
 
     /** 运营者姓名 */
-    @Excel(name = "运营者姓名")
     private String userName;
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
-    public void setDevicegroupId(Long devicegroupId) 
+    public void setDeviceGroupId(Long deviceGroupId)
     {
-        this.devicegroupId = devicegroupId;
+        this.deviceGroupId = deviceGroupId;
     }
 
-    public Long getDevicegroupId() 
+    public Long getDeviceGroupId()
     {
-        return devicegroupId;
+        return deviceGroupId;
     }
     public void setOrgId(Long orgId) 
     {
@@ -108,7 +103,7 @@ public class TDevicegroup extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("devicegroupId", getDevicegroupId())
+            .append("devicegroupId", getDeviceGroupId())
             .append("orgId", getOrgId())
             .append("name", getName())
             .append("no", getNo())

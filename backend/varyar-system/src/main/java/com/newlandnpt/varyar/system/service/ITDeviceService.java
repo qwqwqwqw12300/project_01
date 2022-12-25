@@ -58,4 +58,42 @@ public interface ITDeviceService
      * @return 结果
      */
     public int deleteTDeviceByDeviceId(Long deviceId);
+
+    /**
+     * 分配设备给设备组
+     * @param deviceIds
+     * @param deviceGroupId
+     * @return
+     */
+    public int arrangeDeviceToGroup(Long[] deviceIds, Long deviceGroupId);
+
+    /**
+     * 设备配对
+     * @param tDevice
+     * @return
+     */
+    public int associate(TDevice tDevice);
+
+    /**
+     * 激活设备
+     * @param deviceId
+     * @return
+     */
+    public int active(Long deviceId);
+
+    /**
+     * 设备下线
+     * @param deviceId
+     * @return
+     */
+    public int offline(Long deviceId);
+
+    /**
+     * 导入设备
+     * @param devices 设备列表
+     * @param orgId 机构id
+     * @return
+     */
+    public String importDevice(List<TDevice> devices, Long orgId);
+
 }

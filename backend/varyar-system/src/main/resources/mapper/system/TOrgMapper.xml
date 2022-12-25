@@ -1,175 +1,252 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.newlandnpt.varyar.system.mapper.TOrgMapper">
 
-	<resultMap type="TOrg" id="TOrgResult">
-		<id     property="orgId"     column="org_id"     />
-		<result property="parentId"   column="parent_id"   />
-		<result property="ancestors"  column="ancestors"   />
-		<result property="orgName"   column="org_name"   />
-		<result property="orderNum"   column="order_num"   />
-		<result property="leader"     column="leader"      />
-		<result property="leaderPhone"      column="leaderphone"       />
-		<result property="type"      column="type"       />
-		<result property="address"      column="address"       />
-		<result property="phone1"      column="phone1"       />
-		<result property="phone2"      column="phone2"       />
-		<result property="phone3"      column="phone3"       />
-		<result property="status"     column="status"      />
-		<result property="delFlag"    column="del_flag"    />
-		<result property="parentName" column="parent_name" />
-		<result property="createBy"   column="create_by"   />
-		<result property="createTime" column="create_time" />
-		<result property="updateBy"   column="update_by"   />
-		<result property="updateTime" column="update_time" />
-	</resultMap>
-	
-	<sql id="selectOrgVo">
-        select d.org_id, d.parent_id, d.ancestors, d.org_name, d.order_num, d.leader, d.leaderphone, d.type, d.adress, d.phone1, d.phone2, d.phone3, d.status, d.del_flag, d.create_by, d.create_time
+    <resultMap type="TOrg" id="TOrgResult">
+        <id property="orgId" column="org_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="ancestors" column="ancestors"/>
+        <result property="orgName" column="org_name"/>
+        <result property="orgNo" column="org_no"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="leader" column="leader"/>
+        <result property="leaderPhone" column="leaderphone"/>
+        <result property="type" column="type"/>
+        <result property="address" column="address"/>
+        <result property="attendantName1" column="attendant_name1"/>
+        <result property="attendantName2" column="attendant_name2"/>
+        <result property="attendantName3" column="attendant_name3"/>
+        <result property="phone1" column="phone1"/>
+        <result property="phone2" column="phone2"/>
+        <result property="phone3" column="phone3"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="parentName" column="parent_name"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectOrgVo">
+        select d.org_id,
+               d.parent_id,
+               d.ancestors,
+               d.org_name,
+               d.org_no,
+               d.order_num,
+               d.leader,
+               d.leaderphone,
+               d.type,
+               d.adress,
+               d.attendant_name1,
+               d.attendant_name2,
+               d.attendant_name3,
+               d.phone1,
+               d.phone2,
+               d.phone3,
+               d.status,
+               d.del_flag,
+               d.create_by,
+               d.create_time
         from t_org d
     </sql>
-    
-	<select id="selectOrgList" parameterType="TOrg" resultMap="TOrgResult">
+
+    <select id="selectOrgList" parameterType="TOrg" resultMap="TOrgResult">
         <include refid="selectOrgVo"/>
         where d.del_flag = '0'
-		<if test="orgId != null and orgId != 0">
-			AND org_id = #{orgId}
-		</if>
+        <if test="orgId != null and orgId != 0">
+            AND org_id = #{orgId}
+        </if>
         <if test="parentId != null and parentId != 0">
-			AND parent_id = #{parentId}
-		</if>
-		<if test="orgName != null and orgName != ''">
-			AND org_name like concat('%', #{orgName}, '%')
-		</if>
-		<if test="status != null and status != ''">
-			AND status = #{status}
-		</if>
-		<!-- 数据范围过滤 -->
-		${params.dataScope}
-		order by d.parent_id, d.order_num
+            AND parent_id = #{parentId}
+        </if>
+        <if test="orgName != null and orgName != ''">
+            AND org_name like concat('%', #{orgName}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+        order by d.org_id desc
     </select>
-    
+
     <select id="selectOrgListByRoleId" resultType="Long">
-		select d.org_id
-		from t_org d
-            left join sys_role_org rd on d.org_id = rd.org_id
+        select d.org_id
+        from t_org d
+        left join sys_role_org rd on d.org_id = rd.org_id
         where rd.role_id = #{roleId}
-            <if test="orgCheckStrictly">
-              and d.org_id not in (select d.parent_id from t_org d inner join sys_role_org rd on d.org_id = rd.org_id and rd.role_id = #{roleId})
-            </if>
-		order by d.parent_id, d.order_num
-	</select>
-    
+        <if test="orgCheckStrictly">
+            and d.org_id not in (select d.parent_id from t_org d inner join sys_role_org rd on d.org_id = rd.org_id and
+            rd.role_id = #{roleId})
+        </if>
+        and del_flag = '0'
+        order by d.org_id desc
+    </select>
+
     <select id="selectOrgById" parameterType="Long" resultMap="TOrgResult">
-		select d.org_id, d.parent_id, d.ancestors, d.org_name, d.order_num, d.leader, d.leaderphone, d.type, d.adress, d.phone1, d.phone2, d.phone3, d.status,
-			(select org_name from t_org where org_id = d.parent_id) parent_name
-		from t_org d
-		where d.org_id = #{orgId}
-	</select>
-    
+        select d.org_id,
+               d.parent_id,
+               d.ancestors,
+               d.org_name,
+               d.org_no,
+               d.order_num,
+               d.leader,
+               d.leaderphone,
+               d.type,
+               d.adress,
+               d.attendant_name1,
+               d.attendant_name2,
+               d.attendant_name3,
+               d.phone1,
+               d.phone2,
+               d.phone3,
+               d.status,
+               (select org_name from t_org where org_id = d.parent_id) parent_name
+        from t_org d
+        where d.org_id = #{orgId}
+    </select>
+
     <select id="checkOrgExistUser" parameterType="Long" resultType="int">
-		select count(1) from sys_user where org_id = #{orgId} and del_flag = '0'
-	</select>
-	
-	<select id="hasChildByOrgId" parameterType="Long" resultType="int">
-		select count(1) from t_org
-		where del_flag = '0' and parent_id = #{orgId} limit 1
-	</select>
-	
-	<select id="selectChildrenOrgById" parameterType="Long" resultMap="TOrgResult">
-		select * from t_org where find_in_set(#{orgId}, ancestors)
-	</select>
-	
-	<select id="selectNormalChildrenOrgById" parameterType="Long" resultType="int">
-		select count(*) from t_org where status = 0 and del_flag = '0' and find_in_set(#{orgId}, ancestors)
-	</select>
-	
-	<select id="checkOrgNameUnique" resultMap="TOrgResult">
-	    <include refid="selectOrgVo"/>
-		where org_name=#{orgName} and parent_id = #{parentId} and del_flag = '0' limit 1
-	</select>
-    
+        select count(1)
+        from sys_user
+        where org_id = #{orgId}
+          and del_flag = '0'
+    </select>
+
+    <select id="hasChildByOrgId" parameterType="Long" resultType="int">
+        select count(1)
+        from t_org
+        where del_flag = '0'
+          and parent_id = #{orgId} limit 1
+    </select>
+
+    <select id="selectChildrenOrgById" parameterType="Long" resultMap="TOrgResult">
+        select *
+        from t_org
+        where find_in_set(#{orgId}, ancestors) and del_flag = '0'
+    </select>
+
+    <select id="selectNormalChildrenOrgById" parameterType="Long" resultType="int">
+        select count(*)
+        from t_org
+        where status = 0
+          and del_flag = '0'
+          and find_in_set(#{orgId}, ancestors)
+    </select>
+
+    <select id="checkOrgNameUnique" resultMap="TOrgResult">
+        <include refid="selectOrgVo"/>
+        where org_name=#{orgName} and parent_id = #{parentId} and del_flag = '0' limit 1
+    </select>
+
     <insert id="insertOrg" parameterType="TOrg">
- 		insert into t_org(
- 			<if test="orgId != null and orgId != 0">org_id,</if>
- 			<if test="parentId != null and parentId != 0">parent_id,</if>
- 			<if test="orgName != null and orgName != ''">org_name,</if>
- 			<if test="ancestors != null and ancestors != ''">ancestors,</if>
- 			<if test="orderNum != null">order_num,</if>
- 			<if test="leader != null and leader != ''">leader,</if>
- 			<if test="leaderPhone != null and leaderPhone != ''">leaderphone,</if>
- 			<if test="type != null and type != ''">type,</if>
- 			<if test="address != null and address != ''">address,</if>
- 			<if test="phone1 != null and phone1 != ''">phone1,</if>
- 			<if test="phone2 != null and phone2 != ''">phone2,</if>
- 			<if test="phone3 != null and phone3 != ''">phone3,</if>
- 			<if test="status != null">status,</if>
- 			<if test="createBy != null and createBy != ''">create_by,</if>
- 			create_time
- 		)values(
- 			<if test="orgId != null and orgId != 0">#{orgId},</if>
- 			<if test="parentId != null and parentId != 0">#{parentId},</if>
- 			<if test="orgName != null and orgName != ''">#{orgName},</if>
- 			<if test="ancestors != null and ancestors != ''">#{ancestors},</if>
- 			<if test="orderNum != null">#{orderNum},</if>
- 			<if test="leader != null and leader != ''">#{leader},</if>
-		<if test="leaderPhone != null and leaderPhone != ''">#{leaderPhone},</if>
-		<if test="type != null and type != ''">#{type},</if>
-		<if test="address != null and address != ''">#{address},</if>
-		<if test="phone1 != null and phone1 != ''">#{phone1},</if>
-		<if test="phone2 != null and phone2 != ''">#{phone2},</if>
-		<if test="phone3 != null and phone3 != ''">#{phone3},</if>
- 			<if test="status != null">#{status},</if>
- 			<if test="createBy != null and createBy != ''">#{createBy},</if>
- 			sysdate()
- 		)
-	</insert>
-	
-	<update id="updateOrg" parameterType="TOrg">
- 		update t_org
- 		<set>
- 			<if test="parentId != null and parentId != 0">parent_id = #{parentId},</if>
- 			<if test="orgName != null and orgName != ''">org_name = #{orgName},</if>
- 			<if test="ancestors != null and ancestors != ''">ancestors = #{ancestors},</if>
- 			<if test="orderNum != null">order_num = #{orderNum},</if>
- 			<if test="leader != null">leader = #{leader},</if>
- 			<if test="leaderPhone != null and leaderPhone != ''">leaderphone = #{leaderPhone},</if>
-			<if test="type != null and type != ''">type = #{type},</if>
-			<if test="address != null and address != ''">address = #{address},</if>
-			<if test="phone1 != null and phone1 != ''">phone1 = #{phone1},</if>
-			<if test="phone2 != null and phone2 != ''">phone2 = #{phone2},</if>
-			<if test="phone3 != null and phone3 != ''">phone3 = #{phone3},</if>
-			<if test="status != null and status != ''">status = #{status},</if>
- 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
- 			update_time = sysdate()
- 		</set>
- 		where org_id = #{orgId}
-	</update>
-	
-	<update id="updateOrgChildren" parameterType="java.util.List">
-	    update t_org set ancestors =
-	    <foreach collection="orgs" item="item" index="index"
-	        separator=" " open="case org_id" close="end">
-	        when #{item.orgId} then #{item.ancestors}
-	    </foreach>
-	    where org_id in
-	    <foreach collection="orgs" item="item" index="index"
-	        separator="," open="(" close=")">
-	        #{item.orgId}
-	    </foreach>
-	</update>
-	 
-	<update id="updateOrgStatusNormal" parameterType="Long">
- 	    update t_org set status = '0' where org_id in 
- 	    <foreach collection="array" item="orgId" open="(" separator="," close=")">
-        	#{orgId}
+        insert into t_org(
+        <if test="orgId != null and orgId != 0">org_id,</if>
+        <if test="parentId != null and parentId != 0">parent_id,</if>
+        <if test="orgName != null and orgName != ''">org_name,</if>
+        <if test="orgNo != null and orgNo != ''">org_no,</if>
+        <if test="ancestors != null and ancestors != ''">ancestors,</if>
+        <if test="orderNum != null">order_num,</if>
+        <if test="leader != null and leader != ''">leader,</if>
+        <if test="leaderPhone != null and leaderPhone != ''">leaderphone,</if>
+        <if test="type != null and type != ''">type,</if>
+        <if test="address != null and address != ''">address,</if>
+        <if test="attendantName1 != null and attendantName1 != ''">attendant_name1,</if>
+        <if test="attendantName2 != null and attendantName2 != ''">attendant_name2,</if>
+        <if test="attendantName3 != null and attendantName3 != ''">attendant_name3,</if>
+        <if test="phone1 != null and phone1 != ''">phone1,</if>
+        <if test="phone2 != null and phone2 != ''">phone2,</if>
+        <if test="phone3 != null and phone3 != ''">phone3,</if>
+        <if test="status != null">status,</if>
+        <if test="createBy != null and createBy != ''">create_by,</if>
+        create_time
+        )values(
+        <if test="orgId != null and orgId != 0">#{orgId},</if>
+        <if test="parentId != null and parentId != 0">#{parentId},</if>
+        <if test="orgName != null and orgName != ''">#{orgName},</if>
+        <if test="orgNo != null and orgNo != ''">#{orgNo},</if>
+        <if test="ancestors != null and ancestors != ''">#{ancestors},</if>
+        <if test="orderNum != null">#{orderNum},</if>
+        <if test="leader != null and leader != ''">#{leader},</if>
+        <if test="leaderPhone != null and leaderPhone != ''">#{leaderPhone},</if>
+        <if test="type != null and type != ''">#{type},</if>
+        <if test="address != null and address != ''">#{address},</if>
+        <if test="attendantName1 != null and attendantName1 != ''">#{attendantName1},</if>
+        <if test="attendantName2 != null and attendantName2 != ''">#{attendantName2},</if>
+        <if test="attendantName3 != null and attendantName3 != ''">#{attendantName3},</if>
+        <if test="phone1 != null and phone1 != ''">#{phone1},</if>
+        <if test="phone2 != null and phone2 != ''">#{phone2},</if>
+        <if test="phone3 != null and phone3 != ''">#{phone3},</if>
+        <if test="status != null">#{status},</if>
+        <if test="createBy != null and createBy != ''">#{createBy},</if>
+        sysdate()
+        )
+    </insert>
+
+    <update id="updateOrg" parameterType="TOrg">
+        update t_org
+        <set>
+            <if test="parentId != null and parentId != 0">parent_id = #{parentId},</if>
+            <if test="orgName != null and orgName != ''">org_name = #{orgName},</if>
+            <!-- 机构编号不能修改<if test="orgNo != null and orgNo != ''">org_no = #{orgNo},</if>-->
+            <if test="ancestors != null and ancestors != ''">ancestors = #{ancestors},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="leader != null">leader = #{leader},</if>
+            <if test="leaderPhone != null and leaderPhone != ''">leaderphone = #{leaderPhone},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="address != null and address != ''">address = #{address},</if>
+            <if test="attendantName1 != null and attendantName1 != ''">attendant_name1 = #{attendantName1},</if>
+            <if test="attendantName2 != null and attendantName2 != ''">attendant_name2 = #{attendant_name2},</if>
+            <if test="attendantName3 != null and attendantName3 != ''">attendant_name3 = #{attendantName3},</if>
+            <if test="phone1 != null and phone1 != ''">phone1 = #{phone1},</if>
+            <if test="phone2 != null and phone2 != ''">phone2 = #{phone2},</if>
+            <if test="phone3 != null and phone3 != ''">phone3 = #{phone3},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </set>
+        where org_id = #{orgId}
+    </update>
+
+    <update id="updateOrgChildren" parameterType="java.util.List">
+        update t_org set ancestors =
+        <foreach collection="orgs" item="item" index="index"
+                 separator=" " open="case org_id" close="end">
+            when #{item.orgId} then #{item.ancestors}
         </foreach>
-	</update>
-	
-	<delete id="deleteOrgById" parameterType="Long">
-		update t_org set del_flag = '2' where org_id = #{orgId}
-	</delete>
+        where org_id in
+        <foreach collection="orgs" item="item" index="index"
+                 separator="," open="(" close=")">
+            #{item.orgId}
+        </foreach>
+    </update>
+
+    <update id="updateOrgStatusNormal" parameterType="Long">
+        update t_org set status = '0' where org_id in
+        <foreach collection="array" item="orgId" open="(" separator="," close=")">
+            #{orgId}
+        </foreach>
+    </update>
+
+    <delete id="deleteOrgById" parameterType="Long">
+        update t_org
+        set del_flag = '2'
+        where org_id = #{orgId}
+    </delete>
+
+    <update id="updateChildrenStatusOpen" parameterType="Long">
+        update t_org
+        set status = '0'
+        where find_in_set(#{orgId}, ancestors)
+    </update>
+    <update id="updateChildrenStatusClose" parameterType="Long">
+        update t_org
+        set status = '1'
+        where find_in_set(#{orgId}, ancestors)
+    </update>
 
 </mapper> 

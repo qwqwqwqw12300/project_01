@@ -24,12 +24,6 @@ public class UserConstants
     /** 角色封禁状态 */
     public static final String ROLE_DISABLE = "1";
 
-    /** 机构正常状态 */
-    public static final String ORG_NORMAL = "0";
-
-    /** 机构停用状态 */
-    public static final String ORG_DISABLE = "1";
-
     /** 字典正常状态 */
     public static final String DICT_NORMAL = "0";
 

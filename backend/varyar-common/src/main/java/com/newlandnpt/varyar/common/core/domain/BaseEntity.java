@@ -4,9 +4,14 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.newlandnpt.varyar.common.utils.SecurityUtils;
+
+import static com.newlandnpt.varyar.common.utils.SecurityUtils.getLoginUserName;
 
 /**
  * Entity基类
@@ -114,5 +119,12 @@ public class BaseEntity implements Serializable
     public void setParams(Map<String, Object> params)
     {
         this.params = params;
+    }
+
+    public void autoSetCreateByLoginUser(){
+        this.setCreateBy(getLoginUserName());
+    }
+    public void autoSetUpdateByLoginUser(){
+        this.setUpdateBy(getLoginUserName());
     }
 }

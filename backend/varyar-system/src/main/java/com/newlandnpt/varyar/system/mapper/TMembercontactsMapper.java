@@ -1,7 +1,7 @@
 package com.newlandnpt.varyar.system.mapper;
 
 import java.util.List;
-import com.newlandnpt.varyar.system.domain.TMembercontacts;
+import com.newlandnpt.varyar.system.domain.TMemberContacts;
 
 /**
  * 会员联络人Mapper接口
@@ -17,7 +17,7 @@ public interface TMembercontactsMapper
      * @param membercontactsId 会员联络人主键
      * @return 会员联络人
      */
-    public TMembercontacts selectTMembercontactsByMembercontactsId(Long membercontactsId);
+    public TMemberContacts selectTMembercontactsByMembercontactsId(Long membercontactsId);
 
     /**
      * 查询会员联络人列表
@@ -25,7 +25,7 @@ public interface TMembercontactsMapper
      * @param tMembercontacts 会员联络人
      * @return 会员联络人集合
      */
-    public List<TMembercontacts> selectTMembercontactsList(TMembercontacts tMembercontacts);
+    public List<TMemberContacts> selectTMembercontactsList(TMemberContacts tMembercontacts);
 
     /**
      * 新增会员联络人
@@ -33,7 +33,7 @@ public interface TMembercontactsMapper
      * @param tMembercontacts 会员联络人
      * @return 结果
      */
-    public int insertTMembercontacts(TMembercontacts tMembercontacts);
+    public int insertTMembercontacts(TMemberContacts tMembercontacts);
 
     /**
      * 修改会员联络人
@@ -41,7 +41,7 @@ public interface TMembercontactsMapper
      * @param tMembercontacts 会员联络人
      * @return 结果
      */
-    public int updateTMembercontacts(TMembercontacts tMembercontacts);
+    public int updateTMembercontacts(TMemberContacts tMembercontacts);
 
     /**
      * 删除会员联络人
