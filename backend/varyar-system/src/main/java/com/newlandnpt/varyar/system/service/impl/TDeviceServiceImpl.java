@@ -123,7 +123,7 @@ public class TDeviceServiceImpl implements ITDeviceService {
             target.setDistributeFlag(DISTRIBUTE_FLAG_YES);
         }
         target.setLocation(tDevice.getLocation());
-        // todo 确认配对设备这里的别名是否就是设备名称
+        // 确认配对设备这里的别名是否就是设备名称-- 已确认目前别名没作用，这里就是修改设备名称
         target.setName(tDevice.getName());
 
         return this.updateTDevice(target);
