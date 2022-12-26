@@ -23,13 +23,15 @@
         <result property="phone3" column="phone3"/>
         <result property="status" column="status"/>
         <result property="delFlag" column="del_flag"/>
-        <result property="parentName" column="parent_name"/>
+<!--        <result property="parentName" column="parent_name"/>-->
         <result property="createBy" column="create_by"/>
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
+        <association property="parentName" select="selectParentName" column="{parentId = parent_id}" />
     </resultMap>
 
+    <select id="selectParentName" resultType="String">select org_name from t_org where org_id = #{parentId}</select>
     <sql id="selectOrgVo">
         select d.org_id,
                d.parent_id,
@@ -40,7 +42,7 @@
                d.leader,
                d.leaderphone,
                d.type,
-               d.adress,
+               d.address,
                d.attendant_name1,
                d.attendant_name2,
                d.attendant_name3,
@@ -97,15 +99,14 @@
                d.leader,
                d.leaderphone,
                d.type,
-               d.adress,
+               d.address,
                d.attendant_name1,
                d.attendant_name2,
                d.attendant_name3,
                d.phone1,
                d.phone2,
                d.phone3,
-               d.status,
-               (select org_name from t_org where org_id = d.parent_id) parent_name
+               d.status
         from t_org d
         where d.org_id = #{orgId}
     </select>
@@ -200,7 +201,7 @@
             <if test="type != null and type != ''">type = #{type},</if>
             <if test="address != null and address != ''">address = #{address},</if>
             <if test="attendantName1 != null and attendantName1 != ''">attendant_name1 = #{attendantName1},</if>
-            <if test="attendantName2 != null and attendantName2 != ''">attendant_name2 = #{attendant_name2},</if>
+            <if test="attendantName2 != null and attendantName2 != ''">attendant_name2 = #{attendantName2},</if>
             <if test="attendantName3 != null and attendantName3 != ''">attendant_name3 = #{attendantName3},</if>
             <if test="phone1 != null and phone1 != ''">phone1 = #{phone1},</if>
             <if test="phone2 != null and phone2 != ''">phone2 = #{phone2},</if>

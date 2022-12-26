@@ -189,7 +189,7 @@ public class TDeviceServiceImpl implements ITDeviceService {
                 device.autoSetCreateByLoginUser();
                 this.insertTDevice(device);
                 successNum++;
-                successMsg.append("<br/>" + successNum + "、设备编号 " + device.getNo() + " 导入成功");
+//                successMsg.append("<br/>" + successNum + "、设备编号 " + device.getNo() + " 导入成功");
             } catch (Exception e) {
                 failureNum++;
                 String msg = "<br/>" + failureNum + "、设备编号 " + device.getNo() + " 导入失败：";
@@ -202,7 +202,7 @@ public class TDeviceServiceImpl implements ITDeviceService {
             failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
             throw new ServiceException(failureMsg.toString());
         } else {
-            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条");
         }
         return successMsg.toString();
     }

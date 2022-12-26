@@ -60,7 +60,7 @@ public class TOrgController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:org:list')")
     @GetMapping("/page")
-    public TableDataInfo page(TOrg org)
+    public TableDataInfo page(@Validated TOrg org)
     {
         startPage();
         List<TOrg> orgs = orgService.selectOrgList(org);
@@ -154,7 +154,8 @@ public class TOrgController extends BaseController
      * 导入设备模板
      * @param response
      */
-    @PostMapping("/devices/importTemplate")
+    @PreAuthorize("@ss.hasPermi('system:org-device:import')")
+    @GetMapping("/devices/importTemplate")
     public void importTemplate(HttpServletResponse response)
     {
         ExcelUtil<TDevice> util = new ExcelUtil<TDevice>(TDevice.class);
@@ -167,6 +168,7 @@ public class TOrgController extends BaseController
     @PostMapping("/devices/importData")
     public AjaxResult importData(MultipartFile file, Long orgId) throws Exception
     {
+        orgService.checkOrgDataScope(orgId);
         ExcelUtil<TDevice> util = new ExcelUtil<TDevice>(TDevice.class);
         List<TDevice> userList = util.importExcel(file.getInputStream());
         String message = deviceService.importDevice(userList, orgId);

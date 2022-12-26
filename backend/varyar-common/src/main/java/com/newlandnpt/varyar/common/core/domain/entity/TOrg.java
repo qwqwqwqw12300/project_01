@@ -48,11 +48,14 @@ public class TOrg extends BaseEntity {
     /**
      * 显示顺序
      */
+    @NotNull(message = "显示顺序不能为空")
     private Integer orderNum;
 
     /**
      * 负责人
      */
+    @NotBlank(message = "机构负责人姓名不能为空")
+    @Size(min = 0, max = 50, message = "机构负责人姓名长度不能超过50个字符")
     private String leader;
 
     /**
@@ -167,7 +170,6 @@ public class TOrg extends BaseEntity {
         this.orgNo = orgNo;
     }
 
-    @NotNull(message = "显示顺序不能为空")
     public Integer getOrderNum() {
         return orderNum;
     }
@@ -176,8 +178,6 @@ public class TOrg extends BaseEntity {
         this.orderNum = orderNum;
     }
 
-    @NotBlank(message = "机构负责人姓名不能为空")
-    @Size(min = 0, max = 50, message = "机构负责人姓名长度不能超过50个字符")
     public String getLeader() {
         return leader;
     }

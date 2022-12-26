@@ -198,7 +198,7 @@ public class TOrgServiceImpl implements ITOrgService {
     public int insertOrg(TOrg org) {
         TOrg info = orgMapper.selectOrgById(org.getParentId());
         // 如果父节点不为正常状态,则不允许新增子节点
-        if (!STATUS_CLOSE.equals(info.getStatus())) {
+        if (!STATUS_OPEN.equals(info.getStatus())) {
             throw new ServiceException("父级机构关闭，不允许新增");
         }
         org.setAncestors(info.getAncestors() + "," + org.getParentId());
