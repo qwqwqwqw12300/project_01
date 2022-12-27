@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.system.mapper;
 
 import java.util.List;
 import com.newlandnpt.varyar.system.domain.TDevice;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 设备Mapper接口
@@ -73,5 +74,5 @@ public interface TDeviceMapper
      * @param updateBy
      * @return
      */
-    public int arrangeDeviceToGroup(Long[] deviceIds, Long deviceGroupId,String updateBy);
+    public int arrangeDeviceToGroup(@Param("deviceIds")Long[] deviceIds,@Param("deviceGroupId") Long deviceGroupId,@Param("updateBy") String updateBy);
 }

@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import com.newlandnpt.varyar.common.annotation.DataScope;
+import com.newlandnpt.varyar.common.constant.UserConstants;
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
+import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
+import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,9 +63,7 @@ public class TDeviceGroupServiceImpl implements ITDeviceGroupService {
      */
     @Override
     public int insertTDeviceGroup(TDeviceGroup tDevicegroup) {
-        //todo 生成设备组编号
-        //默认是当前管理员所属机构
-        tDevicegroup.setOrgId(SecurityUtils.getLoginUser().getUser().getOrgId());
+        //todo 生成设备组编号，编号唯一
         //创建人为当前登录人员
         tDevicegroup.autoSetCreateByLoginUser();
         return tDevicegroupMapper.insertTDeviceGroup(tDevicegroup);
@@ -89,7 +90,7 @@ public class TDeviceGroupServiceImpl implements ITDeviceGroupService {
         if (sysUser == null) {
             throw new ServiceException("运营人员不存在");
         }
-        return tDevicegroupMapper.arrangeTDeviceGroupsUser(deviceGroupIds, userId,getLoginUserName());
+        return tDevicegroupMapper.arrangeTDeviceGroupsUser(deviceGroupIds, userId, getLoginUserName());
     }
 
     /**
@@ -112,5 +113,22 @@ public class TDeviceGroupServiceImpl implements ITDeviceGroupService {
     @Override
     public int deleteTDeviceGroupByDeviceGroupId(Long deviceGroupId) {
         return tDevicegroupMapper.deleteTDeviceGroupByDeviceGroupId(deviceGroupId);
+    }
+
+
+    /**
+     * 校验名称是否唯一
+     *
+     * @param deviceGroup 设备组信息
+     * @return 结果
+     */
+    @Override
+    public String checkOrgNameUnique(TDeviceGroup deviceGroup) {
+        TDeviceGroup info = tDevicegroupMapper.checkOrgNameUnique(deviceGroup.getName(), deviceGroup.getOrgId());
+        if (StringUtils.isNotNull(info) && (deviceGroup.getDeviceGroupId() == null
+                || info.getDeviceGroupId().longValue() != deviceGroup.getDeviceGroupId().longValue())) {
+            return UserConstants.NOT_UNIQUE;
+        }
+        return UserConstants.UNIQUE;
     }
 }

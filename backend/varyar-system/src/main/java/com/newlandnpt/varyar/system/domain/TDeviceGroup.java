@@ -5,6 +5,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * 设备组对象 t_devicegroup
  * 
@@ -50,6 +54,7 @@ public class TDeviceGroup extends BaseEntity
         this.orgId = orgId;
     }
 
+    @NotNull(message = "机构id不能为空")
     public Long getOrgId() 
     {
         return orgId;
@@ -59,6 +64,8 @@ public class TDeviceGroup extends BaseEntity
         this.name = name;
     }
 
+    @NotBlank(message = "设备组名称不能为空")
+    @Size(min = 0, max = 50, message = "设备组名称长度不能超过50个字符")
     public String getName() 
     {
         return name;

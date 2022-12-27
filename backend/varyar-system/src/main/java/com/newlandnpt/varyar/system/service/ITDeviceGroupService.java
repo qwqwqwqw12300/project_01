@@ -67,4 +67,13 @@ public interface ITDeviceGroupService
      * @return 结果
      */
     public int deleteTDeviceGroupByDeviceGroupId(Long deviceGroupId);
+
+
+    /**
+     * 校验名称在机构内是否唯一
+     *
+     * @param deviceGroup 设备组信息
+     * @return 结果
+     */
+    public String checkOrgNameUnique(TDeviceGroup deviceGroup);
 }

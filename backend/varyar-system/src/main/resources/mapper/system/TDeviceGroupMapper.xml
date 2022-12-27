@@ -39,6 +39,14 @@
         </where>
     </select>
 
+    <select id="checkOrgNameUnique" resultMap="TDeviceGroupResult">
+        <include refid="selectTDeviceGroupVo"/>
+        where name = #{name} and org_id = #{orgId}
+        and del_flag = '0'
+        limit 1
+    </select>
+
+
     <select id="selectTDeviceGroupByDeviceGroupId" parameterType="Long" resultMap="TDeviceGroupResult">
         <include refid="selectTDeviceGroupVo"/>
         where devicegroup_id = #{deviceGroupId}
@@ -96,7 +104,7 @@
     <update id="arrangeTDeviceGroupsUser" parameterType="map">
         update t_devicegroup
         set user_id = #{userId},
-        user_name = #{userName},
+        user_name = (select user_name from sys_user where user_id = #{userId}),
         <if test="updateBy != null and updateBy != ''">
             update_by = #{updateBy},
         </if>

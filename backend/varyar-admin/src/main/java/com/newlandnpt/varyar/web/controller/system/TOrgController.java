@@ -60,7 +60,7 @@ public class TOrgController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:org:list')")
     @GetMapping("/page")
-    public TableDataInfo page(@Validated TOrg org)
+    public TableDataInfo page( TOrg org)
     {
         startPage();
         List<TOrg> orgs = orgService.selectOrgList(org);

@@ -1,16 +1,15 @@
 package com.newlandnpt.varyar.common.core.domain.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.validation.constraints.Email;
+import com.newlandnpt.varyar.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.data.annotation.Transient;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import com.newlandnpt.varyar.common.core.domain.BaseEntity;
-import org.springframework.data.annotation.Transient;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 机构表 t_org

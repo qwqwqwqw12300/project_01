@@ -2,6 +2,8 @@ package com.newlandnpt.varyar.web.controller.system;
 
 import java.util.List;
 
+import com.newlandnpt.varyar.common.constant.UserConstants;
+import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.system.service.ITDeviceService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +42,8 @@ public class TDeviceGroupController extends BaseController
      * 查询设备组列表
      */
     @PreAuthorize("@ss.hasPermi('system:devicegroup:list')")
-    @GetMapping("/list")
-    public TableDataInfo list(TDeviceGroup tDevicegroup)
+    @GetMapping("/page")
+    public TableDataInfo page(TDeviceGroup tDevicegroup)
     {
         startPage();
         List<TDeviceGroup> list = tDeviceGroupService.selectTDeviceGroupList(tDevicegroup);
@@ -66,6 +68,12 @@ public class TDeviceGroupController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody TDeviceGroup tDevicegroup)
     {
+        //默认是当前管理员所属机构
+        tDevicegroup.setOrgId(SecurityUtils.getLoginUser().getUser().getOrgId());
+        if (UserConstants.NOT_UNIQUE.equals(tDeviceGroupService.checkOrgNameUnique(tDevicegroup)))
+        {
+            return error("新增设备组'" + tDevicegroup.getName() + "'失败，设备组名称已存在");
+        }
         return toAjax(tDeviceGroupService.insertTDeviceGroup(tDevicegroup));
     }
 
@@ -77,6 +85,10 @@ public class TDeviceGroupController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody TDeviceGroup tDevicegroup)
     {
+        if (UserConstants.NOT_UNIQUE.equals(tDeviceGroupService.checkOrgNameUnique(tDevicegroup)))
+        {
+            return error("修改设备组'" + tDevicegroup.getName() + "'失败，设备组名称已存在");
+        }
         return toAjax(tDeviceGroupService.updateTDeviceGroup(tDevicegroup));
     }
 
@@ -96,7 +108,7 @@ public class TDeviceGroupController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:devicegroup:deviceArrange')")
     @Log(title = "设备组-分配设备", businessType = BusinessType.UPDATE)
-    @PutMapping("devices/arrange/{deviceGroupId}")
+    @PutMapping("{deviceGroupId}/devices/arrange")
     public AjaxResult edit(@RequestBody Long[] deviceIds,@PathVariable Long deviceGroupId)
     {
         return toAjax(tDeviceService.arrangeDeviceToGroup(deviceIds,deviceGroupId));

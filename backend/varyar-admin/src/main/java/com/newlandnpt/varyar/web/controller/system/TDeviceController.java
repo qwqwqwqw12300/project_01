@@ -39,8 +39,8 @@ public class TDeviceController extends BaseController
      * 查询设备列表
      */
     @PreAuthorize("@ss.hasPermi('system:device:list')")
-    @GetMapping("/list")
-    public TableDataInfo list(TDevice tDevice)
+    @GetMapping("/page")
+    public TableDataInfo page(TDevice tDevice)
     {
         startPage();
         List<TDevice> list = tDeviceService.selectTDeviceList(tDevice);
