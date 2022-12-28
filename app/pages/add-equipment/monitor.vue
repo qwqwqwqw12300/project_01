@@ -1,0 +1,212 @@
+<!-- 增加监护设备 -->
+<template>
+	<app-body>
+		<view class="ui-navbar">
+			<u-icon name="arrow-left" color="#fff" size="23"></u-icon>
+			<text class="ui-navbar-text">首页</text>
+		</view>
+		<view class="ui-title">
+			<text>增加监护设备</text>
+		</view>
+		<view class="ui-step">
+			<view class="ui-step-icon"></view>
+			<view class="ui-step-title">
+				<text>请确保手机蓝牙</text>
+				<text>WIFI处于开启状态</text>
+			</view>
+		</view>
+		<view class="ui-bluetooth">
+			<image src="../../static/images/bluetooth.png"></image>
+		</view>
+		<view class="ui-step">
+			<view class="ui-step-icon"></view>
+			<view class="ui-step-title">
+				<text>靠近智能设备,</text>
+				<text>等待蓝灯亮起</text>
+			</view>
+		</view>
+		<view class="ui-list">
+			<view v-for="item in deviceList" :key="item.key" @tap="handleSelect(item)" class="ui-list-item"
+				:class="{'active': item.active}">
+				<image class="device" src="../../static/images/device.png" mode="" />
+				<text class="text">设备1 device-01</text>
+				<image v-show="item.active" class="tick" src="../../static/images/tick.png" />
+			</view>
+		</view>
+		<view class="ui-btn">
+			<button>下一步</button>
+		</view>
+	</app-body>
+</template>
+
+<script>
+	export default {
+		data() {
+			const deviceList = [{
+					key: 0,
+					name: '设备1 device-01',
+					active: true
+				},
+				{
+					key: 1,
+					name: '设备2 device-03',
+					active: false
+				},
+				{
+					key: 2,
+					name: '设备2 device-03',
+					active: false
+				}
+			]
+			return {
+				deviceList,
+			}
+		},
+		methods:{
+			handleSelect(item) {
+				this.deviceList = this.deviceList.map(n=>{
+					 n.active = n.key === item.key
+					 return n
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.bg {
+		background-color: rgb(227, 252, 255);
+	}
+
+	.active {
+		background-color: rgb(220, 251, 255);
+	}
+
+	.ui-navbar {
+		padding-top: calc(var(--status-bar-height) + 26rpx);
+		padding-left: 20rpx;
+		display: flex;
+		align-items: center;
+
+		&-text {
+			font-size: 36rpx;
+			color: #fff;
+		}
+	}
+
+	.ui-title {
+		margin-top: 10rpx;
+		padding-left: 50rpx;
+
+		text {
+			font-size: 72rpx;
+			font-weight: bold;
+			color: #ffffff;
+		}
+	}
+
+	.ui-step {
+		height: 148rpx;
+		display: flex;
+		align-items: center;
+		margin-top: 50rpx;
+		padding: 0 40rpx;
+
+		&-icon {
+			width: 150rpx;
+			height: 120rpx;
+			background-image: url('../../static/images/step1.png');
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		&-title {
+			display: flex;
+			flex-direction: column;
+			margin-left: 20rpx;
+			padding: 10rpx;
+			border-radius: 10rpx;
+
+			text {
+				color: #0e6bc0;
+				font-size: 40rpx;
+				font-weight: bold;
+				text-shadow: 0 0 3px #fff, 0 0 3px #5acbff;
+			}
+		}
+	}
+
+	.ui-bluetooth {
+		margin-top: 30rpx;
+		width: 100%;
+		height: 400rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		image {
+			width: 380rpx;
+			height: 360rpx;
+		}
+	}
+
+	.ui-list {
+		margin-top: 20rpx;
+		padding: 20rpx 60rpx 20rpx 20rpx;
+		display: flex;
+		flex-direction: column;
+
+		&-item {
+			margin-left: 80rpx;
+			padding: 18rpx 34rpx;
+			border-radius: 40rpx;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			.text {
+				flex: 1;
+				font-size: 36rpx;
+				margin-left: 20rpx;
+				color: #000000;
+				font-weight: 550;
+			}
+
+			.device {
+				width: 50rpx;
+				height: 50rpx;
+			}
+
+			.tick {
+				width: 35rpx;
+				height: 30rpx;
+			}
+		}
+	}
+
+	.ui-btn {
+		position: absolute;
+		width: 450rpx;
+		margin: 0 auto;
+		bottom: 80rpx;
+		left: 50%;
+		transform: translateX(-50%);
+		text-align: center;
+
+		text {
+			font-size: 30rpx;
+			color: #0094ff;
+		}
+
+		&>* {
+			&:active {
+				opacity: 0.8;
+			}
+		}
+
+		&>*:nth-child(1) {
+			margin-bottom: 50rpx;
+		}
+	}
+</style>

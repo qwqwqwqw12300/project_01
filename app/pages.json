@@ -19,6 +19,13 @@
 			}
 		},
 		{
+			"path": "pages/add-equipment/monitor",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "添加监护设备"
+			}
+		},
+		{
 			"path": "pages/customer-service/customer-service",
 			"style": {
 				"navigationBarTitleText": "在线客服"
