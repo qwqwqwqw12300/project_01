@@ -11,7 +11,8 @@
 			<slot></slot>
 		</view>
 		<view class="wd-service" v-if="needService" @touchmove="onMove" @click="goService" @touchstart="onStart"
-			:style="{top: serviceTop + 'px'}"></view>
+			:style="{top: serviceTop + 'px'}">
+		</view>
 		
 	</view>
 
