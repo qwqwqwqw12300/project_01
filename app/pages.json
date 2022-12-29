@@ -101,7 +101,17 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/myself/mobile",
+            "style": {
+            	"navigationStyle": "custom",
+            	"app-plus": {
+            		"titleNView": false
+            	}
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

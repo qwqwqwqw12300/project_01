@@ -7,40 +7,35 @@
 
 <template>
 	<app-body>
-		  <u-navbar
-			leftText="首页"
-			@rightClick="rightClick"
-			:autoBack="true"
-			bgColor="transparent"
-			leftIconColor="#fff"
-			:fixed="false"
-		        />
-		<text class="ui-logo">修改手机号</text>
+		<u-navbar leftText="首页" @rightClick="rightClick" :autoBack="true" bgColor="transparent" leftIconColor="#fff" :fixed="false" />
+		<text class="ui-logo">修改密码</text>
 		<view class="ui-form">
 			<view class="ui-form-item">
-				<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="原手机号码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input"><u--input placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input></view>
-			</view>
-			<view class="ui-form-item">
-				<u-text prefixIcon="email" iconStyle="font-size: 32rpx" text="原手机短信码" color="#444" size="28rpx"></u-text>
+				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="原密码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u-input placeholder="请输入短信认证码" :border="'none'" fontSize="28rpx" clearable>
+					<u-input placeholder="请输入原密码" :password="true" :border="'none'" fontSize="28rpx" clearable>
 						<template slot="suffix">
-							<button type="default" class="wd-sms ui-mini" size="mini">验证码</button>
+							<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
 						</template>
 					</u-input>
 				</view>
 			</view>
 			<view class="ui-form-item">
-				<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="新手机号码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input"><u--input placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input></view>
+				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx"></u-text>
+				<view class="ui-input">
+					<u-input placeholder="请输入新密码" :border="'none'" :password="true" fontSize="28rpx" clearable>
+						<template slot="suffix">
+							<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
+						</template>
+					</u-input>
+				</view>
 			</view>
 			<view class="ui-form-item">
-				<u-text prefixIcon="email" iconStyle="font-size: 32rpx" text="新手机短信码" color="#444" size="28rpx"></u-text>
+				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="确认密码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u-input placeholder="请输入短信认证码" :border="'none'" fontSize="28rpx" clearable>
+					<u-input placeholder="再次输入新密码" :border="'none'" :password="true" fontSize="28rpx" clearable>
 						<template slot="suffix">
-							<button type="default" class="wd-sms ui-mini" size="mini">验证码</button>
+							<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
 						</template>
 					</u-input>
 				</view>
@@ -59,7 +54,6 @@ export default {
 		return {};
 	},
 	methods: {
-		
 		/**
 		 * 跳转登录
 		 */
