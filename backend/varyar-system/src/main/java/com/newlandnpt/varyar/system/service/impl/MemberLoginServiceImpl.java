@@ -7,8 +7,8 @@ import com.newlandnpt.varyar.common.exception.user.UserPasswordNotMatchException
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
-import com.newlandnpt.varyar.system.domain.TMember;
-import com.newlandnpt.varyar.system.mapper.TMemberMapper;
+import com.newlandnpt.varyar.system.domain.Member;
+import com.newlandnpt.varyar.system.mapper.MemberMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +28,15 @@ public class MemberLoginServiceImpl implements IMemberLoginService {
     private static final Logger log = LoggerFactory.getLogger(MemberLoginServiceImpl.class);
 
     @Autowired
-    private TMemberMapper tMemberMapper;
+    private MemberMapper memberMapper;
 
     @Override
-    public TMember loginByPwd(MemberLoginPwdRequest memberLoginPwdRequest) {
+    public Member loginByPwd(MemberLoginPwdRequest memberLoginPwdRequest) {
 
         String phone = memberLoginPwdRequest.getPhone();
         String pwd = memberLoginPwdRequest.getPassword();
 
-        TMember tMember = tMemberMapper.selectTMemberByPhone(phone);
+        Member tMember = memberMapper.selectMemberByPhone(phone);
         if (StringUtils.isNull(tMember)) {
             log.info("登录会员：{} 不存在.", phone);
             throw new ServiceException("登录用户：" + phone + " 不存在");
@@ -51,9 +51,9 @@ public class MemberLoginServiceImpl implements IMemberLoginService {
     }
 
     @Override
-    public TMember loginBySms(MemberLoginSmsRequest memberLoginSmsRequest) {
+    public Member loginBySms(MemberLoginSmsRequest memberLoginSmsRequest) {
         String phone = memberLoginSmsRequest.getPhone();
-        TMember tMember = tMemberMapper.selectTMemberByPhone(phone);
+        Member tMember = memberMapper.selectMemberByPhone(phone);
 
         return tMember;
     }

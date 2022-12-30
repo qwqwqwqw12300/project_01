@@ -68,8 +68,8 @@
     </select>
 
 
-    <select id="selectMemberByPhone" parameterType="String" resultMap="TMemberResult">
-        <include refid="selectTMemberVo"/>
+    <select id="selectMemberByPhone" parameterType="String" resultMap="MemberResult">
+        <include refid="selectMemberVo"/>
         where m.phone = #{phone} and m.del_flag = '0'
     </select>
 
