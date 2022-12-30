@@ -1,21 +1,18 @@
 package com.newlandnpt.varyar.system.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.newlandnpt.varyar.common.annotation.DataScope;
 import com.newlandnpt.varyar.common.constant.UserConstants;
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
-import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import com.newlandnpt.varyar.common.exception.ServiceException;
-import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.newlandnpt.varyar.system.mapper.TDeviceGroupMapper;
-import com.newlandnpt.varyar.system.domain.TDeviceGroup;
-import com.newlandnpt.varyar.system.service.ITDeviceGroupService;
+import com.newlandnpt.varyar.system.mapper.DeviceGroupMapper;
+import com.newlandnpt.varyar.system.domain.DeviceGroup;
+import com.newlandnpt.varyar.system.service.IDeviceGroupService;
 
 import static com.newlandnpt.varyar.common.utils.SecurityUtils.getLoginUserName;
 
@@ -26,9 +23,9 @@ import static com.newlandnpt.varyar.common.utils.SecurityUtils.getLoginUserName;
  * @date 2022-12-24
  */
 @Service
-public class TDeviceGroupServiceImpl implements ITDeviceGroupService {
+public class DeviceGroupServiceImpl implements IDeviceGroupService {
     @Autowired
-    private TDeviceGroupMapper tDevicegroupMapper;
+    private DeviceGroupMapper devicegroupMapper;
     @Autowired
     private SysUserMapper sysUserMapper;
 
@@ -39,49 +36,49 @@ public class TDeviceGroupServiceImpl implements ITDeviceGroupService {
      * @return 设备组
      */
     @Override
-    public TDeviceGroup selectTDeviceGroupByDeviceGroupId(Long deviceGroupId) {
-        return tDevicegroupMapper.selectTDeviceGroupByDeviceGroupId(deviceGroupId);
+    public DeviceGroup selectDeviceGroupByDeviceGroupId(Long deviceGroupId) {
+        return devicegroupMapper.selectDeviceGroupByDeviceGroupId(deviceGroupId);
     }
 
     /**
      * 查询设备组列表
      *
-     * @param tDevicegroup 设备组
+     * @param devicegroup 设备组
      * @return 设备组
      */
     @DataScope(orgAlias = "d")
     @Override
-    public List<TDeviceGroup> selectTDeviceGroupList(TDeviceGroup tDevicegroup) {
-        return tDevicegroupMapper.selectTDeviceGroupList(tDevicegroup);
+    public List<DeviceGroup> selectDeviceGroupList(DeviceGroup devicegroup) {
+        return devicegroupMapper.selectDeviceGroupList(devicegroup);
     }
 
     /**
      * 新增设备组
      *
-     * @param tDevicegroup 设备组
+     * @param devicegroup 设备组
      * @return 结果
      */
     @Override
-    public int insertTDeviceGroup(TDeviceGroup tDevicegroup) {
+    public int insertDeviceGroup(DeviceGroup devicegroup) {
         //todo 生成设备组编号，编号唯一
         //创建人为当前登录人员
-        tDevicegroup.autoSetCreateByLoginUser();
-        return tDevicegroupMapper.insertTDeviceGroup(tDevicegroup);
+        devicegroup.autoSetCreateByLoginUser();
+        return devicegroupMapper.insertDeviceGroup(devicegroup);
     }
 
     /**
      * 修改设备组
      *
-     * @param tDevicegroup 设备组
+     * @param devicegroup 设备组
      * @return 结果
      */
     @Override
-    public int updateTDeviceGroup(TDeviceGroup tDevicegroup) {
+    public int updateDeviceGroup(DeviceGroup devicegroup) {
         // 运营者信息发生在分配设备组内修改，这里置null不做修改
-        tDevicegroup.setUserId(null);
-        tDevicegroup.setUserName(null);
-        tDevicegroup.autoSetUpdateByLoginUser();
-        return tDevicegroupMapper.updateTDeviceGroup(tDevicegroup);
+        devicegroup.setUserId(null);
+        devicegroup.setUserName(null);
+        devicegroup.autoSetUpdateByLoginUser();
+        return devicegroupMapper.updateDeviceGroup(devicegroup);
     }
 
     @Override
@@ -90,7 +87,7 @@ public class TDeviceGroupServiceImpl implements ITDeviceGroupService {
         if (sysUser == null) {
             throw new ServiceException("运营人员不存在");
         }
-        return tDevicegroupMapper.arrangeTDeviceGroupsUser(deviceGroupIds, userId, getLoginUserName());
+        return devicegroupMapper.arrangeDeviceGroupsUser(deviceGroupIds, userId, getLoginUserName());
     }
 
     /**
@@ -100,8 +97,8 @@ public class TDeviceGroupServiceImpl implements ITDeviceGroupService {
      * @return 结果
      */
     @Override
-    public int deleteTDeviceGroupByDeviceGroupIds(Long[] deviceGroupIds) {
-        return tDevicegroupMapper.deleteTDeviceGroupByDeviceGroupIds(deviceGroupIds);
+    public int deleteDeviceGroupByDeviceGroupIds(Long[] deviceGroupIds) {
+        return devicegroupMapper.deleteDeviceGroupByDeviceGroupIds(deviceGroupIds);
     }
 
     /**
@@ -111,8 +108,8 @@ public class TDeviceGroupServiceImpl implements ITDeviceGroupService {
      * @return 结果
      */
     @Override
-    public int deleteTDeviceGroupByDeviceGroupId(Long deviceGroupId) {
-        return tDevicegroupMapper.deleteTDeviceGroupByDeviceGroupId(deviceGroupId);
+    public int deleteDeviceGroupByDeviceGroupId(Long deviceGroupId) {
+        return devicegroupMapper.deleteDeviceGroupByDeviceGroupId(deviceGroupId);
     }
 
 
@@ -123,8 +120,8 @@ public class TDeviceGroupServiceImpl implements ITDeviceGroupService {
      * @return 结果
      */
     @Override
-    public String checkOrgNameUnique(TDeviceGroup deviceGroup) {
-        TDeviceGroup info = tDevicegroupMapper.checkOrgNameUnique(deviceGroup.getName(), deviceGroup.getOrgId());
+    public String checkOrgNameUnique(DeviceGroup deviceGroup) {
+        DeviceGroup info = devicegroupMapper.checkOrgNameUnique(deviceGroup.getName(), deviceGroup.getOrgId());
         if (StringUtils.isNotNull(info) && (deviceGroup.getDeviceGroupId() == null
                 || info.getDeviceGroupId().longValue() != deviceGroup.getDeviceGroupId().longValue())) {
             return UserConstants.NOT_UNIQUE;

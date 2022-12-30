@@ -8,9 +8,9 @@ import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.newlandnpt.varyar.system.mapper.TMemberMapper;
-import com.newlandnpt.varyar.system.domain.TMember;
-import com.newlandnpt.varyar.system.service.ITMemberService;
+import com.newlandnpt.varyar.system.mapper.MemberMapper;
+import com.newlandnpt.varyar.system.domain.Member;
+import com.newlandnpt.varyar.system.service.IMemberService;
 
 /**
  * 会员Service业务层处理
@@ -19,10 +19,10 @@ import com.newlandnpt.varyar.system.service.ITMemberService;
  * @date 2022-12-24
  */
 @Service
-public class TMemberServiceImpl implements ITMemberService 
+public class MemberServiceImpl implements IMemberService
 {
     @Autowired
-    private TMemberMapper tMemberMapper;
+    private MemberMapper memberMapper;
     @Autowired
     private SysUserMapper sysUserMapper;
 
@@ -33,47 +33,47 @@ public class TMemberServiceImpl implements ITMemberService
      * @return 会员
      */
     @Override
-    public TMember selectTMemberByMemberId(Long memberId)
+    public Member selectMemberByMemberId(Long memberId)
     {
-        return tMemberMapper.selectTMemberByMemberId(memberId);
+        return memberMapper.selectMemberByMemberId(memberId);
     }
 
     /**
      * 查询会员列表
      * 
-     * @param tMember 会员
+     * @param member 会员
      * @return 会员
      */
     @Override
-    public List<TMember> selectTMemberList(TMember tMember)
+    public List<Member> selectMemberList(Member member)
     {
-        return tMemberMapper.selectTMemberList(tMember);
+        return memberMapper.selectMemberList(member);
     }
 
     /**
      * 新增会员
      * 
-     * @param tMember 会员
+     * @param member 会员
      * @return 结果
      */
     @Override
-    public int insertTMember(TMember tMember)
+    public int insertMember(Member member)
     {
-        tMember.setCreateTime(DateUtils.getNowDate());
-        return tMemberMapper.insertTMember(tMember);
+        member.setCreateTime(DateUtils.getNowDate());
+        return memberMapper.insertMember(member);
     }
 
     /**
      * 修改会员
      * 
-     * @param tMember 会员
+     * @param member 会员
      * @return 结果
      */
     @Override
-    public int updateTMember(TMember tMember)
+    public int updateMember(Member member)
     {
-        tMember.setUpdateTime(DateUtils.getNowDate());
-        return tMemberMapper.updateTMember(tMember);
+        member.setUpdateTime(DateUtils.getNowDate());
+        return memberMapper.updateMember(member);
     }
 
     /**
@@ -83,9 +83,9 @@ public class TMemberServiceImpl implements ITMemberService
      * @return 结果
      */
     @Override
-    public int deleteTMemberByMemberIds(Long[] memberIds)
+    public int deleteMemberByMemberIds(Long[] memberIds)
     {
-        return tMemberMapper.deleteTMemberByMemberIds(memberIds);
+        return memberMapper.deleteMemberByMemberIds(memberIds);
     }
 
     /**
@@ -95,15 +95,15 @@ public class TMemberServiceImpl implements ITMemberService
      * @return 结果
      */
     @Override
-    public int deleteTMemberByMemberId(Long memberId)
+    public int deleteMemberByMemberId(Long memberId)
     {
-        return tMemberMapper.deleteTMemberByMemberId(memberId);
+        return memberMapper.deleteMemberByMemberId(memberId);
     }
 
     @Override
     public int arrangeUserToMember(Long memberId, Long userId) {
 
-        TMember member = tMemberMapper.selectTMemberByMemberId(memberId);
+        Member member = memberMapper.selectMemberByMemberId(memberId);
         if(member == null){
             throw new ServiceException("会员不存在");
         }
@@ -115,6 +115,6 @@ public class TMemberServiceImpl implements ITMemberService
         member.setUserId(user.getUserId());
         member.setUserName(user.getUserName());
         member.autoSetUpdateByLoginUser();
-        return this.updateTMember(member);
+        return this.updateMember(member);
     }
 }

@@ -75,7 +75,7 @@ public class SysUser extends BaseEntity
         @Excel(name = "机构名称", targetAttr = "orgName", type = Type.EXPORT),
         @Excel(name = "机构负责人", targetAttr = "leader", type = Type.EXPORT)
     })
-    private TOrg org;
+    private Org org;
 
     /** 角色对象 */
     private List<SysRole> roles;
@@ -247,12 +247,12 @@ public class SysUser extends BaseEntity
         this.loginDate = loginDate;
     }
 
-    public TOrg getOrg()
+    public Org getOrg()
     {
         return org;
     }
 
-    public void setOrg(TOrg org)
+    public void setOrg(Org org)
     {
         this.org = org;
     }

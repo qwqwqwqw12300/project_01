@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.newlandnpt.varyar.system.mapper.TDeviceMapper">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.DeviceMapper">
 
-    <resultMap type="TDevice" id="TDeviceResult">
+    <resultMap type="Device" id="TDeviceResult">
         <result property="deviceId" column="device_id"/>
         <result property="devicegroupId" column="devicegroup_id"/>
         <result property="deviceGroupName" column="device_group_name"/>
@@ -40,7 +40,7 @@
         from t_device d
     </sql>
 
-    <select id="selectTDeviceList" parameterType="TDevice" resultMap="TDeviceResult">
+    <select id="selectTDeviceList" parameterType="Device" resultMap="TDeviceResult">
         <include refid="selectTDeviceVo"/>
         <where>
             <if test="devicegroupId != null ">and devicegroup_id = #{devicegroupId}</if>
@@ -67,7 +67,7 @@
         and del_flag = '0'
     </select>
 
-    <insert id="insertTDevice" parameterType="TDevice" useGeneratedKeys="true" keyProperty="deviceId">
+    <insert id="insertTDevice" parameterType="Device" useGeneratedKeys="true" keyProperty="deviceId">
         insert into t_device
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="devicegroupId != null">devicegroup_id,</if>
@@ -103,7 +103,7 @@
         </trim>
     </insert>
 
-    <update id="updateTDevice" parameterType="TDevice">
+    <update id="updateTDevice" parameterType="Device">
         update t_device
         <trim prefix="SET" suffixOverrides=",">
             <if test="devicegroupId != null">devicegroup_id = #{devicegroupId},</if>
@@ -141,7 +141,7 @@
 
     <select id="selectByDeviceNo" parameterType="String" resultMap="TDeviceResult">
         <include refid="selectTDeviceVo"/>
-        where no = #{deviceNo} and del_flag = '0'
+        where no = #{deviceNo} and del_flag = '0' limit 1
     </select>
 
     <update id="arrangeDeviceToGroup" parameterType="map">

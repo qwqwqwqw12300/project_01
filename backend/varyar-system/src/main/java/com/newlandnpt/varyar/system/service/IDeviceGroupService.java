@@ -1,7 +1,7 @@
 package com.newlandnpt.varyar.system.service;
 
 import java.util.List;
-import com.newlandnpt.varyar.system.domain.TDeviceGroup;
+import com.newlandnpt.varyar.system.domain.DeviceGroup;
 
 /**
  * 设备组Service接口
@@ -9,7 +9,7 @@ import com.newlandnpt.varyar.system.domain.TDeviceGroup;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface ITDeviceGroupService
+public interface IDeviceGroupService
 {
     /**
      * 查询设备组
@@ -17,31 +17,31 @@ public interface ITDeviceGroupService
      * @param deviceGroupId 设备组主键
      * @return 设备组
      */
-    public TDeviceGroup selectTDeviceGroupByDeviceGroupId(Long deviceGroupId);
+    public DeviceGroup selectDeviceGroupByDeviceGroupId(Long deviceGroupId);
 
     /**
      * 查询设备组列表
      * 
-     * @param tDevicegroup 设备组
+     * @param devicegroup 设备组
      * @return 设备组集合
      */
-    public List<TDeviceGroup> selectTDeviceGroupList(TDeviceGroup tDevicegroup);
+    public List<DeviceGroup> selectDeviceGroupList(DeviceGroup devicegroup);
 
     /**
      * 新增设备组
      * 
-     * @param tDevicegroup 设备组
+     * @param devicegroup 设备组
      * @return 结果
      */
-    public int insertTDeviceGroup(TDeviceGroup tDevicegroup);
+    public int insertDeviceGroup(DeviceGroup devicegroup);
 
     /**
      * 修改设备组
      * 
-     * @param tDevicegroup 设备组
+     * @param devicegroup 设备组
      * @return 结果
      */
-    public int updateTDeviceGroup(TDeviceGroup tDevicegroup);
+    public int updateDeviceGroup(DeviceGroup devicegroup);
 
     /**
      * 给运营人员分配设备组
@@ -58,7 +58,7 @@ public interface ITDeviceGroupService
      * @param deviceGroupIds 需要删除的设备组主键集合
      * @return 结果
      */
-    public int deleteTDeviceGroupByDeviceGroupIds(Long[] deviceGroupIds);
+    public int deleteDeviceGroupByDeviceGroupIds(Long[] deviceGroupIds);
 
     /**
      * 删除设备组信息
@@ -66,7 +66,7 @@ public interface ITDeviceGroupService
      * @param deviceGroupId 设备组主键
      * @return 结果
      */
-    public int deleteTDeviceGroupByDeviceGroupId(Long deviceGroupId);
+    public int deleteDeviceGroupByDeviceGroupId(Long deviceGroupId);
 
 
     /**
@@ -75,5 +75,5 @@ public interface ITDeviceGroupService
      * @param deviceGroup 设备组信息
      * @return 结果
      */
-    public String checkOrgNameUnique(TDeviceGroup deviceGroup);
+    public String checkOrgNameUnique(DeviceGroup deviceGroup);
 }

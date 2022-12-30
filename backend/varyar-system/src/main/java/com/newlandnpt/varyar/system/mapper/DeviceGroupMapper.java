@@ -1,6 +1,6 @@
 package com.newlandnpt.varyar.system.mapper;
 
-import com.newlandnpt.varyar.system.domain.TDeviceGroup;
+import com.newlandnpt.varyar.system.domain.DeviceGroup;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -11,38 +11,38 @@ import java.util.List;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface TDeviceGroupMapper {
+public interface DeviceGroupMapper {
     /**
      * 查询设备组
      *
      * @param deviceGroupId 设备组主键
      * @return 设备组
      */
-    public TDeviceGroup selectTDeviceGroupByDeviceGroupId(Long deviceGroupId);
+    public DeviceGroup selectDeviceGroupByDeviceGroupId(Long deviceGroupId);
 
     /**
      * 查询设备组列表
      *
-     * @param tDevicegroup 设备组
+     * @param devicegroup 设备组
      * @return 设备组集合
      */
-    public List<TDeviceGroup> selectTDeviceGroupList(TDeviceGroup tDevicegroup);
+    public List<DeviceGroup> selectDeviceGroupList(DeviceGroup devicegroup);
 
     /**
      * 新增设备组
      *
-     * @param tDevicegroup 设备组
+     * @param devicegroup 设备组
      * @return 结果
      */
-    public int insertTDeviceGroup(TDeviceGroup tDevicegroup);
+    public int insertDeviceGroup(DeviceGroup devicegroup);
 
     /**
      * 修改设备组
      *
-     * @param tDevicegroup 设备组
+     * @param devicegroup 设备组
      * @return 结果
      */
-    public int updateTDeviceGroup(TDeviceGroup tDevicegroup);
+    public int updateDeviceGroup(DeviceGroup devicegroup);
 
     /**
      * 删除设备组
@@ -50,7 +50,7 @@ public interface TDeviceGroupMapper {
      * @param deviceGroupId 设备组主键
      * @return 结果
      */
-    public int deleteTDeviceGroupByDeviceGroupId(Long deviceGroupId);
+    public int deleteDeviceGroupByDeviceGroupId(Long deviceGroupId);
 
     /**
      * 批量删除设备组
@@ -58,7 +58,7 @@ public interface TDeviceGroupMapper {
      * @param deviceGroupIds 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteTDeviceGroupByDeviceGroupIds(Long[] deviceGroupIds);
+    public int deleteDeviceGroupByDeviceGroupIds(Long[] deviceGroupIds);
 
     /**
      * 分配设备组给用户
@@ -68,7 +68,7 @@ public interface TDeviceGroupMapper {
      * @param updateBy
      * @return
      */
-    public int arrangeTDeviceGroupsUser(@Param("deviceGroupIds")Long[] deviceGroupIds,@Param("userId") Long userId,@Param("updateBy") String updateBy);
+    public int arrangeDeviceGroupsUser(@Param("deviceGroupIds")Long[] deviceGroupIds,@Param("userId") Long userId,@Param("updateBy") String updateBy);
 
     /**
      * 校验名称在机构内是否唯一
@@ -77,5 +77,5 @@ public interface TDeviceGroupMapper {
      * @param orgId 机构ID
      * @return 结果
      */
-    public TDeviceGroup checkOrgNameUnique(@Param("name") String name, @Param("orgId") Long orgId);
+    public DeviceGroup checkOrgNameUnique(@Param("name") String name, @Param("orgId") Long orgId);
 }

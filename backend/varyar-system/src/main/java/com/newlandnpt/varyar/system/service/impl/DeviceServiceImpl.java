@@ -1,22 +1,20 @@
 package com.newlandnpt.varyar.system.service.impl;
 
 import com.newlandnpt.varyar.common.annotation.DataScope;
-import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
+import com.newlandnpt.varyar.common.core.domain.entity.Org;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
-import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
-import com.newlandnpt.varyar.system.domain.TDevice;
-import com.newlandnpt.varyar.system.mapper.TDeviceMapper;
-import com.newlandnpt.varyar.system.mapper.TOrgMapper;
-import com.newlandnpt.varyar.system.service.ITDeviceService;
+import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.system.mapper.DeviceMapper;
+import com.newlandnpt.varyar.system.mapper.OrgMapper;
+import com.newlandnpt.varyar.system.service.IDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.newlandnpt.varyar.common.constant.DeviceConstants.*;
 import static com.newlandnpt.varyar.common.utils.SecurityUtils.getLoginUserName;
@@ -28,14 +26,14 @@ import static com.newlandnpt.varyar.common.utils.SecurityUtils.getLoginUserName;
  * @date 2022-12-24
  */
 @Service
-public class TDeviceServiceImpl implements ITDeviceService {
+public class DeviceServiceImpl implements IDeviceService {
 
-    private static final Logger log = LoggerFactory.getLogger(TDeviceServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(DeviceServiceImpl.class);
 
     @Autowired
-    private TDeviceMapper tDeviceMapper;
+    private DeviceMapper deviceMapper;
     @Autowired
-    private TOrgMapper orgMapper;
+    private OrgMapper orgMapper;
 
     /**
      * 查询设备
@@ -44,44 +42,44 @@ public class TDeviceServiceImpl implements ITDeviceService {
      * @return 设备
      */
     @Override
-    public TDevice selectTDeviceByDeviceId(Long deviceId) {
-        return tDeviceMapper.selectTDeviceByDeviceId(deviceId);
+    public Device selectDeviceByDeviceId(Long deviceId) {
+        return deviceMapper.selectTDeviceByDeviceId(deviceId);
     }
 
     /**
      * 查询设备列表
      *
-     * @param tDevice 设备
+     * @param device 设备
      * @return 设备
      */
     @DataScope(orgAlias = "d")
     @Override
-    public List<TDevice> selectTDeviceList(TDevice tDevice) {
-        return tDeviceMapper.selectTDeviceList(tDevice);
+    public List<Device> selectDeviceList(Device device) {
+        return deviceMapper.selectTDeviceList(device);
     }
 
     /**
      * 新增设备
      *
-     * @param tDevice 设备
+     * @param device 设备
      * @return 结果
      */
     @Override
-    public int insertTDevice(TDevice tDevice) {
-        tDevice.setCreateTime(DateUtils.getNowDate());
-        return tDeviceMapper.insertTDevice(tDevice);
+    public int insertDevice(Device device) {
+        device.autoSetCreateByLoginUser();
+        return deviceMapper.insertTDevice(device);
     }
 
     /**
      * 修改设备
      *
-     * @param tDevice 设备
+     * @param device 设备
      * @return 结果
      */
     @Override
-    public int updateTDevice(TDevice tDevice) {
-        tDevice.setUpdateTime(DateUtils.getNowDate());
-        return tDeviceMapper.updateTDevice(tDevice);
+    public int updateDevice(Device device) {
+        device.setUpdateTime(DateUtils.getNowDate());
+        return deviceMapper.updateTDevice(device);
     }
 
     /**
@@ -91,8 +89,8 @@ public class TDeviceServiceImpl implements ITDeviceService {
      * @return 结果
      */
     @Override
-    public int deleteTDeviceByDeviceIds(Long[] deviceIds) {
-        return tDeviceMapper.deleteTDeviceByDeviceIds(deviceIds);
+    public int deleteDeviceByDeviceIds(Long[] deviceIds) {
+        return deviceMapper.deleteTDeviceByDeviceIds(deviceIds);
     }
 
     /**
@@ -102,19 +100,19 @@ public class TDeviceServiceImpl implements ITDeviceService {
      * @return 结果
      */
     @Override
-    public int deleteTDeviceByDeviceId(Long deviceId) {
-        return tDeviceMapper.deleteTDeviceByDeviceId(deviceId);
+    public int deleteDeviceByDeviceId(Long deviceId) {
+        return deviceMapper.deleteTDeviceByDeviceId(deviceId);
     }
 
     @Override
-    public int associate(TDevice tDevice) {
-        TDevice target = tDeviceMapper.selectTDeviceByDeviceId(tDevice.getDeviceId());
+    public int associate(Device device) {
+        Device target = deviceMapper.selectTDeviceByDeviceId(device.getDeviceId());
         if(target == null){
             throw new ServiceException("设备不存在");
         }
-        Long orgId = tDevice.getOrgId();
+        Long orgId = device.getOrgId();
         if(orgId!=null){
-            TOrg org = orgMapper.selectOrgById(orgId);
+            Org org = orgMapper.selectOrgById(orgId);
             if (org == null) {
                 throw new ServiceException("机构id: "+orgId+"的机构不存在");
             }
@@ -122,40 +120,51 @@ public class TDeviceServiceImpl implements ITDeviceService {
             target.setOrgName(org.getOrgName());
             target.setDistributeFlag(DISTRIBUTE_FLAG_YES);
         }
-        target.setLocation(tDevice.getLocation());
+        target.setLocation(device.getLocation());
         // 确认配对设备这里的别名是否就是设备名称-- 已确认目前别名没作用，这里就是修改设备名称
-        target.setName(tDevice.getName());
-
-        return this.updateTDevice(target);
+        target.setName(device.getName());
+        target.autoSetUpdateByLoginUser();
+        return this.updateDevice(target);
     }
 
     @Override
     public int active(Long deviceId) {
-        TDevice tDevice = new TDevice();
-        tDevice.setDeviceId(deviceId);
-        tDevice.setStatus(STATUS_ACTIVATED);
-        return this.updateTDevice(tDevice);
+        Device device = new Device();
+        device.setDeviceId(deviceId);
+        device.setStatus(STATUS_ACTIVATED);
+        return this.updateDevice(device);
     }
 
     @Override
     public int offline(Long deviceId) {
-        TDevice tDevice = new TDevice();
-        tDevice.setDeviceId(deviceId);
-        tDevice.setStatus(STATUS_OFFLINE);
-        return this.updateTDevice(tDevice);
+        Device device = new Device();
+        device.setDeviceId(deviceId);
+        device.setStatus(STATUS_OFFLINE);
+        return this.updateDevice(device);
     }
 
     @Override
     public int arrangeDeviceToGroup(Long[] deviceIds, Long deviceGroupId) {
-        return tDeviceMapper.arrangeDeviceToGroup(deviceIds,deviceGroupId,getLoginUserName());
+        return deviceMapper.arrangeDeviceToGroup(deviceIds,deviceGroupId,getLoginUserName());
+    }
+
+
+    /**
+     * 根据设备号查询设备
+     * @param deviceNo
+     * @return
+     */
+    @Override
+    public Device selectByDeviceNo(String deviceNo){
+        return deviceMapper.selectByDeviceNo(deviceNo);
     }
 
     @Override
-    public String importDevice(List<TDevice> devices, Long orgId) {
+    public String importDevice(List<Device> devices, Long orgId) {
         if (StringUtils.isNull(devices) || devices.size() == 0) {
             throw new ServiceException("导入设备数据不能为空！");
         }
-        TOrg org = orgMapper.selectOrgById(orgId);
+        Org org = orgMapper.selectOrgById(orgId);
         if (org == null) {
             throw new ServiceException("机构id: "+orgId+"的机构不存在");
         }
@@ -164,7 +173,7 @@ public class TDeviceServiceImpl implements ITDeviceService {
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
 
-        for (TDevice device : devices) {
+        for (Device device : devices) {
             try {
                 //校验设备编号不为空
                 if (StringUtils.isBlank(device.getNo())) {
@@ -173,7 +182,7 @@ public class TDeviceServiceImpl implements ITDeviceService {
                     continue;
                 }
                 //校验设备编号是否存在
-                TDevice oldDevice = tDeviceMapper.selectByDeviceNo(device.getNo());
+                Device oldDevice = deviceMapper.selectByDeviceNo(device.getNo());
                 if (oldDevice != null) {
                     failureNum++;
                     failureMsg.append("<br/>" + failureNum + "、设备编号 " + device.getNo() + " 已存在");
@@ -187,7 +196,7 @@ public class TDeviceServiceImpl implements ITDeviceService {
                 device.setDistributeFlag(DISTRIBUTE_FLAG_NO);
                 //获取当前登录用户名作为创建人
                 device.autoSetCreateByLoginUser();
-                this.insertTDevice(device);
+                this.insertDevice(device);
                 successNum++;
 //                successMsg.append("<br/>" + successNum + "、设备编号 " + device.getNo() + " 导入成功");
             } catch (Exception e) {

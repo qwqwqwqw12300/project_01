@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author ruoyi
  */
-public class TOrg extends BaseEntity {
+public class Org extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -122,7 +122,7 @@ public class TOrg extends BaseEntity {
      * 子机构
      */
     @Transient
-    private List<TOrg> children = new ArrayList<TOrg>();
+    private List<Org> children = new ArrayList<Org>();
 
     public Long getOrgId() {
         return orgId;
@@ -298,11 +298,11 @@ public class TOrg extends BaseEntity {
         this.parentName = parentName;
     }
 
-    public List<TOrg> getChildren() {
+    public List<Org> getChildren() {
         return children;
     }
 
-    public void setChildren(List<TOrg> children) {
+    public void setChildren(List<Org> children) {
         this.children = children;
     }
 

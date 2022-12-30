@@ -8,13 +8,16 @@ import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
 import org.springframework.data.annotation.Transient;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 /**
  * 设备对象 t_device
  * 
  * @author ruoyi
  * @date 2022-12-24
  */
-public class TDevice extends BaseEntity
+public class Device extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -113,6 +116,8 @@ public class TDevice extends BaseEntity
         this.no = no;
     }
 
+    @NotBlank(message = "设备编号不能为空")
+    @Size(min = 0, max = 50, message = "设备编号长度不能超过50个字符")
     public String getNo() 
     {
         return no;
@@ -122,6 +127,7 @@ public class TDevice extends BaseEntity
         this.status = status;
     }
 
+    @NotBlank(message = "设备状态不能为空")
     public String getStatus() 
     {
         return status;
@@ -176,6 +182,7 @@ public class TDevice extends BaseEntity
         this.distributeFlag = distributeFlag;
     }
 
+    @NotBlank(message = "分配标志不能为空")
     public String getDistributeFlag() 
     {
         return distributeFlag;

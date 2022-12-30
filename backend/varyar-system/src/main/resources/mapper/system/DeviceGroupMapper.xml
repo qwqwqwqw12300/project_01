@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.newlandnpt.varyar.system.mapper.TDeviceGroupMapper">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.DeviceGroupMapper">
 
-    <resultMap type="TDeviceGroup" id="TDeviceGroupResult">
+    <resultMap type="DeviceGroup" id="DeviceGroupResult">
         <result property="deviceGroupId" column="devicegroup_id"/>
         <result property="orgId" column="org_id"/>
         <result property="name" column="name"/>
@@ -18,15 +18,15 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <sql id="selectTDeviceGroupVo">
+    <sql id="selectDeviceGroupVo">
         select devicegroup_id,
                org_id,
                name, no, user_id, user_name, del_flag, create_by, create_time, update_by, update_time
         from t_devicegroup
     </sql>
 
-    <select id="selectTDeviceGroupList" parameterType="TDeviceGroup" resultMap="TDeviceGroupResult">
-        <include refid="selectTDeviceGroupVo"/>
+    <select id="selectDeviceGroupList" parameterType="DeviceGroup" resultMap="DeviceGroupResult">
+        <include refid="selectDeviceGroupVo"/>
         <where>
             <if test="orgId != null ">and org_id = #{orgId}</if>
             <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
@@ -39,21 +39,21 @@
         </where>
     </select>
 
-    <select id="checkOrgNameUnique" resultMap="TDeviceGroupResult">
-        <include refid="selectTDeviceGroupVo"/>
+    <select id="checkOrgNameUnique" resultMap="DeviceGroupResult">
+        <include refid="selectDeviceGroupVo"/>
         where name = #{name} and org_id = #{orgId}
         and del_flag = '0'
         limit 1
     </select>
 
 
-    <select id="selectTDeviceGroupByDeviceGroupId" parameterType="Long" resultMap="TDeviceGroupResult">
-        <include refid="selectTDeviceGroupVo"/>
+    <select id="selectDeviceGroupByDeviceGroupId" parameterType="Long" resultMap="DeviceGroupResult">
+        <include refid="selectDeviceGroupVo"/>
         where devicegroup_id = #{deviceGroupId}
         and del_flag = '0'
     </select>
 
-    <insert id="insertTDeviceGroup" parameterType="TDeviceGroup" useGeneratedKeys="true" keyProperty="deviceGroupId">
+    <insert id="insertDeviceGroup" parameterType="DeviceGroup" useGeneratedKeys="true" keyProperty="deviceGroupId">
         insert into t_devicegroup
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="orgId != null">org_id,</if>
@@ -75,7 +75,7 @@
         </trim>
     </insert>
 
-    <update id="updateTDeviceGroup" parameterType="TDeviceGroup">
+    <update id="updateDeviceGroup" parameterType="DeviceGroup">
         update t_devicegroup
         <trim prefix="SET" suffixOverrides=",">
             <if test="name != null">name = #{name},</if>
@@ -86,13 +86,13 @@
         where devicegroup_id = #{deviceGroupId}
     </update>
 
-    <delete id="deleteTDeviceGroupByDeviceGroupId" parameterType="Long">
+    <delete id="deleteDeviceGroupByDeviceGroupId" parameterType="Long">
         update t_devicegroup
         set del_flag = '2'
         where devicegroup_id = #{deviceGroupId}
     </delete>
 
-    <delete id="deleteTDeviceGroupByDeviceGroupIds" parameterType="String">
+    <delete id="deleteDeviceGroupByDeviceGroupIds" parameterType="String">
         update t_devicegroup
         set del_flag = '2'
         where devicegroup_id in
@@ -101,7 +101,7 @@
         </foreach>
     </delete>
 
-    <update id="arrangeTDeviceGroupsUser" parameterType="map">
+    <update id="arrangeDeviceGroupsUser" parameterType="map">
         update t_devicegroup
         set user_id = #{userId},
         user_name = (select user_name from sys_user where user_id = #{userId}),
