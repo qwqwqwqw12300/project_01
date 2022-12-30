@@ -6,7 +6,7 @@ import com.newlandnpt.varyar.system.domain.TVersion;
 /**
  * 版本Service接口
  * 
- * @author ruoyi
+ * @author chenxw
  * @date 2022-12-24
  */
 public interface ITVersionService 

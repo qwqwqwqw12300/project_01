@@ -24,7 +24,7 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 /**
  * 版本Controller
  * 
- * @author ruoyi
+ * @author chenxw
  * @date 2022-12-24
  */
 @RestController
