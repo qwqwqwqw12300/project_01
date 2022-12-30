@@ -12,10 +12,10 @@
         <result property="delFlag" column="del_flag"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
-        <collection property="devices" ofType="Device" select="selectdDevices" column="{familyId = family_id}"/>
+        <collection property="devices" ofType="Device" select="selectDevices" column="{familyId = family_id}"/>
     </resultMap>
 
-    <select id="selectdDevices" resultMap="DeviceResult">
+    <select id="selectDevices" resultMap="DeviceResult">
         select device_id,
                devicegroup_id,
                name, no, status, type,
@@ -23,7 +23,7 @@
             location, family_id, room_id, distribute_flag, org_id, org_name, del_flag, create_by, create_time, update_by, update_time,
             (select name from t_devicegroup where devicegroup_id = d.devicegroup_id) device_group_name,
             (select type from t_org where org_id = d.org_id) org_type,
-            (select org_no from t_org where org_id = d.org_id) org_no,
+            (select org_no from t_org where org_id = d.org_id) org_no
         from t_device d
         where d.family_id = #{familyId}
     </select>
@@ -51,8 +51,11 @@
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
+    <sql id="FamilyVo">
+        select f.family_id, f.no, f.name, f.address, f.del_flag, f.create_time, f.update_time
+    </sql>
     <sql id="selectTFamilyVo">
-        select family_id, no, name, address, del_flag, create_time, update_time
+        <include refid="FamilyVo"/>,(select 2 from dual) as share_flag
         from t_family f
     </sql>
 
@@ -66,8 +69,10 @@
         </where>
     </select>
     <select id="selectMembersFamilyList" parameterType="Long" resultMap="TFamilyResult">
+        <include refid="FamilyVo"/>,mf.share_flag
+        from t_family f
         join t_member_family mf on f.family_id = mf.family_id and mf.del_flag = '0' and mf.member_id = #{memberId}
-        where f.delFlag= '0'
+        where f.del_flag= '0'
     </select>
 
     <select id="selectTFamilyByFamilyId" parameterType="Long" resultMap="TFamilyResult">

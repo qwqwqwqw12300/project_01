@@ -2,13 +2,11 @@ package com.newlandnpt.varyar.web.controller.member;
 
 import java.util.List;
 
+import com.newlandnpt.varyar.system.domain.TFamily;
 import com.newlandnpt.varyar.system.service.ITFamilyService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.system.domain.Member;
@@ -51,12 +49,23 @@ public class MemberController extends BaseController
     {
         return success(memberService.selectMemberByMemberId(memberId));
     }
+    /**
+     * 获取会员家庭分页
+     */
+    @PreAuthorize("@ss.hasPermi('system:member:query')")
+    @GetMapping(value = "/{memberId}/family/page")
+    public TableDataInfo familyList(@PathVariable("memberId") Long memberId)
+    {
+        startPage();
+        List<TFamily> list = tFamilyService.selectMembersFamilyList(memberId);
+        return getDataTable(list);
+    }
 
     /**
      * 给会员分配运营
      */
     @PreAuthorize("@ss.hasPermi('system:member:arrange')")
-    @GetMapping(value = "/{memberId}/arrange/user/{userId}")
+    @PutMapping(value = "/{memberId}/arrange/user/{userId}")
     public AjaxResult families(@PathVariable("memberId") Long memberId,
                                @PathVariable("userId") Long userId)
     {
@@ -64,5 +73,7 @@ public class MemberController extends BaseController
         return success(memberService.arrangeUserToMember(memberId,userId));
     }
 
+    // todo 服务登记相关库表结构和实现
+    // todo 服务人员操作相关表结构和实现
 
 }
