@@ -29,7 +29,7 @@
 				</view>
 				<view class="ui-form-item">
 					<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx"></u-text>
-					<view class="ui-input"><u-input placeholder="请输入你的密码" :border="'none'" fontSize="28rpx" clearable></u-input></view>
+					<view class="ui-input"><u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable></u-input></view>
 				</view>
 				<view class="ui-bot">
 					<text class="active">免费注册</text>

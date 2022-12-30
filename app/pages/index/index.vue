@@ -29,7 +29,7 @@
 			</text>
 		
 			<!-- 家庭列表 -->
-			<template v-if="false">
+			<template v-if="true">
 				<view class="ui-group">
 					<view class="ui-title">
 						<view>
@@ -37,7 +37,7 @@
 							<text>共两个设备</text>
 							<text>在线两个设备</text>
 						</view>
-						<u-text prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff" :iconStyle="{
+						<u-text @click="share" prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff" :iconStyle="{
 							fontSize: '44rpx',
 							color: '#fff'
 						}" text="分享"></u-text>
@@ -88,7 +88,7 @@
 						<u-text prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff" :iconStyle="{
 							fontSize: '44rpx',
 							color: '#fff'
-						}" text="分享"></u-text>
+						}"  @click="share"  text="分享"></u-text>
 					</view>
 					<view class="ui-device">
 						<view class="ui-list">
@@ -182,6 +182,14 @@
 			},
 			roomNext() {
 				this.$refs.bindDev.open();
+			},
+			/**
+			 * 分享
+			 */
+			share() {
+				uni.navigateTo({
+					url: '/pages/share/share'
+				})
 			}
 		}
 	}

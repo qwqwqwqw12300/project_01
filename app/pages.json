@@ -100,18 +100,53 @@
 					"titleNView": false
 				}
 			}
+		}, {
+			"path": "pages/myself/mobile",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/share/share",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/myself/famliy-manage",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/myself/room-manage",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		},
+		{
+			"path": "pages/myself/device-manage",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
-	    ,{
-            "path" : "pages/myself/mobile",
-            "style": {
-            	"navigationStyle": "custom",
-            	"app-plus": {
-            		"titleNView": false
-            	}
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

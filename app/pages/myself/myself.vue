@@ -9,13 +9,13 @@
 	<app-body>
 		<view class="ui-user">
 			<text>13222222222</text>
-			<u-icon name="edit-pen" color="#fff" size="50rpx"></u-icon>
+			<u-icon @click="editMobile" name="edit-pen" color="#fff" size="50rpx"></u-icon>
 			<button>注销</button>
 		</view>
 		<view class="ui-menu">
-			<u-grid :border="false" @click="gridClick">
+			<u-grid>
 				<u-grid-item v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
-					<view class="ui-menu-item">
+					<view class="ui-menu-item" :border="false" @click="gridClick(baseListItem.url)">
 						<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" :name="'/static/images/myself/' + baseListItem.pic" size="53rpx"></u-icon>
 						<text class="grid-text">{{ baseListItem.title }}</text>
 					</view>
@@ -33,7 +33,7 @@ export default {
 				{
 					title: '家庭组管理',
 					pic: 'home.png',
-					url: ''
+					url: '/pages/myself/famliy-manage'
 				},
 				{
 					title: '设备管理',
@@ -53,7 +53,7 @@ export default {
 				{
 					title: '密码修改',
 					pic: 'pwd.png',
-					url: ''
+					url: '/pages/myself/pwd'
 				},
 				{
 					title: '协议信息',
@@ -77,7 +77,20 @@ export default {
 		/**
 		 * 菜单点击
 		 */
-		gridClick() {}
+		gridClick(url) {
+			uni.navigateTo({
+				url
+			})
+		},
+		
+		/**
+		 * 修改手机号
+		 */
+		editMobile() {
+			uni.navigateTo({
+				url: '/pages/myself/mobile'
+			})
+		}
 	}
 };
 </script>

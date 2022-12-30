@@ -11,7 +11,7 @@
 			<u-text prefixIcon="plus-circle" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f" size="30rpx" text="新建房间"></u-text>
 			<view class="ui-add-box">
 				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx" text="房间名称"></u-text>
-				<u--input placeholder="请输入家庭名称" border="bottom" clearable></u--input>
+				<u--input placeholder="请输入房间名称" border="bottom" clearable></u--input>
 			</view>
 			<view class="ui-btn"><button @click="next" type="default" class="wd-sms">下一步</button></view>
 		</view>
