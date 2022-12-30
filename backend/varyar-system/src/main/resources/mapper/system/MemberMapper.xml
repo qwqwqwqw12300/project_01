@@ -67,6 +67,12 @@
         where member_id = #{memberId}
     </select>
 
+
+    <select id="selectMemberByPhone" parameterType="String" resultMap="TMemberResult">
+        <include refid="selectTMemberVo"/>
+        where m.phone = #{phone} and m.del_flag = '0'
+    </select>
+
     <insert id="insertMember" parameterType="Member" useGeneratedKeys="true" keyProperty="memberId">
         insert into t_member
         <trim prefix="(" suffix=")" suffixOverrides=",">

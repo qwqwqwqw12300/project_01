@@ -20,6 +20,12 @@ public interface MemberMapper
     public Member selectMemberByMemberId(Long memberId);
 
     /**
+     * 通过手机号查询会员
+
+     */
+    public Member selectMemberByPhone(String phone);
+
+    /**
      * 查询会员列表
      * 
      * @param member 会员

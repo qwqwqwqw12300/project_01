@@ -70,6 +70,11 @@ public class Constants
     public static final Integer CAPTCHA_EXPIRATION = 2;
 
     /**
+     * 短信码有效期（分钟）
+     */
+    public static final Integer SMS_CAPTCHA_EXPIRATION = 10;
+
+    /**
      * 令牌
      */
     public static final String TOKEN = "token";
