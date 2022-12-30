@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
+import org.springframework.data.annotation.Transient;
 
 import java.util.List;
 
@@ -33,7 +34,12 @@ public class TFamily extends BaseEntity
     private String address;
 
     /** 设备列表 */
-    private List<TDevice> devices;
+    @Transient
+    private List<Device> devices;
+
+    /** 共享标志（0代表是 2代表非） */
+    @Transient
+    private String shareFlag;
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
@@ -79,11 +85,19 @@ public class TFamily extends BaseEntity
         this.delFlag = delFlag;
     }
 
-    public List<TDevice> getDevices() {
+    public List<Device> getDevices() {
         return devices;
     }
 
-    public void setDevices(List<TDevice> devices) {
+    public String getShareFlag() {
+        return shareFlag;
+    }
+
+    public void setShareFlag(String shareFlag) {
+        this.shareFlag = shareFlag;
+    }
+
+    public void setDevices(List<Device> devices) {
         this.devices = devices;
     }
 

@@ -1,7 +1,7 @@
 <!-- 增加监护设备 -->
 <template>
 	<app-body>
-		<view class="ui-navbar">
+		<view class="ui-navbar" @tap="handleBack">
 			<u-icon name="arrow-left" color="#fff" size="23"></u-icon>
 			<text class="ui-navbar-text">首页</text>
 		</view>
@@ -9,7 +9,7 @@
 			<text>增加监护设备</text>
 		</view>
 		<view class="ui-step">
-			<view class="ui-step-icon"></view>
+			<view class="ui-step-icon step1_bg"></view>
 			<view class="ui-step-title">
 				<text>请确保手机蓝牙</text>
 				<text>WIFI处于开启状态</text>
@@ -19,7 +19,7 @@
 			<image src="../../static/images/bluetooth.png"></image>
 		</view>
 		<view class="ui-step">
-			<view class="ui-step-icon"></view>
+			<view class="ui-step-icon step2_bg"></view>
 			<view class="ui-step-title">
 				<text>靠近智能设备,</text>
 				<text>等待蓝灯亮起</text>
@@ -68,12 +68,23 @@
 					 n.active = n.key === item.key
 					 return n
 				})
+			},
+			handleBack() {
+				uni.navigateBack()
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	
+	.step1_bg{
+		background-image: url('../../static/images/step1.png');
+	}
+	
+	.step2_bg{
+		background-image: url('../../static/images/step2.png');
+	}
 	.bg {
 		background-color: rgb(227, 252, 255);
 	}
@@ -88,7 +99,7 @@
 		display: flex;
 		align-items: center;
 
-		&-text {
+		.ui-navbar-text {
 			font-size: 36rpx;
 			color: #fff;
 		}
@@ -112,16 +123,15 @@
 		margin-top: 50rpx;
 		padding: 0 40rpx;
 
-		&-icon {
+		.ui-step-icon {
 			width: 150rpx;
 			height: 120rpx;
-			background-image: url('../../static/images/step1.png');
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
 		}
 
-		&-title {
+		.ui-step-title {
 			display: flex;
 			flex-direction: column;
 			margin-left: 20rpx;
@@ -157,7 +167,7 @@
 		display: flex;
 		flex-direction: column;
 
-		&-item {
+		.ui-list-item {
 			margin-left: 80rpx;
 			padding: 18rpx 34rpx;
 			border-radius: 40rpx;

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
+import com.newlandnpt.varyar.common.core.domain.entity.Org;
 import com.newlandnpt.varyar.common.core.domain.entity.SysMenu;
 
 /**
@@ -31,7 +31,7 @@ public class TreeSelect implements Serializable
 
     }
 
-    public TreeSelect(TOrg org)
+    public TreeSelect(Org org)
     {
         this.id = org.getOrgId();
         this.label = org.getOrgName();

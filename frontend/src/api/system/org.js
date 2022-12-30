@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询部门列表
 export function listOrg(query) {
   return request({
-    url: '/system/org/list',
+    url: '/org/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listOrg(query) {
 // 查询部门列表（排除节点）
 export function listOrgExcludeChild(orgId) {
   return request({
-    url: '/system/org/list/exclude/' + orgId,
+    url: '/org/list/exclude/' + orgId,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function listOrgExcludeChild(orgId) {
 // 查询部门详细
 export function getOrg(orgId) {
   return request({
-    url: '/system/org/' + orgId,
+    url: '/org/' + orgId,
     method: 'get'
   })
 }
@@ -29,7 +29,7 @@ export function getOrg(orgId) {
 export function addOrg(data) {
   console.log(JSON.stringify(data))
   return request({
-    url: '/system/org',
+    url: '/org',
     method: 'post',
     data: data
   })
@@ -38,7 +38,7 @@ export function addOrg(data) {
 // 修改部门
 export function updateOrg(data) {
   return request({
-    url: '/system/org',
+    url: '/org',
     method: 'put',
     data: data
   })
@@ -47,7 +47,7 @@ export function updateOrg(data) {
 // 删除部门
 export function delOrg(orgId) {
   return request({
-    url: '/system/org/' + orgId,
+    url: '/org/' + orgId,
     method: 'delete'
   })
 }
