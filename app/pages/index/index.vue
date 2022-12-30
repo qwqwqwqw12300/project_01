@@ -5,132 +5,222 @@
 * @Description: 应用首页
 -->
 
-<template>	
-	<app-body>
-		<view class="ui-scan active">
-			<u-icon name="scan" color="#fff" size="28"></u-icon>
-		</view>
-		<text class="wd-logo">
-			新大陆米家
-		</text>
-		<view class="ui-group">
-			<view class="ui-title">
-				<view>
-					<text>我的家庭1</text>
-					<text>共两个设备</text>
-					<text>在线两个设备</text>
+<template>
+	<view @click="closeDevice">
+		<app-body>
+			<view class="ui-scan">
+				<u-icon name="scan" class="active" color="#fff" size="46rpx"></u-icon>
+				<u-icon name="plus" @click="addDevice" :stop="true" class="active" color="#fff" size="40rpx"></u-icon>
+				<!-- 下拉框 -->
+				<view class="ui-select" v-if="isAddShow">
+					<view class="ui-select-item active">
+						<u-icon name="../../static/images/leida.png" class="active" color="#fff" size="40rpx"></u-icon>
+						<text>雷达波设备</text>
+					</view>
+					<view class="ui-select-item active">
+						<u-icon name="../../static/images/shoubiao.png" class="active" color="#fff" size="40rpx"></u-icon>
+						<text>监护手表</text>
+					</view>
 				</view>
-				<u-text prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff" :iconStyle="{
-					fontSize: '44rpx',
-					color: '#fff'
-				}" text="分享"></u-text>
+				<!-- /下拉框 -->
 			</view>
-			<view class="ui-device">
-				<view class="ui-list">
-					<view class="ui-list-box active">
-						<image src="../../static/images/device.png"></image>
-						<text>xx设备名称</text>
-						<text>位置</text>
-						<view class="ui-list-static">
-							<u-icon name="wifi" color="#0dab1c" size="28"></u-icon>
-						</view>
-						<u-badge :offset="[-9, 0]" :value="9" absolute></u-badge>
-					</view>
-				</view>
-				<view class="ui-list">
-					<view class="ui-list-box active">
-						<image src="../../static/images/device.png"></image>
-						<text>xx设备名称</text>
-						<text>位置</text>
-						<view class="ui-list-static">
-						<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
-						</view>
-					</view>
-				</view>
-				<view class="ui-list">
-					<view class="ui-list-box active">
-						<image src="../../static/images/device.png"></image>
-						<text>xx设备名称</text>
-						<text>位置</text>
-						<view class="ui-list-static">
-						<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
-						</view>
-					</view>
-				</view>
-			</view>
-			
-		</view>
+			<text class="wd-logo">
+				新大陆米家
+			</text>
 		
-		<view class="ui-group">
-			<view class="ui-title">
-				<view>
-					<text>我的家庭1</text>
-					<text>共两个设备</text>
-					<text>在线两个设备</text>
-				</view>
-				<u-text prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff" :iconStyle="{
-					fontSize: '44rpx',
-					color: '#fff'
-				}" text="分享"></u-text>
-			</view>
-			<view class="ui-device">
-				<view class="ui-list">
-					<view class="ui-list-box active">
-						<image src="../../static/images/device.png"></image>
-						<text>xx设备名称</text>
-						<text>位置</text>
-						<view class="ui-list-static">
-							<u-icon name="wifi" color="#0dab1c" size="28"></u-icon>
+			<!-- 家庭列表 -->
+			<template v-if="false">
+				<view class="ui-group">
+					<view class="ui-title">
+						<view>
+							<text>我的家庭1</text>
+							<text>共两个设备</text>
+							<text>在线两个设备</text>
 						</view>
-						<u-badge :offset="[-9, 0]" :value="9" absolute></u-badge>
+						<u-text prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff" :iconStyle="{
+							fontSize: '44rpx',
+							color: '#fff'
+						}" text="分享"></u-text>
 					</view>
-				</view>
-				<view class="ui-list">
-					<view class="ui-list-box active">
-						<image src="../../static/images/device.png"></image>
-						<text>xx设备名称</text>
-						<text>位置</text>
-						<view class="ui-list-static">
-						<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
+					<view class="ui-device">
+						<view class="ui-list">
+							<view class="ui-list-box active">
+								<image src="../../static/images/device.png"></image>
+								<text>xx设备名称</text>
+								<text>位置</text>
+								<view class="ui-list-static">
+									<u-icon name="wifi" color="#0dab1c" size="28"></u-icon>
+								</view>
+								<u-badge :offset="[-9, 0]" :value="9" absolute></u-badge>
+							</view>
+						</view>
+						<view class="ui-list">
+							<view class="ui-list-box active">
+								<image src="../../static/images/device.png"></image>
+								<text>xx设备名称</text>
+								<text>位置</text>
+								<view class="ui-list-static">
+								<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
+								</view>
+							</view>
+						</view>
+						<view class="ui-list">
+							<view class="ui-list-box active">
+								<image src="../../static/images/device.png"></image>
+								<text>xx设备名称</text>
+								<text>位置</text>
+								<view class="ui-list-static">
+								<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
+								</view>
+							</view>
 						</view>
 					</view>
+					
 				</view>
-				<view class="ui-list">
-					<view class="ui-list-box active">
-						<image src="../../static/images/device.png"></image>
-						<text>xx设备名称</text>
-						<text>位置</text>
-						<view class="ui-list-static">
-						<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
+				
+				<view class="ui-group">
+					<view class="ui-title">
+						<view>
+							<text>我的家庭1</text>
+							<text>共两个设备</text>
+							<text>在线两个设备</text>
+						</view>
+						<u-text prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff" :iconStyle="{
+							fontSize: '44rpx',
+							color: '#fff'
+						}" text="分享"></u-text>
+					</view>
+					<view class="ui-device">
+						<view class="ui-list">
+							<view class="ui-list-box active">
+								<image src="../../static/images/device.png"></image>
+								<text>xx设备名称</text>
+								<text>位置</text>
+								<view class="ui-list-static">
+									<u-icon name="wifi" color="#0dab1c" size="28"></u-icon>
+								</view>
+								<u-badge :offset="[-9, 0]" :value="9" absolute></u-badge>
+							</view>
+						</view>
+						<view class="ui-list">
+							<view class="ui-list-box active">
+								<image src="../../static/images/device.png"></image>
+								<text>xx设备名称</text>
+								<text>位置</text>
+								<view class="ui-list-static">
+								<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
+								</view>
+							</view>
+						</view>
+						<view class="ui-list">
+							<view class="ui-list-box active">
+								<image src="../../static/images/device.png"></image>
+								<text>xx设备名称</text>
+								<text>位置</text>
+								<view class="ui-list-static">
+								<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
+								</view>
+							</view>
 						</view>
 					</view>
+					
 				</view>
-			</view>
-			
-		</view>
-	</app-body>
+			</template>
+			<!-- /家庭列表 -->
+			<!-- 空户 -->
+			<template v-else>
+				<view class="ui-default">
+					<image src="../../static/images/tb.png" mode=""></image>
+					<button @click="addFamily">创建家庭</button>
+				</view>
+			</template>
+			<!-- /空户 -->
+		</app-body>
+		<add-family ref="addFamily" @next="familyNext"/>
+		<add-room ref="addRoom"  @next="roomNext"/>
+		<bind-device ref="bindDev"/>
+		
+	</view>
+	
 
 </template>
 <script>
 	export default {
 		data() {
 			return {
+				/**是否展示添加弹窗**/
+				isAddShow: false
 			}
 		},
 		onLoad() {},
 		methods: {
-			
+			/**
+			 * 打开添加按钮
+			 */
+			addDevice() {
+				setTimeout(() => {
+					this.isAddShow = true;
+				}, 10);
+			},
+			/**
+			 * 关闭添加按钮
+			 */
+			closeDevice() {
+				this.isAddShow = false;
+			},
+			/**
+			 * 添加家庭
+			 */
+			addFamily() {
+				this.$refs.addFamily.open();
+			},
+			/**
+			 * 添加家庭下一步
+			 */
+			familyNext() {
+				this.$refs.addRoom.open();
+			},
+			roomNext() {
+				this.$refs.bindDev.open();
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
 	.ui-scan {
+		display: flex;
 		position: absolute;
 		right: 24rpx;
-		top: 80rpx;
-		
-		
+		top: 90rpx;
+		z-index: 2;
+		&>* {
+			margin-left: 20rpx;
+		}
+		.ui-select {
+			position: absolute;
+			top: 70rpx;
+			right: -12rpx;
+			width: 228rpx;
+			height: 258rpx;
+			border-radius: 20rpx;
+			filter: drop-shadow(0 0 5px rgba(7,5,5,0.34));
+			background-image: linear-gradient(-36deg, #f6ba33 0%, #f2bd6b 52%, #f6d7b0 100%);
+			border: 1px solid #ffcb3d;
+			padding: 16rpx;
+			.ui-select-item {
+				// margin-top: 16rpx;
+				padding: 15rpx 0;
+				display: flex;
+				font-size: 26rpx;
+				color: #fff;
+				border-bottom: 1px solid #fff;
+				text {
+					display: inline-block;
+					margin-left: 20rpx;
+				}
+			}
+		}
 	}
 	.ui-group {
 		margin-top: 56rpx;
@@ -198,5 +288,21 @@
 			
 			}
 		}
+	}
+	.ui-default {
+		width: 100%;
+		box-sizing: border-box;
+		display: inline-block;
+		margin-top: 300rpx;
+		padding: 0 73rpx;
+		text-align: center;
+		image {
+			max-width: 305rpx;
+			max-height: 295rpx;
+			margin-bottom: 73rpx;
+		}
+		bottom: {
+			margin-top: 73rpx;
+		};
 	}
 </style>

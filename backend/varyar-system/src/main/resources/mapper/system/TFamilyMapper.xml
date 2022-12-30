@@ -12,7 +12,7 @@
         <result property="delFlag" column="del_flag"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
-        <collection property="devices" ofType="TDevice" select="selectdDevices" column="{familyId = family_id}"/>
+        <collection property="devices" ofType="Device" select="selectdDevices" column="{familyId = family_id}"/>
     </resultMap>
 
     <select id="selectdDevices" resultMap="DeviceResult">
@@ -28,7 +28,7 @@
         where d.family_id = #{familyId}
     </select>
 
-    <resultMap type="TDevice" id="DeviceResult">
+    <resultMap type="Device" id="DeviceResult">
         <result property="deviceId" column="device_id"/>
         <result property="devicegroupId" column="devicegroup_id"/>
         <result property="deviceGroupName" column="device_group_name"/>

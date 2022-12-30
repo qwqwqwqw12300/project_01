@@ -20,7 +20,7 @@ import com.newlandnpt.varyar.common.annotation.Log;
 import com.newlandnpt.varyar.common.constant.UserConstants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
+import com.newlandnpt.varyar.common.core.domain.entity.Org;
 import com.newlandnpt.varyar.common.core.domain.entity.SysRole;
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
@@ -28,7 +28,7 @@ import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
-import com.newlandnpt.varyar.system.service.ITOrgService;
+import com.newlandnpt.varyar.system.service.IOrgService;
 import com.newlandnpt.varyar.system.service.ISysPostService;
 import com.newlandnpt.varyar.system.service.ISysRoleService;
 import com.newlandnpt.varyar.system.service.ISysUserService;
@@ -49,7 +49,7 @@ public class SysUserController extends BaseController
     private ISysRoleService roleService;
 
     @Autowired
-    private ITOrgService orgService;
+    private IOrgService orgService;
 
     @Autowired
     private ISysPostService postService;
@@ -249,7 +249,7 @@ public class SysUserController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @GetMapping("/orgTree")
-    public AjaxResult orgTree(TOrg org)
+    public AjaxResult orgTree(Org org)
     {
         return success(orgService.selectOrgTreeList(org));
     }

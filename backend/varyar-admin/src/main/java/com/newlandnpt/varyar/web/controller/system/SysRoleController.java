@@ -17,7 +17,7 @@ import com.newlandnpt.varyar.common.annotation.Log;
 import com.newlandnpt.varyar.common.constant.UserConstants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
+import com.newlandnpt.varyar.common.core.domain.entity.Org;
 import com.newlandnpt.varyar.common.core.domain.entity.SysRole;
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
 import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
@@ -28,7 +28,7 @@ import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
 import com.newlandnpt.varyar.framework.web.service.SysPermissionService;
 import com.newlandnpt.varyar.framework.web.service.TokenService;
 import com.newlandnpt.varyar.system.domain.SysUserRole;
-import com.newlandnpt.varyar.system.service.ITOrgService;
+import com.newlandnpt.varyar.system.service.IOrgService;
 import com.newlandnpt.varyar.system.service.ISysRoleService;
 import com.newlandnpt.varyar.system.service.ISysUserService;
 
@@ -54,7 +54,7 @@ public class SysRoleController extends BaseController
     private ISysUserService userService;
 
     @Autowired
-    private ITOrgService orgService;
+    private IOrgService orgService;
 
     @PreAuthorize("@ss.hasPermi('system:role:list')")
     @GetMapping("/list")
@@ -257,7 +257,7 @@ public class SysRoleController extends BaseController
     {
         AjaxResult ajax = AjaxResult.success();
         ajax.put("checkedKeys", orgService.selectOrgListByRoleId(roleId));
-        ajax.put("orgs", orgService.selectOrgTreeList(new TOrg()));
+        ajax.put("orgs", orgService.selectOrgTreeList(new Org()));
         return ajax;
     }
 }

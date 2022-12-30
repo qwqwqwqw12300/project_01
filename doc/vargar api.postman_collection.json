@@ -1,0 +1,200 @@
+{
+	"info": {
+		"_postman_id": "f6b60c52-5899-4366-8085-668fed28d536",
+		"name": "vargar api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "验证码",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/captchaImage",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"captchaImage"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "发送短信码",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uuid\":\"228bfaa9170944948d9dbafa8189f298\",\r\n    \"captcha\":\"345x\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/sendSms",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"sendSms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "注册会员",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone\":\"18759178933\",\r\n    \"password\":\"1234\",\r\n    \"smsUuid\":\"63c9699f8d5f46e6b5b673c9e2f235f9\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/regMember",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"regMember"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "密码登录",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone\":\"18759178933\",\r\n    \"password\":\"1234\",\r\n    \"uuid\":\"fcc7f8cf6d7f4352bae35e9ff21213f1\",\r\n    \"code\":\"9774\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/loginByPwd",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"loginByPwd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "短信码登录",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImMyZTI3ZTI4LWE1NGUtNGI4OC1iMDU4LWEzYzg4MWZjOGI0MiJ9.a-ToNm-D0sAt8QBjWVU73C7_Bxh9urAKKJZig_Bq4vF97FDDzwGj82ZexaBRTwV7SL7gftke6f6wDH3-nyzmNQ",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/loginByCode",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"loginByCode"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "家庭组列表",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImMyZTI3ZTI4LWE1NGUtNGI4OC1iMDU4LWEzYzg4MWZjOGI0MiJ9.a-ToNm-D0sAt8QBjWVU73C7_Bxh9urAKKJZig_Bq4vF97FDDzwGj82ZexaBRTwV7SL7gftke6f6wDH3-nyzmNQ",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/loginByCode",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"loginByCode"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

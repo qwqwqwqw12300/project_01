@@ -72,6 +72,26 @@ public class LoginUser implements UserDetails
      */
     private SysUser user;
 
+    private String memberPhone;
+
+    private Long memberId;
+
+    public String getMemberPhone() {
+        return memberPhone;
+    }
+
+    public void setMemberPhone(String memberPhone) {
+        this.memberPhone = memberPhone;
+    }
+
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
+
     public Long getUserId()
     {
         return userId;
@@ -130,7 +150,12 @@ public class LoginUser implements UserDetails
     @Override
     public String getUsername()
     {
-        return user.getUserName();
+        //后台用户
+        if (user != null) {
+            return user.getUserName();
+        }
+        //app端会员
+        return memberPhone;
     }
 
     /**

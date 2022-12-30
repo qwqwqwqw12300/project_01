@@ -161,7 +161,7 @@
 </template>
 
 <script>
-import { listOrg, getOrg, delOrg, addOrg, updateOrg, listOrgExcludeChild } from "@/api/system/org";
+import { listOrg, getOrg, delOrg, addOrg, updateOrg, listOrgExcludeChild } from "@/api/org";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 

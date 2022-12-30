@@ -35,11 +35,23 @@
 			</view>
 			<view class="ui-form-item">
 				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input"><u-input placeholder="请输入你的密码" :border="'none'" fontSize="28rpx" clearable></u-input></view>
+				<view class="ui-input">
+					<u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable>	
+					<template slot="suffix">		
+					<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>		
+				</template>
+					</u-input>
+				</view>
 			</view>
 			<view class="ui-form-item">
 				<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="确认密码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input"><u-input placeholder="请输入你的密码" :border="'none'" fontSize="28rpx" clearable></u-input></view>
+				<view class="ui-input">
+					<u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable>	
+					<template slot="suffix">	
+						<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
+						</template>	
+				</u-input>
+				</view>
 			</view>
 			<view class="ui-btn"><button type="default" @click="goMain">重置密码</button></view>
 			<text class="ui-link active" @click="goLogin">老朋友？点此登录</text>
@@ -57,7 +69,7 @@ export default {
 		 * 勾选协议
 		 */
 		radioChange() {},
-		
+
 		/**
 		 * 跳转登录
 		 */
@@ -66,7 +78,7 @@ export default {
 				url: '/pages/login/login'
 			});
 		},
-		
+
 		/**
 		 * 跳转首页
 		 */
@@ -74,7 +86,7 @@ export default {
 			uni.switchTab({
 				url: '/pages/index/index'
 			});
-		},
+		}
 	}
 };
 </script>

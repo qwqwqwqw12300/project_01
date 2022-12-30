@@ -35,11 +35,23 @@
 			</view>
 			<view class="ui-form-item">
 				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input"><u-input placeholder="请输入你的密码" :border="'none'" fontSize="28rpx" clearable></u-input></view>
+				<view class="ui-input">
+					<u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable>
+						<template slot="suffix">
+							<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
+						</template>
+					</u-input>
+				</view>
 			</view>
 			<view class="ui-form-item">
 				<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="确认密码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input"><u-input placeholder="请输入你的密码" :border="'none'" fontSize="28rpx" clearable></u-input></view>
+				<view class="ui-input">
+					<u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable>
+						<template slot="suffix">
+							<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
+						</template>
+					</u-input>
+				</view>
 			</view>
 			<view class="ui-agreement">
 				<u-radio :customStyle="{ marginRight: '8rpx' }" @change="radioChange" shape="square" activeColor="#fdbc2b" size="24rpx"></u-radio>
@@ -62,7 +74,7 @@ export default {
 		 * 勾选协议
 		 */
 		radioChange() {},
-		
+
 		/**
 		 * 跳转登录
 		 */

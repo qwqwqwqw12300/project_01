@@ -33,7 +33,7 @@ public class TFamily extends BaseEntity
     private String address;
 
     /** 设备列表 */
-    private List<TDevice> devices;
+    private List<Device> devices;
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
@@ -79,11 +79,11 @@ public class TFamily extends BaseEntity
         this.delFlag = delFlag;
     }
 
-    public List<TDevice> getDevices() {
+    public List<Device> getDevices() {
         return devices;
     }
 
-    public void setDevices(List<TDevice> devices) {
+    public void setDevices(List<Device> devices) {
         this.devices = devices;
     }
 
