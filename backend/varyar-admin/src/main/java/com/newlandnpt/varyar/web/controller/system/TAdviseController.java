@@ -43,9 +43,14 @@ public class TAdviseController extends BaseController
     {
         startPage();
         List<TAdvise> list = tAdviseService.selectTAdviseList(tAdvise);
+        setreadFlag(list);
         return getDataTable(list);
     }
-
+    private void setreadFlag(List<TAdvise> list ){
+        for (TAdvise item: list) {
+            item.setReadFlag(item.getReadFlag().equals("1")?"已读":"未读");
+        }
+    }
     /**
      * 导出建议列表
      */
@@ -65,8 +70,9 @@ public class TAdviseController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:advise:query')")
     @GetMapping(value = "/{adviseId}")
     public AjaxResult getInfo(@PathVariable("adviseId") Long adviseId)
-    {
-        return success(tAdviseService.selectTAdviseByAdviseId(adviseId));
+    {   TAdvise tAdvise = tAdviseService.selectTAdviseByAdviseId(adviseId);
+        tAdvise.setReadFlag(tAdvise.getReadFlag().equals("1")?"已读":"未读");
+        return success(tAdvise);
     }
 
     /**
@@ -88,6 +94,7 @@ public class TAdviseController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody TAdvise tAdvise)
     {
+        tAdvise.setReadFlag("1");
         return toAjax(tAdviseService.updateTAdvise(tAdvise));
     }
 

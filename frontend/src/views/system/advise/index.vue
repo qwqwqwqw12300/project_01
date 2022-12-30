@@ -1,18 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="会员id" prop="memberId">
+      <el-form-item label="问题内容" prop="memberId">
         <el-input
-          v-model="queryParams.memberId"
-          placeholder="请输入会员id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="已读标志" prop="readFlag">
-        <el-input
-          v-model="queryParams.readFlag"
-          placeholder="请输入已读标志"
+          v-model="queryParams.content"
+          placeholder="问题内容"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -23,39 +15,7 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:advise:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:advise:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:advise:remove']"
-        >删除</el-button>
-      </el-col>
+   <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -71,9 +31,9 @@
 
     <el-table v-loading="loading" :data="adviseList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="建议id" align="center" prop="adviseId" />
-      <el-table-column label="建议内容" align="center" prop="content" />
-      <el-table-column label="会员id" align="center" prop="memberId" />
+      <el-table-column label="问题内容" align="center" prop="content" />
+      <el-table-column label="会员名称" align="center" prop="memberId" />
+      <el-table-column label="提交时间" align="center" prop="createTime" />
       <el-table-column label="已读标志" align="center" prop="readFlag" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -83,18 +43,11 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:advise:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:advise:remove']"
-          >删除</el-button>
+          >已读</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -107,20 +60,18 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="建议内容">
-          <editor v-model="form.content" :min-height="192"/>
+          <el-input v-model="form.content" :disabled="true" Style="width:100% "/>
         </el-form-item>
-        <el-form-item label="会员id" prop="memberId">
-          <el-input v-model="form.memberId" placeholder="请输入会员id" />
+        <el-form-item label="会员名称" prop="memberId">
+          <el-input v-model="form.memberId":disabled="true" />
         </el-form-item>
         <el-form-item label="已读标志" prop="readFlag">
-          <el-input v-model="form.readFlag" placeholder="请输入已读标志" />
-        </el-form-item>
-        <el-form-item label="删除标志" prop="delFlag">
-          <el-input v-model="form.delFlag" placeholder="请输入删除标志" />
+            <el-input v-model="form.readFlag":disabled="true"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button :disabled="form.readFlag == '已读' ? true:false"
+                   type="primary" @click="submitForm">已 读</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -164,10 +115,8 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        memberId: [
-          { required: true, message: "会员id不能为空", trigger: "blur" }
-        ],
       }
+
     };
   },
   created() {
@@ -230,7 +179,7 @@ export default {
       getAdvise(adviseId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改问题建议管理";
+        this.title = "建议已读操作";
       });
     },
     /** 提交按钮 */
