@@ -26,6 +26,20 @@
 			}
 		},
 		{
+			"path": "pages/add-equipment/radar",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "添加雷达波设备"
+			}
+		},
+		{
+			"path": "pages/add-equipment/watch",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "手表设备详情"
+			}
+		},
+		{
 			"path": "pages/customer-service/customer-service",
 			"style": {
 				"navigationBarTitleText": "在线客服"
