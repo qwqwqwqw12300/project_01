@@ -1,6 +1,7 @@
 package com.newlandnpt.varyar.system.mapper;
 
 import java.util.List;
+
 import com.newlandnpt.varyar.system.domain.TMember;
 
 /**
@@ -18,6 +19,12 @@ public interface TMemberMapper
      * @return 会员
      */
     public TMember selectTMemberByMemberId(Long memberId);
+
+    /**
+     * 通过手机号查询会员
+
+     */
+    public TMember selectTMemberByPhone(String phone);
 
     /**
      * 查询会员列表
