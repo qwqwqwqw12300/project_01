@@ -4,7 +4,7 @@
 		<view class="ui-list">
 			<view class="ui-list-card">
 				<view class="card-header">
-					<u-icon name="/static/images/contact.png" size="60rpx" />
+					<u-icon name="/static/images/contact.png" size="54rpx" />
 					<text class="text">第一紧急联系人</text>
 				</view>
 				<view class="card-content">
@@ -18,14 +18,25 @@
 			</view>
 		</view>
 		<view class="ui-btn">
-			<button>添加紧急联系人</button>
+			<button @click="handleAdd">添加紧急联系人</button>
 		</view>
 	</app-body>
 </template>
 
 <script>
 	export default {
-
+		data() {
+			return{
+				
+			}
+		},
+		methods:{
+			handleAdd(){
+				uni.navigateTo({
+					url: '/pages/myself/add-contact'
+				})
+			}
+		}
 	}
 </script>
 
