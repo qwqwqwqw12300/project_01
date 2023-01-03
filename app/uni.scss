@@ -94,14 +94,6 @@ $uni-font-size-paragraph: 15px;
 
 /**全局样式覆盖**/
 
-.wd-logo {
-	margin: 64rpx 0 0 24rpx;
-	display: inline-block;
-	font-size: 72rpx;
-	font-weight: bold;
-	color: #ffffff;
-}
-
 .active {
 	&:active {
 		opacity: 0.8;
@@ -109,7 +101,7 @@ $uni-font-size-paragraph: 15px;
 }
 
 button {
-	color: #fff;
+	color: #ffffff;
 	background: linear-gradient(96deg, #008fff 0%, #00eaff 100%);
 	box-shadow:0px 13px 16px -10px #008fff;
 	border-radius: 60rpx;
@@ -139,6 +131,8 @@ button {
 }
 
 .wd-bg {
+	box-sizing: border-box;
+	padding-top: var(--status-bar-height);
 	min-height: calc(100vh - var(--window-bottom));
 	position: relative;
 	height: 100%;

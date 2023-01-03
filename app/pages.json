@@ -159,6 +159,24 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/myself/agreement-info",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/myself/privacy-info",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 	"globalStyle": {
