@@ -1,5 +1,5 @@
 <template>
-	<text class="wd-logo">
+	<text class="wd-logo" :style="{marginTop: top}">
 		{{text}}
 	</text>
 </template>
@@ -10,8 +10,13 @@
 		props: {
 			/**是否展示客服**/
 			text: {
-				default: '新大陆米家'
-			}
+				default: '艾吉通'
+			},
+			/**距离顶部高度**/
+			top: {
+				default: '64rpx'
+
+			},
 		},
 		data() {
 			return {

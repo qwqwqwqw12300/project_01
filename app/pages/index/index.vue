@@ -200,7 +200,7 @@
 		display: flex;
 		position: absolute;
 		right: 24rpx;
-		top: 90rpx;
+		top: calc(90rpx + var(--status-bar-height));
 		z-index: 2;
 
 		&>* {

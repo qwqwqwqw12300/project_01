@@ -5,72 +5,69 @@
 * @Description: 登录页面
 -->
 <template>
-	<view class="wd-bg ui-body">
-		<!-- <image class="ui-logo" src="../../static/images/logo.png"></image> -->
-		<text class="ui-logo">新大陆米家</text>
-		<view class="ui-nav">
-			<u-tabs lineWidth="160rpx" lineColor="#fdbd2d" :itemStyle="{ width: '200rpx', height: '90rpx' }"
-				:activeStyle="{ color: '#fdbd2d', fontSize: '28rpx' }"
-				:inactiveStyle="{ color: '#bfbfbf', fontSize: '28rpx' }" lineHeight="4.5rpx" :list="navList"
-				@click="navClick"></u-tabs>
-		</view>
-		<!-- 账号登录 -->
-		<u-transition mode="fade-left" :show="navActive === 0 && delay === 0">
-			<view class="ui-form">
-				<view class="ui-form-item">
-					<u-text prefixIcon="phone-fill" iconStyle="font-size: 30rpx" text="手机号码" color="#444" size="28rpx">
-					</u-text>
-					<view class="ui-input">
-						<u--input placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input>
-					</view>
-				</view>
-				<view class="ui-form-item">
-					<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx">
-					</u-text>
-					<view class="ui-input">
-						<u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable>
-						</u-input>
-					</view>
-				</view>
-				<view class="ui-bot">
-					<text class="active" @click="register">免费注册</text>
-					<text class="active" @click="forgot">忘记密码？</text>
-				</view>
-				<view class="ui-btn"><button @click="login">立即登录</button></view>
+	<app-body :needService="false" :hideTitle="true" :bodyStyle="{backgroundPositionY: '-100rpx'}">
+		<view class="ui-body">
+			<!-- <image class="ui-logo" src="../../static/images/logo.png"></image> -->
+			<text class="ui-logo">新大陆米家</text>
+			<view class="ui-nav">
+				<u-tabs lineWidth="160rpx" lineColor="#fdbd2d" :itemStyle="{ width: '200rpx', height: '90rpx' }"
+					:activeStyle="{ color: '#fdbd2d', fontSize: '28rpx' }"
+					:inactiveStyle="{ color: '#bfbfbf', fontSize: '28rpx' }" lineHeight="4.5rpx" :list="navList"
+					@click="navClick"></u-tabs>
 			</view>
-		</u-transition>
-		<!-- /账号登录 -->
-		<!-- 验证码登录 -->
-		<u-transition mode="fade-right" :show="navActive !== 0 && delay !== 0">
-			<view class="ui-form">
-				<view class="ui-form-item">
-					<u-text prefixIcon="phone-fill" iconStyle="font-size: 30rpx" text="手机号码" color="#444" size="28rpx">
-					</u-text>
-					<view class="ui-input">
-						<u-input placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u-input>
+			<!-- 账号登录 -->
+			<u-transition mode="fade-left" :show="navActive === 0 && delay === 0">
+				<view class="ui-form">
+					<view class="ui-form-item">
+						<u-text prefixIcon="phone-fill" iconStyle="font-size: 30rpx" text="手机号码" color="#444"
+							size="28rpx">
+						</u-text>
+						<view class="ui-input">
+							<u--input placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input>
+						</view>
 					</view>
-				</view>
-				<view class="ui-form-item">
-					<u-text prefixIcon="email-fill" iconStyle="font-size: 32rpx" text="验证码" color="#444" size="28rpx">
-					</u-text>
-					<view class="ui-input">
-						<u-input placeholder="请输入短信认证码" :border="'none'" fontSize="28rpx" clearable>
-							<template slot="suffix">
-								<button class="wd-sms" size="mini">验证码</button>
-							</template>
-						</u-input>
+					<view class="ui-form-item">
+						<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx">
+						</u-text>
+						<view class="ui-input">
+							<u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable>
+							</u-input>
+						</view>
 					</view>
+					<view class="ui-bot">
+						<text class="active" @click="register">免费注册</text>
+						<text class="active" @click="forgot">忘记密码？</text>
+					</view>
+					<view class="ui-btn"><button @click="login">立即登录</button></view>
 				</view>
-				<view class="ui-bot">
-					<text class="active" @click="register">免费注册</text>
-					<text class="active" @click="forgot">忘记密码？</text>
+			</u-transition>
+			<!-- /账号登录 -->
+			<!-- 验证码登录 -->
+			<u-transition mode="fade-right" :show="navActive !== 0 && delay !== 0">
+				<view class="ui-form">
+					<view class="ui-form-item">
+						<u-text prefixIcon="phone-fill" iconStyle="font-size: 30rpx" text="手机号码" color="#444"
+							size="28rpx">
+						</u-text>
+						<view class="ui-input">
+							<u-input placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u-input>
+						</view>
+					</view>
+					<view class="ui-form-item">
+						<sms-input></sms-input>
+					</view>
+					<view class="ui-bot">
+						<text class="active" @click="register">免费注册</text>
+						<text class="active" @click="forgot">忘记密码？</text>
+					</view>
+					<view class="ui-btn"><button @click="login">立即登录</button></view>
 				</view>
-				<view class="ui-btn"><button @click="login">立即登录</button></view>
-			</view>
-		</u-transition>
+			</u-transition>
 
-		<!-- /验证码登录 -->
-	</view>
+			<!-- /验证码登录 -->
+		</view>
+	</app-body>
+
 </template>
 
 <script>

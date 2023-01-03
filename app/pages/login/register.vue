@@ -6,66 +6,56 @@
 -->
 
 <template>
-	<view class="wd-bg ui-body">
-		<text class="ui-logo">注册账号</text>
-		<view class="ui-form">
-			<view class="ui-form-item">
-				<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="手机号码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input">
-					<u--input placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input>
+	<app-body :needService="false" :hideTitle="true" :bodyStyle="{backgroundPositionY: '-100rpx'}">
+		<view class="ui-body">
+			<text class="ui-logo">注册账号</text>
+			<view class="ui-form">
+				<view class="ui-form-item">
+					<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="手机号码" color="#444" size="28rpx">
+					</u-text>
+					<view class="ui-input">
+						<u--input placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input>
+					</view>
 				</view>
-			</view>
-			<view class="ui-form-item">
-				<u-text prefixIcon="photo" iconStyle="font-size: 32rpx" text="验证码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input">
-					<u-input placeholder="请输入图形验证码" :border="'none'" fontSize="28rpx" clearable>
-						<template slot="suffix">
-							<button class="ui-mini" size="mini">验证码</button>
-						</template>
-					</u-input>
+				<view class="ui-form-item">
+					<graphic-input></graphic-input>
 				</view>
-			</view>
-			<view class="ui-form-item">
-				<u-text prefixIcon="email" iconStyle="font-size: 32rpx" text="短信码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input">
-					<u-input placeholder="请输入短信认证码" :border="'none'" fontSize="28rpx" clearable>
-						<template slot="suffix">
-							<button class="wd-sms ui-mini" size="mini">验证码</button>
-						</template>
-					</u-input>
+				<view class="ui-form-item">
+					<sms-input></sms-input>
 				</view>
-			</view>
-			<view class="ui-form-item">
-				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input">
-					<u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable>
-						<template slot="suffix">
-							<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
-						</template>
-					</u-input>
+				<view class="ui-form-item">
+					<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx"></u-text>
+					<view class="ui-input">
+						<u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable>
+							<template slot="suffix">
+								<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
+							</template>
+						</u-input>
+					</view>
 				</view>
-			</view>
-			<view class="ui-form-item">
-				<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="确认密码" color="#444" size="28rpx">
-				</u-text>
-				<view class="ui-input">
-					<u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable>
-						<template slot="suffix">
-							<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
-						</template>
-					</u-input>
+				<view class="ui-form-item">
+					<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="确认密码" color="#444" size="28rpx">
+					</u-text>
+					<view class="ui-input">
+						<u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable>
+							<template slot="suffix">
+								<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
+							</template>
+						</u-input>
+					</view>
 				</view>
+				<view class="ui-agreement">
+					<u-radio :customStyle="{ marginRight: '8rpx' }" @change="radioChange" shape="square"
+						activeColor="#fdbc2b" size="24rpx"></u-radio>
+					<text>同意</text>
+					<text>用户协议</text>
+				</view>
+				<view class="ui-btn"><button @click="goLogin">注册</button></view>
+				<text class="ui-link active">老朋友？点此登录</text>
 			</view>
-			<view class="ui-agreement">
-				<u-radio :customStyle="{ marginRight: '8rpx' }" @change="radioChange" shape="square"
-					activeColor="#fdbc2b" size="24rpx"></u-radio>
-				<text>同意</text>
-				<text>用户协议</text>
-			</view>
-			<view class="ui-btn"><button @click="goLogin">注册</button></view>
-			<text class="ui-link active">老朋友？点此登录</text>
 		</view>
-	</view>
+	</app-body>
+
 </template>
 
 <script>

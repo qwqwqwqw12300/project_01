@@ -16,7 +16,6 @@
 				<view class="ui-select">
 					<uni-data-select v-model="value" :clear="false" :localdata="range"></uni-data-select>
 				</view>
-
 			</view>
 			<view class="ui-btn-group">
 				<button @click="next">确定</button>

@@ -7,7 +7,7 @@
 
 <template>
 	<view class="wd-body">
-		<view class="wd-bg">
+		<view class="wd-bg" :style="bodyStyle">
 			<u-navbar v-if="!hideTitle" leftText="首页" @rightClick="rightClick" :safeAreaInsetTop="false"
 				:autoBack="true" bgColor="transparent" leftIconColor="#fff" :fixed="false" />
 			<slot></slot>
@@ -38,6 +38,12 @@
 			/**返回头文字**/
 			leftText: {
 				default: '首页'
+			},
+			/**背景图高度**/
+			bodyStyle: {
+				default: () => {
+					{}
+				}
 			}
 		},
 		data() {
@@ -115,6 +121,19 @@
 		height: calc(100vh - var(--window-bottom));
 		width: 100%;
 		overflow: scroll;
+	}
+
+	.wd-bg {
+		box-sizing: border-box;
+		padding-top: var(--status-bar-height);
+		min-height: calc(100vh - var(--window-bottom));
+		position: relative;
+		height: 100%;
+		width: 100%;
+		background-image: url('@/static/images/bg2.png');
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-color: #fff;
 	}
 
 	.wd-service {
