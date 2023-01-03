@@ -1,4 +1,3 @@
-<!-- 手表设备详情 -->
 <template>
 	<app-body>
 		<view class="ui-detail">
@@ -13,20 +12,16 @@
 					</view>
 				</view>
 			</view>
-			<image class="ui-detail-map" src="../../static/images/map.png" mode=""></image>
 		</view>
-
 		<view class="ui-tabs">
 			<view class="ui-tabs-content">
-				<u-tabs :list="list1" lineColor="#FEC92E" lineWidth="35" :activeStyle="{
+				<u-tabs :list="list1" lineColor="#FEC92E" lineWidth="50" :activeStyle="{
 							color: '#FEC92E',
 							fontWeight: 'bold',
 							transform: 'scale(1.05)'
-						}">
-				</u-tabs>
+						}" />
 			</view>
 		</view>
-
 		<view class="ui-clear">
 			<u-button class="btn" color="white" iconColor="white" icon="checkmark-circle">全部标记为已读</u-button>
 		</view>
@@ -81,35 +76,22 @@
 
 <style lang="scss" scoped>
 	.wd-box {
-		border-radius: 10rpx;
+		border-radius: 14rpx;
 		margin: 0 46rpx;
-		// margin-top: 20rpx;
 		background-color: #EBEBEB;
-	}
-
-	.ui-navbar {
-		padding-top: calc(var(--status-bar-height) + 26rpx);
-		padding-left: 20rpx;
-		display: flex;
-		align-items: center;
-
-		.ui-navbar-text {
-			font-size: 36rpx;
-			color: #fff;
-		}
 	}
 
 	.ui-detail {
 		@extend .wd-box;
-		margin-top: 60rpx;
+		margin-top: 40rpx;
 		padding: 40rpx;
 		position: relative;
 		display: flex;
 
 		// justify-content: space-between;
 		.ui-detail-icon {
-			width: 160rpx;
-			height: 160rpx;
+			width: 180rpx;
+			height: 180rpx;
 		}
 
 		.ui-detail-device {
@@ -165,7 +147,7 @@
 
 		.ui-tabs-content {
 			padding: 12rpx 20rpx;
-			width: 240rpx;
+			width: 280rpx;
 			margin: 0 auto;
 		}
 	}
@@ -197,8 +179,8 @@
 				box-shadow: 3px 5px 15px #cac6c1;
 
 				.item-title-message {
-					width: 60rpx;
-					height: 50rpx;
+					width: 45rpx;
+					height: 40rpx;
 				}
 
 				.item-title-time {
@@ -218,6 +200,7 @@
 				@extend .wd-box;
 				margin-top: 30rpx;
 				padding: 26rpx 40rpx;
+				box-shadow: 3px 5px 15px #cac6c1;
 
 				.item-content-header {
 					height: 70rpx;
@@ -225,20 +208,20 @@
 					align-items: center;
 
 					.content-header-icon {
-						width: 35rpx;
-						height: 50rpx;
+						width: 30rpx;
+						height: 40rpx;
 					}
 
 					text {
 						margin-left: 20rpx;
-						font-size: 38rpx;
+						font-size: 36rpx;
 						font-weight: bold;
 					}
 				}
 
 				.item-content-card {
 					margin: 20rpx 30rpx 60rpx 60rpx;
-					padding: 20rpx;
+					padding: 24rpx;
 					border-radius: 14rpx;
 					// background-color: #000000;
 					background: linear-gradient(190deg, #FFE383, #FEC92E);
@@ -252,8 +235,8 @@
 						align-items: center;
 
 						.card-title-icon {
-							width: 40rpx;
-							height: 40rpx;
+							width: 35rpx;
+							height: 30rpx;
 						}
 
 						text {
@@ -264,13 +247,12 @@
 					}
 
 					.card-tel {
-						margin-top: 10rpx;
+						margin-top: 14rpx;
 						font-size: 32rpx;
 						font-weight: bold;
 					}
 				}
 			}
 		}
-
 	}
 </style>
