@@ -1,12 +1,6 @@
 <!-- 增加监护设备 -->
 <template>
 	<app-body>
-		<!-- <view class="ui-navbar" @tap="handleBack">
-			<u-icon name="arrow-left" color="#fff" size="23"></u-icon>
-			<text class="ui-navbar-text">首页</text>
-		</view> -->
-		<u-navbar leftText="首页" @rightClick="handleBack" :autoBack="true" bgColor="transparent" leftIconColor="#fff"
-			:fixed="false" />
 		<view class="ui-title">
 			<text>增加监护设备</text>
 		</view>
