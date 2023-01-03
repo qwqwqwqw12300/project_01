@@ -8,12 +8,14 @@
 <template>
 	<view class="wd-body">
 		<view class="wd-bg">
+			<u-navbar v-if="!hideTitle" leftText="首页" @rightClick="rightClick" :safeAreaInsetTop="false"
+				:autoBack="true" bgColor="transparent" leftIconColor="#fff" :fixed="false" />
 			<slot></slot>
 		</view>
 		<view class="wd-service" v-if="needService" @touchmove="onMove" @click="goService" @touchstart="onStart"
 			:style="{top: serviceTop + 'px'}">
 		</view>
-		
+
 	</view>
 
 </template>
@@ -25,8 +27,17 @@
 
 	export default {
 		props: {
+			/**是否展示客服**/
 			needService: {
 				default: true
+			},
+			/**是否隐藏返回头**/
+			hideTitle: {
+				default: false
+			},
+			/**返回头文字**/
+			leftText: {
+				default: '首页'
 			}
 		},
 		data() {
@@ -63,7 +74,8 @@
 						oldTop
 					} = this.serviceBtn;
 					const pageY = e.changedTouches[0].pageY - oldTop;
-					if (pageY > windowTop && pageY < windowHeight - 100) this.$store.commit('setServiceAxisY',pageY);
+					if (pageY > windowTop && pageY < windowHeight - 100) this.$store.commit('setServiceAxisY',
+						pageY);
 				}, 10);
 
 			},
@@ -84,7 +96,7 @@
 					oldTop: changedTouches[0].clientY - offsetTop
 				});
 			},
-			
+
 			/**
 			 * 跳转客服对话
 			 */
@@ -104,6 +116,7 @@
 		width: 100%;
 		overflow: scroll;
 	}
+
 	.wd-service {
 		z-index: 9999;
 		position: fixed;

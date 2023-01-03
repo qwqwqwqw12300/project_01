@@ -9,8 +9,19 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="机构类型" prop="type">
+        <el-select v-model="queryParams.type" placeholder="机构类型" clearable>
+          <el-option
+            v-for="dict in dict.type.org_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="机构状态" clearable>
+          <el-option key=""></el-option>
           <el-option
             v-for="dict in dict.type.sys_normal_disable"
             :key="dict.value"
@@ -161,13 +172,13 @@
 </template>
 
 <script>
-import { listOrg, getOrg, delOrg, addOrg, updateOrg, listOrgExcludeChild } from "@/api/system/org";
+import { listOrg, getOrg, delOrg, addOrg, updateOrg, listOrgExcludeChild } from "@/api/org/org";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Org",
-  dicts: ['sys_normal_disable'],
+  dicts: ['sys_normal_disable','org_type'],
   components: { Treeselect },
   data() {
     return {

@@ -10,6 +10,8 @@ import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
 import com.newlandnpt.varyar.system.service.ISysMenuService;
 import com.newlandnpt.varyar.system.service.ISysRoleService;
 
+import static com.newlandnpt.varyar.framework.web.service.PermissionService.SUPER_ADMIN;
+
 /**
  * 用户权限处理
  * 
@@ -36,7 +38,7 @@ public class SysPermissionService
         // 管理员拥有所有权限
         if (user.isAdmin())
         {
-            roles.add("admin");
+            roles.add(SUPER_ADMIN);
         }
         else
         {

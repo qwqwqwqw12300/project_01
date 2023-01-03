@@ -29,9 +29,10 @@ create table sys_user (
 -- ----------------------------
 -- 初始化-用户信息表数据
 -- ----------------------------
-insert into sys_user values(1,  103, 'admin', 'varyar', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '管理员');
-insert into sys_user values(2,  105, 'ry',    'varyar', '00', 'ry@qq.com',  '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '测试员');
-
+INSERT INTO `sys_user` (`user_id`, `org_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, 100, 'superAdmin', 'superAdmin', '00', NULL, NULL, '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'superAdmin', sysdate(), '', null, '管理员');
+INSERT INTO `sys_user` (`user_id`, `org_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, 100, 'admin', 'admin', '00', NULL, NULL, '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'superAdmin', sysdate(), '', null, '');
+INSERT INTO `sys_user` (`user_id`, `org_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, 100, 'orgadmin', '顶级机构管理员', '00', '', '', '0', '', '$2a$10$/tPXpxOKkm1ocJxKR5yPTeF2OOqKZvzRuti4fztyXEZRhPFu6SLLG', '0', '0', '', NULL, 'superAdmin', sysdate(), '', NULL, NULL);
+INSERT INTO `sys_user` (`user_id`, `org_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, 100, 'biz', '顶级机构运营', '00', '', '', '0', '', '$2a$10$a1kQQXuizeDmoTiM3eyMseEprx.J//JRBgz8mnwLd7zEYvG.mvZCa', '0', '0', '', NULL, 'superAdmin', sysdate(), '', NULL, NULL);
 
 -- ----------------------------
 -- 3、岗位信息表
@@ -51,15 +52,6 @@ create table sys_post
   remark        varchar(500)    default null               comment '备注',
   primary key (post_id)
 ) engine=innodb comment = '岗位信息表';
-
--- ----------------------------
--- 初始化-岗位信息表数据
--- ----------------------------
-insert into sys_post values(1, 'ceo',  '董事长',    1, '0', 'admin', sysdate(), '', null, '');
-insert into sys_post values(2, 'se',   '项目经理',  2, '0', 'admin', sysdate(), '', null, '');
-insert into sys_post values(3, 'hr',   '人力资源',  3, '0', 'admin', sysdate(), '', null, '');
-insert into sys_post values(4, 'user', '普通员工',  4, '0', 'admin', sysdate(), '', null, '');
-
 
 -- ----------------------------
 -- 4、角色信息表
@@ -86,8 +78,10 @@ create table sys_role (
 -- ----------------------------
 -- 初始化-角色信息表数据
 -- ----------------------------
-insert into sys_role values('1', '超级管理员',  'admin',  1, 1, 1, 1, '0', '0', 'admin', sysdate(), '', null, '超级管理员');
-insert into sys_role values('2', '普通角色',    'common', 2, 2, 1, 1, '0', '0', 'admin', sysdate(), '', null, '普通角色');
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, '超级管理员', 'superAdmin', 1, '1', 1, 1, '0', '0', 'superAdmin', sysdate(), '', NULL, '超级管理员');
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, '平台管理员', 'admin', 2, '1', 1, 0, '0', '0', 'superAdmin', sysdate(), '', null, NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, '机构管理员', 'orgadmin', 2, '1', 1, 0, '0', '0', 'superAdmin', sysdate(), '', NULL, NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (102, '运营人员', 'biz', 4, '1', 1, 0, '0', '0', 'superAdmin', sysdate(), '', NULL, NULL);
 
 
 -- ----------------------------
@@ -120,106 +114,141 @@ create table sys_menu (
 -- ----------------------------
 -- 初始化-菜单信息表数据
 -- ----------------------------
--- 一级菜单
-insert into sys_menu values('1', '系统管理', '0', '1', 'system',           null, '', 1, 0, 'M', '0', '0', '', 'system',   'admin', sysdate(), '', null, '系统管理目录');
-insert into sys_menu values('2', '系统监控', '0', '2', 'monitor',          null, '', 1, 0, 'M', '0', '0', '', 'monitor',  'admin', sysdate(), '', null, '系统监控目录');
-insert into sys_menu values('3', '系统工具', '0', '3', 'tool',             null, '', 1, 0, 'M', '0', '0', '', 'tool',     'admin', sysdate(), '', null, '系统工具目录');
--- 二级菜单
-insert into sys_menu values('100',  '用户管理', '1',   '1', 'user',       'system/user/index',        '', 1, 0, 'C', '0', '0', 'system:user:list',        'user',          'admin', sysdate(), '', null, '用户管理菜单');
-insert into sys_menu values('101',  '角色管理', '1',   '2', 'role',       'system/role/index',        '', 1, 0, 'C', '0', '0', 'system:role:list',        'peoples',       'admin', sysdate(), '', null, '角色管理菜单');
-insert into sys_menu values('102',  '菜单管理', '1',   '3', 'menu',       'system/menu/index',        '', 1, 0, 'C', '0', '0', 'system:menu:list',        'tree-table',    'admin', sysdate(), '', null, '菜单管理菜单');
-insert into sys_menu values('103',  '机构管理', '1',   '4', 'org',       'system/org/index',        '', 1, 0, 'C', '0', '0', 'org:list',        'tree',          'admin', sysdate(), '', null, '机构管理菜单');
-insert into sys_menu values('104',  '岗位管理', '1',   '5', 'post',       'system/post/index',        '', 1, 0, 'C', '0', '0', 'system:post:list',        'post',          'admin', sysdate(), '', null, '岗位管理菜单');
-insert into sys_menu values('105',  '字典管理', '1',   '6', 'dict',       'system/dict/index',        '', 1, 0, 'C', '0', '0', 'system:dict:list',        'dict',          'admin', sysdate(), '', null, '字典管理菜单');
-insert into sys_menu values('106',  '参数设置', '1',   '7', 'config',     'system/config/index',      '', 1, 0, 'C', '0', '0', 'system:config:list',      'edit',          'admin', sysdate(), '', null, '参数设置菜单');
-insert into sys_menu values('107',  '通知公告', '1',   '8', 'notice',     'system/notice/index',      '', 1, 0, 'C', '0', '0', 'system:notice:list',      'message',       'admin', sysdate(), '', null, '通知公告菜单');
-insert into sys_menu values('108',  '日志管理', '1',   '9', 'log',        '',                         '', 1, 0, 'M', '0', '0', '',                        'log',           'admin', sysdate(), '', null, '日志管理菜单');
-insert into sys_menu values('109',  '在线用户', '2',   '1', 'online',     'monitor/online/index',     '', 1, 0, 'C', '0', '0', 'monitor:online:list',     'online',        'admin', sysdate(), '', null, '在线用户菜单');
-insert into sys_menu values('110',  '定时任务', '2',   '2', 'job',        'monitor/job/index',        '', 1, 0, 'C', '0', '0', 'monitor:job:list',        'job',           'admin', sysdate(), '', null, '定时任务菜单');
-insert into sys_menu values('111',  '数据监控', '2',   '3', 'druid',      'monitor/druid/index',      '', 1, 0, 'C', '0', '0', 'monitor:druid:list',      'druid',         'admin', sysdate(), '', null, '数据监控菜单');
-insert into sys_menu values('112',  '服务监控', '2',   '4', 'server',     'monitor/server/index',     '', 1, 0, 'C', '0', '0', 'monitor:server:list',     'server',        'admin', sysdate(), '', null, '服务监控菜单');
-insert into sys_menu values('113',  '缓存监控', '2',   '5', 'cache',      'monitor/cache/index',      '', 1, 0, 'C', '0', '0', 'monitor:cache:list',      'redis',         'admin', sysdate(), '', null, '缓存监控菜单');
-insert into sys_menu values('114',  '缓存列表', '2',   '6', 'cacheList',  'monitor/cache/list',       '', 1, 0, 'C', '0', '0', 'monitor:cache:list',      'redis-list',    'admin', sysdate(), '', null, '缓存列表菜单');
-insert into sys_menu values('115',  '表单构建', '3',   '1', 'build',      'tool/build/index',         '', 1, 0, 'C', '0', '0', 'tool:build:list',         'build',         'admin', sysdate(), '', null, '表单构建菜单');
-insert into sys_menu values('116',  '代码生成', '3',   '2', 'gen',        'tool/gen/index',           '', 1, 0, 'C', '0', '0', 'tool:gen:list',           'code',          'admin', sysdate(), '', null, '代码生成菜单');
-insert into sys_menu values('117',  '系统接口', '3',   '3', 'swagger',    'tool/swagger/index',       '', 1, 0, 'C', '0', '0', 'tool:swagger:list',       'swagger',       'admin', sysdate(), '', null, '系统接口菜单');
--- 三级菜单
-insert into sys_menu values('500',  '操作日志', '108', '1', 'operlog',    'monitor/operlog/index',    '', 1, 0, 'C', '0', '0', 'monitor:operlog:list',    'form',          'admin', sysdate(), '', null, '操作日志菜单');
-insert into sys_menu values('501',  '登录日志', '108', '2', 'logininfor', 'monitor/logininfor/index', '', 1, 0, 'C', '0', '0', 'monitor:logininfor:list', 'logininfor',    'admin', sysdate(), '', null, '登录日志菜单');
--- 用户管理按钮
-insert into sys_menu values('1000', '用户查询', '100', '1',  '', '', '', 1, 0, 'F', '0', '0', 'system:user:query',          '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1001', '用户新增', '100', '2',  '', '', '', 1, 0, 'F', '0', '0', 'system:user:add',            '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1002', '用户修改', '100', '3',  '', '', '', 1, 0, 'F', '0', '0', 'system:user:edit',           '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1003', '用户删除', '100', '4',  '', '', '', 1, 0, 'F', '0', '0', 'system:user:remove',         '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1004', '用户导出', '100', '5',  '', '', '', 1, 0, 'F', '0', '0', 'system:user:export',         '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1005', '用户导入', '100', '6',  '', '', '', 1, 0, 'F', '0', '0', 'system:user:import',         '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1006', '重置密码', '100', '7',  '', '', '', 1, 0, 'F', '0', '0', 'system:user:resetPwd',       '#', 'admin', sysdate(), '', null, '');
--- 角色管理按钮
-insert into sys_menu values('1007', '角色查询', '101', '1',  '', '', '', 1, 0, 'F', '0', '0', 'system:role:query',          '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1008', '角色新增', '101', '2',  '', '', '', 1, 0, 'F', '0', '0', 'system:role:add',            '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1009', '角色修改', '101', '3',  '', '', '', 1, 0, 'F', '0', '0', 'system:role:edit',           '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1010', '角色删除', '101', '4',  '', '', '', 1, 0, 'F', '0', '0', 'system:role:remove',         '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1011', '角色导出', '101', '5',  '', '', '', 1, 0, 'F', '0', '0', 'system:role:export',         '#', 'admin', sysdate(), '', null, '');
--- 菜单管理按钮
-insert into sys_menu values('1012', '菜单查询', '102', '1',  '', '', '', 1, 0, 'F', '0', '0', 'system:menu:query',          '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1013', '菜单新增', '102', '2',  '', '', '', 1, 0, 'F', '0', '0', 'system:menu:add',            '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1014', '菜单修改', '102', '3',  '', '', '', 1, 0, 'F', '0', '0', 'system:menu:edit',           '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1015', '菜单删除', '102', '4',  '', '', '', 1, 0, 'F', '0', '0', 'system:menu:remove',         '#', 'admin', sysdate(), '', null, '');
--- 机构管理按钮
-insert into sys_menu values('1016', '机构查询', '103', '1',  '', '', '', 1, 0, 'F', '0', '0', 'org:query',          '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1017', '机构新增', '103', '2',  '', '', '', 1, 0, 'F', '0', '0', 'org:add',            '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1018', '机构修改', '103', '3',  '', '', '', 1, 0, 'F', '0', '0', 'org:edit',           '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1019', '机构删除', '103', '4',  '', '', '', 1, 0, 'F', '0', '0', 'org:remove',         '#', 'admin', sysdate(), '', null, '');
--- 岗位管理按钮
-insert into sys_menu values('1020', '岗位查询', '104', '1',  '', '', '', 1, 0, 'F', '0', '0', 'system:post:query',          '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1021', '岗位新增', '104', '2',  '', '', '', 1, 0, 'F', '0', '0', 'system:post:add',            '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1022', '岗位修改', '104', '3',  '', '', '', 1, 0, 'F', '0', '0', 'system:post:edit',           '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1023', '岗位删除', '104', '4',  '', '', '', 1, 0, 'F', '0', '0', 'system:post:remove',         '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1024', '岗位导出', '104', '5',  '', '', '', 1, 0, 'F', '0', '0', 'system:post:export',         '#', 'admin', sysdate(), '', null, '');
--- 字典管理按钮
-insert into sys_menu values('1025', '字典查询', '105', '1', '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:query',          '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1026', '字典新增', '105', '2', '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:add',            '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1027', '字典修改', '105', '3', '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:edit',           '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1028', '字典删除', '105', '4', '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:remove',         '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1029', '字典导出', '105', '5', '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:export',         '#', 'admin', sysdate(), '', null, '');
--- 参数设置按钮
-insert into sys_menu values('1030', '参数查询', '106', '1', '#', '', '', 1, 0, 'F', '0', '0', 'system:config:query',        '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1031', '参数新增', '106', '2', '#', '', '', 1, 0, 'F', '0', '0', 'system:config:add',          '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1032', '参数修改', '106', '3', '#', '', '', 1, 0, 'F', '0', '0', 'system:config:edit',         '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1033', '参数删除', '106', '4', '#', '', '', 1, 0, 'F', '0', '0', 'system:config:remove',       '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1034', '参数导出', '106', '5', '#', '', '', 1, 0, 'F', '0', '0', 'system:config:export',       '#', 'admin', sysdate(), '', null, '');
--- 通知公告按钮
-insert into sys_menu values('1035', '公告查询', '107', '1', '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:query',        '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1036', '公告新增', '107', '2', '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:add',          '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1037', '公告修改', '107', '3', '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:edit',         '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1038', '公告删除', '107', '4', '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:remove',       '#', 'admin', sysdate(), '', null, '');
--- 操作日志按钮
-insert into sys_menu values('1039', '操作查询', '500', '1', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:query',      '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1040', '操作删除', '500', '2', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:remove',     '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1041', '日志导出', '500', '3', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:export',     '#', 'admin', sysdate(), '', null, '');
--- 登录日志按钮
-insert into sys_menu values('1042', '登录查询', '501', '1', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:query',   '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1043', '登录删除', '501', '2', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:remove',  '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1044', '日志导出', '501', '3', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:export',  '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1045', '账户解锁', '501', '4', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:unlock',  '#', 'admin', sysdate(), '', null, '');
--- 在线用户按钮
-insert into sys_menu values('1046', '在线查询', '109', '1', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:online:query',       '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1047', '批量强退', '109', '2', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:online:batchLogout', '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1048', '单条强退', '109', '3', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:online:forceLogout', '#', 'admin', sysdate(), '', null, '');
--- 定时任务按钮
-insert into sys_menu values('1049', '任务查询', '110', '1', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:query',          '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1050', '任务新增', '110', '2', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:add',            '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1051', '任务修改', '110', '3', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:edit',           '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1052', '任务删除', '110', '4', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:remove',         '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1053', '状态修改', '110', '5', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:changeStatus',   '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1054', '任务导出', '110', '6', '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:export',         '#', 'admin', sysdate(), '', null, '');
--- 代码生成按钮
-insert into sys_menu values('1055', '生成查询', '116', '1', '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:query',             '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1056', '生成修改', '116', '2', '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:edit',              '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1057', '生成删除', '116', '3', '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:remove',            '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1058', '导入代码', '116', '4', '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:import',            '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1059', '预览代码', '116', '5', '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:preview',           '#', 'admin', sysdate(), '', null, '');
-insert into sys_menu values('1060', '生成代码', '116', '6', '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:code',              '#', 'admin', sysdate(), '', null, '');
+-- 菜单
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2000, '首页（平台管理员）', 0, 1, 'platfromAdminHome', 'home/platformAdmin/index', NULL, 1, 0, 'C', '0', '0', 'home:platformAdmin:list', 'dashboard', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2001, '首页（机构管理员）', 0, 1, 'orgAdminHome', 'home/orgAdmin/index', NULL, 1, 0, 'C', '0', '0', 'home:orgAdmin:list', 'dashboard', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2002, '首页（运营人员）', 0, 1, 'operateAdminHome', 'home/operateAdmin/index', NULL, 1, 0, 'C', '0', '0', 'home:operateAdmin:list', 'dashboard', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1, '系统管理', 0, 2, 'system', NULL, '', 1, 0, 'M', '0', '0', '', 'system', 'superAdmin', NULL, '系统管理目录');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2033, '机构管理', 0, 3, 'org', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'nested', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2023, '设备管理', 0, 4, 'devices', NULL, NULL, 1, 0, 'M', '0', '0', NULL, 'nested', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2005, '会员管理', 0, 5, 'members', 'members/index', NULL, 1, 0, 'C', '0', '0', 'members:list', 'peoples', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2035, '事件消息管理', 0, 6, 'eventAndMessage', NULL, NULL, 1, 0, 'M', '0', '0', '', 'nested', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (3, '系统工具', 0, 18, 'tool', NULL, '', 1, 0, 'M', '0', '0', '', 'tool', 'superAdmin', NULL, '系统工具目录');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2, '系统监控', 0, 19, 'monitor', NULL, '', 1, 0, 'M', '0', '0', '', 'monitor', 'superAdmin', NULL, '系统监控目录');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (100, '用户管理', 1, 1, 'user', 'system/user/index', '', 1, 0, 'C', '0', '0', 'system:user:list', 'user', 'superAdmin', NULL, '用户管理菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (101, '角色管理', 1, 2, 'role', 'system/role/index', '', 1, 0, 'C', '0', '0', 'system:role:list', 'peoples', 'superAdmin', NULL, '角色管理菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (108, '日志管理', 1, 3, 'log', '', '', 1, 0, 'M', '0', '0', '', 'nested', 'superAdmin', NULL, '日志管理菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2017, '用户协议管理', 1, 4, 'agreement', 'system/agreement', NULL, 1, 0, 'C', '0', '0', 'system:agreement:list', 'education', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2018, '问题与建议管理', 1, 5, 'advise', 'system/advise', NULL, 1, 0, 'C', '0', '0', 'system:advise:list', 'post', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2032, '应用版本管理', 1, 6, 'version', 'system/version/index', NULL, 1, 0, 'C', '0', '0', 'system:version:list', 'upload', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2022, '短信模板管理', 1, 7, 'messageTemplate', 'system/messageTemplate/index', NULL, 1, 0, 'C', '0', '0', 'system:messageTemplate:list', 'form', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2019, '批处理管理', 1, 8, 'batchTask', 'system/batchTask/index', NULL, 1, 0, 'C', '0', '0', 'system:batchTask:list', 'log', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (105, '字典管理', 1, 10, 'dict', 'system/dict/index', '', 1, 0, 'C', '0', '0', 'system:dict:list', 'dict', 'superAdmin', NULL, '字典管理菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (107, '通知公告', 1, 11, 'notice', 'system/notice/index', '', 1, 0, 'C', '0', '0', 'system:notice:list', 'message', 'superAdmin', NULL, '通知公告菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (106, '参数设置', 1, 12, 'config', 'system/config/index', '', 1, 0, 'C', '0', '0', 'system:config:list', 'edit', 'superAdmin', NULL, '参数设置菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (102, '菜单管理', 1, 13, 'menu', 'system/menu/index', '', 1, 0, 'C', '0', '0', 'system:menu:list', 'tree-table', 'superAdmin', NULL, '菜单管理菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (109, '在线用户', 2, 1, 'online', 'monitor/online/index', '', 1, 0, 'C', '0', '0', 'monitor:online:list', 'online', 'superAdmin', NULL, '在线用户菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (110, '定时任务', 2, 2, 'job', 'monitor/job/index', '', 1, 0, 'C', '0', '0', 'monitor:job:list', 'job', 'superAdmin', NULL, '定时任务菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (111, '数据监控', 2, 3, 'druid', 'monitor/druid/index', '', 1, 0, 'C', '0', '0', 'monitor:druid:list', 'druid', 'superAdmin', NULL, '数据监控菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (112, '服务监控', 2, 4, 'server', 'monitor/server/index', '', 1, 0, 'C', '0', '0', 'monitor:server:list', 'server', 'superAdmin', NULL, '服务监控菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (113, '缓存监控', 2, 5, 'cache', 'monitor/cache/index', '', 1, 0, 'C', '0', '0', 'monitor:cache:list', 'redis', 'superAdmin', NULL, '缓存监控菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (114, '缓存列表', 2, 6, 'cacheList', 'monitor/cache/list', '', 1, 0, 'C', '0', '0', 'monitor:cache:list', 'redis-list', 'superAdmin', NULL, '缓存列表菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (115, '表单构建', 3, 1, 'build', 'tool/build/index', '', 1, 0, 'C', '0', '0', 'tool:build:list', 'build', 'superAdmin', NULL, '表单构建菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (116, '代码生成', 3, 2, 'gen', 'tool/gen/index', '', 1, 0, 'C', '0', '0', 'tool:gen:list', 'code', 'superAdmin', NULL, '代码生成菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (117, '系统接口', 3, 3, 'swagger', 'tool/swagger/index', '', 1, 0, 'C', '0', '0', 'tool:swagger:list', 'swagger', 'superAdmin', NULL, '系统接口菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (500, '操作日志', 108, 1, 'operlog', 'system/operlog/index', '', 1, 0, 'C', '0', '0', 'system:operlog:list', 'form', 'superAdmin', NULL, '操作日志菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (501, '登录日志', 108, 2, 'logininfor', 'system/logininfor/index', '', 1, 0, 'C', '0', '0', 'system:logininfor:list', 'logininfor', 'superAdmin', NULL, '登录日志菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2058, '设备总览', 2005, 2, 'memberDevices', 'member/devices/index', NULL, 1, 0, 'C', '1', '0', 'member:devices', '404', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2059, '服务登记', 2005, 3, 'serveRecord', 'member/serverRecord/index', NULL, 1, 0, 'C', '1', '0', 'member:serveRecord', '404', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2060, '运营分配', 2005, 4, 'memberArrange', 'member/arrange/index', NULL, 1, 0, 'C', '1', '0', 'member:arrange', '404', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2061, '服务人员操作记录', 2005, 5, 'servedOprLog', 'member/servedOprLog/index', NULL, 1, 0, 'C', '1', '0', 'member:servedOprLog', '404', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2015, '设备管理', 2023, 1, 'device', 'device/index', NULL, 1, 0, 'C', '0', '0', 'device:list', 'tool', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2034, '设备参数管理', 2023, 2, 'deviceParameters', 'devices/deviceParameters/index', NULL, 1, 0, 'C', '0', '0', 'devices:deviceParameters:list', 'phone', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (103, '机构管理', 2033, 1, 'org', 'org/index', '', 1, 0, 'C', '0', '0', 'org:list', 'tree', 'superAdmin', NULL, '机构管理菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2010, '设备组管理', 2033, 2, 'deviceGroup', 'org/deviceGroup/list', NULL, 1, 0, 'C', '0', '0', 'org:deviceGroup:list', 'tool', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2063, '事件管理', 2035, 1, 'event', 'eventAndMessage/event/index', NULL, 1, 0, 'C', '0', '0', 'eventAndMessage:event:list', 'log', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2021, '消息管理', 2035, 2, 'message', 'eventAndMsg/message/index', NULL, 1, 0, 'C', '0', '0', 'eventAndMsg:message:list', 'message', 'superAdmin', NULL, '');
+
+
+-- 按钮
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1000, '查询', 100, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:user:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1001, '新增', 100, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:user:add', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1002, '修改', 100, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:user:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1003, '删除', 100, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:user:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2024, '分配角色', 100, 5, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:user:roleArrange', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1004, '用户导出', 100, 6, '', '', '', 1, 0, 'F', '0', '0', 'system:user:export', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1005, '用户导入', 100, 7, '', '', '', 1, 0, 'F', '0', '0', 'system:user:import', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1006, '重置密码', 100, 8, '', '', '', 1, 0, 'F', '0', '0', 'system:user:resetPwd', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1007, '查询', 101, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:role:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1008, '新增', 101, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:role:add', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1009, '修改', 101, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:role:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1010, '删除', 101, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:role:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2025, '分配权限', 101, 5, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:role:menuArrange', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1011, '角色导出', 101, 6, '', '', '', 1, 0, 'F', '0', '0', 'system:role:export', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1012, '查询', 102, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1013, '新增', 102, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:add', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1014, '修改', 102, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1015, '删除', 102, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1016, '查询', 103, 1, '', '', '', 1, 0, 'F', '0', '0', 'org:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1017, '新增', 103, 2, '', '', '', 1, 0, 'F', '0', '0', 'org:add', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1018, '修改', 103, 3, '', '', '', 1, 0, 'F', '0', '0', 'org:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1019, '删除', 103, 4, '', '', '', 1, 0, 'F', '0', '0', 'org:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2045, '导入设备', 103, 5, '', NULL, NULL, 1, 0, 'F', '0', '0', 'org:deviceImport', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1025, '查询', 105, 1, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1026, '新增', 105, 2, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:add', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1027, '修改', 105, 3, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1028, '删除', 105, 4, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1029, '导出', 105, 5, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:export', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1030, '查询', 106, 1, '#', '', '', 1, 0, 'F', '0', '0', 'system:config:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1031, '新增', 106, 2, '#', '', '', 1, 0, 'F', '0', '0', 'system:config:add', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1032, '修改', 106, 3, '#', '', '', 1, 0, 'F', '0', '0', 'system:config:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1033, '删除', 106, 4, '#', '', '', 1, 0, 'F', '0', '0', 'system:config:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1034, '导出', 106, 5, '#', '', '', 1, 0, 'F', '0', '0', 'system:config:export', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1035, '查询', 107, 1, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1036, '新增', 107, 2, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:add', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1037, '修改', 107, 3, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1038, '删除', 107, 4, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1046, '在线查询', 109, 1, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:online:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1047, '批量强退', 109, 2, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:online:batchLogout', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1048, '单条强退', 109, 3, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:online:forceLogout', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1049, '任务查询', 110, 1, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1050, '任务新增', 110, 2, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:add', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1051, '任务修改', 110, 3, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1052, '任务删除', 110, 4, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1053, '状态修改', 110, 5, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:changeStatus', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1054, '任务导出', 110, 6, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:export', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1055, '生成查询', 116, 1, '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1056, '生成修改', 116, 2, '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1057, '生成删除', 116, 3, '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1058, '导入代码', 116, 4, '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:import', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1059, '预览代码', 116, 5, '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:preview', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1060, '生成代码', 116, 6, '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:code', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1039, '查询', 500, 1, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1040, '删除', 500, 2, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1041, '日志导出', 500, 3, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:export', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1042, '查询', 501, 1, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1043, '删除', 501, 2, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1044, '日志导出', 501, 3, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:export', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1045, '账户解锁', 501, 4, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:unlock', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2057, '查询', 2005, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:member:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2046, '查询', 2010, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'org:devicegroup:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2047, '新增', 2010, 2, '', NULL, NULL, 1, 0, 'F', '0', '0', 'org:devicegroup:add', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2048, '修改', 2010, 3, '', NULL, NULL, 1, 0, 'F', '0', '0', 'org:devicegroup:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2049, '删除', 2010, 4, '', NULL, NULL, 1, 0, 'F', '0', '0', 'org:devicegroup:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2050, '分配设备', 2010, 5, '', NULL, NULL, 1, 0, 'F', '0', '0', 'org:devicegroup:deviceArrange', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2051, '修改运营人员', 2010, 6, '', NULL, NULL, 1, 0, 'F', '0', '0', 'org:devicegroup:arrangeUser', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2052, '查询', 2015, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'device:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2053, '新增', 2015, 2, '', NULL, NULL, 1, 0, 'F', '0', '0', 'device:add', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2054, '分配机构', 2015, 3, '', NULL, NULL, 1, 0, 'F', '0', '0', 'device:associate', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2055, '上下线', 2015, 4, '', NULL, NULL, 1, 0, 'F', '0', '0', 'device:activeOrOffline', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2056, '分配设备组', 2015, 5, '', NULL, NULL, 1, 0, 'F', '0', '0', 'device:groupArrange', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2029, '查询', 2017, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:agreement:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2026, '新增', 2017, 2, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:agreement:add', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2027, '修改', 2017, 3, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:agreement:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2028, '删除', 2017, 4, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:agreement:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2030, '查询', 2018, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:advise:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2031, '处理', 2018, 2, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:advise:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2044, '查询', 2019, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:batchTask:list', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2062, '查询', 2021, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'eventAndMsg:msg:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2040, '查询', 2022, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:messageTemplate:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2041, '新增', 2022, 2, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:messageTemplate:add', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2042, '修改', 2022, 3, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:messageTemplate:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2043, '删除', 2022, 4, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:messageTemplate:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2037, '查询', 2032, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:version:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2036, '新增', 2032, 2, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:version:add', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2038, '修改', 2032, 3, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:version:edit', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2039, '删除', 2032, 4, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:version:remove', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2064, '查询', 2063, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'eventAndMessage:event:query', '#', 'superAdmin', NULL, '');
 
 
 -- ----------------------------
@@ -235,9 +264,10 @@ create table sys_user_role (
 -- ----------------------------
 -- 初始化-用户和角色关联表数据
 -- ----------------------------
-insert into sys_user_role values ('1', '1');
-insert into sys_user_role values ('2', '2');
-
+INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (1, 1);
+INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (2, 100);
+INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (100, 101);
+INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (101, 102);
 
 -- ----------------------------
 -- 7、角色和菜单关联表  角色1-N菜单
@@ -252,91 +282,134 @@ create table sys_role_menu (
 -- ----------------------------
 -- 初始化-角色和菜单关联表数据
 -- ----------------------------
-insert into sys_role_menu values ('2', '1');
-insert into sys_role_menu values ('2', '2');
-insert into sys_role_menu values ('2', '3');
-insert into sys_role_menu values ('2', '4');
-insert into sys_role_menu values ('2', '100');
-insert into sys_role_menu values ('2', '101');
-insert into sys_role_menu values ('2', '102');
-insert into sys_role_menu values ('2', '103');
-insert into sys_role_menu values ('2', '104');
-insert into sys_role_menu values ('2', '105');
-insert into sys_role_menu values ('2', '106');
-insert into sys_role_menu values ('2', '107');
-insert into sys_role_menu values ('2', '108');
-insert into sys_role_menu values ('2', '109');
-insert into sys_role_menu values ('2', '110');
-insert into sys_role_menu values ('2', '111');
-insert into sys_role_menu values ('2', '112');
-insert into sys_role_menu values ('2', '113');
-insert into sys_role_menu values ('2', '114');
-insert into sys_role_menu values ('2', '115');
-insert into sys_role_menu values ('2', '116');
-insert into sys_role_menu values ('2', '117');
-insert into sys_role_menu values ('2', '500');
-insert into sys_role_menu values ('2', '501');
-insert into sys_role_menu values ('2', '1000');
-insert into sys_role_menu values ('2', '1001');
-insert into sys_role_menu values ('2', '1002');
-insert into sys_role_menu values ('2', '1003');
-insert into sys_role_menu values ('2', '1004');
-insert into sys_role_menu values ('2', '1005');
-insert into sys_role_menu values ('2', '1006');
-insert into sys_role_menu values ('2', '1007');
-insert into sys_role_menu values ('2', '1008');
-insert into sys_role_menu values ('2', '1009');
-insert into sys_role_menu values ('2', '1010');
-insert into sys_role_menu values ('2', '1011');
-insert into sys_role_menu values ('2', '1012');
-insert into sys_role_menu values ('2', '1013');
-insert into sys_role_menu values ('2', '1014');
-insert into sys_role_menu values ('2', '1015');
-insert into sys_role_menu values ('2', '1016');
-insert into sys_role_menu values ('2', '1017');
-insert into sys_role_menu values ('2', '1018');
-insert into sys_role_menu values ('2', '1019');
-insert into sys_role_menu values ('2', '1020');
-insert into sys_role_menu values ('2', '1021');
-insert into sys_role_menu values ('2', '1022');
-insert into sys_role_menu values ('2', '1023');
-insert into sys_role_menu values ('2', '1024');
-insert into sys_role_menu values ('2', '1025');
-insert into sys_role_menu values ('2', '1026');
-insert into sys_role_menu values ('2', '1027');
-insert into sys_role_menu values ('2', '1028');
-insert into sys_role_menu values ('2', '1029');
-insert into sys_role_menu values ('2', '1030');
-insert into sys_role_menu values ('2', '1031');
-insert into sys_role_menu values ('2', '1032');
-insert into sys_role_menu values ('2', '1033');
-insert into sys_role_menu values ('2', '1034');
-insert into sys_role_menu values ('2', '1035');
-insert into sys_role_menu values ('2', '1036');
-insert into sys_role_menu values ('2', '1037');
-insert into sys_role_menu values ('2', '1038');
-insert into sys_role_menu values ('2', '1039');
-insert into sys_role_menu values ('2', '1040');
-insert into sys_role_menu values ('2', '1041');
-insert into sys_role_menu values ('2', '1042');
-insert into sys_role_menu values ('2', '1043');
-insert into sys_role_menu values ('2', '1044');
-insert into sys_role_menu values ('2', '1045');
-insert into sys_role_menu values ('2', '1046');
-insert into sys_role_menu values ('2', '1047');
-insert into sys_role_menu values ('2', '1048');
-insert into sys_role_menu values ('2', '1049');
-insert into sys_role_menu values ('2', '1050');
-insert into sys_role_menu values ('2', '1051');
-insert into sys_role_menu values ('2', '1052');
-insert into sys_role_menu values ('2', '1053');
-insert into sys_role_menu values ('2', '1054');
-insert into sys_role_menu values ('2', '1055');
-insert into sys_role_menu values ('2', '1056');
-insert into sys_role_menu values ('2', '1057');
-insert into sys_role_menu values ('2', '1058');
-insert into sys_role_menu values ('2', '1059');
-insert into sys_role_menu values ('2', '1060');
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 100);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 101);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 103);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 108);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 500);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 501);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1000);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1001);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1002);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1003);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1007);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1008);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1009);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1010);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1016);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1017);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1018);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1019);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1039);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1042);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2000);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2005);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2010);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2015);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2017);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2018);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2019);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2021);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2022);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2023);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2024);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2025);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2026);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2027);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2028);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2029);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2030);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2031);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2032);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2033);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2034);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2035);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2036);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2037);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2038);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2039);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2040);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2041);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2042);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2043);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2044);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2045);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2046);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2047);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2048);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2049);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2050);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2051);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2052);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2053);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2054);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2055);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2056);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2057);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2058);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2059);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2060);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2061);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2062);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 100);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 103);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1000);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1001);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1002);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1003);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1016);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1017);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1018);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1019);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2001);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2005);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2010);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2015);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2021);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2023);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2024);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2033);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2034);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2035);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2045);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2046);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2047);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2048);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2049);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2050);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2051);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2052);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2053);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2054);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2055);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2056);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2057);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2058);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2059);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2060);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2061);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2062);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2063);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2064);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2002);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2005);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2015);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2021);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2023);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2035);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2052);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2053);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2055);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2056);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2057);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2058);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2059);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2061);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2062);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2063);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2064);
 
 -- ----------------------------
 -- 8、角色和机构关联表  角色1-N机构
@@ -348,12 +421,6 @@ create table sys_role_org (
   primary key(role_id, org_id)
 ) engine=innodb comment = '角色和机构关联表';
 
--- ----------------------------
--- 初始化-角色和机构关联表数据
--- ----------------------------
-insert into sys_role_org values ('2', '100');
-insert into sys_role_org values ('2', '101');
-insert into sys_role_org values ('2', '105');
 
 
 -- ----------------------------
@@ -367,11 +434,6 @@ create table sys_user_post
   primary key (user_id, post_id)
 ) engine=innodb comment = '用户与岗位关联表';
 
--- ----------------------------
--- 初始化-用户与岗位关联表数据
--- ----------------------------
-insert into sys_user_post values ('1', '1');
-insert into sys_user_post values ('2', '2');
 
 
 -- ----------------------------

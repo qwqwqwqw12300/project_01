@@ -122,7 +122,7 @@ public class DeviceController extends BaseController
      * 设备配对
      */
     @PreAuthorize("@ss.hasPermi('device:associate')")
-    @Log(title = "设备-分配设备组", businessType = BusinessType.UPDATE)
+    @Log(title = "设备-设备配对", businessType = BusinessType.UPDATE)
     @PutMapping("associate")
     public AjaxResult associate(@RequestBody Device device)
     {

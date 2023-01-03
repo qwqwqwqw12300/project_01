@@ -7,10 +7,10 @@
 
 <template>
 	<view @click="closeDevice">
-		<app-body>
+		<app-body :hideTitle="true">
 			<view class="ui-scan">
-				<u-icon name="scan" class="active" color="#fff" size="46rpx"></u-icon>
-				<u-icon name="plus" @click="addDevice" :stop="true" class="active" color="#fff" size="40rpx"></u-icon>
+				<u-icon name="scan" class="active" color="#fff" size="50rpx"></u-icon>
+				<u-icon name="plus" @click="addDevice" :stop="true" class="active" color="#fff" size="45rpx"></u-icon>
 				<!-- 下拉框 -->
 				<view class="ui-select" v-if="isAddShow">
 					<view class="ui-select-item active">
@@ -18,16 +18,14 @@
 						<text>雷达波设备</text>
 					</view>
 					<view class="ui-select-item active">
-						<u-icon name="../../static/images/shoubiao.png" class="active" color="#fff" size="40rpx"></u-icon>
+						<u-icon name="../../static/images/shoubiao.png" class="active" color="#fff" size="40rpx">
+						</u-icon>
 						<text>监护手表</text>
 					</view>
 				</view>
 				<!-- /下拉框 -->
 			</view>
-			<text class="wd-logo">
-				新大陆米家
-			</text>
-		
+			<app-logo></app-logo>
 			<!-- 家庭列表 -->
 			<template v-if="true">
 				<view class="ui-group">
@@ -37,7 +35,8 @@
 							<text>共两个设备</text>
 							<text>在线两个设备</text>
 						</view>
-						<u-text @click="share" prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff" :iconStyle="{
+						<u-text @click="share" prefixIcon="share-square" size="28rpx" :align="'right'" :block="false"
+							color="#fff" :iconStyle="{
 							fontSize: '44rpx',
 							color: '#fff'
 						}" text="分享"></u-text>
@@ -60,7 +59,7 @@
 								<text>xx设备名称</text>
 								<text>位置</text>
 								<view class="ui-list-static">
-								<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
+									<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
 								</view>
 							</view>
 						</view>
@@ -70,14 +69,14 @@
 								<text>xx设备名称</text>
 								<text>位置</text>
 								<view class="ui-list-static">
-								<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
+									<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
 								</view>
 							</view>
 						</view>
 					</view>
-					
+
 				</view>
-				
+
 				<view class="ui-group">
 					<view class="ui-title">
 						<view>
@@ -85,10 +84,11 @@
 							<text>共两个设备</text>
 							<text>在线两个设备</text>
 						</view>
-						<u-text prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff" :iconStyle="{
+						<u-text prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff"
+							:iconStyle="{
 							fontSize: '44rpx',
 							color: '#fff'
-						}"  @click="share"  text="分享"></u-text>
+						}" @click="share" text="分享"></u-text>
 					</view>
 					<view class="ui-device">
 						<view class="ui-list">
@@ -108,7 +108,7 @@
 								<text>xx设备名称</text>
 								<text>位置</text>
 								<view class="ui-list-static">
-								<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
+									<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
 								</view>
 							</view>
 						</view>
@@ -118,12 +118,12 @@
 								<text>xx设备名称</text>
 								<text>位置</text>
 								<view class="ui-list-static">
-								<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
+									<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
 								</view>
 							</view>
 						</view>
 					</view>
-					
+
 				</view>
 			</template>
 			<!-- /家庭列表 -->
@@ -136,12 +136,12 @@
 			</template>
 			<!-- /空户 -->
 		</app-body>
-		<add-family ref="addFamily" @next="familyNext"/>
-		<add-room ref="addRoom"  @next="roomNext"/>
-		<bind-device ref="bindDev"/>
-		
+		<add-family ref="addFamily" @next="familyNext" />
+		<add-room ref="addRoom" @next="roomNext" />
+		<bind-device ref="bindDev" />
+
 	</view>
-	
+
 
 </template>
 <script>
@@ -202,9 +202,11 @@
 		right: 24rpx;
 		top: 90rpx;
 		z-index: 2;
+
 		&>* {
 			margin-left: 20rpx;
 		}
+
 		.ui-select {
 			position: absolute;
 			top: 70rpx;
@@ -212,10 +214,11 @@
 			width: 228rpx;
 			height: 258rpx;
 			border-radius: 20rpx;
-			filter: drop-shadow(0 0 5px rgba(7,5,5,0.34));
+			filter: drop-shadow(0 0 5px rgba(7, 5, 5, 0.34));
 			background-image: linear-gradient(-36deg, #f6ba33 0%, #f2bd6b 52%, #f6d7b0 100%);
 			border: 1px solid #ffcb3d;
 			padding: 16rpx;
+
 			.ui-select-item {
 				// margin-top: 16rpx;
 				padding: 15rpx 0;
@@ -223,6 +226,7 @@
 				font-size: 26rpx;
 				color: #fff;
 				border-bottom: 1px solid #fff;
+
 				text {
 					display: inline-block;
 					margin-left: 20rpx;
@@ -230,12 +234,14 @@
 			}
 		}
 	}
+
 	.ui-group {
 		margin-top: 56rpx;
 		width: 100%;
 		display: inline-flex;
 		flex-direction: column;
 		align-items: center;
+
 		.ui-title {
 			box-sizing: border-box;
 			padding: 0 32rpx;
@@ -249,21 +255,24 @@
 			color: #fff;
 			background-color: rgba(0, 0, 0, 0.4);
 			font-size: 24rpx;
+
 			text {
 				margin-right: 10rpx;
 			}
 		}
+
 		.ui-device {
 			display: inline-block;
 			width: calc(100% - 128rpx);
 			margin-top: 74rpx;
-			&
-			.ui-list {
+
+			& .ui-list {
 				margin-bottom: 50rpx;
 				float: left;
 				height: 258rpx;
 				width: 50%;
 				text-align: center;
+
 				.ui-list-box {
 					position: relative;
 					height: 100%;
@@ -273,30 +282,35 @@
 					justify-content: center;
 					flex-direction: column;
 					border-radius: 10px;
-					filter: drop-shadow(7.824px 10.382px 8px rgba(7,5,5,0.08));
+					filter: drop-shadow(7.824px 10.382px 8px rgba(7, 5, 5, 0.08));
 					background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
+
 					image {
 						height: 78rpx;
 						width: 80rpx;
 					}
+
 					text {
 						display: inline-block;
 						margin-top: 15rpx;
 						font-size: 22rpx;
+
 						&:nth-child(2) {
 							font-size: 30rpx;
 						}
 					}
+
 					.ui-list-static {
 						position: absolute;
 						bottom: 10rpx;
 						right: 12rpx;
 					}
 				}
-			
+
 			}
 		}
 	}
+
 	.ui-default {
 		width: 100%;
 		box-sizing: border-box;
@@ -304,13 +318,17 @@
 		margin-top: 300rpx;
 		padding: 0 73rpx;
 		text-align: center;
+
 		image {
 			max-width: 305rpx;
 			max-height: 295rpx;
 			margin-bottom: 73rpx;
 		}
+
 		bottom: {
 			margin-top: 73rpx;
-		};
+		}
+
+		;
 	}
 </style>

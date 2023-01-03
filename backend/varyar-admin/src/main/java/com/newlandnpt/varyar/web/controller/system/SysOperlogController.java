@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.web.controller.monitor;
+package com.newlandnpt.varyar.web.controller.system;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -25,13 +25,13 @@ import com.newlandnpt.varyar.system.service.ISysOperLogService;
  * @author newlandnpt
  */
 @RestController
-@RequestMapping("/monitor/operlog")
+@RequestMapping("/system/operlog")
 public class SysOperlogController extends BaseController
 {
     @Autowired
     private ISysOperLogService operLogService;
 
-    @PreAuthorize("@ss.hasPermi('monitor:operlog:list')")
+    @PreAuthorize("@ss.hasPermi('system:operlog:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysOperLog operLog)
     {
@@ -41,7 +41,7 @@ public class SysOperlogController extends BaseController
     }
 
     @Log(title = "操作日志", businessType = BusinessType.EXPORT)
-    @PreAuthorize("@ss.hasPermi('monitor:operlog:export')")
+    @PreAuthorize("@ss.hasPermi('system:operlog:export')")
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysOperLog operLog)
     {
@@ -51,7 +51,7 @@ public class SysOperlogController extends BaseController
     }
 
     @Log(title = "操作日志", businessType = BusinessType.DELETE)
-    @PreAuthorize("@ss.hasPermi('monitor:operlog:remove')")
+    @PreAuthorize("@ss.hasPermi('system:operlog:remove')")
     @DeleteMapping("/{operIds}")
     public AjaxResult remove(@PathVariable Long[] operIds)
     {
@@ -59,7 +59,7 @@ public class SysOperlogController extends BaseController
     }
 
     @Log(title = "操作日志", businessType = BusinessType.CLEAN)
-    @PreAuthorize("@ss.hasPermi('monitor:operlog:remove')")
+    @PreAuthorize("@ss.hasPermi('system:operlog:remove')")
     @DeleteMapping("/clean")
     public AjaxResult clean()
     {

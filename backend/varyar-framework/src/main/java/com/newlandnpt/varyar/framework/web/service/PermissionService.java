@@ -21,7 +21,7 @@ public class PermissionService
     private static final String ALL_PERMISSION = "*:*:*";
 
     /** 管理员角色权限标识 */
-    private static final String SUPER_ADMIN = "admin";
+    public static final String SUPER_ADMIN = "superAdmin";
 
     private static final String ROLE_DELIMETER = ",";
 
