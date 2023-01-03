@@ -43,7 +43,7 @@
 					{
 						title: '设置紧急电话',
 						pic: 'phone.png',
-						url: ''
+						url: '/pages/myself/urgent-mobile'
 					},
 					{
 						title: '消息设置',
