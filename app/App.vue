@@ -10,12 +10,12 @@
 
 <script>
 	import {
-		startup
-	} from '@/common/start-up/main.js'
+		push
+	} from '@/common/sdk/push.js'
 
 	export default {
 		onLaunch: function() {
-			startup.ready();
+			push.init(); // 推送服务初始化
 		},
 		onShow: function() {
 			console.log('App Show')

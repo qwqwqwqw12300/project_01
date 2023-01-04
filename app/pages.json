@@ -42,7 +42,8 @@
 		{
 			"path": "pages/customer-service/customer-service",
 			"style": {
-				"navigationBarTitleText": "在线客服"
+				"navigationBarTitleText": "在线客服",
+				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
 
@@ -218,7 +219,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
-		"navigationBarBackgroundColor": "#fff",
+		"navigationBarBackgroundColor": "#FEC845",
 		"backgroundColor": "#F8F8F8",
 		"app-plus": {
 			"bounce": "none" //关闭窗口回弹效果

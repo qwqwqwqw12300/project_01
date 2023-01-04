@@ -4,7 +4,7 @@
 		<!-- <view class="ui-logo">
 			<image src="../../static/images/logo.png" alt="">
 		</view> -->
-		<view class="ui-ad">
+		<view class="ui-ad" @click="goGuide">
 			<image src="../../static/images/ad.png"></image>
 		</view>
 		<view class="ui-tip">
@@ -43,7 +43,7 @@
 					console.log('加载成功', complete);
 				},
 				fail: (error) => {
-					console.log('加载失败', error);
+					console.log('加载失败	', error);
 				}
 			});
 		},
@@ -63,6 +63,11 @@
 			goLogin() {
 				uni.navigateTo({
 					url: '/pages/login/login'
+				});
+			},
+			goGuide() {
+				uni.navigateTo({
+					url: '/pages/guide/guide'
 				});
 			}
 		}

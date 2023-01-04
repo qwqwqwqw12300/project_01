@@ -7,6 +7,7 @@
 
 <template>
 	<view class="wd-body">
+		<!-- 	<view class="wd-top"></view> -->
 		<view class="wd-bg" :style="bodyStyle">
 			<u-navbar v-if="!hideTitle" leftText="首页" @rightClick="rightClick" :safeAreaInsetTop="false"
 				:autoBack="true" bgColor="transparent" leftIconColor="#fff" :fixed="false" />
@@ -117,7 +118,18 @@
 </script>
 
 <style lang="scss">
+	.wd-top {
+		position: absolute;
+		width: 100%;
+		height: var(--status-bar-height);
+		background: #FEC845;
+		top: 0;
+		z-index: 99;
+	}
+
 	.wd-body {
+		padding-top: var(--status-bar-height);
+		box-sizing: border-box;
 		height: calc(100vh - var(--window-bottom));
 		width: 100%;
 		overflow: scroll;
@@ -125,8 +137,7 @@
 
 	.wd-bg {
 		box-sizing: border-box;
-		padding-top: var(--status-bar-height);
-		min-height: calc(100vh - var(--window-bottom));
+		min-height: calc(100vh - var(--window-bottom) - var(--status-bar-height));
 		position: relative;
 		height: 100%;
 		width: 100%;

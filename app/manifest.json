@@ -18,7 +18,8 @@
 		},
 		/* 模块配置 */
 		"modules": {
-			"Push": {}
+			"Push": {},
+			"Geolocation": {}
 		},
 		/* 应用发布信息 */
 		"distribute": {
@@ -33,13 +34,15 @@
 					"<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
 					"<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
 					"<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+					"<uses-permission android:name=\"android.permission.INTERNET\"/>",
 					"<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
 					"<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
 					"<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
 					"<uses-permission android:name=\"android.permission.VIBRATE\"/>",
 					"<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
 					"<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-				]
+				],
+				"autoSdkPermissions": true
 			},
 			/* ios打包配置 */
 			"ios": {
@@ -99,7 +102,134 @@
 				}
 			}
 		},
-		"nativePlugins": {}
+		"nativePlugins": {
+			"JG-JCore": {
+				"JPUSH_APPKEY_IOS": "3c3f6b5746d37ea030455d83",
+				"JPUSH_CHANNEL_IOS": "",
+				"JPUSH_APPKEY_ANDROID": "3c3f6b5746d37ea030455d83",
+				"JPUSH_CHANNEL_ANDROID": "",
+				"__plugin_info__": {
+					"name": "JG-JCore",
+					"description": "极光推送JCore插件",
+					"platforms": "Android,iOS",
+					"url": "",
+					"android_package_name": "",
+					"ios_bundle_id": "",
+					"isCloud": false,
+					"bought": -1,
+					"pid": "",
+					"parameters": {
+						"JPUSH_APPKEY_IOS": {
+							"des": "[iOS]极光portal配置应用信息时分配的AppKey",
+							"key": "JCore:APP_KEY",
+							"value": ""
+						},
+						"JPUSH_CHANNEL_IOS": {
+							"des": "[iOS]用于统计分发渠道，不需要可填默认值developer-default",
+							"key": "JCore:CHANNEL",
+							"value": ""
+						},
+						"JPUSH_APPKEY_ANDROID": {
+							"des": "[Android]极光portal配置应用信息时分配的AppKey",
+							"key": "JPUSH_APPKEY",
+							"value": ""
+						},
+						"JPUSH_CHANNEL_ANDROID": {
+							"des": "[Android]用于统计分发渠道，不需要可填默认值developer-default",
+							"key": "JPUSH_CHANNEL",
+							"value": ""
+						}
+					}
+				}
+			},
+			"JG-JPush": {
+				"JPUSH_ISPRODUCTION_IOS": "",
+				"JPUSH_ADVERTISINGID_IOS": "",
+				"JPUSH_DEFAULTINITJPUSH_IOS": "true",
+				"JPUSH_OPPO_APPKEY": "",
+				"JPUSH_OPPO_APPID": "",
+				"JPUSH_OPPO_APPSECRET": "",
+				"JPUSH_VIVO_APPKEY": "",
+				"JPUSH_VIVO_APPID": "",
+				"JPUSH_MEIZU_APPKEY": "",
+				"JPUSH_MEIZU_APPID": "",
+				"JPUSH_XIAOMI_APPKEY": "",
+				"JPUSH_XIAOMI_APPID": "",
+				"__plugin_info__": {
+					"name": "JG-JPush",
+					"description": "极光推送Hbuilder插件",
+					"platforms": "Android,iOS",
+					"url": "",
+					"android_package_name": "",
+					"ios_bundle_id": "",
+					"isCloud": false,
+					"bought": -1,
+					"pid": "",
+					"parameters": {
+						"JPUSH_ISPRODUCTION_IOS": {
+							"des": "[iOS]是否是生产环境，是填true，不是填false或者不填",
+							"key": "JPush:ISPRODUCTION",
+							"value": ""
+						},
+						"JPUSH_ADVERTISINGID_IOS": {
+							"des": "[iOS]广告标识符（IDFA）如果不需要使用IDFA，可不填",
+							"key": "JPush:ADVERTISINGID",
+							"value": ""
+						},
+						"JPUSH_DEFAULTINITJPUSH_IOS": {
+							"des": "[iOS]是否默认初始化，是填true，不是填false或者不填",
+							"key": "JPush:DEFAULTINITJPUSH",
+							"value": ""
+						},
+						"JPUSH_OPPO_APPKEY": {
+							"des": "厂商OPPO-appkey,示例：OP-12345678",
+							"key": "OPPO_APPKEY",
+							"value": ""
+						},
+						"JPUSH_OPPO_APPID": {
+							"des": "厂商OPPO-appId,示例：OP-12345678",
+							"key": "OPPO_APPID",
+							"value": ""
+						},
+						"JPUSH_OPPO_APPSECRET": {
+							"des": "厂商OPPO-appSecret,示例：OP-12345678",
+							"key": "OPPO_APPSECRET",
+							"value": ""
+						},
+						"JPUSH_VIVO_APPKEY": {
+							"des": "厂商VIVO-appkey,示例：12345678",
+							"key": "com.vivo.push.api_key",
+							"value": ""
+						},
+						"JPUSH_VIVO_APPID": {
+							"des": "厂商VIVO-appId,示例：12345678",
+							"key": "com.vivo.push.app_id",
+							"value": ""
+						},
+						"JPUSH_MEIZU_APPKEY": {
+							"des": "厂商MEIZU-appKey,示例：MZ-12345678",
+							"key": "MEIZU_APPKEY",
+							"value": ""
+						},
+						"JPUSH_MEIZU_APPID": {
+							"des": "厂商MEIZU-appId,示例：MZ-12345678",
+							"key": "MEIZU_APPID",
+							"value": ""
+						},
+						"JPUSH_XIAOMI_APPKEY": {
+							"des": "厂商XIAOMI-appKey,示例：MI-12345678",
+							"key": "XIAOMI_APPKEY",
+							"value": ""
+						},
+						"JPUSH_XIAOMI_APPID": {
+							"des": "厂商XIAOMI-appId,示例：MI-12345678",
+							"key": "XIAOMI_APPID",
+							"value": ""
+						}
+					}
+				}
+			}
+		}
 	},
 	/* 快应用特有相关 */
 	"quickapp": {},

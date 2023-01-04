@@ -8,7 +8,7 @@
 	<app-body :needService="false" :hideTitle="true" :bodyStyle="{backgroundPositionY: '-100rpx'}">
 		<view class="ui-body">
 			<!-- <image class="ui-logo" src="../../static/images/logo.png"></image> -->
-			<text class="ui-logo">新大陆米家</text>
+			<text class="ui-logo">艾吉通</text>
 			<view class="ui-nav">
 				<u-tabs lineWidth="160rpx" lineColor="#fdbd2d" :itemStyle="{ width: '200rpx', height: '90rpx' }"
 					:activeStyle="{ color: '#fdbd2d', fontSize: '28rpx' }"

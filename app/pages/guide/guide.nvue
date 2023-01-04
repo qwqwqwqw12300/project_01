@@ -6,9 +6,15 @@
 		<u-cell-group>
 			<u-cell v-for="(item, index) in list" :key="item.id" :title="item.name" isLink :url="item.url"></u-cell>
 		</u-cell-group>
+		<button @click="localPush">本地推送</button>
+		<button @click="getRegistrationID">用户id</button>
+
 	</view>
 </template>
 <script>
+	import {
+		push
+	} from '@/common/start-up/push.js';
 	export default {
 		props: {
 			hasLeftWin: {
@@ -27,11 +33,20 @@
 				}, ]
 			}
 		},
-		methods: {},
+		methods: {
+			localPush() {
+				push.addLocalNotification();
+			},
+			getRegistrationID() {
+				push.getRegistrationID().then(res => {
+					console.log(res, 'getRegistrationID');
+				});
+			}
+		},
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.ui-img {
 		height: 150rpx;
 		width: 100%;
