@@ -26,7 +26,13 @@ public interface TRoomMapper
      * @return 房间集合
      */
     public List<TRoom> selectTRoomList(TRoom tRoom);
-
+    /**
+     * 查询房间列表
+     *
+     * @param tRoom 房间
+     * @return 房间集合
+     */
+    public List<TRoom> selectByMemberIdList(Long memberId);
     /**
      * 新增房间
      * 

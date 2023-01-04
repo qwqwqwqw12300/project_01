@@ -7,14 +7,12 @@ public class TfamilyRequest {
     /**
      * 家庭名称
      */
-    @NotBlank(message = "家庭名称不能为空")
     @Size(min = 0, max = 50, message = "家庭名称不能超过10个字符")
     private String familyName;
 
     /**
      * 家庭地址
      */
-    @NotBlank(message = "家庭地址不能为空")
     @Size(min = 0, max = 50, message = "家庭地址不能超过50个字符")
     private String address;
 
