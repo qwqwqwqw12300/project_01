@@ -1,26 +1,17 @@
 package com.newlandnpt.varyar.api.controller.system;
 
-import com.newlandnpt.varyar.common.annotation.Anonymous;
-import com.newlandnpt.varyar.common.annotation.Log;
+
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.page.TableDataInfo;
-import com.newlandnpt.varyar.common.enums.BusinessType;
-import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
-import com.newlandnpt.varyar.system.domain.TAgreement;
 import com.newlandnpt.varyar.system.service.ITAgreementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-
 /**
- * 协议Controller
+ * 协议管理Controller
  * 
  * @author chenxw1
- * @date 2022-12-30
+ * @date 2023-01-04
  */
 @RestController
 @RequestMapping("/api/agreement")
@@ -30,7 +21,7 @@ public class TAgreementController extends BaseController
     private ITAgreementService tAgreementService;
 
     /**
-     * 通过协议类型获取协议详细信息
+     * 通过协议类型获取协议详细信息:0隐私协议 1app协议
      */
     @PostMapping(value = "/getAgreementInfo")
     public AjaxResult getInfo(@RequestParam("agreementType") String agreementType)
@@ -38,4 +29,14 @@ public class TAgreementController extends BaseController
         return success(tAgreementService.selectTAgreementByAgreementType(agreementType));
     }
 
+    /**
+     * 匿名访问获取用户协议:1app协议
+     */
+    @PostMapping(value = "/selectAgreement")
+    public AjaxResult selectAgreement()
+    {
+        //用户app接入协议类型
+        String agreementType="1";
+        return success(tAgreementService.selectTAgreementByAgreementType(agreementType));
+    }
 }
