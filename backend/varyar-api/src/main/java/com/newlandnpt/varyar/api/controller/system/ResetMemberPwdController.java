@@ -35,19 +35,6 @@ public class ResetMemberPwdController{
             @RequestBody @Validated ResetMemberPwdRequest resetMemberPwdRequest) {
 
         AjaxResult ajax = AjaxResult.success();
-        // check captcha
-/*
-        String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + resetMemberPwdRequest.getUuid();
-        String captcha = redisCache.getCacheObject(verifyKey);
-
-        if (captcha == null) {
-            throw new CaptchaExpireException();
-        }
-        if (!captcha.equalsIgnoreCase(resetMemberPwdRequest.getCode())) {
-            throw new CaptchaException();
-        }
-*/
-
         // check sms
         String verifyKey = CacheConstants.SMS_CODE_KEY + resetMemberPwdRequest.getUuid();
         String code = redisCache.getCacheObject(verifyKey);
@@ -60,12 +47,11 @@ public class ResetMemberPwdController{
         }
 
         try {
-            resetMemberPwdService.ResetMemberPwd(resetMemberPwdRequest);
+            resetMemberPwdService.resetMemberPwd(resetMemberPwdRequest);
         } catch (Exception e){
             ajax = AjaxResult.error("重置失败");
             return ajax;
         }
-        //resetMemberPwdService.ResetMemberPwd(resetMemberPwdRequest);
 
         return ajax;
     }
