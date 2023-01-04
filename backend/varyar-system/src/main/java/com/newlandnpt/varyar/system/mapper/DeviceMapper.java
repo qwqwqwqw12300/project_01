@@ -27,7 +27,13 @@ public interface DeviceMapper
      * @return 设备集合
      */
     public List<Device> selectTDeviceList(Device device);
-
+    /**
+     * 查询设备列表
+     *
+     * @param device 设备
+     * @return 设备集合
+     */
+    public List<Device>  selectByMemberId(Long memberId);
     /**
      * 新增设备
      * 
