@@ -177,6 +177,24 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/myself/urgent-mobile",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/myself/add-contact",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 	"globalStyle": {

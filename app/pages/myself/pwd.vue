@@ -6,7 +6,7 @@
 -->
 
 <template>
-	<app-body>
+	<app-body :bodyStyle="{backgroundPositionY: '-100rpx'}">
 		<!-- 	<text class="ui-logo">修改密码</text> -->
 		<app-logo text="修改密码"></app-logo>
 		<view class="ui-form">

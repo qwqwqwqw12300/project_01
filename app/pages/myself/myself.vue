@@ -38,12 +38,12 @@
 					{
 						title: '设备管理',
 						pic: 'device.png',
-						url: ''
+						url: '/pages/myself/device-manage'
 					},
 					{
 						title: '设置紧急电话',
 						pic: 'phone.png',
-						url: ''
+						url: '/pages/myself/urgent-mobile'
 					},
 					{
 						title: '消息设置',

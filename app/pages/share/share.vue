@@ -1,8 +1,6 @@
 <template>
-	<app-body>
+	<app-body :bodyStyle="{backgroundPositionY: '-100rpx'}">
 		<view id="share">
-			<u-navbar leftText="首页" @rightClick="rightClick" :autoBack="true" bgColor="transparent" leftIconColor="#fff"
-				:fixed="false" />
 			<view class="ui-user">
 				<text>已分享给</text>
 				<view>

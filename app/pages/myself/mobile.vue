@@ -5,7 +5,7 @@
 * @Description: 修改手机号
 -->
 <template>
-	<app-body>
+	<app-body :bodyStyle="{backgroundPositionY: '-100rpx'}">
 		<!-- <text class="ui-logo">修改手机号</text> -->
 		<app-logo text="修改手机号"></app-logo>
 		<view class="ui-form">
@@ -16,15 +16,7 @@
 				</view>
 			</view>
 			<view class="ui-form-item">
-				<u-text prefixIcon="email" iconStyle="font-size: 32rpx" text="原手机短信码" color="#444" size="28rpx">
-				</u-text>
-				<view class="ui-input">
-					<u-input placeholder="请输入短信认证码" :border="'none'" fontSize="28rpx" clearable>
-						<template slot="suffix">
-							<button type="default" class="wd-sms ui-mini" size="mini">验证码</button>
-						</template>
-					</u-input>
-				</view>
+				<sms-input></sms-input>
 			</view>
 			<view class="ui-form-item">
 				<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="新手机号码" color="#444" size="28rpx"></u-text>
@@ -33,15 +25,7 @@
 				</view>
 			</view>
 			<view class="ui-form-item">
-				<u-text prefixIcon="email" iconStyle="font-size: 32rpx" text="新手机短信码" color="#444" size="28rpx">
-				</u-text>
-				<view class="ui-input">
-					<u-input placeholder="请输入短信认证码" :border="'none'" fontSize="28rpx" clearable>
-						<template slot="suffix">
-							<button type="default" class="wd-sms ui-mini" size="mini">验证码</button>
-						</template>
-					</u-input>
-				</view>
+				<sms-input></sms-input>
 			</view>
 			<view class="wd-btn-gloup">
 				<button type="default" @click="goLogin">重置</button>
