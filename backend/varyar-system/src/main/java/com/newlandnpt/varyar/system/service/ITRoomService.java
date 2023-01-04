@@ -26,6 +26,13 @@ public interface ITRoomService
      * @return 房间集合
      */
     public List<TRoom> selectTRoomList(TRoom tRoom);
+    /**
+     * 通过查询房间列表
+     *
+     * @param tRoom 房间
+     * @return 房间集合
+     */
+    public List<TRoom> selectTRoomList(Long memberId);
 
     /**
      * 新增房间

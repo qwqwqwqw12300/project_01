@@ -41,7 +41,7 @@ public interface ITFamilyService
      * @param tFamily 家庭
      * @return 结果
      */
-    public int insertTFamily(TFamily tFamily);
+    public int insertTFamily(TFamily tFamily,Long memberId);
 
     /**
      * 修改家庭
