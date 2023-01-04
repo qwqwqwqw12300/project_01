@@ -75,4 +75,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{agreementId}
         </foreach>
     </delete>
+
+    <select id="selectTAgreementByAgreementType" parameterType="String" resultMap="TAgreementResult">
+        <include refid="selectTAgreementVo"/>
+        where TYPE = #{agreementType} AND del_flag='0' ORDER BY create_time DESC  LIMIT 1
+    </select>
 </mapper>

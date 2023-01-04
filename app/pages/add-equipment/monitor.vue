@@ -1,9 +1,10 @@
 <!-- 增加监护设备 -->
 <template>
 	<app-body>
-		<view class="ui-title">
+		<!-- <view class="ui-title">
 			<text>增加监护设备</text>
-		</view>
+		</view> -->
+		<app-logo text="增加监护设备"></app-logo>
 		<view class="ui-step">
 			<view class="ui-step-icon step1_bg"></view>
 			<view class="ui-step-title">

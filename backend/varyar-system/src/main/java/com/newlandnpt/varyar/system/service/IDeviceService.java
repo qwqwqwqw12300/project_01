@@ -26,7 +26,13 @@ public interface IDeviceService
      * @return 设备集合
      */
     public List<Device> selectDeviceList(Device device);
-
+    /**
+     * 查询设备列表
+     *
+     * @param device 设备
+     * @return 设备集合
+     */
+    public List<Device> selectDeviceByMemberId(Long memberId);
     /**
      * 新增设备
      * 

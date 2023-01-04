@@ -48,7 +48,7 @@
 					{
 						title: '消息设置',
 						pic: 'info.png',
-						url: ''
+						url: '/pages/myself/push-set'
 					},
 					{
 						title: '密码修改',
@@ -68,7 +68,7 @@
 					{
 						title: '问题与建议',
 						pic: 'complaint.png',
-						url: ''
+						url: '/pages/myself/suggestion'
 					}
 				]
 			};

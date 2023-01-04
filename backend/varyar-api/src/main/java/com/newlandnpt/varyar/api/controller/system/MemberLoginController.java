@@ -57,6 +57,7 @@ public class MemberLoginController extends BaseController {
         LoginUser loginUser = new LoginUser();
         loginUser.setMemberPhone(tMember.getPhone());
         loginUser.setMemberId(tMember.getMemberId());
+        loginUser.setMemberPassword(tMember.getPassword());
         String token = tokenService.createToken(loginUser);
         ajax.put(Constants.TOKEN, token);
 
@@ -84,9 +85,24 @@ public class MemberLoginController extends BaseController {
 
         LoginUser loginUser = new LoginUser();
         loginUser.setMemberPhone(tMember.getPhone());
+        loginUser.setMemberId(tMember.getMemberId());
         String token = tokenService.createToken(loginUser);
 
         ajax.put(Constants.TOKEN, token);
+
+        return ajax;
+    }
+
+    //用户退出
+    @PostMapping("/loginOut")
+    public AjaxResult loginOut() {
+        //获取当前登录用户信息
+        LoginUser loginUser = getLoginUser();
+        String token = loginUser.getToken();
+        AjaxResult ajax = AjaxResult.success();
+        // 清除缓存token
+        String tokenKey = CacheConstants.LOGIN_TOKEN_KEY + token;
+        redisCache.deleteObject(tokenKey);
 
         return ajax;
     }

@@ -93,4 +93,16 @@ public class TAgreementServiceImpl implements ITAgreementService
     {
         return tAgreementMapper.deleteTAgreementByAgreementId(agreementId);
     }
+
+    /**
+     * 查询协议
+     *
+     * @param agreementType 协议类型
+     * @return 协议
+     */
+    @Override
+    public TAgreement selectTAgreementByAgreementType(String agreementType)
+    {
+        return tAgreementMapper.selectTAgreementByAgreementType(agreementType);
+    }
 }

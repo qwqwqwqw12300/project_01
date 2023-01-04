@@ -39,7 +39,12 @@
             (select org_no from t_org where org_id = d.org_id) org_no
         from t_device d
     </sql>
-
+    <sql id="selectTDeviceVo1">
+        select tf.family_id , r.room_id
+        from t_room r
+        join t_family tf on tf.family_id = r.family_id and tf.del_flag ="0"
+        join t_member_family tmf on tmf.family_id = tf.family_id and tmf.del_flag ="0"
+    </sql>
     <select id="selectTDeviceList" parameterType="Device" resultMap="TDeviceResult">
         <include refid="selectTDeviceVo"/>
         <where>
@@ -59,6 +64,12 @@
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
+    </select>
+
+    <select id="selectByMemberId" parameterType="Long" resultMap="TDeviceResult">
+        select * from t_device ta join (
+        <include refid="selectTDeviceVo1"/> and tmf.member_id = #{memberId}
+        where r.del_flag ="0") trm on trm.family_id =  ta.family_id and trm.room_id = ta.room_id
     </select>
 
     <select id="selectTDeviceByDeviceId" parameterType="Long" resultMap="TDeviceResult">

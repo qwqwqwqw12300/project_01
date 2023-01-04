@@ -3,6 +3,7 @@ package com.newlandnpt.varyar.system.mapper;
 import java.util.List;
 import com.newlandnpt.varyar.system.domain.Member;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 会员Mapper接口
@@ -65,6 +66,16 @@ public interface MemberMapper
      * @return 结果
      */
     public int deleteMemberByMemberIds(Long[] memberIds);
+
+    /**
+     * 重置用户密码
+     *
+     * @param phone 用户名/手机号
+     * @param password 密码
+     * @return 结果
+     */
+    public int resetUserPwd(@Param("phone") String phone, @Param("password") String password);
+
 
     /**
      * 根据机构id统计机构服务会员数量

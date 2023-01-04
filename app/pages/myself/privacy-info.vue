@@ -1,9 +1,7 @@
 <!-- 隐私协议 -->
 <template>
 	<app-body>
-		<view class="ui-title">
-			<text>隐私协议</text>
-		</view>
+		<app-logo text="隐私协议"></app-logo>
 		<view class="uni-agreement">
 			<scroll-view scroll-y class="uni-agreement-scroll">
 	

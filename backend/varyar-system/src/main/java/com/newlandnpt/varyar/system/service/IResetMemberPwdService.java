@@ -9,6 +9,6 @@ public interface IResetMemberPwdService {
     /**
      * 重置密码
      */
-    void ResetMemberPwd(ResetMemberPwdRequest resetMemberPwdRequest);
+    void resetMemberPwd(ResetMemberPwdRequest resetMemberPwdRequest);
 
 }

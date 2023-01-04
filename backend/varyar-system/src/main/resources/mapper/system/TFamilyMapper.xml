@@ -115,13 +115,13 @@
 
     <delete id="deleteTFamilyByFamilyId" parameterType="Long">
         update t_family
-        set del_flag = '2'
+        set del_flag = '2',update_time = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')
         where family_id = #{familyId}
     </delete>
 
     <delete id="deleteTFamilyByFamilyIds" parameterType="String">
         update t_family
-        set del_flag = '2'
+        set del_flag = '2',update_time = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')
         where family_id in
         <foreach item="familyId" collection="array" open="(" separator="," close=")">
             #{familyId}

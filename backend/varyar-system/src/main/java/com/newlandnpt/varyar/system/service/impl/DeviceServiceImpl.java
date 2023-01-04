@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -57,7 +59,13 @@ public class DeviceServiceImpl implements IDeviceService {
     public List<Device> selectDeviceList(Device device) {
         return deviceMapper.selectTDeviceList(device);
     }
+    @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
+    public List<Device> selectDeviceByMemberId(Long memberId){
+        List<Device> list = deviceMapper.selectByMemberId(memberId);
 
+        return list;
+    }
     /**
      * 新增设备
      *

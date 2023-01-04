@@ -43,7 +43,9 @@ public class TRoomServiceImpl implements ITRoomService
     {
         return tRoomMapper.selectTRoomList(tRoom);
     }
-
+    public List<TRoom> selectTRoomList(Long memberId){
+        return tRoomMapper.selectByMemberIdList(memberId);
+    }
     /**
      * 新增房间
      * 

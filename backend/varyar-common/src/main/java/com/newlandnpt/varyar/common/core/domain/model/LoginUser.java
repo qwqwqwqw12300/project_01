@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.alibaba.fastjson2.annotation.JSONField;
@@ -75,6 +76,16 @@ public class LoginUser implements UserDetails
     private String memberPhone;
 
     private Long memberId;
+    //app用户密码
+    private String memberPassword;
+
+    public String getMemberPassword() {
+        return memberPassword;
+    }
+
+    public void setMemberPassword(String memberPassword) {
+        this.memberPassword = memberPassword;
+    }
 
     public String getMemberPhone() {
         return memberPhone;
