@@ -112,6 +112,15 @@
         where member_id = #{memberId}
     </update>
 
+    <update id="updateUserPhone" parameterType="Member">
+        update t_member set phone = #{phone} where user_name = #{userName}
+    </update>
+
+    <update id="resetUserPwd" parameterType="Member">
+        update t_member set password = #{password},update_time = sysdate() where phone = #{phone}
+    </update>
+
+
     <delete id="deleteMemberByMemberId" parameterType="Long">
         update t_member
         set del_flag = '2'

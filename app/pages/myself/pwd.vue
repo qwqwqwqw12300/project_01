@@ -6,9 +6,9 @@
 -->
 
 <template>
-	<app-body>
-		<u-navbar leftText="首页" @rightClick="rightClick" :autoBack="true" bgColor="transparent" leftIconColor="#fff" :fixed="false" />
-		<text class="ui-logo">修改密码</text>
+	<app-body :bodyStyle="{backgroundPositionY: '-100rpx'}">
+		<!-- 	<text class="ui-logo">修改密码</text> -->
+		<app-logo text="修改密码"></app-logo>
 		<view class="ui-form">
 			<view class="ui-form-item">
 				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="原密码" color="#444" size="28rpx"></u-text>
@@ -41,63 +41,67 @@
 				</view>
 			</view>
 			<view class="wd-btn-gloup">
-				<button type="default" @click="goLogin">重置</button>
-				<button type="default" @click="goLogin">取消</button>
+				<button @click="goLogin">重置</button>
+				<button @click="goLogin">取消</button>
 			</view>
 		</view>
 	</app-body>
 </template>
 
 <script>
-export default {
-	data() {
-		return {};
-	},
-	methods: {
-		/**
-		 * 跳转登录
-		 */
-		goLogin() {
-			uni.navigateTo({
-				url: '/pages/login/login'
-			});
+	export default {
+		data() {
+			return {};
+		},
+		methods: {
+			/**
+			 * 跳转登录
+			 */
+			goLogin() {
+				uni.navigateTo({
+					url: '/pages/login/login'
+				});
+			}
 		}
-	}
-};
+	};
 </script>
 
 <style lang="scss">
-.ui-logo {
-	height: 69rpx;
-	width: 366rpx;
-	font-size: 69rpx;
-	color: #fff;
-	margin: 62rpx 72rpx;
-	display: inline-block;
-	font-weight: bold;
-}
+	.ui-logo {
+		height: 69rpx;
+		width: 366rpx;
+		font-size: 69rpx;
+		color: #fff;
+		margin: 62rpx 72rpx;
+		display: inline-block;
+		font-weight: bold;
+	}
 
-.ui-form {
-	margin-top: 156rpx;
-	padding: 0 80rpx;
-	padding-bottom: 120rpx;
-	.ui-input {
-		margin: 34rpx 0 60rpx 0;
-		border-bottom: 1px solid #e2e2e2;
+	.ui-form {
+		margin-top: 156rpx;
+		padding: 0 80rpx;
+		padding-bottom: 120rpx;
+
+		.ui-input {
+			margin: 34rpx 0 60rpx 0;
+			border-bottom: 1px solid #e2e2e2;
+		}
+
+		.ui-bot {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			font-size: 26rpx;
+			color: #484848;
+		}
+
+		.ui-mini {
+			width: 160rpx;
+			// height: 60rpx;
+		}
+
+		.wd-btn-gloup {
+			margin: 120rpx 0;
+		}
 	}
-	.ui-bot {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		font-size: 26rpx;
-		color: #484848;
-	}
-	.ui-mini {
-		width: 160rpx;
-		// height: 60rpx;
-	}
-	.wd-btn-gloup {
-		margin: 120rpx 0;
-	}
-}
 </style>

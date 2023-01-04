@@ -7,13 +7,15 @@
 
 <template>
 	<view class="wd-body">
-		<view class="wd-bg">
+		<view class="wd-bg" :style="bodyStyle">
+			<u-navbar v-if="!hideTitle" leftText="首页" @rightClick="rightClick" :safeAreaInsetTop="false"
+				:autoBack="true" bgColor="transparent" leftIconColor="#fff" :fixed="false" />
 			<slot></slot>
 		</view>
 		<view class="wd-service" v-if="needService" @touchmove="onMove" @click="goService" @touchstart="onStart"
 			:style="{top: serviceTop + 'px'}">
 		</view>
-		
+
 	</view>
 
 </template>
@@ -25,8 +27,23 @@
 
 	export default {
 		props: {
+			/**是否展示客服**/
 			needService: {
 				default: true
+			},
+			/**是否隐藏返回头**/
+			hideTitle: {
+				default: false
+			},
+			/**返回头文字**/
+			leftText: {
+				default: '首页'
+			},
+			/**背景图高度**/
+			bodyStyle: {
+				default: () => {
+					{}
+				}
 			}
 		},
 		data() {
@@ -63,7 +80,8 @@
 						oldTop
 					} = this.serviceBtn;
 					const pageY = e.changedTouches[0].pageY - oldTop;
-					if (pageY > windowTop && pageY < windowHeight - 100) this.$store.commit('setServiceAxisY',pageY);
+					if (pageY > windowTop && pageY < windowHeight - 100) this.$store.commit('setServiceAxisY',
+						pageY);
 				}, 10);
 
 			},
@@ -84,7 +102,7 @@
 					oldTop: changedTouches[0].clientY - offsetTop
 				});
 			},
-			
+
 			/**
 			 * 跳转客服对话
 			 */
@@ -104,6 +122,20 @@
 		width: 100%;
 		overflow: scroll;
 	}
+
+	.wd-bg {
+		box-sizing: border-box;
+		padding-top: var(--status-bar-height);
+		min-height: calc(100vh - var(--window-bottom));
+		position: relative;
+		height: 100%;
+		width: 100%;
+		background-image: url('@/static/images/bg2.png');
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-color: #fff;
+	}
+
 	.wd-service {
 		z-index: 9999;
 		position: fixed;

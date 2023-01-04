@@ -68,6 +68,9 @@
         <if test="orgName != null and orgName != ''">
             AND org_name like concat('%', #{orgName}, '%')
         </if>
+        <if test="type != null and type != ''">
+            AND type = #{type}
+        </if>
         <if test="status != null and status != ''">
             AND status = #{status}
         </if>

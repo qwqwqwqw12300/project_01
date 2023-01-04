@@ -1,11 +1,6 @@
 <!-- 手表设备详情 -->
 <template>
 	<app-body>
-		<view class="ui-navbar" @tap="handleBack">
-			<u-icon name="arrow-left" color="#fff" size="23"></u-icon>
-			<text class="ui-navbar-text">首页</text>
-		</view>
-
 		<view class="ui-detail">
 			<image class="ui-detail-icon" src="../../static/images/device.png" mode=""></image>
 			<view class="ui-detail-device">
