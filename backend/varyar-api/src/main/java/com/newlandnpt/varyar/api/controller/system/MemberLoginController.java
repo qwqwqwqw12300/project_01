@@ -57,6 +57,7 @@ public class MemberLoginController extends BaseController {
         LoginUser loginUser = new LoginUser();
         loginUser.setMemberPhone(tMember.getPhone());
         loginUser.setMemberId(tMember.getMemberId());
+        loginUser.setMemberPassword(tMember.getPassword());
         String token = tokenService.createToken(loginUser);
         ajax.put(Constants.TOKEN, token);
 
