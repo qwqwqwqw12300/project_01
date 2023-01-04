@@ -77,7 +77,8 @@ public class TFamilyController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody TFamily tFamily)
     {
-        return toAjax(tFamilyService.insertTFamily(tFamily));
+//        return toAjax(tFamilyService.insertTFamily(tFamily));
+        return null;
     }
 
     /**
