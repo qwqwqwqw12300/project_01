@@ -490,6 +490,8 @@ insert into sys_dict_type values(7,  '通知类型', 'sys_notice_type',     '0',
 insert into sys_dict_type values(8,  '通知状态', 'sys_notice_status',   '0', 'admin', sysdate(), '', null, '通知状态列表');
 insert into sys_dict_type values(9,  '操作类型', 'sys_oper_type',       '0', 'admin', sysdate(), '', null, '操作类型列表');
 insert into sys_dict_type values(10, '系统状态', 'sys_common_status',   '0', 'admin', sysdate(), '', null, '登录状态列表');
+insert into sys_dict_type values(11, 'APP类型', 'sys_app_type',   '0', 'admin', sysdate(), '', null, 'APP类型列表');
+insert into sys_dict_type values(12, '删除标记', 'sys_del_flag',   '0', 'admin', sysdate(), '', null, '删除标记列表');
 
 
 -- ----------------------------
@@ -544,6 +546,10 @@ insert into sys_dict_data values(26, 8,  '生成代码', '8',       'sys_oper_ty
 insert into sys_dict_data values(27, 9,  '清空数据', '9',       'sys_oper_type',       '',   'danger',  'N', '0', 'admin', sysdate(), '', null, '清空操作');
 insert into sys_dict_data values(28, 1,  '成功',     '0',       'sys_common_status',   '',   'primary', 'N', '0', 'admin', sysdate(), '', null, '正常状态');
 insert into sys_dict_data values(29, 2,  '失败',     '1',       'sys_common_status',   '',   'danger',  'N', '0', 'admin', sysdate(), '', null, '停用状态');
+insert into sys_dict_data values(30, 1,  'android',     '0',       'sys_app_type',   '',   'success',  'N', '0', 'admin', sysdate(), '', null, '0:android');
+insert into sys_dict_data values(31, 2,  'ios',     '1',       'sys_app_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '1:ios');
+insert into sys_dict_data values(32, 1,  '存在',     '0',       'sys_del_flag',   '',   'primary',  'N', '0', 'admin', sysdate(), '', null, '0:存在');
+insert into sys_dict_data values(33, 2,  '删除',     '2',       'sys_del_flag',   '',   'danger',  'N', '0', 'admin', sysdate(), '', null, '2:删除');
 
 
 -- ----------------------------

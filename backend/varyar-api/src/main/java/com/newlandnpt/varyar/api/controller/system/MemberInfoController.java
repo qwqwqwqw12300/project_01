@@ -2,9 +2,11 @@ package com.newlandnpt.varyar.api.controller.system;
 
 
 import com.newlandnpt.varyar.common.constant.CacheConstants;
+import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
 import com.newlandnpt.varyar.common.core.domain.model.MemberInfoRequest;
+import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
@@ -13,9 +15,6 @@ import com.newlandnpt.varyar.framework.web.service.TokenService;
 import com.newlandnpt.varyar.system.service.IMemberInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.newlandnpt.varyar.common.core.controller.BaseController;
-import com.newlandnpt.varyar.common.core.redis.RedisCache;
-import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 
 
 
