@@ -195,6 +195,24 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/myself/suggestion",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/myself/push-set",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 	"globalStyle": {
