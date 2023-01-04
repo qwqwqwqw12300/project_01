@@ -58,4 +58,13 @@ public interface TAgreementMapper
      * @return 结果
      */
     public int deleteTAgreementByAgreementIds(Long[] agreementIds);
+
+    /**
+     * 查询协议
+     *
+     * @param agreementType 协议类型
+     * @return 协议
+     */
+    public TAgreement selectTAgreementByAgreementType(String agreementType);
+
 }

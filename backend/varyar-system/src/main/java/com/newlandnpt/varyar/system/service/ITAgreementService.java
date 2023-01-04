@@ -58,4 +58,13 @@ public interface ITAgreementService
      * @return 结果
      */
     public int deleteTAgreementByAgreementId(Long agreementId);
+
+    /**
+     * 根据类型查询协议
+     *
+     * @param agreementType 协议主键
+     * @return 协议
+     */
+    public TAgreement selectTAgreementByAgreementType(String agreementType);
+
 }
