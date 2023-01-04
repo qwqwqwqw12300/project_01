@@ -66,4 +66,10 @@ public interface IMemberService
      * @return
      */
     public int arrangeUserToMember(Long memberId,Long userId);
+
+    /**
+     * 根据机构id统计机构服务会员数量
+     * @return
+     */
+    public long total();
 }

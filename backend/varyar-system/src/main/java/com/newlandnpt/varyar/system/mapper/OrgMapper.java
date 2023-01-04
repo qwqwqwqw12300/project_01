@@ -3,6 +3,7 @@ package com.newlandnpt.varyar.system.mapper;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import com.newlandnpt.varyar.common.core.domain.entity.Org;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 机构管理 数据层
@@ -129,4 +130,11 @@ public interface OrgMapper
      * @return 结果
      */
     public int deleteOrgById(Long orgId);
+
+    /**
+     * 机构总数
+     * @return
+     */
+    @Select("select count(*) from t_org where del_flag = '0'")
+    public long total();
 }

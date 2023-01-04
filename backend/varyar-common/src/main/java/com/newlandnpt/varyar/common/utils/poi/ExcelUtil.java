@@ -12,16 +12,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
@@ -654,7 +645,7 @@ public class ExcelUtil<T>
             {
                 Field field = (Field) os[0];
                 Excel excel = (Excel) os[1];
-                if (Collection.class.isAssignableFrom(field.getType()))
+                if (excel.useSubClassAnn()&&Collection.class.isAssignableFrom(field.getType()))
                 {
                     for (Field subField : subFields)
                     {
@@ -1355,7 +1346,32 @@ public class ExcelUtil<T>
         if (StringUtils.isNotEmpty(excel.targetAttr()))
         {
             String target = excel.targetAttr();
-            if (target.contains("."))
+            if(Collection.class.isAssignableFrom(field.getType())){
+                Iterator iterator = ((Collection)o).iterator();
+                List<String> results = new ArrayList<>();
+                while(iterator.hasNext()){
+                    Object param = iterator.next();
+                    Object result = getValue(param,target);
+                    if(result instanceof String){
+                        results.add((String)result);
+                    }else{
+                        throw new UtilException("使用+拼接导出属性时类型异常");
+                    }
+                }
+                return results.stream().collect(Collectors.joining(excel.separator()));
+            }else if(target.contains("+")){
+                String[] targets = target.split("[+]");
+                List<String> results = new ArrayList<>();
+                for(String t:targets){
+                    Object result = getValue(o,t);
+                    if(result instanceof String){
+                        results.add((String)result);
+                    }else{
+                        throw new UtilException("使用+拼接导出属性时类型异常");
+                    }
+                }
+                return results.stream().collect(Collectors.joining(excel.separator()));
+            }else if (target.contains("."))
             {
                 String[] targets = target.split("[.]");
                 for (String name : targets)
@@ -1428,7 +1444,9 @@ public class ExcelUtil<T>
                         subMethod = getSubMethod(field.getName(), clazz);
                         ParameterizedType pt = (ParameterizedType) field.getGenericType();
                         Class<?> subClass = (Class<?>) pt.getActualTypeArguments()[0];
-                        this.subFields = FieldUtils.getFieldsListWithAnnotation(subClass, Excel.class);
+                        if(attr.useSubClassAnn()){
+                            this.subFields = FieldUtils.getFieldsListWithAnnotation(subClass, Excel.class);
+                        }
                     }
                 }
 

@@ -60,7 +60,6 @@ public class DeviceGroupServiceImpl implements IDeviceGroupService {
      */
     @Override
     public int insertDeviceGroup(DeviceGroup devicegroup) {
-        //todo 生成设备组编号，编号唯一
         //创建人为当前登录人员
         devicegroup.autoSetCreateByLoginUser();
         return devicegroupMapper.insertDeviceGroup(devicegroup);

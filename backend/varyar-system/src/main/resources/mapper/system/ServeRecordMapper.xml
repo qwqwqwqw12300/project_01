@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.ServeRecordMapper">
+    
+    <resultMap type="ServeRecord" id="ServeRecordResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="servedUserId"    column="served_user_id"    />
+        <result property="servedUserSnapshot"    column="served_user_snapshot"   javaType="com.newlandnpt.varyar.common.core.domain.entity.SysUser"  typeHandler="com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler"/>
+        <result property="servedType"    column="served_type"    />
+        <result property="servedInfo"    column="served_info"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <association property="servedUser" column="{userId = served_user_id}" select="selectUserSimple"/>
+        <association property="device"    column="{deviceId = device_id}" select="selectDeviceByDeviceId"/>
+        <collection property="serveEvents" select="selectServeEventSimple" column="{recordId = record_id}"></collection>
+    </resultMap>
+
+    <resultMap type="Device" id="DeviceResult">
+        <result property="deviceId" column="device_id"/>
+        <result property="devicegroupId" column="devicegroup_id"/>
+        <result property="deviceGroupName" column="device_group_name"/>
+        <result property="name" column="name"/>
+        <result property="no" column="no"/>
+        <result property="status" column="status"/>
+        <result property="type" column="type"/>
+        <result property="registerTime" column="register_time"/>
+        <result property="location" column="location"/>
+        <result property="familyId" column="family_id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="distributeFlag" column="distribute_flag"/>
+        <result property="orgId" column="org_id"/>
+        <result property="orgName" column="org_name"/>
+        <result property="orgType" column="org_type"/>
+        <result property="orgNo" column="org_no"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <resultMap type="com.newlandnpt.varyar.system.domain.ServeRecord$ServeEventSimple" id="EventSimpleResult">
+        <result property="eventId"    column="event_id"    />
+        <result property="no"    column="no"    />
+    </resultMap>
+
+    <resultMap id="SysUserSimple" type="com.newlandnpt.varyar.system.domain.ServeRecord$SysUserSimple">
+        <id     property="userId"       column="user_id"      />
+        <result property="orgId"       column="org_id"      />
+        <result property="userName"     column="user_name"    />
+        <result property="nickName"     column="nick_name"    />
+        <result property="email"        column="email"        />
+        <result property="phonenumber"  column="phonenumber"  />
+        <result property="orgName"  column="org_name"  />
+    </resultMap>
+
+    <select id="selectUserSimple" resultMap="SysUserSimple">
+        select u.user_id, u.org_id, u.user_name, u.nick_name, u.phonenumber,d.org_name
+        from sys_user u
+                 left join t_org d on u.org_id = d.org_id
+        where u.user_id = #{userId}
+    </select>
+
+    <select id="selectServeEventSimple" resultMap="EventSimpleResult">
+        select e.event_id, e.no from t_event e,  t_serve_record_event_relate r where  e.event_id = r.event_id and r.record_id = #{recordId}
+    </select>
+
+    <select id="selectDeviceByDeviceId" resultMap="DeviceResult">
+        <include refid="selectDeviceVo"/>
+        where device_id = #{deviceId}
+        and del_flag = '0'
+    </select>
+
+    <sql id="selectServeRecordVo">
+        select s.record_id, s.served_user_id, s.served_user_snapshot, s.served_type, s.served_info, s.device_id, s.remark, s.del_flag, s.create_by, s.create_time from t_serve_record s
+    </sql>
+
+    <sql id="selectDeviceVo">
+        select device_id,
+               devicegroup_id,
+               name, no, status, type,
+            register_time,
+            location, family_id, room_id, distribute_flag, org_id, org_name, del_flag, create_by, create_time, update_by, update_time,
+            (select name from t_devicegroup where devicegroup_id = d.devicegroup_id) device_group_name,
+            (select type from t_org where org_id = d.org_id) org_type,
+            (select org_no from t_org where org_id = d.org_id) org_no
+        from t_device d
+    </sql>
+
+    <sql id="servedUserSnapshot">
+        #{servedUserSnapshot,javaType=com.newlandnpt.varyar.common.core.domain.entity.SysUser,typeHandler = com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler}
+    </sql>
+
+    <select id="selectServeRecordList" parameterType="ServeRecord" resultMap="ServeRecordResult">
+        <include refid="selectServeRecordVo"/>
+        <if test="servedUser!=null and (servedUser.nickName !=null or servedUser.phonenumber!=null)">
+            left join sys_user u on u.user_id = s.served_user_id
+        </if>
+        <if test="device!=null and (device.type !=null or device.no!=null or device.name !=null)">
+            left join t_device d on d.device_id = s.device_id
+        </if>
+        <where>  
+            <if test="servedUserId != null "> and s.served_user_id = #{servedUserId}</if>
+            <if test="servedType != null  and servedType != ''"> and s.served_type = #{servedType}</if>
+            <if test="servedInfo != null  and servedInfo != ''"> and s.served_info = #{servedInfo}</if>
+            <if test="deviceId != null "> and s.device_id = #{deviceId}</if>
+            <if test="params.createTimeBegin !=null">and s.create_time <![CDATA[>=]]> ${params.createTimeBegin}</if>
+            <if test="params.createTimeEnd !=null">and s.create_time <![CDATA[<=]]> ${params.createTimeEnd}</if>
+
+            <if test="servedUser!=null and servedUser.nickName !=null"> and u.nick_name like concat('%', #{servedUser.nickName}, '%')</if>
+            <if test="servedUser!=null and servedUser.phonenumber !=null"> and u.phonenumber like concat('%', #{servedUser.phonenumber}, '%')</if>
+
+            <if test="device!=null and device.type !=null"> and d.type = #{device.type}</if>
+            <if test="device!=null and device.no !=null"> and d.no like concat(#{device.no}, '%')</if>
+            <if test="device!=null and device.name !=null"> and d.name like concat('%', #{device.name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectServeRecordByRecordId" parameterType="Long" resultMap="ServeRecordResult">
+        <include refid="selectServeRecordVo"/>
+        where record_id = #{recordId}
+    </select>
+        
+    <insert id="insertServeRecord" parameterType="ServeRecord" useGeneratedKeys="true" keyProperty="recordId">
+        insert into t_serve_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="servedUserId != null">served_user_id,</if>
+            <if test="servedUserSnapshot != null">served_user_snapshot,</if>
+            <if test="servedType != null">served_type,</if>
+            <if test="servedInfo != null">served_info,</if>
+            <if test="deviceId != null">device_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="servedUserId != null">#{servedUserId},</if>
+            <if test="servedUserSnapshot != null"><include refid="servedUserSnapshot"/>,</if>
+            <if test="servedType != null">#{servedType},</if>
+            <if test="servedInfo != null">#{servedInfo},</if>
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateServeRecord" parameterType="ServeRecord">
+        update t_serve_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="servedUserId != null">served_user_id = #{servedUserId},</if>
+            <if test="servedUserSnapshot != null">served_user_snapshot = <include refid="servedUserSnapshot"/>,</if>
+            <if test="servedType != null">served_type = #{servedType},</if>
+            <if test="servedInfo != null">served_info = #{servedInfo},</if>
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="deleteServeRecordByRecordId" parameterType="Long">
+        update t_serve_record set del_flag = '2' where record_id = #{recordId}
+    </delete>
+
+    <delete id="deleteServeRecordByRecordIds" parameterType="String">
+        update  t_serve_record set del_flag = '2' where record_id in
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+</mapper>

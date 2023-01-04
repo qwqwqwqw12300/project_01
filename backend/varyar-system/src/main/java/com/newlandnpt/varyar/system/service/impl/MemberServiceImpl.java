@@ -117,4 +117,9 @@ public class MemberServiceImpl implements IMemberService
         member.autoSetUpdateByLoginUser();
         return this.updateMember(member);
     }
+
+    @Override
+    public long total() {
+        return memberMapper.total();
+    }
 }

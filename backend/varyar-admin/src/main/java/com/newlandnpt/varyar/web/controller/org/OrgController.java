@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
+import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
 import com.newlandnpt.varyar.system.domain.Device;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import org.apache.commons.lang3.ArrayUtils;
@@ -97,7 +98,7 @@ public class OrgController extends BaseController
     @PostMapping
     public AjaxResult add(@Validated @RequestBody Org org)
     {
-        //todo 机构编号生成
+        org.setOrgNo(IdUtils.fastSimpleUUID());
         if (UserConstants.NOT_UNIQUE.equals(orgService.checkOrgNameUnique(org)))
         {
             return error("新增机构'" + org.getOrgName() + "'失败，机构名称已存在");

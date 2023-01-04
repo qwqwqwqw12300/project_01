@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.ServeRecordEventRelateMapper">
+    
+    <resultMap type="ServeRecordEventRelate" id="ServeRecordEventRelateResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="eventId"    column="event_id"    />
+    </resultMap>
+
+    <sql id="selectServeRecordEventRelateVo">
+        select record_id, event_id from t_serve_record_event_relate
+    </sql>
+
+
+
+    <select id="selectServeRecordEventRelateList" parameterType="ServeRecordEventRelate" resultMap="ServeRecordEventRelateResult">
+        <include refid="selectServeRecordEventRelateVo"/>
+        <where>  
+            <if test="recordId != null "> and record_id = #{recordId}</if>
+            <if test="eventId != null "> and event_id = #{eventId}</if>
+        </where>
+    </select>
+    
+    <select id="selectServeRecordEventRelateByRecordId" parameterType="Long" resultMap="ServeRecordEventRelateResult">
+        <include refid="selectServeRecordEventRelateVo"/>
+        where record_id = #{recordId}
+    </select>
+        
+    <insert id="insertServeRecordEventRelate" parameterType="ServeRecordEventRelate">
+        insert into t_serve_record_event_relate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recordId != null">record_id,</if>
+            <if test="eventId != null">event_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="recordId != null">#{recordId},</if>
+            <if test="eventId != null">#{eventId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateServeRecordEventRelate" parameterType="ServeRecordEventRelate">
+        update t_serve_record_event_relate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="eventId != null">event_id = #{eventId},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="deleteServeRecordEventRelateByRecordId" parameterType="Long">
+        delete from t_serve_record_event_relate where record_id = #{recordId}
+    </delete>
+
+    <delete id="deleteServeRecordEventRelateByRecordIds" parameterType="String">
+        delete from t_serve_record_event_relate where record_id in 
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+</mapper>

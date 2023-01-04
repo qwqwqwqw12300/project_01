@@ -11,6 +11,7 @@ import com.newlandnpt.varyar.common.annotation.Excel.Type;
 import com.newlandnpt.varyar.common.annotation.Excels;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
 import com.newlandnpt.varyar.common.xss.Xss;
+import org.springframework.data.annotation.Transient;
 
 /**
  * 用户对象 sys_user
@@ -75,9 +76,11 @@ public class SysUser extends BaseEntity
         @Excel(name = "机构名称", targetAttr = "orgName", type = Type.EXPORT),
         @Excel(name = "机构负责人", targetAttr = "leader", type = Type.EXPORT)
     })
+    @Transient
     private Org org;
 
     /** 角色对象 */
+    @Transient
     private List<SysRole> roles;
 
     /** 角色组 */

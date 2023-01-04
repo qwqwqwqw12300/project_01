@@ -283,6 +283,15 @@ public class OrgServiceImpl implements IOrgService {
     }
 
     /**
+     * 机构总数
+     * @return
+     */
+    @Override
+    public long total() {
+        return orgMapper.total();
+    }
+
+    /**
      * 递归列表
      */
     private void recursionFn(List<Org> list, Org t) {

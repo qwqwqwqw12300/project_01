@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.system.mapper;
 
 import java.util.List;
 import com.newlandnpt.varyar.system.domain.Member;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 会员Mapper接口
@@ -64,4 +65,11 @@ public interface MemberMapper
      * @return 结果
      */
     public int deleteMemberByMemberIds(Long[] memberIds);
+
+    /**
+     * 根据机构id统计机构服务会员数量
+     * @return
+     */
+    @Select("select count(*) from t_member where del_flag = '0'")
+    public long total();
 }

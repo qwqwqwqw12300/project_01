@@ -31,7 +31,7 @@ public class MemberController extends BaseController
     /**
      * 查询会员列表
      */
-    @PreAuthorize("@ss.hasPermi('system:member:list')")
+    @PreAuthorize("@ss.hasPermi('member:list')")
     @GetMapping("/page")
     public TableDataInfo list(Member member)
     {
@@ -43,7 +43,7 @@ public class MemberController extends BaseController
     /**
      * 获取会员详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:member:query')")
+    @PreAuthorize("@ss.hasPermi('member:query')")
     @GetMapping(value = "/{memberId}")
     public AjaxResult getInfo(@PathVariable("memberId") Long memberId)
     {
@@ -52,7 +52,7 @@ public class MemberController extends BaseController
     /**
      * 获取会员家庭分页
      */
-    @PreAuthorize("@ss.hasPermi('system:member:query')")
+    @PreAuthorize("@ss.hasPermi('member:query')")
     @GetMapping(value = "/{memberId}/family/page")
     public TableDataInfo familyList(@PathVariable("memberId") Long memberId)
     {
@@ -64,7 +64,7 @@ public class MemberController extends BaseController
     /**
      * 给会员分配运营
      */
-    @PreAuthorize("@ss.hasPermi('system:member:arrange')")
+    @PreAuthorize("@ss.hasPermi('member:arrange')")
     @PutMapping(value = "/{memberId}/arrange/user/{userId}")
     public AjaxResult families(@PathVariable("memberId") Long memberId,
                                @PathVariable("userId") Long userId)
@@ -72,6 +72,8 @@ public class MemberController extends BaseController
 
         return success(memberService.arrangeUserToMember(memberId,userId));
     }
+
+
 
     // todo 服务登记相关库表结构和实现
     // todo 服务人员操作相关表结构和实现

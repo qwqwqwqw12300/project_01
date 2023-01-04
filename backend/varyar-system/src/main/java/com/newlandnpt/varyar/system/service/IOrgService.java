@@ -121,4 +121,10 @@ public interface IOrgService
      * @return 结果
      */
     public int deleteOrgById(Long orgId);
+
+    /**
+     * 机构总数
+     * @return
+     */
+    public long total();
 }

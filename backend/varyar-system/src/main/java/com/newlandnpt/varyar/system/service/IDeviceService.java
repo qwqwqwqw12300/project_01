@@ -104,4 +104,10 @@ public interface IDeviceService
      */
     public String importDevice(List<Device> devices, Long orgId);
 
+    /**
+     * 统计设备数量
+     * @return
+     */
+    public long total();
+
 }

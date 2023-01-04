@@ -153,6 +153,12 @@ public @interface Excel
      */
     Type type() default Type.ALL;
 
+    /**
+     * 使用子类的Excel注解，默认true
+     * @return
+     */
+    boolean useSubClassAnn() default true;
+
     public enum Type
     {
         ALL(0), EXPORT(1), IMPORT(2);

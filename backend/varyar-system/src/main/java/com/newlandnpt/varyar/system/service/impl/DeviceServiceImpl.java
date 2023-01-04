@@ -215,4 +215,9 @@ public class DeviceServiceImpl implements IDeviceService {
         }
         return successMsg.toString();
     }
+
+    @Override
+    public long total() {
+        return deviceMapper.total();
+    }
 }

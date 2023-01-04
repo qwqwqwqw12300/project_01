@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar;
 
+import com.newlandnpt.varyar.system.domain.ServeRecord;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;

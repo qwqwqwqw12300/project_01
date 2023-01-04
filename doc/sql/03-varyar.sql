@@ -31,7 +31,7 @@ INSERT INTO `t_org` (`org_id`, `parent_id`, `ancestors`, `org_name`, `org_no`, `
 drop table if exists t_devicegroup;
 create table t_devicegroup (
   devicegroup_id           bigint(20)      not null auto_increment    comment '设备组id',
-  org_id            bigint(20)      not null                   comment '机构id',
+  org_id            bigint(20)      default null                   comment '机构id',
   name              varchar(50)      default ''                comment '设备组名称',
   no                varchar(50)     default ''                 comment '设备组编号',
   user_id           bigint(20)      default null               comment '运营者id',
@@ -184,6 +184,28 @@ create table t_event (
   update_time       datetime                                  comment '更新时间',
   primary key (event_id)
 ) engine=innodb auto_increment=100 comment = '事件表';
+drop table if exists t_serve_record;
+
+create table t_serve_record(
+    record_id bigint(20)      not null auto_increment    comment '服务记录id',
+    served_user_id bigint(20)      not null              comment '服务人员id',
+    served_user_snapshot text       default null                comment '服务人员快照',
+    served_type      char(1)         default '0'                comment '服务类型（ 0拨打电话 ）',
+    served_info     varchar(2046)      default null             comment '服务信息，根据服务类型而定，例：拨打电话记录电话号码',
+    device_id       bigint(20)      not null              comment '设备id',
+    remark            text             default null                comment '备注',
+    del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
+    create_by         varchar(64)     default ''                 comment '创建者',
+    create_time       datetime                                   comment '创建时间',
+    primary key (record_id)
+) engine=innodb auto_increment=100 comment = '服务记录表';
+
+drop table if exists t_serve_record_event_relate;
+
+create table t_serve_record_event_relate(
+    record_id bigint(20)      not null   comment '服务记录id',
+    event_id        bigint(20)      not null    comment '事件id'
+)engine=innodb auto_increment=100 comment = '服务记录和事件关联表';
 
 drop table if exists t_msg;
 create table t_msg (

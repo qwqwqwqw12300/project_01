@@ -3,6 +3,7 @@ package com.newlandnpt.varyar.system.mapper;
 import java.util.List;
 import com.newlandnpt.varyar.system.domain.Device;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 设备Mapper接口
@@ -75,4 +76,11 @@ public interface DeviceMapper
      * @return
      */
     public int arrangeDeviceToGroup(@Param("deviceIds")Long[] deviceIds,@Param("deviceGroupId") Long deviceGroupId,@Param("updateBy") String updateBy);
+
+    /**
+     * 根据机构统计设备数量
+     * @return
+     */
+    @Select("select count(*) from t_device where del_flag = '0' and status in ('1','2')")
+    public long total();
 }

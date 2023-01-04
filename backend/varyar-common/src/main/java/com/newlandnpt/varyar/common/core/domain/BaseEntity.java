@@ -1,15 +1,14 @@
 package com.newlandnpt.varyar.common.core.domain;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
+import com.newlandnpt.varyar.common.utils.reflect.ReflectUtils;
+import org.springframework.data.annotation.Transient;
 
 import static com.newlandnpt.varyar.common.utils.SecurityUtils.getLoginUserName;
 
@@ -126,5 +125,18 @@ public class BaseEntity implements Serializable
     }
     public void autoSetUpdateByLoginUser(){
         this.setUpdateBy(getLoginUserName());
+    }
+
+    /**
+     * 清除实体类非映射表属性
+     */
+    public void clearTransient(){
+        Class<?> clz = this.getClass();
+        Arrays.stream(clz.getDeclaredFields())
+                .forEach(field -> {
+                    if(field.isAnnotationPresent(Transient.class)){
+                        ReflectUtils.setFieldValue(this,field.getName(),null);
+                    }
+                });
     }
 }

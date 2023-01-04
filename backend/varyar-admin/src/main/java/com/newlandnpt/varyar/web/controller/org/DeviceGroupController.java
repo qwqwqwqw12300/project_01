@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.newlandnpt.varyar.common.constant.UserConstants;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
+import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,7 @@ public class DeviceGroupController extends BaseController
     {
         //默认是当前管理员所属机构
         devicegroup.setOrgId(SecurityUtils.getLoginUser().getUser().getOrgId());
+        devicegroup.setNo(IdUtils.fastSimpleUUID());
         if (UserConstants.NOT_UNIQUE.equals(deviceGroupService.checkOrgNameUnique(devicegroup)))
         {
             return error("新增设备组'" + devicegroup.getName() + "'失败，设备组名称已存在");
