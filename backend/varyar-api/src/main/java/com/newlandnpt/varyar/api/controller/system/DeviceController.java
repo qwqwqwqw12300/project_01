@@ -18,7 +18,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/device")
-public class TDeviceController extends BaseController {
+public class DeviceController extends BaseController {
     @Autowired
     private IDeviceService iDeviceService;
     /**

@@ -9,7 +9,7 @@ import com.newlandnpt.varyar.system.domain.TRoom;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface ITRoomService 
+public interface IRoomService
 {
     /**
      * 查询房间
