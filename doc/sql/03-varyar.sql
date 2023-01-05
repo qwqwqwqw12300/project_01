@@ -262,7 +262,7 @@ create table t_device_fence (
   device_id             bigint(20)                          comment '设备id',
   device_no             varchar(50)                         comment '设备编号',      
   address               varchar(50)                         comment '地址',
-  Longitude             varchar(50)                         comment '经度',
+  longitude             varchar(50)                         comment '经度',
   latitude              varchar(50)                         comment '纬度',
   radius                varchar(50)                         comment '半径',
   create_time        datetime                               comment '创建时间',
