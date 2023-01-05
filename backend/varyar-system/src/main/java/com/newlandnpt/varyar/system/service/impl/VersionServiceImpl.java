@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TVersionMapper;
 import com.newlandnpt.varyar.system.domain.TVersion;
-import com.newlandnpt.varyar.system.service.ITVersionService;
+import com.newlandnpt.varyar.system.service.IVersionService;
 
 /**
  * 版本Service业务层处理
@@ -15,7 +15,7 @@ import com.newlandnpt.varyar.system.service.ITVersionService;
  * @date 2022-12-24
  */
 @Service
-public class TVersionServiceImpl implements ITVersionService 
+public class VersionServiceImpl implements IVersionService
 {
     @Autowired
     private TVersionMapper tVersionMapper;
@@ -92,5 +92,17 @@ public class TVersionServiceImpl implements ITVersionService
     public int deleteTVersionByVersionId(Long versionId)
     {
         return tVersionMapper.deleteTVersionByVersionId(versionId);
+    }
+
+    /**
+     * 查询版本
+     *
+     * @param versionType 版本类型:0android 1ios）
+     * @return 版本
+     */
+    @Override
+    public TVersion selectTVersionByVersionType(String versionType)
+    {
+        return tVersionMapper.selectTVersionByVersionType(versionType);
     }
 }

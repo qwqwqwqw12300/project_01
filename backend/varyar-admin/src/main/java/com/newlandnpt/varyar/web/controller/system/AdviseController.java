@@ -17,7 +17,7 @@ import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.system.domain.TAdvise;
-import com.newlandnpt.varyar.system.service.ITAdviseService;
+import com.newlandnpt.varyar.system.service.IAdviseService;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 
@@ -29,10 +29,10 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/system/advise")
-public class TAdviseController extends BaseController
+public class AdviseController extends BaseController
 {
     @Autowired
-    private ITAdviseService tAdviseService;
+    private IAdviseService adviseService;
 
     /**
      * 查询建议列表
@@ -42,7 +42,7 @@ public class TAdviseController extends BaseController
     public TableDataInfo list(TAdvise tAdvise)
     {
         startPage();
-        List<TAdvise> list = tAdviseService.selectTAdviseList(tAdvise);
+        List<TAdvise> list = adviseService.selectTAdviseList(tAdvise);
         setreadFlag(list);
         return getDataTable(list);
     }
@@ -59,7 +59,7 @@ public class TAdviseController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, TAdvise tAdvise)
     {
-        List<TAdvise> list = tAdviseService.selectTAdviseList(tAdvise);
+        List<TAdvise> list = adviseService.selectTAdviseList(tAdvise);
         ExcelUtil<TAdvise> util = new ExcelUtil<TAdvise>(TAdvise.class);
         util.exportExcel(response, list, "建议数据");
     }
@@ -70,7 +70,7 @@ public class TAdviseController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:advise:query')")
     @GetMapping(value = "/{adviseId}")
     public AjaxResult getInfo(@PathVariable("adviseId") Long adviseId)
-    {   TAdvise tAdvise = tAdviseService.selectTAdviseByAdviseId(adviseId);
+    {   TAdvise tAdvise = adviseService.selectTAdviseByAdviseId(adviseId);
         tAdvise.setReadFlag(tAdvise.getReadFlag().equals("1")?"已读":"未读");
         return success(tAdvise);
     }
@@ -83,7 +83,7 @@ public class TAdviseController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody TAdvise tAdvise)
     {
-        return toAjax(tAdviseService.insertTAdvise(tAdvise));
+        return toAjax(adviseService.insertTAdvise(tAdvise));
     }
 
     /**
@@ -95,7 +95,7 @@ public class TAdviseController extends BaseController
     public AjaxResult edit(@RequestBody TAdvise tAdvise)
     {
         tAdvise.setReadFlag("1");
-        return toAjax(tAdviseService.updateTAdvise(tAdvise));
+        return toAjax(adviseService.updateTAdvise(tAdvise));
     }
 
     /**
@@ -106,6 +106,6 @@ public class TAdviseController extends BaseController
 	@DeleteMapping("/{adviseIds}")
     public AjaxResult remove(@PathVariable Long[] adviseIds)
     {
-        return toAjax(tAdviseService.deleteTAdviseByAdviseIds(adviseIds));
+        return toAjax(adviseService.deleteTAdviseByAdviseIds(adviseIds));
     }
 }

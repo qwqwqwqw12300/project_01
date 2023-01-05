@@ -17,7 +17,7 @@ import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.system.domain.TVersion;
-import com.newlandnpt.varyar.system.service.ITVersionService;
+import com.newlandnpt.varyar.system.service.IVersionService;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 
@@ -29,10 +29,10 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/system/version")
-public class TVersionController extends BaseController
+public class VersionController extends BaseController
 {
     @Autowired
-    private ITVersionService tVersionService;
+    private IVersionService versionService;
 
     /**
      * 查询版本列表
@@ -42,7 +42,7 @@ public class TVersionController extends BaseController
     public TableDataInfo list(TVersion tVersion)
     {
         startPage();
-        List<TVersion> list = tVersionService.selectTVersionList(tVersion);
+        List<TVersion> list = versionService.selectTVersionList(tVersion);
         return getDataTable(list);
     }
 
@@ -54,7 +54,7 @@ public class TVersionController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, TVersion tVersion)
     {
-        List<TVersion> list = tVersionService.selectTVersionList(tVersion);
+        List<TVersion> list = versionService.selectTVersionList(tVersion);
         ExcelUtil<TVersion> util = new ExcelUtil<TVersion>(TVersion.class);
         util.exportExcel(response, list, "版本数据");
     }
@@ -66,7 +66,7 @@ public class TVersionController extends BaseController
     @GetMapping(value = "/{versionId}")
     public AjaxResult getInfo(@PathVariable("versionId") Long versionId)
     {
-        return success(tVersionService.selectTVersionByVersionId(versionId));
+        return success(versionService.selectTVersionByVersionId(versionId));
     }
 
     /**
@@ -77,7 +77,7 @@ public class TVersionController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody TVersion tVersion)
     {
-        return toAjax(tVersionService.insertTVersion(tVersion));
+        return toAjax(versionService.insertTVersion(tVersion));
     }
 
     /**
@@ -88,7 +88,7 @@ public class TVersionController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody TVersion tVersion)
     {
-        return toAjax(tVersionService.updateTVersion(tVersion));
+        return toAjax(versionService.updateTVersion(tVersion));
     }
 
     /**
@@ -99,6 +99,6 @@ public class TVersionController extends BaseController
 	@DeleteMapping("/{versionIds}")
     public AjaxResult remove(@PathVariable Long[] versionIds)
     {
-        return toAjax(tVersionService.deleteTVersionByVersionIds(versionIds));
+        return toAjax(versionService.deleteTVersionByVersionIds(versionIds));
     }
 }

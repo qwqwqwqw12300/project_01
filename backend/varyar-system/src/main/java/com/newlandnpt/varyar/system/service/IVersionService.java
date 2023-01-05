@@ -9,7 +9,7 @@ import com.newlandnpt.varyar.system.domain.TVersion;
  * @author chenxw
  * @date 2022-12-24
  */
-public interface ITVersionService 
+public interface IVersionService
 {
     /**
      * 查询版本
@@ -58,4 +58,12 @@ public interface ITVersionService
      * @return 结果
      */
     public int deleteTVersionByVersionId(Long versionId);
+
+    /**
+     * 查询版本
+     *
+     * @param versionType 版本类型:（0android 1ios）
+     * @return 版本
+     */
+    public TVersion selectTVersionByVersionType(String versionType);
 }

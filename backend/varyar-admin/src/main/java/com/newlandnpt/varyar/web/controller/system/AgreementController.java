@@ -17,7 +17,7 @@ import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.system.domain.TAgreement;
-import com.newlandnpt.varyar.system.service.ITAgreementService;
+import com.newlandnpt.varyar.system.service.IAgreementService;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 
@@ -29,10 +29,10 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/system/agreement")
-public class TAgreementController extends BaseController
+public class AgreementController extends BaseController
 {
     @Autowired
-    private ITAgreementService tAgreementService;
+    private IAgreementService agreementService;
 
     /**
      * 查询协议列表
@@ -42,7 +42,7 @@ public class TAgreementController extends BaseController
     public TableDataInfo list(TAgreement tAgreement)
     {
         startPage();
-        List<TAgreement> list = tAgreementService.selectTAgreementList(tAgreement);
+        List<TAgreement> list = agreementService.selectTAgreementList(tAgreement);
         setType(list);
         return getDataTable(list);
     }
@@ -60,7 +60,7 @@ public class TAgreementController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, TAgreement tAgreement)
     {
-        List<TAgreement> list = tAgreementService.selectTAgreementList(tAgreement);
+        List<TAgreement> list = agreementService.selectTAgreementList(tAgreement);
         ExcelUtil<TAgreement> util = new ExcelUtil<TAgreement>(TAgreement.class);
         util.exportExcel(response, list, "协议数据");
     }
@@ -72,7 +72,7 @@ public class TAgreementController extends BaseController
     @GetMapping(value = "/{agreementId}")
     public AjaxResult getInfo(@PathVariable("agreementId") Long agreementId)
     {
-        return success(tAgreementService.selectTAgreementByAgreementId(agreementId));
+        return success(agreementService.selectTAgreementByAgreementId(agreementId));
     }
 
     /**
@@ -83,7 +83,7 @@ public class TAgreementController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody TAgreement tAgreement)
     {
-        return toAjax(tAgreementService.insertTAgreement(tAgreement));
+        return toAjax(agreementService.insertTAgreement(tAgreement));
     }
 
     /**
@@ -94,7 +94,7 @@ public class TAgreementController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody TAgreement tAgreement)
     {
-        return toAjax(tAgreementService.updateTAgreement(tAgreement));
+        return toAjax(agreementService.updateTAgreement(tAgreement));
     }
 
     /**
@@ -105,6 +105,6 @@ public class TAgreementController extends BaseController
 	@DeleteMapping("/{agreementIds}")
     public AjaxResult remove(@PathVariable Long[] agreementIds)
     {
-        return toAjax(tAgreementService.deleteTAgreementByAgreementIds(agreementIds));
+        return toAjax(agreementService.deleteTAgreementByAgreementIds(agreementIds));
     }
 }
