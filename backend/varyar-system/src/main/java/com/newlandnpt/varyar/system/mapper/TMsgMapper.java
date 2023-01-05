@@ -5,15 +5,15 @@ import com.newlandnpt.varyar.system.domain.TMsg;
 
 /**
  * 消息Mapper接口
- * 
+ *
  * @author ruoyi
- * @date 2022-12-24
+ * @date 2023-01-05
  */
-public interface TMsgMapper 
+public interface TMsgMapper
 {
     /**
      * 查询消息
-     * 
+     *
      * @param msgId 消息主键
      * @return 消息
      */
@@ -21,7 +21,7 @@ public interface TMsgMapper
 
     /**
      * 查询消息列表
-     * 
+     *
      * @param tMsg 消息
      * @return 消息集合
      */
@@ -29,7 +29,7 @@ public interface TMsgMapper
 
     /**
      * 新增消息
-     * 
+     *
      * @param tMsg 消息
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface TMsgMapper
 
     /**
      * 修改消息
-     * 
+     *
      * @param tMsg 消息
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface TMsgMapper
 
     /**
      * 删除消息
-     * 
+     *
      * @param msgId 消息主键
      * @return 结果
      */
@@ -53,9 +53,17 @@ public interface TMsgMapper
 
     /**
      * 批量删除消息
-     * 
+     *
      * @param msgIds 需要删除的数据主键集合
      * @return 结果
      */
     public int deleteTMsgByMsgIds(Long[] msgIds);
+
+    /**
+     * 查询消息列表
+     *
+     * @param tMsg 消息
+     * @return 消息集合
+     */
+    public List<TMsg> selectTMsgInfo(TMsg tMsg);
 }

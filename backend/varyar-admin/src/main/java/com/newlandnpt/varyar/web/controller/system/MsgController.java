@@ -17,7 +17,7 @@ import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.system.domain.TMsg;
-import com.newlandnpt.varyar.system.service.ITMsgService;
+import com.newlandnpt.varyar.system.service.IMsgService;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 
@@ -29,10 +29,10 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/system/msg")
-public class TMsgController extends BaseController
+public class MsgController extends BaseController
 {
     @Autowired
-    private ITMsgService tMsgService;
+    private IMsgService msgService;
 
     /**
      * 查询消息列表
@@ -43,7 +43,7 @@ public class TMsgController extends BaseController
             TMsg tMsg)
     {
         startPage();
-        List<TMsg> list = tMsgService.selectTMsgList(tMsg);
+        List<TMsg> list = msgService.selectTMsgList(tMsg);
         setType(list);
         return getDataTable(list);
     }
@@ -61,7 +61,7 @@ public class TMsgController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, TMsg tMsg)
     {
-        List<TMsg> list = tMsgService.selectTMsgList(tMsg);
+        List<TMsg> list = msgService.selectTMsgList(tMsg);
         ExcelUtil<TMsg> util = new ExcelUtil<TMsg>(TMsg.class);
         util.exportExcel(response, list, "消息数据");
     }
@@ -73,7 +73,7 @@ public class TMsgController extends BaseController
     @GetMapping(value = "/{msgId}")
     public AjaxResult getInfo(@PathVariable("msgId") Long msgId)
     {
-        return success(tMsgService.selectTMsgByMsgId(msgId));
+        return success(msgService.selectTMsgByMsgId(msgId));
     }
 
     /**
@@ -84,7 +84,7 @@ public class TMsgController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody TMsg tMsg)
     {
-        return toAjax(tMsgService.insertTMsg(tMsg));
+        return toAjax(msgService.insertTMsg(tMsg));
     }
 
     /**
@@ -96,7 +96,7 @@ public class TMsgController extends BaseController
     public AjaxResult edit(@RequestBody TMsg tMsg)
     {
         tMsg.setOperateFlag("1");
-        return toAjax(tMsgService.updateTMsg(tMsg));
+        return toAjax(msgService.updateTMsg(tMsg));
     }
 
     /**
@@ -107,6 +107,6 @@ public class TMsgController extends BaseController
 	@DeleteMapping("/{msgIds}")
     public AjaxResult remove(@PathVariable Long[] msgIds)
     {
-        return toAjax(tMsgService.deleteTMsgByMsgIds(msgIds));
+        return toAjax(msgService.deleteTMsgByMsgIds(msgIds));
     }
 }
