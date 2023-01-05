@@ -1,0 +1,1560 @@
+{
+	"info": {
+		"_postman_id": "c68768c3-4361-4c3b-bc7d-45a313791a8b",
+		"name": "智慧养老",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "首页",
+			"item": [
+				{
+					"name": "admin首页",
+					"item": [
+						{
+							"name": "已激活设备数量",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/platform/admin/device/count",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"platform",
+										"admin",
+										"device",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "未分配（配对）设备数量",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/platform/admin/device/notassociate/count",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"platform",
+										"admin",
+										"device",
+										"notassociate",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "会员总数",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/platform/admin/member/count",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"platform",
+										"admin",
+										"member",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "未分配会员总数",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/platform/admin/member/notarrange/count",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"platform",
+										"admin",
+										"member",
+										"notarrange",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "机构总数",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/platform/admin/org/count",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"platform",
+										"admin",
+										"org",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "未处理消息（事件）数",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/platform/admin/event/unhandle/count",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"platform",
+										"admin",
+										"event",
+										"unhandle",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "未处理会员消息（事件）数",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/platform/admin/event/member/unhandle/count",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"platform",
+										"admin",
+										"event",
+										"member",
+										"unhandle",
+										"count"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "orgadmin首页",
+					"item": [
+						{
+							"name": "获取分支机构",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/org/admin/suborg/list",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"org",
+										"admin",
+										"suborg",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "统计分支机构设备数",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/org/admin/suborg/device/count/groupbyorg",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"org",
+										"admin",
+										"suborg",
+										"device",
+										"count",
+										"groupbyorg"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "统计机构事件数",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/org/admin/org/100/event/unhandle/count",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"org",
+										"admin",
+										"org",
+										"100",
+										"event",
+										"unhandle",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "未分配（配对）设备数量",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/org/admin/device/notassociate/count",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"org",
+										"admin",
+										"device",
+										"notassociate",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "未分组设备数量",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/org/admin/device/notarrange/count",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"org",
+										"admin",
+										"device",
+										"notarrange",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "未分配设备组数量",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/org/admin/devicegroup/notarrange/count",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"org",
+										"admin",
+										"devicegroup",
+										"notarrange",
+										"count"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "biz首页",
+					"item": []
+				}
+			]
+		},
+		{
+			"name": "系统管理",
+			"item": []
+		},
+		{
+			"name": "机构管理",
+			"item": [
+				{
+					"name": "机构管理",
+					"item": [
+						{
+							"name": "分页获取机构信息",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/org/page",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"org",
+										"page"
+									],
+									"query": [
+										{
+											"key": "orgName",
+											"value": "1226",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "新增机构",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// 去除请求body中的注释",
+											"if (pm?.request?.body?.mode === 'raw') {",
+											"    const rawData = pm.request.body.toString();",
+											"    const strippedData = rawData.replace(",
+											"        /\\\\\"|\"(?:\\\\\"|[^\"])*\"|(\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/)/g,",
+											"        (m, g) => g ? \"\" : m",
+											"    );",
+											"    // pm.request.body.update(JSON.stringify(JSON.parse(strippedData)));",
+											"    pm.request.body.raw = JSON.stringify(JSON.parse(strippedData));",
+											"}",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "challengeAlgorithm",
+											"value": "S256",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"parentId\":\"100\" ,//父级机构id\n    \"orgName\":\"1226\" ,//机构名称\n    \"orgNo\":\"1\",//机构编号\n    \"leader\":\"leader\",// 负责人\n    \"leaderPhone\":\"phone\",//联系电话\n    \"type\":\"0\",//机构类型（0企业机构 1个人机构）\n    \"address\":\"家\",//机构地址\n    \"attendantName1\":\"1\",//第一服务人员姓名\n    \"phone1\":\"1\",//第一服务人员号码\n    \"attendantName2\":\"2\",//第二服务人员姓名\n    \"phone2\":\"2\",//第二服务人员号码\n    \"attendantName3\":\"3\",//第三服务人员姓名\n    \"phone3\":\"3\",//第三服务人员号码\n    \"status\":\"0\",//机构状态:0开通,1关闭\n    \"orderNum\":0//显示顺序\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/org",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"org"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改机构",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// 去除请求body中的注释",
+											"if (pm?.request?.body?.mode === 'raw') {",
+											"    const rawData = pm.request.body.toString();",
+											"    const strippedData = rawData.replace(",
+											"        /\\\\\"|\"(?:\\\\\"|[^\"])*\"|(\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/)/g,",
+											"        (m, g) => g ? \"\" : m",
+											"    );",
+											"    // pm.request.body.update(JSON.stringify(JSON.parse(strippedData)));",
+											"    pm.request.body.raw = JSON.stringify(JSON.parse(strippedData));",
+											"}",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "challengeAlgorithm",
+											"value": "S256",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"orgId\":112,//机构id\n    \"parentId\":\"100\" ,//父级机构id\n    \"orgName\":\"1226\" ,//机构名称\n    \"orgNo\":\"1\",//机构编号\n    \"leader\":\"leader\",// 负责人\n    \"leaderPhone\":\"phone\",//联系电话\n    \"type\":\"0\",//机构类型（0企业机构 1个人机构）\n    \"address\":\"家\",//机构地址\n    \"attendantName1\":\"1\",//第一服务人员姓名\n    \"phone1\":\"1\",//第一服务人员号码\n    \"attendantName2\":\"2\",//第二服务人员姓名\n    \"phone2\":\"2\",//第二服务人员号码\n    \"attendantName3\":\"3\",//第三服务人员姓名\n    \"phone3\":\"3\",//第三服务人员号码\n    \"status\":\"0\",//机构状态:0开通,1关闭\n    \"orderNum\":0//显示顺序\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/org",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"org"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除机构",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "challengeAlgorithm",
+											"value": "S256",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/org/111",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"org",
+										"111"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "获取导入设备模板",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "challengeAlgorithm",
+											"value": "S256",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/org/devices/importTemplate",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"org",
+										"devices",
+										"importTemplate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "导入设备",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "challengeAlgorithm",
+											"value": "S256",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/Users/junelyn/Documents/npt/work/2022/智慧养老/response.xlsx"
+										},
+										{
+											"key": "orgId",
+											"value": "112",
+											"description": "机构id",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/org/devices/importData",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"org",
+										"devices",
+										"importData"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "设备组管理",
+					"item": [
+						{
+							"name": "分页获取设备组信息",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "challengeAlgorithm",
+											"value": "S256",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/org/devicegroup/page",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"org",
+										"devicegroup",
+										"page"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "设备组详情",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "challengeAlgorithm",
+											"value": "S256",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/org/devicegroup/100",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"org",
+										"devicegroup",
+										"100"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "新建设备组",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// 去除请求body中的注释",
+											"if (pm?.request?.body?.mode === 'raw') {",
+											"    const rawData = pm.request.body.toString();",
+											"    const strippedData = rawData.replace(",
+											"        /\\\\\"|\"(?:\\\\\"|[^\"])*\"|(\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/)/g,",
+											"        (m, g) => g ? \"\" : m",
+											"    );",
+											"    // pm.request.body.update(JSON.stringify(JSON.parse(strippedData)));",
+											"    pm.request.body.raw = JSON.stringify(JSON.parse(strippedData));",
+											"}",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "challengeAlgorithm",
+											"value": "S256",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"1227-2\" // 设备组名称\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/org/devicegroup",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"org",
+										"devicegroup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改设备组",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// 去除请求body中的注释",
+											"if (pm?.request?.body?.mode === 'raw') {",
+											"    const rawData = pm.request.body.toString();",
+											"    const strippedData = rawData.replace(",
+											"        /\\\\\"|\"(?:\\\\\"|[^\"])*\"|(\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/)/g,",
+											"        (m, g) => g ? \"\" : m",
+											"    );",
+											"    // pm.request.body.update(JSON.stringify(JSON.parse(strippedData)));",
+											"    pm.request.body.raw = JSON.stringify(JSON.parse(strippedData));",
+											"}",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "challengeAlgorithm",
+											"value": "S256",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"createBy\": \"admin\",\n        \"createTime\": \"2022-12-27 01:26:23\",\n        \"updateBy\": \"admin\",\n        \"updateTime\": \"2022-12-27 01:31:25\",\n        \"remark\": null,\n        \"deviceGroupId\":103, //设备组id\n        \"orgId\": 103, // 机构id\n        \"name\":\"1227-2\", // 设备组名称\n        \"no\": \"\",\n        \"userId\": null,\n        \"userName\": null,\n        \"delFlag\": \"0\"\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/org/devicegroup",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"org",
+										"devicegroup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "设备组分配设备",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// 去除请求body中的注释",
+											"if (pm?.request?.body?.mode === 'raw') {",
+											"    const rawData = pm.request.body.toString();",
+											"    const strippedData = rawData.replace(",
+											"        /\\\\\"|\"(?:\\\\\"|[^\"])*\"|(\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/)/g,",
+											"        (m, g) => g ? \"\" : m",
+											"    );",
+											"    // pm.request.body.update(JSON.stringify(JSON.parse(strippedData)));",
+											"    pm.request.body.raw = JSON.stringify(JSON.parse(strippedData));",
+											"}",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[100]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/org/devicegroup/103/devices/arrange",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"org",
+										"devicegroup",
+										"103",
+										"devices",
+										"arrange"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "设备组分配运营人员",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// 去除请求body中的注释",
+											"if (pm?.request?.body?.mode === 'raw') {",
+											"    const rawData = pm.request.body.toString();",
+											"    const strippedData = rawData.replace(",
+											"        /\\\\\"|\"(?:\\\\\"|[^\"])*\"|(\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/)/g,",
+											"        (m, g) => g ? \"\" : m",
+											"    );",
+											"    // pm.request.body.update(JSON.stringify(JSON.parse(strippedData)));",
+											"    pm.request.body.raw = JSON.stringify(JSON.parse(strippedData));",
+											"}",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[103]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/org/devicegroup/arrange/user/1",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"org",
+										"devicegroup",
+										"arrange",
+										"user",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除设备组",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// 去除请求body中的注释",
+											"if (pm?.request?.body?.mode === 'raw') {",
+											"    const rawData = pm.request.body.toString();",
+											"    const strippedData = rawData.replace(",
+											"        /\\\\\"|\"(?:\\\\\"|[^\"])*\"|(\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/)/g,",
+											"        (m, g) => g ? \"\" : m",
+											"    );",
+											"    // pm.request.body.update(JSON.stringify(JSON.parse(strippedData)));",
+											"    pm.request.body.raw = JSON.stringify(JSON.parse(strippedData));",
+											"}",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "challengeAlgorithm",
+											"value": "S256",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/org/devicegroup/102",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"org",
+										"devicegroup",
+										"102"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "设备管理",
+			"item": [
+				{
+					"name": "设备管理",
+					"item": [
+						{
+							"name": "分页获取设备信息",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										},
+										{
+											"key": "challengeAlgorithm",
+											"value": "S256",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "client_authentication",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/device/page",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"device",
+										"page"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "新增设备信息",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"12302\",\n    \"no\": \"12302\",\n    \"status\": \"0\",\n    \"type\": \"0\",\n    \"distributeFlag\": \"0\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/device",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"device"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "设备信息详情",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/device/103",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"device",
+										"103"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "设备配对(分配机构)",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"deviceId\": 103,\n    \"orgId\": 103,\n    \"name\": \"1230\",\n    \"location\": \"0\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/device/associate",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"device",
+										"associate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "设备激活（上线）",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/device/103/status/active",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"device",
+										"103",
+										"status",
+										"active"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "设备下线",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/device/103/status/offline",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"device",
+										"103",
+										"status",
+										"offline"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "分配设备组",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/device/101/arrange/group/100",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"device",
+										"101",
+										"arrange",
+										"group",
+										"100"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "会员管理",
+			"item": [
+				{
+					"name": "会员分页",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{智慧养老url}}/member/page",
+							"host": [
+								"{{智慧养老url}}"
+							],
+							"path": [
+								"member",
+								"page"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "会员详情",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{智慧养老url}}/member/100",
+							"host": [
+								"{{智慧养老url}}"
+							],
+							"path": [
+								"member",
+								"100"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "会员家庭分页（会员名下设备总览）",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{智慧养老url}}/member/100/family/page",
+							"host": [
+								"{{智慧养老url}}"
+							],
+							"path": [
+								"member",
+								"100",
+								"family",
+								"page"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "分配运营",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{智慧养老url}}/member/100/arrange/user/1",
+							"host": [
+								"{{智慧养老url}}"
+							],
+							"path": [
+								"member",
+								"100",
+								"arrange",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "服务记录",
+			"item": [
+				{
+					"name": "创建服务记录",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"servedType\": \"0\", //服务类型（ 0拨打电话 ）\n    \"servedInfo\": \"13700000001\", //服务信息，服务类型为0的时候填服务电话\n    \"deviceId\": \"101\", //设备id,\n    \"serveEvents\": [\n        {\n            \"eventId\": 102\n        },\n        {\n            \"eventId\": 103\n        }\n    ] //处理消息列表\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{智慧养老url}}/device/serve/record",
+							"host": [
+								"{{智慧养老url}}"
+							],
+							"path": [
+								"device",
+								"serve",
+								"record"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "服务记录分页",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"servedUserId\": 101, //\n    \"servedType\": \"0\", //服务类型（ 0拨打电话 ）\n    \"servedInfo\": \"13700000001\", //服务信息，服务类型为0的时候填服务电话\n    \"deviceId\": \"101\", //设备id,\n    \"serveEvents\": [\n        {\n            \"eventId\": 100\n        },\n        {\n            \"eventId\": 101\n        }\n    ] //处理消息列表\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{智慧养老url}}/device/serve/record/page?servedUser.nickName=运营&servedUser.phonenumber=137&device.type=0&device.no=12303&device.name=12303&params%5BcreateTimeBegin%5D=2023-01-04&params%5BcreateTimeEnd%5D=2023-01-05",
+							"host": [
+								"{{智慧养老url}}"
+							],
+							"path": [
+								"device",
+								"serve",
+								"record",
+								"page"
+							],
+							"query": [
+								{
+									"key": "servedUser.nickName",
+									"value": "运营",
+									"description": "服务人员姓名"
+								},
+								{
+									"key": "servedUser.phonenumber",
+									"value": "137",
+									"description": "服务人员号码"
+								},
+								{
+									"key": "device.type",
+									"value": "0",
+									"description": "设备类型"
+								},
+								{
+									"key": "device.no",
+									"value": "12303",
+									"description": "设备编号"
+								},
+								{
+									"key": "device.name",
+									"value": "12303",
+									"description": "设备名称"
+								},
+								{
+									"key": "params%5BcreateTimeBegin%5D",
+									"value": "2023-01-04",
+									"description": "处理时间起始"
+								},
+								{
+									"key": "params%5BcreateTimeEnd%5D",
+									"value": "2023-01-05",
+									"description": "处理时间截止"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "导出服务记录",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"servedUserId\": 101, //\n    \"servedType\": \"0\", //服务类型（ 0拨打电话 ）\n    \"servedInfo\": \"13700000001\", //服务信息，服务类型为0的时候填服务电话\n    \"deviceId\": \"101\", //设备id,\n    \"serveEvents\": [\n        {\n            \"eventId\": 100\n        },\n        {\n            \"eventId\": 101\n        }\n    ] //处理消息列表\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{智慧养老url}}/device/serve/record/export",
+							"host": [
+								"{{智慧养老url}}"
+							],
+							"path": [
+								"device",
+								"serve",
+								"record",
+								"export"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "登录",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"superadmin\",\n    \"password\": \"admin123\",\n    \"code\": \"3\",\n    \"uuid\": \"45947e1679ac4ae0b80e15e2ae259982\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{智慧养老url}}/login",
+					"host": [
+						"{{智慧养老url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取验证码",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = {response: pm.response.json()}",
+							"data.response.img=\"data:image/jpg;base64,\"+data.response.img;",
+							"var template = `<html><img src=\"{{response.img}}\" /><p>uuid:{{response.uuid}}</p></html>`;",
+							"// 显示图片",
+							"pm.visualizer.set(template, data);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{智慧养老url}}/captchaImage",
+					"host": [
+						"{{智慧养老url}}"
+					],
+					"path": [
+						"captchaImage"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// 去除请求body中的注释",
+					"if (pm?.request?.body?.mode === 'raw') {",
+					"    const rawData = pm.request.body.toString();",
+					"    const strippedData = rawData.replace(",
+					"        /\\\\\"|\"(?:\\\\\"|[^\"])*\"|(\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/)/g,",
+					"        (m, g) => g ? \"\" : m",
+					"    );",
+					"    // pm.request.body.update(JSON.stringify(JSON.parse(strippedData)));",
+					"    pm.request.body.raw = JSON.stringify(JSON.parse(strippedData));",
+					"}",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

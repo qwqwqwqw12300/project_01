@@ -15,6 +15,7 @@
         <result property="registerTime" column="register_time"/>
         <result property="location" column="location"/>
         <result property="familyId" column="family_id"/>
+        <result property="memberId" column="member_id"/>
         <result property="roomId" column="room_id"/>
         <result property="distributeFlag" column="distribute_flag"/>
         <result property="orgId" column="org_id"/>
@@ -33,7 +34,7 @@
                devicegroup_id,
                name, no, status, type,
             register_time,
-            location, family_id, room_id, distribute_flag, org_id, org_name, del_flag, create_by, create_time, update_by, update_time,
+            location, family_id, member_id, room_id, distribute_flag, org_id, org_name, del_flag, create_by, create_time, update_by, update_time,
             (select name from t_devicegroup where devicegroup_id = d.devicegroup_id) device_group_name,
             (select type from t_org where org_id = d.org_id) org_type,
             (select org_no from t_org where org_id = d.org_id) org_no
@@ -56,6 +57,7 @@
             <if test="registerTime != null ">and register_time = #{registerTime}</if>
             <if test="location != null  and location != ''">and location = #{location}</if>
             <if test="familyId != null ">and family_id = #{familyId}</if>
+            <if test="memberId != null ">and member_id = #{memberId}</if>
             <if test="roomId != null ">and room_id = #{roomId}</if>
             <if test="distributeFlag != null  and distributeFlag != ''">and distribute_flag = #{distributeFlag}</if>
             <if test="orgId != null ">and org_id = #{orgId}</if>
@@ -66,10 +68,10 @@
         </where>
     </select>
 
-    <select id="selectByMemberId" parameterType="Long" resultMap="TDeviceResult">
+    <select id="selectByMemberId" parameterType="Map" resultMap="TDeviceResult">
         select * from t_device ta join (
         <include refid="selectTDeviceVo1"/> and tmf.member_id = #{memberId}
-        where r.del_flag ="0") trm on trm.family_id =  ta.family_id and trm.room_id = ta.room_id
+        where r.del_flag ="0" and r.room_id = #{roomId} and r.family_id = #{familyId}) trm on trm.family_id =  ta.family_id and trm.room_id = ta.room_id
     </select>
 
     <select id="selectTDeviceByDeviceId" parameterType="Long" resultMap="TDeviceResult">
@@ -89,6 +91,7 @@
             <if test="registerTime != null">register_time,</if>
             <if test="location != null">location,</if>
             <if test="familyId != null">family_id,</if>
+            <if test="memberId != null">member_id,</if>
             <if test="roomId != null">room_id,</if>
             <if test="distributeFlag != null">distribute_flag,</if>
             <if test="orgId != null">org_id,</if>
@@ -105,6 +108,7 @@
             <if test="registerTime != null">#{registerTime},</if>
             <if test="location != null">#{location},</if>
             <if test="familyId != null">#{familyId},</if>
+            <if test="memberId != null">#{memberId},</if>
             <if test="roomId != null">#{roomId},</if>
             <if test="distributeFlag != null">#{distributeFlag},</if>
             <if test="orgId != null">#{orgId},</if>
@@ -125,6 +129,7 @@
             <if test="registerTime != null">register_time = #{registerTime},</if>
             <if test="location != null">location = #{location},</if>
             <if test="familyId != null">family_id = #{familyId},</if>
+            <if test="memberId != null">member_id = #{memberId},</if>
             <if test="roomId != null">room_id = #{roomId},</if>
             <if test="distributeFlag != null">distribute_flag = #{distributeFlag},</if>
             <if test="orgId != null">org_id = #{orgId},</if>

@@ -58,4 +58,22 @@ public interface ITEventService
      * @return 结果
      */
     public int deleteTEventByEventId(Long eventId);
+
+    /**
+     * 未处理事件数
+     * @return
+     */
+    public long unHandleEventCount();
+    /**
+     * 机构未处理事件数
+     * @return
+     * @param orgId
+     */
+    public long unHandleEventCountInOrg(Long orgId);
+
+    /**
+     * 未处理会员事件数
+     * @return
+     */
+    public long unHandleMemberEventCount();
 }

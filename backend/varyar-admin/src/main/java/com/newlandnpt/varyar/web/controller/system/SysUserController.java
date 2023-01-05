@@ -55,10 +55,10 @@ public class SysUserController extends BaseController
     private ISysPostService postService;
 
     /**
-     * 获取用户列表
+     * 获取用户分页
      */
     @PreAuthorize("@ss.hasPermi('system:user:list')")
-    @GetMapping("/list")
+    @GetMapping("/page")
     public TableDataInfo list(SysUser user)
     {
         startPage();
@@ -129,7 +129,7 @@ public class SysUserController extends BaseController
         {
             return error("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
         }
-        else if (StringUtils.isNotEmpty(user.getPhonenumber())
+        else if (StringUtils.isNotEmpty(user.getMobilePhone())
                 && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
         {
             return error("新增用户'" + user.getUserName() + "'失败，手机号码已存在");
@@ -158,7 +158,7 @@ public class SysUserController extends BaseController
         {
             return error("修改用户'" + user.getUserName() + "'失败，登录账号已存在");
         }
-        else if (StringUtils.isNotEmpty(user.getPhonenumber())
+        else if (StringUtils.isNotEmpty(user.getMobilePhone())
                 && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
         {
             return error("修改用户'" + user.getUserName() + "'失败，手机号码已存在");

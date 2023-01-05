@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.system.mapper;
 
 import com.newlandnpt.varyar.system.domain.DeviceGroup;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -78,4 +79,12 @@ public interface DeviceGroupMapper {
      * @return 结果
      */
     public DeviceGroup checkOrgNameUnique(@Param("name") String name, @Param("orgId") Long orgId);
+
+    /**
+     * 未分配设备组
+     * @param deviceGroup
+     * @return
+     */
+    @Select("select count(*) from t_devicegroup where org_id = #{orgId} and user_id in null")
+    public long notArrangeCount(DeviceGroup deviceGroup);
 }

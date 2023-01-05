@@ -1,9 +1,6 @@
 package com.newlandnpt.varyar.system.service;
 
 import com.newlandnpt.varyar.common.core.domain.model.MemberInfoRequest;
-import com.newlandnpt.varyar.common.core.domain.model.MemberLoginPwdRequest;
-import com.newlandnpt.varyar.common.core.domain.model.MemberLoginSmsRequest;
-import com.newlandnpt.varyar.system.domain.Member;
 
 /**
  * 会员个人中心方法

@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.system.service.impl;
 
 import java.util.List;
 
+import com.newlandnpt.varyar.common.annotation.DataScope;
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
@@ -119,7 +120,14 @@ public class MemberServiceImpl implements IMemberService
     }
 
     @Override
-    public long total() {
-        return memberMapper.total();
+    @DataScope(orgAlias = "d")
+    public long total(Member member) {
+        return memberMapper.total(member);
+    }
+
+    @Override
+    @DataScope(orgAlias = "d")
+    public long notArrangeMemberCount(Member member) {
+        return memberMapper.notArrangeMemberCount(member);
     }
 }

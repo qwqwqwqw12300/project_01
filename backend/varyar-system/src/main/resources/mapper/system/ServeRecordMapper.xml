@@ -55,12 +55,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="userName"     column="user_name"    />
         <result property="nickName"     column="nick_name"    />
         <result property="email"        column="email"        />
-        <result property="phonenumber"  column="phonenumber"  />
+        <result property="mobilePhone"  column="mobile_phone"  />
         <result property="orgName"  column="org_name"  />
     </resultMap>
 
     <select id="selectUserSimple" resultMap="SysUserSimple">
-        select u.user_id, u.org_id, u.user_name, u.nick_name, u.phonenumber,d.org_name
+        select u.user_id, u.org_id, u.user_name, u.nick_name, u.phone_number,d.org_name
         from sys_user u
                  left join t_org d on u.org_id = d.org_id
         where u.user_id = #{userId}
@@ -98,10 +98,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectServeRecordList" parameterType="ServeRecord" resultMap="ServeRecordResult">
         <include refid="selectServeRecordVo"/>
-        <if test="servedUser!=null and (servedUser.nickName !=null or servedUser.phonenumber!=null)">
+        <if test="servedUser != null and (servedUser.nickName != null or servedUser.mobilePhone != null)">
             left join sys_user u on u.user_id = s.served_user_id
         </if>
-        <if test="device!=null and (device.type !=null or device.no!=null or device.name !=null)">
+        <if test="device != null and (device.type != null or device.no!=null or device.name != null)">
             left join t_device d on d.device_id = s.device_id
         </if>
         <where>  
@@ -109,11 +109,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="servedType != null  and servedType != ''"> and s.served_type = #{servedType}</if>
             <if test="servedInfo != null  and servedInfo != ''"> and s.served_info = #{servedInfo}</if>
             <if test="deviceId != null "> and s.device_id = #{deviceId}</if>
-            <if test="params.createTimeBegin !=null">and s.create_time <![CDATA[>=]]> ${params.createTimeBegin}</if>
-            <if test="params.createTimeEnd !=null">and s.create_time <![CDATA[<=]]> ${params.createTimeEnd}</if>
-
+            <if test="params.createTimeBegin != null">
+                and s.create_time <![CDATA[>=]]> #{params.createTimeBegin}
+            </if>
+            <if test="params.createTimeEnd != null">
+                and s.create_time <![CDATA[<=]]> ${params.createTimeEnd}
+            </if>
             <if test="servedUser!=null and servedUser.nickName !=null"> and u.nick_name like concat('%', #{servedUser.nickName}, '%')</if>
-            <if test="servedUser!=null and servedUser.phonenumber !=null"> and u.phonenumber like concat('%', #{servedUser.phonenumber}, '%')</if>
+            <if test="servedUser!=null and servedUser.mobilePhone !=null"> and u.mobile_phone like concat('%', #{servedUser.mobilePhone}, '%')</if>
 
             <if test="device!=null and device.type !=null"> and d.type = #{device.type}</if>
             <if test="device!=null and device.no !=null"> and d.no like concat(#{device.no}, '%')</if>

@@ -3,7 +3,7 @@ package com.newlandnpt.varyar.web.controller.member;
 import java.util.List;
 
 import com.newlandnpt.varyar.system.domain.TFamily;
-import com.newlandnpt.varyar.system.service.ITFamilyService;
+import com.newlandnpt.varyar.system.service.IFamilyService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +26,7 @@ public class MemberController extends BaseController
     @Autowired
     private IMemberService memberService;
     @Autowired
-    private ITFamilyService tFamilyService;
+    private IFamilyService tFamilyService;
 
     /**
      * 查询会员列表

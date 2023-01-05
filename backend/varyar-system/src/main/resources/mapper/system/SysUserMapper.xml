@@ -8,9 +8,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <id     property="userId"       column="user_id"      />
         <result property="orgId"       column="org_id"      />
         <result property="userName"     column="user_name"    />
+        <result property="name"     column="name"    />
         <result property="nickName"     column="nick_name"    />
         <result property="email"        column="email"        />
-        <result property="phonenumber"  column="phonenumber"  />
+        <result property="mobilePhone"  column="mobile_phone"  />
+        <result property="telephone"  column="telephone"  />
+        <result property="extensionNumber"  column="extension_number"  />
         <result property="sex"          column="sex"          />
         <result property="avatar"       column="avatar"       />
         <result property="password"     column="password"     />
@@ -47,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 	
 	<sql id="selectUserVo">
-        select u.user_id, u.org_id, u.user_name, u.nick_name, u.email, u.avatar, u.phonenumber, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
+        select u.user_id, u.org_id, u.user_name, u.nick_name,u.name, u.email, u.avatar, u.mobile_phone, u.telephone, u.extension_number, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
         d.org_id, d.parent_id, d.ancestors, d.org_name, d.order_num, d.leader, d.status as org_status,
         r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
         from sys_user u
@@ -57,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
     
     <select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
-		select u.user_id, u.org_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.org_name, d.leader from sys_user u
+		select u.user_id, u.org_id, u.nick_name, u.user_name, u.name, u.email, u.avatar, u.mobile_phone, u.telephone, u.extension_number, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.org_name, d.leader from sys_user u
 		left join t_org d on u.org_id = d.org_id
 		where u.del_flag = '0'
 		<if test="userId != null and userId != 0">
@@ -69,8 +72,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="status != null and status != ''">
 			AND u.status = #{status}
 		</if>
-		<if test="phonenumber != null and phonenumber != ''">
-			AND u.phonenumber like concat('%', #{phonenumber}, '%')
+		<if test="mobilePhone != null and mobilePhone != ''">
+			AND u.mobile_phone like concat('%', #{mobilePhone}, '%')
 		</if>
 		<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
 			AND date_format(u.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
@@ -86,7 +89,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectAllocatedList" parameterType="SysUser" resultMap="SysUserResult">
-	    select distinct u.user_id, u.org_id, u.user_name, u.nick_name, u.email, u.phonenumber, u.status, u.create_time
+	    select distinct u.user_id, u.org_id, u.user_name, u.nick_name, u.email, u.mobile_phone, u.status, u.create_time
 	    from sys_user u
 			 left join t_org d on u.org_id = d.org_id
 			 left join sys_user_role ur on u.user_id = ur.user_id
@@ -95,15 +98,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    <if test="userName != null and userName != ''">
 			AND u.user_name like concat('%', #{userName}, '%')
 		</if>
-		<if test="phonenumber != null and phonenumber != ''">
-			AND u.phonenumber like concat('%', #{phonenumber}, '%')
+		<if test="mobilePhone != null and mobilePhone != ''">
+			AND u.mobile_phone like concat('%', #{mobilePhone}, '%')
 		</if>
 		<!-- 数据范围过滤 -->
 		${params.dataScope}
 	</select>
 	
 	<select id="selectUnallocatedList" parameterType="SysUser" resultMap="SysUserResult">
-	    select distinct u.user_id, u.org_id, u.user_name, u.nick_name, u.email, u.phonenumber, u.status, u.create_time
+	    select distinct u.user_id, u.org_id, u.user_name, u.user_name, u.name, u.email, u.mobile_phone, u.telephone, u.extension_number, u.status, u.create_time
 	    from sys_user u
 			 left join t_org d on u.org_id = d.org_id
 			 left join sys_user_role ur on u.user_id = ur.user_id
@@ -113,8 +116,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    <if test="userName != null and userName != ''">
 			AND u.user_name like concat('%', #{userName}, '%')
 		</if>
-		<if test="phonenumber != null and phonenumber != ''">
-			AND u.phonenumber like concat('%', #{phonenumber}, '%')
+		<if test="mobilePhone != null and mobilePhone != ''">
+			AND u.mobile_phone like concat('%', #{mobilePhone}, '%')
 		</if>
 		<!-- 数据范围过滤 -->
 		${params.dataScope}
@@ -135,7 +138,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="checkPhoneUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, phonenumber from sys_user where phonenumber = #{phonenumber} and del_flag = '0' limit 1
+		select user_id, mobile_phone from sys_user where mobile_phone = #{mobilePhone} and del_flag = '0' limit 1
 	</select>
 	
 	<select id="checkEmailUnique" parameterType="String" resultMap="SysUserResult">
@@ -147,10 +150,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="userId != null and userId != 0">user_id,</if>
  			<if test="orgId != null and orgId != 0">org_id,</if>
  			<if test="userName != null and userName != ''">user_name,</if>
+ 			<if test="name != null and name != ''">name,</if>
  			<if test="nickName != null and nickName != ''">nick_name,</if>
  			<if test="email != null and email != ''">email,</if>
  			<if test="avatar != null and avatar != ''">avatar,</if>
- 			<if test="phonenumber != null and phonenumber != ''">phonenumber,</if>
+ 			<if test="mobilePhone != null and mobilePhone != ''">mobile_phone,</if>
+ 			<if test="telephone != null and telephone != ''">telephone,</if>
+ 			<if test="extensionNumber != null and extensionNumber != ''">extension_number,</if>
  			<if test="sex != null and sex != ''">sex,</if>
  			<if test="password != null and password != ''">password,</if>
  			<if test="status != null and status != ''">status,</if>
@@ -161,10 +167,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="userId != null and userId != ''">#{userId},</if>
  			<if test="orgId != null and orgId != ''">#{orgId},</if>
  			<if test="userName != null and userName != ''">#{userName},</if>
+			<if test="name != null and name != ''">#{name},</if>
  			<if test="nickName != null and nickName != ''">#{nickName},</if>
  			<if test="email != null and email != ''">#{email},</if>
  			<if test="avatar != null and avatar != ''">#{avatar},</if>
- 			<if test="phonenumber != null and phonenumber != ''">#{phonenumber},</if>
+			<if test="mobilePhone != null and mobilePhone != ''">#{mobilePhone},</if>
+			<if test="telephone != null and telephone != ''">#{telephone},</if>
+			<if test="extensionNumber != null and extensionNumber != ''">#{extensionNumber},</if>
  			<if test="sex != null and sex != ''">#{sex},</if>
  			<if test="password != null and password != ''">#{password},</if>
  			<if test="status != null and status != ''">#{status},</if>
@@ -180,8 +189,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="orgId != null and orgId != 0">org_id = #{orgId},</if>
  			<if test="userName != null and userName != ''">user_name = #{userName},</if>
  			<if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
+			<if test="name != null and name != ''">name = #{name},</if>
  			<if test="email != null ">email = #{email},</if>
- 			<if test="phonenumber != null ">phonenumber = #{phonenumber},</if>
+ 			<if test="mobilePhone != null ">mobile_phone = #{mobilePhone},</if>
+			<if test="telephone != null and telephone != ''">telephone = #{telephone},</if>
+			<if test="extensionNumber != null and extensionNumber != ''">extension_number = #{extensionNumber},</if>
  			<if test="sex != null and sex != ''">sex = #{sex},</if>
  			<if test="avatar != null and avatar != ''">avatar = #{avatar},</if>
  			<if test="password != null and password != ''">password = #{password},</if>

@@ -23,32 +23,34 @@ public class SysUser extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 用户ID */
-    @Excel(name = "用户序号", cellType = ColumnType.NUMERIC, prompt = "用户编号")
     private Long userId;
 
     /** 机构ID */
-    @Excel(name = "机构编号", type = Type.IMPORT)
     private Long orgId;
 
-    /** 用户账号 */
-    @Excel(name = "登录名称")
+    /** 登录账号 */
     private String userName;
 
     /** 用户昵称 */
-    @Excel(name = "用户名称")
     private String nickName;
 
-    /** 用户邮箱 */
-    @Excel(name = "用户邮箱")
-    private String email;
-
-    /** 手机号码 */
-    @Excel(name = "手机号码")
-    private String phonenumber;
+    /** 用户姓名 */
+    private String name;
 
     /** 用户性别 */
-    @Excel(name = "用户性别", readConverterExp = "0=男,1=女,2=未知")
     private String sex;
+
+    /** 手机号码 */
+    private String mobilePhone;
+
+    /** 座机号 */
+    private String telephone;
+
+    /** 分机号 */
+    private String extensionNumber;
+
+    /** 用户邮箱 */
+    private String email;
 
     /** 用户头像 */
     private String avatar;
@@ -169,15 +171,41 @@ public class SysUser extends BaseEntity
         this.email = email;
     }
 
-    @Size(min = 0, max = 11, message = "手机号码长度不能超过11个字符")
-    public String getPhonenumber()
-    {
-        return phonenumber;
+    @Xss(message = "姓名不能包含脚本字符")
+    @Size(min = 0, max = 30, message = "姓名长度不能超过30个字符")
+    public String getName() {
+        return name;
     }
 
-    public void setPhonenumber(String phonenumber)
-    {
-        this.phonenumber = phonenumber;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Size(min = 0, max = 11, message = "手机号码长度不能超过11个字符")
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
+
+    @Size(min = 0, max = 14, message = "座机号码长度不能超过14个字符")
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    @Size(min = 0, max = 3, message = "分机号码长度不能超过3个字符")
+    public String getExtensionNumber() {
+        return extensionNumber;
+    }
+
+    public void setExtensionNumber(String extensionNumber) {
+        this.extensionNumber = extensionNumber;
     }
 
     public String getSex()
@@ -302,26 +330,28 @@ public class SysUser extends BaseEntity
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("userId", getUserId())
-            .append("orgId", getOrgId())
-            .append("userName", getUserName())
-            .append("nickName", getNickName())
-            .append("email", getEmail())
-            .append("phonenumber", getPhonenumber())
-            .append("sex", getSex())
-            .append("avatar", getAvatar())
-            .append("password", getPassword())
-            .append("status", getStatus())
-            .append("delFlag", getDelFlag())
-            .append("loginIp", getLoginIp())
-            .append("loginDate", getLoginDate())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
-            .append("org", getOrg())
-            .toString();
+        return new ToStringBuilder(this)
+                .append("userId", userId)
+                .append("orgId", orgId)
+                .append("userName", userName)
+                .append("nickName", nickName)
+                .append("name", name)
+                .append("sex", sex)
+                .append("mobilePhone", mobilePhone)
+                .append("telephone", telephone)
+                .append("extensionNumber", extensionNumber)
+                .append("email", email)
+                .append("avatar", avatar)
+                .append("password", password)
+                .append("status", status)
+                .append("delFlag", delFlag)
+                .append("loginIp", loginIp)
+                .append("loginDate", loginDate)
+                .append("org", org)
+                .append("roles", roles)
+                .append("roleIds", roleIds)
+                .append("postIds", postIds)
+                .append("roleId", roleId)
+                .toString();
     }
 }

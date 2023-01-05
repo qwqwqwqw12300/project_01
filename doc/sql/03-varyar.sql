@@ -53,7 +53,8 @@ create table t_device (
   status            char(1)         default '0'                comment '状态（0未激活 1激活 2下线）',
   type              char(1)         default '0'                comment '类型（0雷达波 1监控设备）',
   register_time     datetime                                   comment '激活时间',
-  location          varchar(100)     default ''                comment '设备位置',  
+  location          varchar(100)     default ''                comment '设备位置',
+  member_id        bigint(20)                                  comment '会员id',
   family_id        bigint(20)                                  comment '家庭id',
   room_id          bigint(20)                                  comment '房间id',
   distribute_flag   char(1)         default '0'                comment '分配标志（0未分配 1已分配）',
@@ -125,6 +126,10 @@ create table t_room (
   room_id        bigint(20)      not null auto_increment    comment '房间id',
   name              varchar(50)     default ''                 comment '房间名称',
   family_id        bigint(20)      not null                    comment '家庭id',
+  room_length      decimal(10,2)                               comment '长度',
+  room_left        decimal(10,2)                               comment '左侧',
+  room_right       decimal(10,2)                               comment '右侧',
+  height           decimal(10,2)                               comment '高度',
   del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
   create_time       datetime                                   comment '创建时间',
   update_time       datetime                                   comment '更新时间',
@@ -166,24 +171,7 @@ create table t_version (
   primary key (version_id)
 ) engine=innodb auto_increment=100 comment = '版本表';
 
-drop table if exists t_event;
-create table t_event (
-  event_id        bigint(20)      not null auto_increment    comment '事件id',
-  no                varchar(50)     default ''                comment '事件编号',
-  level              varchar(50)     default ''               comment '级别',
-  content           varchar(50)     default ''                comment '内容',
-  operate_type          char(1)         default null          comment '操作类型（0会员操作 1后台人工）',
-  member_id         bigint(20)      default null              comment '会员id',
-  member_phone       varchar(11)      default null            comment '会员手机号',
-  member_name       varchar(50)      default null             comment '会员姓名',
-  user_id           bigint(20)      default null              comment '运营者id',
-  user_name         varchar(50)     default null              comment '运营者姓名',
-  operate_time       datetime                                 comment '操作时间',
-  operate_flag        char(1)         default null            comment '操作标志（0未处理 1已处理）',
-  create_time       datetime                                  comment '创建时间',
-  update_time       datetime                                  comment '更新时间',
-  primary key (event_id)
-) engine=innodb auto_increment=100 comment = '事件表';
+
 drop table if exists t_serve_record;
 
 create table t_serve_record(
@@ -207,14 +195,78 @@ create table t_serve_record_event_relate(
     event_id        bigint(20)      not null    comment '事件id'
 )engine=innodb auto_increment=100 comment = '服务记录和事件关联表';
 
+
+drop table if exists t_event;
+create table t_event (
+  event_id        bigint(20)      not null auto_increment    comment '事件id',
+  no                varchar(50)     default ''                comment '事件编号',
+  level              varchar(50)     default ''               comment '级别',
+  content           varchar(50)     default ''                comment '内容',
+  device_id         bigint(20)                                comment '设备id',
+  devicegroup_id    bigint(20)                                comment '设备组id',
+  family_id         bigint(20)                                comment '家庭id',
+  device_no         varchar(50)                               comment '设备编号',
+  org_id            bigint(20)                                comment '机构id',
+  org_name          varchar(50)                               comment '机构名称',
+  operate_type          char(1)                               comment '操作类型（0会员操作 1后台人工）',
+  member_id         bigint(20)                                comment '会员id',
+  member_phone       varchar(11)                              comment '会员手机号',
+  member_name       varchar(50)                               comment '会员姓名',
+  user_id           bigint(20)                                comment '运营者id',
+  user_name         varchar(50)                               comment '运营者姓名',
+  operate_time       datetime                                 comment '操作时间',
+  operate_flag        char(1)                                 comment '操作标志（0未处理 1已处理）',
+  create_time       datetime                                  comment '创建时间',
+  update_time       datetime                                  comment '更新时间',
+  primary key (event_id)
+) engine=innodb auto_increment=100 comment = '事件表';
+
 drop table if exists t_msg;
 create table t_msg (
   msg_id        bigint(20)      not null auto_increment    comment '消息id',
   no                varchar(50)     default ''             comment '消息编号',
   content           varchar(50)     default ''             comment '内容',
   event_id       bigint(20)                                comment '事件id',
+  device_id         bigint(20)                                comment '设备id',
+  family_id         bigint(20)                                comment '家庭id',
+  member_id       bigint(20)                                comment '处理人会员id',
   operate_flag        char(1)         default null            comment '已读未读标志（0未处理 1已处理）',
   create_time       datetime                               comment '创建时间',
   update_time       datetime                               comment '更新时间',
   primary key (msg_id)
 ) engine=innodb auto_increment=100 comment = '消息表';
+
+drop table if exists t_room_zone;
+create table t_room_zone (
+  room_zone_id        bigint(20)      not null auto_increment    comment '子区域id',
+  room_id           bigint(20)                            comment '房间id',
+  name               varchar(50)                          comment '子区域名称',
+  x1                decimal(10,2)                         comment '最左侧的点',
+  x2                decimal(10,2)                         comment '最右侧的点',
+  y1                decimal(10,2)                         comment '最近的点',
+  y2                decimal(10,2)                         comment '最远的点',
+  z1                decimal(10,2)                         comment '最底部的点',
+  z2                decimal(10,2)                         comment '最顶部的点',
+  exist_flag        char(1)                               comment '存在监测标志（0是 1否）',
+  fall_flag         char(1)                               comment '迭代监测标志（0是 1否）',
+  entry_time        int                                   comment '进入时间(s)',
+  departure_time    int                                   comment '离开时间(s)',
+  create_time       datetime                               comment '创建时间',
+  update_time       datetime                               comment '更新时间',
+  primary key (room_zone_id)
+) engine=innodb auto_increment=100 comment = '子区域表';
+
+drop table if exists t_device_fence;
+create table t_device_fence (
+  device_fence_id        bigint(20)      not null auto_increment    comment '设备电子围栏id',
+  geo_fence_id          bigint(20)                          comment '高德API服务-电子围栏id',
+  device_id             bigint(20)                          comment '设备id',
+  device_no             varchar(50)                         comment '设备编号',      
+  address               varchar(50)                         comment '地址',
+  longitude             varchar(50)                         comment '经度',
+  latitude              varchar(50)                         comment '纬度',
+  radius                varchar(50)                         comment '半径',
+  create_time        datetime                               comment '创建时间',
+  update_time       datetime                                comment '更新时间',
+  primary key (device_fence_id)
+) engine=innodb auto_increment=100 comment = '设备电子围栏表';

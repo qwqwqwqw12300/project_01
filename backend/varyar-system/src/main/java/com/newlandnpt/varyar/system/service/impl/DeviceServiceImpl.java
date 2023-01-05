@@ -6,6 +6,7 @@ import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.system.domain.dto.org.OrgDeviceCountDto;
 import com.newlandnpt.varyar.system.mapper.DeviceMapper;
 import com.newlandnpt.varyar.system.mapper.OrgMapper;
 import com.newlandnpt.varyar.system.service.IDeviceService;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.newlandnpt.varyar.common.constant.DeviceConstants.*;
 import static com.newlandnpt.varyar.common.utils.SecurityUtils.getLoginUserName;
@@ -61,10 +63,8 @@ public class DeviceServiceImpl implements IDeviceService {
     }
     @Override
     @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
-    public List<Device> selectDeviceByMemberId(Long memberId){
-        List<Device> list = deviceMapper.selectByMemberId(memberId);
-
-        return list;
+    public List<Device> selectDeviceByMemberId(Map map){
+        return deviceMapper.selectByMemberId(map);
     }
     /**
      * 新增设备
@@ -225,7 +225,30 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
-    public long total() {
-        return deviceMapper.total();
+    public long total(Device device) {
+        return deviceMapper.total(device);
+    }
+
+    @Override
+    @DataScope(orgAlias = "d")
+    public long notAssociateDeviceCount(Device device) {
+        return deviceMapper.notAssociateDeviceCount(device);
+    }
+
+    @Override
+    @DataScope(orgAlias = "d")
+    public long notArrangeDeviceCount(Device device) {
+        return deviceMapper.notArrangeDeviceCount(device);
+    }
+
+    @Override
+    @DataScope(orgAlias = "d")
+    public List<OrgDeviceCountDto> countGroupByOrgId(Device device) {
+        return deviceMapper.countGroupByOrgId(device);
+    }
+
+    @Override
+    public List<Device> selectBizCareDeviceList(Long userId) {
+        return null;
     }
 }

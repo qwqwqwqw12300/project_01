@@ -17,7 +17,7 @@ import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.system.domain.TRoom;
-import com.newlandnpt.varyar.system.service.ITRoomService;
+import com.newlandnpt.varyar.system.service.IRoomService;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 
@@ -32,7 +32,7 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 public class TRoomController extends BaseController
 {
     @Autowired
-    private ITRoomService tRoomService;
+    private IRoomService tRoomService;
 
     /**
      * 查询房间列表

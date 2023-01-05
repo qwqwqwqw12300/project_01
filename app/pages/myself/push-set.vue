@@ -3,7 +3,7 @@
 		<app-logo text="消息推送设置"></app-logo>
 		<view class="ui-form">
 			<view class="ui-form-item">
-				<u-icon name="/static/images/push.png" width="26" height="23" size="53rpx"></u-icon>
+				<u-icon name="email" size="37"></u-icon>
 				<text class="text">消息推送</text>
 				<u-switch activeColor="#5ac725" inactiveColor="rgb(138, 138, 138)" size="24"> ></u-switch>
 			</view>
@@ -36,10 +36,11 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+			box-shadow: 15rpx 15rpx 20rpx #c8c5c0;
 
 			.text {
 				flex: 1;
-				margin-left: 24rpx;
+				margin-left: 10rpx;
 				font-size: 33rpx;
 			}
 		}

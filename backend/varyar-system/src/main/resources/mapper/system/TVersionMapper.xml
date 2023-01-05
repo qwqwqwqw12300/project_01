@@ -72,4 +72,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{versionId}
         </foreach>
     </delete>
+
+    <select id="selectTVersionByVersionType" parameterType="String" resultMap="TVersionResult">
+        <include refid="selectTVersionVo"/>
+        where type = #{versionType} and del_flag='0'
+        order by create_time desc limit 1
+    </select>
 </mapper>

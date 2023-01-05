@@ -3,7 +3,7 @@
 		<app-logo text="意见与建议"></app-logo>
 		<view class="ui-form">
 			<view class="ui-form-item">
-				<u-text prefixIcon="/static/images/suggestion.png" iconStyle="font-size: 32rpx" text="您的问题与建议"
+				<u-text prefixIcon="file-text" iconStyle="font-size: 32rpx" text="您的问题与建议"
 					color="#444" size="28rpx"></u-text>
 				<view class="ui-textarea">
 					<u--textarea height="100" placeholder="请输入您的问题或建议"></u--textarea>

@@ -1,7 +1,10 @@
 package com.newlandnpt.varyar.system.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.system.domain.dto.org.OrgDeviceCountDto;
 
 /**
  * 设备Service接口
@@ -29,10 +32,10 @@ public interface IDeviceService
     /**
      * 查询设备列表
      *
-     * @param device 设备
+     * @param map 设备
      * @return 设备集合
      */
-    public List<Device> selectDeviceByMemberId(Long memberId);
+    public List<Device> selectDeviceByMemberId(Map map);
     /**
      * 新增设备
      * 
@@ -113,7 +116,36 @@ public interface IDeviceService
     /**
      * 统计设备数量
      * @return
+     * @param device
      */
-    public long total();
+    public long total(Device device);
+
+    /**
+     * 统计未分配(配对)设备数量
+     * @return
+     * @param device
+     */
+    public long notAssociateDeviceCount(Device device);
+
+    /**
+     * 统计未分组设备数量
+     * @return
+     * @param device
+     */
+    public long notArrangeDeviceCount(Device device);
+
+    /**
+     * 根据机构id分组统计设备数
+     * @return
+     * @param device
+     */
+    public List<OrgDeviceCountDto> countGroupByOrgId(Device device);
+
+    /**
+     * 获取运营关心的设备列表
+     * @param userId
+     * @return
+     */
+    public List<Device> selectBizCareDeviceList(Long userId);
 
 }
