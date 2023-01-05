@@ -246,4 +246,9 @@ public class DeviceServiceImpl implements IDeviceService {
     public List<OrgDeviceCountDto> countGroupByOrgId(Device device) {
         return deviceMapper.countGroupByOrgId(device);
     }
+
+    @Override
+    public List<Device> selectBizCareDeviceList(Long userId) {
+        return null;
+    }
 }

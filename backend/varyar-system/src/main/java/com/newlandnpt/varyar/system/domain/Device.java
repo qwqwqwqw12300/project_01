@@ -54,6 +54,9 @@ public class Device extends BaseEntity
     @Excel(name = "设备分组",type = Excel.Type.EXPORT)
     private String deviceGroupName;
 
+    /** 会员id */
+    private Long memberId;
+
     /** 家庭id */
     private Long familyId;
 
@@ -159,7 +162,16 @@ public class Device extends BaseEntity
     {
         return location;
     }
-    public void setFamilyId(Long familyId) 
+
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
+
+    public void setFamilyId(Long familyId)
     {
         this.familyId = familyId;
     }
@@ -251,6 +263,7 @@ public class Device extends BaseEntity
                 .append("registerTime", registerTime)
                 .append("location", location)
                 .append("deviceGroupName", deviceGroupName)
+                .append("memberId", memberId)
                 .append("familyId", familyId)
                 .append("roomId", roomId)
                 .append("distributeFlag", distributeFlag)

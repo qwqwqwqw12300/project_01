@@ -141,4 +141,11 @@ public interface IDeviceService
      */
     public List<OrgDeviceCountDto> countGroupByOrgId(Device device);
 
+    /**
+     * 获取运营关心的设备列表
+     * @param userId
+     * @return
+     */
+    public List<Device> selectBizCareDeviceList(Long userId);
+
 }

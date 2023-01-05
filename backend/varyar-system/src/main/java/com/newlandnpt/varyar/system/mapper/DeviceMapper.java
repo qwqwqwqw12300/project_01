@@ -117,4 +117,12 @@ public interface DeviceMapper
     @Select("select org_id as orgId,count(*) as count from t_device where status in ('1','2') ${params.dataScope} and del_flag = '0'" +
             "group by org_id")
     public List<OrgDeviceCountDto> countGroupByOrgId(Device device);
+
+    /**
+     * 查询设备列表
+     *
+     * @param userId 用户id
+     * @return 设备集合
+     */
+    public List<Device> selectBizCareDeviceList(Long userId);
 }
