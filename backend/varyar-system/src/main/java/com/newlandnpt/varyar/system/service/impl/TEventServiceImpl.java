@@ -1,6 +1,7 @@
 package com.newlandnpt.varyar.system.service.impl;
 
 import java.util.List;
+
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,5 +93,20 @@ public class TEventServiceImpl implements ITEventService
     public int deleteTEventByEventId(Long eventId)
     {
         return tEventMapper.deleteTEventByEventId(eventId);
+    }
+
+    @Override
+    public long unHandleEventCount() {
+        return tEventMapper.unHandleEventCount();
+    }
+
+    @Override
+    public long unHandleEventCountInOrg(Long orgId) {
+        return tEventMapper.unHandleEventCountInOrg(orgId);
+    }
+
+    @Override
+    public long unHandleMemberEventCount() {
+        return tEventMapper.unHandleMemberEventCount();
     }
 }

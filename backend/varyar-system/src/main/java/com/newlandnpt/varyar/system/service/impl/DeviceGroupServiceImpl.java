@@ -127,4 +127,9 @@ public class DeviceGroupServiceImpl implements IDeviceGroupService {
         }
         return UserConstants.UNIQUE;
     }
+
+    @Override
+    public long notArrangeCount(DeviceGroup deviceGroup) {
+        return devicegroupMapper.notArrangeCount(deviceGroup);
+    }
 }

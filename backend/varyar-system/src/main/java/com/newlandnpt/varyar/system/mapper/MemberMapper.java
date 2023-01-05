@@ -78,9 +78,29 @@ public interface MemberMapper
 
 
     /**
-     * 根据机构id统计机构服务会员数量
+     * 会员总数
      * @return
+     * @param member
      */
-    @Select("select count(*) from t_member where del_flag = '0'")
-    public long total();
+    @Select(" <script> " +
+            " select count(*) from t_member where " +
+            " <if test=\"params.dataScope != null and params.dataScope != ''\"> " +
+            " user_id in (select user_id from sys_user u where 1=1 ${params.dataScope}) " +
+            " and </if> " +
+            " del_flag = '0' " +
+            " </script> ")
+    public long total(Member member);
+
+    /**
+     * 未分配会员数
+     * @return
+     * @param member
+     */
+    @Select(" <script> " +
+            " select count(*) from t_member where distribute_flag = '0' " +
+            " <if test=\"params.dataScope != null and params.dataScope != ''\"> " +
+            " user_id in (select user_id from sys_user u where 1=1 ${params.dataScope})</if> " +
+            " and del_flag = '0' " +
+            " </script> ")
+    public long notArrangeMemberCount(Member member);
 }

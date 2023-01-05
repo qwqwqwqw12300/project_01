@@ -8,7 +8,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
 import org.springframework.data.annotation.Transient;
-import org.springframework.security.web.PortResolverImpl;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -38,7 +37,7 @@ public class ServeRecord extends BaseEntity
     /** 服务人员信息 */
     @Excels({
             @Excel(name = "服务人员", targetAttr = "nickName", type = Excel.Type.EXPORT,sort = 2),
-            @Excel(name = "服务人员手机号码", targetAttr = "phonenumber", type = Excel.Type.EXPORT,sort = 3),
+            @Excel(name = "服务人员手机号码", targetAttr = "mobilePhone", type = Excel.Type.EXPORT,sort = 3),
             @Excel(name = "处理人归属机构", targetAttr = "orgName", type = Excel.Type.EXPORT,sort = 4)
     })
     @Transient
@@ -255,7 +254,7 @@ public class ServeRecord extends BaseEntity
         private String nickName;
 
         /** 手机号码 */
-        private String phonenumber;
+        private String mobilePhone;
         /** 机构名称**/
         private String orgName;
 
@@ -291,12 +290,12 @@ public class ServeRecord extends BaseEntity
             this.nickName = nickName;
         }
 
-        public String getPhonenumber() {
-            return phonenumber;
+        public String getMobilePhone() {
+            return mobilePhone;
         }
 
-        public void setPhonenumber(String phonenumber) {
-            this.phonenumber = phonenumber;
+        public void setMobilePhone(String mobilePhone) {
+            this.mobilePhone = mobilePhone;
         }
 
         public String getOrgName() {

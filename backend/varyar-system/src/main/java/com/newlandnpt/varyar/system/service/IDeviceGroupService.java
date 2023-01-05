@@ -76,4 +76,11 @@ public interface IDeviceGroupService
      * @return 结果
      */
     public String checkOrgNameUnique(DeviceGroup deviceGroup);
+
+    /**
+     * 未分配设备组
+     * @param deviceGroup
+     * @return
+     */
+    public long notArrangeCount(DeviceGroup deviceGroup);
 }

@@ -63,7 +63,7 @@ public class SysProfileController extends BaseController
         LoginUser loginUser = getLoginUser();
         SysUser sysUser = loginUser.getUser();
         user.setUserName(sysUser.getUserName());
-        if (StringUtils.isNotEmpty(user.getPhonenumber())
+        if (StringUtils.isNotEmpty(user.getMobilePhone())
                 && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
         {
             return error("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
@@ -81,7 +81,10 @@ public class SysProfileController extends BaseController
         {
             // 更新缓存用户信息
             sysUser.setNickName(user.getNickName());
-            sysUser.setPhonenumber(user.getPhonenumber());
+            sysUser.setName(user.getName());
+            sysUser.setMobilePhone(user.getMobilePhone());
+            sysUser.setTelephone(user.getTelephone());
+            sysUser.setExtensionNumber(user.getExtensionNumber());
             sysUser.setEmail(user.getEmail());
             sysUser.setSex(user.getSex());
             tokenService.setLoginUser(loginUser);

@@ -68,8 +68,15 @@ public interface IMemberService
     public int arrangeUserToMember(Long memberId,Long userId);
 
     /**
-     * 根据机构id统计机构服务会员数量
+     * 会员总数
      * @return
+     * @param member
      */
-    public long total();
+    public long total(Member member);
+    /**
+     * 未分配会员数
+     * @return
+     * @param member
+     */
+    public long notArrangeMemberCount(Member member);
 }

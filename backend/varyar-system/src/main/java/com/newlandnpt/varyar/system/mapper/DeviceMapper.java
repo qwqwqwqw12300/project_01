@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.system.domain.dto.org.OrgDeviceCountDto;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -86,9 +87,34 @@ public interface DeviceMapper
     public int arrangeDeviceToGroup(@Param("deviceIds")Long[] deviceIds,@Param("deviceGroupId") Long deviceGroupId,@Param("updateBy") String updateBy);
 
     /**
-     * 根据机构统计设备数量
+     * 统计已激活设备数量（激活后即使设备下线也包括在内）
      * @return
+     * @param device
      */
-    @Select("select count(*) from t_device where del_flag = '0' and status in ('1','2')")
-    public long total();
+    @Select("select count(*) from t_device where status in ('1','2') ${params.dataScope} and del_flag = '0' ")
+    public long total(Device device);
+
+    /**
+     * 统计未分配激活设备数量
+     * @return
+     * @param device
+     */
+    @Select("select count(*) from t_device where status in ('1','2') and distribute_flag = '0' ${params.dataScope} and del_flag = '0'")
+    public long notAssociateDeviceCount(Device device);
+    /**
+     * 统计未分组激活设备数量
+     * @return
+     * @param device
+     */
+    @Select("select count(*) from t_device where status in ('1','2') and devicegroup_id is null ${params.dataScope} and del_flag = '0'")
+    public long notArrangeDeviceCount(Device device);
+
+    /**
+     * 根据机构id分组统计设备数
+     * @return
+     * @param device
+     */
+    @Select("select org_id as orgId,count(*) as count from t_device where status in ('1','2') ${params.dataScope} and del_flag = '0'" +
+            "group by org_id")
+    public List<OrgDeviceCountDto> countGroupByOrgId(Device device);
 }

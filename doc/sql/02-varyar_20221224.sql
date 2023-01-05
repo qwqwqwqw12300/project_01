@@ -6,11 +6,14 @@ drop table if exists sys_user;
 create table sys_user (
   user_id           bigint(20)      not null auto_increment    comment '用户ID',
   org_id           bigint(20)      default null               comment '机构ID',
-  user_name         varchar(30)     not null                   comment '用户账号',
+  user_name         varchar(30)     not null                   comment '登录账号',
   nick_name         varchar(30)     not null                   comment '用户昵称',
+  name              varchar(30)     not null                   comment '姓名',
   user_type         varchar(2)      default '00'               comment '用户类型（00系统用户）',
   email             varchar(50)     default ''                 comment '用户邮箱',
-  phonenumber       varchar(11)     default ''                 comment '手机号码',
+  mobile_phone      varchar(11)     default ''                 comment '手机号码',
+  telephone         varchar(14)     default ''                 comment '座机号',
+  extension_number  varchar(14)     default ''                 comment '分机号',
   sex               char(1)         default '0'                comment '用户性别（0男 1女 2未知）',
   avatar            varchar(100)    default ''                 comment '头像地址',
   password          varchar(100)    default ''                 comment '密码',
@@ -29,10 +32,10 @@ create table sys_user (
 -- ----------------------------
 -- 初始化-用户信息表数据
 -- ----------------------------
-INSERT INTO `sys_user` (`user_id`, `org_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, NULL, 'superAdmin', 'superAdmin', '00', NULL, NULL, '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'superAdmin', sysdate(), '', null, '管理员');
-INSERT INTO `sys_user` (`user_id`, `org_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, 100, 'admin', 'admin', '00', NULL, NULL, '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'superAdmin', sysdate(), '', null, '');
-INSERT INTO `sys_user` (`user_id`, `org_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, 101, 'orgadmin', '个人机构管理员', '00', '', '', '0', '', '$2a$10$/tPXpxOKkm1ocJxKR5yPTeF2OOqKZvzRuti4fztyXEZRhPFu6SLLG', '0', '0', '', NULL, 'superAdmin', sysdate(), '', NULL, NULL);
-INSERT INTO `sys_user` (`user_id`, `org_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, 101, 'biz', '个人机构运营', '00', '', '', '0', '', '$2a$10$a1kQQXuizeDmoTiM3eyMseEprx.J//JRBgz8mnwLd7zEYvG.mvZCa', '0', '0', '', NULL, 'superAdmin', sysdate(), '', NULL, NULL);
+INSERT INTO `sys_user` (`user_id`, `org_id`, `user_name`, `nick_name`, `name`, `user_type`, `email`, `mobile_phone`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, NULL, 'superAdmin', 'superAdmin', 'superAdmin', '00', NULL, NULL, '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'superAdmin', sysdate(), '', null, '管理员');
+INSERT INTO `sys_user` (`user_id`, `org_id`, `user_name`, `nick_name`, `name`, `user_type`, `email`, `mobile_phone`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, 100, 'admin', 'admin', 'admin', '00', NULL, NULL, '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', sysdate(), 'superAdmin', sysdate(), '', null, '');
+INSERT INTO `sys_user` (`user_id`, `org_id`, `user_name`, `nick_name`, `name`, `user_type`, `email`, `mobile_phone`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, 101, 'orgadmin', '个人机构管理员', '个人机构管理员', '00', '', '', '0', '', '$2a$10$/tPXpxOKkm1ocJxKR5yPTeF2OOqKZvzRuti4fztyXEZRhPFu6SLLG', '0', '0', '', NULL, 'superAdmin', sysdate(), '', NULL, NULL);
+INSERT INTO `sys_user` (`user_id`, `org_id`, `user_name`, `nick_name`, `name`, `user_type`, `email`, `mobile_phone`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, 101, 'biz', '个人机构运营', '个人机构运营', '00', '', '', '0', '', '$2a$10$a1kQQXuizeDmoTiM3eyMseEprx.J//JRBgz8mnwLd7zEYvG.mvZCa', '0', '0', '', NULL, 'superAdmin', sysdate(), '', NULL, NULL);
 
 -- ----------------------------
 -- 3、岗位信息表

@@ -6,6 +6,7 @@ import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.system.domain.dto.org.OrgDeviceCountDto;
 import com.newlandnpt.varyar.system.mapper.DeviceMapper;
 import com.newlandnpt.varyar.system.mapper.OrgMapper;
 import com.newlandnpt.varyar.system.service.IDeviceService;
@@ -224,7 +225,25 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
-    public long total() {
-        return deviceMapper.total();
+    public long total(Device device) {
+        return deviceMapper.total(device);
+    }
+
+    @Override
+    @DataScope(orgAlias = "d")
+    public long notAssociateDeviceCount(Device device) {
+        return deviceMapper.notAssociateDeviceCount(device);
+    }
+
+    @Override
+    @DataScope(orgAlias = "d")
+    public long notArrangeDeviceCount(Device device) {
+        return deviceMapper.notArrangeDeviceCount(device);
+    }
+
+    @Override
+    @DataScope(orgAlias = "d")
+    public List<OrgDeviceCountDto> countGroupByOrgId(Device device) {
+        return deviceMapper.countGroupByOrgId(device);
     }
 }

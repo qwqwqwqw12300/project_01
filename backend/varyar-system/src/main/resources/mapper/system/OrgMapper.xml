@@ -62,6 +62,9 @@
         <if test="orgId != null and orgId != 0">
             AND org_id = #{orgId}
         </if>
+        <if test="params.idNotEQ != null">
+            AND org_id != #{params.idNotEQ}
+        </if>
         <if test="parentId != null and parentId != 0">
             AND parent_id = #{parentId}
         </if>
