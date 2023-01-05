@@ -33,20 +33,48 @@
 			}
 		},
 		{
-			"path": "pages/add-equipment/watch",
+			"path": "pages/add-equipment/radar-detail",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "手表设备详情"
+				"app-plus": {
+					"titleNView": false
+				}
 			}
 		},
 		{
-			"path": "pages/customer-service/customer-service",
+			"path": "pages/add-equipment/watch-detail",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/service/customer-service",
 			"style": {
 				"navigationBarTitleText": "在线客服",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
-
+		{
+			"path": "pages/service/system-messages",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/service/message-details",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
 		{
 			"path": "pages/guide/guide",
 			"style": {
@@ -60,7 +88,6 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-
 		},
 		{
 			"path": "pages/login/login",
@@ -215,7 +242,16 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/myself/position-setting",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

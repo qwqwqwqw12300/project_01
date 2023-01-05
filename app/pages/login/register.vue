@@ -6,7 +6,7 @@
 -->
 
 <template>
-	<app-body :needService="false" :hideTitle="true" :bodyStyle="{backgroundPositionY: '-100rpx'}">
+	<app-body :needService="false" :hideTitle="true" :bodyStyle="{backgroundPositionY: '-200rpx'}">
 		<view class="ui-body">
 			<text class="ui-logo">注册账号</text>
 			<view class="ui-form">

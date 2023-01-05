@@ -11,11 +11,17 @@
 <script>
 	import {
 		push
-	} from '@/common/sdk/push.js'
+	} from '@/common/sdk/push.js';
+	import {
+		isApp
+	} from '@/common/utils/util.js';
 
 	export default {
 		onLaunch: function() {
-			push.init(); // 推送服务初始化
+			if (isApp()) {
+				push.init(); // 推送服务初始化
+			}
+
 		},
 		onShow: function() {
 			console.log('App Show')

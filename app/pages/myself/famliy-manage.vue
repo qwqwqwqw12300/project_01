@@ -17,8 +17,7 @@
 							size="60rpx"></u-icon>
 						<text class="grid-text">{{ baseListItem.title }}</text>
 						<view class="ui-edit" @click.stop="editFamliy">
-							<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="edit-pen-fill" size="30rpx"
-								color="#ff9500"></u-icon>
+							<u-icon name="edit-pen-fill" size="30rpx" color="#ff9500"></u-icon>
 						</view>
 					</view>
 				</u-grid-item>
