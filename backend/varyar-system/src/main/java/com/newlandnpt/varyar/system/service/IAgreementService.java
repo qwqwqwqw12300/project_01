@@ -9,7 +9,7 @@ import com.newlandnpt.varyar.system.domain.TAgreement;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface ITAgreementService 
+public interface IAgreementService
 {
     /**
      * 查询协议

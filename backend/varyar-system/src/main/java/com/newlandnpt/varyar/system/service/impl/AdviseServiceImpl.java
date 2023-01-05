@@ -1,12 +1,14 @@
 package com.newlandnpt.varyar.system.service.impl;
 
-import java.util.List;
 import com.newlandnpt.varyar.common.utils.DateUtils;
+import com.newlandnpt.varyar.system.domain.TAdvise;
+import com.newlandnpt.varyar.system.mapper.TAdviseMapper;
+import com.newlandnpt.varyar.system.service.IAdviseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.newlandnpt.varyar.system.mapper.TAdviseMapper;
-import com.newlandnpt.varyar.system.domain.TAdvise;
-import com.newlandnpt.varyar.system.service.ITAdviseService;
+
+import java.util.List;
+
 
 /**
  * 建议Service业务层处理
@@ -15,7 +17,7 @@ import com.newlandnpt.varyar.system.service.ITAdviseService;
  * @date 2022-12-24
  */
 @Service
-public class TAdviseServiceImpl implements ITAdviseService 
+public class AdviseServiceImpl implements IAdviseService
 {
     @Autowired
     private TAdviseMapper tAdviseMapper;
@@ -53,6 +55,9 @@ public class TAdviseServiceImpl implements ITAdviseService
     @Override
     public int insertTAdvise(TAdvise tAdvise)
     {
+
+        //初始标记为未读信息
+        tAdvise.setDelFlag("0");
         tAdvise.setCreateTime(DateUtils.getNowDate());
         return tAdviseMapper.insertTAdvise(tAdvise);
     }

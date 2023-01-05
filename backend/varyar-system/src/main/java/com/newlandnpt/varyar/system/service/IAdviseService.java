@@ -9,7 +9,7 @@ import com.newlandnpt.varyar.system.domain.TAdvise;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface ITAdviseService 
+public interface IAdviseService
 {
     /**
      * 查询建议

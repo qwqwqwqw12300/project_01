@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TAgreementMapper;
 import com.newlandnpt.varyar.system.domain.TAgreement;
-import com.newlandnpt.varyar.system.service.ITAgreementService;
+import com.newlandnpt.varyar.system.service.IAgreementService;
 
 /**
  * 协议Service业务层处理
@@ -15,7 +15,7 @@ import com.newlandnpt.varyar.system.service.ITAgreementService;
  * @date 2022-12-24
  */
 @Service
-public class TAgreementServiceImpl implements ITAgreementService 
+public class AgreementServiceImpl implements IAgreementService
 {
     @Autowired
     private TAgreementMapper tAgreementMapper;

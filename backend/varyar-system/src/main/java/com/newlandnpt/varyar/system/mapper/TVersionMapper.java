@@ -58,4 +58,13 @@ public interface TVersionMapper
      * @return 结果
      */
     public int deleteTVersionByVersionIds(Long[] versionIds);
+
+    /**
+     * 查询版本
+     *
+     * @param versionType 版本类型:（0android 1ios）
+     * @return 版本
+     */
+    public TVersion selectTVersionByVersionType(String versionType);
+
 }
