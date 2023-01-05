@@ -1,0 +1,870 @@
+{
+	"info": {
+		"_postman_id": "61281708-d2c7-4685-a29d-7c0d50469b18",
+		"name": "varyar",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25135574"
+	},
+	"item": [
+		{
+			"name": "登录",
+			"item": [
+				{
+					"name": "获取验证码",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/captchaImage",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"captchaImage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "发送短信",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uuid\": \"c8916a767204456fa970c675c71048e5\",\r\n    \"captcha\":\"6d23\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/sendSms",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"sendSms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "账号密码登录",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \"phone\":\"13900001111\",\r\n    \"password\":\"1234\", \r\n    \"uuid\":\"f98933b3ece045c0812ea148622c3f36\",\r\n    \"code\":\"pbyc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/loginByPwd",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"loginByPwd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "短信登录",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"smsUuid\"：258295b3f46646c4b6c75126e917d03f\",\r\n    \"\":\"\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/loginBySms",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"loginBySms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "注册",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phone\":\"13900001111\",\r\n    \"password\":\"1234\",\r\n    \"code\":\"3679\",\r\n    \"smsUuid\":\"16f3eb2298a94ea48c4e91a5e2bb9168\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/regMember",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"regMember"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "我的-房间组",
+			"item": [
+				{
+					"name": "获取房间列表",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImRlMjEwNWY4LTczMzgtNGRlMi05YzI0LTQwZDY2MTE3NDIyOCJ9.O7vNaZJHBltso6jgbsUSkhkTfhXKGkEB-EvggY76be8Qbwu6yuE42HuEkkAtYDw8EBm8pr53MC9xSKgT4Pq-ag",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"familyId\":\"106\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/room/list",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"room",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "创建我的房间",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjAyMTdhMjkwLTU0NDUtNDNjMS05N2ZjLWJlZTQ0MTk3MDQ1ZCJ9.rDMdT6pXJ1nIgbcFTwxXBa6AgRbWfdDd7hiJ2pX9777dJ8ZhyMhognyuRMRqq2FJ7WGaMMo8WGqyPSyJEADuXg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"familyId\":\"106\",\r\n    \"roomName\":\"room001\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/room/creRoom",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"room",
+								"creRoom"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "修改我的房间",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImU3MTQ2MTE3LTdiMjItNDJjOC04MzQ3LTYxZjRjYWM4NGIyNCJ9.fXLDaDjHg0-5tKUQ36RqxS7THJYq7M50VrkgXy7HT6JnjP7Q8MoQErPAEdSROGpLub1q8fqVJEFO2HG4vb7hEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roomName\":\"room001_1\",\r\n    \"roomId\":\"100\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/room/editRoom",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"room",
+								"editRoom"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除我的房间",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImU3MTQ2MTE3LTdiMjItNDJjOC04MzQ3LTYxZjRjYWM4NGIyNCJ9.fXLDaDjHg0-5tKUQ36RqxS7THJYq7M50VrkgXy7HT6JnjP7Q8MoQErPAEdSROGpLub1q8fqVJEFO2HG4vb7hEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"roomId\":\"104\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/room/remRoom",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"room",
+								"remRoom"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "我的-家庭组",
+			"item": [
+				{
+					"name": "获取家庭列表",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImI2YWVhYTJjLTI5M2UtNDdmYi04YzJlLWNkYzMzY2ExOTdiYyJ9.9v2zzWIMuDCcxgbs-4QF0CjymVsZegs0ZBjSVnX3nYjCJ6myeHpQaOxT4rEK8gJ2xVUe6oo0kOJvjvI_VxcPwQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/family/list",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"family",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "创建我的家庭",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjEwMjFmYTlkLWIyMjMtNDE1Yy05MTQxLWNkYWEyN2UzOGJlNyJ9.o1aMhjnXfkWJ3g_2SvZSVt7ViI2BJR8-RD1kosAX_P4p8U9GNAVScFgpCDRCM0k6G2jmaF5X_ULZELru3JCAfw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"familyName\":\"其为以为002\",\r\n    \"address\":\"饵位器2号\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/family/creFamily",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"family",
+								"creFamily"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "修改我的家庭",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjEwMjFmYTlkLWIyMjMtNDE1Yy05MTQxLWNkYWEyN2UzOGJlNyJ9.o1aMhjnXfkWJ3g_2SvZSVt7ViI2BJR8-RD1kosAX_P4p8U9GNAVScFgpCDRCM0k6G2jmaF5X_ULZELru3JCAfw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"familyName\":\"圣罗兰11\",\r\n    \"address\":\"德玛西亚112221\",\r\n    \"familyId\":\"106\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/family/editFamily",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"family",
+								"editFamily"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除我的家庭",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjhiNzgzMmRmLWU1ZWItNGQ5NC1iYTliLTNhMWQ5NmVkZDM1OCJ9.wMAGL9DzFT5Tl3s2DxeYejhVach3rsjGhnRgne7rlUWmAzouEnnzTpXjbZSz7Wkg4wKScoY8JTG6RlTTJz9AIA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"familyId\":\"106\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/family/remFamily",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"family",
+								"remFamily"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "我的-系统消息",
+			"item": []
+		},
+		{
+			"name": "我的-设备管理",
+			"item": [
+				{
+					"name": "获取设备列表",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImQxNzU2NWZjLTQ5MzAtNDExNy1iNWIxLWMwYmU4YTMxOGMxZiJ9.tVshptXBtVqK5aK5Ie2wCgwuAOJRawHYOYWf6yhVgcqydUpibvlzyDvGsd08HdH_JGZDs2DJLLFENqFLYiPOdQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/device/list",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"device",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		
+		{
+			"name": "用户登录登出",
+			"item": [
+				{
+					"name": "账号密码登录",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phone\":\"13774522537\",\r\n    \"password\":\"7777777\",\r\n    \"uuid\":\"d1a5c4e0ffee4d7dbd22e07733d28fe5\",\r\n    \"code\":\"wag7\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/loginByPwd",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"loginByPwd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "用户退出",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjE0ZDRhYmVmLWIyYjYtNGZiZC04ZTU2LWRhNGZmNWZhMGYwZSJ9.C1fkOH1_TZcTJpxe6_d0oA0pGGFKB4-M-OKaGWpd2o_dsmg2gI8H4xfeaCuGn6RsUHy2EUHE2rpXxtGU370VBw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/loginOut",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"loginOut"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "个人中心修改",
+			"item": [
+				{
+					"name": "个人中心-修改密码",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjE0ZDRhYmVmLWIyYjYtNGZiZC04ZTU2LWRhNGZmNWZhMGYwZSJ9.C1fkOH1_TZcTJpxe6_d0oA0pGGFKB4-M-OKaGWpd2o_dsmg2gI8H4xfeaCuGn6RsUHy2EUHE2rpXxtGU370VBw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/memberInfo/updatePwd?oldPassword=1008611&newPassword=7777777",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"memberInfo",
+								"updatePwd"
+							],
+							"query": [
+								{
+									"key": "oldPassword",
+									"value": "1008611"
+								},
+								{
+									"key": "newPassword",
+									"value": "7777777"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "个人中心-修改手机号",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjE0ZDRhYmVmLWIyYjYtNGZiZC04ZTU2LWRhNGZmNWZhMGYwZSJ9.C1fkOH1_TZcTJpxe6_d0oA0pGGFKB4-M-OKaGWpd2o_dsmg2gI8H4xfeaCuGn6RsUHy2EUHE2rpXxtGU370VBw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPhone\":\"13774522637\",\r\n    \"newPhone\":\"13774522537\",   \r\n    \"oldCode\":\"3801\",\r\n    \"newCode\":\"2884\",\r\n    \"password\":\"7777777\",\r\n    \"uuid\":\"971b2acad2d04c4ca915baecec0940ea\",\r\n    \"newuuid\":\"35bc1790df4e49dabe277de4929a1593\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/memberInfo/updatePhone",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"memberInfo",
+								"updatePhone"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "协议管理",
+			"item": [
+				{
+					"name": "查询协议",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjE0ZDRhYmVmLWIyYjYtNGZiZC04ZTU2LWRhNGZmNWZhMGYwZSJ9.C1fkOH1_TZcTJpxe6_d0oA0pGGFKB4-M-OKaGWpd2o_dsmg2gI8H4xfeaCuGn6RsUHy2EUHE2rpXxtGU370VBw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/agreement/getAgreementInfo?agreementType=0",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"agreement",
+								"getAgreementInfo"
+							],
+							"query": [
+								{
+									"key": "agreementType",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "用户协议",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/agreement/selectAgreement",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"agreement",
+								"selectAgreement"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "找回重置密码",
+			"item": [
+				{
+					"name": "找回重置密码",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImRhZDVlZmY1LTAyMDEtNDE4MC05NjA2LTY1MGU4ZGM2ZjM4NCJ9.ohej8q5-p0hfe52olRqcJSYRnA4yRfZXRlBcakmy05bTx50uIy5e1-T46WvGlqDiDLNH_1sgfdaG1THSUSVqJw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phone\":\"13774522537\",\r\n    \"code\":\"sdf2\",\r\n    \"smscode\":\"sdff\",\r\n    \"password\":\"111111\",\r\n    \"uuid\":\"dsfefefwwegeeg\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/resetMemberPwd",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"resetMemberPwd"
+							]
+						},
+						"description": "重置密码"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "问题建议",
+			"item": [
+				{
+					"name": "用户新增建议",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjE0ZDRhYmVmLWIyYjYtNGZiZC04ZTU2LWRhNGZmNWZhMGYwZSJ9.C1fkOH1_TZcTJpxe6_d0oA0pGGFKB4-M-OKaGWpd2o_dsmg2gI8H4xfeaCuGn6RsUHy2EUHE2rpXxtGU370VBw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"captcha\":\"c3e3\",\r\n    \"content\":\"这是个优化建13774522537\",   \r\n    \"uuid\":\"165acb081e0c4767804c8f36e078f340\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/advise/addAdvise",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"advise",
+								"addAdvise"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "版本查询",
+			"item": [
+				{
+					"name": "查询版本",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjE0ZDRhYmVmLWIyYjYtNGZiZC04ZTU2LWRhNGZmNWZhMGYwZSJ9.C1fkOH1_TZcTJpxe6_d0oA0pGGFKB4-M-OKaGWpd2o_dsmg2gI8H4xfeaCuGn6RsUHy2EUHE2rpXxtGU370VBw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/version/selectVersionInfo?versionType=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"version",
+								"selectVersionInfo"
+							],
+							"query": [
+								{
+									"key": "versionType",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+		
+		
+	]
+}
