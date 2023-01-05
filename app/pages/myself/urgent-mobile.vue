@@ -4,16 +4,16 @@
 		<view class="ui-list">
 			<view class="ui-list-card">
 				<view class="card-header">
-					<u-icon name="/static/images/contact.png" size="54rpx" />
+					<u-icon name="account-fill" size="33" color="#FDC135"/>
 					<text class="text">第一紧急联系人</text>
 				</view>
 				<view class="card-content">
 					<view class="name">
-						<u-icon name="/static/images/phone_white.png" size="44rpx" />
+						<u-icon name="phone" size="30" color="#fff" />
 						<text>张三</text>
 					</view>
 					<text class="tel">15900008888</text>
-					<u-icon name="/static/images/close.png" size="54rpx" />
+					<u-icon name="close-circle" size="33" color="#000" />
 				</view>
 			</view>
 		</view>
@@ -55,7 +55,7 @@
 				align-items: center;
 
 				.text {
-					margin-left: 26rpx;
+					margin-left: 10rpx;
 					color: #333;
 					font-size: 38rpx;
 					font-weight: bold;
@@ -79,7 +79,7 @@
 					font-weight: bold;
 
 					text {
-						margin-left: 14rpx;
+						margin-left: 8rpx;
 					}
 				}
 

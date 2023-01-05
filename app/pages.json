@@ -33,7 +33,7 @@
 			}
 		},
 		{
-			"path": "pages/add-equipment/watch",
+			"path": "pages/add-equipment/watch-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "手表设备详情"

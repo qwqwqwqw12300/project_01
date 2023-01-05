@@ -34,7 +34,8 @@
 				</view>
 				<view class="item-content">
 					<view class="item-content-header">
-						<image class="content-header-icon" src="../../static/images/right.png" mode="" />
+						<u-icon name="arrow-right" size="42rpx"></u-icon>
+					<!-- 	<image class="content-header-icon" src="../../static/images/right.png" mode="" /> -->
 						<text>时间</text>
 						<text>类型</text>
 						<text>SOS</text>
