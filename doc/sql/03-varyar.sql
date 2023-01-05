@@ -254,3 +254,18 @@ create table t_room_zone (
   update_time       datetime                               comment '更新时间',
   primary key (room_zone_id)
 ) engine=innodb auto_increment=100 comment = '子区域表';
+
+drop table if exists t_device_fence;
+create table t_device_fence (
+  device_fence_id        bigint(20)      not null auto_increment    comment '设备电子围栏id',
+  geo_fence_id          bigint(20)                          comment '高德API服务-电子围栏id',
+  device_id             bigint(20)                          comment '设备id',
+  device_no             varchar(50)                         comment '设备编号',      
+  address               varchar(50)                         comment '地址',
+  longitude             varchar(50)                         comment '经度',
+  latitude              varchar(50)                         comment '纬度',
+  radius                varchar(50)                         comment '半径',
+  create_time        datetime                               comment '创建时间',
+  update_time       datetime                                comment '更新时间',
+  primary key (device_fence_id)
+) engine=innodb auto_increment=100 comment = '设备电子围栏表';
