@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TRoomMapper;
 import com.newlandnpt.varyar.system.domain.TRoom;
-import com.newlandnpt.varyar.system.service.ITRoomService;
+import com.newlandnpt.varyar.system.service.IRoomService;
 
 /**
  * 房间Service业务层处理
@@ -15,7 +15,7 @@ import com.newlandnpt.varyar.system.service.ITRoomService;
  * @date 2022-12-24
  */
 @Service
-public class TRoomServiceImpl implements ITRoomService 
+public class TRoomServiceImpl implements IRoomService
 {
     @Autowired
     private TRoomMapper tRoomMapper;

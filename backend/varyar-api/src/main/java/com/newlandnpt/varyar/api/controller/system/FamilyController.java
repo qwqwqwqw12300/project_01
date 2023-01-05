@@ -5,8 +5,7 @@ import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.model.TfamilyRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.system.domain.TFamily;
-import com.newlandnpt.varyar.system.service.ITFamilyService;
-import com.newlandnpt.varyar.system.service.ITMemberFamilyService;
+import com.newlandnpt.varyar.system.service.IFamilyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +21,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/family")
-public class TFamilyController extends BaseController {
+public class FamilyController extends BaseController {
 
     @Autowired
-    private ITFamilyService tFamilyService;
+    private IFamilyService tFamilyService;
 
     @GetMapping("/list")
     public TableDataInfo list( TFamily tFamily) {

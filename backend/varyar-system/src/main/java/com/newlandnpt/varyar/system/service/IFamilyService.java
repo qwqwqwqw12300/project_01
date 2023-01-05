@@ -9,7 +9,7 @@ import com.newlandnpt.varyar.system.domain.TFamily;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface ITFamilyService 
+public interface IFamilyService
 {
     /**
      * 查询家庭
@@ -42,6 +42,13 @@ public interface ITFamilyService
      * @return 结果
      */
     public int insertTFamily(TFamily tFamily,Long memberId);
+    /**
+     * 新增家庭
+     *
+     * @param tFamily 家庭
+     * @return 结果
+     */
+    public int insertTFamily(TFamily tFamily);
 
     /**
      * 修改家庭

@@ -8,12 +8,12 @@ import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.domain.TMemberFamily;
 import com.newlandnpt.varyar.system.domain.TRoom;
 import com.newlandnpt.varyar.system.service.ITMemberFamilyService;
-import com.newlandnpt.varyar.system.service.ITRoomService;
+import com.newlandnpt.varyar.system.service.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TFamilyMapper;
 import com.newlandnpt.varyar.system.domain.TFamily;
-import com.newlandnpt.varyar.system.service.ITFamilyService;
+import com.newlandnpt.varyar.system.service.IFamilyService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,14 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2022-12-24
  */
 @Service
-public class TFamilyServiceImpl implements ITFamilyService 
+public class TFamilyServiceImpl implements IFamilyService
 {
     @Autowired
     private TFamilyMapper tFamilyMapper;
     @Autowired
     private ITMemberFamilyService itMemberFamilyService;
     @Autowired
-    private ITRoomService itRoomService;
+    private IRoomService iRoomService;
 
     /**
      * 查询家庭
@@ -84,6 +84,19 @@ public class TFamilyServiceImpl implements ITFamilyService
     }
 
     /**
+     * 新增家庭
+     *
+     * @param tFamily 家庭
+     * @return 结果
+     */
+    @Override
+    public int insertTFamily(TFamily tFamily)
+    {
+        tFamily.setCreateTime(DateUtils.getNowDate());
+        return tFamilyMapper.insertTFamily(tFamily);
+    }
+
+    /**
      * 修改家庭
      * 
      * @param tFamily 家庭
@@ -124,13 +137,13 @@ public class TFamilyServiceImpl implements ITFamilyService
         TRoom tRoom = new TRoom();
         tRoom.setFamilyId(familyId);
         //查询对应家庭下的房间信息
-        List<TRoom> list = itRoomService.selectTRoomList(tRoom);
+        List<TRoom> list = iRoomService.selectTRoomList(tRoom);
         for (TRoom item : list){
             roomIdSet.add(item.getRoomId());
         }
         Long[] roomIds = new Long[roomIdSet.size()];
         roomIdSet.toArray(roomIds);
         //删除对应的房间信息
-        return itRoomService.deleteTRoomByRoomIds(roomIds);
+        return iRoomService.deleteTRoomByRoomIds(roomIds);
     }
 }

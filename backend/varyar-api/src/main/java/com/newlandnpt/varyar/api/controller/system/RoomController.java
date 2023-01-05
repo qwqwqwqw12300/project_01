@@ -5,7 +5,7 @@ import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.model.TRoomRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.system.domain.TRoom;
-import com.newlandnpt.varyar.system.service.ITRoomService;
+import com.newlandnpt.varyar.system.service.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,18 +21,18 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/room")
-public class TRoomController extends BaseController {
+public class RoomController extends BaseController {
 
     @Autowired
-    private ITRoomService itRoomService;
+    private IRoomService iRoomService;
 /*
 * 获取房间列表
 * */
     @GetMapping("/list")
-    public TableDataInfo list( TRoomController room) {
+    public TableDataInfo list(RoomController room) {
         startPage();
         Long memberId = getLoginUser().getMemberId();
-        List<TRoom> list = itRoomService.selectTRoomList(memberId);
+        List<TRoom> list = iRoomService.selectTRoomList(memberId);
         return getDataTable(list);
     }
     /*
@@ -57,7 +57,7 @@ public class TRoomController extends BaseController {
             tRoom.setFamilyId(Long.valueOf(tRoomRequest.getFamilyId()));
             tRoom.setDelFlag("0");
             tRoom.setName(tRoomRequest.getRoomName());
-            itRoomService.insertTRoom(tRoom);
+            iRoomService.insertTRoom(tRoom);
         } catch (Exception e){
             ajax = AjaxResult.error("新增我的房间失败！");
             return ajax;
@@ -76,10 +76,10 @@ public class TRoomController extends BaseController {
             return ajax;
         }
         //查询我的房间（需要修改的）
-        TRoom tRoom =  itRoomService.selectTRoomByRoomId(Long.valueOf(tRoomRequest.getRoomId()));
+        TRoom tRoom =  iRoomService.selectTRoomByRoomId(Long.valueOf(tRoomRequest.getRoomId()));
         try {
             tRoom.setName(tRoomRequest.getRoomName());
-            itRoomService.updateTRoom(tRoom);
+            iRoomService.updateTRoom(tRoom);
         } catch (Exception e){
             ajax = AjaxResult.error("修改我的房间失败！");
             return ajax;
@@ -98,9 +98,9 @@ public class TRoomController extends BaseController {
             return ajax;
         }
         //查找我的房间
-        TRoom tRoom = itRoomService.selectTRoomByRoomId(Long.valueOf(tRoomRequest.getRoomId()));
+        TRoom tRoom = iRoomService.selectTRoomByRoomId(Long.valueOf(tRoomRequest.getRoomId()));
         try {
-            itRoomService.deleteTRoomByRoomId(tRoom.getRoomId());
+            iRoomService.deleteTRoomByRoomId(tRoom.getRoomId());
         } catch (Exception e){
             ajax = AjaxResult.error("删除我的房间失败！");
             return ajax;
