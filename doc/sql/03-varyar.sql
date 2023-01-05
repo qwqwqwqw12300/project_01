@@ -258,6 +258,7 @@ create table t_room_zone (
 drop table if exists t_device_fence;
 create table t_device_fence (
   device_fence_id        bigint(20)      not null auto_increment    comment '设备电子围栏id',
+  geo_fence_id          bigint(20)                          comment '高德API服务-电子围栏id',
   device_id             bigint(20)                          comment '设备id',
   device_no             varchar(50)                         comment '设备编号',      
   address               varchar(50)                         comment '地址',
