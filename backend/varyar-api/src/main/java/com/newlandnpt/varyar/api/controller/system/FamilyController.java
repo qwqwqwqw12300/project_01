@@ -2,7 +2,7 @@ package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.model.TfamilyRequest;
+import com.newlandnpt.varyar.common.core.domain.model.FamilyRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.system.domain.TFamily;
 import com.newlandnpt.varyar.system.service.IFamilyService;
@@ -39,9 +39,9 @@ public class FamilyController extends BaseController {
 * */
     @PostMapping("/creFamily")
     public AjaxResult createFamily(
-            @RequestBody @Validated TfamilyRequest tfamilyRequest){
+            @RequestBody @Validated FamilyRequest familyRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (tfamilyRequest.getFamilyName().equals("")||tfamilyRequest.getFamilyName()==null){
+        if (familyRequest.getFamilyName().equals("")|| familyRequest.getFamilyName()==null){
             ajax = AjaxResult.error("家庭名称不能为空！");
             return ajax;
         }
@@ -53,8 +53,8 @@ public class FamilyController extends BaseController {
             //添加 家庭信息
             TFamily tFamily = new TFamily();
             tFamily.setNo(familyNo);
-            tFamily.setName(tfamilyRequest.getFamilyName());
-            tFamily.setAddress(tfamilyRequest.getAddress());
+            tFamily.setName(familyRequest.getFamilyName());
+            tFamily.setAddress(familyRequest.getAddress());
             tFamily.setDelFlag("0");
             tFamilyService.insertTFamily(tFamily,memberId);
         } catch (Exception e){
@@ -68,21 +68,21 @@ public class FamilyController extends BaseController {
     * */
     @PostMapping("/editFamily")
     public AjaxResult editFamily(
-            @RequestBody @Validated TfamilyRequest tfamilyRequest){
+            @RequestBody @Validated FamilyRequest familyRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (tfamilyRequest.getFamilyId().equals("")||tfamilyRequest.getFamilyId()==null){
+        if (familyRequest.getFamilyId().equals("")|| familyRequest.getFamilyId()==null){
             ajax = AjaxResult.error("家庭Id不能为空！");
             return ajax;
         }
         //查询我的家庭（需要修改的）
-        TFamily tFamily =  tFamilyService.selectTFamilyByFamilyId(Long.valueOf(tfamilyRequest.getFamilyId()));
+        TFamily tFamily =  tFamilyService.selectTFamilyByFamilyId(Long.valueOf(familyRequest.getFamilyId()));
         if( tFamily == null){
             ajax = AjaxResult.error("无法查到需要修改的记录！");
             return ajax;
         }
         try {
-            tFamily.setName(tfamilyRequest.getFamilyName());
-            tFamily.setAddress(tfamilyRequest.getAddress());
+            tFamily.setName(familyRequest.getFamilyName());
+            tFamily.setAddress(familyRequest.getAddress());
             tFamilyService.updateTFamily(tFamily);
         } catch (Exception e){
             ajax = AjaxResult.error("修改我的家庭失败！");
@@ -95,14 +95,14 @@ public class FamilyController extends BaseController {
      * */
     @PostMapping("/remFamily")
     public AjaxResult removeFamily(
-            @RequestBody @Validated TfamilyRequest tfamilyRequest){
+            @RequestBody @Validated FamilyRequest familyRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (tfamilyRequest.getFamilyId().equals("")||tfamilyRequest.getFamilyId()==null){
+        if (familyRequest.getFamilyId().equals("")|| familyRequest.getFamilyId()==null){
             ajax = AjaxResult.error("家庭Id不能为空！");
             return ajax;
         }
         //查询我的家庭（需要修改的）
-        TFamily tFamily =  tFamilyService.selectTFamilyByFamilyId(Long.valueOf(tfamilyRequest.getFamilyId()));
+        TFamily tFamily =  tFamilyService.selectTFamilyByFamilyId(Long.valueOf(familyRequest.getFamilyId()));
         if( tFamily == null){
             ajax = AjaxResult.error("无法查到需要修改的记录！");
             return ajax;

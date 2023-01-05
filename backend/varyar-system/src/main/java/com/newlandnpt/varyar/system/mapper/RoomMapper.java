@@ -1,6 +1,8 @@
 package com.newlandnpt.varyar.system.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.newlandnpt.varyar.system.domain.TRoom;
 
 /**
@@ -9,7 +11,7 @@ import com.newlandnpt.varyar.system.domain.TRoom;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface TRoomMapper 
+public interface RoomMapper
 {
     /**
      * 查询房间
@@ -32,7 +34,7 @@ public interface TRoomMapper
      * @param tRoom 房间
      * @return 房间集合
      */
-    public List<TRoom> selectByMemberIdList(Long memberId);
+    public List<TRoom> selectByMemberIdList(Map map);
     /**
      * 新增房间
      * 

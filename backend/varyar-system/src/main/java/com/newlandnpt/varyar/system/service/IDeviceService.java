@@ -1,6 +1,8 @@
 package com.newlandnpt.varyar.system.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.newlandnpt.varyar.system.domain.Device;
 
 /**
@@ -29,10 +31,10 @@ public interface IDeviceService
     /**
      * 查询设备列表
      *
-     * @param device 设备
+     * @param map 设备
      * @return 设备集合
      */
-    public List<Device> selectDeviceByMemberId(Long memberId);
+    public List<Device> selectDeviceByMemberId(Map map);
     /**
      * 新增设备
      * 

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.newlandnpt.varyar.common.constant.DeviceConstants.*;
 import static com.newlandnpt.varyar.common.utils.SecurityUtils.getLoginUserName;
@@ -61,10 +62,8 @@ public class DeviceServiceImpl implements IDeviceService {
     }
     @Override
     @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
-    public List<Device> selectDeviceByMemberId(Long memberId){
-        List<Device> list = deviceMapper.selectByMemberId(memberId);
-
-        return list;
+    public List<Device> selectDeviceByMemberId(Map map){
+        return deviceMapper.selectByMemberId(map);
     }
     /**
      * 新增设备

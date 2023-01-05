@@ -2,7 +2,7 @@ package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.model.TRoomRequest;
+import com.newlandnpt.varyar.common.core.domain.model.RoomRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.system.domain.TRoom;
 import com.newlandnpt.varyar.system.service.IRoomService;
@@ -28,11 +28,11 @@ public class RoomController extends BaseController {
 /*
 * 获取房间列表
 * */
-    @GetMapping("/list")
-    public TableDataInfo list(RoomController room) {
+    @PostMapping("/list")
+    public TableDataInfo list(@RequestBody @Validated RoomRequest roomRequest) {
         startPage();
         Long memberId = getLoginUser().getMemberId();
-        List<TRoom> list = iRoomService.selectTRoomList(memberId);
+        List<TRoom> list = iRoomService.selectTRoomList(memberId,Long.valueOf(roomRequest.getFamilyId()));
         return getDataTable(list);
     }
     /*
@@ -40,13 +40,13 @@ public class RoomController extends BaseController {
     * */
     @PostMapping("/creRoom")
     public AjaxResult createRoom(
-            @RequestBody @Validated TRoomRequest tRoomRequest){
+            @RequestBody @Validated RoomRequest roomRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (tRoomRequest.getRoomName().equals("")||tRoomRequest.getRoomName()==null){
+        if (roomRequest.getRoomName().equals("")|| roomRequest.getRoomName()==null){
             ajax = AjaxResult.error("房间名称不能为空！");
             return ajax;
         }
-        if (tRoomRequest.getFamilyId().equals("")||tRoomRequest.getFamilyId()==null){
+        if (roomRequest.getFamilyId().equals("")|| roomRequest.getFamilyId()==null){
             ajax = AjaxResult.error("家庭Id不能为空！");
             return ajax;
         }
@@ -54,9 +54,9 @@ public class RoomController extends BaseController {
         String roomNo = "R"+sdf.format(new Date());
         try {
             TRoom  tRoom = new TRoom();
-            tRoom.setFamilyId(Long.valueOf(tRoomRequest.getFamilyId()));
+            tRoom.setFamilyId(Long.valueOf(roomRequest.getFamilyId()));
             tRoom.setDelFlag("0");
-            tRoom.setName(tRoomRequest.getRoomName());
+            tRoom.setName(roomRequest.getRoomName());
             iRoomService.insertTRoom(tRoom);
         } catch (Exception e){
             ajax = AjaxResult.error("新增我的房间失败！");
@@ -69,16 +69,16 @@ public class RoomController extends BaseController {
     * */
     @PostMapping("/editRoom")
     public AjaxResult editRoom(
-            @RequestBody @Validated TRoomRequest tRoomRequest){
+            @RequestBody @Validated RoomRequest roomRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (tRoomRequest.getRoomId().equals("")||tRoomRequest.getRoomId()==null){
+        if (roomRequest.getRoomId().equals("")|| roomRequest.getRoomId()==null){
             ajax = AjaxResult.error("房间Id不能为空！");
             return ajax;
         }
         //查询我的房间（需要修改的）
-        TRoom tRoom =  iRoomService.selectTRoomByRoomId(Long.valueOf(tRoomRequest.getRoomId()));
+        TRoom tRoom =  iRoomService.selectTRoomByRoomId(Long.valueOf(roomRequest.getRoomId()));
         try {
-            tRoom.setName(tRoomRequest.getRoomName());
+            tRoom.setName(roomRequest.getRoomName());
             iRoomService.updateTRoom(tRoom);
         } catch (Exception e){
             ajax = AjaxResult.error("修改我的房间失败！");
@@ -91,14 +91,14 @@ public class RoomController extends BaseController {
      * */
     @PostMapping("/remRoom")
     public AjaxResult removeRoom(
-            @RequestBody @Validated TRoomRequest tRoomRequest){
+            @RequestBody @Validated RoomRequest roomRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (tRoomRequest.getRoomId().equals("")||tRoomRequest.getRoomId()==null){
+        if (roomRequest.getRoomId().equals("")|| roomRequest.getRoomId()==null){
             ajax = AjaxResult.error("房间Id不能为空！");
             return ajax;
         }
         //查找我的房间
-        TRoom tRoom = iRoomService.selectTRoomByRoomId(Long.valueOf(tRoomRequest.getRoomId()));
+        TRoom tRoom = iRoomService.selectTRoomByRoomId(Long.valueOf(roomRequest.getRoomId()));
         try {
             iRoomService.deleteTRoomByRoomId(tRoom.getRoomId());
         } catch (Exception e){

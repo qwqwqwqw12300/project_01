@@ -1,10 +1,13 @@
 package com.newlandnpt.varyar.system.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.newlandnpt.varyar.system.mapper.TRoomMapper;
+import com.newlandnpt.varyar.system.mapper.RoomMapper;
 import com.newlandnpt.varyar.system.domain.TRoom;
 import com.newlandnpt.varyar.system.service.IRoomService;
 
@@ -15,10 +18,10 @@ import com.newlandnpt.varyar.system.service.IRoomService;
  * @date 2022-12-24
  */
 @Service
-public class TRoomServiceImpl implements IRoomService
+public class RoomServiceImpl implements IRoomService
 {
     @Autowired
-    private TRoomMapper tRoomMapper;
+    private RoomMapper roomMapper;
 
     /**
      * 查询房间
@@ -29,7 +32,7 @@ public class TRoomServiceImpl implements IRoomService
     @Override
     public TRoom selectTRoomByRoomId(Long roomId)
     {
-        return tRoomMapper.selectTRoomByRoomId(roomId);
+        return roomMapper.selectTRoomByRoomId(roomId);
     }
 
     /**
@@ -41,10 +44,20 @@ public class TRoomServiceImpl implements IRoomService
     @Override
     public List<TRoom> selectTRoomList(TRoom tRoom)
     {
-        return tRoomMapper.selectTRoomList(tRoom);
+        return roomMapper.selectTRoomList(tRoom);
     }
-    public List<TRoom> selectTRoomList(Long memberId){
-        return tRoomMapper.selectByMemberIdList(memberId);
+    /**
+     * 查询房间列表
+     *
+     * @param memberId 会员id
+     * @param familyId 家庭id
+     * @return 房间
+     */
+    public List<TRoom> selectTRoomList(Long memberId,Long familyId){
+        Map map = new HashMap();
+        map.put("memberId",memberId);
+        map.put("familyId",familyId);
+        return roomMapper.selectByMemberIdList(map);
     }
     /**
      * 新增房间
@@ -56,7 +69,7 @@ public class TRoomServiceImpl implements IRoomService
     public int insertTRoom(TRoom tRoom)
     {
         tRoom.setCreateTime(DateUtils.getNowDate());
-        return tRoomMapper.insertTRoom(tRoom);
+        return roomMapper.insertTRoom(tRoom);
     }
 
     /**
@@ -69,7 +82,7 @@ public class TRoomServiceImpl implements IRoomService
     public int updateTRoom(TRoom tRoom)
     {
         tRoom.setUpdateTime(DateUtils.getNowDate());
-        return tRoomMapper.updateTRoom(tRoom);
+        return roomMapper.updateTRoom(tRoom);
     }
 
     /**
@@ -81,7 +94,7 @@ public class TRoomServiceImpl implements IRoomService
     @Override
     public int deleteTRoomByRoomIds(Long[] roomIds)
     {
-        return tRoomMapper.deleteTRoomByRoomIds(roomIds);
+        return roomMapper.deleteTRoomByRoomIds(roomIds);
     }
 
     /**
@@ -93,6 +106,6 @@ public class TRoomServiceImpl implements IRoomService
     @Override
     public int deleteTRoomByRoomId(Long roomId)
     {
-        return tRoomMapper.deleteTRoomByRoomId(roomId);
+        return roomMapper.deleteTRoomByRoomId(roomId);
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TMemberFamilyMapper;
 import com.newlandnpt.varyar.system.domain.TMemberFamily;
-import com.newlandnpt.varyar.system.service.ITMemberFamilyService;
+import com.newlandnpt.varyar.system.service.IMemberFamilyService;
 
 /**
  * 会员和家庭关联Service业务层处理
@@ -15,7 +15,7 @@ import com.newlandnpt.varyar.system.service.ITMemberFamilyService;
  * @date 2022-12-24
  */
 @Service
-public class TMemberFamilyServiceImpl implements ITMemberFamilyService 
+public class MemberFamilyServiceImpl implements IMemberFamilyService
 {
     @Autowired
     private TMemberFamilyMapper tMemberFamilyMapper;

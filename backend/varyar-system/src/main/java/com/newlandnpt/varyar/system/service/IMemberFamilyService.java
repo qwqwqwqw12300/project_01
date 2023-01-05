@@ -9,7 +9,7 @@ import com.newlandnpt.varyar.system.domain.TMemberFamily;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface ITMemberFamilyService 
+public interface IMemberFamilyService
 {
     /**
      * 查询会员和家庭关联

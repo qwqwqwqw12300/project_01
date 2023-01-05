@@ -7,11 +7,11 @@ import java.util.Set;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.domain.TMemberFamily;
 import com.newlandnpt.varyar.system.domain.TRoom;
-import com.newlandnpt.varyar.system.service.ITMemberFamilyService;
+import com.newlandnpt.varyar.system.service.IMemberFamilyService;
 import com.newlandnpt.varyar.system.service.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.newlandnpt.varyar.system.mapper.TFamilyMapper;
+import com.newlandnpt.varyar.system.mapper.FamilyMapper;
 import com.newlandnpt.varyar.system.domain.TFamily;
 import com.newlandnpt.varyar.system.service.IFamilyService;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,12 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2022-12-24
  */
 @Service
-public class TFamilyServiceImpl implements IFamilyService
+public class FamilyServiceImpl implements IFamilyService
 {
     @Autowired
-    private TFamilyMapper tFamilyMapper;
+    private FamilyMapper familyMapper;
     @Autowired
-    private ITMemberFamilyService itMemberFamilyService;
+    private IMemberFamilyService iMemberFamilyService;
     @Autowired
     private IRoomService iRoomService;
 
@@ -42,7 +42,7 @@ public class TFamilyServiceImpl implements IFamilyService
     @Override
     public TFamily selectTFamilyByFamilyId(Long familyId)
     {
-        return tFamilyMapper.selectTFamilyByFamilyId(familyId);
+        return familyMapper.selectTFamilyByFamilyId(familyId);
     }
 
     /**
@@ -54,12 +54,12 @@ public class TFamilyServiceImpl implements IFamilyService
     @Override
     public List<TFamily> selectTFamilyList(TFamily tFamily)
     {
-        return tFamilyMapper.selectTFamilyList(tFamily);
+        return familyMapper.selectTFamilyList(tFamily);
     }
 
     @Override
     public List<TFamily> selectMembersFamilyList(Long memberId) {
-        return tFamilyMapper.selectMembersFamilyList(memberId);
+        return familyMapper.selectMembersFamilyList(memberId);
     }
 
     /**
@@ -73,14 +73,14 @@ public class TFamilyServiceImpl implements IFamilyService
     public int insertTFamily(TFamily tFamily,Long memberId)
     {
         tFamily.setCreateTime(DateUtils.getNowDate());
-        tFamilyMapper.insertTFamily(tFamily);
+        familyMapper.insertTFamily(tFamily);
         //添加 会员和家庭关联信息
         TMemberFamily tMemberFamily = new TMemberFamily();
         tMemberFamily.setFamilyId(tFamily.getFamilyId());
         tMemberFamily.setMemberId(memberId);
         tMemberFamily.setCreateMemberId(memberId);
         tMemberFamily.setDelFlag("0");
-        return itMemberFamilyService.insertTMemberFamily(tMemberFamily);
+        return iMemberFamilyService.insertTMemberFamily(tMemberFamily);
     }
 
     /**
@@ -93,7 +93,7 @@ public class TFamilyServiceImpl implements IFamilyService
     public int insertTFamily(TFamily tFamily)
     {
         tFamily.setCreateTime(DateUtils.getNowDate());
-        return tFamilyMapper.insertTFamily(tFamily);
+        return familyMapper.insertTFamily(tFamily);
     }
 
     /**
@@ -107,7 +107,7 @@ public class TFamilyServiceImpl implements IFamilyService
     public int updateTFamily(TFamily tFamily)
     {
         tFamily.setUpdateTime(DateUtils.getNowDate());
-        return tFamilyMapper.updateTFamily(tFamily);
+        return familyMapper.updateTFamily(tFamily);
     }
 
     /**
@@ -119,7 +119,7 @@ public class TFamilyServiceImpl implements IFamilyService
     @Override
     public int deleteTFamilyByFamilyIds(Long[] familyIds)
     {
-        return tFamilyMapper.deleteTFamilyByFamilyIds(familyIds);
+        return familyMapper.deleteTFamilyByFamilyIds(familyIds);
     }
 
     /**
@@ -132,7 +132,7 @@ public class TFamilyServiceImpl implements IFamilyService
     @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
     public int deleteTFamilyByFamilyId(Long familyId)
     {   //删除对应的我的家庭信息
-        tFamilyMapper.deleteTFamilyByFamilyId(familyId);
+        familyMapper.deleteTFamilyByFamilyId(familyId);
         Set<Long> roomIdSet = new HashSet<>();
         TRoom tRoom = new TRoom();
         tRoom.setFamilyId(familyId);

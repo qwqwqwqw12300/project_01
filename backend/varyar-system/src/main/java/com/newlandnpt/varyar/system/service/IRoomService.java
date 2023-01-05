@@ -32,7 +32,7 @@ public interface IRoomService
      * @param tRoom 房间
      * @return 房间集合
      */
-    public List<TRoom> selectTRoomList(Long memberId);
+    public List<TRoom> selectTRoomList(Long memberId,Long familyId);
 
     /**
      * 新增房间
