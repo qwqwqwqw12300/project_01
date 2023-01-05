@@ -17,7 +17,7 @@ import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.system.domain.TFamily;
-import com.newlandnpt.varyar.system.service.ITFamilyService;
+import com.newlandnpt.varyar.system.service.IFamilyService;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 
@@ -32,7 +32,7 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 public class TFamilyController extends BaseController
 {
     @Autowired
-    private ITFamilyService tFamilyService;
+    private IFamilyService tFamilyService;
 
     /**
      * 查询家庭列表

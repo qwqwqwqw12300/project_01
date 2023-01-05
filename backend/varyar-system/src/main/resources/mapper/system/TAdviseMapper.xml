@@ -21,9 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectTAdviseList" parameterType="TAdvise" resultMap="TAdviseResult">
         <include refid="selectTAdviseVo"/>
         <where>  
-            <if test="content != null  and content != ''"> and content = #{content}</if>
-            <if test="memberId != null "> and member_id = #{memberId}</if>
-            <if test="readFlag != null  and readFlag != ''"> and read_flag = #{readFlag}</if>
+            <if test="content != null  and content != ''"> AND content like concat('%', #{content}, '%')</if>
         </where>
     </select>
     
@@ -51,15 +49,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">#{updateTime},</if>
          </trim>
     </insert>
-
+    <!--修改已读标志-->
     <update id="updateTAdvise" parameterType="TAdvise">
         update t_advise
         <trim prefix="SET" suffixOverrides=",">
-            <if test="content != null">content = #{content},</if>
-            <if test="memberId != null">member_id = #{memberId},</if>
             <if test="readFlag != null">read_flag = #{readFlag},</if>
-            <if test="delFlag != null">del_flag = #{delFlag},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where advise_id = #{adviseId}

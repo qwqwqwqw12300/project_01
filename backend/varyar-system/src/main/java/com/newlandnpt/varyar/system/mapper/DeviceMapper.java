@@ -1,6 +1,8 @@
 package com.newlandnpt.varyar.system.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.newlandnpt.varyar.system.domain.Device;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -34,7 +36,7 @@ public interface DeviceMapper
      * @param device 设备
      * @return 设备集合
      */
-    public List<Device>  selectByMemberId(Long memberId);
+    public List<Device>  selectByMemberId(Map map);
     /**
      * 新增设备
      * 

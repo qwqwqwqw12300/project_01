@@ -39,11 +39,18 @@ public class TMsgController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:msg:list')")
     @GetMapping("/list")
-    public TableDataInfo list(TMsg tMsg)
+    public TableDataInfo list(
+            TMsg tMsg)
     {
         startPage();
         List<TMsg> list = tMsgService.selectTMsgList(tMsg);
+        setType(list);
         return getDataTable(list);
+    }
+    private void setType(List<TMsg> list){
+        for(TMsg item : list){
+            item.setOperateFlag(item.getOperateFlag().equals("1")?"审核":"未审核");
+        }
     }
 
     /**
@@ -88,6 +95,7 @@ public class TMsgController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody TMsg tMsg)
     {
+        tMsg.setOperateFlag("1");
         return toAjax(tMsgService.updateTMsg(tMsg));
     }
 

@@ -54,6 +54,7 @@ public class TMsgServiceImpl implements ITMsgService
     public int insertTMsg(TMsg tMsg)
     {
         tMsg.setCreateTime(DateUtils.getNowDate());
+        tMsg.setOperateFlag("0");
         return tMsgMapper.insertTMsg(tMsg);
     }
 
