@@ -92,26 +92,6 @@
         </foreach>
     </delete>
 
-    <select id="selectTMsgInfo" resultMap="MsgInfoResult">
-        SELECT
-            msg.event_id,
-            msg.device_id,
-            msg.family_id,
-            msg.create_time,
-            msg.content,
-            msg.member_id,
-            msg.operate_flag,
-            dev.type  TYPE,
-            eve.LEVEL  LEVEL
-        FROM
-            t_msg msg
-                LEFT JOIN t_device dev  ON  msg.device_id = dev.device_id
-                LEFT JOIN t_event  eve  ON  msg.event_id = eve.event_id
-        WHERE msg.family_id ='1001'
-            /*and dev.type = 0
-            And eve.LEVEL = 1*/
-        ORDER BY msg.create_time DESC
 
-    </select>
 
 </mapper>
