@@ -16,6 +16,7 @@
         <result property="location" column="location"/>
         <result property="familyId" column="family_id"/>
         <result property="memberId" column="member_id"/>
+        <result property="memberNo" column="member_no"/>
         <result property="roomId" column="room_id"/>
         <result property="distributeFlag" column="distribute_flag"/>
         <result property="orgId" column="org_id"/>
@@ -37,7 +38,8 @@
             location, family_id, member_id, room_id, distribute_flag, org_id, org_name, del_flag, create_by, create_time, update_by, update_time,
             (select name from t_devicegroup where devicegroup_id = d.devicegroup_id) device_group_name,
             (select type from t_org where org_id = d.org_id) org_type,
-            (select org_no from t_org where org_id = d.org_id) org_no
+            (select org_no from t_org where org_id = d.org_id) org_no,
+            (select no from t_member where member_id = d.member_id) member_no
         from t_device d
     </sql>
     <sql id="selectTDeviceVo1">
@@ -77,6 +79,14 @@
     <select id="selectTDeviceByDeviceId" parameterType="Long" resultMap="TDeviceResult">
         <include refid="selectTDeviceVo"/>
         where device_id = #{deviceId}
+        and del_flag = '0'
+    </select>
+    <select id="selectBizCareDeviceList" parameterType="Long" resultMap="TDeviceResult">
+        <include refid="selectTDeviceVo"/>
+        where (
+            (d.devicegroup_id in (select dg.devicegroup_id from t_devicegroup dg where dg.user_id = #{userId}))
+            or (d.member_id in (select m.member_id from t_member m where m.user_id = #{userId}))
+        )
         and del_flag = '0'
     </select>
 

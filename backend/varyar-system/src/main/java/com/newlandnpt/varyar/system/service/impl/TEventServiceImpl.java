@@ -3,6 +3,7 @@ package com.newlandnpt.varyar.system.service.impl;
 import java.util.List;
 
 import com.newlandnpt.varyar.common.utils.DateUtils;
+import com.newlandnpt.varyar.system.domain.dto.event.EventCountGroupByLevelDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TEventMapper;
@@ -108,5 +109,10 @@ public class TEventServiceImpl implements ITEventService
     @Override
     public long unHandleMemberEventCount() {
         return tEventMapper.unHandleMemberEventCount();
+    }
+
+    @Override
+    public List<EventCountGroupByLevelDto> countUnHandleByDeviceGroupByLevel(Long deviceId) {
+        return tEventMapper.countUnHandleByDeviceGroupByLevel(deviceId);
     }
 }

@@ -57,6 +57,10 @@ public class Device extends BaseEntity
     /** 会员id */
     private Long memberId;
 
+    /** 会员编号 */
+    @Transient
+    private String memberNo;
+
     /** 家庭id */
     private Long familyId;
 
@@ -171,6 +175,14 @@ public class Device extends BaseEntity
         this.memberId = memberId;
     }
 
+    public String getMemberNo() {
+        return memberNo;
+    }
+
+    public void setMemberNo(String memberNo) {
+        this.memberNo = memberNo;
+    }
+
     public void setFamilyId(Long familyId)
     {
         this.familyId = familyId;
@@ -264,6 +276,7 @@ public class Device extends BaseEntity
                 .append("location", location)
                 .append("deviceGroupName", deviceGroupName)
                 .append("memberId", memberId)
+                .append("memberNo", memberNo)
                 .append("familyId", familyId)
                 .append("roomId", roomId)
                 .append("distributeFlag", distributeFlag)
