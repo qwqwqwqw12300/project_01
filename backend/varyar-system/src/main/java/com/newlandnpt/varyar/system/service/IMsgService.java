@@ -9,7 +9,7 @@ import com.newlandnpt.varyar.system.domain.TMsg;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface ITMsgService 
+public interface IMsgService
 {
     /**
      * 查询消息

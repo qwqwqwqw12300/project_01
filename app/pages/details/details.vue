@@ -187,7 +187,7 @@
 
 		.ui-scroll {
 			margin-top: 20rpx;
-			height: calc(100vh - (var(--window-bottom) + 610rpx + 80rpx));
+			height: calc(100vh - (var(--window-bottom) + 610rpx + 100rpx + var(--status-bar-height)));
 
 			.ui-message,
 			.ui-sos {
