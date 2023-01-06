@@ -8,6 +8,9 @@
 import {
 	env
 } from '@/config/env.js';
+import {
+	isApp
+} from '../utils/util';
 
 class Push {
 	/**推送模块**/
@@ -16,13 +19,14 @@ class Push {
 	registrationID = '';
 
 	constructor() {
+		if (isApp()) this.jpushModule = uni.requireNativePlugin("JG-JPush");
 
 	}
 
 	init() {
 		return new Promise(resolve => {
 			console.log('极光推送开始注册');
-			this.jpushModule = uni.requireNativePlugin("JG-JPush");
+
 			if (uni.getSystemInfoSync().platform == "ios") {
 				// 请求定位权限
 				const locationServicesEnabled = this.jpushModule.locationServicesEnabled(); // 获取系统定位服务是否开启
@@ -121,7 +125,6 @@ class Push {
 	 * 添加一个本地通知
 	 */
 	addLocalNotification() {
-		console.log('本地推送');
 		this.jpushModule.addLocalNotification({
 			messageID: '123',
 			title: 'title',

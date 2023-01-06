@@ -54,44 +54,11 @@
 				</view>
 			</view>
 			<!-- /筛选框 -->
-			<!-- 已读按钮 -->
-			<view class="ui-read active">
-				<u-text prefixIcon="checkmark-circle" align="center" :iconStyle="{fontSize: '30rpx', color: '#fff'}"
-					color="#fff" size="24rpx" text="全部标记为已读"></u-text>
+			<view class="ui-msg-list">
+				<msg-list></msg-list>
 			</view>
-			<!-- /已读按钮 -->
-			<!-- 未读事件列表 -->
-			<scroll-view scroll-y="true" class="ui-scroll">
-				<view class="ui-message">
-					<u-icon name="chat" color="#414141" size="40rpx"></u-icon>
-					<text>2022/12/26 10:00:00</text>
-					<text>xx设备</text>
-					<text>人员离开</text>
-				</view>
-				<!-- /sos事件 -->
-				<view class="ui-sos">
-					<view>
-						<u-icon name="arrow-right" color="#414141" size="40rpx"></u-icon>
-						<text>2022/12/26 10:00:00</text>
-						<text>xx设备</text>
-						<text>人员摔倒</text>
-					</view>
-					<view class="ui-sos-btn active">
-						<u-text prefixIcon="phone" align="center" :block="false" iconStyle="font-size: 40rpx"
-							size="24rpx" text="紧急电话"></u-text>
-						<text>132222222222</text>
-					</view>
 
-				</view>
-				<!-- /sos事件 -->
-				<view class="ui-message">
-					<u-icon name="chat" color="#414141" size="40rpx"></u-icon>
-					<text>2022/12/26 10:00:00</text>
-					<text>xx设备</text>
-					<text>人员离开</text>
-				</view>
-			</scroll-view>
-			<!-- /未读事件列表 -->
+
 		</view>
 	</app-body>
 </template>
