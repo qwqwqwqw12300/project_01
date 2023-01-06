@@ -25,7 +25,7 @@ public class RoomZoneController extends BaseController {
     private IRoomZoneService iRoomZoneService;
 
     /**
-     * 绑定\设置雷达波设备
+     * 设置雷达波设备
      * */
     @PostMapping("/setRadarDevice")
     public AjaxResult setRadarDevice(
@@ -46,7 +46,7 @@ public class RoomZoneController extends BaseController {
         try {
             iRoomZoneService.insertTRoomZone(tRoomZone);
         } catch (Exception e){
-            ajax = AjaxResult.error("修改我的设备失败！");
+            ajax = AjaxResult.error("设置雷达波设备失败！");
             return ajax;
         }
         return ajax;

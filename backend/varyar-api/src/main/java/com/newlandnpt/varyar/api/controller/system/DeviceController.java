@@ -23,6 +23,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/device")
 public class DeviceController extends BaseController {
+
     @Autowired
     private IDeviceService iDeviceService;
     /**
@@ -140,7 +141,7 @@ public class DeviceController extends BaseController {
     /**
      * 绑定\解绑设备
      * */
-    @PostMapping("/editDevice")
+    @PostMapping("/setDevice")
     public AjaxResult setDevice(
             @RequestBody @Validated DeviceRequest deviceRequest) {
         AjaxResult ajax = AjaxResult.success();
@@ -171,6 +172,5 @@ public class DeviceController extends BaseController {
         }
         return ajax;
     }
-
 
 }
