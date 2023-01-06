@@ -18,11 +18,11 @@
 				<u-icon name="plus" @click="addDevice" :stop="true" class="active" color="#fff" size="45rpx"></u-icon>
 				<!-- 下拉框 -->
 				<view class="ui-select" v-if="isAddShow">
-					<view class="ui-select-item active" @click="goPage('/pages/add-equipment/radar')">
+					<view class="ui-select-item active" @click="goPage('/pages/equipment/radar')">
 						<u-icon name="../../static/images/leida.png" class="active" color="#fff" size="40rpx"></u-icon>
 						<text>雷达波设备</text>
 					</view>
-					<view class="ui-select-item active" @click="goPage('/pages/add-equipment/monitor')">
+					<view class="ui-select-item active" @click="goPage('/pages/equipment/monitor')">
 						<u-icon name="../../static/images/shoubiao.png" class="active" color="#fff" size="40rpx">
 						</u-icon>
 						<text>监护手表</text>
@@ -48,7 +48,7 @@
 					</view>
 					<view class="ui-device">
 						<view class="ui-list">
-							<view class="ui-list-box active" @click="goPage('/pages/add-equipment/radar-detail')">
+							<view class="ui-list-box active" @click="goPage('/pages/equipment/radar-detail')">
 								<image src="../../static/images/device.png"></image>
 								<text>xx设备名称</text>
 								<text>位置</text>
@@ -59,7 +59,7 @@
 							</view>
 						</view>
 						<view class="ui-list">
-							<view class="ui-list-box active" @click="goPage('/pages/add-equipment/watch-detail')">
+							<view class="ui-list-box active" @click="goPage('/pages/equipment/watch-detail')">
 								<image src="../../static/images/device.png"></image>
 								<text>xx设备名称</text>
 								<text>位置</text>
@@ -93,7 +93,7 @@
 							:iconStyle="{
 							fontSize: '44rpx',
 							color: '#fff'
-						}" @click="share" text="分享"></u-text>
+						}" @click="goPage('/pages/share/share')" text="分享"></u-text>
 					</view>
 					<view class="ui-device">
 						<view class="ui-list">
