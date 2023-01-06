@@ -57,11 +57,23 @@ public class Device extends BaseEntity
     /** 会员id */
     private Long memberId;
 
+    /** 会员编号 */
+    @Transient
+    private String memberNo;
+
     /** 家庭id */
     private Long familyId;
 
+    /** 家庭名称 */
+    @Transient
+    private String familyName;
+
     /** 房间id */
     private Long roomId;
+
+    /** 房间名称 */
+    @Transient
+    private String roomName;
 
     /** 分配标志（0未分配 1已分配） */
     private String distributeFlag;
@@ -171,6 +183,14 @@ public class Device extends BaseEntity
         this.memberId = memberId;
     }
 
+    public String getMemberNo() {
+        return memberNo;
+    }
+
+    public void setMemberNo(String memberNo) {
+        this.memberNo = memberNo;
+    }
+
     public void setFamilyId(Long familyId)
     {
         this.familyId = familyId;
@@ -180,7 +200,16 @@ public class Device extends BaseEntity
     {
         return familyId;
     }
-    public void setRoomId(Long roomId) 
+
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
+    }
+
+    public void setRoomId(Long roomId)
     {
         this.roomId = roomId;
     }
@@ -189,7 +218,16 @@ public class Device extends BaseEntity
     {
         return roomId;
     }
-    public void setDistributeFlag(String distributeFlag) 
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
+    public void setDistributeFlag(String distributeFlag)
     {
         this.distributeFlag = distributeFlag;
     }
@@ -264,6 +302,7 @@ public class Device extends BaseEntity
                 .append("location", location)
                 .append("deviceGroupName", deviceGroupName)
                 .append("memberId", memberId)
+                .append("memberNo", memberNo)
                 .append("familyId", familyId)
                 .append("roomId", roomId)
                 .append("distributeFlag", distributeFlag)

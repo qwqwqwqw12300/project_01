@@ -82,9 +82,9 @@ create table sys_role (
 -- 初始化-角色信息表数据
 -- ----------------------------
 INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, '超级管理员', 'superAdmin', 1, '1', 1, 1, '0', '0', 'superAdmin', sysdate(), '', NULL, '超级管理员');
-INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, '平台管理员', 'admin', 2, '1', 1, 0, '0', '0', 'superAdmin', sysdate(), '', null, NULL);
-INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, '机构管理员', 'orgadmin', 2, '1', 1, 0, '0', '0', 'superAdmin', sysdate(), '', NULL, NULL);
-INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (102, '运营人员', 'biz', 4, '1', 1, 0, '0', '0', 'superAdmin', sysdate(), '', NULL, NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, '平台管理员', 'admin', 2, '4', 1, 0, '0', '0', 'superAdmin', sysdate(), '', null, NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, '机构管理员', 'orgadmin', 2, '4', 1, 0, '0', '0', 'superAdmin', sysdate(), '', NULL, NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (102, '运营人员', 'biz', 4, '4', 1, 0, '0', '0', 'superAdmin', sysdate(), '', NULL, NULL);
 
 
 -- ----------------------------
@@ -156,7 +156,7 @@ INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2060, '运营分配', 2005, 4, 'memberArrange', 'member/arrange/index', NULL, 1, 0, 'C', '1', '0', 'member:arrange', '404', 'superAdmin', NULL, '');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2061, '服务人员操作记录', 2005, 5, 'servedOprLog', 'member/servedOprLog/index', NULL, 1, 0, 'C', '1', '0', 'member:servedOprLog', '404', 'superAdmin', NULL, '');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2015, '设备管理', 2023, 1, 'device', 'device/index', NULL, 1, 0, 'C', '0', '0', 'device:list', 'tool', 'superAdmin', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2034, '设备参数管理', 2023, 2, 'deviceParameters', 'devices/deviceParameters/index', NULL, 1, 0, 'C', '0', '0', 'devices:deviceParameters:list', 'phone', 'superAdmin', NULL, '');
+-- INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2034, '设备参数管理', 2023, 2, 'deviceParameters', 'devices/deviceParameters/index', NULL, 1, 0, 'C', '0', '0', 'devices:deviceParameters:list', 'phone', 'superAdmin', NULL, '');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (103, '机构管理', 2033, 1, 'org', 'org/index', '', 1, 0, 'C', '0', '0', 'org:list', 'tree', 'superAdmin', NULL, '机构管理菜单');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2010, '设备组管理', 2033, 2, 'deviceGroup', 'org/deviceGroup/list', NULL, 1, 0, 'C', '0', '0', 'org:deviceGroup:list', 'tool', 'superAdmin', NULL, '');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2063, '事件管理', 2035, 1, 'event', 'eventAndMessage/event/index', NULL, 1, 0, 'C', '0', '0', 'eventAndMessage:event:list', 'log', 'superAdmin', NULL, '');
@@ -326,7 +326,7 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2030);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2031);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2032);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2033);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2034);
+-- INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2034);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2035);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2036);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2037);
@@ -374,7 +374,7 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2021);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2023);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2024);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2033);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2034);
+-- INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2034);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2035);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2045);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2046);

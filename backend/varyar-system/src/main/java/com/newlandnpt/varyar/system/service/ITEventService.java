@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.system.service;
 
 import java.util.List;
 import com.newlandnpt.varyar.system.domain.TEvent;
+import com.newlandnpt.varyar.system.domain.dto.event.EventCountGroupByLevelDto;
 
 /**
  * 事件Service接口
@@ -76,4 +77,11 @@ public interface ITEventService
      * @return
      */
     public long unHandleMemberEventCount();
+
+    /**
+     * 根据级别聚合统计设备的事件数
+     * @param deviceId
+     * @return
+     */
+    public List<EventCountGroupByLevelDto> countUnHandleByDeviceGroupByLevel(Long deviceId);
 }

@@ -57,7 +57,7 @@ public class SysRoleController extends BaseController
     private IOrgService orgService;
 
     @PreAuthorize("@ss.hasPermi('system:role:list')")
-    @GetMapping("/list")
+    @GetMapping("/page")
     public TableDataInfo list(SysRole role)
     {
         startPage();
@@ -110,7 +110,7 @@ public class SysRoleController extends BaseController
     /**
      * 修改保存角色
      */
-    @PreAuthorize("@ss.hasPermi('system:role:edit')")
+    @PreAuthorize("@ss.hasAnyPermi('system:role:edit,system:role:menuArrange')")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysRole role)
