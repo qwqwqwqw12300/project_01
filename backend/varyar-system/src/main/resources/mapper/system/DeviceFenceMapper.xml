@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.DeviceFenceMapper">
+
+    <resultMap type="TDeviceFence" id="TDeviceFenceResult">
+        <result property="deviceFenceId"    column="device_fence_id"    />
+        <result property="geoFenceId"    column="geo_fence_id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="deviceNo"    column="device_no"    />
+        <result property="address"    column="address"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="radius"    column="radius"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTDeviceFenceVo">
+        select device_fence_id, geo_fence_id, device_id, device_no, address, longitude, latitude, radius, create_time, update_time from t_device_fence
+    </sql>
+
+    <select id="selectTDeviceFenceList" parameterType="TDeviceFence" resultMap="TDeviceFenceResult">
+        <include refid="selectTDeviceFenceVo"/>
+        <where>
+            <if test="geoFenceId != null "> and geo_fence_id = #{geoFenceId}</if>
+            <if test="deviceId != null "> and device_id = #{deviceId}</if>
+            <if test="deviceNo != null  and deviceNo != ''"> and device_no = #{deviceNo}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="longitude != null  and longitude != ''"> and longitude = #{longitude}</if>
+            <if test="latitude != null  and latitude != ''"> and latitude = #{latitude}</if>
+            <if test="radius != null  and radius != ''"> and radius = #{radius}</if>
+        </where>
+    </select>
+
+    <select id="selectTDeviceFenceByDeviceFenceId" parameterType="Long" resultMap="TDeviceFenceResult">
+        <include refid="selectTDeviceFenceVo"/>
+        where device_fence_id = #{deviceFenceId}
+    </select>
+
+    <insert id="insertTDeviceFence" parameterType="TDeviceFence" useGeneratedKeys="true" keyProperty="deviceFenceId">
+        insert into t_device_fence
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="geoFenceId != null">geo_fence_id,</if>
+            <if test="deviceId != null">device_id,</if>
+            <if test="deviceNo != null">device_no,</if>
+            <if test="address != null">address,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="radius != null">radius,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="geoFenceId != null">#{geoFenceId},</if>
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="deviceNo != null">#{deviceNo},</if>
+            <if test="address != null">#{address},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="radius != null">#{radius},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTDeviceFence" parameterType="TDeviceFence">
+        update t_device_fence
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="geoFenceId != null">geo_fence_id = #{geoFenceId},</if>
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="deviceNo != null">device_no = #{deviceNo},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="radius != null">radius = #{radius},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where device_fence_id = #{deviceFenceId}
+    </update>
+
+    <delete id="deleteTDeviceFenceByDeviceFenceId" parameterType="Long">
+        delete from t_device_fence where device_fence_id = #{deviceFenceId}
+    </delete>
+
+    <delete id="deleteTDeviceFenceByDeviceFenceIds" parameterType="String">
+        delete from t_device_fence where device_fence_id in
+        <foreach item="deviceFenceId" collection="array" open="(" separator="," close=")">
+            #{deviceFenceId}
+        </foreach>
+    </delete>
+</mapper>
