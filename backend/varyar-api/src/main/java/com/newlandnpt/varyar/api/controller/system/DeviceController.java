@@ -2,10 +2,13 @@ package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.common.core.domain.model.DevicePhoneRequest;
 import com.newlandnpt.varyar.common.core.domain.model.DeviceRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter;
+import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -170,6 +173,119 @@ public class DeviceController extends BaseController {
             ajax = AjaxResult.error("修改我的设备失败！");
             return ajax;
         }
+        return ajax;
+    }
+    /**
+     * 设置SOS电话
+     * */
+    @PostMapping("/setSOSDevicePhone")
+    public AjaxResult setSOSDevicephone(
+            @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
+        AjaxResult ajax = AjaxResult.success();
+        //查找设备信息
+        Device device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(devicePhoneRequest.getDeviceId()));
+        if (device == null){
+            ajax = AjaxResult.error("设备信息不存在！");
+            return ajax;
+        }
+        List<DevicePhone> list = devicePhoneRequest.getList();
+        //校验是否有sos电话信息
+        Boolean sosflag = false;
+        for(DevicePhone item :list){
+            if (item.getType().equals("0")){
+                checkPhoneInfo(item,ajax);
+                sosflag =true;
+            }
+        }
+        if (!sosflag){
+            ajax = AjaxResult.error("设备信息sos电话信息不存在！");
+            return ajax;
+        }
+        DeviceParameter dpt = new DeviceParameter();
+        dpt.setList(list);
+        device.setParameter(dpt);
+        try {
+            iDeviceService.updateDevice(device);
+        } catch (Exception e){
+            ajax = AjaxResult.error("设置SOS电话失败！");
+            return ajax;
+        }
+        return ajax;
+    }
+    private AjaxResult checkPhoneInfo(DevicePhone devicePhone ,AjaxResult ajax){
+        if (devicePhone.getPhoneName().equals("")|| devicePhone.getPhoneName()==null){
+            ajax = AjaxResult.error("联系人名称不能为空！");
+            return ajax;
+        }
+        if (devicePhone.getPhone().length()>20){
+            ajax = AjaxResult.error("联系人名称20个字符！");
+            return ajax;
+        }
+        if (devicePhone.getPhone().equals("")|| devicePhone.getPhone()==null){
+            ajax = AjaxResult.error("联系人电话不能为空！");
+            return ajax;
+        }
+        if (devicePhone.getPhone().length()>11){
+            ajax = AjaxResult.error("联系人电话长度11个字符！");
+            return ajax;
+        }
+        if (devicePhone.getType().equals("")|| devicePhone.getType()==null){
+            ajax = AjaxResult.error("设备名称不能为空！");
+            return ajax;
+        }
+        if (devicePhone.getPhone().length()>20){
+            ajax = AjaxResult.error("联系人名称20个字符！");
+            return ajax;
+        }
+        return null;
+    }
+    /**
+     * 设置普通电话  创建普通号码  删除普通号码
+     * */
+    @PostMapping("/setDevicephone")
+    public AjaxResult setDevicephone(
+            @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
+        AjaxResult ajax = AjaxResult.success();
+        //查找设备信息
+        Device device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(devicePhoneRequest.getDeviceId()));
+        if (device == null){
+            ajax = AjaxResult.error("设备信息不存在！");
+            return ajax;
+        }
+        List<DevicePhone> list = devicePhoneRequest.getList();
+        for(DevicePhone item :list){
+            if (item.getType().equals("P")){
+                checkPhoneInfo(item,ajax);
+            }
+        }
+        DeviceParameter dpt = new DeviceParameter();
+        dpt.setList(list);
+        device.setParameter(dpt);
+        try {
+            iDeviceService.updateDevice(device);
+        } catch (Exception e){
+            ajax = AjaxResult.error("设置SOS电话失败！");
+            return ajax;
+        }
+        return ajax;
+    }
+    /**
+     * 创建普通号码
+     * */
+    @PostMapping("/creDevicePhone")
+    public AjaxResult createDevicePhone(
+            @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
+        AjaxResult ajax = AjaxResult.success();
+        return ajax;
+
+    }
+    /**
+     * 删除普通号码
+     * */
+    @PostMapping("/remDevicePhone")
+    public AjaxResult removeDevicePhone(
+            @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
+        AjaxResult ajax = AjaxResult.success();
         return ajax;
     }
 

@@ -1,7 +1,5 @@
 package com.newlandnpt.varyar.common.core.domain.model;
 
-import org.apache.poi.hpsf.Decimal;
-
 import javax.validation.constraints.Size;
 
 public class DeviceRequest {
