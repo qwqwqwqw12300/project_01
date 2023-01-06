@@ -5,7 +5,7 @@
 * @Description: 修改手机号
 -->
 <template>
-	<app-body :bodyStyle="{backgroundPositionY: '-100rpx'}">
+	<app-body :bodyStyle="{backgroundPositionY: '-200rpx'}">
 		<!-- <text class="ui-logo">修改手机号</text> -->
 		<app-logo text="修改手机号"></app-logo>
 		<view class="ui-form">

@@ -11,7 +11,7 @@ import {
 
 class Push {
 	/**推送模块**/
-	jpushModule = uni.requireNativePlugin("JG-JPush");
+	jpushModule;
 	/**注册id(设备唯一编号)**/
 	registrationID = '';
 
@@ -22,6 +22,7 @@ class Push {
 	init() {
 		return new Promise(resolve => {
 			console.log('极光推送开始注册');
+			this.jpushModule = uni.requireNativePlugin("JG-JPush");
 			if (uni.getSystemInfoSync().platform == "ios") {
 				// 请求定位权限
 				const locationServicesEnabled = this.jpushModule.locationServicesEnabled(); // 获取系统定位服务是否开启

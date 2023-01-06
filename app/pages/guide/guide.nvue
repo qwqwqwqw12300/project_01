@@ -14,7 +14,7 @@
 <script>
 	import {
 		push
-	} from '@/common/start-up/push.js';
+	} from '@/common/sdk/push.js';
 	export default {
 		props: {
 			hasLeftWin: {

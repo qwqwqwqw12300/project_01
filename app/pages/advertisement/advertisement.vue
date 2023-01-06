@@ -37,15 +37,6 @@
 			});
 			animation.opacity(10).step();
 			this.animationData = animation.export();
-			uni.preloadPage({
-				url: "/pages/customer-service/customer-service",
-				complete: (complete) => {
-					console.log('加载成功', complete);
-				},
-				fail: (error) => {
-					console.log('加载失败	', error);
-				}
-			});
 		},
 		methods: {
 			/**

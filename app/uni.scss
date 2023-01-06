@@ -138,7 +138,9 @@ button {
 .uni-input-placeholder {
 	letter-spacing: 3rpx;
 }
-
+.u-badge {
+	z-index: 10;
+}
 #deviceManage {
 	.u-grid-item--hover-class {
 		opacity: 1;

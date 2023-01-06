@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TMsgMapper;
 import com.newlandnpt.varyar.system.domain.TMsg;
-import com.newlandnpt.varyar.system.service.ITMsgService;
+import com.newlandnpt.varyar.system.service.IMsgService;
 
 /**
  * 消息Service业务层处理
@@ -15,7 +15,7 @@ import com.newlandnpt.varyar.system.service.ITMsgService;
  * @date 2022-12-24
  */
 @Service
-public class TMsgServiceImpl implements ITMsgService 
+public class MsgServiceImpl implements IMsgService
 {
     @Autowired
     private TMsgMapper tMsgMapper;

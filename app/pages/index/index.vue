@@ -9,15 +9,20 @@
 	<view @click="closeDevice">
 		<app-body :hideTitle="true">
 			<view class="ui-scan">
+				<view class="ui-sys-message">
+					<u-badge :isDot="true" absolute :offset="[0, 0]"></u-badge>
+					<u-icon name="chat" @click="goPage('/pages/service/system-messages')" class="active" color="#fff"
+						size="50rpx"></u-icon>
+				</view>
 				<u-icon name="scan" class="active" color="#fff" size="50rpx"></u-icon>
 				<u-icon name="plus" @click="addDevice" :stop="true" class="active" color="#fff" size="45rpx"></u-icon>
 				<!-- 下拉框 -->
 				<view class="ui-select" v-if="isAddShow">
-					<view class="ui-select-item active">
+					<view class="ui-select-item active" @click="goPage('/pages/add-equipment/radar')">
 						<u-icon name="../../static/images/leida.png" class="active" color="#fff" size="40rpx"></u-icon>
 						<text>雷达波设备</text>
 					</view>
-					<view class="ui-select-item active">
+					<view class="ui-select-item active" @click="goPage('/pages/add-equipment/monitor')">
 						<u-icon name="../../static/images/shoubiao.png" class="active" color="#fff" size="40rpx">
 						</u-icon>
 						<text>监护手表</text>
@@ -35,15 +40,15 @@
 							<text>共两个设备</text>
 							<text>在线两个设备</text>
 						</view>
-						<u-text @click="share" prefixIcon="share-square" size="28rpx" :align="'right'" :block="false"
-							color="#fff" :iconStyle="{
+						<u-text @click="goPage('/pages/share/share')" prefixIcon="share-square" size="28rpx"
+							:align="'right'" :block="false" color="#fff" :iconStyle="{
 							fontSize: '44rpx',
 							color: '#fff'
 						}" text="分享"></u-text>
 					</view>
 					<view class="ui-device">
 						<view class="ui-list">
-							<view class="ui-list-box active">
+							<view class="ui-list-box active" @click="goPage('/pages/add-equipment/radar-detail')">
 								<image src="../../static/images/device.png"></image>
 								<text>xx设备名称</text>
 								<text>位置</text>
@@ -54,7 +59,7 @@
 							</view>
 						</view>
 						<view class="ui-list">
-							<view class="ui-list-box active">
+							<view class="ui-list-box active" @click="goPage('/pages/add-equipment/watch-detail')">
 								<image src="../../static/images/device.png"></image>
 								<text>xx设备名称</text>
 								<text>位置</text>
@@ -180,16 +185,19 @@
 			familyNext() {
 				this.$refs.addRoom.open();
 			},
+			/**
+			 * 添加房间下一步
+			 */
 			roomNext() {
 				this.$refs.bindDev.open();
 			},
 			/**
-			 * 分享
+			 * 页面跳转
 			 */
-			share() {
+			goPage(url) {
 				uni.navigateTo({
-					url: '/pages/share/share'
-				})
+					url
+				});
 			}
 		}
 	}
@@ -200,8 +208,13 @@
 		display: flex;
 		position: absolute;
 		right: 24rpx;
-		top: calc(90rpx + var(--status-bar-height));
+		top: calc(90rpx);
 		z-index: 2;
+
+		.ui-sys-message {
+			position: relative;
+
+		}
 
 		&>* {
 			margin-left: 20rpx;
