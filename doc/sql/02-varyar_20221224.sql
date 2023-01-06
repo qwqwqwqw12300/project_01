@@ -82,9 +82,9 @@ create table sys_role (
 -- 初始化-角色信息表数据
 -- ----------------------------
 INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, '超级管理员', 'superAdmin', 1, '1', 1, 1, '0', '0', 'superAdmin', sysdate(), '', NULL, '超级管理员');
-INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, '平台管理员', 'admin', 2, '1', 1, 0, '0', '0', 'superAdmin', sysdate(), '', null, NULL);
-INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, '机构管理员', 'orgadmin', 2, '1', 1, 0, '0', '0', 'superAdmin', sysdate(), '', NULL, NULL);
-INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (102, '运营人员', 'biz', 4, '1', 1, 0, '0', '0', 'superAdmin', sysdate(), '', NULL, NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, '平台管理员', 'admin', 2, '4', 1, 0, '0', '0', 'superAdmin', sysdate(), '', null, NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, '机构管理员', 'orgadmin', 2, '4', 1, 0, '0', '0', 'superAdmin', sysdate(), '', NULL, NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (102, '运营人员', 'biz', 4, '4', 1, 0, '0', '0', 'superAdmin', sysdate(), '', NULL, NULL);
 
 
 -- ----------------------------

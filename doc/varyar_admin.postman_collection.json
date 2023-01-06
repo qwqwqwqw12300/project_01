@@ -306,13 +306,405 @@
 				},
 				{
 					"name": "biz首页",
-					"item": []
+					"item": [
+						{
+							"name": "运营关注设备列表",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/biz/device/care/list",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"biz",
+										"device",
+										"care",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "统计设备未处理事件数",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/home/biz/device/101/event/unhandle/count/groupbylevel",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"home",
+										"biz",
+										"device",
+										"101",
+										"event",
+										"unhandle",
+										"count",
+										"groupbylevel"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
 		{
 			"name": "系统管理",
-			"item": []
+			"item": [
+				{
+					"name": "用户管理",
+					"item": [
+						{
+							"name": "用户分页",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/system/user/page",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"system",
+										"user",
+										"page"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "新增用户",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userName\": \"personal\",//登录账号\n    \"nickName\": \"superAdmin\",// 昵称\n    \"name\": \"个人机构管理员\",// 姓名\n    \"orgId\": 101,// 所属机构\n    \"sex\": \"1\", //性别 0男 1女 2未知\n    \"mobilePhone\": \"13700000001\",// 手机号码\n    \"telephone\": \"0591-87383838\",//区号+座机号以 -号分隔\n    \"extensionNumber\": \"010\",//分机号\n    \"password\": \"admin123\",//密码\n    \"status\": \"0\",// 状态 （0正常 1停用）\n    \"remark\": \"个人机构管理员\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/system/user",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"system",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改用户",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\":102,\n    \"userName\": \"personal\", //登录账号\n    \"nickName\": \"superAdmin\", // 昵称\n    \"name\": \"个人机构管理员\", // 姓名\n    \"orgId\": 101, // 所属机构\n    \"sex\": \"1\", //性别 0男 1女 2未知\n    \"mobilePhone\": \"13700000001\", // 手机号码\n    \"telephone\": \"0591-87383838\", //区号+座机号以 -号分隔\n    \"extensionNumber\": \"010\", //分机号\n    \"password\": \"admin123\", //密码\n    \"status\": \"0\", // 状态 （0正常 1停用）\n    \"remark\": \"个人机构管理员\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/system/user",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"system",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "分配角色",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\":102,\n    \"roleIds\": [102]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/system/user/authRole",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"system",
+										"user",
+										"authRole"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "获取用户详细",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userId\":102,\n    \"userName\": \"personal\", //登录账号\n    \"nickName\": \"superAdmin\", // 昵称\n    \"name\": \"个人机构管理员\", // 姓名\n    \"orgId\": 101, // 所属机构\n    \"sex\": \"1\", //性别 0男 1女 2未知\n    \"mobilePhone\": \"13700000001\", // 手机号码\n    \"telephone\": \"0591-87383838\", //区号+座机号以 -号分隔\n    \"extensionNumber\": \"010\", //分机号\n    \"password\": \"admin123\", //密码\n    \"status\": \"0\", // 状态 （0正常 1停用）\n    \"remark\": \"个人机构管理员\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/system/user/102",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"system",
+										"user",
+										"102"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "删除用户",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/system/user/103",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"system",
+										"user",
+										"103"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "角色管理",
+					"item": [
+						{
+							"name": "角色分页",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/system/role/page",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"system",
+										"role",
+										"page"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "角色详细",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/system/role/101",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"system",
+										"role",
+										"101"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "角色权限列表",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/system/menu/roleMenuTreeselect/101",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"system",
+										"menu",
+										"roleMenuTreeselect",
+										"101"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "权限树",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{智慧养老url}}/system/menu/treeselect",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"system",
+										"menu",
+										"treeselect"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "创建角色（包含权限）",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"roleName\": \"112\",// 角色名称\n    \"roleKey\": \"112\",// 角色key\n    \"roleSort\": 0,//排序\n    \"dataScope\": \"4\",// 数据范围（1：所有数据权限；2：自定义数据权限；3：本机构数据权限；4：本机构及以下数据权限；5：仅本人数据权限）\n    \"menuCheckStrictly\": true,//菜单树选择项是否关联显示\n    \"orgCheckStrictly\": false,//机构树选择项是否关联显示\n    \"status\": \"0\",//角色状态（0正常 1停用）\n    \"menuIds\": [\n        2000\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/system/role",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"system",
+										"role"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "修改角色（包含权限）",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"roleId\": 104,//角色id\n    \"roleName\": \"112\",// 角色名称\n    \"roleKey\": \"112\",// 角色key\n    \"roleSort\": 0,//排序\n    \"dataScope\": \"4\",// 数据范围（1：所有数据权限；2：自定义数据权限；3：本机构数据权限；4：本机构及以下数据权限；5：仅本人数据权限）\n    \"menuCheckStrictly\": true,//菜单树选择项是否关联显示\n    \"orgCheckStrictly\": false,//机构树选择项是否关联显示\n    \"status\": \"0\",//角色状态（0正常 1停用）\n    \"menuIds\": [\n        2000\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{智慧养老url}}/system/role",
+									"host": [
+										"{{智慧养老url}}"
+									],
+									"path": [
+										"system",
+										"role"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "日志管理",
+					"item": [
+						{
+							"name": "登录日志",
+							"item": [
+								{
+									"name": "登录日志列表",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{智慧养老url}}/system/logininfor/list",
+											"host": [
+												"{{智慧养老url}}"
+											],
+											"path": [
+												"system",
+												"logininfor",
+												"list"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "操作日志",
+							"item": [
+								{
+									"name": "操作日志列表",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{智慧养老url}}/system/operlog/list",
+											"host": [
+												"{{智慧养老url}}"
+											],
+											"path": [
+												"system",
+												"operlog",
+												"list"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
 		},
 		{
 			"name": "机构管理",
@@ -1113,7 +1505,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"12302\",\n    \"no\": \"12302\",\n    \"status\": \"0\",\n    \"type\": \"0\",\n    \"distributeFlag\": \"0\"\n}",
+									"raw": "{\n    \"name\": \"12304\",\n    \"no\": \"12304\",\n    \"status\": \"0\",\n    \"type\": \"0\",\n    \"distributeFlag\": \"0\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1465,7 +1857,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"superadmin\",\n    \"password\": \"admin123\",\n    \"code\": \"3\",\n    \"uuid\": \"45947e1679ac4ae0b80e15e2ae259982\"\n}",
+					"raw": "{\n    \"username\": \"superadmin\",\n    \"password\": \"admin123\",\n    \"code\": \"18\",\n    \"uuid\": \"a44c26da246f4e8faf49e3754e34483f\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
