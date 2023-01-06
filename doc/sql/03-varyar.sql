@@ -265,7 +265,7 @@ create table t_device_fence (
   address               varchar(50)                         comment '地址',
   longitude             varchar(50)                         comment '经度',
   latitude              varchar(50)                         comment '纬度',
-  radius                varchar(50)                         comment '半径',
+  radius                int(5)                              comment '半径（米），范围在[1,50000]间',
   create_time        datetime                               comment '创建时间',
   update_time       datetime                                comment '更新时间',
   primary key (device_fence_id)
