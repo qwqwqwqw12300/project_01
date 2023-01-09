@@ -35,7 +35,12 @@
 		},
 		methods: {
 			localPush() {
-				push.addLocalNotification();
+				try {
+					push.addLocalNotification();
+				} catch (e) {
+					console.log(e);
+				}
+
 			},
 			getRegistrationID() {
 				push.getRegistrationID().then(res => {

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.TRoomZoneMapper">
+    
+    <resultMap type="TRoomZone" id="TRoomZoneResult">
+        <result property="roomZoneId"    column="room_zone_id"    />
+        <result property="roomId"    column="room_id"    />
+        <result property="name"    column="name"    />
+        <result property="x1"    column="x1"    />
+        <result property="x2"    column="x2"    />
+        <result property="y1"    column="y1"    />
+        <result property="y2"    column="y2"    />
+        <result property="z1"    column="z1"    />
+        <result property="z2"    column="z2"    />
+        <result property="existFlag"    column="exist_flag"    />
+        <result property="fallFlag"    column="fall_flag"    />
+        <result property="entryTime"    column="entry_time"    />
+        <result property="departureTime"    column="departure_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTRoomZoneVo">
+        select room_zone_id, room_id, name, x1, x2, y1, y2, z1, z2, exist_flag, fall_flag, entry_time, departure_time, create_time, update_time from t_room_zone
+    </sql>
+
+    <select id="selectTRoomZoneList" parameterType="TRoomZone" resultMap="TRoomZoneResult">
+        <include refid="selectTRoomZoneVo"/>
+        <where>  
+            <if test="roomId != null "> and room_id = #{roomId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="x1 != null "> and x1 = #{x1}</if>
+            <if test="x2 != null "> and x2 = #{x2}</if>
+            <if test="y1 != null "> and y1 = #{y1}</if>
+            <if test="y2 != null "> and y2 = #{y2}</if>
+            <if test="z1 != null "> and z1 = #{z1}</if>
+            <if test="z2 != null "> and z2 = #{z2}</if>
+            <if test="existFlag != null  and existFlag != ''"> and exist_flag = #{existFlag}</if>
+            <if test="fallFlag != null  and fallFlag != ''"> and fall_flag = #{fallFlag}</if>
+            <if test="entryTime != null "> and entry_time = #{entryTime}</if>
+            <if test="departureTime != null "> and departure_time = #{departureTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectTRoomZoneByRoomZoneId" parameterType="Long" resultMap="TRoomZoneResult">
+        <include refid="selectTRoomZoneVo"/>
+        where room_zone_id = #{roomZoneId}
+    </select>
+        
+    <insert id="insertTRoomZone" parameterType="TRoomZone" useGeneratedKeys="true" keyProperty="roomZoneId">
+        insert into t_room_zone
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomId != null">room_id,</if>
+            <if test="name != null">name,</if>
+            <if test="x1 != null">x1,</if>
+            <if test="x2 != null">x2,</if>
+            <if test="y1 != null">y1,</if>
+            <if test="y2 != null">y2,</if>
+            <if test="z1 != null">z1,</if>
+            <if test="z2 != null">z2,</if>
+            <if test="existFlag != null">exist_flag,</if>
+            <if test="fallFlag != null">fall_flag,</if>
+            <if test="entryTime != null">entry_time,</if>
+            <if test="departureTime != null">departure_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomId != null">#{roomId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="x1 != null">#{x1},</if>
+            <if test="x2 != null">#{x2},</if>
+            <if test="y1 != null">#{y1},</if>
+            <if test="y2 != null">#{y2},</if>
+            <if test="z1 != null">#{z1},</if>
+            <if test="z2 != null">#{z2},</if>
+            <if test="existFlag != null">#{existFlag},</if>
+            <if test="fallFlag != null">#{fallFlag},</if>
+            <if test="entryTime != null">#{entryTime},</if>
+            <if test="departureTime != null">#{departureTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTRoomZone" parameterType="TRoomZone">
+        update t_room_zone
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomId != null">room_id = #{roomId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="x1 != null">x1 = #{x1},</if>
+            <if test="x2 != null">x2 = #{x2},</if>
+            <if test="y1 != null">y1 = #{y1},</if>
+            <if test="y2 != null">y2 = #{y2},</if>
+            <if test="z1 != null">z1 = #{z1},</if>
+            <if test="z2 != null">z2 = #{z2},</if>
+            <if test="existFlag != null">exist_flag = #{existFlag},</if>
+            <if test="fallFlag != null">fall_flag = #{fallFlag},</if>
+            <if test="entryTime != null">entry_time = #{entryTime},</if>
+            <if test="departureTime != null">departure_time = #{departureTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where room_zone_id = #{roomZoneId}
+    </update>
+
+    <delete id="deleteTRoomZoneByRoomZoneId" parameterType="Long">
+        delete from t_room_zone where room_zone_id = #{roomZoneId}
+    </delete>
+
+    <delete id="deleteTRoomZoneByRoomZoneIds" parameterType="String">
+        delete from t_room_zone where room_zone_id in 
+        <foreach item="roomZoneId" collection="array" open="(" separator="," close=")">
+            #{roomZoneId}
+        </foreach>
+    </delete>
+</mapper>

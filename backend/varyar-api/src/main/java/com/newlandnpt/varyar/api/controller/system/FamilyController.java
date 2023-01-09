@@ -34,9 +34,9 @@ public class FamilyController extends BaseController {
         List<TFamily> list = tFamilyService.selectMembersFamilyList(memberId);
         return getDataTable(list);
     }
-/*
-* 创建我的家庭
-* */
+    /**
+     * 创建我的家庭
+     * */
     @PostMapping("/creFamily")
     public AjaxResult createFamily(
             @RequestBody @Validated FamilyRequest familyRequest){

@@ -19,21 +19,21 @@
 			}
 		},
 		{
-			"path": "pages/add-equipment/monitor",
+			"path": "pages/equipment/monitor",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "添加监护设备"
 			}
 		},
 		{
-			"path": "pages/add-equipment/radar",
+			"path": "pages/equipment/radar",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "添加雷达波设备"
 			}
 		},
 		{
-			"path": "pages/add-equipment/radar-detail",
+			"path": "pages/equipment/radar-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -42,7 +42,7 @@
 			}
 		},
 		{
-			"path": "pages/add-equipment/watch-detail",
+			"path": "pages/equipment/watch-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -241,21 +241,30 @@
 					"titleNView": false
 				}
 			}
+		}, {
+			"path": "pages/myself/position-setting",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/equipment/mobile-book",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		}
-	    ,{
-            "path" : "pages/myself/position-setting",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
-		"navigationBarBackgroundColor": "#FEC845",
+		"navigationBarBackgroundColor": "#ffffff",
 		"backgroundColor": "#F8F8F8",
 		"app-plus": {
 			"bounce": "none" //关闭窗口回弹效果

@@ -73,13 +73,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <delete id="deleteMemberContactsByMemberContactsId" parameterType="Long">
         update t_membercontacts
-        set del_flag = '2'
+        set del_flag = '2',update_time = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')
         where membercontacts_id = #{memberContactsId}
     </delete>
 
     <delete id="deleteMemberContactsByMemberContactsIds" parameterType="String">
         update t_membercontacts
-        set del_flag = '2'
+        set del_flag = '2',update_time = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')
         where membercontacts_id in
         <foreach item="memberContactsId" collection="array" open="(" separator="," close=")">
             #{memberContactsId}

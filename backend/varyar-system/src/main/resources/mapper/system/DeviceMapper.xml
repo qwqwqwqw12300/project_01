@@ -12,6 +12,7 @@
         <result property="no" column="no"/>
         <result property="status" column="status"/>
         <result property="type" column="type"/>
+        <result property="parameter" column="parameter" javaType="com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter" typeHandler="com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler"/>
         <result property="registerTime" column="register_time"/>
         <result property="location" column="location"/>
         <result property="familyId" column="family_id"/>
@@ -46,12 +47,16 @@
             (select name from t_room where room_id = d.room_id) room_name
         from t_device d
     </sql>
-    <sql id="selectTDeviceVo1">
+    <sql id="selectTDeviceByMemberId">
         select tf.family_id , r.room_id
         from t_room r
         join t_family tf on tf.family_id = r.family_id and tf.del_flag ="0"
         join t_member_family tmf on tmf.family_id = tf.family_id and tmf.del_flag ="0"
     </sql>
+    <sql id="parameter">
+        #{parameter,javaType=com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter,typeHandler = com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler}
+    </sql>
+
     <select id="selectTDeviceList" parameterType="Device" resultMap="TDeviceResult">
         <include refid="selectTDeviceVo"/>
         <where>
@@ -75,8 +80,8 @@
     </select>
 
     <select id="selectByMemberId" parameterType="Map" resultMap="TDeviceResult">
-        select * from t_device ta join (
-        <include refid="selectTDeviceVo1"/> and tmf.member_id = #{memberId}
+        select ta.* from t_device ta join (
+        <include refid="selectTDeviceByMemberId"/> and tmf.member_id = #{memberId}
         where r.del_flag ="0" and r.room_id = #{roomId} and r.family_id = #{familyId}) trm on trm.family_id =  ta.family_id and trm.room_id = ta.room_id
     </select>
 
@@ -102,6 +107,7 @@
             <if test="no != null">no,</if>
             <if test="status != null">status,</if>
             <if test="type != null">type,</if>
+            <if test="parameter != null">type = #{parameter},</if>
             <if test="registerTime != null">register_time,</if>
             <if test="location != null">location,</if>
             <if test="familyId != null">family_id,</if>
@@ -119,6 +125,7 @@
             <if test="no != null">#{no},</if>
             <if test="status != null">#{status},</if>
             <if test="type != null">#{type},</if>
+            <if test="parameter != null">type = #{parameter},</if>
             <if test="registerTime != null">#{registerTime},</if>
             <if test="location != null">#{location},</if>
             <if test="familyId != null">#{familyId},</if>
@@ -140,6 +147,7 @@
             <!--设备编号不允许修改<if test="no != null">no = #{no},</if>-->
             <if test="status != null">status = #{status},</if>
             <if test="type != null">type = #{type},</if>
+            <if test="parameter != null">type = #{parameter},</if>
             <if test="registerTime != null">register_time = #{registerTime},</if>
             <if test="location != null">location = #{location},</if>
             <if test="familyId != null">family_id = #{familyId},</if>

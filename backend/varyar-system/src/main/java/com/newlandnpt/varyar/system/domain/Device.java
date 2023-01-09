@@ -1,7 +1,8 @@
 package com.newlandnpt.varyar.system.domain;
 
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
+
+import com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
@@ -41,7 +42,8 @@ public class Device extends BaseEntity
     /** 类型（0雷达波 1监控设备） */
     @Excel(name = "设备类型",type = Excel.Type.EXPORT,readConverterExp = "0=雷达波,1=监控设备")
     private String type;
-
+    /** 设备参数信息 */
+    private DeviceParameter parameter;
     /** 激活时间 */
     private Date registerTime;
 
@@ -108,6 +110,7 @@ public class Device extends BaseEntity
     {
         return deviceId;
     }
+
     public void setDevicegroupId(Long devicegroupId) 
     {
         this.devicegroupId = devicegroupId;
@@ -117,6 +120,7 @@ public class Device extends BaseEntity
     {
         return devicegroupId;
     }
+
     public void setName(String name) 
     {
         this.name = name;
@@ -289,6 +293,14 @@ public class Device extends BaseEntity
         this.orgNo = orgNo;
     }
 
+    public DeviceParameter getParameter() {
+        return parameter;
+    }
+
+    public void setParameter(DeviceParameter parameter) {
+        this.parameter = parameter;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -298,6 +310,7 @@ public class Device extends BaseEntity
                 .append("no", no)
                 .append("status", status)
                 .append("type", type)
+                .append("parameter", parameter)
                 .append("registerTime", registerTime)
                 .append("location", location)
                 .append("deviceGroupName", deviceGroupName)
