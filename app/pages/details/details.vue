@@ -19,14 +19,14 @@
 				</view>
 				<view class="ui-list">
 					<text>开始时间:</text>
-					<view class="ui-date">
+					<view class="ui-date active" @click="openDate('start')">
 						<text>2022/12/28</text>
 						<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
 					</view>
 				</view>
 				<view class="ui-list">
 					<text>结束时间:</text>
-					<view class="ui-date">
+					<view class="ui-date active" @click="openDate('end')">
 						<text>2022/12/28</text>
 						<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
 					</view>
@@ -55,10 +55,10 @@
 			</view>
 			<!-- /筛选框 -->
 			<view class="ui-msg-list">
-				<msg-list></msg-list>
+				<msg-list :needNav="false"
+					srollHeight="calc(100vh - var(--window-bottom) - 730rpx - var(--status-bar-height))"></msg-list>
 			</view>
-
-
+			<u-calendar @close="dateClose" :show="dateHandle.show" @confirm="dateConfirm"></u-calendar>
 		</view>
 	</app-body>
 </template>
@@ -77,10 +77,39 @@
 				}, {
 					value: 2,
 					text: '设备三'
-				}]
+				}],
+				/**日期控制**/
+				dateHandle: {
+					/**是否展示**/
+					show: false,
+					/**日期类型**/
+					type: 'start'
+				},
+
 			};
 		},
-		methods: {}
+		methods: {
+			/**
+			 * 日期确认
+			 */
+			dateConfirm(date) {
+				this.dateClose();
+				console.log(date);
+			},
+
+			dateClose() {
+				this.dateHandle.show = false;
+			},
+			/**
+			 * 开启日期 
+			 **/
+			openDate(type) {
+				Object.assign(this.dateHandle, {
+					type,
+					show: true
+				});
+			}
+		}
 	};
 </script>
 

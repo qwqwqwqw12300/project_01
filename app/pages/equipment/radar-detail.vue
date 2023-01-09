@@ -13,7 +13,10 @@
 				</view>
 			</view>
 		</view>
-		<view class="ui-tabs">
+		<view class="ui-msg-list">
+			<msg-list srollHeight="calc(100vh - var(--window-bottom) - 600rpx - var(--status-bar-height))"></msg-list>
+		</view>
+		<!-- <view class="ui-tabs">
 			<view class="ui-tabs-content">
 				<u-tabs :list="list1" lineColor="#FEC92E" lineWidth="50" :activeStyle="{
 							color: '#FEC92E',
@@ -35,7 +38,6 @@
 				<view class="item-content">
 					<view class="item-content-header">
 						<u-icon name="arrow-right" size="42rpx"></u-icon>
-					<!-- 	<image class="content-header-icon" src="../../static/images/right.png" mode="" /> -->
 						<text>时间</text>
 						<text>类型</text>
 						<text>SOS</text>
@@ -52,7 +54,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 	</app-body>
 </template>
 
@@ -80,6 +82,10 @@
 		border-radius: 14rpx;
 		margin: 0 46rpx;
 		background-color: #EBEBEB;
+	}
+
+	.ui-msg-list {
+		padding: 0 46rpx;
 	}
 
 	.ui-detail {
