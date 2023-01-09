@@ -1,10 +1,14 @@
 package com.newlandnpt.varyar.common.core.domain.model;
 
-import org.apache.poi.hpsf.Decimal;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class RadarRequest {
 
@@ -22,51 +26,51 @@ public class RadarRequest {
     private String zoneName;
 
     /**
-     *  区域类型
+     *  区域类型  0：监控区域    1：私人区域
      * */
     @NotBlank(message = "区域类型不能为空")
-    @Size(min = 0, max = 1, message = "房间Id标识不能超过1个字符")
+    @Size(min = 0, max = 1, message = "区域类型不能超过1个字符")
     private String zoneType;
     /**
      * 最左侧的点
      * */
-    @NotBlank(message = "最左侧的点不能为空")
+    @NotNull(message = "最左侧的点不能为空")
     private BigDecimal x1;
 
     /**
      * 最右侧的点
      * */
-    @NotBlank(message = "最右侧的点不能为空")
+    @NotNull(message = "最右侧的点不能为空")
     private BigDecimal x2;
     /**
      * 最近的点
      * */
-    @NotBlank(message = "最近的点不能为空")
+    @NotNull(message = "最近的点不能为空")
     private BigDecimal y1;
     /**
      * 最远的点
      * */
-    @NotBlank(message = "最远的点不能为空")
+    @NotNull(message = "最远的点不能为空")
     private BigDecimal y2;
     /**
      * 最底部的点
      * */
-    @NotBlank(message = "最底部的点不能为空")
+    @NotNull(message = "最底部的点不能为空")
     private BigDecimal z1;
     /**
      *最顶部的点
      * */
-    @NotBlank(message = "最顶部的点不能为空")
+    @NotNull(message = "最顶部的点不能为空")
     private BigDecimal z2;
     /**
-     *进入时间
+     *进入时间   data HH:mm:ss
      * */
-    @NotBlank(message = "进入时间不能为空")
+    @NotNull(message = "进入时间不能为空")
     private Long entryTime;
     /**
-     *离开时间
+     *离开时间 data HH:mm:ss
      * */
-    @NotBlank(message = "离开时间不能为空")
+    @NotNull(message = "离开时间不能为空")
     private Long departureTime;
 
     public String getRoomId() {

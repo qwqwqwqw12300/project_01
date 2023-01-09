@@ -26,6 +26,13 @@ public interface IMsgService
      * @return 消息集合
      */
     public List<TMsg> selectTMsgList(TMsg tMsg);
+    /**
+     * 查询消息列表
+     *
+     * @param tMsg 消息
+     * @return 消息集合
+     */
+    public List<TMsg> selectTMsgList(Long memberId);
 
     /**
      * 新增消息
@@ -58,4 +65,20 @@ public interface IMsgService
      * @return 结果
      */
     public int deleteTMsgByMsgId(Long msgId);
+
+    /**
+     * 根据查询消息总数
+     *
+     * @param operateFlag 已读未读
+     * @return 消息总数
+     */
+    int selectMsgCountByFlag(String operateFlag);
+
+    /**
+     * 查询消息总数
+     *
+     * @param operateFlag 已读未读
+     * @return 消息总数
+     */
+    int selectMsgCount(String operateFlag);
 }

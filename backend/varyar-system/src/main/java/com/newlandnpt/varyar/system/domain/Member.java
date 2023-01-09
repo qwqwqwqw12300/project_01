@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar.system.domain;
 
+import com.newlandnpt.varyar.common.core.domain.entity.MemberParameter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
@@ -49,7 +50,18 @@ public class Member extends BaseEntity
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
-    public void setMemberId(Long memberId) 
+    /** 会员参数 */
+    private MemberParameter parameter;
+
+    public MemberParameter getParameter() {
+        return parameter;
+    }
+
+    public void setParameter(MemberParameter parameter) {
+        this.parameter = parameter;
+    }
+
+    public void setMemberId(Long memberId)
     {
         this.memberId = memberId;
     }
