@@ -27,6 +27,7 @@ public interface TMsgMapper
      */
     public List<TMsg> selectTMsgList(TMsg tMsg);
 
+    public List<TMsg> selectTMsgByMemberId(Long memberId);
     /**
      * 新增消息
      *

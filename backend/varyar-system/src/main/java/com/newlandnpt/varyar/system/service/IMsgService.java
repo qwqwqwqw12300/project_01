@@ -26,6 +26,13 @@ public interface IMsgService
      * @return 消息集合
      */
     public List<TMsg> selectTMsgList(TMsg tMsg);
+    /**
+     * 查询消息列表
+     *
+     * @param tMsg 消息
+     * @return 消息集合
+     */
+    public List<TMsg> selectTMsgList(Long memberId);
 
     /**
      * 新增消息

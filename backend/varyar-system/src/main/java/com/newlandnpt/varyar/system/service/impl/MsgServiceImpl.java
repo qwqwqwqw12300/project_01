@@ -43,6 +43,9 @@ public class MsgServiceImpl implements IMsgService
     {
         return tMsgMapper.selectTMsgList(tMsg);
     }
+    public List<TMsg> selectTMsgList(Long memberId){
+        return tMsgMapper.selectTMsgByMemberId(memberId);
+    }
 
     /**
      * 新增消息
