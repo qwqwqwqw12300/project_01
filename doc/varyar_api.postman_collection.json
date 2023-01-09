@@ -601,15 +601,15 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjE0ZDRhYmVmLWIyYjYtNGZiZC04ZTU2LWRhNGZmNWZhMGYwZSJ9.C1fkOH1_TZcTJpxe6_d0oA0pGGFKB4-M-OKaGWpd2o_dsmg2gI8H4xfeaCuGn6RsUHy2EUHE2rpXxtGU370VBw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjMxYWQxYzg5LWZhNTItNDRhOS1iNjYxLTQwNWYwYTdiNWY0NCJ9.H-31oOlfPju0YG1Mcv0ZBf_sc2hH7a_zMR1TKHoZPhz6fUIInKJCup2NLkiTLbdTEtKWglKkfcvrCbuou2fr-w",
 									"type": "string"
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "localhost:8081/api/memberInfo/updatePwd?oldPassword=1008611&newPassword=7777777",
+							"raw": "localhost:8081/api/memberInfo/updatePwd?oldPassword=7777777&newPassword=666666",
 							"host": [
 								"localhost"
 							],
@@ -622,11 +622,11 @@
 							"query": [
 								{
 									"key": "oldPassword",
-									"value": "1008611"
+									"value": "7777777"
 								},
 								{
 									"key": "newPassword",
-									"value": "7777777"
+									"value": "666666"
 								}
 							]
 						}
@@ -857,6 +857,333 @@
 									"key": "versionType",
 									"value": "1"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "消息查询",
+			"item": [
+				{
+					"name": "消息查询",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImFkMDZmZDdjLWQyYWMtNDZjYy1hNTA5LTZhMGJiYjRjZTU4MSJ9._PJJlSl-SI3_uOlqQVa-I7Wu03DP_-0S4o8hMR5Ll1gyyHoaxy1_70irzFqgDrtzUyUhqC0QfvOgRWRD3Y04Eg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/msgInfo/list",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"msgInfo",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "消息数",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjFlYTM3OGYwLTdhNDMtNDI3Ni05ZDZmLTBlOWIwNTgxZGM0OSJ9._qB3jtoaGMgIcOubF3cTOMpNOrcKEuUfejxJYfIV5qE20BuLQeiZchOR8migl707pgpfUWL2mgqtzdBUBvA77w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/msgInfo/selectMsgCountByFlag?operateFlag=0",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"msgInfo",
+								"selectMsgCountByFlag"
+							],
+							"query": [
+								{
+									"key": "operateFlag",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "消息总数",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjFlYTM3OGYwLTdhNDMtNDI3Ni05ZDZmLTBlOWIwNTgxZGM0OSJ9._qB3jtoaGMgIcOubF3cTOMpNOrcKEuUfejxJYfIV5qE20BuLQeiZchOR8migl707pgpfUWL2mgqtzdBUBvA77w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/msgInfo/selectMsgCount?operateFlag=0",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"msgInfo",
+								"selectMsgCount"
+							],
+							"query": [
+								{
+									"key": "operateFlag",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "详情页-事件",
+			"item": [
+				{
+					"name": "事件",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjVkMmZiMzA0LTRhN2ItNDk5OS04NWYyLWEzMGE2OTQzYTgyYyJ9.WvmVT0RMeuRlQ3wzgjOaFIwRj3m_zsUTmyNP5kPq12k0VXmbSZjJb5nhRx_-eXrZltcPAie_AM9xCcuWdOwVdA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/event/list",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"event",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "设备事件查询",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImQzZGU2ZTFkLTlkOTUtNDNhYi04YTRlLTdlM2I0ZTJjYTE3ZiJ9.VQq056oXFCGquWAjN6Toi7ffHZkwmmnFKCqYALxhUl6Sdl2MaWqIYMsespr9DWU81ul0HXHRcdThNpeHxDCvgw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"familyId\":\"100\",\r\n    \"startTime\":\"\",\r\n    \"endTime\":\"\",\r\n    \"type\":\"\",\r\n    \"level\":\"\",\r\n    \"operateFlag\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/event/selectEventInfo",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"event",
+								"selectEventInfo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "设备事件数",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjFlYTM3OGYwLTdhNDMtNDI3Ni05ZDZmLTBlOWIwNTgxZGM0OSJ9._qB3jtoaGMgIcOubF3cTOMpNOrcKEuUfejxJYfIV5qE20BuLQeiZchOR8migl707pgpfUWL2mgqtzdBUBvA77w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/event/selectEventCountByFlag?operateFlag=0",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"event",
+								"selectEventCountByFlag"
+							],
+							"query": [
+								{
+									"key": "operateFlag",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "设备事件总数",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjFlYTM3OGYwLTdhNDMtNDI3Ni05ZDZmLTBlOWIwNTgxZGM0OSJ9._qB3jtoaGMgIcOubF3cTOMpNOrcKEuUfejxJYfIV5qE20BuLQeiZchOR8migl707pgpfUWL2mgqtzdBUBvA77w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/event/selectEventCount?operateFlag=0",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"event",
+								"selectEventCount"
+							],
+							"query": [
+								{
+									"key": "operateFlag",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "电子围栏",
+			"item": [
+				{
+					"name": "设置电子围栏",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjYzYzg0ZTg4LTU1ZDMtNGVjYS1iNjFmLTdjYTcyZTc2ZWYyMSJ9.v1lAp7AF4qd6rMkI8eJ2MLHFKashBL0twI-tNiUa_-BAQnn2-l8svOeWdaJVFdwm_wX5tjXmOXsrAT04dmZLUQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"deviceFenceId\":\"109\",\r\n    \"geoFenceId\":\"12323231\",\r\n    \"deviceId\":\"1001\",\r\n    \"deviceNo\":\"11233\",\r\n    \"address\":\"福州22市\",\r\n    \"longitude\":\"134.3323312\",\r\n    \"latitude\":\"111.2343432\",\r\n    \"radius\":\"200\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/fence/addFence",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"fence",
+								"addFence"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取电子围栏信息",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjYzYzg0ZTg4LTU1ZDMtNGVjYS1iNjFmLTdjYTcyZTc2ZWYyMSJ9.v1lAp7AF4qd6rMkI8eJ2MLHFKashBL0twI-tNiUa_-BAQnn2-l8svOeWdaJVFdwm_wX5tjXmOXsrAT04dmZLUQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/fence/109",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"fence",
+								"109"
 							]
 						}
 					},
