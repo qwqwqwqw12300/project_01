@@ -1,7 +1,10 @@
 package com.newlandnpt.varyar.system.mapper;
 
 import java.util.List;
+
+import com.newlandnpt.varyar.common.core.domain.model.EventRequest;
 import com.newlandnpt.varyar.system.domain.TEvent;
+import com.newlandnpt.varyar.system.domain.TEventList;
 import com.newlandnpt.varyar.system.domain.dto.event.EventCountGroupByLevelDto;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -97,4 +100,29 @@ public interface TEventMapper
      */
     @Select(" select level,count(*) as count from t_event where operate_flag = '0' and device_id = #{deviceId} group by level")
     public List<EventCountGroupByLevelDto> countUnHandleByDeviceGroupByLevel(Long deviceId);
+
+    /**
+     * 根据查询消息总数
+     *
+     * @param operateFlag 已读未读
+     * @return 消息总数
+     */
+    int selectEventCountByFlag(String operateFlag);
+
+    /**
+     * 查询消息总数
+     *
+     * @param operateFlag 已读未读
+     * @return 消息总数
+     */
+    int selectEventCount(String operateFlag);
+
+    /**
+     * 查询事件列表
+     *
+     * @param eventRequest 查询请求条件
+     * @return 事件集合
+     */
+    public List<TEventList> selectEventInfo(EventRequest eventRequest);
+
 }
