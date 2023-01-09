@@ -2,7 +2,9 @@ package com.newlandnpt.varyar.system.service.impl;
 
 import java.util.List;
 
+import com.newlandnpt.varyar.common.core.domain.model.EventRequest;
 import com.newlandnpt.varyar.common.utils.DateUtils;
+import com.newlandnpt.varyar.system.domain.TEventList;
 import com.newlandnpt.varyar.system.domain.dto.event.EventCountGroupByLevelDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -115,4 +117,41 @@ public class TEventServiceImpl implements ITEventService
     public List<EventCountGroupByLevelDto> countUnHandleByDeviceGroupByLevel(Long deviceId) {
         return tEventMapper.countUnHandleByDeviceGroupByLevel(deviceId);
     }
+
+    /**
+     * 根据查询消息总数
+     *
+     * @param operateFlag 已读未读
+     * @return 消息总数
+     */
+    @Override
+    public int selectEventCountByFlag(String operateFlag)
+    {
+        return tEventMapper.selectEventCountByFlag(operateFlag);
+    }
+
+    /**
+     * 查询消息总数
+     *
+     * @param operateFlag 已读未读
+     * @return 消息总数
+     */
+    @Override
+    public int selectEventCount(String operateFlag)
+    {
+        return tEventMapper.selectEventCount(operateFlag);
+    }
+
+    /**
+     * app查询事件列表
+     *
+     * @param eventRequest 事件条件请求
+     * @return 事件
+     */
+    @Override
+    public List<TEventList> selectEventInfo(EventRequest eventRequest)
+    {
+        return tEventMapper.selectEventInfo(eventRequest);
+    }
+
 }

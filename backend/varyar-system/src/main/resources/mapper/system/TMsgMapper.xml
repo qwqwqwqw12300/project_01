@@ -104,6 +104,14 @@
         </foreach>
     </delete>
 
+    <select id="selectMsgCountByFlag" parameterType="String" resultType="Integer">
+        select count(content) from t_msg
+        where operate_flag = #{operateFlag}
+    </select>
 
+    <select id="selectMsgCount" parameterType="String" resultType="Integer">
+        select count(content) from t_msg
+        where 1=1
+    </select>
 
 </mapper>

@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.system.mapper;
 
 import java.util.List;
 import com.newlandnpt.varyar.system.domain.TMsg;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 消息Mapper接口
@@ -67,4 +68,20 @@ public interface TMsgMapper
      * @return 消息集合
      */
     public List<TMsg> selectTMsgInfo(TMsg tMsg);
+    /**
+     * 根据查询消息总数
+     *
+     * @param operateFlag 已读未读
+     * @return 消息总数
+     */
+    int selectMsgCountByFlag(String operateFlag);
+
+    /**
+     * 查询消息总数
+     *
+     * @param operateFlag 已读未读
+     * @return 消息总数
+     */
+    int selectMsgCount(String operateFlag);
+
 }

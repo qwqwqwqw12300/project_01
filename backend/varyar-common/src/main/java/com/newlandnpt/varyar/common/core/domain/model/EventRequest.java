@@ -37,6 +37,12 @@ public class EventRequest {
      * */
     private String operateFlag;
 
+    private Long memberId;
+
+    private String memberPhone;
+
+    private String memberName;
+
 
     public String getFamilyId() {
         return familyId;
@@ -86,6 +92,30 @@ public class EventRequest {
         this.operateFlag = operateFlag;
     }
 
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
+
+    public String getMemberPhone() {
+        return memberPhone;
+    }
+
+    public void setMemberPhone(String memberPhone) {
+        this.memberPhone = memberPhone;
+    }
+
+    public String getMemberName() {
+        return memberName;
+    }
+
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
+    }
+
     @Override
     public String toString() {
         return "EventRequest{" +
@@ -95,6 +125,9 @@ public class EventRequest {
                 ", type='" + type + '\'' +
                 ", level='" + level + '\'' +
                 ", operateFlag='" + operateFlag + '\'' +
+                ", memberId='" + memberId + '\'' +
+                ", memberPhone='" + memberPhone + '\'' +
+                ", memberName='" + memberName + '\'' +
                 '}';
     }
 }

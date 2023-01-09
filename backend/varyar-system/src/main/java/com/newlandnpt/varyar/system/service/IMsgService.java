@@ -65,4 +65,20 @@ public interface IMsgService
      * @return 结果
      */
     public int deleteTMsgByMsgId(Long msgId);
+
+    /**
+     * 根据查询消息总数
+     *
+     * @param operateFlag 已读未读
+     * @return 消息总数
+     */
+    int selectMsgCountByFlag(String operateFlag);
+
+    /**
+     * 查询消息总数
+     *
+     * @param operateFlag 已读未读
+     * @return 消息总数
+     */
+    int selectMsgCount(String operateFlag);
 }
