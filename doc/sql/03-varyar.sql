@@ -26,7 +26,7 @@ create table t_org (
 ) engine=innodb auto_increment=100 comment = '机构表';
 
 INSERT INTO `t_org` (`org_id`, `parent_id`, `ancestors`, `org_name`, `org_no`, `order_num`, `leader`, `leaderphone`, `type`, `address`, `attendant_name1`, `attendant_name2`, `attendant_name3`, `phone1`, `phone2`, `phone3`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (100, 0, '0', '顶级机构', '', 0, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'admin', '2022-12-19 02:23:41', '', NULL);
-INSERT INTO `t_org` (`org_id`, `parent_id`, `ancestors`, `org_name`, `org_no`, `order_num`, `leader`, `leaderphone`, `type`, `address`, `attendant_name1`, `attendant_name2`, `attendant_name3`, `phone1`, `phone2`, `phone3`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (101, 100, '0', '个人机构', '', 0, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'admin', '2022-12-19 02:23:41', '', NULL);
+INSERT INTO `t_org` (`org_id`, `parent_id`, `ancestors`, `org_name`, `org_no`, `order_num`, `leader`, `leaderphone`, `type`, `address`, `attendant_name1`, `attendant_name2`, `attendant_name3`, `phone1`, `phone2`, `phone3`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (101, 100, '0,100', '个人机构', '', 0, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'admin', '2022-12-19 02:23:41', '', NULL);
 
 drop table if exists t_devicegroup;
 create table t_devicegroup (

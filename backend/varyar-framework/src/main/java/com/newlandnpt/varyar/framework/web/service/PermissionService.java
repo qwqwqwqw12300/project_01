@@ -1,6 +1,8 @@
 package com.newlandnpt.varyar.framework.web.service;
 
 import java.util.Set;
+
+import com.newlandnpt.varyar.common.constant.UserConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import com.newlandnpt.varyar.common.core.domain.entity.SysRole;
@@ -8,6 +10,8 @@ import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.framework.security.context.PermissionContextHolder;
+
+import static com.newlandnpt.varyar.common.constant.UserConstants.SUPER_ADMIN;
 
 /**
  * RuoYi首创 自定义权限实现，ss取自SpringSecurity首字母
@@ -21,7 +25,7 @@ public class PermissionService
     private static final String ALL_PERMISSION = "*:*:*";
 
     /** 管理员角色权限标识 */
-    public static final String SUPER_ADMIN = "superAdmin";
+    public static final String SUPER_ADMIN = UserConstants.SUPER_ADMIN;
 
     private static final String ROLE_DELIMETER = ",";
 
