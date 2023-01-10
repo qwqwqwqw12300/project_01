@@ -3,14 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
     <groupId>com.newlandnpt.varyar</groupId>
     <artifactId>varyar</artifactId>
     <version>3.8.4</version>
 
     <name>varyar</name>
     <description>varyar管理系统</description>
-    
+
     <properties>
         <varyar.version>3.8.4</varyar.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,8 +30,11 @@
         <poi.version>4.1.2</poi.version>
         <velocity.version>2.3</velocity.version>
         <jwt.version>0.9.1</jwt.version>
+        <rocketmq.version>2.2.1</rocketmq.version>
+        <httpclient.version>4.5.13</httpclient.version>
+        <lombok.version>1.16.22</lombok.version>
     </properties>
-	
+
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
@@ -182,6 +185,20 @@
                 <groupId>com.newlandnpt.varyar</groupId>
                 <artifactId>varyar-cloudBase</artifactId>
                 <version>${varyar.version}</version>
+            </dependency>
+
+            <!-- RocketMQ-->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq.version}</version>
+            </dependency>
+
+            <!-- 地理 http工具-->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
             </dependency>
 
         </dependencies>

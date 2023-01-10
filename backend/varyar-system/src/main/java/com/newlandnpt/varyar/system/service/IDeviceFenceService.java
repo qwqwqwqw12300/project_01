@@ -20,6 +20,13 @@ public interface IDeviceFenceService
     public TDeviceFence selectTDeviceFenceByDeviceFenceId(Long deviceFenceId);
 
     /**
+     * 根据设备号查询设备
+     * @param deviceNo
+     * @return
+     */
+    public TDeviceFence selectTDeviceFenceByDeviceNo(String deviceNo);
+
+    /**
      * 查询设备电子围栏列表
      *
      * @param tDeviceFence 设备电子围栏

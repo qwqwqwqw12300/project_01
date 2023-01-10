@@ -1,32 +1,6 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <!--机构数据-->
-<!--      <el-col :span="4" :xs="24">-->
-<!--        <div class="head-container">-->
-<!--          <el-input-->
-<!--            v-model="orgName"-->
-<!--            placeholder="请输入机构名称"-->
-<!--            clearable-->
-<!--            size="small"-->
-<!--            prefix-icon="el-icon-search"-->
-<!--            style="margin-bottom: 20px"-->
-<!--          />-->
-<!--        </div>-->
-<!--        <div class="head-container">-->
-<!--          <el-tree-->
-<!--            :data="orgOptions"-->
-<!--            :props="defaultProps"-->
-<!--            :expand-on-click-node="false"-->
-<!--            :filter-node-method="filterNode"-->
-<!--            ref="tree"-->
-<!--            node-key="id"-->
-<!--            default-expand-all-->
-<!--            highlight-current-->
-<!--            @node-click="handleNodeClick"-->
-<!--          />-->
-<!--        </div>-->
-<!--      </el-col>-->
       <!--用户数据-->
       <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
@@ -42,24 +16,6 @@
           <el-form-item label="归属机构" prop="orgId">
             <treeselect style="width: 240px" v-model="queryParams.orgId" :options="orgOptions" :show-count="true" placeholder="请选择归属机构" />
           </el-form-item>
-<!--          <el-form-item label="登录账号" prop="userName">-->
-<!--            <el-input-->
-<!--              v-model="queryParams.userName"-->
-<!--              placeholder="请输入登录账号"-->
-<!--              clearable-->
-<!--              style="width: 240px"-->
-<!--              @keyup.enter.native="handleQuery"-->
-<!--            />-->
-<!--          </el-form-item>-->
-<!--          <el-form-item label="手机号码" prop="mobilePhone">-->
-<!--            <el-input-->
-<!--              v-model="queryParams.mobilePhone"-->
-<!--              placeholder="请输入手机号码"-->
-<!--              clearable-->
-<!--              style="width: 240px"-->
-<!--              @keyup.enter.native="handleQuery"-->
-<!--            />-->
-<!--          </el-form-item>-->
           <el-form-item label="状态" prop="status">
             <el-select
               v-model="queryParams.status"
@@ -103,42 +59,22 @@
               v-hasPermi="['system:user:add']"
             >添加</el-button>
           </el-col>
-<!--          <el-col :span="1.5">-->
-<!--            <el-button-->
-<!--              type="success"-->
-<!--              plain-->
-<!--              icon="el-icon-edit"-->
-<!--              size="mini"-->
-<!--              :disabled="single"-->
-<!--              @click="handleUpdate"-->
-<!--              v-hasPermi="['system:user:edit']"-->
-<!--            >修改</el-button>-->
-<!--          </el-col>-->
-<!--          <el-col :span="1.5">-->
-<!--            <el-button-->
-<!--              type="danger"-->
-<!--              plain-->
-<!--              icon="el-icon-delete"-->
-<!--              size="mini"-->
-<!--              :disabled="multiple"-->
-<!--              @click="handleDelete"-->
-<!--              v-hasPermi="['system:user:remove']"-->
-<!--            >删除</el-button>-->
-<!--          </el-col>-->
-<!--          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>-->
+          <el-col :span="1.5">
+            <el-button
+              type="info"
+              plain
+              icon="el-icon-upload2"
+              size="mini"
+              @click="handleImport"
+            >导入</el-button>
+          </el-col>
         </el-row>
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
-<!--          <el-table-column type="selection" width="50" align="center" />-->
           <el-table-column v-for="column in columns" :label="column.label" :key="column.key" :prop="column.prop"
                            v-if="column.visible" :formatter="column.formatter"
                            :show-overflow-tooltip="column.showOverFlowToolTip == undefined?true:column.showOverFlowToolTip">
           </el-table-column>
-<!--          <el-table-column label="状态" align="center" key="status" v-if="columns[6].visible">-->
-<!--            <template v-if="column.template" slot-scope="scope">-->
-<!--              {{column.template}}-->
-<!--            </template>-->
-<!--          </el-table-column>-->
           <el-table-column
             label="操作"
             align="center"
@@ -214,7 +150,7 @@
           <el-col :span="12">
             <el-form-item label="性别" prop="sex">
               <el-radio-group v-model="form.sex">
-                <el-radio v-for="dict in dict.type.sys_user_sex" :label="dict.value">{{ dict.label }}</el-radio>
+                <el-radio v-for="dict in dict.type.sys_user_sex" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -574,7 +510,6 @@ export default {
     resetQuery() {
       this.dateRange = [];
       this.resetForm("queryForm");
-      this.queryParams.orgId = undefined;
       this.$refs.tree.setCurrentKey(null);
       this.handleQuery();
     },
