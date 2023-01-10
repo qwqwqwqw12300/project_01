@@ -57,8 +57,8 @@ public class TEvent extends BaseEntity
     private String userName;
 
     /** 操作时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "操作时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "操作时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date operateTime;
 
     /** 操作标志（0未处理 1已处理） */
