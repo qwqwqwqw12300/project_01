@@ -22,6 +22,12 @@ public class CircleReq {
     private String sid;
 
     /**
+     * 围栏id
+     * sid为猎鹰service唯一编号
+     */
+    private String gfid;
+
+    /**
      * 围栏名称
      * 在同一个 sid 下不可重复，不可为空。
      *

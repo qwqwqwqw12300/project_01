@@ -26,15 +26,31 @@ public class GeoFenceServiceImpl implements GeoFenceService {
         //构造请求参数
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("name", circleReq.getName());
-        paramsMap.put("desc", circleReq.getDesc());
         paramsMap.put("center", circleReq.getCenter());
         paramsMap.put("radius", circleReq.getRadius());
         paramsMap.put("key", GeoConstant.GEO_KEY);
         paramsMap.put("sid", GeoConstant.GEO_SERVICE_ID);
         //发送请求
-        String result = HttpSendService.sendPost(paramsMap, GeoConstant.GEO_FENCE_CIRCLE);
+        String result = HttpSendService.sendPost(paramsMap, GeoConstant.GEO_FENCE_CIRCLE_ADD);
         JSONObject resultJson = JSON.parseObject(result);
         log.info("新增圆形围栏结果：{}", resultJson);
+        return result;
+    }
+
+    @Override
+    public String updateCircleFence(CircleReq circleReq) {
+        //构造请求参数
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("name", circleReq.getName());
+        paramsMap.put("center", circleReq.getCenter());
+        paramsMap.put("radius", circleReq.getRadius());
+        paramsMap.put("key", GeoConstant.GEO_KEY);
+        paramsMap.put("sid", GeoConstant.GEO_SERVICE_ID);
+        paramsMap.put("gfid", circleReq.getGfid());
+        //发送请求
+        String result = HttpSendService.sendPost(paramsMap, GeoConstant.GEO_FENCE_CIRCLE_UPDATE);
+        JSONObject resultJson = JSON.parseObject(result);
+        log.info("更新圆形围栏结果：{}", resultJson);
         return result;
     }
 

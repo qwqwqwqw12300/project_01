@@ -4,7 +4,7 @@ import io.jsonwebtoken.Claims;
 
 /**
  * 通用常量信息
- * 
+ *
  * @author ruoyi
  */
 public class Constants
@@ -63,7 +63,7 @@ public class Constants
      * 登录失败
      */
     public static final String LOGIN_FAIL = "Error";
- 
+
     /**
      * 验证码有效期（分钟）
      */
@@ -144,4 +144,9 @@ public class Constants
      */
     public static final String[] JOB_ERROR_STR = { "java.net.URL", "javax.naming.InitialContext", "org.yaml.snakeyaml",
             "org.springframework", "org.apache", "com.newlandnpt.varyar.common.utils.file", "com.newlandnpt.varyar.common.config" };
+
+    /**
+     * 高德api成功响应码
+     */
+    public static final Integer GEO_RESP_SUCCESS = 10000;
 }
