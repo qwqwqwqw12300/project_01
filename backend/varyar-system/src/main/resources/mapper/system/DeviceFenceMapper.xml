@@ -39,6 +39,11 @@
         where device_fence_id = #{deviceFenceId}
     </select>
 
+    <select id="selectTDeviceFenceByDeviceNo" resultMap="TDeviceFenceResult">
+        <include refid="selectTDeviceFenceVo"/>
+        where device_no = #{deviceNo}
+    </select>
+
     <insert id="insertTDeviceFence" parameterType="TDeviceFence" useGeneratedKeys="true" keyProperty="deviceFenceId">
         insert into t_device_fence
         <trim prefix="(" suffix=")" suffixOverrides=",">

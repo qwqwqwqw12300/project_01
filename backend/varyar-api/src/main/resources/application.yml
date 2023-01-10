@@ -53,7 +53,7 @@ spring:
   messages:
     # 国际化资源文件路径
     basename: i18n/messages
-  profiles: 
+  profiles:
     active: druid
   # 文件上传
   servlet:
@@ -76,7 +76,7 @@ spring:
     # 数据库索引
     database: 0
     # 密码
-    password: 
+    password:
     # 连接超时时间
     timeout: 10s
     lettuce:
@@ -98,7 +98,7 @@ token:
     secret: abcdefghijklmnopqrstuvwxyz
     # 令牌有效期（默认30分钟）
     expireTime: 30
-  
+
 # MyBatis配置
 mybatis:
     # 搜索指定包别名
@@ -109,10 +109,10 @@ mybatis:
     configLocation: classpath:mybatis/mybatis-config.xml
 
 # PageHelper分页插件
-pagehelper: 
+pagehelper:
   helperDialect: mysql
   supportMethodsArguments: true
-  params: count=countSql 
+  params: count=countSql
 
 # Swagger配置
 swagger:
@@ -122,10 +122,46 @@ swagger:
   pathMapping: /dev-api
 
 # 防止XSS攻击
-xss: 
+xss:
   # 过滤开关
   enabled: true
   # 排除链接（多个用逗号分隔）
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+
+
+
+# rocketmq配置
+rocketmq:
+  name-server: 192.168.132.204:9876
+  producer:
+    group: group_msg
+  group:
+    net: group_net
+    fall: group_fall
+    access: group_access
+    location: group_location
+  topic:
+    net: netTopic
+    fall: fallTopic
+    access: accessTopic
+    location: locationTopic
+
+
+location:
+  gaode:
+    key: 92e29e7a06fa0d24124beac6efb5c154
+    sid: 856898
+    trackServiceAdd: https://tsapi.amap.com/v1/track/service/add
+    trackTerminalAdd: https://tsapi.amap.com/v1/track/terminal/add
+    trackTerminalList: https://tsapi.amap.com/v1/track/terminal/list
+    trackTraceAdd: https://tsapi.amap.com/v1/track/trace/add
+    trackPointUpload: https://tsapi.amap.com/v1/track/point/upload
+    trackTerminalTrsearch: https://tsapi.amap.com/v1/track/terminal/trsearch
+    fenceCircle: https://tsapi.amap.com/v1/track/geofence/add/circle
+    fenceList: https://tsapi.amap.com/v1/track/geofence/list
+    fenceLocation: https://tsapi.amap.com/v1/track/geofence/status/location
+    fenceTerminalBind: https://tsapi.amap.com/v1/track/geofence/terminal/bind
+    fenceTerminalStatus: https://tsapi.amap.com/v1/track/geofence/status/terminal
+
