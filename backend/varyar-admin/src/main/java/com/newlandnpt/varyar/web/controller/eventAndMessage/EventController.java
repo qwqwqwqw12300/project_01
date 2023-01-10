@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.web.controller.system;
+package com.newlandnpt.varyar.web.controller.eventAndMessage;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +17,7 @@ import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.system.domain.TEvent;
-import com.newlandnpt.varyar.system.service.ITEventService;
+import com.newlandnpt.varyar.system.service.IEventService;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 
@@ -28,11 +28,11 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
  * @date 2022-12-24
  */
 @RestController
-@RequestMapping("/system/event")
-public class TEventController extends BaseController
+@RequestMapping("/event")
+public class EventController extends BaseController
 {
     @Autowired
-    private ITEventService tEventService;
+    private IEventService eventService;
 
     /**
      * 查询事件列表
@@ -42,7 +42,7 @@ public class TEventController extends BaseController
     public TableDataInfo list(TEvent tEvent)
     {
         startPage();
-        List<TEvent> list = tEventService.selectTEventList(tEvent);
+        List<TEvent> list = eventService.selectTEventList(tEvent);
         return getDataTable(list);
     }
 
@@ -54,7 +54,7 @@ public class TEventController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, TEvent tEvent)
     {
-        List<TEvent> list = tEventService.selectTEventList(tEvent);
+        List<TEvent> list = eventService.selectTEventList(tEvent);
         ExcelUtil<TEvent> util = new ExcelUtil<TEvent>(TEvent.class);
         util.exportExcel(response, list, "事件数据");
     }
@@ -66,7 +66,7 @@ public class TEventController extends BaseController
     @GetMapping(value = "/{eventId}")
     public AjaxResult getInfo(@PathVariable("eventId") Long eventId)
     {
-        return success(tEventService.selectTEventByEventId(eventId));
+        return success(eventService.selectTEventByEventId(eventId));
     }
 
     /**
@@ -77,7 +77,7 @@ public class TEventController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody TEvent tEvent)
     {
-        return toAjax(tEventService.insertTEvent(tEvent));
+        return toAjax(eventService.insertTEvent(tEvent));
     }
 
     /**
@@ -88,7 +88,7 @@ public class TEventController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody TEvent tEvent)
     {
-        return toAjax(tEventService.updateTEvent(tEvent));
+        return toAjax(eventService.updateTEvent(tEvent));
     }
 
     /**
@@ -99,6 +99,6 @@ public class TEventController extends BaseController
 	@DeleteMapping("/{eventIds}")
     public AjaxResult remove(@PathVariable Long[] eventIds)
     {
-        return toAjax(tEventService.deleteTEventByEventIds(eventIds));
+        return toAjax(eventService.deleteTEventByEventIds(eventIds));
     }
 }

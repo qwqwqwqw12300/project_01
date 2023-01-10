@@ -42,7 +42,7 @@ public class DeviceGroupController extends BaseController
     /**
      * 查询设备组列表
      */
-    @PreAuthorize("@ss.hasPermi('org:devicegroup:list')")
+    @PreAuthorize("@ss.hasPermi('org:deviceGroup:list')")
     @GetMapping("/page")
     public TableDataInfo page(DeviceGroup devicegroup)
     {
@@ -54,7 +54,7 @@ public class DeviceGroupController extends BaseController
     /**
      * 获取设备组详细信息
      */
-    @PreAuthorize("@ss.hasPermi('org:devicegroup:query')")
+    @PreAuthorize("@ss.hasPermi('org:deviceGroup:query')")
     @GetMapping(value = "/{devicegroupId}")
     public AjaxResult getInfo(@PathVariable("devicegroupId") Long devicegroupId)
     {
@@ -64,13 +64,13 @@ public class DeviceGroupController extends BaseController
     /**
      * 新增设备组
      */
-    @PreAuthorize("@ss.hasPermi('org:devicegroup:add')")
+    @PreAuthorize("@ss.hasPermi('org:deviceGroup:add')")
     @Log(title = "设备组", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody DeviceGroup devicegroup)
     {
         //默认是当前管理员所属机构
-        devicegroup.setOrgId(SecurityUtils.getLoginUser().getUser().getOrgId());
+//        devicegroup.setOrgId(SecurityUtils.getLoginUser().getUser().getOrgId());
         devicegroup.setNo(IdUtils.fastSimpleUUID());
         if (UserConstants.NOT_UNIQUE.equals(deviceGroupService.checkOrgNameUnique(devicegroup)))
         {
@@ -82,7 +82,7 @@ public class DeviceGroupController extends BaseController
     /**
      * 修改设备组
      */
-    @PreAuthorize("@ss.hasPermi('org:devicegroup:edit')")
+    @PreAuthorize("@ss.hasPermi('org:deviceGroup:edit')")
     @Log(title = "设备组", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody DeviceGroup devicegroup)
@@ -97,7 +97,7 @@ public class DeviceGroupController extends BaseController
     /**
      * 修改运营人员
      */
-    @PreAuthorize("@ss.hasPermi('org:devicegroup:arrangeUser')")
+    @PreAuthorize("@ss.hasPermi('org:deviceGroup:arrangeUser')")
     @Log(title = "设备组-运营人员", businessType = BusinessType.UPDATE)
     @PutMapping("/arrange/user/{userId}")
     public AjaxResult arrangeDeviceGroups(@RequestBody Long[] deviceGroupIds,@PathVariable Long userId)
@@ -108,7 +108,7 @@ public class DeviceGroupController extends BaseController
     /**
      * 设备组分配设备
      */
-    @PreAuthorize("@ss.hasPermi('org:devicegroup:deviceArrange')")
+    @PreAuthorize("@ss.hasPermi('org:deviceGroup:deviceArrange')")
     @Log(title = "设备组-分配设备", businessType = BusinessType.UPDATE)
     @PutMapping("{deviceGroupId}/devices/arrange")
     public AjaxResult edit(@RequestBody Long[] deviceIds,@PathVariable Long deviceGroupId)
@@ -119,7 +119,7 @@ public class DeviceGroupController extends BaseController
     /**
      * 删除设备组
      */
-    @PreAuthorize("@ss.hasPermi('org:devicegroup:remove')")
+    @PreAuthorize("@ss.hasPermi('org:deviceGroup:remove')")
     @Log(title = "设备组", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{devicegroupIds}")
     public AjaxResult remove(@PathVariable Long[] devicegroupIds)

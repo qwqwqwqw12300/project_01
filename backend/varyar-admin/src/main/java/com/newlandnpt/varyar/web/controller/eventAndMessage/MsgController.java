@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.web.controller.system;
+package com.newlandnpt.varyar.web.controller.eventAndMessage;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +28,7 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
  * @date 2022-12-24
  */
 @RestController
-@RequestMapping("/system/msg")
+@RequestMapping("/msg")
 public class MsgController extends BaseController
 {
     @Autowired

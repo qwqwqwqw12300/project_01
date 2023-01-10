@@ -25,8 +25,8 @@ create table t_org (
   primary key (org_id)
 ) engine=innodb auto_increment=100 comment = '机构表';
 
-INSERT INTO `t_org` (`org_id`, `parent_id`, `ancestors`, `org_name`, `org_no`, `order_num`, `leader`, `leaderphone`, `type`, `address`, `attendant_name1`, `attendant_name2`, `attendant_name3`, `phone1`, `phone2`, `phone3`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (100, 0, '0', '顶级机构', '', 0, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'admin', '2022-12-19 02:23:41', '', NULL);
-INSERT INTO `t_org` (`org_id`, `parent_id`, `ancestors`, `org_name`, `org_no`, `order_num`, `leader`, `leaderphone`, `type`, `address`, `attendant_name1`, `attendant_name2`, `attendant_name3`, `phone1`, `phone2`, `phone3`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (101, 100, '0,100', '个人机构', '', 0, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'admin', '2022-12-19 02:23:41', '', NULL);
+INSERT INTO `t_org` (`org_id`, `parent_id`, `ancestors`, `org_name`, `org_no`, `order_num`, `leader`, `leaderphone`, `type`, `address`, `attendant_name1`, `attendant_name2`, `attendant_name3`, `phone1`, `phone2`, `phone3`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (100, 0, '0', '顶级机构', '100', 0, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'admin', '2022-12-19 02:23:41', '', NULL);
+INSERT INTO `t_org` (`org_id`, `parent_id`, `ancestors`, `org_name`, `org_no`, `order_num`, `leader`, `leaderphone`, `type`, `address`, `attendant_name1`, `attendant_name2`, `attendant_name3`, `phone1`, `phone2`, `phone3`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (101, 100, '0,100', '个人机构', '101', 0, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'admin', '2022-12-19 02:23:41', '', NULL);
 
 drop table if exists t_devicegroup;
 create table t_devicegroup (
@@ -267,7 +267,7 @@ create table t_device_fence (
   address               varchar(50)                         comment '地址',
   longitude             varchar(50)                         comment '经度',
   latitude              varchar(50)                         comment '纬度',
-  radius                varchar(50)                         comment '半径',
+  radius                int(5)                              comment '半径（米），范围在[1,50000]间',
   create_time        datetime                               comment '创建时间',
   update_time       datetime                                comment '更新时间',
   primary key (device_fence_id)

@@ -8,6 +8,14 @@ export function listOrg(query) {
     params: query
   })
 }
+// 查询部门分页
+export function pageOrg(query) {
+  return request({
+    url: '/org/page',
+    method: 'get',
+    params: query
+  })
+}
 
 // 查询部门列表（排除节点）
 export function listOrgExcludeChild(orgId) {
@@ -27,7 +35,6 @@ export function getOrg(orgId) {
 
 // 新增部门
 export function addOrg(data) {
-  console.log(JSON.stringify(data))
   return request({
     url: '/org',
     method: 'post',

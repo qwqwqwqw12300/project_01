@@ -6,7 +6,7 @@ import com.newlandnpt.varyar.common.core.domain.model.EventRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.system.domain.TEvent;
 import com.newlandnpt.varyar.system.domain.TEventList;
-import com.newlandnpt.varyar.system.service.ITEventService;
+import com.newlandnpt.varyar.system.service.IEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ import java.util.List;
 public class EventController extends BaseController
 {
     @Autowired
-    private ITEventService tEventService;
+    private IEventService tEventService;
 
     /**
      * 查询事件列表

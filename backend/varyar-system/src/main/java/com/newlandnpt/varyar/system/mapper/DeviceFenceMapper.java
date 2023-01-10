@@ -1,7 +1,9 @@
 package com.newlandnpt.varyar.system.mapper;
 
-import java.util.List;
 import com.newlandnpt.varyar.system.domain.TDeviceFence;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * 设备电子围栏Mapper接口
@@ -9,6 +11,7 @@ import com.newlandnpt.varyar.system.domain.TDeviceFence;
  * @author chenxw
  * @date 2023-01-06
  */
+@Repository
 public interface DeviceFenceMapper
 {
     /**
@@ -18,6 +21,13 @@ public interface DeviceFenceMapper
      * @return 设备电子围栏
      */
     public TDeviceFence selectTDeviceFenceByDeviceFenceId(Long deviceFenceId);
+
+    /**
+     * 根据设备号查询设备
+     * @param deviceNo 设备号
+     * @return 设备电子围栏
+     */
+    public TDeviceFence selectTDeviceFenceByDeviceNo(String deviceNo);
 
     /**
      * 查询设备电子围栏列表
