@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询消息列表
 export function listMsg(query) {
   return request({
-    url: '/system/msg/list',
+    url: '/msg/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listMsg(query) {
 // 查询消息详细
 export function getMsg(msgId) {
   return request({
-    url: '/system/msg/' + msgId,
+    url: '/msg/' + msgId,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getMsg(msgId) {
 // 新增消息
 export function addMsg(data) {
   return request({
-    url: '/system/msg',
+    url: '/msg',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addMsg(data) {
 // 修改消息
 export function updateMsg(data) {
   return request({
-    url: '/system/msg',
+    url: '/msg',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateMsg(data) {
 // 删除消息
 export function delMsg(msgId) {
   return request({
-    url: '/system/msg/' + msgId,
+    url: '/msg/' + msgId,
     method: 'delete'
   })
 }

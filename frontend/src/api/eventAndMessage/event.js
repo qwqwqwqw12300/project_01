@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询事件列表
 export function listEvent(query) {
   return request({
-    url: '/system/event/list',
+    url: '/event/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listEvent(query) {
 // 查询事件详细
 export function getEvent(eventId) {
   return request({
-    url: '/system/event/' + eventId,
+    url: '/event/' + eventId,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getEvent(eventId) {
 // 新增事件
 export function addEvent(data) {
   return request({
-    url: '/system/event',
+    url: '/event',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addEvent(data) {
 // 修改事件
 export function updateEvent(data) {
   return request({
-    url: '/system/event',
+    url: '/event',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateEvent(data) {
 // 删除事件
 export function delEvent(eventId) {
   return request({
-    url: '/system/event/' + eventId,
+    url: '/event/' + eventId,
     method: 'delete'
   })
 

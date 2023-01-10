@@ -13,7 +13,7 @@ import com.newlandnpt.varyar.system.domain.dto.event.EventCountGroupByLevelDto;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface ITEventService 
+public interface IEventService
 {
     /**
      * 查询事件

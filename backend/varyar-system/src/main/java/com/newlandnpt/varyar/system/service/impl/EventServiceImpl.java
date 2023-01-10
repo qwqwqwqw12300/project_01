@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TEventMapper;
 import com.newlandnpt.varyar.system.domain.TEvent;
-import com.newlandnpt.varyar.system.service.ITEventService;
+import com.newlandnpt.varyar.system.service.IEventService;
 
 /**
  * 事件Service业务层处理
@@ -19,7 +19,7 @@ import com.newlandnpt.varyar.system.service.ITEventService;
  * @date 2022-12-24
  */
 @Service
-public class TEventServiceImpl implements ITEventService 
+public class EventServiceImpl implements IEventService
 {
     @Autowired
     private TEventMapper tEventMapper;
