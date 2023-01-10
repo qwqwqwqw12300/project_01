@@ -1,5 +1,13 @@
 package com.newlandnpt.varyar.system.service.impl;
 
+import java.util.List;
+import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.constant.DeviceConstants;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
@@ -8,21 +16,17 @@ import com.newlandnpt.varyar.system.domain.TEvent;
 import com.newlandnpt.varyar.system.mapper.DeviceMapper;
 import com.newlandnpt.varyar.system.mapper.TEventMapper;
 import com.newlandnpt.varyar.system.service.DeviceDisconnectionService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @author lisd
  * @date 2023/1/6
  **/
 @Service
-@Slf4j
+//@Slf4j
 public class DeviceDisconnectionServiceImpl implements DeviceDisconnectionService {
 
+	private static final Logger log = LoggerFactory.getLogger(DeviceDisconnectionServiceImpl.class);
+	
     @Autowired
     private DeviceMapper deviceMapper;
 

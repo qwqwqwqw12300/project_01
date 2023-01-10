@@ -1,5 +1,13 @@
 package com.newlandnpt.varyar.api.controller.business.rocketmq;
 
+import java.util.UUID;
+
+import org.apache.rocketmq.spring.core.RocketMQListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.newlandnpt.varyar.common.constant.DeviceConstants;
@@ -15,12 +23,6 @@ import com.newlandnpt.varyar.system.service.GeoFenceService;
 import com.newlandnpt.varyar.system.service.IDeviceFenceService;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import com.newlandnpt.varyar.system.service.ITEventService;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.rocketmq.spring.core.RocketMQListener;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 /**
  * 地理围栏事件-消息监听类
@@ -29,10 +31,12 @@ import java.util.UUID;
  * @date 2022/12/24
  **/
 @Component
-@Slf4j
+//@Slf4j
 //@RocketMQMessageListener(topic = "${rocketmq.topic.location}", consumerGroup = "${rocketmq.group.location}")
 public class LocationListener implements RocketMQListener<String> {
 
+	private static final Logger log = LoggerFactory.getLogger(LocationListener.class);
+	
     @Autowired
     private GeoFenceService geoFenceService;
 

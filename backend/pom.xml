@@ -179,6 +179,13 @@
                 <artifactId>varyar-common</artifactId>
                 <version>${varyar.version}</version>
             </dependency>
+            
+            <!-- 云对接基础服务包-->
+            <dependency>
+                <groupId>com.newlandnpt.varyar</groupId>
+                <artifactId>varyar-cloudBase</artifactId>
+                <version>${varyar.version}</version>
+            </dependency>
 
             <!-- RocketMQ-->
             <dependency>
@@ -205,6 +212,8 @@
         <module>varyar-quartz</module>
         <module>varyar-generator</module>
         <module>varyar-common</module>
+        <module>varyar-cloudBase</module>
+        <module>varyar-cloud</module>
     </modules>
     <packaging>pom</packaging>
 

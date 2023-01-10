@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="问题内容" prop="memberId">
+      <el-form-item label="问题内容" prop="content">
         <el-input
           v-model="queryParams.content"
           placeholder="问题内容"
@@ -16,6 +16,17 @@
     </el-form>
 
    <el-row :gutter="10" class="mb8">
+    <el-col :span="1.5">
+        <el-button
+          type="success"
+          plain
+          icon="el-icon-edit"
+          size="mini"
+          :disabled="single"
+          @click="handleUpdate"
+          v-hasPermi="['system:advise:edit']"
+        >一键已读</el-button>
+      </el-col>
       <el-col :span="1.5">
         <el-button
           type="warning"

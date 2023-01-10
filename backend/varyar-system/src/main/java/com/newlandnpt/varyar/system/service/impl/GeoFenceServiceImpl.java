@@ -1,5 +1,12 @@
 package com.newlandnpt.varyar.system.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.newlandnpt.varyar.common.constant.GeoConstant;
@@ -7,20 +14,17 @@ import com.newlandnpt.varyar.system.domain.req.CircleReq;
 import com.newlandnpt.varyar.system.domain.req.FenceReq;
 import com.newlandnpt.varyar.system.service.GeoFenceService;
 import com.newlandnpt.varyar.system.service.HttpSendService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author lisd
  * @date 2023/1/3
  **/
 @Service
-@Slf4j
+//@Slf4j
 public class GeoFenceServiceImpl implements GeoFenceService {
 
+	private static final Logger log = LoggerFactory.getLogger(GeoFenceServiceImpl.class);
+	
     @Override
     public String addCircleFence(CircleReq circleReq) {
         //构造请求参数
