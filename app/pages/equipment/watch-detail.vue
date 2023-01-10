@@ -13,7 +13,7 @@
 					</view>
 				</view>
 			</view>
-			<u-icon name="map-fill" size="30" color="#FF7E00" class="ui-detail-map"></u-icon>
+			<u-icon name="map-fill" @click="goMap" size="30" color="#FF7E00" class="ui-detail-map"></u-icon>
 			<!-- 	<image class="ui-detail-map" src="../../static/images/map.png" mode=""></image> -->
 		</view>
 		<view class="ui-msg-list">
@@ -77,6 +77,14 @@
 		methods: {
 			handleBack() {
 				uni.navigateBack()
+			},
+			/**
+			 * 跳转地图
+			 */
+			goMap() {
+				uni.navigateTo({
+					url: '/pages/equipment/map'
+				});
 			}
 		}
 	}

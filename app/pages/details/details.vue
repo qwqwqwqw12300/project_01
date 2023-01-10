@@ -58,12 +58,15 @@
 				<msg-list :needNav="false"
 					srollHeight="calc(100vh - var(--window-bottom) - 730rpx - var(--status-bar-height))"></msg-list>
 			</view>
-			<u-calendar @close="dateClose" :show="dateHandle.show" @confirm="dateConfirm"></u-calendar>
+			<u-calendar @close="dateClose" :monthNum="13" :maxDate="dateHandle.max" :minDate="dateHandle.min"
+				:show="dateHandle.show" @confirm="dateConfirm">
+			</u-calendar>
 		</view>
 	</app-body>
 </template>
 
 <script>
+	const dateTime = new Date();
 	export default {
 		data() {
 			return {
@@ -83,7 +86,9 @@
 					/**是否展示**/
 					show: false,
 					/**日期类型**/
-					type: 'start'
+					type: 'start',
+					max: dateTime.getTime(),
+					min: new Date(new Date().setFullYear(dateTime.getFullYear() - 1)).getTime()
 				},
 
 			};

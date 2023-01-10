@@ -1,16 +1,10 @@
 <template>
 	<app-body :hideTitle="true" :needService="false">
-		<app-logo></app-logo>
-		<!-- <view class="ui-logo">
-			<image src="../../static/images/logo.png" alt="">
-		</view> -->
 		<view class="ui-ad" @click="goGuide">
 			<image src="../../static/images/ad.png"></image>
 		</view>
 		<view class="ui-tip">
-			<text>简单</text>
-			<text>易用</text>
-			<text>安全</text>
+			<text>艾吉通</text>
 		</view>
 		<view class="ui-title">
 			<image src="../../static/images/ad-text.png"></image>
@@ -81,7 +75,7 @@
 		height: 447rpx;
 		width: 628rpx;
 		margin: 0 auto;
-		padding: 130rpx 0 0 44rpx;
+		padding: 160rpx 0 0 44rpx;
 		text-align: center;
 
 		image {
@@ -92,7 +86,7 @@
 
 	.ui-tip {
 		margin-top: 80rpx;
-		font-size: 36rpx;
+		font-size: 48rpx;
 		color: #fdbc2b;
 		text-align: center;
 
@@ -122,7 +116,7 @@
 		position: absolute;
 		width: 579rpx;
 		margin: 0 auto;
-		bottom: 150rpx;
+		bottom: 100rpx;
 		left: 50%;
 		transform: translateX(-50%);
 		text-align: center;

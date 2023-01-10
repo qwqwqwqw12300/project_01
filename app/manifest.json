@@ -19,7 +19,8 @@
         /* 模块配置 */
         "modules" : {
             "Push" : {},
-            "Geolocation" : {}
+            "Geolocation" : {},
+            "Maps" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -53,9 +54,19 @@
                 "geolocation" : {
                     "system" : {
                         "__platform__" : [ "ios", "android" ]
+                    },
+                    "amap" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "appkey_ios" : "5286159940e05dde7757a3a894959348",
+                        "appkey_android" : "5286159940e05dde7757a3a894959348"
                     }
                 },
-                "maps" : {},
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "5286159940e05dde7757a3a894959348",
+                        "appkey_android" : "5286159940e05dde7757a3a894959348"
+                    }
+                },
                 "push" : {},
                 "ad" : {}
             },

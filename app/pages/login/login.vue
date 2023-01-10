@@ -5,10 +5,11 @@
 * @Description: 登录页面
 -->
 <template>
-	<app-body :needService="false" :hideTitle="true" :bodyStyle="{backgroundPositionY: '-100rpx'}">
+	<app-body :needService="false" :hideTitle="true">
 		<view class="ui-body">
 			<!-- <image class="ui-logo" src="../../static/images/logo.png"></image> -->
 			<text class="ui-logo">艾吉通</text>
+			<view class="ui-tip">艾吉通·守护您每一分钟!</view>
 			<view class="ui-nav">
 				<u-tabs lineWidth="160rpx" lineColor="#fdbd2d" :itemStyle="{ width: '200rpx', height: '90rpx' }"
 					:activeStyle="{ color: '#fdbd2d', fontSize: '28rpx' }"
@@ -131,7 +132,7 @@
 	.ui-body {
 		// height: 100vh;
 		text-align: center;
-		background-position: 0 -100rpx;
+		// background-position: 0 -100rpx;
 	}
 
 	.ui-logo {
@@ -144,8 +145,14 @@
 		font-weight: bold;
 	}
 
+	.ui-tip {
+		margin-top: 30rpx;
+		color: #fff;
+		font-size: 40rpx;
+	}
+
 	.ui-nav {
-		margin-top: 71rpx;
+		margin-top: 30rpx;
 		display: inline-flex;
 		justify-content: center;
 		height: 109rpx;

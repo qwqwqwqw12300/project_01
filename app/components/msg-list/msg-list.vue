@@ -21,34 +21,37 @@
 		<!-- 未读事件列表 -->
 		<scroll-view scroll-y="true" @refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled
 			:style="{height: srollHeight}" class="ui-scroll">
-			<view class="ui-message">
-				<u-icon name="chat" color="#414141" size="40rpx"></u-icon>
-				<text>2022/12/26 10:00:00</text>
-				<text>xx设备</text>
-				<text>人员离开</text>
-			</view>
-			<!-- /sos事件 -->
-			<view class="ui-sos">
-				<view>
-					<u-icon name="arrow-right" color="#414141" size="40rpx"></u-icon>
+			<template v-if="true">
+				<view class="ui-message">
+					<u-icon name="chat" color="#414141" size="40rpx"></u-icon>
 					<text>2022/12/26 10:00:00</text>
 					<text>xx设备</text>
-					<text>人员摔倒</text>
+					<text>人员离开</text>
 				</view>
-				<view class="ui-sos-btn active">
-					<u-text prefixIcon="phone" align="center" :block="false" iconStyle="font-size: 40rpx" size="24rpx"
-						text="紧急电话"></u-text>
-					<text>132222222222</text>
-				</view>
+				<!-- /sos事件 -->
+				<view class="ui-sos">
+					<view>
+						<u-icon name="arrow-right" color="#414141" size="40rpx"></u-icon>
+						<text>2022/12/26 10:00:00</text>
+						<text>xx设备</text>
+						<text>人员摔倒</text>
+					</view>
+					<view class="ui-sos-btn active">
+						<u-text prefixIcon="phone" align="center" :block="false" iconStyle="font-size: 40rpx"
+							size="24rpx" text="紧急电话"></u-text>
+						<text>132222222222</text>
+					</view>
 
-			</view>
-			<!-- /sos事件 -->
-			<view class="ui-message">
-				<u-icon name="chat" color="#414141" size="40rpx"></u-icon>
-				<text>2022/12/26 10:00:00</text>
-				<text>xx设备</text>
-				<text>人员离开</text>
-			</view>
+				</view>
+				<!-- /sos事件 -->
+				<view class="ui-message" v-for="item of 3" :key="item">
+					<u-icon name="chat" color="#414141" size="40rpx"></u-icon>
+					<text>2022/12/26 10:00:00</text>
+					<text>xx设备</text>
+					<text>人员离开</text>
+				</view>
+			</template>
+			<u-empty v-else mode="list" text="暂无数据" marginTop="80rpx"></u-empty>
 		</scroll-view>
 		<!-- /未读事件列表 -->
 	</view>
@@ -77,7 +80,7 @@
 		methods: {
 			navClick() {},
 			onRefresh($e) {
-				// this.triggered = true;
+				this.triggered = true;
 				setTimeout(() => {
 					this.triggered = false;
 				}, 3000)

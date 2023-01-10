@@ -9,6 +9,7 @@
 							color="#fff" text="用户1"></u--text>
 						<u-icon class="active" name="close-circle" color="#fff600" size="36rpx"></u-icon>
 					</view>
+
 					<view class="ui-user-item">
 						<u--text prefixIcon="account-fill" :iconStyle="{ color: '#fff', fontSize: '36rpx' }"
 							color="#fff" text="用户1"></u--text>
@@ -25,15 +26,7 @@
 					</view>
 				</view>
 				<view class="ui-form-item">
-					<u-text prefixIcon="email" iconStyle="font-size: 32rpx" text="短信码" color="#444" size="28rpx">
-					</u-text>
-					<view class="ui-input">
-						<u-input placeholder="请输入短信认证码" :border="'none'" fontSize="28rpx" clearable>
-							<template slot="suffix">
-								<button class="wd-sms ui-mini" size="mini">验证码</button>
-							</template>
-						</u-input>
-					</view>
+					<sms-input />
 				</view>
 				<view class="wd-btn-gloup"><button @click="submit">提交</button></view>
 			</view>
