@@ -103,7 +103,8 @@
                        :show-overflow-tooltip="column.showOverFlowToolTip == undefined?true:column.showOverFlowToolTip">
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope" v-if="scope.row.roleKey !== 'superAdmin'&&scope.row.roleKey !== 'admin'&&scope.row.roleKey !== 'orgadmin'&&scope.row.roleKey !== 'biz'">
+        <template slot-scope="scope"
+                  v-if="scope.row.roleKey !== 'superAdmin'&&scope.row.roleKey !== 'admin'&&scope.row.roleKey !== 'orgadmin'&&scope.row.roleKey !== 'biz'">
           <el-button
             size="mini"
             type="text"

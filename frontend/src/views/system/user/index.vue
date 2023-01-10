@@ -59,6 +59,15 @@
               v-hasPermi="['system:user:add']"
             >添加</el-button>
           </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="info"
+              plain
+              icon="el-icon-upload2"
+              size="mini"
+              @click="handleImport"
+            >导入</el-button>
+          </el-col>
         </el-row>
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
