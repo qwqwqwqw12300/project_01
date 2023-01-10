@@ -319,7 +319,7 @@ export default {
       // 列信息
       columns: [
         { key: 0, label: `机构名称`, prop:`orgName`, visible: true },
-        { key: 1, label: `机构编号`, prop:`no`, visible: true },
+        { key: 1, label: `机构编号`, prop:`orgNo`, visible: true },
         { key: 2, label: `上级机构`, prop:`parentName`, visible: true },
         { key: 3, label: `机构类型`, prop:`type`, visible: true , formatter:(row, column, cellValue) => this.dict.type.org_type?.find(x=>x.value == cellValue)?.label},
         { key: 4, label: `机构负责人`, prop:`leader`, visible: true },
