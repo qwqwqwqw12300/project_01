@@ -35,7 +35,6 @@ export function getOrg(orgId) {
 
 // 新增部门
 export function addOrg(data) {
-  console.log(JSON.stringify(data))
   return request({
     url: '/org',
     method: 'post',
