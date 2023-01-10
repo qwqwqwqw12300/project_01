@@ -12,7 +12,7 @@
         <result property="no" column="no"/>
         <result property="status" column="status"/>
         <result property="type" column="type"/>
-        <result property="parameter" column="parameter" javaType="com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter" typeHandler="com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler"/>
+        <result property="parameter" column="device_parameter" javaType="com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter" typeHandler="com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler"/>
         <result property="registerTime" column="register_time"/>
         <result property="location" column="location"/>
         <result property="familyId" column="family_id"/>
@@ -76,6 +76,12 @@
             and del_flag = '0'
             <!-- 数据范围过滤 -->
             ${params.dataScope}
+            <if test='params.order_registerTime != null and params.order_registerTime == "asc" '>
+                order by register_time
+            </if>
+            <if test='params.order_registerTime != null and params.order_registerTime == "desc"'>
+                order by register_time  desc
+            </if>
         </where>
     </select>
 
@@ -107,7 +113,7 @@
             <if test="no != null">no,</if>
             <if test="status != null">status,</if>
             <if test="type != null">type,</if>
-            <if test="parameter != null">type = #{parameter},</if>
+            <if test="parameter != null">device_parameter,</if>
             <if test="registerTime != null">register_time,</if>
             <if test="location != null">location,</if>
             <if test="familyId != null">family_id,</if>
@@ -125,7 +131,7 @@
             <if test="no != null">#{no},</if>
             <if test="status != null">#{status},</if>
             <if test="type != null">#{type},</if>
-            <if test="parameter != null">type = #{parameter},</if>
+            <if test="parameter != null"><include refid="parameter"/>,</if>
             <if test="registerTime != null">#{registerTime},</if>
             <if test="location != null">#{location},</if>
             <if test="familyId != null">#{familyId},</if>
@@ -147,7 +153,7 @@
             <!--设备编号不允许修改<if test="no != null">no = #{no},</if>-->
             <if test="status != null">status = #{status},</if>
             <if test="type != null">type = #{type},</if>
-            <if test="parameter != null">type = #{parameter},</if>
+            <if test="parameter != null">device_parameter = <include refid="parameter"/>,</if>
             <if test="registerTime != null">register_time = #{registerTime},</if>
             <if test="location != null">location = #{location},</if>
             <if test="familyId != null">family_id = #{familyId},</if>

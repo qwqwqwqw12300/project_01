@@ -37,6 +37,10 @@ import DictTag from '@/components/DictTag'
 import VueMeta from 'vue-meta'
 // 字典数据组件
 import DictData from '@/components/DictData'
+// 表单面板组件
+import FormPanel from '@/components/FormPanel'
+// 穿梭框组件
+import Transfer from '@/components/Transfer'
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -57,6 +61,8 @@ Vue.component('Editor', Editor)
 Vue.component('FileUpload', FileUpload)
 Vue.component('ImageUpload', ImageUpload)
 Vue.component('ImagePreview', ImagePreview)
+Vue.component('FormPanel', FormPanel)
+Vue.component('Transfer', Transfer)
 
 Vue.use(directive)
 Vue.use(plugins)

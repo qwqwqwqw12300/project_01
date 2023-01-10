@@ -3,6 +3,7 @@ package com.newlandnpt.varyar.common.core.domain.model;
 import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class DevicePhoneRequest {
     /**
      * 电话列表
      * */
-    @NotBlank(message = "电话列表不能为空")
+    @NotNull(message = "电话列表不能为空")
     private List<DevicePhone> list;
 
     public String getDeviceId() {

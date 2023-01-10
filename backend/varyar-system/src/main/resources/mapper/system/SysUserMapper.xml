@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"   column="update_time"  />
         <result property="remark"       column="remark"       />
         <association property="org"    column="org_id" javaType="Org" resultMap="orgResult" />
-        <collection  property="roles"   javaType="java.util.List"           resultMap="RoleResult" />
+        <collection  property="roles"  javaType="java.util.List"  column="{userId = user_id}"   select="selectRoles" />
     </resultMap>
 	
     <resultMap id="orgResult" type="Org">
@@ -48,20 +48,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="dataScope"     column="data_scope"    />
         <result property="status"       column="role_status"    />
     </resultMap>
+
+	<select id="selectRoles" resultMap="RoleResult">
+		select distinct r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.menu_check_strictly, r.org_check_strictly,
+						r.status, r.del_flag, r.create_time, r.remark
+		from sys_role r
+				 left join sys_user_role ur on ur.role_id = r.role_id
+		where ur.user_id = #{userId}
+
+	</select>
 	
 	<sql id="selectUserVo">
         select u.user_id, u.org_id, u.user_name, u.nick_name,u.name, u.email, u.avatar, u.mobile_phone, u.telephone, u.extension_number, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
-        d.org_id, d.parent_id, d.ancestors, d.org_name, d.order_num, d.leader, d.status as org_status,
-        r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
+        d.org_id, d.parent_id, d.ancestors, d.org_name, d.order_num, d.leader, d.status as org_status
         from sys_user u
 		    left join t_org d on u.org_id = d.org_id
-		    left join sys_user_role ur on u.user_id = ur.user_id
-		    left join sys_role r on r.role_id = ur.role_id
     </sql>
     
     <select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
-		select u.user_id, u.org_id, u.nick_name, u.user_name, u.name, u.email, u.avatar, u.mobile_phone, u.telephone, u.extension_number, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.org_name, d.leader from sys_user u
+		select u.user_id, u.org_id, u.nick_name, u.user_name, u.name, u.email, u.avatar, u.mobile_phone, u.telephone, u.extension_number, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.org_name, d.leader
+		from sys_user u
 		left join t_org d on u.org_id = d.org_id
+		left join sys_user_role ur on u.user_id = ur.user_id
+		left join sys_role r on r.role_id = ur.role_id
 		where u.del_flag = '0'
 		<if test="userId != null and userId != 0">
 			AND u.user_id = #{userId}
@@ -81,6 +90,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
 			AND date_format(u.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
 		</if>
+		<if test="params.nameOrMobilePhone != null">
+			AND (
+				u.name like concat('%', #{params.nameOrMobilePhone}, '%')
+			    or
+			 	u.mobile_phone like concat('%', #{params.nameOrMobilePhone}, '%')
+			)
+		</if>
 		<if test="orgId != null and orgId != 0">
 			AND (u.org_id = #{orgId} OR u.org_id IN ( SELECT t.org_id FROM t_org t WHERE find_in_set(#{orgId}, ancestors) ))
 		</if>
@@ -89,7 +105,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectAllocatedList" parameterType="SysUser" resultMap="SysUserResult">
-	    select distinct u.user_id, u.org_id, u.user_name, u.nick_name, u.email, u.mobile_phone, u.status, u.create_time
+	    select distinct u.user_id, u.org_id, u.user_name, u.nick_name, u.name, u.email, u.mobile_phone, u.telephone, u.extension_number, u.status, u.create_time
 	    from sys_user u
 			 left join t_org d on u.org_id = d.org_id
 			 left join sys_user_role ur on u.user_id = ur.user_id
@@ -106,7 +122,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectUnallocatedList" parameterType="SysUser" resultMap="SysUserResult">
-	    select distinct u.user_id, u.org_id, u.user_name, u.user_name, u.name, u.email, u.mobile_phone, u.telephone, u.extension_number, u.status, u.create_time
+	    select distinct u.user_id, u.org_id, u.user_name, u.nick_name, u.name, u.email, u.mobile_phone, u.telephone, u.extension_number, u.status, u.create_time
 	    from sys_user u
 			 left join t_org d on u.org_id = d.org_id
 			 left join sys_user_role ur on u.user_id = ur.user_id

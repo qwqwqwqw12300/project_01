@@ -43,6 +43,9 @@ public class MsgServiceImpl implements IMsgService
     {
         return tMsgMapper.selectTMsgList(tMsg);
     }
+    public List<TMsg> selectTMsgList(Long memberId){
+        return tMsgMapper.selectTMsgByMemberId(memberId);
+    }
 
     /**
      * 新增消息
@@ -93,5 +96,29 @@ public class MsgServiceImpl implements IMsgService
     public int deleteTMsgByMsgId(Long msgId)
     {
         return tMsgMapper.deleteTMsgByMsgId(msgId);
+    }
+
+    /**
+     * 根据查询消息总数
+     *
+     * @param operateFlag 已读未读
+     * @return 消息总数
+     */
+    @Override
+    public int selectMsgCountByFlag(String operateFlag)
+    {
+        return tMsgMapper.selectMsgCountByFlag(operateFlag);
+    }
+
+    /**
+     * 查询消息总数
+     *
+     * @param operateFlag 已读未读
+     * @return 消息总数
+     */
+    @Override
+    public int selectMsgCount(String operateFlag)
+    {
+        return tMsgMapper.selectMsgCount(operateFlag);
     }
 }

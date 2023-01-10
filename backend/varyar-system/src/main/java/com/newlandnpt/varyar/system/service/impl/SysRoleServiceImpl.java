@@ -1,10 +1,7 @@
 package com.newlandnpt.varyar.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +21,8 @@ import com.newlandnpt.varyar.system.mapper.SysRoleMapper;
 import com.newlandnpt.varyar.system.mapper.SysRoleMenuMapper;
 import com.newlandnpt.varyar.system.mapper.SysUserRoleMapper;
 import com.newlandnpt.varyar.system.service.ISysRoleService;
+
+import static com.newlandnpt.varyar.common.constant.UserConstants.SUPER_ADMIN;
 
 /**
  * 角色 业务层处理
@@ -52,9 +51,16 @@ public class SysRoleServiceImpl implements ISysRoleService
      * @return 角色数据集合信息
      */
     @Override
-    @DataScope(orgAlias = "d")
     public List<SysRole> selectRoleList(SysRole role)
     {
+        //不是超管的情况排除超管角色
+        if(!SecurityUtils.isAdmin(SecurityUtils.getUserId())){
+            Map<String,Object> params = role.getParams();
+            if(params == null){
+                params = new HashMap<>();
+            }
+            params.put("roleKeyExclude",SUPER_ADMIN);
+        }
         return roleMapper.selectRoleList(role);
     }
 

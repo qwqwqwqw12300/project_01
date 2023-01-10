@@ -9,6 +9,7 @@
         <result property="no" column="no"/>
         <result property="phone" column="phone"/>
         <result property="password" column="password"/>
+        <result property="parameter" column="member_parameter" javaType="com.newlandnpt.varyar.common.core.domain.entity.MemberParameter" typeHandler="com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler"/>
         <result property="distributeFlag" column="distribute_flag"/>
         <result property="userId" column="user_id"/>
         <result property="userName" column="user_name"/>
@@ -49,6 +50,10 @@
         from t_member m
     </sql>
 
+    <sql id="parameter">
+        #{parameter,javaType=com.newlandnpt.varyar.common.core.domain.entity.MemberParameter,typeHandler = com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler}
+    </sql>
+
     <select id="selectMemberList" parameterType="Member" resultMap="MemberResult">
         <include refid="selectMemberVo"/>
         <where>
@@ -79,6 +84,7 @@
             <if test="no != null">no,</if>
             <if test="phone != null">phone,</if>
             <if test="password != null">password,</if>
+            <if test="parameter != null">member_parameter,</if>
             <if test="distributeFlag != null">distribute_flag,</if>
             <if test="userId != null">user_id,</if>
             <if test="userName != null">user_name,</if>
@@ -89,6 +95,7 @@
             <if test="no != null">#{no},</if>
             <if test="phone != null">#{phone},</if>
             <if test="password != null">#{password},</if>
+            <if test="parameter != null"><include refid="parameter"/>,</if>
             <if test="distributeFlag != null">#{distributeFlag},</if>
             <if test="userId != null">#{userId},</if>
             <if test="userName != null">#{userName},</if>
@@ -103,6 +110,7 @@
             <if test="no != null">no = #{no},</if>
             <if test="phone != null">phone = #{phone},</if>
             <if test="password != null">password = #{password},</if>
+            <if test="parameter != null">member_parameter = <include refid="parameter"/>,</if>
             <if test="distributeFlag != null">distribute_flag = #{distributeFlag},</if>
             <if test="userId != null">user_id = #{userId},</if>
             <if test="userName != null">user_name = #{userName},</if>

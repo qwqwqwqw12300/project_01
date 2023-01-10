@@ -26,7 +26,7 @@ create table t_org (
 ) engine=innodb auto_increment=100 comment = '机构表';
 
 INSERT INTO `t_org` (`org_id`, `parent_id`, `ancestors`, `org_name`, `org_no`, `order_num`, `leader`, `leaderphone`, `type`, `address`, `attendant_name1`, `attendant_name2`, `attendant_name3`, `phone1`, `phone2`, `phone3`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (100, 0, '0', '顶级机构', '', 0, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'admin', '2022-12-19 02:23:41', '', NULL);
-INSERT INTO `t_org` (`org_id`, `parent_id`, `ancestors`, `org_name`, `org_no`, `order_num`, `leader`, `leaderphone`, `type`, `address`, `attendant_name1`, `attendant_name2`, `attendant_name3`, `phone1`, `phone2`, `phone3`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (101, 100, '0', '个人机构', '', 0, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'admin', '2022-12-19 02:23:41', '', NULL);
+INSERT INTO `t_org` (`org_id`, `parent_id`, `ancestors`, `org_name`, `org_no`, `order_num`, `leader`, `leaderphone`, `type`, `address`, `attendant_name1`, `attendant_name2`, `attendant_name3`, `phone1`, `phone2`, `phone3`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (101, 100, '0,100', '个人机构', '', 0, NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'admin', '2022-12-19 02:23:41', '', NULL);
 
 drop table if exists t_devicegroup;
 create table t_devicegroup (
@@ -52,7 +52,7 @@ create table t_device (
   no                varchar(50)     default ''                 comment '设备编号',
   status            char(1)         default '0'                comment '状态（0未激活 1激活 2下线）',
   type              char(1)         default '0'                comment '类型（0雷达波 1监控设备）',
-  parameter         text  			default null               comment '设备参数',
+  device_parameter  text  			default null               comment '设备参数',
   register_time     datetime                                   comment '激活时间',
   location          varchar(100)     default ''                comment '设备位置',
   member_id        bigint(20)                                  comment '会员id',
@@ -76,6 +76,7 @@ create table t_member (
   phone             varchar(11)      default ''                comment '会员手机号',
   password          varchar(100)    default ''                 comment '密码',
   distribute_flag   char(1)         default '0'                comment '分配标志（0未分配 1已分配）',
+  member_parameter  text  			default null               comment '会员参数',
   user_id           bigint(20)      default null               comment '运营者id',
   user_name         varchar(50)     default null               comment '运营者姓名',
   del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',

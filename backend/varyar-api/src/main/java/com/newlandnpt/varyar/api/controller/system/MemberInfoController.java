@@ -39,7 +39,7 @@ public class MemberInfoController extends BaseController
     /**
      * 个人中心-重置密码
      */
-    @PutMapping("/updatePwd")
+    @PostMapping("/updatePwd")
     public AjaxResult updatePwd(String oldPassword, String newPassword)
     {
         LoginUser loginUser = getLoginUser();

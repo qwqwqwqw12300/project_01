@@ -21,6 +21,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 
+    <resultMap type="TEventList" id="TEventListResult">
+        <result property="familyId"    column="family_id"    />
+        <result property="level"    column="level"    />
+        <result property="type"    column="type"    />
+        <result property="content"    column="content"    />
+        <result property="operateFlag"    column="operate_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
     <sql id="selectTEventVo">
         select event_id, no, level, content, operate_type, member_id, member_phone, member_name, user_id, user_name, operate_time, operate_flag, create_time, update_time from t_event
     </sql>
@@ -111,4 +121,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{eventId}
         </foreach>
     </delete>
+
+    <select id="selectEventCountByFlag" parameterType="String" resultType="Integer">
+        select count(content) from t_event
+        where operate_flag = #{operateFlag}
+    </select>
+
+    <select id="selectEventCount" parameterType="String" resultType="Integer">
+        select count(content) from t_event
+        where 1=1
+    </select>
+
+    <select id="selectEventInfo" parameterType="EventRequest" resultMap="TEventListResult">
+<!--        <include refid="selectTEventVo"/>-->
+        select
+        eve.family_id      ,
+        eve.level          ,
+        eve.content        ,
+        eve.operate_flag   ,
+        eve.create_time    ,
+        eve.update_time    ,
+        dev.type
+        from t_event eve
+        left join t_device dev ON eve.device_id =dev.device_id
+        <where>
+            <if test="familyId != null  and familyId != ''">eve.family_id = #{familyId}</if>
+            <if test="level != null  and level != ''"> and eve.level = #{level}</if>
+            <if test="type != null  and type != '' "> and dev.type = #{type}</if>
+            <if test="operateFlag != null  and operateFlag != ''"> and eve.operate_flag = #{operateFlag}</if>
+            <if test="startTime != null  and endTime != null"> and eve.create_time between #{startTime} and #{endTime}</if>
+        </where>
+        ORDER BY eve.create_time DESC
+    </select>
+
 </mapper>

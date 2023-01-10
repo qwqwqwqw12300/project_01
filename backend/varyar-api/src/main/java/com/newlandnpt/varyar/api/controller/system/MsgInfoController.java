@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 详情页-查询消息Controller
@@ -29,14 +31,7 @@ import java.util.List;
 public class MsgInfoController extends BaseController
 {
     @Autowired
-    private IAdviseService adviseService;
-    @Autowired
-    private RedisCache redisCache;
-    @Autowired
     private IFamilyService tFamilyService;
-
-    @Autowired
-    private ISysDictTypeService dictTypeService;
 
     @Autowired
     private IMsgService msgService;
@@ -64,10 +59,9 @@ public class MsgInfoController extends BaseController
     }
 
     /**
-     * 下拉选项框接口,根据会员id找家庭
+     * 根据会员id找家庭
      */
-    @GetMapping("/selectFamily")
-    public AjaxResult selectFamily()
+    public List<TFamily> selectFamily()
     {
         //获取当前用户的id
         LoginUser loginUser = getLoginUser();
@@ -77,7 +71,33 @@ public class MsgInfoController extends BaseController
         {
             data = new ArrayList<TFamily>();
         }
-         return success(data);
+         return data;
     }
+
+    /**
+     * 查询消息
+     */
+    @PostMapping("/selectMsgCountByFlag")
+    public AjaxResult selectMsgCountByFlag(@RequestParam("operateFlag") String operateFlag)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        int count = msgService.selectMsgCountByFlag(operateFlag);
+        ajax.put("count",count);
+        return ajax;
+    }
+
+    /**
+     * 查询消息
+     */
+    @PostMapping("/selectMsgCount")
+    public AjaxResult selectMsgCount(@RequestParam("operateFlag") String operateFlag)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        int count = msgService.selectMsgCount(operateFlag);
+        ajax.put("count",count);
+
+        return ajax;
+    }
+
 
 }

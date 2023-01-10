@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 设备管理
@@ -188,13 +186,50 @@ public class DeviceController extends BaseController {
             ajax = AjaxResult.error("设备信息不存在！");
             return ajax;
         }
+        if(!device.getType().equals("2")){
+            ajax = AjaxResult.error("该设备不是手表！");
+            return ajax;
+        }
         List<DevicePhone> list = devicePhoneRequest.getList();
         //校验是否有sos电话信息
         Boolean sosflag = false;
+        Set<String> types = new HashSet<String>();
+        Set<String> type1 = new HashSet<String>();
+        Set<String> type2 = new HashSet<String>();
+        Set<String> type3 = new HashSet<String>();
+        Set<String> type4 = new HashSet<String>();
         for(DevicePhone item :list){
+            checkPhoneInfo(item,ajax);
             if (item.getType().equals("0")){
-                checkPhoneInfo(item,ajax);
                 sosflag =true;
+                if (!types.add(item.getType())){
+                    ajax = AjaxResult.error("sos电话信息重复！");
+                    return ajax;
+                }
+            }
+            if(item.getType().equals("1")){
+                if (!type1.add(item.getType())){
+                    ajax = AjaxResult.error("按钮1电话信息重复！");
+                    return ajax;
+                }
+            }
+            if(item.getType().equals("2")){
+                if (!type2.add(item.getType())){
+                    ajax = AjaxResult.error("按钮2电话信息重复！");
+                    return ajax;
+                }
+            }
+            if(item.getType().equals("3")){
+                if (!type3.add(item.getType())){
+                    ajax = AjaxResult.error("按钮3电话信息重复！");
+                    return ajax;
+                }
+            }
+            if(item.getType().equals("4")){
+                if (!type4.add(item.getType())){
+                    ajax = AjaxResult.error("按钮4电话信息重复！");
+                    return ajax;
+                }
             }
         }
         if (!sosflag){
@@ -245,29 +280,7 @@ public class DeviceController extends BaseController {
     @PostMapping("/setDevicephone")
     public AjaxResult setDevicephone(
             @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
-        AjaxResult ajax = AjaxResult.success();
-        //查找设备信息
-        Device device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(devicePhoneRequest.getDeviceId()));
-        if (device == null){
-            ajax = AjaxResult.error("设备信息不存在！");
-            return ajax;
-        }
-        List<DevicePhone> list = devicePhoneRequest.getList();
-        for(DevicePhone item :list){
-            if (item.getType().equals("P")){
-                checkPhoneInfo(item,ajax);
-            }
-        }
-        DeviceParameter dpt = new DeviceParameter();
-        dpt.setList(list);
-        device.setParameter(dpt);
-        try {
-            iDeviceService.updateDevice(device);
-        } catch (Exception e){
-            ajax = AjaxResult.error("设置SOS电话失败！");
-            return ajax;
-        }
-        return ajax;
+        return setSOSDevicephone(devicePhoneRequest);
     }
     /**
      * 创建普通号码
@@ -275,8 +288,7 @@ public class DeviceController extends BaseController {
     @PostMapping("/creDevicePhone")
     public AjaxResult createDevicePhone(
             @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
-        AjaxResult ajax = AjaxResult.success();
-        return ajax;
+        return setSOSDevicephone(devicePhoneRequest);
 
     }
     /**
@@ -285,8 +297,7 @@ public class DeviceController extends BaseController {
     @PostMapping("/remDevicePhone")
     public AjaxResult removeDevicePhone(
             @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
-        AjaxResult ajax = AjaxResult.success();
-        return ajax;
+        return setSOSDevicephone(devicePhoneRequest);
     }
 
 }

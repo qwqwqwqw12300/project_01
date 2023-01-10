@@ -7,6 +7,11 @@
 
 <template>
 	<view>
+		<view class="ui-nav" v-if="needNav">
+			<u-tabs lineWidth="130rpx" lineColor="#fec92e"
+				:itemStyle="{width: '180rpx', height: '80rpx', fontSize: '30rpx'}" :list="navList" @click="navClick">
+			</u-tabs>
+		</view>
 		<!-- 已读按钮 -->
 		<view class="ui-read active">
 			<u-text prefixIcon="checkmark-circle" align="center" :iconStyle="{fontSize: '30rpx', color: '#fff'}"
@@ -14,7 +19,8 @@
 		</view>
 		<!-- /已读按钮 -->
 		<!-- 未读事件列表 -->
-		<scroll-view scroll-y="true" class="ui-scroll">
+		<scroll-view scroll-y="true" @refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled
+			:style="{height: srollHeight}" class="ui-scroll">
 			<view class="ui-message">
 				<u-icon name="chat" color="#414141" size="40rpx"></u-icon>
 				<text>2022/12/26 10:00:00</text>
@@ -50,16 +56,53 @@
 
 <script>
 	export default {
+		props: {
+			/**是否需要导航栏**/
+			needNav: {
+				default: true
+			},
+			/**混动容器高度**/
+			srollHeight: String
+		},
 		data() {
 			return {
-
+				navList: [{
+					name: '已读',
+				}, {
+					name: '未读',
+				}, ],
+				triggered: true
 			};
+		},
+		methods: {
+			navClick() {},
+			onRefresh($e) {
+				// this.triggered = true;
+				setTimeout(() => {
+					this.triggered = false;
+				}, 3000)
+				console.log($e);
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
+	.ui-nav {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 80rpx;
+		border-radius: 10rpx;
+		margin-top: 20rpx;
+		filter: drop-shadow(7.824px 10.382px 8px rgba(7, 5, 5, 0.08));
+		background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
+		text-align: center;
+	}
+
 	.ui-read {
+		margin-top: 20rpx;
 		background-color: rgba(0, 0, 0, 0.4);
 		width: 100%;
 		height: 60rpx;
@@ -69,7 +112,7 @@
 
 	.ui-scroll {
 		margin-top: 20rpx;
-		height: calc(100vh - (var(--window-bottom) + 610rpx + 100rpx + var(--status-bar-height)));
+		//height: calc(100vh - (var(--window-bottom) + 610rpx + 120rpx + var(--status-bar-height)));
 
 		.ui-message,
 		.ui-sos {

@@ -21,7 +21,7 @@ public class DevicePhone implements Serializable
     public String phone;
 
     /**
-     * 电话类型（P：普通电话  0：sos电话）
+     * 电话类型（P：普通电话  0：sos电话  按钮1 :1  按钮2:2 按钮3:3 按钮4:4)
      * */
     public String type;
 
