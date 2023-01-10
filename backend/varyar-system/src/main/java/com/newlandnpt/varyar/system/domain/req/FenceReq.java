@@ -1,13 +1,11 @@
 package com.newlandnpt.varyar.system.domain.req;
 
-import lombok.Data;
-
 /**
  * 高德-地理围栏查询请求类
  * @author lisd
  * @date 2022/12/26
  **/
-@Data
+//@Data
 @SuppressWarnings({"ALL", "pmd:LowerCamelCaseVariableNamingRule"})
 public class FenceReq {
 
@@ -58,5 +56,69 @@ public class FenceReq {
      * 单页数据数量，取值 [1, 100]
      */
     private Integer pagesize;
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public String getSid() {
+		return sid;
+	}
+
+	public void setSid(String sid) {
+		this.sid = sid;
+	}
+
+	public Integer getOutputshape() {
+		return outputshape;
+	}
+
+	public void setOutputshape(Integer outputshape) {
+		this.outputshape = outputshape;
+	}
+
+	public String getGfids() {
+		return gfids;
+	}
+
+	public void setGfids(String gfids) {
+		this.gfids = gfids;
+	}
+
+	public String getTids() {
+		return tids;
+	}
+
+	public void setTids(String tids) {
+		this.tids = tids;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
+	public Integer getPagesize() {
+		return pagesize;
+	}
+
+	public void setPagesize(Integer pagesize) {
+		this.pagesize = pagesize;
+	}
 
 }

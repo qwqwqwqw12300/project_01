@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.web.core.config;
+package com.newlandnpt.varyar.api.core.config;
 
 import java.util.ArrayList;
 import java.util.List;

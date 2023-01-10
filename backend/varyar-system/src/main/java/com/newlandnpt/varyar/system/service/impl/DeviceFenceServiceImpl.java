@@ -1,5 +1,13 @@
 package com.newlandnpt.varyar.system.service.impl;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.newlandnpt.varyar.common.constant.Constants;
@@ -10,12 +18,6 @@ import com.newlandnpt.varyar.system.domain.vo.GeoResultVo;
 import com.newlandnpt.varyar.system.mapper.DeviceFenceMapper;
 import com.newlandnpt.varyar.system.service.GeoFenceService;
 import com.newlandnpt.varyar.system.service.IDeviceFenceService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * 设备电子围栏Service业务层处理
@@ -24,8 +26,11 @@ import java.util.List;
  * @date 2023-01-06
  */
 @Service
-@Slf4j
+//@Slf4j
 public class DeviceFenceServiceImpl implements IDeviceFenceService {
+	
+	private static final Logger log = LoggerFactory.getLogger(DeviceFenceServiceImpl.class);
+	
     @Autowired
     private DeviceFenceMapper deviceFenceMapper;
 
