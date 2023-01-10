@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlandnpt.varyar.cloudBase.mapper.StateMapper">
+    
+    <resultMap type="State" id="StateResult">
+        <id property="deviceId"    column="device_id"    />
+        <result property="upTime"     column="up_time"     />
+        <result property="wifiRssi"   column="wifi_rssi"   />
+        <result property="recordTime"    column="record_time"    />
+    </resultMap>
+    
+    <sql id="selectStateVo">
+        select * from t_cloud_state
+    </sql>
+    
+    <select id="selectByDeviceId" parameterType="String" resultMap="StateResult">
+        <include refid="selectStateVo"/>
+        where device_id = #{deviceId} limit 1
+    </select>
+    
+    <insert id="insert" parameterType="State">
+        insert into t_cloud_state (device_id, timestamp, up_time, wifi_rssi, record_time, first_time)
+        values( #{deviceId}, #{timestamp}, #{upTime}, #{wifiRssi}, sysdate(), sysdate())
+    </insert>
+    
+    <update id="update" parameterType="State">
+        update t_cloud_state 
+        <set>
+            timestamp = #{timestamp} , up_time = #{upTime}, wifi_rssi = #{wifiRssi}, record_time = sysdate()
+        </set>
+        where device_id = #{deviceId}
+    </update>
+    
+	<delete id="deleteById" parameterType="String">
+		delete from t_cloud_state where device_id = #{deviceId}
+	</delete>
+    
+    <delete id="deleteByIds" parameterType="String">
+        delete from t_cloud_state where device_id in 
+        <foreach item="deviceId" collection="array" open="(" separator="," close=")">
+        	#{deviceId}
+        </foreach>
+    </delete>
+    
+</mapper>
