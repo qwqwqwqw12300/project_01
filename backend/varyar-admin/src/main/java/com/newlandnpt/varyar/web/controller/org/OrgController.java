@@ -155,7 +155,7 @@ public class OrgController extends BaseController
      * @param response
      */
     @PreAuthorize("@ss.hasPermi('org:deviceImport')")
-    @GetMapping("/devices/importTemplate")
+    @PostMapping("/devices/importTemplate")
     public void importTemplate(HttpServletResponse response)
     {
         ExcelUtil<Device> util = new ExcelUtil<Device>(Device.class);

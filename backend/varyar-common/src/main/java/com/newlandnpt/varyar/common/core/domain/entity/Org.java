@@ -159,7 +159,7 @@ public class Org extends BaseEntity {
         this.orgName = orgName;
     }
 
-    @NotBlank(message = "机构编号不能为空")
+//    @NotBlank(message = "机构编号不能为空")
     @Size(min = 0, max = 50, message = "机构编号长度不能超过50个字符")
     public String getOrgNo() {
         return orgNo;
