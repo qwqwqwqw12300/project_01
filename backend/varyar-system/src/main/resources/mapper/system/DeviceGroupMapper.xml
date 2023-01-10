@@ -22,7 +22,7 @@
         select devicegroup_id,
                org_id,
                name, no, user_id, user_name, del_flag, create_by, create_time, update_by, update_time
-        from t_devicegroup
+        from t_devicegroup d
     </sql>
 
     <select id="selectDeviceGroupList" parameterType="DeviceGroup" resultMap="DeviceGroupResult">

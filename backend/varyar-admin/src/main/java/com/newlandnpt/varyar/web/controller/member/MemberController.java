@@ -73,9 +73,4 @@ public class MemberController extends BaseController
         return success(memberService.arrangeUserToMember(memberId,userId));
     }
 
-
-
-    // todo 服务登记相关库表结构和实现
-    // todo 服务人员操作相关表结构和实现
-
 }

@@ -70,7 +70,7 @@ public class DeviceGroupController extends BaseController
     public AjaxResult add(@RequestBody DeviceGroup devicegroup)
     {
         //默认是当前管理员所属机构
-        devicegroup.setOrgId(SecurityUtils.getLoginUser().getUser().getOrgId());
+//        devicegroup.setOrgId(SecurityUtils.getLoginUser().getUser().getOrgId());
         devicegroup.setNo(IdUtils.fastSimpleUUID());
         if (UserConstants.NOT_UNIQUE.equals(deviceGroupService.checkOrgNameUnique(devicegroup)))
         {
