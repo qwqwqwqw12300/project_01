@@ -21,7 +21,6 @@
 			if (isApp()) {
 				push.init(); // 推送服务初始化
 			}
-
 		},
 		onShow: function() {
 			console.log('App Show')

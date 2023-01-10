@@ -16,8 +16,10 @@
 			<u-icon name="map-fill" size="30" color="#FF7E00" class="ui-detail-map"></u-icon>
 			<!-- 	<image class="ui-detail-map" src="../../static/images/map.png" mode=""></image> -->
 		</view>
-
-		<view class="ui-tabs">
+		<view class="ui-msg-list">
+			<msg-list srollHeight="calc(100vh - var(--window-bottom) - 600rpx - var(--status-bar-height))"></msg-list>
+		</view>
+		<!-- <view class="ui-tabs">
 			<view class="ui-tabs-content">
 				<u-tabs :list="list1" lineColor="#FEC92E" lineWidth="35" :activeStyle="{
 							color: '#FEC92E',
@@ -34,7 +36,6 @@
 		<view class="ui-list">
 			<view class="ui-list-item">
 				<view class="item-title">
-					<!-- <u-icon name="chat" color="#414141" size="44rpx"></u-icon> -->
 					<image class="item-title-message" src="../../static/images/message.png" mode="" />
 					<text class="item-title-time">2022/12/22 10:22</text>
 					<text class="item-title-type">SOS</text>
@@ -42,7 +43,6 @@
 				<view class="item-content">
 					<view class="item-content-header">
 						<u-icon name="arrow-right" size="42rpx"></u-icon>
-						<!-- 	<image class="content-header-icon" src="../../static/images/right.png" mode="" /> -->
 						<text>时间</text>
 						<text>类型</text>
 						<text>SOS</text>
@@ -59,7 +59,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 	</app-body>
 </template>
 
@@ -88,6 +88,10 @@
 		margin: 0 46rpx;
 		// margin-top: 20rpx;
 		background-color: #EBEBEB;
+	}
+
+	.ui-msg-list {
+		padding: 0 46rpx;
 	}
 
 	.ui-navbar {

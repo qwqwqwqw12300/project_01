@@ -1,15 +1,13 @@
 package com.newlandnpt.varyar.system.service.impl;
 
-import java.util.List;
-
-import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
-import com.newlandnpt.varyar.system.domain.Member;
+import com.newlandnpt.varyar.system.domain.TDeviceFence;
+import com.newlandnpt.varyar.system.mapper.DeviceFenceMapper;
+import com.newlandnpt.varyar.system.service.IDeviceFenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.newlandnpt.varyar.system.mapper.DeviceFenceMapper;
-import com.newlandnpt.varyar.system.domain.TDeviceFence;
-import com.newlandnpt.varyar.system.service.IDeviceFenceService;
+
+import java.util.List;
 
 /**
  * 设备电子围栏Service业务层处理
@@ -33,6 +31,11 @@ public class DeviceFenceServiceImpl implements IDeviceFenceService
     public TDeviceFence selectTDeviceFenceByDeviceFenceId(Long deviceFenceId)
     {
         return deviceFenceMapper.selectTDeviceFenceByDeviceFenceId(deviceFenceId);
+    }
+
+    @Override
+    public TDeviceFence selectTDeviceFenceByDeviceNo(String deviceNo) {
+        return deviceFenceMapper.selectTDeviceFenceByDeviceNo(deviceNo);
     }
 
     /**

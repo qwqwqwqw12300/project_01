@@ -2,7 +2,7 @@ package com.newlandnpt.varyar.common.constant;
 
 /**
  * 缓存的key 常量
- * 
+ *
  * @author ruoyi
  */
 public class CacheConstants
@@ -31,6 +31,11 @@ public class CacheConstants
      * 字典管理 cache key
      */
     public static final String SYS_DICT_KEY = "sys_dict:";
+
+    /**
+     * 终端管理 cache key
+     */
+    public static final String DEVICE_KEY = "device_info:";
 
     /**
      * 防重提交 redis key

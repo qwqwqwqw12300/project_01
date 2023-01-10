@@ -14,7 +14,7 @@
 					<u-icon name="chat" @click="goPage('/pages/service/system-messages')" class="active" color="#fff"
 						size="50rpx"></u-icon>
 				</view>
-				<u-icon name="scan" class="active" color="#fff" size="50rpx"></u-icon>
+				<u-icon name="scan" class="active" @click="scan" color="#fff" size="50rpx"></u-icon>
 				<u-icon name="plus" @click="addDevice" :stop="true" class="active" color="#fff" size="45rpx"></u-icon>
 				<!-- 下拉框 -->
 				<view class="ui-select" v-if="isAddShow">
@@ -198,6 +198,14 @@
 				uni.navigateTo({
 					url
 				});
+			},
+
+			scan() {
+				uni.scanCode({
+					success: res => {
+						console.log(res, '扫码结果');
+					}
+				})
 			}
 		}
 	}

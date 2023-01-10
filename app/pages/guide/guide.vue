@@ -3,27 +3,24 @@
 		<view class="ui-img">
 			<!-- <image src="../../static/componentIndex.png" mode="aspectFit"></image> -->
 		</view>
-		<u-cell-group>
+		<!-- 	<u-cell-group>
 			<u-cell v-for="(item, index) in list" :key="item.id" :title="item.name" isLink :url="item.url"></u-cell>
-		</u-cell-group>
+		</u-cell-group> -->
 		<button @click="localPush">本地推送</button>
 		<button @click="getRegistrationID">用户id</button>
-
+		<button @click="initSDK">初始化</button>
+		<button @click="connect">连接</button>
+		<button @click="getwifiInfo">获取wifi信息</button>
+		<button @click="checkPermission">检查权限</button>
+		<button @click="requestPermission">获取权限</button>
 	</view>
 </template>
 <script>
+	const sdkModule = uni.requireNativePlugin("VPairSDKModule");
 	import {
 		push
 	} from '@/common/sdk/push.js';
 	export default {
-		props: {
-			hasLeftWin: {
-				type: Boolean
-			},
-			leftWinActive: {
-				type: String
-			}
-		},
 		data() {
 			return {
 				list: [{
@@ -40,12 +37,31 @@
 				} catch (e) {
 					console.log(e);
 				}
-
 			},
 			getRegistrationID() {
 				push.getRegistrationID().then(res => {
 					console.log(res, 'getRegistrationID');
 				});
+			},
+			initSDK() {
+				sdkModule.initSDK(); //初始化调用
+			},
+			checkPermission() {
+				var result = sdkModule.checkPermission() //检查权限，返回Map<Integer，string>错误码与对应的错误信息，map为空说明正常
+				console.log(result, 'checkPermission', typeof result);
+			},
+			requestPermission() {
+				sdkModule.requestPermission(3) //根据错误码请求功能
+			},
+			getwifiInfo() {
+				var info = sdkModule.getWifiInfo() //获取当前连接的wifi的SSID和BSSID
+				console.log(info, 'getwifiInfo', typeof info);
+			},
+			connect() {
+				var ssid = "";
+				var bssid = "";
+				var password = "";
+				sdkModule.connect(ssid, bssid, password); //用wifi的SSID和BSSID和wifi密码连接
 			}
 		},
 	}
@@ -65,5 +81,11 @@
 		height: 100%;
 		width: 100%;
 		background: #fff;
+	}
+
+	button {
+		float: left;
+		width: 300rpx;
+		margin: 30rpx;
 	}
 </style>
