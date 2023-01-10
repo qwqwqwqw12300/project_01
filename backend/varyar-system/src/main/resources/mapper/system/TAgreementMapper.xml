@@ -20,7 +20,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectTAgreementList" parameterType="TAgreement" resultMap="TAgreementResult">
         <include refid="selectTAgreementVo"/>
-        <where>  
+        <where>
+            del_flag='0'
             <if test="content != null  and content != ''"> and content = #{content}</if>
             <if test="ver != null  and ver != ''"> and ver = #{ver}</if>
             <if test="type != null  and type != ''"> and type = #{type}</if>
@@ -30,6 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectTAgreementByAgreementId" parameterType="Long" resultMap="TAgreementResult">
         <include refid="selectTAgreementVo"/>
         where agreement_id = #{agreementId}
+        and  del_flag='0'
     </select>
         
     <insert id="insertTAgreement" parameterType="TAgreement" useGeneratedKeys="true" keyProperty="agreementId">
@@ -66,11 +68,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteTAgreementByAgreementId" parameterType="Long">
-        delete from t_agreement where agreement_id = #{agreementId}
+--         delete from t_agreement where agreement_id = #{agreementId}
+        update t_agreement set del_flag = '2' ,update_time = sysdate() where agreement_id = #{agreementId}
+
     </delete>
 
     <delete id="deleteTAgreementByAgreementIds" parameterType="String">
-        delete from t_agreement where agreement_id in 
+--         delete from t_agreement where agreement_id in
+        update  t_agreement  set del_flag = '2' ,update_time = sysdate() where agreement_id in
         <foreach item="agreementId" collection="array" open="(" separator="," close=")">
             #{agreementId}
         </foreach>
@@ -78,6 +83,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectTAgreementByAgreementType" parameterType="String" resultMap="TAgreementResult">
         <include refid="selectTAgreementVo"/>
-        where TYPE = #{agreementType} AND del_flag='0' ORDER BY create_time DESC  LIMIT 1
+        where type = #{agreementType} AND del_flag='0' ORDER BY create_time DESC  LIMIT 1
     </select>
 </mapper>
