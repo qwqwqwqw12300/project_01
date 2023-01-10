@@ -63,11 +63,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteTVersionByVersionId" parameterType="Long">
-        delete from t_version where version_id = #{versionId}
+--         delete from t_version where version_id = #{versionId}
+    update t_version  set del_flag = '2' ,update_time = sysdate() where version_id = #{versionId}
     </delete>
 
     <delete id="deleteTVersionByVersionIds" parameterType="String">
-        delete from t_version where version_id in 
+--         delete from t_version where version_id in
+        update  t_version  set del_flag = '2' ,update_time = sysdate() where version_id in
+
         <foreach item="versionId" collection="array" open="(" separator="," close=")">
             #{versionId}
         </foreach>

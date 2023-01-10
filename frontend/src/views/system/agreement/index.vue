@@ -9,9 +9,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="协议类型" prop="ver">
-        <el-select v-model="queryParams.ver" placeholder="请选择"  >
-          <el-option v-for ="item in stateArr" :key="item.value":label="item.label" :value="item.value"></el-option>
+      <el-form-item label="协议类型" prop="type">
+        <el-select v-model="queryParams.type" placeholder="请选择"  >
+          <!-- <el-option v-for ="item in stateArr" :key="item.value":label="item.label" :value="item.value"></el-option> -->
+          <el-option
+                v-for="dict in dict.type.sys_agreement_type"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
         </el-select>
 
       </el-form-item>
@@ -105,17 +111,24 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="协议内容">
-          <editor v-mode="form.content" :min-height="192"/>
+          <editor v-model="form.content" :min-height="192"/>
         </el-form-item>
         <el-form-item label="协议版本" prop="ver">
           <el-input v-model="form.ver" placeholder="请输入协议版本" />
         </el-form-item>
         <el-form-item label="协议类型" prop="type">
-          <el-radio-group v-model="form.type">
+          <!-- <el-radio-group v-model="form.type">
             <el-radio-button label="1" >APP协议</el-radio-button>
             <el-radio-button label="0" >隐私协议</el-radio-button>
-          </el-radio-group>
-
+          </el-radio-group> -->
+          <el-select v-model="form.type" placeholder="请选择协议类型">
+                <el-option
+                  v-for="dict in dict.type.sys_agreement_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>       
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -131,6 +144,9 @@ import { listAgreement, getAgreement, delAgreement, addAgreement, updateAgreemen
 
 export default {
   name: "Agreement",
+  // 字典引入
+  dicts: ['sys_agreement_type'],
+
   data() {
     return {
       // 遮罩层
@@ -168,11 +184,11 @@ export default {
           type:{ required: true, message: '请选择协议类型', trigger: 'blur' }
       },
       //协议类型
-      stateArr:[
-          { value:1,label:'APP协议'},
-          { value:0,label:'隐私协议'}
-      ],
-      radioType:"1"
+      // stateArr:[
+      //     { value:1,label:'APP协议'},
+      //     { value:0,label:'隐私协议'}
+      // ],
+      // radioType:"1"
     };
   },
   created() {
