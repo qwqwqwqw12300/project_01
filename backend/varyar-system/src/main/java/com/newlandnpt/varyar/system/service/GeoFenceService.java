@@ -18,6 +18,13 @@ public interface GeoFenceService {
     String addCircleFence(CircleReq circleReq);
 
     /**
+     * 更新圆形地理围栏
+     * @param circleReq
+     * @return resultJson
+     */
+    String updateCircleFence(CircleReq circleReq);
+
+    /**
      * 查询围栏
      * @param fenceReq
      * @return resultJson

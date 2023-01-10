@@ -153,7 +153,8 @@ location:
   gaode:
     key: 92e29e7a06fa0d24124beac6efb5c154
     sid: 856898
-    fenceCircle: https://tsapi.amap.com/v1/track/geofence/add/circle
+    fenceCircleAdd: https://tsapi.amap.com/v1/track/geofence/add/circle
+    fenceCircleUpdate: https://tsapi.amap.com/v1/track/geofence/update/circle
     fenceLocation: https://tsapi.amap.com/v1/track/geofence/status/location
     trackServiceAdd: https://tsapi.amap.com/v1/track/service/add
     trackTerminalAdd: https://tsapi.amap.com/v1/track/terminal/add

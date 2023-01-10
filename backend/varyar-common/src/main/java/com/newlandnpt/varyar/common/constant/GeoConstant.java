@@ -53,7 +53,12 @@ public class GeoConstant {
     /**
      * 创建圆形围栏
      */
-    public static String GEO_FENCE_CIRCLE;
+    public static String GEO_FENCE_CIRCLE_ADD;
+
+    /**
+     * 创建圆形围栏
+     */
+    public static String GEO_FENCE_CIRCLE_UPDATE;
 
     /**
      * 查询围栏列表
@@ -148,13 +153,22 @@ public class GeoConstant {
         GeoConstant.GEO_TRACE_SEARCH = geoTraceSearch;
     }
 
-    public String getGeoFenceCircle() {
-        return GeoConstant.GEO_FENCE_CIRCLE;
+    public String getGeoFenceCircleAdd() {
+        return GeoConstant.GEO_FENCE_CIRCLE_ADD;
     }
 
-    @Value("${location.gaode.fenceCircle}")
-    public void setGeoFenceCircle(String geoFenceCircle) {
-        GeoConstant.GEO_FENCE_CIRCLE = geoFenceCircle;
+    @Value("${location.gaode.fenceCircleAdd}")
+    public void setGeoFenceCircleAdd(String geoFenceCircleAdd) {
+        GeoConstant.GEO_FENCE_CIRCLE_ADD = geoFenceCircleAdd;
+    }
+
+    public String getGeoFenceCircleUpdate() {
+        return GeoConstant.GEO_FENCE_CIRCLE_UPDATE;
+    }
+
+    @Value("${location.gaode.fenceCircleUpdate}")
+    public void setGeoFenceCircleUpdate(String geoFenceCircleUpdate) {
+        GeoConstant.GEO_FENCE_CIRCLE_UPDATE = geoFenceCircleUpdate;
     }
 
     public String getGeoFenceList() {
