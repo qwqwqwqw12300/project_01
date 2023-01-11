@@ -8,40 +8,42 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.newlandnpt.varyar.cloudBase.domain.vo.TrackerTargetVo;
 
 public class Presence implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 自定义id
-	 */
-	private Long id;
-
+	/** 报文:事件的时间 **/
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date timestamp;
 	
+	/** 报文:设备id **/
+	private String deviceId;
+	
+	/** 报文:事件时间戳 EPOCH timestamp of the state event **/
 	private Long timestampMillis;
 	
+	/** 报文:房间内是否有人 **/
 	private Boolean roomPresenceDetected;
-	
-	private String deviceId;
 
+	/**
+	 * 报文:区域信息以及区域是否被占用，json字符串<br>
+	 * json： "{\"0\":0,\"1\":0,\"2\":0,\"3\":0}",<br>
+	 * 描述：<p>key 	  - 存在的区域,根据创建顺序排序. 第一个区域为 0. 最多可以有4个区域 (最后一个是3).<br> 
+	 *		value - 如果区域被占用值为1.</p> 
+	 */
 	private String presenceRegionMap;
 	
-	private Map<String, Integer> regionMap;
-	
+	/**报文: 数组 – 检测到的每个目标都是数组里的一个对象 以及其附加信息**/
 	private List<TrackerTargetVo> trackerTargets;
 	
+	/** 自定义:根据presenceRegionMap自动转成map，方便操作 **/
+	private Map<String, Integer> regionMap;
+
+	/** 自定义:入库时间 **/
 	private Date recordTime;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public Date getTimestamp() {
 		return timestamp;
@@ -49,6 +51,14 @@ public class Presence implements Serializable {
 
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public String getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
 	}
 
 	public Long getTimestampMillis() {
@@ -67,26 +77,6 @@ public class Presence implements Serializable {
 		this.roomPresenceDetected = roomPresenceDetected;
 	}
 
-	public String getDeviceId() {
-		return deviceId;
-	}
-
-	public void setDeviceId(String deviceId) {
-		this.deviceId = deviceId;
-	}
-
-//	public Map<String, Integer> getPresenceRegionMap() {
-//		return presenceRegionMap;
-//	}
-//
-//	public void setPresenceRegionMap(Map<String, Integer> presenceRegionMap) {
-//		this.presenceRegionMap = presenceRegionMap;
-//	}
-
-	public List<TrackerTargetVo> getTrackerTargets() {
-		return trackerTargets;
-	}
-
 	public String getPresenceRegionMap() {
 		return presenceRegionMap;
 	}
@@ -99,16 +89,20 @@ public class Presence implements Serializable {
 		this.presenceRegionMap = presenceRegionMap;
 	}
 
+	public List<TrackerTargetVo> getTrackerTargets() {
+		return trackerTargets;
+	}
+
+	public void setTrackerTargets(List<TrackerTargetVo> trackerTargets) {
+		this.trackerTargets = trackerTargets;
+	}
+
 	public Map<String, Integer> getRegionMap() {
 		return regionMap;
 	}
 
 	public void setRegionMap(Map<String, Integer> regionMap) {
 		this.regionMap = regionMap;
-	}
-
-	public void setTrackerTargets(List<TrackerTargetVo> trackerTargets) {
-		this.trackerTargets = trackerTargets;
 	}
 
 	public Date getRecordTime() {
