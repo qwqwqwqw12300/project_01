@@ -9,19 +9,33 @@
 	<app-body leftText="返回">
 		<view class="uni-agreement">
 			<scroll-view scroll-y class="uni-agreement-scroll">
-				<text>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</text>
+				<text>{{ content }}</text>
 			</scroll-view>
 		</view>
 	</app-body>
 </template>
 
 <script>
+	import {
+		PostMessageDeatil,
+	} from '@/common/http/api.js';
 	export default {
 		data() {
-			return {}
+			return {
+				content: '',
+			}
 		},
 		methods: {
-
+			initData(msgId) {
+				PostMessageDeatil({
+					msgId
+				}).then(res=>{
+					this.content = res.rows[0].content
+				})
+			}
+		},
+		onLoad(options){
+			this.initData(options.msgId)
 		}
 	}
 </script>

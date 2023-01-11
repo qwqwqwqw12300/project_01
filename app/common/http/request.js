@@ -13,6 +13,8 @@ import {
 	isApp
 } from '../utils/util';
 
+import { getToken } from '@/common/utils/auth.js'
+
 /**错误处理文案**/
 const errText = {
 	401: '访问令牌无效或已过期',
@@ -52,6 +54,7 @@ const request = (url, options, process, method = 'POST') => {
 			header: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
+				'Authorization': getToken()
 			},
 			withCredentials: true,
 			success: result => {

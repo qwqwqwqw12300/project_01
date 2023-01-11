@@ -25,3 +25,18 @@ export const GetCaptchaImage = (params) => http.get('/api/captchaImage', params)
  *登录 *
  */
 export const PostLoginByPwd = (params) => http.post('/api/loginByPwd', params)
+
+/* 
+ *查看消息列表 *
+ */
+export const GetMessageList = (params) => http.get('/api/message/list', params)
+
+/* 
+ *查看消息详情 *
+ */
+export const PostMessageDeatil = (params) => http.post('/api/message/msgContent', params)
+
+/* 
+ *查看消息状态 *
+ */
+export const PostSetMsgInfo = (params) => http.post('/api/message/setMsgInfo', params)
