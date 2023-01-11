@@ -8,7 +8,7 @@ export const env = {
 	/**开发模式**/
 	mode: 'dev',
 	/**服务器地址**/
-	basePath: 'http://192.168.132.148:81',
+	basePath: 'http://192.168.1.141:8081',
 	/**版本更新地址**/
 	appUpdateUrl: '',
 	/**协议地址**/
