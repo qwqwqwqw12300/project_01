@@ -40,3 +40,13 @@ export const PostMessageDeatil = (params) => http.post('/api/message/msgContent'
  *查看消息状态 *
  */
 export const PostSetMsgInfo = (params) => http.post('/api/message/setMsgInfo', params)
+
+/* 
+ *获取推送开关信息*
+ */
+export const PostGetPushMsgState = (params) => http.post('/api/message/getPushMsgState', params)
+
+/* 
+ *推送开关*
+ */
+export const PostUpdPushMsg = (params) => http.post('/api/message/updPushMsg', params)
