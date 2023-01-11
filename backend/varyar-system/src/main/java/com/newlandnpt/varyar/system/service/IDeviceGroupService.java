@@ -1,7 +1,7 @@
 package com.newlandnpt.varyar.system.service;
 
 import java.util.List;
-import com.newlandnpt.varyar.system.domain.DeviceGroup;
+import com.newlandnpt.varyar.system.domain.TDeviceGroup;
 
 /**
  * 设备组Service接口
@@ -17,7 +17,7 @@ public interface IDeviceGroupService
      * @param deviceGroupId 设备组主键
      * @return 设备组
      */
-    public DeviceGroup selectDeviceGroupByDeviceGroupId(Long deviceGroupId);
+    public TDeviceGroup selectDeviceGroupByDeviceGroupId(Long deviceGroupId);
 
     /**
      * 查询设备组列表
@@ -25,7 +25,7 @@ public interface IDeviceGroupService
      * @param devicegroup 设备组
      * @return 设备组集合
      */
-    public List<DeviceGroup> selectDeviceGroupList(DeviceGroup devicegroup);
+    public List<TDeviceGroup> selectDeviceGroupList(TDeviceGroup devicegroup);
 
     /**
      * 新增设备组
@@ -33,7 +33,7 @@ public interface IDeviceGroupService
      * @param devicegroup 设备组
      * @return 结果
      */
-    public int insertDeviceGroup(DeviceGroup devicegroup);
+    public int insertDeviceGroup(TDeviceGroup devicegroup);
 
     /**
      * 修改设备组
@@ -41,7 +41,7 @@ public interface IDeviceGroupService
      * @param devicegroup 设备组
      * @return 结果
      */
-    public int updateDeviceGroup(DeviceGroup devicegroup);
+    public int updateDeviceGroup(TDeviceGroup devicegroup);
 
     /**
      * 给运营人员分配设备组
@@ -75,12 +75,12 @@ public interface IDeviceGroupService
      * @param deviceGroup 设备组信息
      * @return 结果
      */
-    public String checkOrgNameUnique(DeviceGroup deviceGroup);
+    public String checkOrgNameUnique(TDeviceGroup deviceGroup);
 
     /**
      * 未分配设备组
      * @param deviceGroup
      * @return
      */
-    public long notArrangeCount(DeviceGroup deviceGroup);
+    public long notArrangeCount(TDeviceGroup deviceGroup);
 }

@@ -11,7 +11,7 @@ import com.newlandnpt.varyar.system.service.IMemberFamilyService;
 import com.newlandnpt.varyar.system.service.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.newlandnpt.varyar.system.mapper.FamilyMapper;
+import com.newlandnpt.varyar.system.mapper.TFamilyMapper;
 import com.newlandnpt.varyar.system.domain.TFamily;
 import com.newlandnpt.varyar.system.service.IFamilyService;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class FamilyServiceImpl implements IFamilyService
 {
     @Autowired
-    private FamilyMapper familyMapper;
+    private TFamilyMapper familyMapper;
     @Autowired
     private IMemberFamilyService iMemberFamilyService;
     @Autowired

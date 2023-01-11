@@ -1,7 +1,7 @@
 package com.newlandnpt.varyar.system.service;
 
 import java.util.List;
-import com.newlandnpt.varyar.system.domain.ServeRecord;
+import com.newlandnpt.varyar.system.domain.TServeRecord;
 
 /**
  * 服务记录Service接口
@@ -17,7 +17,7 @@ public interface IServeRecordService
      * @param recordId 服务记录主键
      * @return 服务记录
      */
-    public ServeRecord selectServeRecordByRecordId(Long recordId);
+    public TServeRecord selectServeRecordByRecordId(Long recordId);
 
     /**
      * 查询服务记录列表
@@ -25,7 +25,7 @@ public interface IServeRecordService
      * @param serveRecord 服务记录
      * @return 服务记录集合
      */
-    public List<ServeRecord> selectServeRecordList(ServeRecord serveRecord);
+    public List<TServeRecord> selectServeRecordList(TServeRecord serveRecord);
 
     /**
      * 新增服务记录
@@ -33,7 +33,7 @@ public interface IServeRecordService
      * @param serveRecord 服务记录
      * @return 结果
      */
-    public int insertServeRecord(ServeRecord serveRecord);
+    public int insertServeRecord(TServeRecord serveRecord);
 
     /**
      * 修改服务记录
@@ -41,7 +41,7 @@ public interface IServeRecordService
      * @param serveRecord 服务记录
      * @return 结果
      */
-    public int updateServeRecord(ServeRecord serveRecord);
+    public int updateServeRecord(TServeRecord serveRecord);
 
     /**
      * 批量删除服务记录

@@ -14,7 +14,7 @@ import java.util.List;
  * @author ruoyi
  * @date 2022-12-24
  */
-public class Member extends BaseEntity
+public class TMember extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -45,7 +45,7 @@ public class Member extends BaseEntity
 
     /** 联络人 */
     @Transient
-    private List<MemberContacts> contacts;
+    private List<TMemberContacts> contacts;
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
@@ -133,11 +133,11 @@ public class Member extends BaseEntity
         this.userPhone = userPhone;
     }
 
-    public List<MemberContacts> getContacts() {
+    public List<TMemberContacts> getContacts() {
         return contacts;
     }
 
-    public void setContacts(List<MemberContacts> contacts) {
+    public void setContacts(List<TMemberContacts> contacts) {
         this.contacts = contacts;
     }
 

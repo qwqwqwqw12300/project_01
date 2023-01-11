@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 /**
@@ -18,50 +19,61 @@ public class Fall implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 自定义id
+	 * 自定义id，自增
 	 */
 	private Long id;
 
+	/** 报文:设备id **/
 	private String deviceId;
 	
+	/** 报文:事件id 唯一id，长度不定，字母数字组合，摔倒时间周期内一致**/
 	private String eventId;
 	
+	/** 报文:事件的时间 **/
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date timestamp;
 	
+	/** 报文:事件结束时间 **/
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date endTimestamp;
 	
-	/** 当前阶段的跌倒事件 **/
+	/** 报文:当前阶段的跌倒事件(fall_detected, fall_confirmed, calling, finished, fall_exit) **/
 	private String status;
 	
-	/** 如果发生跌倒 值为fall **/
+	/** 报文:如果发生跌倒 值为fall **/
 	private String type;
 	
-	/** 设备是否在test模式1：true 0：false **/
+	/** 报文:设备是否在test模式1：true 0：false **/
 	private Boolean isSimulated;
 	
+	/** 报文:最后状态更新时间 **/
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date statusUpdateTimestamp;
 	
-	/** 触发事件目标的json字符串，内容为：targetId，xCm，yCm，zCm字段 **/
+	/** 报文: 触发事件目标的json字符串，内容为：targetId，xCm，yCm，zCm字段<br>
+	 * json： {\"targetId\":0,\"x_cm\":-94,\"y_cm\":175,\"z_cm\":19},<br>
+	**/
 	private String extra;
 	
-	/** 当前是否激活学习模式 1：true 0：false **/
+	/** 报文: 当前是否激活学习模式 1：true 0：false **/
 	private Boolean isLearning;
 	
-	/** 是否已激活静音模式1：true 0：false 不会向看护人和面板发送警报**/
+	/** 报文: 是否已激活静音模式1：true 0：false 不会向看护人和面板发送警报**/
 	private Boolean isSilent;
 	
+	/** 报文:事件时间戳 **/
 	private Long timestampMillis;
 	
-	/** 目标id **/
+	/** 自定义：根据extra字段获取 目标id **/
 	private Integer targetId;
 	
-	/** 触发坠落事件的目标的X位置**/
+	/** 自定义：根据extra字段获取 触发坠落事件的目标的X位置**/
 	private Integer xCm;
 	
-	/** 触发坠落事件的目标的y位置**/
+	/** 自定义：根据extra字段获取 触发坠落事件的目标的y位置**/
 	private Integer yCm;
 	
-	/** 触发坠落事件的目标的z位置**/
+	/** 自定义：根据extra字段获取 触发坠落事件的目标的z位置**/
 	private Integer zCm;
 
 	public Long getId() {

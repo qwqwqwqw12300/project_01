@@ -3,7 +3,6 @@ package com.newlandnpt.varyar.web.controller.org;
 import java.util.List;
 
 import com.newlandnpt.varyar.common.constant.UserConstants;
-import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,7 +19,7 @@ import com.newlandnpt.varyar.common.annotation.Log;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.enums.BusinessType;
-import com.newlandnpt.varyar.system.domain.DeviceGroup;
+import com.newlandnpt.varyar.system.domain.TDeviceGroup;
 import com.newlandnpt.varyar.system.service.IDeviceGroupService;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 
@@ -44,10 +43,10 @@ public class DeviceGroupController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('org:deviceGroup:list')")
     @GetMapping("/page")
-    public TableDataInfo page(DeviceGroup devicegroup)
+    public TableDataInfo page(TDeviceGroup devicegroup)
     {
         startPage();
-        List<DeviceGroup> list = deviceGroupService.selectDeviceGroupList(devicegroup);
+        List<TDeviceGroup> list = deviceGroupService.selectDeviceGroupList(devicegroup);
         return getDataTable(list);
     }
 
@@ -67,7 +66,7 @@ public class DeviceGroupController extends BaseController
     @PreAuthorize("@ss.hasPermi('org:deviceGroup:add')")
     @Log(title = "设备组", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody DeviceGroup devicegroup)
+    public AjaxResult add(@RequestBody TDeviceGroup devicegroup)
     {
         //默认是当前管理员所属机构
 //        devicegroup.setOrgId(SecurityUtils.getLoginUser().getUser().getOrgId());
@@ -85,7 +84,7 @@ public class DeviceGroupController extends BaseController
     @PreAuthorize("@ss.hasPermi('org:deviceGroup:edit')")
     @Log(title = "设备组", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody DeviceGroup devicegroup)
+    public AjaxResult edit(@RequestBody TDeviceGroup devicegroup)
     {
         if (UserConstants.NOT_UNIQUE.equals(deviceGroupService.checkOrgNameUnique(devicegroup)))
         {

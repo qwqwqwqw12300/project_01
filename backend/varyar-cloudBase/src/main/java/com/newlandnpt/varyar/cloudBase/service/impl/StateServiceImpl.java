@@ -18,7 +18,7 @@ public class StateServiceImpl implements StateService {
 	@Resource(name = "cloud.stateMapper")
 	private StateMapper stateMapper;
 
-	public static final String CACHE_KEY = "cloud:state";
+	public static final String CACHE_KEY = "cloud:state:";
 	
 	@Override
 	public void receve(State t) {

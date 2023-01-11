@@ -6,7 +6,7 @@ import com.newlandnpt.varyar.common.core.domain.model.DevicePhoneRequest;
 import com.newlandnpt.varyar.common.core.domain.model.DeviceRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.utils.DateUtils;
-import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter;
 import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
 import com.newlandnpt.varyar.system.service.IDeviceService;
@@ -39,7 +39,7 @@ public class DeviceController extends BaseController {
         map.put("memberId",memberId);
         map.put("familyId",Long.valueOf(deviceRequest.getFamilyId()));
         map.put("roomId",Long.valueOf(deviceRequest.getRoomId()));
-        List<Device> list = iDeviceService.selectDeviceByMemberId(map);
+        List<TDevice> list = iDeviceService.selectDeviceByMemberId(map);
         return getDataTable(list);
     }
     /**
@@ -54,7 +54,7 @@ public class DeviceController extends BaseController {
         map.put("memberId",memberId);
         map.put("familyId",Long.valueOf(deviceRequest.getFamilyId()));
         map.put("roomId",Long.valueOf(deviceRequest.getRoomId()));
-        List<Device> list = iDeviceService.selectDeviceByMemberId(map);
+        List<TDevice> list = iDeviceService.selectDeviceByMemberId(map);
         return getDataTable(list);
     }
     /**
@@ -67,7 +67,7 @@ public class DeviceController extends BaseController {
         if(checkInfo(deviceRequest,ajax) != null){
            return ajax;
         }
-        Device device = new Device();
+        TDevice device = new TDevice();
         device.setName(deviceRequest.getDeviceName());
         device.setNo(deviceRequest.getDeviceNo());
         device.setType(deviceRequest.getDeviceType());
@@ -102,7 +102,7 @@ public class DeviceController extends BaseController {
             ajax = AjaxResult.error("设备id不能为空！");
             return ajax;
         }
-        Device device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
+        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
         if (device==null){
             ajax = AjaxResult.error("无法查找到设备信息！");
             return ajax;
@@ -158,7 +158,7 @@ public class DeviceController extends BaseController {
             ajax = AjaxResult.error("房间id不能为空！");
             return ajax;
         }
-        Device device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
+        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
         if (device==null){
             ajax = AjaxResult.error("无法查找到设备信息！");
             return ajax;
@@ -181,7 +181,7 @@ public class DeviceController extends BaseController {
             @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
         AjaxResult ajax = AjaxResult.success();
         //查找设备信息
-        Device device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(devicePhoneRequest.getDeviceId()));
+        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(devicePhoneRequest.getDeviceId()));
         if (device == null){
             ajax = AjaxResult.error("设备信息不存在！");
             return ajax;

@@ -9,7 +9,7 @@ import com.newlandnpt.varyar.system.domain.TFamily;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface FamilyMapper
+public interface TFamilyMapper
 {
     /**
      * 查询家庭

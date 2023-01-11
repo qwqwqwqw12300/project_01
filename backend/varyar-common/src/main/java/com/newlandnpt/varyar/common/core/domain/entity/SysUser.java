@@ -4,9 +4,7 @@ import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
-import com.newlandnpt.varyar.common.annotation.Excel.ColumnType;
 import com.newlandnpt.varyar.common.annotation.Excel.Type;
 import com.newlandnpt.varyar.common.annotation.Excels;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
@@ -79,7 +77,7 @@ public class SysUser extends BaseEntity
         @Excel(name = "机构负责人", targetAttr = "leader", type = Type.EXPORT)
     })
     @Transient
-    private Org org;
+    private TOrg org;
 
     /** 角色对象 */
     @Transient
@@ -278,12 +276,12 @@ public class SysUser extends BaseEntity
         this.loginDate = loginDate;
     }
 
-    public Org getOrg()
+    public TOrg getOrg()
     {
         return org;
     }
 
-    public void setOrg(Org org)
+    public void setOrg(TOrg org)
     {
         this.org = org;
     }

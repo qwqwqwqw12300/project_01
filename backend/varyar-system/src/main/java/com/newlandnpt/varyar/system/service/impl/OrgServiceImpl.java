@@ -5,14 +5,14 @@ import com.newlandnpt.varyar.common.constant.UserConstants;
 import com.newlandnpt.varyar.common.core.domain.TreeSelect;
 import com.newlandnpt.varyar.common.core.domain.entity.SysRole;
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
-import com.newlandnpt.varyar.common.core.domain.entity.Org;
+import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import com.newlandnpt.varyar.common.core.text.Convert;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.common.utils.spring.SpringUtils;
 import com.newlandnpt.varyar.system.mapper.SysRoleMapper;
-import com.newlandnpt.varyar.system.mapper.OrgMapper;
+import com.newlandnpt.varyar.system.mapper.TOrgMapper;
 import com.newlandnpt.varyar.system.service.IOrgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ import static com.newlandnpt.varyar.common.constant.OrgConstants.STATUS_OPEN;
 @Service
 public class OrgServiceImpl implements IOrgService {
     @Autowired
-    private OrgMapper orgMapper;
+    private TOrgMapper orgMapper;
 
     @Autowired
     private SysRoleMapper roleMapper;
@@ -46,7 +46,7 @@ public class OrgServiceImpl implements IOrgService {
      */
     @Override
     @DataScope(orgAlias = "d")
-    public List<Org> selectOrgList(Org org) {
+    public List<TOrg> selectOrgList(TOrg org) {
         return orgMapper.selectOrgList(org);
     }
 
@@ -57,8 +57,8 @@ public class OrgServiceImpl implements IOrgService {
      * @return 机构树信息集合
      */
     @Override
-    public List<TreeSelect> selectOrgTreeList(Org org) {
-        List<Org> orgs = SpringUtils.getAopProxy(this).selectOrgList(org);
+    public List<TreeSelect> selectOrgTreeList(TOrg org) {
+        List<TOrg> orgs = SpringUtils.getAopProxy(this).selectOrgList(org);
         return buildOrgTreeSelect(orgs);
     }
 
@@ -69,10 +69,10 @@ public class OrgServiceImpl implements IOrgService {
      * @return 树结构列表
      */
     @Override
-    public List<Org> buildOrgTree(List<Org> orgs) {
-        List<Org> returnList = new ArrayList<Org>();
-        List<Long> tempList = orgs.stream().map(Org::getOrgId).collect(Collectors.toList());
-        for (Org org : orgs) {
+    public List<TOrg> buildOrgTree(List<TOrg> orgs) {
+        List<TOrg> returnList = new ArrayList<TOrg>();
+        List<Long> tempList = orgs.stream().map(TOrg::getOrgId).collect(Collectors.toList());
+        for (TOrg org : orgs) {
             // 如果是顶级节点, 遍历该父节点的所有子节点
             if (!tempList.contains(org.getParentId())) {
                 recursionFn(orgs, org);
@@ -92,8 +92,8 @@ public class OrgServiceImpl implements IOrgService {
      * @return 下拉树结构列表
      */
     @Override
-    public List<TreeSelect> buildOrgTreeSelect(List<Org> orgs) {
-        List<Org> orgTrees = buildOrgTree(orgs);
+    public List<TreeSelect> buildOrgTreeSelect(List<TOrg> orgs) {
+        List<TOrg> orgTrees = buildOrgTree(orgs);
         return orgTrees.stream().map(TreeSelect::new).collect(Collectors.toList());
     }
 
@@ -116,7 +116,7 @@ public class OrgServiceImpl implements IOrgService {
      * @return 机构信息
      */
     @Override
-    public Org selectOrgById(Long orgId) {
+    public TOrg selectOrgById(Long orgId) {
         return orgMapper.selectOrgById(orgId);
     }
 
@@ -162,9 +162,9 @@ public class OrgServiceImpl implements IOrgService {
      * @return 结果
      */
     @Override
-    public String checkOrgNameUnique(Org org) {
+    public String checkOrgNameUnique(TOrg org) {
         Long orgId = StringUtils.isNull(org.getOrgId()) ? -1L : org.getOrgId();
-        Org info = orgMapper.checkOrgNameUnique(org.getOrgName(), org.getParentId());
+        TOrg info = orgMapper.checkOrgNameUnique(org.getOrgName(), org.getParentId());
         if (StringUtils.isNotNull(info) && info.getOrgId().longValue() != orgId.longValue()) {
             return UserConstants.NOT_UNIQUE;
         }
@@ -179,9 +179,9 @@ public class OrgServiceImpl implements IOrgService {
     @Override
     public void checkOrgDataScope(Long orgId) {
         if (!SysUser.isAdmin(SecurityUtils.getUserId())) {
-            Org org = new Org();
+            TOrg org = new TOrg();
             org.setOrgId(orgId);
-            List<Org> orgs = SpringUtils.getAopProxy(this).selectOrgList(org);
+            List<TOrg> orgs = SpringUtils.getAopProxy(this).selectOrgList(org);
             if (StringUtils.isEmpty(orgs)) {
                 throw new ServiceException("没有权限访问机构数据！");
             }
@@ -195,8 +195,8 @@ public class OrgServiceImpl implements IOrgService {
      * @return 结果
      */
     @Override
-    public int insertOrg(Org org) {
-        Org info = orgMapper.selectOrgById(org.getParentId());
+    public int insertOrg(TOrg org) {
+        TOrg info = orgMapper.selectOrgById(org.getParentId());
         // 如果父节点不为正常状态,则不允许新增子节点
         if (!STATUS_OPEN.equals(info.getStatus())) {
             throw new ServiceException("父级机构关闭，不允许新增");
@@ -212,9 +212,9 @@ public class OrgServiceImpl implements IOrgService {
      * @return 结果
      */
     @Override
-    public int updateOrg(Org org) {
-        Org newParentOrg = orgMapper.selectOrgById(org.getParentId());
-        Org oldOrg = orgMapper.selectOrgById(org.getOrgId());
+    public int updateOrg(TOrg org) {
+        TOrg newParentOrg = orgMapper.selectOrgById(org.getParentId());
+        TOrg oldOrg = orgMapper.selectOrgById(org.getOrgId());
         if (StringUtils.isNotNull(newParentOrg) && StringUtils.isNotNull(oldOrg)) {
             String newAncestors = newParentOrg.getAncestors() + "," + newParentOrg.getOrgId();
             String oldAncestors = oldOrg.getAncestors();
@@ -234,7 +234,7 @@ public class OrgServiceImpl implements IOrgService {
      *
      * @param org 当前机构
      */
-    private void updateParentOrgStatusNormal(Org org) {
+    private void updateParentOrgStatusNormal(TOrg org) {
         String ancestors = org.getAncestors();
         Long[] orgIds = Convert.toLongArray(ancestors);
         orgMapper.updateOrgStatusNormal(orgIds);
@@ -245,7 +245,7 @@ public class OrgServiceImpl implements IOrgService {
      *
      * @param org 当前机构
      */
-    private void updateChildrenOrgStatus(Org org) {
+    private void updateChildrenOrgStatus(TOrg org) {
         Long orgId = org.getOrgId();
         if (STATUS_OPEN.equals(org.getStatus())) {
             orgMapper.updateChildrenStatusOpen(orgId);
@@ -262,8 +262,8 @@ public class OrgServiceImpl implements IOrgService {
      * @param oldAncestors 旧的父ID集合
      */
     public void updateOrgChildren(Long orgId, String newAncestors, String oldAncestors) {
-        List<Org> children = orgMapper.selectChildrenOrgById(orgId);
-        for (Org child : children) {
+        List<TOrg> children = orgMapper.selectChildrenOrgById(orgId);
+        for (TOrg child : children) {
             child.setAncestors(child.getAncestors().replaceFirst(oldAncestors, newAncestors));
         }
         if (children.size() > 0) {
@@ -294,11 +294,11 @@ public class OrgServiceImpl implements IOrgService {
     /**
      * 递归列表
      */
-    private void recursionFn(List<Org> list, Org t) {
+    private void recursionFn(List<TOrg> list, TOrg t) {
         // 得到子节点列表
-        List<Org> childList = getChildList(list, t);
+        List<TOrg> childList = getChildList(list, t);
         t.setChildren(childList);
-        for (Org tChild : childList) {
+        for (TOrg tChild : childList) {
             if (hasChild(list, tChild)) {
                 recursionFn(list, tChild);
             }
@@ -308,11 +308,11 @@ public class OrgServiceImpl implements IOrgService {
     /**
      * 得到子节点列表
      */
-    private List<Org> getChildList(List<Org> list, Org t) {
-        List<Org> tlist = new ArrayList<Org>();
-        Iterator<Org> it = list.iterator();
+    private List<TOrg> getChildList(List<TOrg> list, TOrg t) {
+        List<TOrg> tlist = new ArrayList<TOrg>();
+        Iterator<TOrg> it = list.iterator();
         while (it.hasNext()) {
-            Org n = (Org) it.next();
+            TOrg n = (TOrg) it.next();
             if (StringUtils.isNotNull(n.getParentId()) && n.getParentId().longValue() == t.getOrgId().longValue()) {
                 tlist.add(n);
             }
@@ -323,7 +323,7 @@ public class OrgServiceImpl implements IOrgService {
     /**
      * 判断是否有子节点
      */
-    private boolean hasChild(List<Org> list, Org t) {
+    private boolean hasChild(List<TOrg> list, TOrg t) {
         return getChildList(list, t).size() > 0;
     }
 }

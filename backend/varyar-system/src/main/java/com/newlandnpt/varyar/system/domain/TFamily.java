@@ -35,7 +35,7 @@ public class TFamily extends BaseEntity
 
     /** 设备列表 */
     @Transient
-    private List<Device> devices;
+    private List<TDevice> devices;
 
     /** 共享标志（0代表是 2代表非） */
     @Transient
@@ -85,7 +85,7 @@ public class TFamily extends BaseEntity
         this.delFlag = delFlag;
     }
 
-    public List<Device> getDevices() {
+    public List<TDevice> getDevices() {
         return devices;
     }
 
@@ -97,7 +97,7 @@ public class TFamily extends BaseEntity
         this.shareFlag = shareFlag;
     }
 
-    public void setDevices(List<Device> devices) {
+    public void setDevices(List<TDevice> devices) {
         this.devices = devices;
     }
 

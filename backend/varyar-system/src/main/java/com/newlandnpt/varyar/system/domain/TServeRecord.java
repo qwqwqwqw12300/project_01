@@ -21,7 +21,7 @@ import java.util.List;
  * @author lin.ju
  * @date 2023-01-04
  */
-public class ServeRecord extends BaseEntity
+public class TServeRecord extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -63,7 +63,7 @@ public class ServeRecord extends BaseEntity
             @Excel(name = "设备编号", targetAttr = "no", type = Excel.Type.EXPORT,sort = 7),
             @Excel(name = "设备分组+位置", targetAttr = "deviceGroupName+location", separator = " ",type = Excel.Type.EXPORT,sort = 9)
     })
-    private Device device;
+    private TDevice device;
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
@@ -165,11 +165,11 @@ public class ServeRecord extends BaseEntity
         this.servedUser = servedUser;
     }
 
-    public Device getDevice() {
+    public TDevice getDevice() {
         return device;
     }
 
-    public void setDevice(Device device) {
+    public void setDevice(TDevice device) {
         this.device = device;
     }
 

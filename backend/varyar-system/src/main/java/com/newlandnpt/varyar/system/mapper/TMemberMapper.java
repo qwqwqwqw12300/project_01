@@ -1,7 +1,7 @@
 package com.newlandnpt.varyar.system.mapper;
 
 import java.util.List;
-import com.newlandnpt.varyar.system.domain.Member;
+import com.newlandnpt.varyar.system.domain.TMember;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface MemberMapper
+public interface TMemberMapper
 {
     /**
      * 查询会员
@@ -19,13 +19,13 @@ public interface MemberMapper
      * @param memberId 会员主键
      * @return 会员
      */
-    public Member selectMemberByMemberId(Long memberId);
+    public TMember selectMemberByMemberId(Long memberId);
 
     /**
      * 通过手机号查询会员
 
      */
-    public Member selectMemberByPhone(String phone);
+    public TMember selectMemberByPhone(String phone);
 
     /**
      * 查询会员列表
@@ -33,7 +33,7 @@ public interface MemberMapper
      * @param member 会员
      * @return 会员集合
      */
-    public List<Member> selectMemberList(Member member);
+    public List<TMember> selectMemberList(TMember member);
 
     /**
      * 新增会员
@@ -41,7 +41,7 @@ public interface MemberMapper
      * @param member 会员
      * @return 结果
      */
-    public int insertMember(Member member);
+    public int insertMember(TMember member);
 
     /**
      * 修改会员
@@ -49,7 +49,7 @@ public interface MemberMapper
      * @param member 会员
      * @return 结果
      */
-    public int updateMember(Member member);
+    public int updateMember(TMember member);
 
     /**
      * 删除会员
@@ -89,7 +89,7 @@ public interface MemberMapper
             " and </if> " +
             " del_flag = '0' " +
             " </script> ")
-    public long total(Member member);
+    public long total(TMember member);
 
     /**
      * 未分配会员数
@@ -102,5 +102,5 @@ public interface MemberMapper
             " user_id in (select user_id from sys_user u where 1=1 ${params.dataScope})</if> " +
             " and del_flag = '0' " +
             " </script> ")
-    public long notArrangeMemberCount(Member member);
+    public long notArrangeMemberCount(TMember member);
 }
