@@ -189,6 +189,16 @@
 			}
 		},
 		{
+			"path": "pages/myself/version-manage",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		
+		},
+		{
 			"path": "pages/myself/agreement-info",
 			"style": {
 				"navigationStyle": "custom",

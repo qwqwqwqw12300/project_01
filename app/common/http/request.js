@@ -6,6 +6,9 @@
  * @Description: 网络请求服务
  */
 import __config from 'config/env';
+import {
+	isApp
+} from '../utils/util';
 
 /**错误处理文案**/
 const errText = {
@@ -28,8 +31,13 @@ const errText = {
  * @param {string} method 请求方法
  */
 const request = (url, options, process, method = 'POST') => {
-	const _url = __config.basePath + url,
-		showLoading = process.showLoading !== false,
+	let _url;
+	if (isApp()) {
+		_url = __config.basePath + url;
+	} else {
+		_url = url;
+	}
+	const showLoading = process.showLoading !== false,
 		errorHandle = process.error !== false;
 	console.info('请求URL|入参：' + url + ' | ' + JSON.stringify(options));
 	return new Promise((resolve, reject) => {
