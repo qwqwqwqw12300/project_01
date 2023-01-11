@@ -138,7 +138,52 @@
         :limit.sync="queryParams.pageSize"
         @pagination="getList"
       />
-  
+      <el-row>
+      <!-- 卡片表单展示 -->
+      <el-col :span="24" class="card-box">
+          <el-card>
+            <div slot="header">
+              <span>机构基本信息</span>
+            </div>
+            <div class="el-table el-table--enable-row-hover el-table--medium">
+              <table cellspacing="0" style="width: 100%;">
+                <tbody>
+                  <tr>
+                    <td class="el-table__cell is-leaf"><div class="cell">机构名称：</div></td>
+                    <td class="el-table__cell is-leaf"><div class="cell" >马尾养老院</div></td>
+                    <td class="el-table__cell is-leaf"><div class="cell">机构编号：</div></td>
+                    <td class="el-table__cell is-leaf"><div class="cell" >100000123001</div></td>
+                  </tr>
+                  <tr>
+                    <td class="el-table__cell is-leaf"><div class="cell">上级机构：</div></td>
+                    <td class="el-table__cell is-leaf"><div class="cell" >爱康公司</div></td>
+                    <td class="el-table__cell is-leaf"><div class="cell">机构地址：</div></td>
+                    <td class="el-table__cell is-leaf"><div class="cell" >福州市马尾江滨路1号</div></td>
+                  </tr>
+          <tr>
+                    <td class="el-table__cell is-leaf"><div class="cell">机构负责人：</div></td>
+                    <td class="el-table__cell is-leaf"><div class="cell" >张三</div></td>
+                    <td class="el-table__cell is-leaf"><div class="cell">机构负责人电话：</div></td>
+                    <td class="el-table__cell is-leaf"><div class="cell" >13300001221</div></td>
+                  </tr>
+          <tr>
+                    <td class="el-table__cell is-leaf"><div class="cell">第一服务电话：</div></td>
+                    <td class="el-table__cell is-leaf"><div class="cell" >13300001221</div></td>
+                    <td class="el-table__cell is-leaf"><div class="cell">第二服务电话：</div></td>
+                    <td class="el-table__cell is-leaf"><div class="cell" >13300001221</div></td>
+                  </tr>
+          <tr>
+                    <td class="el-table__cell is-leaf"><div class="cell">第三服务电话：</div></td>
+                    <td class="el-table__cell is-leaf"><div class="cell" >13300001221</div></td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </el-card>
+        </el-col>
+    </el-row>
+
       <!-- 添加或修改消息对话框 -->
       <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
@@ -169,7 +214,10 @@
           <el-button @click="cancel">取 消</el-button>
         </div>
       </el-dialog>
+
+      
     </div>
+
   </template>
   
   <script>

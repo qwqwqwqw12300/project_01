@@ -44,13 +44,7 @@ public class MsgController extends BaseController
     {
         startPage();
         List<TMsg> list = msgService.selectTMsgList(tMsg);
-        setType(list);
         return getDataTable(list);
-    }
-    private void setType(List<TMsg> list){
-        for(TMsg item : list){
-            item.setOperateFlag(item.getOperateFlag().equals("1")?"审核":"未审核");
-        }
     }
 
     /**

@@ -22,7 +22,7 @@ import com.newlandnpt.varyar.system.domain.vo.GeoFenceResultVo;
 import com.newlandnpt.varyar.system.service.GeoFenceService;
 import com.newlandnpt.varyar.system.service.IDeviceFenceService;
 import com.newlandnpt.varyar.system.service.IDeviceService;
-import com.newlandnpt.varyar.system.service.ITEventService;
+import com.newlandnpt.varyar.system.service.IEventService;
 
 /**
  * 地理围栏事件-消息监听类
@@ -44,7 +44,7 @@ public class LocationListener implements RocketMQListener<String> {
     private IDeviceService deviceService;
 
     @Autowired
-    private ITEventService eventService;
+    private IEventService eventService;
 
     @Autowired
     private IDeviceFenceService deviceFenceService;
