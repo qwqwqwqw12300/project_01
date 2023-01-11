@@ -33,15 +33,11 @@ public class FallApi {
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
     
-    @Resource(name = "cloud.fallService")
-	private FallService fallService;
-
-    /**
-     * 跌倒事件
-     * 设备模块接收到信息，mq推送，新增跌倒事件
-     */
     @Value("${rocketmq.topic.fall}")
     private String fallTopic;
+    
+    @Resource(name = "cloud.fallService")
+	private FallService fallService;
     
     @GetMapping("/fall")
     @ResponseBody

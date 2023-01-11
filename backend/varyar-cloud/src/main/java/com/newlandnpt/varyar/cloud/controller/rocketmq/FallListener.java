@@ -17,6 +17,6 @@ public class FallListener  implements RocketMQListener<Fall> {
 	
     @Override
     public void onMessage(Fall fall) {
-        log.debug("----" + System.currentTimeMillis() + "----" + " 监听到跌倒事件消息： " + JSON.toJSONString(fall));
+    	log.debug("监听到[{}], 报文对象：{} " ,"跌倒事件消息"  ,JSON.toJSONString(fall));
     }
 }
