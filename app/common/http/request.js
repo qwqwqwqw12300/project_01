@@ -5,7 +5,10 @@
  * @FilePath: /http/request.js
  * @Description: 网络请求服务
  */
-import __config from 'config/env';
+
+import {
+	env
+} from '../../config/env';
 import {
 	isApp
 } from '../utils/util';
@@ -33,13 +36,13 @@ const errText = {
 const request = (url, options, process, method = 'POST') => {
 	let _url;
 	if (isApp()) {
-		_url = __config.basePath + url;
+		_url = env.basePath + url;
 	} else {
 		_url = url;
 	}
 	const showLoading = process.showLoading !== false,
 		errorHandle = process.error !== false;
-	console.info('请求URL|入参：' + url + ' | ' + JSON.stringify(options));
+	console.info('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));
 	return new Promise((resolve, reject) => {
 		if (showLoading) uni.showLoading();
 		uni.request({

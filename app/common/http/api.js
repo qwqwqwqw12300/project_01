@@ -7,6 +7,11 @@
  */
 
 import http from './request.js';
-
-export const getDemo = (data) => http.get('/demo/demo', data);
-export const postDemo = (data) => http.post('/demo/demo', data);
+/**
+ * 获取请求验证码
+ */
+export const getDemo = () => http.get('/api/captchaImage');
+export const postDemo = () => http.post('/api/sendSms', {
+	"uuid": "c8916a767204456fa970c675c71048e5",
+	"captcha": "6d23"
+});

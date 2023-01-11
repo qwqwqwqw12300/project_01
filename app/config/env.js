@@ -16,5 +16,7 @@ export const env = {
 	/**crisp客服Id**/
 	crispWebsoteId: 'f6e8cb47-0c2b-48e0-8506-788ff6af7be1',
 	/**包名**/
-	package: 'uni.UNI9B9BD07'
+	package: 'uni.UNI9B9BD07',
+	/**加密公钥**/
+	publicKey: 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDF4xuwZNWhVaQZguqxLBKhc2S1jKiJOzJS0YczxLPTH9l2Fa+zxZ/AzYci95KG9kFbvZEVyuFhR5UTsORc+ONsqTg/zx2+vJ7kI8h2/qtWNV6vH9JmgMVHl5CEpikXhZjOPutNmzcRKfzDbYwp274f6iDUi9GttlYR68qPBij8AQIDAQAB'
 }
