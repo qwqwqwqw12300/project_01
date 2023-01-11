@@ -3,7 +3,7 @@ package com.newlandnpt.varyar.web.controller.home;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.system.service.IDeviceService;
-import com.newlandnpt.varyar.system.service.ITEventService;
+import com.newlandnpt.varyar.system.service.IEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ public class BizHomeController extends BaseController {
     @Autowired
     private IDeviceService deviceService;
     @Autowired
-    private ITEventService eventService;
+    private IEventService eventService;
 
     /**
      * 运营关心的设备列表

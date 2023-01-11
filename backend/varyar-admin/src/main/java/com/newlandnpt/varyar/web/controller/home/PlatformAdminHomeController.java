@@ -7,7 +7,7 @@ import com.newlandnpt.varyar.system.domain.Member;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import com.newlandnpt.varyar.system.service.IMemberService;
 import com.newlandnpt.varyar.system.service.IOrgService;
-import com.newlandnpt.varyar.system.service.ITEventService;
+import com.newlandnpt.varyar.system.service.IEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +31,7 @@ public class PlatformAdminHomeController extends BaseController {
     @Autowired
     private IOrgService orgService;
     @Autowired
-    private ITEventService eventService;
+    private IEventService eventService;
 
 
     /**
