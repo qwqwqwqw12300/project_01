@@ -47,7 +47,12 @@ const request = (url, options, process, method = 'POST') => {
 		if (showLoading) uni.showLoading();
 		uni.request({
 			url: _url,
+			data: options,
 			method,
+			header: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
 			withCredentials: true,
 			success: result => {
 				const {

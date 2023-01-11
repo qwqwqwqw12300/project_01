@@ -15,3 +15,13 @@ export const postDemo = () => http.post('/api/sendSms', {
 	"uuid": "c8916a767204456fa970c675c71048e5",
 	"captcha": "6d23"
 });
+
+/* 
+ *获取图形验证码 *
+ */
+export const GetCaptchaImage = (params) => http.get('/api/captchaImage', params)
+
+/* 
+ *登录 *
+ */
+export const PostLoginByPwd = (params) => http.post('/api/loginByPwd', params)
