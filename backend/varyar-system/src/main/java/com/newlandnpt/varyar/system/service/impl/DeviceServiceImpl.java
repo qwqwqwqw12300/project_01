@@ -198,6 +198,7 @@ public class DeviceServiceImpl implements IDeviceService {
                 }
                 //设置机构id
                 device.setOrgId(orgId);
+                device.setOrgName(org.getOrgName());
                 //默认未激活
                 device.setStatus(STATUS_NOT_ACTIVE);
                 //默认未分配

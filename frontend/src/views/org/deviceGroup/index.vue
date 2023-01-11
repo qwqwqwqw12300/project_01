@@ -1,21 +1,7 @@
 <template>
   <div class="app-container">
     <el-row>
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>机构基本信息</span>
-        </div>
-        <el-descriptions :column="2">
-          <el-descriptions-item label="机构名称">{{ org.orgName }}</el-descriptions-item>
-          <el-descriptions-item label="上级机构">{{ org.parentName }}</el-descriptions-item>
-          <el-descriptions-item label="机构地址">{{ org.address }}</el-descriptions-item>
-          <el-descriptions-item label="机构负责人">{{ org.leader }}</el-descriptions-item>
-          <el-descriptions-item label="机构负责人电话">{{ org.leaderPhone }}</el-descriptions-item>
-          <el-descriptions-item label="第一服务电话">{{ org.phone1 }}({{ org.attendantName1 }})</el-descriptions-item>
-          <el-descriptions-item label="第二服务电话">{{ org.phone2 }}({{ org.attendantName2 }})</el-descriptions-item>
-          <el-descriptions-item label="第三服务电话">{{ org.phone3 }}({{ org.attendantName3 }})</el-descriptions-item>
-        </el-descriptions>
-      </el-card>
+      <org-info-card :value="orgId"></org-info-card>
     </el-row>
     <el-row>
       <el-card class="box-card">
@@ -68,7 +54,7 @@
     </el-row>
 
 
-    <form-panel title="设备组分配运营人员" :visible.sync="arrangeUserOpen">
+    <form-panel title="修改运营人员" :visible.sync="arrangeUserOpen">
 
     </form-panel>
     <form-panel title="设备分配设备组" :visible.sync="deviceArrangeOpen">
@@ -81,8 +67,10 @@
 import {pageDeviceGroup, addDeviceGroup, updateDeviceGroup, arrangeUser, deviceArrange} from "@/api/org/deviceGroup"
 import {getUserProfile} from "@/api/system/user";
 import {getOrg} from "@/api/org/org";
+import OrgInfoCard from "@/views/org/components/OrgInfoCard";
 
 export default {
+  components:{OrgInfoCard},
   name: "DeviceGroup",
   data() {
     return {
@@ -132,9 +120,10 @@ export default {
       this.userOrgId = response.data.orgId;
     },
     initOrg() {
-      getOrg(this.orgId).then(response => {
-        this.org = response.data;
-      })
+      if(this.orgId != undefined)
+        getOrg(this.orgId).then(response => {
+          this.org = response.data;
+        })
     },
     reset() {
       this.form = {
