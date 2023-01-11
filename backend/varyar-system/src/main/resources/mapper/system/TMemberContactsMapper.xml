@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.newlandnpt.varyar.system.mapper.MemberContactsMapper">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.TMemberContactsMapper">
     
-    <resultMap type="MemberContacts" id="MemberContactsResult">
+    <resultMap type="TMemberContacts" id="MemberContactsResult">
         <result property="memberContactsId"    column="membercontacts_id"    />
         <result property="memberId"    column="member_id"    />
         <result property="name"    column="name"    />
@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select membercontacts_id, member_id, name, phone, order_num, del_flag, create_time, update_time from t_membercontacts
     </sql>
 
-    <select id="selectMemberContactsList" parameterType="MemberContacts" resultMap="MemberContactsResult">
+    <select id="selectMemberContactsList" parameterType="TMemberContacts" resultMap="MemberContactsResult">
         <include refid="selectMemberContactsVo"/>
         <where>  
             <if test="memberId != null "> and member_id = #{memberId}</if>
@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where membercontacts_id = #{memberContactsId}
     </select>
         
-    <insert id="insertMemberContacts" parameterType="MemberContacts" useGeneratedKeys="true" keyProperty="memberContactsId">
+    <insert id="insertMemberContacts" parameterType="TMemberContacts" useGeneratedKeys="true" keyProperty="memberContactsId">
         insert into t_membercontacts
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="memberId != null">member_id,</if>
@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateMemberContacts" parameterType="MemberContacts">
+    <update id="updateMemberContacts" parameterType="TMemberContacts">
         update t_membercontacts
         <trim prefix="SET" suffixOverrides=",">
             <if test="memberId != null">member_id = #{memberId},</if>

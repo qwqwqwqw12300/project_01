@@ -9,8 +9,8 @@ import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.newlandnpt.varyar.system.mapper.MemberMapper;
-import com.newlandnpt.varyar.system.domain.Member;
+import com.newlandnpt.varyar.system.mapper.TMemberMapper;
+import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IMemberService;
 
 /**
@@ -23,7 +23,7 @@ import com.newlandnpt.varyar.system.service.IMemberService;
 public class MemberServiceImpl implements IMemberService
 {
     @Autowired
-    private MemberMapper memberMapper;
+    private TMemberMapper memberMapper;
     @Autowired
     private SysUserMapper sysUserMapper;
 
@@ -34,7 +34,7 @@ public class MemberServiceImpl implements IMemberService
      * @return 会员
      */
     @Override
-    public Member selectMemberByMemberId(Long memberId)
+    public TMember selectMemberByMemberId(Long memberId)
     {
         return memberMapper.selectMemberByMemberId(memberId);
     }
@@ -46,7 +46,7 @@ public class MemberServiceImpl implements IMemberService
      * @return 会员
      */
     @Override
-    public List<Member> selectMemberList(Member member)
+    public List<TMember> selectMemberList(TMember member)
     {
         return memberMapper.selectMemberList(member);
     }
@@ -58,7 +58,7 @@ public class MemberServiceImpl implements IMemberService
      * @return 结果
      */
     @Override
-    public int insertMember(Member member)
+    public int insertMember(TMember member)
     {
         member.setCreateTime(DateUtils.getNowDate());
         return memberMapper.insertMember(member);
@@ -71,7 +71,7 @@ public class MemberServiceImpl implements IMemberService
      * @return 结果
      */
     @Override
-    public int updateMember(Member member)
+    public int updateMember(TMember member)
     {
         member.setUpdateTime(DateUtils.getNowDate());
         return memberMapper.updateMember(member);
@@ -104,7 +104,7 @@ public class MemberServiceImpl implements IMemberService
     @Override
     public int arrangeUserToMember(Long memberId, Long userId) {
 
-        Member member = memberMapper.selectMemberByMemberId(memberId);
+        TMember member = memberMapper.selectMemberByMemberId(memberId);
         if(member == null){
             throw new ServiceException("会员不存在");
         }
@@ -121,13 +121,13 @@ public class MemberServiceImpl implements IMemberService
 
     @Override
     @DataScope(orgAlias = "d")
-    public long total(Member member) {
+    public long total(TMember member) {
         return memberMapper.total(member);
     }
 
     @Override
     @DataScope(orgAlias = "d")
-    public long notArrangeMemberCount(Member member) {
+    public long notArrangeMemberCount(TMember member) {
         return memberMapper.notArrangeMemberCount(member);
     }
 }

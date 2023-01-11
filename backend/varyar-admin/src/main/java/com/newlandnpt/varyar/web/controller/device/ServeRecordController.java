@@ -14,13 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.newlandnpt.varyar.system.domain.ServeRecord;
+import com.newlandnpt.varyar.system.domain.TServeRecord;
 import com.newlandnpt.varyar.system.service.IServeRecordService;
 
 /**
@@ -41,10 +39,10 @@ public class ServeRecordController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('device:serveRecord:list')")
     @GetMapping("/page")
-    public TableDataInfo list(ServeRecord serveRecord)
+    public TableDataInfo list(TServeRecord serveRecord)
     {
         startPage();
-        List<ServeRecord> list = serveRecordService.selectServeRecordList(serveRecord);
+        List<TServeRecord> list = serveRecordService.selectServeRecordList(serveRecord);
         return getDataTable(list);
     }
 
@@ -54,10 +52,10 @@ public class ServeRecordController extends BaseController
     @PreAuthorize("@ss.hasPermi('device:serveRecord:export')")
     @Log(title = "服务记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, ServeRecord serveRecord)
+    public void export(HttpServletResponse response, TServeRecord serveRecord)
     {
-        List<ServeRecord> list = serveRecordService.selectServeRecordList(serveRecord);
-        ExcelUtil<ServeRecord> util = new ExcelUtil<ServeRecord>(ServeRecord.class);
+        List<TServeRecord> list = serveRecordService.selectServeRecordList(serveRecord);
+        ExcelUtil<TServeRecord> util = new ExcelUtil<TServeRecord>(TServeRecord.class);
         util.exportExcel(response, list, "服务记录数据");
     }
 
@@ -77,7 +75,7 @@ public class ServeRecordController extends BaseController
     @PreAuthorize("@ss.hasPermi('device:serveRecord:add')")
     @Log(title = "服务记录", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody ServeRecord serveRecord)
+    public AjaxResult add(@Validated @RequestBody TServeRecord serveRecord)
     {
         // 服务人员为当前登录人员
         serveRecord.setServedUserId(getUserId());

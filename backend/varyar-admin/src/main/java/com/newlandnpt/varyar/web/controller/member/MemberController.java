@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.system.domain.Member;
+import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IMemberService;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 
@@ -33,10 +33,10 @@ public class MemberController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('member:list')")
     @GetMapping("/page")
-    public TableDataInfo list(Member member)
+    public TableDataInfo list(TMember member)
     {
         startPage();
-        List<Member> list = memberService.selectMemberList(member);
+        List<TMember> list = memberService.selectMemberList(member);
         return getDataTable(list);
     }
 

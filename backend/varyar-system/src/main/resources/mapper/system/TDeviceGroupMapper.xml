@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.newlandnpt.varyar.system.mapper.DeviceGroupMapper">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.TDeviceGroupMapper">
 
-    <resultMap type="DeviceGroup" id="DeviceGroupResult">
+    <resultMap type="TDeviceGroup" id="DeviceGroupResult">
         <result property="deviceGroupId" column="devicegroup_id"/>
         <result property="orgId" column="org_id"/>
         <result property="name" column="name"/>
@@ -25,7 +25,7 @@
         from t_devicegroup d
     </sql>
 
-    <select id="selectDeviceGroupList" parameterType="DeviceGroup" resultMap="DeviceGroupResult">
+    <select id="selectDeviceGroupList" parameterType="TDeviceGroup" resultMap="DeviceGroupResult">
         <include refid="selectDeviceGroupVo"/>
         <where>
             <if test="orgId != null ">and org_id = #{orgId}</if>
@@ -53,7 +53,7 @@
         and del_flag = '0'
     </select>
 
-    <insert id="insertDeviceGroup" parameterType="DeviceGroup" useGeneratedKeys="true" keyProperty="deviceGroupId">
+    <insert id="insertDeviceGroup" parameterType="TDeviceGroup" useGeneratedKeys="true" keyProperty="deviceGroupId">
         insert into t_devicegroup
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="orgId != null">org_id,</if>
@@ -75,7 +75,7 @@
         </trim>
     </insert>
 
-    <update id="updateDeviceGroup" parameterType="DeviceGroup">
+    <update id="updateDeviceGroup" parameterType="TDeviceGroup">
         update t_devicegroup
         <trim prefix="SET" suffixOverrides=",">
             <if test="name != null">name = #{name},</if>

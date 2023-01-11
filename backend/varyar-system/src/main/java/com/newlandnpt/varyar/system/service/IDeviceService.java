@@ -3,7 +3,7 @@ package com.newlandnpt.varyar.system.service;
 import java.util.List;
 import java.util.Map;
 
-import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.dto.org.OrgDeviceCountDto;
 
 /**
@@ -20,7 +20,7 @@ public interface IDeviceService
      * @param deviceId 设备主键
      * @return 设备
      */
-    public Device selectDeviceByDeviceId(Long deviceId);
+    public TDevice selectDeviceByDeviceId(Long deviceId);
 
     /**
      * 查询设备列表
@@ -28,21 +28,21 @@ public interface IDeviceService
      * @param device 设备
      * @return 设备集合
      */
-    public List<Device> selectDeviceList(Device device);
+    public List<TDevice> selectDeviceList(TDevice device);
     /**
      * 查询设备列表
      *
      * @param map 设备
      * @return 设备集合
      */
-    public List<Device> selectDeviceByMemberId(Map map);
+    public List<TDevice> selectDeviceByMemberId(Map map);
     /**
      * 新增设备
      * 
      * @param device 设备
      * @return 结果
      */
-    public int insertDevice(Device device);
+    public int insertDevice(TDevice device);
 
     /**
      * 修改设备
@@ -50,7 +50,7 @@ public interface IDeviceService
      * @param device 设备
      * @return 结果
      */
-    public int updateDevice(Device device);
+    public int updateDevice(TDevice device);
 
     /**
      * 批量删除设备
@@ -82,14 +82,14 @@ public interface IDeviceService
      * @param deviceNo
      * @return
      */
-    public Device selectByDeviceNo(String deviceNo);
+    public TDevice selectByDeviceNo(String deviceNo);
 
     /**
      * 设备配对
      * @param device
      * @return
      */
-    public int associate(Device device);
+    public int associate(TDevice device);
 
     /**
      * 激活设备
@@ -111,41 +111,41 @@ public interface IDeviceService
      * @param orgId 机构id
      * @return
      */
-    public String importDevice(List<Device> devices, Long orgId);
+    public String importDevice(List<TDevice> devices, Long orgId);
 
     /**
      * 统计设备数量
      * @return
      * @param device
      */
-    public long total(Device device);
+    public long total(TDevice device);
 
     /**
      * 统计未分配(配对)设备数量
      * @return
      * @param device
      */
-    public long notAssociateDeviceCount(Device device);
+    public long notAssociateDeviceCount(TDevice device);
 
     /**
      * 统计未分组设备数量
      * @return
      * @param device
      */
-    public long notArrangeDeviceCount(Device device);
+    public long notArrangeDeviceCount(TDevice device);
 
     /**
      * 根据机构id分组统计设备数
      * @return
      * @param device
      */
-    public List<OrgDeviceCountDto> countGroupByOrgId(Device device);
+    public List<OrgDeviceCountDto> countGroupByOrgId(TDevice device);
 
     /**
      * 获取运营关心的设备列表
      * @param userId
      * @return
      */
-    public List<Device> selectBizCareDeviceList(Long userId);
+    public List<TDevice> selectBizCareDeviceList(Long userId);
 
 }

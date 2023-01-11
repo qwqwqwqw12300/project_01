@@ -6,9 +6,8 @@ import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.exception.user.UserPasswordNotMatchException;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
-import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
-import com.newlandnpt.varyar.system.domain.Member;
-import com.newlandnpt.varyar.system.mapper.MemberMapper;
+import com.newlandnpt.varyar.system.domain.TMember;
+import com.newlandnpt.varyar.system.mapper.TMemberMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +27,15 @@ public class MemberLoginServiceImpl implements IMemberLoginService {
     private static final Logger log = LoggerFactory.getLogger(MemberLoginServiceImpl.class);
 
     @Autowired
-    private MemberMapper memberMapper;
+    private TMemberMapper memberMapper;
 
     @Override
-    public Member loginByPwd(MemberLoginPwdRequest memberLoginPwdRequest) {
+    public TMember loginByPwd(MemberLoginPwdRequest memberLoginPwdRequest) {
 
         String phone = memberLoginPwdRequest.getPhone();
         String pwd = memberLoginPwdRequest.getPassword();
 
-        Member tMember = memberMapper.selectMemberByPhone(phone);
+        TMember tMember = memberMapper.selectMemberByPhone(phone);
         if (StringUtils.isNull(tMember)) {
             log.info("登录会员：{} 不存在.", phone);
             throw new ServiceException("登录用户：" + phone + " 不存在");
@@ -51,9 +50,9 @@ public class MemberLoginServiceImpl implements IMemberLoginService {
     }
 
     @Override
-    public Member loginBySms(MemberLoginSmsRequest memberLoginSmsRequest) {
+    public TMember loginBySms(MemberLoginSmsRequest memberLoginSmsRequest) {
         String phone = memberLoginSmsRequest.getPhone();
-        Member tMember = memberMapper.selectMemberByPhone(phone);
+        TMember tMember = memberMapper.selectMemberByPhone(phone);
 
         return tMember;
     }

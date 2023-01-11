@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
  * @author ruoyi
  * @date 2022-12-24
  */
-public class DeviceGroup extends BaseEntity
+public class TDeviceGroup extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
