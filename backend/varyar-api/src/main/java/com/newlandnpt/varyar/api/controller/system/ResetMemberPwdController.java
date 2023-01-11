@@ -1,16 +1,15 @@
 package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.constant.CacheConstants;
-import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.model.RegMemberRequest;
+import com.newlandnpt.varyar.common.core.domain.entity.RsaUtils;
 import com.newlandnpt.varyar.common.core.domain.model.ResetMemberPwdRequest;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
-import com.newlandnpt.varyar.system.service.IRegMemberService;
 import com.newlandnpt.varyar.system.service.IResetMemberPwdService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,8 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ResetMemberPwdController{
     @Autowired
     private RedisCache redisCache;
+
     @Autowired
     private IResetMemberPwdService resetMemberPwdService;
+
+    @Value("${location.gaode.privateKey}")
+    private String privateKey;
 
     @PostMapping("/resetMemberPwd")
     public AjaxResult resetMemberPwd(
@@ -45,7 +48,13 @@ public class ResetMemberPwdController{
         if (!code.equalsIgnoreCase(resetMemberPwdRequest.getCode())) {
             throw new CaptchaException();
         }
-
+        //解密
+        try {
+            resetMemberPwdRequest.setPassword(RsaUtils.decryptByPrivateKey(privateKey,resetMemberPwdRequest.getPassword()));
+        } catch (Exception e) {
+            ajax = AjaxResult.error("密钥解密失败！");
+            return ajax;
+        }
         try {
             resetMemberPwdService.resetMemberPwd(resetMemberPwdRequest);
         } catch (Exception e){

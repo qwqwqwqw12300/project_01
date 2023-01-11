@@ -4,8 +4,10 @@ package com.newlandnpt.varyar.api.controller.system;
 import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.common.core.domain.entity.RsaUtils;
 import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
 import com.newlandnpt.varyar.common.core.domain.model.MemberInfoRequest;
+import com.newlandnpt.varyar.common.core.domain.model.PasswordRequest;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
@@ -14,6 +16,8 @@ import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.framework.web.service.TokenService;
 import com.newlandnpt.varyar.system.service.IMemberInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -30,19 +34,32 @@ public class MemberInfoController extends BaseController
 {
     @Autowired
     private IMemberInfoService memberInfoService;
+
     @Autowired
     private TokenService tokenService;
 
     @Autowired
     private RedisCache redisCache;
 
+    @Value("${location.gaode.privateKey}")
+    private String privateKey;
+
     /**
      * 个人中心-重置密码
      */
     @PostMapping("/updatePwd")
-    public AjaxResult updatePwd(String oldPassword, String newPassword)
+    public AjaxResult updatePwd(@RequestBody @Validated PasswordRequest passwordRequest)
     {
         LoginUser loginUser = getLoginUser();
+        String oldPassword = passwordRequest.getOldPassword();
+        String newPassword = passwordRequest.getNewPassword();
+        //解密
+        try {
+            oldPassword = RsaUtils.decryptByPrivateKey(privateKey,oldPassword);
+            newPassword = RsaUtils.decryptByPrivateKey(privateKey,newPassword);
+        } catch (Exception e) {
+            error("密钥解密失败！");
+        }
         //获取当前登录用户手机号及密码信息
         String Phone = loginUser.getMemberPhone();
         String password = loginUser.getMemberPassword();

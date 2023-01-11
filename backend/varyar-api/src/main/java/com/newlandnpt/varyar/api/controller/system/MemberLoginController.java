@@ -4,6 +4,7 @@ import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.common.core.domain.entity.RsaUtils;
 import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
 import com.newlandnpt.varyar.common.core.domain.model.MemberLoginPwdRequest;
 import com.newlandnpt.varyar.common.core.domain.model.MemberLoginSmsRequest;
@@ -14,11 +15,10 @@ import com.newlandnpt.varyar.framework.web.service.TokenService;
 import com.newlandnpt.varyar.system.domain.Member;
 import com.newlandnpt.varyar.system.service.IMemberLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 /**
  * 会员登录
@@ -36,6 +36,10 @@ public class MemberLoginController extends BaseController {
     @Autowired
     private TokenService tokenService;
 
+    @Value("${location.gaode.privateKey}")
+    private String privateKey;
+
+
     @PostMapping("/loginByPwd")
     public AjaxResult loginByPwd(
             @RequestBody @Validated MemberLoginPwdRequest memberLoginPwdRequest) {
@@ -51,7 +55,12 @@ public class MemberLoginController extends BaseController {
         if (!captcha.equalsIgnoreCase(memberLoginPwdRequest.getCode())) {
             throw new CaptchaException();
         }
-
+        //解密
+        try {
+            memberLoginPwdRequest.setPassword(RsaUtils.decryptByPrivateKey(privateKey,memberLoginPwdRequest.getPassword()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // 生成令牌
         Member tMember = memberLoginService.loginByPwd(memberLoginPwdRequest);
         LoginUser loginUser = new LoginUser();
@@ -103,7 +112,6 @@ public class MemberLoginController extends BaseController {
         // 清除缓存token
         String tokenKey = CacheConstants.LOGIN_TOKEN_KEY + token;
         redisCache.deleteObject(tokenKey);
-
         return ajax;
     }
 }
