@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.api.controller.business.rocketmq;
+package com.newlandnpt.varyar.cloud.controller.rocketmq;
 
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
