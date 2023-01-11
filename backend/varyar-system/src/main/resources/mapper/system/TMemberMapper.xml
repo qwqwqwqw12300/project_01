@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.newlandnpt.varyar.system.mapper.MemberMapper">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.TMemberMapper">
 
-    <resultMap type="Member" id="MemberResult">
+    <resultMap type="TMember" id="MemberResult">
         <result property="memberId" column="member_id"/>
         <result property="no" column="no"/>
         <result property="phone" column="phone"/>
@@ -17,7 +17,7 @@
         <result property="delFlag" column="del_flag"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
-        <collection property="contacts" ofType="MemberContacts" select="selectContacts" column="{memberId = member_id}"/>
+        <collection property="contacts" ofType="TMemberContacts" select="selectContacts" column="{memberId = member_id}"/>
     </resultMap>
 
     <select id="selectContacts" resultMap="MemberContactsResult">
@@ -32,7 +32,7 @@
         from t_membercontacts
         where member_id = #{memberId}
     </select>
-    <resultMap type="MemberContacts" id="MemberContactsResult">
+    <resultMap type="TMemberContacts" id="MemberContactsResult">
         <result property="memberContactsId" column="membercontacts_id"/>
         <result property="memberId" column="member_id"/>
         <result property="name" column="name"/>
@@ -54,7 +54,7 @@
         #{parameter,javaType=com.newlandnpt.varyar.common.core.domain.entity.MemberParameter,typeHandler = com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler}
     </sql>
 
-    <select id="selectMemberList" parameterType="Member" resultMap="MemberResult">
+    <select id="selectMemberList" parameterType="TMember" resultMap="MemberResult">
         <include refid="selectMemberVo"/>
         <where>
             <if test="no != null  and no != ''">and no = #{no}</if>
@@ -78,7 +78,7 @@
         where m.phone = #{phone} and m.del_flag = '0'
     </select>
 
-    <insert id="insertMember" parameterType="Member" useGeneratedKeys="true" keyProperty="memberId">
+    <insert id="insertMember" parameterType="TMember" useGeneratedKeys="true" keyProperty="memberId">
         insert into t_member
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="no != null">no,</if>
@@ -104,7 +104,7 @@
         </trim>
     </insert>
 
-    <update id="updateMember" parameterType="Member">
+    <update id="updateMember" parameterType="TMember">
         update t_member
         <trim prefix="SET" suffixOverrides=",">
             <if test="no != null">no = #{no},</if>
@@ -120,11 +120,11 @@
         where member_id = #{memberId}
     </update>
 
-    <update id="updateUserPhone" parameterType="Member">
+    <update id="updateUserPhone" parameterType="TMember">
         update t_member set phone = #{phone} where user_name = #{userName}
     </update>
 
-    <update id="resetUserPwd" parameterType="Member">
+    <update id="resetUserPwd" parameterType="TMember">
         update t_member set password = #{password},update_time = sysdate() where phone = #{phone}
     </update>
 

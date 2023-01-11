@@ -20,7 +20,7 @@ import com.newlandnpt.varyar.common.annotation.Log;
 import com.newlandnpt.varyar.common.constant.UserConstants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.entity.Org;
+import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import com.newlandnpt.varyar.common.core.domain.entity.SysRole;
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
@@ -251,7 +251,7 @@ public class SysUserController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @GetMapping("/orgTree")
-    public AjaxResult orgTree(Org org)
+    public AjaxResult orgTree(TOrg org)
     {
         return success(orgService.selectOrgTreeList(org));
     }

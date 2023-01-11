@@ -5,7 +5,7 @@ import java.util.List;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
 import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
-import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import com.newlandnpt.varyar.common.annotation.Log;
 import com.newlandnpt.varyar.common.constant.UserConstants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.entity.Org;
+import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.system.service.IOrgService;
@@ -50,9 +50,9 @@ public class OrgController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('org:list')")
     @GetMapping("/list")
-    public AjaxResult list(Org org)
+    public AjaxResult list(TOrg org)
     {
-        List<Org> orgs = orgService.selectOrgList(org);
+        List<TOrg> orgs = orgService.selectOrgList(org);
         return success(orgs);
     }
     /**
@@ -60,10 +60,10 @@ public class OrgController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('org:list')")
     @GetMapping("/page")
-    public TableDataInfo page( Org org)
+    public TableDataInfo page( TOrg org)
     {
         startPage();
-        List<Org> orgs = orgService.selectOrgList(org);
+        List<TOrg> orgs = orgService.selectOrgList(org);
         return getDataTable(orgs);
     }
 
@@ -74,7 +74,7 @@ public class OrgController extends BaseController
     @GetMapping("/list/exclude/{orgId}")
     public AjaxResult excludeChild(@PathVariable(value = "orgId", required = false) Long orgId)
     {
-        List<Org> orgs = orgService.selectOrgList(new Org());
+        List<TOrg> orgs = orgService.selectOrgList(new TOrg());
         orgs.removeIf(d -> d.getOrgId().intValue() == orgId || ArrayUtils.contains(StringUtils.split(d.getAncestors(), ","), orgId + ""));
         return success(orgs);
     }
@@ -96,7 +96,7 @@ public class OrgController extends BaseController
     @PreAuthorize("@ss.hasPermi('org:add')")
     @Log(title = "机构管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody Org org)
+    public AjaxResult add(@Validated @RequestBody TOrg org)
     {
         org.setOrgNo(IdUtils.fastSimpleUUID());
         if (UserConstants.NOT_UNIQUE.equals(orgService.checkOrgNameUnique(org)))
@@ -113,7 +113,7 @@ public class OrgController extends BaseController
     @PreAuthorize("@ss.hasPermi('org:edit')")
     @Log(title = "机构管理", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody Org org)
+    public AjaxResult edit(@Validated @RequestBody TOrg org)
     {
         Long orgId = org.getOrgId();
         orgService.checkOrgDataScope(orgId);
@@ -158,7 +158,7 @@ public class OrgController extends BaseController
     @PostMapping("/devices/importTemplate")
     public void importTemplate(HttpServletResponse response)
     {
-        ExcelUtil<Device> util = new ExcelUtil<Device>(Device.class);
+        ExcelUtil<TDevice> util = new ExcelUtil<TDevice>(TDevice.class);
         util.importTemplateExcel(response, "设备数据");
     }
 
@@ -169,8 +169,8 @@ public class OrgController extends BaseController
     public AjaxResult importData(MultipartFile file, Long orgId) throws Exception
     {
         orgService.checkOrgDataScope(orgId);
-        ExcelUtil<Device> util = new ExcelUtil<Device>(Device.class);
-        List<Device> userList = util.importExcel(file.getInputStream());
+        ExcelUtil<TDevice> util = new ExcelUtil<TDevice>(TDevice.class);
+        List<TDevice> userList = util.importExcel(file.getInputStream());
         String message = deviceService.importDevice(userList, orgId);
         return success(message);
     }

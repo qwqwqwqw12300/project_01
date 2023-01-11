@@ -10,9 +10,9 @@
 		<u-text prefixIcon="photo" iconStyle="font-size: 32rpx" text="验证码" color="#444" size="28rpx">
 		</u-text>
 		<view class="ui-input">
-			<u-input placeholder="请输入图形验证码" :border="'none'" fontSize="28rpx" clearable>
+			<u-input v-model="code" maxlength="4" placeholder="请输入图形验证码" :border="'none'" fontSize="28rpx" clearable>
 				<template slot="suffix">
-					<button class="ui-mini" size="mini">验证码</button>
+					<image @tap="handleGetCaptcha" class="img" :src="codeUrl"></image>
 				</template>
 			</u-input>
 		</view>
@@ -20,11 +20,33 @@
 </template>
 
 <script>
+	import {
+		GetCaptchaImage,
+	} from '@/common/http/api.js';
 	export default {
 		data() {
 			return {
-
+				codeUrl: '',
+				uuid: '',
+				code: '',
 			};
+		},
+		methods: {
+			handleGetCaptcha() {
+				GetCaptchaImage({}).then(res => {
+					this.codeUrl = 'data:image/jpeg;base64,' + res.img
+					this.uuid = res.uuid
+				})
+			},
+			returnCodeData() {
+				return {
+					code: this.code,
+					uuid: this.uuid,
+				}
+			}
+		},
+		mounted() {
+			this.handleGetCaptcha()
 		}
 	}
 </script>
@@ -33,6 +55,11 @@
 	.ui-input {
 		margin: 34rpx 0 60rpx 0;
 		border-bottom: 1px solid #e2e2e2;
+
+		.img {
+			width: 140rpx;
+			height: 70rpx;
+		}
 	}
 
 	.ui-mini {

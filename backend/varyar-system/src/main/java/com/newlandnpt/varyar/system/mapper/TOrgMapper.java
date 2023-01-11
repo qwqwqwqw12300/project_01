@@ -2,7 +2,7 @@ package com.newlandnpt.varyar.system.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import com.newlandnpt.varyar.common.core.domain.entity.Org;
+import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select;
  * 
  * @author ruoyi
  */
-public interface OrgMapper
+public interface TOrgMapper
 {
     /**
      * 查询机构管理数据
@@ -18,7 +18,7 @@ public interface OrgMapper
      * @param org 机构信息
      * @return 机构信息集合
      */
-    public List<Org> selectOrgList(Org org);
+    public List<TOrg> selectOrgList(TOrg org);
 
     /**
      * 根据角色ID查询机构树信息
@@ -35,7 +35,7 @@ public interface OrgMapper
      * @param orgId 机构ID
      * @return 机构信息
      */
-    public Org selectOrgById(Long orgId);
+    public TOrg selectOrgById(Long orgId);
 
     /**
      * 根据ID查询所有子机构
@@ -43,7 +43,7 @@ public interface OrgMapper
      * @param orgId 机构ID
      * @return 机构列表
      */
-    public List<Org> selectChildrenOrgById(Long orgId);
+    public List<TOrg> selectChildrenOrgById(Long orgId);
 
     /**
      * 根据ID查询所有子机构（正常状态）
@@ -76,7 +76,7 @@ public interface OrgMapper
      * @param parentId 父机构ID
      * @return 结果
      */
-    public Org checkOrgNameUnique(@Param("orgName") String orgName, @Param("parentId") Long parentId);
+    public TOrg checkOrgNameUnique(@Param("orgName") String orgName, @Param("parentId") Long parentId);
 
     /**
      * 新增机构信息
@@ -84,7 +84,7 @@ public interface OrgMapper
      * @param org 机构信息
      * @return 结果
      */
-    public int insertOrg(Org org);
+    public int insertOrg(TOrg org);
 
     /**
      * 修改机构信息
@@ -92,7 +92,7 @@ public interface OrgMapper
      * @param org 机构信息
      * @return 结果
      */
-    public int updateOrg(Org org);
+    public int updateOrg(TOrg org);
 
     /**
      * 修改所在机构正常状态
@@ -121,7 +121,7 @@ public interface OrgMapper
      * @param orgs 子元素
      * @return 结果
      */
-    public int updateOrgChildren(@Param("orgs") List<Org> orgs);
+    public int updateOrgChildren(@Param("orgs") List<TOrg> orgs);
 
     /**
      * 删除机构管理信息

@@ -24,14 +24,19 @@
 							size="28rpx">
 						</u-text>
 						<view class="ui-input">
-							<u--input placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input>
+							<u--input v-model="loginForm.phone" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx"
+								clearable></u--input>
 						</view>
+					</view>
+					<view class="ui-form-item">
+						<graphic-input ref="codeRef"></graphic-input>
 					</view>
 					<view class="ui-form-item">
 						<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx">
 						</u-text>
 						<view class="ui-input">
-							<u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable>
+							<u-input v-model="loginForm.password" placeholder="请输入你的密码" :password="true"
+								:border="'none'" fontSize="28rpx" clearable>
 							</u-input>
 						</view>
 					</view>
@@ -72,6 +77,14 @@
 </template>
 
 <script>
+	import {
+		PostLoginByPwd,
+	} from '@/common/http/api.js';
+	import {
+		env
+	} from "@/config/env.js";
+	import { setToken } from '@/common/utils/auth.js'
+	import jsencrypt from '@/common/utils/jsencrypt.vue'
 	export default {
 		data() {
 			return {
@@ -87,6 +100,12 @@
 				navActive: 0,
 				/**切换动画延时效果**/
 				delay: 0,
+				loginForm: {
+					phone: '13900001111',
+					code: '',
+					password: '1234',
+					uuid: '',
+				}
 			};
 		},
 		methods: {
@@ -103,9 +122,26 @@
 			 * 登录
 			 */
 			login() {
-				uni.switchTab({
-					url: '/pages/index/index'
-				});
+				const {
+					phone,
+					password
+				} = this.loginForm
+				const rsaPassword = jsencrypt.setEncrypt(env.publicKey, password)
+				const {
+					code,
+					uuid
+				} = this.$refs.codeRef.returnCodeData()
+				PostLoginByPwd({
+					phone,
+					password: rsaPassword,
+					code,
+					uuid
+				}).then(res => {
+					setToken(res.token)
+					uni.switchTab({
+						url: '/pages/index/index'
+					});
+				})
 			},
 
 			/**

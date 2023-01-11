@@ -17,7 +17,7 @@ import com.newlandnpt.varyar.common.annotation.Log;
 import com.newlandnpt.varyar.common.constant.UserConstants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.entity.Org;
+import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import com.newlandnpt.varyar.common.core.domain.entity.SysRole;
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
 import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
@@ -257,7 +257,7 @@ public class SysRoleController extends BaseController
     {
         AjaxResult ajax = AjaxResult.success();
         ajax.put("checkedKeys", orgService.selectOrgListByRoleId(roleId));
-        ajax.put("orgs", orgService.selectOrgTreeList(new Org()));
+        ajax.put("orgs", orgService.selectOrgTreeList(new TOrg()));
         return ajax;
     }
 }

@@ -10,14 +10,14 @@
 		<view id="system">
 			<app-logo text="系统消息"></app-logo>
 			<view class="ui-list">
-				<view class="ui-item" v-for="item of [1,2,3,4,5]" :key="item">
+				<view class="ui-item" v-for="item in messageList" :key="item.msgId">
 					<view class="ui-date">
-						2022年10月11日 11：22
+						{{ item.updateTime }}
+						<!-- 2022年10月11日 11：22 -->
 					</view>
-					<view class="ui-box active" @click="details">
+					<view class="ui-box active" @click="details(item.msgId)">
 						<text>标题</text>
-						<u-text size="25rpx" color="#666" :lines="3"
-							text="内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容"></u-text>
+						<u-text size="25rpx" color="#666" :lines="3" :text="item.content"></u-text>
 						<view class="ui-detail">
 							<text>立即查看</text>
 							<u-icon name="arrow-right" size="40rpx"></u-icon>
@@ -30,16 +30,29 @@
 </template>
 
 <script>
+	import {
+		GetMessageList,
+	} from '@/common/http/api.js';
 	export default {
 		data() {
-			return {}
+			return {
+				messageList: [],
+			}
 		},
 		methods: {
-			details() {
+			details(id) {
 				uni.navigateTo({
-					url: '/pages/service/message-details'
+					url: `/pages/service/message-details?msgId=${id}`
+				})
+			},
+			initDatd() {
+				GetMessageList({}).then(res => {
+					this.messageList = res.rows
 				})
 			}
+		},
+		mounted() {
+			this.initDatd()
 		}
 	}
 </script>

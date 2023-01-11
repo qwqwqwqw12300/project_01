@@ -1,6 +1,6 @@
 package com.newlandnpt.varyar.system.mapper;
 
-import com.newlandnpt.varyar.system.domain.DeviceGroup;
+import com.newlandnpt.varyar.system.domain.TDeviceGroup;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -12,14 +12,14 @@ import java.util.List;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface DeviceGroupMapper {
+public interface TDeviceGroupMapper {
     /**
      * 查询设备组
      *
      * @param deviceGroupId 设备组主键
      * @return 设备组
      */
-    public DeviceGroup selectDeviceGroupByDeviceGroupId(Long deviceGroupId);
+    public TDeviceGroup selectDeviceGroupByDeviceGroupId(Long deviceGroupId);
 
     /**
      * 查询设备组列表
@@ -27,7 +27,7 @@ public interface DeviceGroupMapper {
      * @param devicegroup 设备组
      * @return 设备组集合
      */
-    public List<DeviceGroup> selectDeviceGroupList(DeviceGroup devicegroup);
+    public List<TDeviceGroup> selectDeviceGroupList(TDeviceGroup devicegroup);
 
     /**
      * 新增设备组
@@ -35,7 +35,7 @@ public interface DeviceGroupMapper {
      * @param devicegroup 设备组
      * @return 结果
      */
-    public int insertDeviceGroup(DeviceGroup devicegroup);
+    public int insertDeviceGroup(TDeviceGroup devicegroup);
 
     /**
      * 修改设备组
@@ -43,7 +43,7 @@ public interface DeviceGroupMapper {
      * @param devicegroup 设备组
      * @return 结果
      */
-    public int updateDeviceGroup(DeviceGroup devicegroup);
+    public int updateDeviceGroup(TDeviceGroup devicegroup);
 
     /**
      * 删除设备组
@@ -78,7 +78,7 @@ public interface DeviceGroupMapper {
      * @param orgId 机构ID
      * @return 结果
      */
-    public DeviceGroup checkOrgNameUnique(@Param("name") String name, @Param("orgId") Long orgId);
+    public TDeviceGroup checkOrgNameUnique(@Param("name") String name, @Param("orgId") Long orgId);
 
     /**
      * 未分配设备组
@@ -86,5 +86,5 @@ public interface DeviceGroupMapper {
      * @return
      */
     @Select("select count(*) from t_devicegroup where org_id = #{orgId} and user_id in null")
-    public long notArrangeCount(DeviceGroup deviceGroup);
+    public long notArrangeCount(TDeviceGroup deviceGroup);
 }
