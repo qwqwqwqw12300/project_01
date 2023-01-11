@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.newlandnpt.varyar.system.mapper.ServeRecordMapper">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.TServeRecordMapper">
     
-    <resultMap type="ServeRecord" id="ServeRecordResult">
+    <resultMap type="TServeRecord" id="ServeRecordResult">
         <result property="recordId"    column="record_id"    />
         <result property="servedUserId"    column="served_user_id"    />
         <result property="servedUserSnapshot"    column="served_user_snapshot"   javaType="com.newlandnpt.varyar.common.core.domain.entity.SysUser"  typeHandler="com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler"/>
@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <collection property="serveEvents" select="selectServeEventSimple" column="{recordId = record_id}"></collection>
     </resultMap>
 
-    <resultMap type="Device" id="DeviceResult">
+    <resultMap type="TDevice" id="DeviceResult">
         <result property="deviceId" column="device_id"/>
         <result property="devicegroupId" column="devicegroup_id"/>
         <result property="deviceGroupName" column="device_group_name"/>
@@ -44,12 +44,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <resultMap type="com.newlandnpt.varyar.system.domain.ServeRecord$ServeEventSimple" id="EventSimpleResult">
+    <resultMap type="com.newlandnpt.varyar.system.domain.TServeRecord$ServeEventSimple" id="EventSimpleResult">
         <result property="eventId"    column="event_id"    />
         <result property="no"    column="no"    />
     </resultMap>
 
-    <resultMap id="SysUserSimple" type="com.newlandnpt.varyar.system.domain.ServeRecord$SysUserSimple">
+    <resultMap id="SysUserSimple" type="com.newlandnpt.varyar.system.domain.TServeRecord$SysUserSimple">
         <id     property="userId"       column="user_id"      />
         <result property="orgId"       column="org_id"      />
         <result property="userName"     column="user_name"    />
@@ -96,7 +96,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         #{servedUserSnapshot,javaType=com.newlandnpt.varyar.common.core.domain.entity.SysUser,typeHandler = com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler}
     </sql>
 
-    <select id="selectServeRecordList" parameterType="ServeRecord" resultMap="ServeRecordResult">
+    <select id="selectServeRecordList" parameterType="TServeRecord" resultMap="ServeRecordResult">
         <include refid="selectServeRecordVo"/>
         <if test="servedUser != null and (servedUser.nickName != null or servedUser.mobilePhone != null)">
             left join sys_user u on u.user_id = s.served_user_id
@@ -129,7 +129,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where record_id = #{recordId}
     </select>
         
-    <insert id="insertServeRecord" parameterType="ServeRecord" useGeneratedKeys="true" keyProperty="recordId">
+    <insert id="insertServeRecord" parameterType="TServeRecord" useGeneratedKeys="true" keyProperty="recordId">
         insert into t_serve_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="servedUserId != null">served_user_id,</if>
@@ -155,7 +155,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateServeRecord" parameterType="ServeRecord">
+    <update id="updateServeRecord" parameterType="TServeRecord">
         update t_serve_record
         <trim prefix="SET" suffixOverrides=",">
             <if test="servedUserId != null">served_user_id = #{servedUserId},</if>

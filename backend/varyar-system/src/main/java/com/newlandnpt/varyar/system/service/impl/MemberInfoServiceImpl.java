@@ -1,8 +1,8 @@
 package com.newlandnpt.varyar.system.service.impl;
 
 import com.newlandnpt.varyar.common.core.domain.model.MemberInfoRequest;
-import com.newlandnpt.varyar.system.domain.Member;
-import com.newlandnpt.varyar.system.mapper.MemberMapper;
+import com.newlandnpt.varyar.system.domain.TMember;
+import com.newlandnpt.varyar.system.mapper.TMemberMapper;
 import com.newlandnpt.varyar.system.service.IMemberInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ public class MemberInfoServiceImpl implements IMemberInfoService {
     private static final Logger log = LoggerFactory.getLogger(MemberInfoServiceImpl.class);
 
     @Autowired
-    private MemberMapper memberMapper;
+    private TMemberMapper memberMapper;
 
     /**
      * 重置用户密码
@@ -41,11 +41,11 @@ public class MemberInfoServiceImpl implements IMemberInfoService {
     public void updatePhone(MemberInfoRequest memberInfoRequest) {
         String newPhone = memberInfoRequest.getNewPhone();
         String oldPhone = memberInfoRequest.getOldPhone();
-        Member tMemberQuery = memberMapper.selectMemberByPhone(oldPhone);
+        TMember tMemberQuery = memberMapper.selectMemberByPhone(oldPhone);
         //通过手机号获取用户id
         long memberId=tMemberQuery.getMemberId();
 
-        Member tMember = new Member();
+        TMember tMember = new TMember();
         tMember.setMemberId(memberId);
         tMember.setPhone(newPhone);
 

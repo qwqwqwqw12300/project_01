@@ -1,7 +1,7 @@
 package com.newlandnpt.varyar.system.mapper;
 
 import java.util.List;
-import com.newlandnpt.varyar.system.domain.ServeRecordEventRelate;
+import com.newlandnpt.varyar.system.domain.TServeRecordEventRelate;
 
 /**
  * 服务记录和事件关联Mapper接口
@@ -17,7 +17,7 @@ public interface ServeRecordEventRelateMapper
      * @param recordId 服务记录和事件关联主键
      * @return 服务记录和事件关联
      */
-    public ServeRecordEventRelate selectServeRecordEventRelateByRecordId(Long recordId);
+    public TServeRecordEventRelate selectServeRecordEventRelateByRecordId(Long recordId);
 
     /**
      * 查询服务记录和事件关联列表
@@ -25,7 +25,7 @@ public interface ServeRecordEventRelateMapper
      * @param serveRecordEventRelate 服务记录和事件关联
      * @return 服务记录和事件关联集合
      */
-    public List<ServeRecordEventRelate> selectServeRecordEventRelateList(ServeRecordEventRelate serveRecordEventRelate);
+    public List<TServeRecordEventRelate> selectServeRecordEventRelateList(TServeRecordEventRelate serveRecordEventRelate);
 
     /**
      * 新增服务记录和事件关联
@@ -33,7 +33,7 @@ public interface ServeRecordEventRelateMapper
      * @param serveRecordEventRelate 服务记录和事件关联
      * @return 结果
      */
-    public int insertServeRecordEventRelate(ServeRecordEventRelate serveRecordEventRelate);
+    public int insertServeRecordEventRelate(TServeRecordEventRelate serveRecordEventRelate);
 
     /**
      * 修改服务记录和事件关联
@@ -41,7 +41,7 @@ public interface ServeRecordEventRelateMapper
      * @param serveRecordEventRelate 服务记录和事件关联
      * @return 结果
      */
-    public int updateServeRecordEventRelate(ServeRecordEventRelate serveRecordEventRelate);
+    public int updateServeRecordEventRelate(TServeRecordEventRelate serveRecordEventRelate);
 
     /**
      * 删除服务记录和事件关联

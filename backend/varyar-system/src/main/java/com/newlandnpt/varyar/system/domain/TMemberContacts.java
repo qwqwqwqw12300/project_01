@@ -11,7 +11,7 @@ import com.newlandnpt.varyar.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2022-12-24
  */
-public class MemberContacts extends BaseEntity
+public class TMemberContacts extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

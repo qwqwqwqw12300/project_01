@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.constant.DeviceConstants;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
-import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TEvent;
-import com.newlandnpt.varyar.system.mapper.DeviceMapper;
+import com.newlandnpt.varyar.system.mapper.TDeviceMapper;
 import com.newlandnpt.varyar.system.mapper.TEventMapper;
 import com.newlandnpt.varyar.system.service.DeviceDisconnectionService;
 
@@ -28,7 +28,7 @@ public class DeviceDisconnectionServiceImpl implements DeviceDisconnectionServic
 	private static final Logger log = LoggerFactory.getLogger(DeviceDisconnectionServiceImpl.class);
 	
     @Autowired
-    private DeviceMapper deviceMapper;
+    private TDeviceMapper deviceMapper;
 
     @Autowired
     private TEventMapper tEventMapper;
@@ -38,15 +38,15 @@ public class DeviceDisconnectionServiceImpl implements DeviceDisconnectionServic
 
     @Override
     public void deviceDisconnectionIssue(String deviceNo) {
-        Device param = new Device();
+        TDevice param = new TDevice();
         param.setNo(deviceNo);
         param.setStatus(DeviceConstants.STATUS_ACTIVATED);
-        List<Device> devices = deviceMapper.selectTDeviceList(param);
+        List<TDevice> devices = deviceMapper.selectTDeviceList(param);
         if ((devices.size() == 0)) {
             log.error("设备列表为空");
             return;
         }
-        for (Device device : devices) {
+        for (TDevice device : devices) {
             String cacheKey = getCacheKey(device.getNo());
             if (!redisCache.hasKey(cacheKey)) {
                 //todoL Redis缓存设备结构
@@ -61,7 +61,7 @@ public class DeviceDisconnectionServiceImpl implements DeviceDisconnectionServic
      *
      * @param device 终端信息
      */
-    private void triggerNetEvent(Device device) {
+    private void triggerNetEvent(TDevice device) {
         TEvent event = new TEvent();
         event.setNo(UUID.randomUUID().toString());
         event.setLevel("严重");

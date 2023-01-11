@@ -69,6 +69,11 @@
 						title: '问题与建议',
 						pic: 'complaint.png',
 						url: '/pages/myself/suggestion'
+					},
+					{
+						title: '版本管理',
+						pic: 'version-mg.png',
+						url: '/pages/myself/version-manage'
 					}
 				]
 			};

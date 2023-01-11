@@ -1,14 +1,14 @@
 package com.newlandnpt.varyar.system.service.impl;
 
 import com.newlandnpt.varyar.common.annotation.DataScope;
-import com.newlandnpt.varyar.common.core.domain.entity.Org;
+import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
-import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.dto.org.OrgDeviceCountDto;
-import com.newlandnpt.varyar.system.mapper.DeviceMapper;
-import com.newlandnpt.varyar.system.mapper.OrgMapper;
+import com.newlandnpt.varyar.system.mapper.TDeviceMapper;
+import com.newlandnpt.varyar.system.mapper.TOrgMapper;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,9 +35,9 @@ public class DeviceServiceImpl implements IDeviceService {
     private static final Logger log = LoggerFactory.getLogger(DeviceServiceImpl.class);
 
     @Autowired
-    private DeviceMapper deviceMapper;
+    private TDeviceMapper deviceMapper;
     @Autowired
-    private OrgMapper orgMapper;
+    private TOrgMapper orgMapper;
 
     /**
      * 查询设备
@@ -46,7 +46,7 @@ public class DeviceServiceImpl implements IDeviceService {
      * @return 设备
      */
     @Override
-    public Device selectDeviceByDeviceId(Long deviceId) {
+    public TDevice selectDeviceByDeviceId(Long deviceId) {
         return deviceMapper.selectTDeviceByDeviceId(deviceId);
     }
 
@@ -58,12 +58,12 @@ public class DeviceServiceImpl implements IDeviceService {
      */
     @DataScope(orgAlias = "d")
     @Override
-    public List<Device> selectDeviceList(Device device) {
+    public List<TDevice> selectDeviceList(TDevice device) {
         return deviceMapper.selectTDeviceList(device);
     }
     @Override
     @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
-    public List<Device> selectDeviceByMemberId(Map map){
+    public List<TDevice> selectDeviceByMemberId(Map map){
         return deviceMapper.selectByMemberId(map);
     }
     /**
@@ -73,7 +73,7 @@ public class DeviceServiceImpl implements IDeviceService {
      * @return 结果
      */
     @Override
-    public int insertDevice(Device device) {
+    public int insertDevice(TDevice device) {
         device.autoSetCreateByLoginUser();
         return deviceMapper.insertTDevice(device);
     }
@@ -85,7 +85,7 @@ public class DeviceServiceImpl implements IDeviceService {
      * @return 结果
      */
     @Override
-    public int updateDevice(Device device) {
+    public int updateDevice(TDevice device) {
         device.setUpdateTime(DateUtils.getNowDate());
         return deviceMapper.updateTDevice(device);
     }
@@ -113,14 +113,14 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
-    public int associate(Device device) {
-        Device target = deviceMapper.selectTDeviceByDeviceId(device.getDeviceId());
+    public int associate(TDevice device) {
+        TDevice target = deviceMapper.selectTDeviceByDeviceId(device.getDeviceId());
         if(target == null){
             throw new ServiceException("设备不存在");
         }
         Long orgId = device.getOrgId();
         if(orgId!=null){
-            Org org = orgMapper.selectOrgById(orgId);
+            TOrg org = orgMapper.selectOrgById(orgId);
             if (org == null) {
                 throw new ServiceException("机构id: "+orgId+"的机构不存在");
             }
@@ -137,7 +137,7 @@ public class DeviceServiceImpl implements IDeviceService {
 
     @Override
     public int active(Long deviceId) {
-        Device device = new Device();
+        TDevice device = new TDevice();
         device.setDeviceId(deviceId);
         device.setStatus(STATUS_ACTIVATED);
         return this.updateDevice(device);
@@ -145,7 +145,7 @@ public class DeviceServiceImpl implements IDeviceService {
 
     @Override
     public int offline(Long deviceId) {
-        Device device = new Device();
+        TDevice device = new TDevice();
         device.setDeviceId(deviceId);
         device.setStatus(STATUS_OFFLINE);
         return this.updateDevice(device);
@@ -163,16 +163,16 @@ public class DeviceServiceImpl implements IDeviceService {
      * @return
      */
     @Override
-    public Device selectByDeviceNo(String deviceNo){
+    public TDevice selectByDeviceNo(String deviceNo){
         return deviceMapper.selectByDeviceNo(deviceNo);
     }
 
     @Override
-    public String importDevice(List<Device> devices, Long orgId) {
+    public String importDevice(List<TDevice> devices, Long orgId) {
         if (StringUtils.isNull(devices) || devices.size() == 0) {
             throw new ServiceException("导入设备数据不能为空！");
         }
-        Org org = orgMapper.selectOrgById(orgId);
+        TOrg org = orgMapper.selectOrgById(orgId);
         if (org == null) {
             throw new ServiceException("机构id: "+orgId+"的机构不存在");
         }
@@ -181,7 +181,7 @@ public class DeviceServiceImpl implements IDeviceService {
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
 
-        for (Device device : devices) {
+        for (TDevice device : devices) {
             try {
                 //校验设备编号不为空
                 if (StringUtils.isBlank(device.getNo())) {
@@ -190,7 +190,7 @@ public class DeviceServiceImpl implements IDeviceService {
                     continue;
                 }
                 //校验设备编号是否存在
-                Device oldDevice = deviceMapper.selectByDeviceNo(device.getNo());
+                TDevice oldDevice = deviceMapper.selectByDeviceNo(device.getNo());
                 if (oldDevice != null) {
                     failureNum++;
                     failureMsg.append("<br/>" + failureNum + "、设备编号 " + device.getNo() + " 已存在");
@@ -198,6 +198,7 @@ public class DeviceServiceImpl implements IDeviceService {
                 }
                 //设置机构id
                 device.setOrgId(orgId);
+                device.setOrgName(org.getOrgName());
                 //默认未激活
                 device.setStatus(STATUS_NOT_ACTIVE);
                 //默认未分配
@@ -225,30 +226,30 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
-    public long total(Device device) {
+    public long total(TDevice device) {
         return deviceMapper.total(device);
     }
 
     @Override
     @DataScope(orgAlias = "og")
-    public long notAssociateDeviceCount(Device device) {
+    public long notAssociateDeviceCount(TDevice device) {
         return deviceMapper.notAssociateDeviceCount(device);
     }
 
     @Override
     @DataScope(orgAlias = "og")
-    public long notArrangeDeviceCount(Device device) {
+    public long notArrangeDeviceCount(TDevice device) {
         return deviceMapper.notArrangeDeviceCount(device);
     }
 
     @Override
     @DataScope(orgAlias = "og")
-    public List<OrgDeviceCountDto> countGroupByOrgId(Device device) {
+    public List<OrgDeviceCountDto> countGroupByOrgId(TDevice device) {
         return deviceMapper.countGroupByOrgId(device);
     }
 
     @Override
-    public List<Device> selectBizCareDeviceList(Long userId) {
+    public List<TDevice> selectBizCareDeviceList(Long userId) {
         return deviceMapper.selectBizCareDeviceList(userId);
     }
 }

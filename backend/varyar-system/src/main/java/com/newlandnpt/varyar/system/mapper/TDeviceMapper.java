@@ -3,7 +3,7 @@ package com.newlandnpt.varyar.system.mapper;
 import java.util.List;
 import java.util.Map;
 
-import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.dto.org.OrgDeviceCountDto;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -14,7 +14,7 @@ import org.apache.ibatis.annotations.Select;
  * @author ruoyi
  * @date 2022-12-24
  */
-public interface DeviceMapper
+public interface TDeviceMapper
 {
     /**
      * 查询设备
@@ -22,7 +22,7 @@ public interface DeviceMapper
      * @param deviceId 设备主键
      * @return 设备
      */
-    public Device selectTDeviceByDeviceId(Long deviceId);
+    public TDevice selectTDeviceByDeviceId(Long deviceId);
 
     /**
      * 查询设备列表
@@ -30,21 +30,21 @@ public interface DeviceMapper
      * @param device 设备
      * @return 设备集合
      */
-    public List<Device> selectTDeviceList(Device device);
+    public List<TDevice> selectTDeviceList(TDevice device);
     /**
      * 查询设备列表
      *
      * @param device 设备
      * @return 设备集合
      */
-    public List<Device>  selectByMemberId(Map map);
+    public List<TDevice>  selectByMemberId(Map map);
     /**
      * 新增设备
      * 
      * @param device 设备
      * @return 结果
      */
-    public int insertTDevice(Device device);
+    public int insertTDevice(TDevice device);
 
     /**
      * 修改设备
@@ -52,7 +52,7 @@ public interface DeviceMapper
      * @param device 设备
      * @return 结果
      */
-    public int updateTDevice(Device device);
+    public int updateTDevice(TDevice device);
 
     /**
      * 删除设备
@@ -75,7 +75,7 @@ public interface DeviceMapper
      * @param deviceNo
      * @return
      */
-    public Device selectByDeviceNo(String deviceNo);
+    public TDevice selectByDeviceNo(String deviceNo);
 
     /**
      * 将设备分配给设备组
@@ -92,7 +92,7 @@ public interface DeviceMapper
      * @param device
      */
     @Select("select count(*) from t_device where status in ('1','2') ${params.dataScope} and del_flag = '0' ")
-    public long total(Device device);
+    public long total(TDevice device);
 
     /**
      * 统计未分配激活设备数量
@@ -100,14 +100,14 @@ public interface DeviceMapper
      * @param device
      */
     @Select("select count(*) from t_device where status in ('1','2') and distribute_flag = '0' ${params.dataScope} and del_flag = '0'")
-    public long notAssociateDeviceCount(Device device);
+    public long notAssociateDeviceCount(TDevice device);
     /**
      * 统计未分组激活设备数量
      * @return
      * @param device
      */
     @Select("select count(*) from t_device where status in ('1','2') and devicegroup_id is null ${params.dataScope} and del_flag = '0'")
-    public long notArrangeDeviceCount(Device device);
+    public long notArrangeDeviceCount(TDevice device);
 
     /**
      * 根据机构id分组统计设备数
@@ -116,7 +116,7 @@ public interface DeviceMapper
      */
     @Select("select org_id as orgId,count(*) as count from t_device where status in ('1','2') ${params.dataScope} and del_flag = '0'" +
             "group by org_id")
-    public List<OrgDeviceCountDto> countGroupByOrgId(Device device);
+    public List<OrgDeviceCountDto> countGroupByOrgId(TDevice device);
 
     /**
      * 查询设备列表
@@ -124,5 +124,5 @@ public interface DeviceMapper
      * @param userId 用户id
      * @return 设备集合
      */
-    public List<Device> selectBizCareDeviceList(Long userId);
+    public List<TDevice> selectBizCareDeviceList(Long userId);
 }

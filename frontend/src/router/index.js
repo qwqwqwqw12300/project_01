@@ -87,6 +87,20 @@ export const constantRoutes = [
         meta: { title: '个人中心', icon: 'user' }
       }
     ]
+  },
+  {
+    path: '/org',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'deviceGroupArrangeUser',
+        component: () => import('@/views/org/deviceGroup/arrangeUser'),
+        name: 'DeviceGroupArrangeUser',
+        meta: { title: '设备组分配运营人员', icon: 'user' }
+      }
+    ]
   }
 ]
 

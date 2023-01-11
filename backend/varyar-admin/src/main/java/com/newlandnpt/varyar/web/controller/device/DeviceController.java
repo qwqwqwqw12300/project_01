@@ -17,7 +17,7 @@ import com.newlandnpt.varyar.common.annotation.Log;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.enums.BusinessType;
-import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
@@ -40,10 +40,10 @@ public class DeviceController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('device:list')")
     @GetMapping("/page")
-    public TableDataInfo page(Device device)
+    public TableDataInfo page(TDevice device)
     {
         startPage();
-        List<Device> list = tDeviceService.selectDeviceList(device);
+        List<TDevice> list = tDeviceService.selectDeviceList(device);
         return getDataTable(list);
     }
 
@@ -53,10 +53,10 @@ public class DeviceController extends BaseController
     @PreAuthorize("@ss.hasPermi('device:export')")
     @Log(title = "设备", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, Device device)
+    public void export(HttpServletResponse response, TDevice device)
     {
-        List<Device> list = tDeviceService.selectDeviceList(device);
-        ExcelUtil<Device> util = new ExcelUtil<Device>(Device.class);
+        List<TDevice> list = tDeviceService.selectDeviceList(device);
+        ExcelUtil<TDevice> util = new ExcelUtil<TDevice>(TDevice.class);
         util.exportExcel(response, list, "设备数据");
     }
 
@@ -76,9 +76,9 @@ public class DeviceController extends BaseController
     @PreAuthorize("@ss.hasPermi('device:add')")
     @Log(title = "设备", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody Device device)
+    public AjaxResult add(@RequestBody TDevice device)
     {//校验设备编号是否存在
-        Device oldDevice = tDeviceService.selectByDeviceNo(device.getNo());
+        TDevice oldDevice = tDeviceService.selectByDeviceNo(device.getNo());
         if (oldDevice != null) {
             return error("新增设备'" + device.getNo() + "'失败，设备编号已存在");
         }
@@ -124,7 +124,7 @@ public class DeviceController extends BaseController
     @PreAuthorize("@ss.hasPermi('device:associate')")
     @Log(title = "设备-设备配对", businessType = BusinessType.UPDATE)
     @PutMapping("associate")
-    public AjaxResult associate(@RequestBody Device device)
+    public AjaxResult associate(@RequestBody TDevice device)
     {
         return toAjax(tDeviceService.associate(device));
     }

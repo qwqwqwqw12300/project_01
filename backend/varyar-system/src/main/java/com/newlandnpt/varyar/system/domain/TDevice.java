@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
  * @author ruoyi
  * @date 2022-12-24
  */
-public class Device extends BaseEntity
+public class TDevice extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

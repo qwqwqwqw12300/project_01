@@ -11,7 +11,7 @@ import com.newlandnpt.varyar.common.core.domain.BaseEntity;
  * @author lin.ju
  * @date 2023-01-04
  */
-public class ServeRecordEventRelate extends BaseEntity
+public class TServeRecordEventRelate extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 

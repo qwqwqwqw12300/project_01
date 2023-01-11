@@ -2,8 +2,8 @@ package com.newlandnpt.varyar.web.controller.home;
 
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.system.domain.Device;
-import com.newlandnpt.varyar.system.domain.Member;
+import com.newlandnpt.varyar.system.domain.TDevice;
+import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import com.newlandnpt.varyar.system.service.IMemberService;
 import com.newlandnpt.varyar.system.service.IOrgService;
@@ -43,7 +43,7 @@ public class PlatformAdminHomeController extends BaseController {
     @GetMapping("/device/count")
     public AjaxResult deviceCount() {
         //统计机构下已激活设备数量
-        return success(deviceService.total(new Device()));
+        return success(deviceService.total(new TDevice()));
     }
 
     /**
@@ -54,7 +54,7 @@ public class PlatformAdminHomeController extends BaseController {
     @PreAuthorize("@ss.hasPermi('home:platformAdmin:list')")
     @GetMapping("/device/notassociate/count")
     public AjaxResult notAssociateDeviceCount() {
-        return success(deviceService.notAssociateDeviceCount(new Device()));
+        return success(deviceService.notAssociateDeviceCount(new TDevice()));
     }
 
 
@@ -67,7 +67,7 @@ public class PlatformAdminHomeController extends BaseController {
     @GetMapping("/member/count")
     public AjaxResult memberCount() {
         //会员数
-        return success(memberService.total(new Member()));
+        return success(memberService.total(new TMember()));
     }
 
     /**
@@ -79,7 +79,7 @@ public class PlatformAdminHomeController extends BaseController {
     @GetMapping("/member/notarrange/count")
     public AjaxResult notArrangeMemberCount() {
         //会员数
-        return success(memberService.notArrangeMemberCount(new Member()));
+        return success(memberService.notArrangeMemberCount(new TMember()));
     }
 
     /**

@@ -4,8 +4,8 @@ import java.util.List;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.newlandnpt.varyar.system.mapper.MemberContactsMapper;
-import com.newlandnpt.varyar.system.domain.MemberContacts;
+import com.newlandnpt.varyar.system.mapper.TMemberContactsMapper;
+import com.newlandnpt.varyar.system.domain.TMemberContacts;
 import com.newlandnpt.varyar.system.service.IMemberContactsService;
 
 /**
@@ -18,7 +18,7 @@ import com.newlandnpt.varyar.system.service.IMemberContactsService;
 public class MemberContactsServiceImpl implements IMemberContactsService
 {
     @Autowired
-    private MemberContactsMapper memberContactsMapper;
+    private TMemberContactsMapper memberContactsMapper;
 
     /**
      * 查询会员联络人
@@ -27,7 +27,7 @@ public class MemberContactsServiceImpl implements IMemberContactsService
      * @return 会员联络人
      */
     @Override
-    public MemberContacts selectMemberContactsByMemberContactsId(Long memberContactsId)
+    public TMemberContacts selectMemberContactsByMemberContactsId(Long memberContactsId)
     {
         return memberContactsMapper.selectMemberContactsByMemberContactsId(memberContactsId);
     }
@@ -39,7 +39,7 @@ public class MemberContactsServiceImpl implements IMemberContactsService
      * @return 会员联络人
      */
     @Override
-    public List<MemberContacts> selectMemberContactsList(MemberContacts memberContacts)
+    public List<TMemberContacts> selectMemberContactsList(TMemberContacts memberContacts)
     {
         return memberContactsMapper.selectMemberContactsList(memberContacts);
     }
@@ -51,7 +51,7 @@ public class MemberContactsServiceImpl implements IMemberContactsService
      * @return 结果
      */
     @Override
-    public int insertMemberContacts(MemberContacts memberContacts)
+    public int insertMemberContacts(TMemberContacts memberContacts)
     {
         memberContacts.setCreateTime(DateUtils.getNowDate());
         return memberContactsMapper.insertMemberContacts(memberContacts);
@@ -64,7 +64,7 @@ public class MemberContactsServiceImpl implements IMemberContactsService
      * @return 结果
      */
     @Override
-    public int updateMemberContacts(MemberContacts memberContacts)
+    public int updateMemberContacts(TMemberContacts memberContacts)
     {
         memberContacts.setUpdateTime(DateUtils.getNowDate());
         return memberContactsMapper.updateMemberContacts(memberContacts);
