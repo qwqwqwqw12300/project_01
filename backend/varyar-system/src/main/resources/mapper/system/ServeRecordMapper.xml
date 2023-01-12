@@ -53,14 +53,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <id     property="userId"       column="user_id"      />
         <result property="orgId"       column="org_id"      />
         <result property="userName"     column="user_name"    />
-        <result property="nickName"     column="nick_name"    />
+        <result property="name"     column="name"    />
         <result property="email"        column="email"        />
         <result property="mobilePhone"  column="mobile_phone"  />
         <result property="orgName"  column="org_name"  />
     </resultMap>
 
     <select id="selectUserSimple" resultMap="SysUserSimple">
-        select u.user_id, u.org_id, u.user_name, u.nick_name, u.phone_number,d.org_name
+        select u.user_id, u.org_id, u.user_name, u.name, u.mobile_phone,d.org_name
         from sys_user u
                  left join t_org d on u.org_id = d.org_id
         where u.user_id = #{userId}

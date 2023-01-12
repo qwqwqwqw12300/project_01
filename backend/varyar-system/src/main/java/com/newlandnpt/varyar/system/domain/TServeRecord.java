@@ -250,8 +250,8 @@ public class TServeRecord extends BaseEntity
         /** 用户账号 */
         private String userName;
 
-        /** 用户昵称 */
-        private String nickName;
+        /** 用户姓名 */
+        private String name;
 
         /** 手机号码 */
         private String mobilePhone;
@@ -282,12 +282,12 @@ public class TServeRecord extends BaseEntity
             this.userName = userName;
         }
 
-        public String getNickName() {
-            return nickName;
+        public String getName() {
+            return name;
         }
 
-        public void setNickName(String nickName) {
-            this.nickName = nickName;
+        public void setName(String name) {
+            this.name = name;
         }
 
         public String getMobilePhone() {
