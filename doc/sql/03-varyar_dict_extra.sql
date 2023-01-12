@@ -23,3 +23,18 @@ insert into sys_dict_data values(37, 2,  '已读',     '1',       'sys_read_flag
 insert into sys_dict_type values(15, '操作标志', 'sys_operate_flag',   '0', 'admin', sysdate(), '', null, '操作标志列表');
 insert into sys_dict_data values(38, 1,  '未处理',     '0',      'sys_operate_flag',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:未处理');
 insert into sys_dict_data values(39, 2,  '已处理',     '1',       'sys_operate_flag',   '',   'success',  'N', '0', 'admin', sysdate(), '', null, '1:已处理');
+
+-- ----------------------------
+-- 消息类型:1短信 2APP消息 3事件消息
+-- ----------------------------
+insert into sys_dict_type values(16, '消息类型', 'sys_msg_type',   '0', 'admin', sysdate(), '', null, '消息类型');
+insert into sys_dict_data values(40, 1,  '短信',     '1',      'sys_msg_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '1:短信');
+insert into sys_dict_data values(41, 2,  'APP消息',     '2',       'sys_msg_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '2:APP消息');
+insert into sys_dict_data values(42, 3,  '事件消息',     '3',       'sys_msg_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '3:事件消息');
+
+-- ----------------------------
+-- 发送状态:0未发送 1已发送
+-- ----------------------------
+insert into sys_dict_type values(17, '消息类型', 'sys_send_status',   '0', 'admin', sysdate(), '', null, '消息类型');
+insert into sys_dict_data values(43, 1,  '未发送',     '0',      'sys_send_status',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:未发送');
+insert into sys_dict_data values(44, 2,  '已发送',     '1',       'sys_send_status',   '',   'success',  'N', '0', 'admin', sysdate(), '', null, '1:已发送');

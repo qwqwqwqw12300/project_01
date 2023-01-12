@@ -45,7 +45,11 @@
       <el-table-column label="问题内容" align="center" prop="content" />
       <el-table-column label="会员名称" align="center" prop="memberId" />
       <el-table-column label="提交时间" align="center" prop="createTime" />
-      <el-table-column label="已读标志" align="center" prop="readFlag" />
+      <el-table-column label="已读标志" align="center" prop="readFlag" >
+        <template slot-scope="scope">
+          {{ readFlagFormat(scope.row) }}
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -74,10 +78,10 @@
           <el-input v-model="form.content" :disabled="true" Style="width:100% "/>
         </el-form-item>
         <el-form-item label="会员名称" prop="memberId">
-          <el-input v-model="form.memberId":disabled="true" />
+          <el-input v-model="form.memberId" :disabled="true" />
         </el-form-item>
         <el-form-item label="已读标志" prop="readFlag">
-            <el-input v-model="form.readFlag":disabled="true"/>
+            <el-input v-model="form.readFlag" :disabled="true"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -94,6 +98,7 @@ import { listAdvise, getAdvise, delAdvise, addAdvise, updateAdvise } from "@/api
 
 export default {
   name: "Advise",
+  dicts: ['sys_read_flag'],
   data() {
     return {
       // 遮罩层
@@ -143,6 +148,12 @@ export default {
         this.loading = false;
       });
     },
+
+    // 已读未读字典翻译
+    readFlagFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.sys_read_flag, row.readFlag)
+    },
+
     // 取消按钮
     cancel() {
       this.open = false;
