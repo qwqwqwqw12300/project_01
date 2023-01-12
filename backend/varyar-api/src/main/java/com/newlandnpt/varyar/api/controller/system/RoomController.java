@@ -4,8 +4,15 @@ import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.model.RoomRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
+import com.newlandnpt.varyar.common.exception.ServiceException;
+import com.newlandnpt.varyar.system.domain.TFamily;
+import com.newlandnpt.varyar.system.domain.TMemberFamily;
 import com.newlandnpt.varyar.system.domain.TRoom;
+import com.newlandnpt.varyar.system.mapper.TMemberFamilyMapper;
+import com.newlandnpt.varyar.system.service.IFamilyService;
+import com.newlandnpt.varyar.system.service.IMemberFamilyService;
 import com.newlandnpt.varyar.system.service.IRoomService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +32,12 @@ public class RoomController extends BaseController {
 
     @Autowired
     private IRoomService iRoomService;
+
+    @Autowired
+    private IFamilyService tFamilyService;
+
+    @Autowired
+    private IMemberFamilyService iMemberFamilyService;
 /*
 * 获取房间列表
 * */
@@ -32,6 +45,10 @@ public class RoomController extends BaseController {
     public TableDataInfo list(@RequestBody @Validated RoomRequest roomRequest) {
         startPage();
         Long memberId = getLoginUser().getMemberId();
+        List<TMemberFamily> TMemberFamilys = iMemberFamilyService.selectTMemberFamilyByMemberFamilyId(Long.valueOf(roomRequest.getFamilyId()),memberId);
+        if(CollectionUtils.isEmpty(TMemberFamilys)||TMemberFamilys.size()==0){
+            throw new ServiceException(String.format("家庭信息不存在！"));
+        }
         List<TRoom> list = iRoomService.selectTRoomList(memberId,Long.valueOf(roomRequest.getFamilyId()));
         return getDataTable(list);
     }
@@ -50,12 +67,20 @@ public class RoomController extends BaseController {
             ajax = AjaxResult.error("家庭Id不能为空！");
             return ajax;
         }
+        Long memberId = getLoginUser().getMemberId();
+        //校验家庭信息是否存在
+        TFamily tFamily = tFamilyService.selectTFamilyByFamilyId(Long.valueOf(roomRequest.getFamilyId()));
+        if(tFamily == null ){
+            ajax = AjaxResult.error("家庭信息不存在！");
+            return ajax;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String roomNo = "R"+sdf.format(new Date());
         try {
             TRoom  tRoom = new TRoom();
             tRoom.setFamilyId(Long.valueOf(roomRequest.getFamilyId()));
             tRoom.setDelFlag("0");
+            tRoom.setCreateBy(String.valueOf(this.getLoginUser().getMemberId()));
             tRoom.setName(roomRequest.getRoomName());
             iRoomService.insertTRoom(tRoom);
         } catch (Exception e){
@@ -77,6 +102,10 @@ public class RoomController extends BaseController {
         }
         //查询我的房间（需要修改的）
         TRoom tRoom =  iRoomService.selectTRoomByRoomId(Long.valueOf(roomRequest.getRoomId()));
+        if(tRoom.getCreateBy().equals(this.getLoginUser().getMemberId())){
+            ajax = AjaxResult.error("非创建者无权限修改！");
+            return ajax;
+        }
         try {
             tRoom.setName(roomRequest.getRoomName());
             iRoomService.updateTRoom(tRoom);
@@ -99,6 +128,10 @@ public class RoomController extends BaseController {
         }
         //查找我的房间
         TRoom tRoom = iRoomService.selectTRoomByRoomId(Long.valueOf(roomRequest.getRoomId()));
+        if(tRoom.getCreateBy().equals(this.getLoginUser().getMemberId())){
+            ajax = AjaxResult.error("非创建者无权限删除！");
+            return ajax;
+        }
         try {
             iRoomService.deleteTRoomByRoomId(tRoom.getRoomId());
         } catch (Exception e){

@@ -1,6 +1,9 @@
 package com.newlandnpt.varyar.system.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,15 @@ public class MemberFamilyServiceImpl implements IMemberFamilyService
     public TMemberFamily selectTMemberFamilyByMemberFamilyId(Long memberFamilyId)
     {
         return tMemberFamilyMapper.selectTMemberFamilyByMemberFamilyId(memberFamilyId);
+    }
+    public List<TMemberFamily> selectTMemberFamilyByMemberFamilyId(Long memberFamilyId,Long memberId){
+        Map map = new HashMap();
+        map.put("memberId",memberId);
+        map.put("familyId",memberId);
+        return tMemberFamilyMapper.selectTMemberFamilyByFamilyId(map);
+    }
+    public List<TMemberFamily> selectTMemberFamilyByPhone(String phone){
+        return tMemberFamilyMapper.selectTMemberFamilyByPhone(phone);
     }
 
     /**

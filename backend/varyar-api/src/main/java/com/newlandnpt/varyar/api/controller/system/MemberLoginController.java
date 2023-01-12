@@ -36,7 +36,7 @@ public class MemberLoginController extends BaseController {
     @Autowired
     private TokenService tokenService;
 
-    @Value("${location.gaode.privateKey}")
+    @Value("${location.privateKey}")
     private String privateKey;
 
 

@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar.system.service.impl;
 
+import com.newlandnpt.varyar.common.core.domain.entity.MemberParameter;
 import com.newlandnpt.varyar.common.core.domain.model.RegMemberRequest;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
@@ -24,7 +25,7 @@ public class RegMemberServiceImpl implements IRegMemberService {
     private TMemberMapper memberMapper;
 
     @Override
-    public void regMember(RegMemberRequest regMemberRequest) {
+    public TMember regMember(RegMemberRequest regMemberRequest) {
         String phone = regMemberRequest.getPhone();
         String pwd = regMemberRequest.getPassword();
 
@@ -32,12 +33,15 @@ public class RegMemberServiceImpl implements IRegMemberService {
         if (tMemberQuery != null) {
             throw new ServiceException("该用户已注册！");
         }
-
+        MemberParameter parameter = new MemberParameter();
+        parameter.setPushMessage("0");
         TMember tMember = new TMember();
+        tMember.setParameter(parameter);
         tMember.setNo(IdUtils.fastSimpleUUID());
         tMember.setPhone(phone);
         tMember.setPassword(SecurityUtils.encryptPassword(pwd));
         tMember.setCreateTime(new Date());
         memberMapper.insertMember(tMember);
+        return tMember;
     }
 }

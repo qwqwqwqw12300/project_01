@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectTRoomVo1"/>
         from t_room r
         join t_family tf on tf.family_id = r.family_id and tf.del_flag ="0" and tf.family_id = #{familyId}
-        join  t_member_family tmf on tmf.family_id = tf.family_id and tmf.del_flag ="0"and tmf.member_id = #{memberId}
+        join  t_member_family tmf on tmf.family_id = tf.family_id and tmf.del_flag ="0"and tmf.create_member_id = #{memberId}
         where r.del_flag= '0'
     </select>
     

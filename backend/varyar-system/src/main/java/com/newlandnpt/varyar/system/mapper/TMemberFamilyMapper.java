@@ -1,6 +1,8 @@
 package com.newlandnpt.varyar.system.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.newlandnpt.varyar.system.domain.TMemberFamily;
 
 /**
@@ -18,7 +20,20 @@ public interface TMemberFamilyMapper
      * @return 会员和家庭关联
      */
     public TMemberFamily selectTMemberFamilyByMemberFamilyId(Long memberFamilyId);
-
+    /**
+     * 查询会员和家庭关联
+     *
+     * @param phone 会员和家庭关联主键
+     * @return 会员和家庭关联
+     */
+    public List<TMemberFamily> selectTMemberFamilyByFamilyId(Map map);
+    /**
+     * 查询会员和家庭关联
+     *
+     * @param phone 会员和家庭关联主键
+     * @return 会员和家庭关联
+     */
+    public List<TMemberFamily> selectTMemberFamilyByPhone(String phone);
     /**
      * 查询会员和家庭关联列表
      * 

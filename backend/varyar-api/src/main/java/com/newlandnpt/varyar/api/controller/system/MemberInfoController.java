@@ -41,7 +41,7 @@ public class MemberInfoController extends BaseController
     @Autowired
     private RedisCache redisCache;
 
-    @Value("${location.gaode.privateKey}")
+    @Value("${location.privateKey}")
     private String privateKey;
 
     /**
@@ -116,18 +116,20 @@ public class MemberInfoController extends BaseController
             String password = loginUser.getMemberPassword();
 
             if(StringUtils.isEmpty(memberInfoRequest.getNewPhone())
-                    && StringUtils.isEmpty(memberInfoRequest.getOldPhone())  )
-            {
+                    && StringUtils.isEmpty(memberInfoRequest.getOldPhone())  ){
                 return error("修改用户'" + loginUser.getUsername() + "'失败，手机号码不能为空！");
 
             }
-            if (memberInfoRequest.getNewPhone().equals(phone))
-            {
+            //校对旧手机号与登录会员手机号
+            if(phone.equals(memberInfoRequest.getOldPhone())){
+                return error("修改用户'" + loginUser.getUsername() + "'失败，原手机号码错误！");
+            }
+
+            if (memberInfoRequest.getNewPhone().equals(phone)){
                 return error("修改用户'" + loginUser.getUsername() + "'失败，手机号码与旧号码相同");
             }
 
-            if (!SecurityUtils.matchesPassword(memberInfoRequest.getPassword(), password))
-            {
+            if (!SecurityUtils.matchesPassword(memberInfoRequest.getPassword(), password)){
                 return error("用户密码不匹配");
             }
 

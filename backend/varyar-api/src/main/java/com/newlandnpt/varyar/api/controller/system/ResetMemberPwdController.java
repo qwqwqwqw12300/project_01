@@ -30,7 +30,7 @@ public class ResetMemberPwdController{
     @Autowired
     private IResetMemberPwdService resetMemberPwdService;
 
-    @Value("${location.gaode.privateKey}")
+    @Value("${location.privateKey}")
     private String privateKey;
 
     @PostMapping("/resetMemberPwd")

@@ -37,7 +37,18 @@ public class TMemberFamily extends BaseEntity
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
-    public void setMemberFamilyId(Long memberFamilyId) 
+    /** 手机号*/
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setMemberFamilyId(Long memberFamilyId)
     {
         this.memberFamilyId = memberFamilyId;
     }
@@ -103,6 +114,7 @@ public class TMemberFamily extends BaseEntity
             .append("delFlag", getDelFlag())
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
+            .append("phone", getPhone())
             .toString();
     }
 }
