@@ -19,11 +19,8 @@ import com.newlandnpt.varyar.cloudBase.constant.CacheConstants;
 import com.newlandnpt.varyar.cloudBase.domain.State;
 import com.newlandnpt.varyar.cloudBase.mapper.StateMapper;
 import com.newlandnpt.varyar.cloudBase.service.StateService;
-import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.utils.spring.SpringUtils;
-import com.newlandnpt.varyar.system.domain.TDevice;
-import com.newlandnpt.varyar.system.service.IDeviceService;
 
 
 @Service("cloud.stateService")
@@ -35,9 +32,6 @@ public class StateServiceImpl implements StateService {
 	private StateMapper stateMapper;
 	
 	 @Autowired
-	 private IDeviceService deviceService;
-	 
-	 @Autowired
 	 private RocketMQTemplate rocketMQTemplate;
 	 
 	 @Value("${rocketmq.topic.deviceState}")
@@ -47,10 +41,6 @@ public class StateServiceImpl implements StateService {
 	 public void receve(State t) {
 		 String deviceId = t.getDeviceId();
 		 if(StringUtils.isBlank(deviceId)) {
-			 return ;
-		 }
-		 TDevice device = deviceService.selectByDeviceNo(deviceId);
-		 if(device == null) {
 			 return ;
 		 }
 		 State obj = stateMapper.selectByDeviceId(deviceId);

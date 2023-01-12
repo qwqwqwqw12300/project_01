@@ -11,22 +11,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
-import com.newlandnpt.varyar.cloudBase.constant.CacheConstants;
 import com.newlandnpt.varyar.cloudBase.domain.Presence;
 import com.newlandnpt.varyar.cloudBase.service.PresenceService;
-import com.newlandnpt.varyar.common.core.redis.RedisCache;
-import com.newlandnpt.varyar.common.utils.spring.SpringUtils;
-import com.newlandnpt.varyar.system.domain.TDevice;
-import com.newlandnpt.varyar.system.service.IDeviceService;
 
 
 @Service("cloud.presenceService")
 public class PresenceServiceImpl implements PresenceService {
 	
 	 private static final Logger log = LoggerFactory.getLogger(PresenceServiceImpl.class);
-	 
-	 @Autowired
-	 private IDeviceService deviceService;
 	 
 	 @Autowired
 	 private RocketMQTemplate rocketMQTemplate;
@@ -41,12 +33,6 @@ public class PresenceServiceImpl implements PresenceService {
 		if(StringUtils.isBlank(deviceId)) {
 			return ;
 		}
-		TDevice device = deviceService.selectByDeviceNo(deviceId);
-		if(device == null) {
-			return ;
-		}
-		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_KEY + t.getDeviceId(), t);
-		
 		SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
     	//System.out.println(JSON.toJSONString(result));
         if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
