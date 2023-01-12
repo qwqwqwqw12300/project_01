@@ -140,12 +140,14 @@ rocketmq:
     net: group_net
     fall: group_fall
     presence: group_presence
+    deviceState: group_deviceState
     access: group_access
     location: group_location
   topic:
     net: netTopic
     fall: fallTopic
     presence: presenceTopic
+    deviceState: deviceStateTopic
     access: accessTopic
     location: locationTopic
 
