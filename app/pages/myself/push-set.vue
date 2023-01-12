@@ -21,7 +21,7 @@
 	export default {
 		data() {
 			return {
-				flag: false, //0关闭，1开启
+				flag: '0', //0关闭，1开启
 			}
 		},
 		methods: {
@@ -34,7 +34,7 @@
 			},
 			handleInit() {
 				PostGetPushMsgState({}).then(res => {
-					console.log(res)
+					this.flag = res + ''
 				})
 			}
 		},
