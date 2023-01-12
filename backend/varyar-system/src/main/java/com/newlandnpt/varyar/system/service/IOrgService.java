@@ -2,7 +2,7 @@ package com.newlandnpt.varyar.system.service;
 
 import java.util.List;
 import com.newlandnpt.varyar.common.core.domain.TreeSelect;
-import com.newlandnpt.varyar.common.core.domain.entity.Org;
+import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 
 /**
  * 机构管理 服务层
@@ -17,7 +17,7 @@ public interface IOrgService
      * @param org 机构信息
      * @return 机构信息集合
      */
-    public List<Org> selectOrgList(Org org);
+    public List<TOrg> selectOrgList(TOrg org);
 
     /**
      * 查询机构树结构信息
@@ -25,7 +25,7 @@ public interface IOrgService
      * @param org 机构信息
      * @return 机构树信息集合
      */
-    public List<TreeSelect> selectOrgTreeList(Org org);
+    public List<TreeSelect> selectOrgTreeList(TOrg org);
 
     /**
      * 构建前端所需要树结构
@@ -33,7 +33,7 @@ public interface IOrgService
      * @param orgs 机构列表
      * @return 树结构列表
      */
-    public List<Org> buildOrgTree(List<Org> orgs);
+    public List<TOrg> buildOrgTree(List<TOrg> orgs);
 
     /**
      * 构建前端所需要下拉树结构
@@ -41,7 +41,7 @@ public interface IOrgService
      * @param orgs 机构列表
      * @return 下拉树结构列表
      */
-    public List<TreeSelect> buildOrgTreeSelect(List<Org> orgs);
+    public List<TreeSelect> buildOrgTreeSelect(List<TOrg> orgs);
 
     /**
      * 根据角色ID查询机构树信息
@@ -57,7 +57,7 @@ public interface IOrgService
      * @param orgId 机构ID
      * @return 机构信息
      */
-    public Org selectOrgById(Long orgId);
+    public TOrg selectOrgById(Long orgId);
 
     /**
      * 根据ID查询所有子机构（正常状态）
@@ -89,7 +89,7 @@ public interface IOrgService
      * @param org 机构信息
      * @return 结果
      */
-    public String checkOrgNameUnique(Org org);
+    public String checkOrgNameUnique(TOrg org);
 
     /**
      * 校验机构是否有数据权限
@@ -104,7 +104,7 @@ public interface IOrgService
      * @param org 机构信息
      * @return 结果
      */
-    public int insertOrg(Org org);
+    public int insertOrg(TOrg org);
 
     /**
      * 修改保存机构信息
@@ -112,7 +112,7 @@ public interface IOrgService
      * @param org 机构信息
      * @return 结果
      */
-    public int updateOrg(Org org);
+    public int updateOrg(TOrg org);
 
     /**
      * 删除机构管理信息

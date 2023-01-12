@@ -10,8 +10,8 @@ import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.newlandnpt.varyar.system.mapper.DeviceGroupMapper;
-import com.newlandnpt.varyar.system.domain.DeviceGroup;
+import com.newlandnpt.varyar.system.mapper.TDeviceGroupMapper;
+import com.newlandnpt.varyar.system.domain.TDeviceGroup;
 import com.newlandnpt.varyar.system.service.IDeviceGroupService;
 
 import static com.newlandnpt.varyar.common.utils.SecurityUtils.getLoginUserName;
@@ -25,7 +25,7 @@ import static com.newlandnpt.varyar.common.utils.SecurityUtils.getLoginUserName;
 @Service
 public class DeviceGroupServiceImpl implements IDeviceGroupService {
     @Autowired
-    private DeviceGroupMapper devicegroupMapper;
+    private TDeviceGroupMapper devicegroupMapper;
     @Autowired
     private SysUserMapper sysUserMapper;
 
@@ -36,7 +36,7 @@ public class DeviceGroupServiceImpl implements IDeviceGroupService {
      * @return 设备组
      */
     @Override
-    public DeviceGroup selectDeviceGroupByDeviceGroupId(Long deviceGroupId) {
+    public TDeviceGroup selectDeviceGroupByDeviceGroupId(Long deviceGroupId) {
         return devicegroupMapper.selectDeviceGroupByDeviceGroupId(deviceGroupId);
     }
 
@@ -48,7 +48,7 @@ public class DeviceGroupServiceImpl implements IDeviceGroupService {
      */
     @DataScope(orgAlias = "d")
     @Override
-    public List<DeviceGroup> selectDeviceGroupList(DeviceGroup devicegroup) {
+    public List<TDeviceGroup> selectDeviceGroupList(TDeviceGroup devicegroup) {
         return devicegroupMapper.selectDeviceGroupList(devicegroup);
     }
 
@@ -59,7 +59,7 @@ public class DeviceGroupServiceImpl implements IDeviceGroupService {
      * @return 结果
      */
     @Override
-    public int insertDeviceGroup(DeviceGroup devicegroup) {
+    public int insertDeviceGroup(TDeviceGroup devicegroup) {
         //创建人为当前登录人员
         devicegroup.autoSetCreateByLoginUser();
         return devicegroupMapper.insertDeviceGroup(devicegroup);
@@ -72,7 +72,7 @@ public class DeviceGroupServiceImpl implements IDeviceGroupService {
      * @return 结果
      */
     @Override
-    public int updateDeviceGroup(DeviceGroup devicegroup) {
+    public int updateDeviceGroup(TDeviceGroup devicegroup) {
         // 运营者信息发生在分配设备组内修改，这里置null不做修改
         devicegroup.setUserId(null);
         devicegroup.setUserName(null);
@@ -119,8 +119,8 @@ public class DeviceGroupServiceImpl implements IDeviceGroupService {
      * @return 结果
      */
     @Override
-    public String checkOrgNameUnique(DeviceGroup deviceGroup) {
-        DeviceGroup info = devicegroupMapper.checkOrgNameUnique(deviceGroup.getName(), deviceGroup.getOrgId());
+    public String checkOrgNameUnique(TDeviceGroup deviceGroup) {
+        TDeviceGroup info = devicegroupMapper.checkOrgNameUnique(deviceGroup.getName(), deviceGroup.getOrgId());
         if (StringUtils.isNotNull(info) && (deviceGroup.getDeviceGroupId() == null
                 || info.getDeviceGroupId().longValue() != deviceGroup.getDeviceGroupId().longValue())) {
             return UserConstants.NOT_UNIQUE;
@@ -129,7 +129,7 @@ public class DeviceGroupServiceImpl implements IDeviceGroupService {
     }
 
     @Override
-    public long notArrangeCount(DeviceGroup deviceGroup) {
+    public long notArrangeCount(TDeviceGroup deviceGroup) {
         return devicegroupMapper.notArrangeCount(deviceGroup);
     }
 }

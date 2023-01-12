@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.newlandnpt.varyar.system.mapper.OrgMapper">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.TOrgMapper">
 
-    <resultMap type="Org" id="TOrgResult">
+    <resultMap type="TOrg" id="TOrgResult">
         <id property="orgId" column="org_id"/>
         <result property="parentId" column="parent_id"/>
         <result property="ancestors" column="ancestors"/>
@@ -56,7 +56,7 @@
         from t_org d
     </sql>
 
-    <select id="selectOrgList" parameterType="Org" resultMap="TOrgResult">
+    <select id="selectOrgList" parameterType="TOrg" resultMap="TOrgResult">
         <include refid="selectOrgVo"/>
         where d.del_flag = '0'
         <if test="orgId != null and orgId != 0">
@@ -150,7 +150,7 @@
         where org_name=#{orgName} and parent_id = #{parentId} and del_flag = '0' limit 1
     </select>
 
-    <insert id="insertOrg" parameterType="Org">
+    <insert id="insertOrg" parameterType="TOrg">
         insert into t_org(
         <if test="orgId != null and orgId != 0">org_id,</if>
         <if test="parentId != null and parentId != 0">parent_id,</if>
@@ -194,7 +194,7 @@
         )
     </insert>
 
-    <update id="updateOrg" parameterType="Org">
+    <update id="updateOrg" parameterType="TOrg">
         update t_org
         <set>
             <if test="parentId != null and parentId != 0">parent_id = #{parentId},</if>

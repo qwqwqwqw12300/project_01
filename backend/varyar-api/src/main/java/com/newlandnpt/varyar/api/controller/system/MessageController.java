@@ -6,8 +6,7 @@ import com.newlandnpt.varyar.common.core.domain.entity.MemberParameter;
 import com.newlandnpt.varyar.common.core.domain.model.MessagePushRequest;
 import com.newlandnpt.varyar.common.core.domain.model.MessageRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
-import com.newlandnpt.varyar.system.domain.Member;
-import com.newlandnpt.varyar.system.domain.TFamily;
+import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.domain.TMsg;
 import com.newlandnpt.varyar.system.service.IMemberService;
 import com.newlandnpt.varyar.system.service.IMsgService;
@@ -79,7 +78,7 @@ public class MessageController extends BaseController {
     public AjaxResult updatePushMsg(@RequestBody @Validated MessagePushRequest messagePushRequest){
         AjaxResult ajax = AjaxResult.success();
         Long memberId = getLoginUser().getMemberId();
-        Member member = iMemberService.selectMemberByMemberId(memberId);
+        TMember member = iMemberService.selectMemberByMemberId(memberId);
         if(member == null){
             ajax = AjaxResult.error("查询会员信息失败！");
             return ajax;

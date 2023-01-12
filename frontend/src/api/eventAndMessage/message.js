@@ -42,3 +42,11 @@ export function delMsg(msgId) {
     method: 'delete'
   })
 }
+
+// 查询机构下拉树结构
+export function orgTreeSelect() {
+  return request({
+    url: '/system/user/orgTree',
+    method: 'get'
+  })
+}

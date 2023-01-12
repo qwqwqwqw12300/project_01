@@ -5,7 +5,8 @@
 		</view>
 		<view class="ui-site-gloup">
 			<view class="ui-item active" v-for="(item, index) of poiList" :key="index">
-				<u-text prefixIcon="map" iconStyle="font-size: 19px" :text="getAddress(item)"></u-text>
+				<u-text prefixIcon="map" iconStyle="font-size: 19px" :text="item.name"></u-text>
+				<text>{{getAddress(item)}}</text>
 			</view>
 		</view>
 	</view>

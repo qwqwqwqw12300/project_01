@@ -55,6 +55,11 @@
             <artifactId>varyar-quartz</artifactId>
         </dependency>
 
+		<dependency>
+            <groupId>com.newlandnpt.varyar</groupId>
+            <artifactId>varyar-cloudBase</artifactId>
+        </dependency>
+        
     </dependencies>
 
     <build>

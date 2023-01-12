@@ -13,7 +13,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.newlandnpt.varyar.common.constant.DeviceConstants;
 import com.newlandnpt.varyar.common.constant.GeoConstant;
 import com.newlandnpt.varyar.common.utils.StringUtils;
-import com.newlandnpt.varyar.system.domain.Device;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TDeviceFence;
 import com.newlandnpt.varyar.system.domain.TEvent;
 import com.newlandnpt.varyar.system.domain.req.FenceReq;
@@ -59,7 +59,7 @@ public class LocationListener implements RocketMQListener<String> {
         }
         String deviceNo = msgReq.getDeviceNo();
         String location = msgReq.getLongitude() + "," + msgReq.getLatitude();
-        Device device = deviceService.selectByDeviceNo(deviceNo);
+        TDevice device = deviceService.selectByDeviceNo(deviceNo);
         //判断设备记录与状态
         if (device == null || !device.getStatus().equals(DeviceConstants.STATUS_ACTIVATED)) {
             log.info("未查询到相关电子围栏");

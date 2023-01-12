@@ -1,7 +1,7 @@
 package com.newlandnpt.varyar.system.service;
 
 import java.util.List;
-import com.newlandnpt.varyar.system.domain.Member;
+import com.newlandnpt.varyar.system.domain.TMember;
 
 /**
  * 会员Service接口
@@ -17,7 +17,7 @@ public interface IMemberService
      * @param memberId 会员主键
      * @return 会员
      */
-    public Member selectMemberByMemberId(Long memberId);
+    public TMember selectMemberByMemberId(Long memberId);
 
     /**
      * 查询会员列表
@@ -25,7 +25,7 @@ public interface IMemberService
      * @param member 会员
      * @return 会员集合
      */
-    public List<Member> selectMemberList(Member member);
+    public List<TMember> selectMemberList(TMember member);
 
     /**
      * 新增会员
@@ -33,7 +33,7 @@ public interface IMemberService
      * @param member 会员
      * @return 结果
      */
-    public int insertMember(Member member);
+    public int insertMember(TMember member);
 
     /**
      * 修改会员
@@ -41,7 +41,7 @@ public interface IMemberService
      * @param member 会员
      * @return 结果
      */
-    public int updateMember(Member member);
+    public int updateMember(TMember member);
 
     /**
      * 批量删除会员
@@ -72,11 +72,11 @@ public interface IMemberService
      * @return
      * @param member
      */
-    public long total(Member member);
+    public long total(TMember member);
     /**
      * 未分配会员数
      * @return
      * @param member
      */
-    public long notArrangeMemberCount(Member member);
+    public long notArrangeMemberCount(TMember member);
 }

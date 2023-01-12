@@ -13,6 +13,10 @@
 		<button @click="getwifiInfo">获取wifi信息</button>
 		<button @click="checkPermission">检查权限</button>
 		<button @click="requestPermission">获取权限</button>
+		<button @click="getDemo">get请求测试</button>
+		<button @click="postDemo">post请求测试</button>
+
+
 	</view>
 </template>
 <script>
@@ -20,6 +24,10 @@
 	import {
 		push
 	} from '@/common/sdk/push.js';
+	import {
+		getDemo,
+		postDemo
+	} from '../../common/http/api';
 	export default {
 		data() {
 			return {
@@ -62,6 +70,20 @@
 				var bssid = "";
 				var password = "";
 				sdkModule.connect(ssid, bssid, password); //用wifi的SSID和BSSID和wifi密码连接
+			},
+			getDemo() {
+				getDemo().then(res => {
+					console.log(res, 'getDemo');
+				})
+			},
+
+			postDemo() {
+				postDemo({
+					"uuid": "c8916a767204456fa970c675c71048e5",
+					"captcha": "6d23"
+				}).then(res => {
+					console.log(res, 'postDemo');
+				})
 			}
 		},
 	}

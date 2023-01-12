@@ -4,7 +4,7 @@ import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.model.MemberContactsRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
-import com.newlandnpt.varyar.system.domain.MemberContacts;
+import com.newlandnpt.varyar.system.domain.TMemberContacts;
 import com.newlandnpt.varyar.system.service.IMemberContactsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -28,11 +28,11 @@ public class MemberContactsController extends BaseController {
      * 获取紧急电话列表
      * */
     @GetMapping("/list")
-    public TableDataInfo list(MemberContacts memberContacts) {
+    public TableDataInfo list(TMemberContacts memberContacts) {
         startPage();
         Long memberId = getLoginUser().getMemberId();
         memberContacts.setMemberId(memberId);
-        List<MemberContacts> list = iMemberContactsService.selectMemberContactsList(memberContacts);
+        List<TMemberContacts> list = iMemberContactsService.selectMemberContactsList(memberContacts);
         return getDataTable(list);
     }
     /**
@@ -45,7 +45,7 @@ public class MemberContactsController extends BaseController {
         if(checkInfo(memberContactsRequest,ajax)!=null){
             return ajax;
         }
-        MemberContacts memberContacts = new MemberContacts();
+        TMemberContacts memberContacts = new TMemberContacts();
         memberContacts.setMemberId(this.getLoginUser().getMemberId());
         memberContacts.setCreateBy(this.getLoginUser().getUsername());
         memberContacts.setName(memberContactsRequest.getPhoneName());
@@ -72,7 +72,7 @@ public class MemberContactsController extends BaseController {
             ajax = AjaxResult.error("会员联络人Id不能为空！");
             return ajax;
         }
-        MemberContacts memberContacts = iMemberContactsService.selectMemberContactsByMemberContactsId(Long.valueOf(memberContactsRequest.getMemberContactsId()));
+        TMemberContacts memberContacts = iMemberContactsService.selectMemberContactsByMemberContactsId(Long.valueOf(memberContactsRequest.getMemberContactsId()));
         memberContacts.setName(memberContactsRequest.getPhoneName());
         memberContacts.setPhone(memberContactsRequest.getPhone());
         memberContacts.setOrderNum(Long.valueOf(memberContactsRequest.getOrderNum()));

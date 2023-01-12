@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
 import com.newlandnpt.varyar.common.exception.ServiceException;
-import com.newlandnpt.varyar.system.domain.ServeRecordEventRelate;
+import com.newlandnpt.varyar.system.domain.TServeRecordEventRelate;
 import com.newlandnpt.varyar.system.mapper.ServeRecordEventRelateMapper;
 import com.newlandnpt.varyar.system.mapper.SysUserMapper;
 import org.apache.commons.collections4.CollectionUtils;
@@ -14,7 +14,7 @@ import com.newlandnpt.varyar.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.ServeRecordMapper;
-import com.newlandnpt.varyar.system.domain.ServeRecord;
+import com.newlandnpt.varyar.system.domain.TServeRecord;
 import com.newlandnpt.varyar.system.service.IServeRecordService;
 
 /**
@@ -40,7 +40,7 @@ public class ServeRecordServiceImpl implements IServeRecordService
      * @return 服务记录
      */
     @Override
-    public ServeRecord selectServeRecordByRecordId(Long recordId)
+    public TServeRecord selectServeRecordByRecordId(Long recordId)
     {
         return serveRecordMapper.selectServeRecordByRecordId(recordId);
     }
@@ -52,7 +52,7 @@ public class ServeRecordServiceImpl implements IServeRecordService
      * @return 服务记录
      */
     @Override
-    public List<ServeRecord> selectServeRecordList(ServeRecord serveRecord)
+    public List<TServeRecord> selectServeRecordList(TServeRecord serveRecord)
     {
         return serveRecordMapper.selectServeRecordList(serveRecord);
     }
@@ -65,7 +65,7 @@ public class ServeRecordServiceImpl implements IServeRecordService
      */
     @Override
     @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
-    public int insertServeRecord(ServeRecord serveRecord)
+    public int insertServeRecord(TServeRecord serveRecord)
     {
         if(CollectionUtils.isEmpty(serveRecord.getServeEvents())){
             throw new ServiceException(String.format("处理消息不能为空"));
@@ -81,7 +81,7 @@ public class ServeRecordServiceImpl implements IServeRecordService
         serveRecord.setCreateTime(DateUtils.getNowDate());
         int effect = serveRecordMapper.insertServeRecord(serveRecord);
         serveRecord.getServeEvents().forEach(serveEventSimple -> {
-            ServeRecordEventRelate relate = new ServeRecordEventRelate();
+            TServeRecordEventRelate relate = new TServeRecordEventRelate();
             relate.setRecordId(serveRecord.getRecordId());
             relate.setEventId(serveEventSimple.getEventId());
             serveRecordEventRelateMapper.insertServeRecordEventRelate(relate);
@@ -96,7 +96,7 @@ public class ServeRecordServiceImpl implements IServeRecordService
      * @return 结果
      */
     @Override
-    public int updateServeRecord(ServeRecord serveRecord)
+    public int updateServeRecord(TServeRecord serveRecord)
     {
         //服务记录对应消息暂不修改
         return serveRecordMapper.updateServeRecord(serveRecord);

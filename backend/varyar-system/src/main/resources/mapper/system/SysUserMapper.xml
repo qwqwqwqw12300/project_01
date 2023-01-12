@@ -26,11 +26,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"     column="update_by"    />
         <result property="updateTime"   column="update_time"  />
         <result property="remark"       column="remark"       />
-        <association property="org"    column="org_id" javaType="Org" resultMap="orgResult" />
+        <association property="org"    column="org_id" javaType="TOrg" resultMap="orgResult" />
         <collection  property="roles"  javaType="java.util.List"  column="{userId = user_id}"   select="selectRoles" />
     </resultMap>
 	
-    <resultMap id="orgResult" type="Org">
+    <resultMap id="orgResult" type="TOrg">
         <id     property="orgId"    column="org_id"     />
         <result property="parentId"  column="parent_id"   />
         <result property="orgName"  column="org_name"   />

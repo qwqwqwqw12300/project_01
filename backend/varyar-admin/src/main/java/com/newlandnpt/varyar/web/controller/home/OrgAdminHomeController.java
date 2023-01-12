@@ -2,9 +2,9 @@ package com.newlandnpt.varyar.web.controller.home;
 
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.entity.Org;
-import com.newlandnpt.varyar.system.domain.Device;
-import com.newlandnpt.varyar.system.domain.DeviceGroup;
+import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
+import com.newlandnpt.varyar.system.domain.TDevice;
+import com.newlandnpt.varyar.system.domain.TDeviceGroup;
 import com.newlandnpt.varyar.system.service.IDeviceGroupService;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import com.newlandnpt.varyar.system.service.IOrgService;
@@ -45,11 +45,11 @@ public class OrgAdminHomeController extends BaseController {
     @GetMapping("/suborg/list")
     public AjaxResult list()
     {
-        Org param = new Org();
+        TOrg param = new TOrg();
         Map<String,Object> params = new HashMap<>();
         params.put("idNotEQ",getOrgId());
         param.setParams(params);
-        List<Org> orgs = orgService.selectOrgList(param);
+        List<TOrg> orgs = orgService.selectOrgList(param);
         return success(orgs);
     }
 
@@ -59,7 +59,7 @@ public class OrgAdminHomeController extends BaseController {
     @PreAuthorize("@ss.hasPermi('home:orgAdmin:list')")
     @GetMapping("/suborg/device/count/groupbyorg")
     public AjaxResult subOrgDeviceCount(){
-        return success(deviceService.countGroupByOrgId(new Device()));
+        return success(deviceService.countGroupByOrgId(new TDevice()));
     }
 
     /**
@@ -78,7 +78,7 @@ public class OrgAdminHomeController extends BaseController {
     @PreAuthorize("@ss.hasPermi('home:platformAdmin:list')")
     @GetMapping("device/notassociate/count")
     public AjaxResult notAssociateDeviceCount(){
-        return success(deviceService.notAssociateDeviceCount(new Device()));
+        return success(deviceService.notAssociateDeviceCount(new TDevice()));
     }
 
     /**
@@ -88,7 +88,7 @@ public class OrgAdminHomeController extends BaseController {
     @PreAuthorize("@ss.hasPermi('home:orgAdmin:list')")
     @GetMapping("device/notarrange/count")
     public AjaxResult notArrangeDeviceCount(){
-        return success(deviceService.notArrangeDeviceCount(new Device()));
+        return success(deviceService.notArrangeDeviceCount(new TDevice()));
     }
 
 
@@ -100,7 +100,7 @@ public class OrgAdminHomeController extends BaseController {
     @PreAuthorize("@ss.hasPermi('home:orgAdmin:list')")
     @GetMapping("devicegroup/notarrange/count")
     public AjaxResult notArrangeDeviceGroupCount(){
-        DeviceGroup deviceGroup = new DeviceGroup();
+        TDeviceGroup deviceGroup = new TDeviceGroup();
         deviceGroup.setOrgId(getOrgId());
         return success(deviceGroupService.notArrangeCount(deviceGroup));
     }

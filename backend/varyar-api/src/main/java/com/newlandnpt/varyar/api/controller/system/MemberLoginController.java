@@ -12,7 +12,7 @@ import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.framework.web.service.TokenService;
-import com.newlandnpt.varyar.system.domain.Member;
+import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IMemberLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,7 +62,7 @@ public class MemberLoginController extends BaseController {
             e.printStackTrace();
         }
         // 生成令牌
-        Member tMember = memberLoginService.loginByPwd(memberLoginPwdRequest);
+        TMember tMember = memberLoginService.loginByPwd(memberLoginPwdRequest);
         LoginUser loginUser = new LoginUser();
         loginUser.setMemberPhone(tMember.getPhone());
         loginUser.setMemberId(tMember.getMemberId());
@@ -90,7 +90,7 @@ public class MemberLoginController extends BaseController {
         }
 
         // 生成令牌
-        Member tMember = memberLoginService.loginBySms(memberLoginSmsRequest);
+        TMember tMember = memberLoginService.loginBySms(memberLoginSmsRequest);
 
         LoginUser loginUser = new LoginUser();
         loginUser.setMemberPhone(tMember.getPhone());
