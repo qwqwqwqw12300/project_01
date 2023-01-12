@@ -18,6 +18,14 @@ public interface IMemberFamilyService
      * @return 会员和家庭关联
      */
     public TMemberFamily selectTMemberFamilyByMemberFamilyId(Long memberFamilyId);
+    public List<TMemberFamily>  selectTMemberFamilyByMemberFamilyId(Long memberFamilyId,Long memberId);
+    /**
+     * 用手机号查询 会员与家庭信息
+     *
+     * @param phone 会员和家庭关联主键
+     * @return 会员和家庭关联
+     */
+    public List<TMemberFamily> selectTMemberFamilyByPhone(String phone);
 
     /**
      * 查询会员和家庭关联列表

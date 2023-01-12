@@ -80,6 +80,7 @@ public class FamilyServiceImpl implements IFamilyService
         tMemberFamily.setMemberId(memberId);
         tMemberFamily.setCreateMemberId(memberId);
         tMemberFamily.setDelFlag("0");
+        tMemberFamily.setShareFlag("2");
         return iMemberFamilyService.insertTMemberFamily(tMemberFamily);
     }
 

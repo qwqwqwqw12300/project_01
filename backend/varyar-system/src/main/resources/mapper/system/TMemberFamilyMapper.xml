@@ -7,6 +7,7 @@
     <resultMap type="TMemberFamily" id="TMemberFamilyResult">
         <result property="memberFamilyId" column="member_family_id"/>
         <result property="memberId" column="member_id"/>
+        <result property="phone" column="phone"/>
         <result property="familyId" column="family_id"/>
         <result property="createMemberId" column="create_member_id"/>
         <result property="shareFlag" column="share_flag"/>
@@ -23,7 +24,8 @@
                share_flag,
                del_flag,
                create_time,
-               update_time
+               update_time,
+               phone
         from t_member_family mf
     </sql>
 
@@ -43,6 +45,14 @@
         where member_family_id = #{memberFamilyId}
     </select>
 
+    <select id="selectTMemberFamilyByFamilyId" parameterType="Map" resultMap="TMemberFamilyResult">
+        <include refid="selectTMemberFamilyVo"/>
+        where family_id = #{familyId} and create_member_id = #{memberId}
+    </select>
+    <select id="selectTMemberFamilyByPhone" parameterType="String" resultMap="TMemberFamilyResult">
+        <include refid="selectTMemberFamilyVo"/>
+        where phone = #{phone}
+    </select>
     <insert id="insertTMemberFamily" parameterType="TMemberFamily" useGeneratedKeys="true" keyProperty="memberFamilyId">
         insert into t_member_family
         <trim prefix="(" suffix=")" suffixOverrides=",">

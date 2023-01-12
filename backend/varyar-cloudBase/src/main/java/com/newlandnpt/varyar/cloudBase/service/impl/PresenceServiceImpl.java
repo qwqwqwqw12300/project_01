@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
+import com.newlandnpt.varyar.cloudBase.constant.CacheConstants;
 import com.newlandnpt.varyar.cloudBase.domain.Presence;
 import com.newlandnpt.varyar.cloudBase.service.PresenceService;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
@@ -33,7 +34,6 @@ public class PresenceServiceImpl implements PresenceService {
 	 @Value("${rocketmq.topic.presence}")
 	 private String presenceTopic;
 	    
-	public static final String CACHE_KEY = "cloud:presence:";
 	
 	@Override
 	public void receve(Presence t) {
@@ -45,7 +45,7 @@ public class PresenceServiceImpl implements PresenceService {
 		if(device == null) {
 			return ;
 		}
-		SpringUtils.getBean(RedisCache.class).setCacheObject(CACHE_KEY + t.getDeviceId(), t);
+		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_KEY + t.getDeviceId(), t);
 		
 		SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
     	//System.out.println(JSON.toJSONString(result));

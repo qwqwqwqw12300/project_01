@@ -6,6 +6,7 @@ import com.newlandnpt.varyar.common.core.domain.entity.MemberParameter;
 import com.newlandnpt.varyar.common.core.domain.model.MessagePushRequest;
 import com.newlandnpt.varyar.common.core.domain.model.MessageRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
+import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.domain.TMsg;
 import com.newlandnpt.varyar.system.service.IMemberService;
@@ -94,4 +95,26 @@ public class MessageController extends BaseController {
         }
         return ajax;
     }
+    /**
+     * 我的-消息设置	获取推送开关状态·
+     */
+    @GetMapping("/getPushMsgState")
+    public String  getPushMessageState(){
+        Long memberId = getLoginUser().getMemberId();
+        TMember member = new TMember();
+        try {
+            member = iMemberService.selectMemberByMemberId(memberId);
+        }  catch (Exception e){
+            throw new ServiceException(e.getMessage());
+        }
+        String flag = "";
+
+        if(member.getParameter() == null || member.getParameter().getPushMessage()==null){
+            flag = "0";
+            return flag;
+        }
+        flag = member.getParameter().getPushMessage();
+        return flag;
+    }
+
 }

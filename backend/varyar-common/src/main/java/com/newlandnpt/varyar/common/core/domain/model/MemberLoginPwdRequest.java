@@ -20,7 +20,7 @@ public class MemberLoginPwdRequest {
      * 密码
      */
     @NotBlank(message = "密码不能为空")
-    @Size(min = 0, max = 100, message = "密码不能超过100个字符")
+    @Size(min = 0, max = 200, message = "密码不能超过100个字符")
     private String password;
 
     /**

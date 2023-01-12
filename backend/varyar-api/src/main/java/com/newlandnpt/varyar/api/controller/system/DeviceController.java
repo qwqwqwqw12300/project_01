@@ -78,7 +78,6 @@ public class DeviceController extends BaseController {
         device.setOrgName("个人机构");
         device.setDelFlag("0");
         device.setMemberId(getLoginUser().getMemberId());
-        device.setCreateBy(getLoginUser().getUsername());
         device.setCreateTime(DateUtils.getNowDate());
         try {
             iDeviceService.insertDevice(device);
