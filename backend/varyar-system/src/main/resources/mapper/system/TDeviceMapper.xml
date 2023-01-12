@@ -38,7 +38,7 @@
                devicegroup_id,
                name, no, status, type,
             register_time,
-            location, family_id, member_id, room_id, distribute_flag, org_id, org_name, del_flag, create_by, create_time, update_by, update_time,
+            location, family_id, member_id, room_id, distribute_flag, org_id, org_name, del_flag, create_by, create_time, update_by, update_time,device_parameter,
             (select name from t_devicegroup where devicegroup_id = d.devicegroup_id) device_group_name,
             (select type from t_org where org_id = d.org_id) org_type,
             (select org_no from t_org where org_id = d.org_id) org_no,
@@ -61,6 +61,15 @@
         <include refid="selectTDeviceVo"/>
         <where>
             <if test="devicegroupId != null ">and devicegroup_id = #{devicegroupId}</if>
+            <if test="params.arrangeDeviceGroup != null ">
+                <if test='params.arrangeDeviceGroup == "false" '>
+                    and devicegroup_id is null
+                </if>
+
+                <if test='params.arrangeDeviceGroup == "true" '>
+                    and devicegroup_id is not null
+                </if>
+            </if>
             <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
             <if test="no != null  and no != ''">and no = #{no}</if>
             <if test="status != null  and status != ''">and status = #{status}</if>
@@ -199,5 +208,14 @@
         <foreach item="deviceId" collection="deviceIds" open="(" separator="," close=")">
             #{deviceId}
         </foreach>
+    </update>
+    <update id="clearDeviceGroup" parameterType="map">
+        update t_device
+        set devicegroup_id = null,
+        <if test="updateBy != null and updateBy != ''">
+            update_by = #{updateBy},
+        </if>
+        update_time = sysdate()
+        where devicegroup_id = #{deviceGroupId}
     </update>
 </mapper>

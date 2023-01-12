@@ -44,9 +44,19 @@ export const PostSetMsgInfo = (params) => http.post('/api/message/setMsgInfo', p
 /* 
  *获取推送开关信息*
  */
-export const PostGetPushMsgState = (params) => http.post('/api/message/getPushMsgState', params)
+export const PostGetPushMsgState = (params) => http.get('/api/message/getPushMsgState', params)
 
 /* 
  *推送开关*
  */
 export const PostUpdPushMsg = (params) => http.post('/api/message/updPushMsg', params)
+
+/* 
+ *用户新增建议*
+ */
+export const PostAddAdvise = (params) => http.post('/api/advise/addAdvise', params)
+
+/* 
+ *获取紧急联系人列表*
+ */
+export const PostContactsList = (params) => http.post('/api/memberContacts/list', params)

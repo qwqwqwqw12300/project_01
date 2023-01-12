@@ -1,5 +1,5 @@
 <template>
-  <div v-show="visible" class="mask_layer el-dialog is-fullscreen" @click.stop>
+  <div v-if="visible" class="mask_layer el-dialog is-fullscreen" @click.stop>
     <div class="el-dialog__header">
       <slot name="header">
         <span class="el-dialog__title mask_header_title">{{ title }}</span>

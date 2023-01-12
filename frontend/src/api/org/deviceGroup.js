@@ -8,6 +8,13 @@ export function pageDeviceGroup(query) {
     params: query
   })
 }
+// 查询设备组分页
+export function getDeviceGroup(deviceGroupId) {
+  return request({
+    url: '/org/devicegroup/'+deviceGroupId,
+    method: 'get'
+  })
+}
 // 添加设备组
 export function addDeviceGroup(data) {
   return request({
@@ -27,7 +34,7 @@ export function updateDeviceGroup(data) {
 // 分配运营人员
 export function arrangeUser(data,userId) {
   return request({
-    url: '/org/devicegroup/arrangeUser/'+userId,
+    url: '/org/devicegroup/arrange/user/'+userId,
     method: 'put',
     data: data
   })
@@ -35,7 +42,7 @@ export function arrangeUser(data,userId) {
 // 设备组分配设备
 export function deviceArrange(deviceGroupId,data) {
   return request({
-    url: '/org/devicegroup/'+deviceGroupId+'/deviceArrange',
+    url: deviceGroupId==null?('/org/devicegroup/devices/arrange'):('/org/devicegroup/'+deviceGroupId+'/devices/arrange'),
     method: 'put',
     data: data
   })

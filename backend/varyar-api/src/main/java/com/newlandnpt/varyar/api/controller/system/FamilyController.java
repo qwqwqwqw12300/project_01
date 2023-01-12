@@ -56,6 +56,8 @@ public class FamilyController extends BaseController {
             tFamily.setName(familyRequest.getFamilyName());
             tFamily.setAddress(familyRequest.getAddress());
             tFamily.setDelFlag("0");
+            tFamily.setShareFlag("2");
+            tFamily.setCreateBy(String.valueOf(memberId));
             tFamilyService.insertTFamily(tFamily,memberId);
         } catch (Exception e){
             ajax = AjaxResult.error("新增我的家庭失败！");
@@ -78,6 +80,10 @@ public class FamilyController extends BaseController {
         TFamily tFamily =  tFamilyService.selectTFamilyByFamilyId(Long.valueOf(familyRequest.getFamilyId()));
         if( tFamily == null){
             ajax = AjaxResult.error("无法查到需要修改的记录！");
+            return ajax;
+        }
+        if(tFamily.getCreateBy().equals(this.getLoginUser().getMemberId())){
+            ajax = AjaxResult.error("非创建者无权限修改！");
             return ajax;
         }
         try {
@@ -105,6 +111,10 @@ public class FamilyController extends BaseController {
         TFamily tFamily =  tFamilyService.selectTFamilyByFamilyId(Long.valueOf(familyRequest.getFamilyId()));
         if( tFamily == null){
             ajax = AjaxResult.error("无法查到需要修改的记录！");
+            return ajax;
+        }
+        if(tFamily.getCreateBy().equals(this.getLoginUser().getMemberId())){
+            ajax = AjaxResult.error("非创建者无权限删除！");
             return ajax;
         }
         try {
