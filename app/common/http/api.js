@@ -59,4 +59,19 @@ export const PostAddAdvise = (params) => http.post('/api/advise/addAdvise', para
 /* 
  *获取紧急联系人列表*
  */
-export const PostContactsList = (params) => http.post('/api/memberContacts/list', params)
+export const GetContactsList = (params) => http.get('/api/memberContacts/list', params)
+
+/* 
+ *添加紧急联系人*
+ */
+export const PostAddContacts = (params) => http.post('/api/memberContacts/creMemberCon', params)
+
+/* 
+ *删除紧急联系人*
+ */
+export const PostDelContacts = (params) => http.post('/api/memberContacts/remMemberCon', params)
+
+/* 
+ *编辑紧急联系人*
+ */
+export const PostEditContacts = (params) => http.post('/api/memberContacts/editMemberCon', params)
