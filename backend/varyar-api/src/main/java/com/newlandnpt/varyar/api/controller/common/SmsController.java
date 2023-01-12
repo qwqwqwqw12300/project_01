@@ -67,4 +67,23 @@ public class SmsController {
         ajax.put("smsUuid", smsUuid);
         return ajax;
     }
+    /**
+     * 校验短信验证码
+     */
+    @PostMapping("/checkSms")
+    public AjaxResult checkSms(@RequestBody @Validated SmsRequest smsRequest) {
+        AjaxResult ajax = AjaxResult.success();
+
+        // check sms
+        String verifyKey = CacheConstants.SMS_CODE_KEY + smsRequest.getUuid();
+        String code = redisCache.getCacheObject(verifyKey);
+        redisCache.deleteObject(verifyKey);
+        if (code == null) {
+            throw new CaptchaExpireException();
+        }
+        if (!code.equalsIgnoreCase(smsRequest.getCaptcha())) {
+            throw new CaptchaException();
+        }
+        return ajax;
+    }
 }

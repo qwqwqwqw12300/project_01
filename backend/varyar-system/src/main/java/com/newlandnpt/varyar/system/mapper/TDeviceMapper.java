@@ -23,6 +23,13 @@ public interface TDeviceMapper
      * @return 设备
      */
     public TDevice selectTDeviceByDeviceId(Long deviceId);
+    /**
+     * 查询设备
+     *
+     * @param memberId 会员id
+     * @return 设备
+     */
+    public List<TDevice> selectTDeviceByMember(Long memberId);
 
     /**
      * 查询设备列表

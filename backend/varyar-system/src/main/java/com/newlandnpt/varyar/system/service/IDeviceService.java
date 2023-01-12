@@ -32,6 +32,13 @@ public interface IDeviceService
     /**
      * 查询设备列表
      *
+     * @param memberId 设备
+     * @return 设备集合
+     */
+    public List<TDevice> selectDeviceByMember(Long memberId);
+    /**
+     * 查询设备列表
+     *
      * @param map 设备
      * @return 设备集合
      */

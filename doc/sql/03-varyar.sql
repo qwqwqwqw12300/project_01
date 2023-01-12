@@ -278,3 +278,14 @@ create table t_device_fence (
   update_time       datetime                                comment '更新时间',
   primary key (device_fence_id)
 ) engine=innodb auto_increment=100 comment = '设备电子围栏表';
+
+drop table if exists t_notice;
+create table t_notice (
+  notice_id			bigint(20)      not null auto_increment    comment '公告id',
+  sys_notice_id     bigint(20)      					       comment '系统公告id',
+  member_id         bigint(20)                                 comment '会员id',
+  read_flag         char(1)                                    comment '阅读标志（0未读 1已读）',
+  create_time        datetime                                  comment '创建时间',
+  update_time       datetime                                   comment '更新时间',
+  primary key (notice_id)
+) engine=innodb auto_increment=100 comment = '公告表';

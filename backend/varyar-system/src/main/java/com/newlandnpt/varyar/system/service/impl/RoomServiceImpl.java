@@ -34,7 +34,10 @@ public class RoomServiceImpl implements IRoomService
     {
         return roomMapper.selectTRoomByRoomId(roomId);
     }
-
+    @Override
+    public List<TRoom>  selectTRoomByFamilyId(Long familyId){
+        return roomMapper.selectTRoomByFamilyId(familyId);
+    }
     /**
      * 查询房间列表
      * 
@@ -46,19 +49,7 @@ public class RoomServiceImpl implements IRoomService
     {
         return roomMapper.selectTRoomList(tRoom);
     }
-    /**
-     * 查询房间列表
-     *
-     * @param memberId 会员id
-     * @param familyId 家庭id
-     * @return 房间
-     */
-    public List<TRoom> selectTRoomList(Long memberId,Long familyId){
-        Map map = new HashMap();
-        map.put("memberId",memberId);
-        map.put("familyId",familyId);
-        return roomMapper.selectByMemberIdList(map);
-    }
+
     /**
      * 新增房间
      * 

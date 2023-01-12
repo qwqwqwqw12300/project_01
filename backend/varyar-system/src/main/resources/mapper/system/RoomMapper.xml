@@ -16,9 +16,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <sql id="selectTRoomVo">
         select room_id, name, family_id, del_flag, create_time, update_time from t_room
     </sql>
-    <sql id="selectTRoomVo1">
-        select r.room_id, r.name, r.family_id, r.del_flag, r.create_time, r.update_time
-    </sql>
     <select id="selectTRoomList" parameterType="TRoom" resultMap="TRoomResult">
         <include refid="selectTRoomVo"/>
         <where>  
@@ -26,19 +23,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="familyId != null "> and family_id = #{familyId}</if>
         </where>
     </select>
-    <select id="selectByMemberIdList" parameterType="Map" resultMap="TRoomResult">
-        <include refid="selectTRoomVo1"/>
-        from t_room r
-        join t_family tf on tf.family_id = r.family_id and tf.del_flag ="0" and tf.family_id = #{familyId}
-        join  t_member_family tmf on tmf.family_id = tf.family_id and tmf.del_flag ="0"and tmf.create_member_id = #{memberId}
-        where r.del_flag= '0'
-    </select>
-    
+
     <select id="selectTRoomByRoomId" parameterType="Long" resultMap="TRoomResult">
         <include refid="selectTRoomVo"/>
         where room_id = #{roomId}
     </select>
-        
+    <select id="selectTRoomByFamilyId" parameterType="Long" resultMap="TRoomResult">
+        <include refid="selectTRoomVo"/>
+        where family_id = #{familyId}
+    </select>
     <insert id="insertTRoom" parameterType="TRoom" useGeneratedKeys="true" keyProperty="roomId">
         insert into t_room
         <trim prefix="(" suffix=")" suffixOverrides=",">

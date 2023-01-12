@@ -18,7 +18,7 @@ public interface IMemberFamilyService
      * @return 会员和家庭关联
      */
     public TMemberFamily selectTMemberFamilyByMemberFamilyId(Long memberFamilyId);
-    public List<TMemberFamily>  selectTMemberFamilyByMemberFamilyId(Long memberFamilyId,Long memberId);
+    public List<TMemberFamily>  selectTMemberFamilyByMemberFamilyId(Long FamilyId,Long memberId);
     /**
      * 用手机号查询 会员与家庭信息
      *

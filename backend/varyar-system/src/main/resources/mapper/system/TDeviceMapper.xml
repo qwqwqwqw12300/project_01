@@ -95,9 +95,8 @@
     </select>
 
     <select id="selectByMemberId" parameterType="Map" resultMap="TDeviceResult">
-        select ta.* from t_device ta join (
-        <include refid="selectTDeviceByMemberId"/> and tmf.member_id = #{memberId}
-        where r.del_flag ="0" and r.room_id = #{roomId} and r.family_id = #{familyId}) trm on trm.family_id =  ta.family_id and trm.room_id = ta.room_id
+        <include refid="selectTDeviceVo"/>
+        where ta.del_flag ="0" and ta.room_id = #{roomId} and ta.family_id = #{familyId}) and ta.member_id=#{memberId}
     </select>
 
     <select id="selectTDeviceByDeviceId" parameterType="Long" resultMap="TDeviceResult">
@@ -105,6 +104,12 @@
         where device_id = #{deviceId}
         and del_flag = '0'
     </select>
+
+    <select id="selectTDeviceByMember" parameterType="Long" resultMap="TDeviceResult">
+    <include refid="selectTDeviceVo"/>
+    where device_id = #{memberId}
+    and del_flag = '0'
+</select>
     <select id="selectBizCareDeviceList" parameterType="Long" resultMap="TDeviceResult">
         <include refid="selectTDeviceVo"/>
         where (

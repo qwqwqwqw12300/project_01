@@ -34,10 +34,10 @@ public class MemberFamilyServiceImpl implements IMemberFamilyService
     {
         return tMemberFamilyMapper.selectTMemberFamilyByMemberFamilyId(memberFamilyId);
     }
-    public List<TMemberFamily> selectTMemberFamilyByMemberFamilyId(Long memberFamilyId,Long memberId){
+    public List<TMemberFamily> selectTMemberFamilyByMemberFamilyId(Long FamilyId,Long memberId){
         Map map = new HashMap();
         map.put("memberId",memberId);
-        map.put("familyId",memberId);
+        map.put("familyId",FamilyId);
         return tMemberFamilyMapper.selectTMemberFamilyByFamilyId(map);
     }
     public List<TMemberFamily> selectTMemberFamilyByPhone(String phone){

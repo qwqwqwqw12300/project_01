@@ -5,7 +5,7 @@ import javax.validation.constraints.Size;
 
 public class MemberContactsRequest {
     @Size(min = 0, max = 20, message = "会员联络人id不能超过20个字符")
-    private String MemberContactsId;
+    private String memberContactsId;
 
     /**
      * 联络人姓名
@@ -24,11 +24,11 @@ public class MemberContactsRequest {
     private String orderNum;
 
     public String getMemberContactsId() {
-        return MemberContactsId;
+        return memberContactsId;
     }
 
     public void setMemberContactsId(String memberContactsId) {
-        MemberContactsId = memberContactsId;
+        this.memberContactsId = memberContactsId;
     }
 
     public String getPhoneName() {

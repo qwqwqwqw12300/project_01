@@ -49,7 +49,10 @@ public class DeviceServiceImpl implements IDeviceService {
     public TDevice selectDeviceByDeviceId(Long deviceId) {
         return deviceMapper.selectTDeviceByDeviceId(deviceId);
     }
-
+    @Override
+    public List<TDevice> selectDeviceByMember(Long memberId){
+        return deviceMapper.selectTDeviceByMember(memberId);
+    }
     /**
      * 查询设备列表
      *

@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.system.domain.TVersion;
 import com.newlandnpt.varyar.system.service.IVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +29,10 @@ public class VersionController extends BaseController
     @PostMapping(value = "/selectVersionInfo")
     public AjaxResult selectVersionInfo(@RequestParam("versionType") String versionType)
     {
-        return success(versionService.selectTVersionByVersionType(versionType));
+        TVersion tVersion = versionService.selectTVersionByVersionType(versionType);
+        if (tVersion == null){
+            error("版本信息为空！");
+        }
+        return success(tVersion);
     }
-
-
 }

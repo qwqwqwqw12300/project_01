@@ -43,13 +43,19 @@ public class RoomController extends BaseController {
 * */
     @PostMapping("/list")
     public TableDataInfo list(@RequestBody @Validated RoomRequest roomRequest) {
+        if (roomRequest.getFamilyId().equals("")|| roomRequest.getFamilyId()==null){
+            throw new ServiceException(String.format("家庭Id不能为空！"));
+        }
         startPage();
         Long memberId = getLoginUser().getMemberId();
-        List<TMemberFamily> TMemberFamilys = iMemberFamilyService.selectTMemberFamilyByMemberFamilyId(Long.valueOf(roomRequest.getFamilyId()),memberId);
+        // 查询当前会员与家庭关系
+        List<TMemberFamily> TMemberFamilys =
+                iMemberFamilyService.selectTMemberFamilyByMemberFamilyId(Long.valueOf(roomRequest.getFamilyId()),memberId);
         if(CollectionUtils.isEmpty(TMemberFamilys)||TMemberFamilys.size()==0){
             throw new ServiceException(String.format("家庭信息不存在！"));
         }
-        List<TRoom> list = iRoomService.selectTRoomList(memberId,Long.valueOf(roomRequest.getFamilyId()));
+        //获取家庭与房间信息
+        List<TRoom> list = iRoomService.selectTRoomByFamilyId(Long.valueOf(roomRequest.getFamilyId()));
         return getDataTable(list);
     }
     /*
