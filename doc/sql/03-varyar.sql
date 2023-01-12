@@ -113,7 +113,8 @@ create table t_family (
 drop table if exists t_member_family;
 create table t_member_family (
   member_family_id         bigint(20)      not null auto_increment    comment '会员和家庭关联id',
-  member_id         bigint(20)      not null                   comment '会员id',
+  member_id         bigint(20)      not null                   comment '会员id(共享对象的会员id)',
+  phone				varchar(11)      default '' 				comment '手机号',
   family_id         bigint(20)      not null                   comment '家庭id',
   create_member_id  bigint(20)      not null                   comment '创建会员id',
   share_flag          char(1)                                  comment '共享标志（0代表是 2代表非）',
@@ -250,7 +251,7 @@ create table t_room_zone (
   z1                decimal(10,2)                         comment '最底部的点',
   z2                decimal(10,2)                         comment '最顶部的点',
   exist_flag        char(1)                               comment '存在监测标志（0是 1否）',
-  fall_flag         char(1)                               comment '迭代监测标志（0是 1否）',
+  fall_flag         char(1)                               comment '跌倒监测标志（0是 1否）',
   entry_time        int                                   comment '进入时间(s)',
   departure_time    int                                   comment '离开时间(s)',
   create_time       datetime                               comment '创建时间',
