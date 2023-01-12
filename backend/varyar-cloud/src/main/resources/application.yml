@@ -143,6 +143,8 @@ rocketmq:
     deviceState: group_deviceState
     access: group_access
     location: group_location
+    cloud: group_cloud
+    deviceConfig: group_deviceConfig
   topic:
     net: netTopic
     fall: fallTopic
@@ -150,6 +152,7 @@ rocketmq:
     deviceState: deviceStateTopic
     access: accessTopic
     location: locationTopic
+    deviceConfig: deviceConfigTopic
 
 location:
   gaode:

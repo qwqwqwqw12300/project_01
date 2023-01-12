@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
+import com.newlandnpt.varyar.cloudBase.constant.CacheConstants;
 import com.newlandnpt.varyar.cloudBase.domain.State;
 import com.newlandnpt.varyar.cloudBase.mapper.StateMapper;
 import com.newlandnpt.varyar.cloudBase.service.StateService;
@@ -39,8 +40,6 @@ public class StateServiceImpl implements StateService {
 	 @Value("${rocketmq.topic.deviceState}")
 	 private String deviceStateTopic;
 
-	 public static final String CACHE_KEY = "cloud:state:";
-	 
 	 @Override
 	 public void receve(State t) {
 		 String deviceId = t.getDeviceId();
@@ -57,7 +56,7 @@ public class StateServiceImpl implements StateService {
 		 } else {
 			 stateMapper.update(t);
 		 }
-		 SpringUtils.getBean(RedisCache.class).setCacheObject(CACHE_KEY + t.getDeviceId(), t);
+		 SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.DEVICE_STATE_KEY + t.getDeviceId(), t);
 		 SendResult result = rocketMQTemplate.syncSend(deviceStateTopic, MessageBuilder.withPayload(t).build());
 		 //System.out.println(JSON.toJSONString(result));
 		 if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
