@@ -8,3 +8,12 @@ export function pageDevice(query) {
     params: query
   })
 }
+
+
+// 查询设备详细
+export function getDevice(deviceId) {
+  return request({
+    url: '/device/' + deviceId,
+    method: 'get'
+  })
+}
