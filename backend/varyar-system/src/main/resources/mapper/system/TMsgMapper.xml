@@ -6,36 +6,46 @@
 
     <resultMap type="TMsg" id="TMsgResult">
         <result property="msgId"    column="msg_id"    />
+        <result property="msgType"    column="msg_type"    />
         <result property="no"    column="no"    />
         <result property="content"    column="content"    />
         <result property="eventId"    column="event_id"    />
         <result property="deviceId"    column="device_id"    />
         <result property="familyId"    column="family_id"    />
         <result property="memberId"    column="member_id"    />
+        <result property="operator"    column="operator"    />
+        <result property="sendStatus"    column="send_status"    />
+        <result property="reason"    column="reason"    />
         <result property="operateFlag"    column="operate_flag"    />
+        <result property="sendTime"    column="send_time"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 
     <sql id="selectTMsgVo">
-        select msg_id, no, content, event_id, device_id, family_id, member_id, operate_flag, create_time, update_time from t_msg
+        select msg_id, msg_type, no, content, event_id, device_id, family_id, member_id, operator, send_status, reason, operate_flag, send_time, create_time, update_time from t_msg
     </sql>
     <sql id="selectTMsgByMemberId">
         select tm.msg_id, tm.no, tm.content, tm.event_id, tm.device_id, tm.family_id, tm.member_id, tm.operate_flag, tm.create_time,
-        tm.update_time  from  t_msg tm join t_member_family  tmf on tm.family_id = tmf.family_id
+               tm.update_time  from  t_msg tm join t_member_family  tmf on tm.family_id = tmf.family_id
     </sql>
 
 
     <select id="selectTMsgList" parameterType="TMsg" resultMap="TMsgResult">
         <include refid="selectTMsgVo"/>
         <where>
+            <if test="msgType != null  and msgType != ''"> and msg_type = #{msgType}</if>
             <if test="no != null  and no != ''"> and no = #{no}</if>
             <if test="content != null  and content != ''"> and content = #{content}</if>
             <if test="eventId != null "> and event_id = #{eventId}</if>
             <if test="deviceId != null "> and device_id = #{deviceId}</if>
             <if test="familyId != null "> and family_id = #{familyId}</if>
             <if test="memberId != null "> and member_id = #{memberId}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="sendStatus != null  and sendStatus != ''"> and send_status = #{sendStatus}</if>
+            <if test="reason != null  and reason != ''"> and reason = #{reason}</if>
             <if test="operateFlag != null  and operateFlag != ''"> and operate_flag = #{operateFlag}</if>
+            <if test="sendTime != null "> and send_time = #{sendTime}</if>
         </where>
     </select>
 
@@ -54,24 +64,34 @@
     <insert id="insertTMsg" parameterType="TMsg" useGeneratedKeys="true" keyProperty="msgId">
         insert into t_msg
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="msgType != null">msg_type,</if>
             <if test="no != null">no,</if>
             <if test="content != null">content,</if>
             <if test="eventId != null">event_id,</if>
             <if test="deviceId != null">device_id,</if>
             <if test="familyId != null">family_id,</if>
             <if test="memberId != null">member_id,</if>
+            <if test="operator != null">operator,</if>
+            <if test="sendStatus != null">send_status,</if>
+            <if test="reason != null">reason,</if>
             <if test="operateFlag != null">operate_flag,</if>
+            <if test="sendTime != null">send_time,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="msgType != null">#{msgType},</if>
             <if test="no != null">#{no},</if>
             <if test="content != null">#{content},</if>
             <if test="eventId != null">#{eventId},</if>
             <if test="deviceId != null">#{deviceId},</if>
             <if test="familyId != null">#{familyId},</if>
             <if test="memberId != null">#{memberId},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="sendStatus != null">#{sendStatus},</if>
+            <if test="reason != null">#{reason},</if>
             <if test="operateFlag != null">#{operateFlag},</if>
+            <if test="sendTime != null">#{sendTime},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
         </trim>
@@ -80,13 +100,18 @@
     <update id="updateTMsg" parameterType="TMsg">
         update t_msg
         <trim prefix="SET" suffixOverrides=",">
+            <if test="msgType != null">msg_type = #{msgType},</if>
             <if test="no != null">no = #{no},</if>
             <if test="content != null">content = #{content},</if>
             <if test="eventId != null">event_id = #{eventId},</if>
             <if test="deviceId != null">device_id = #{deviceId},</if>
             <if test="familyId != null">family_id = #{familyId},</if>
             <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="sendStatus != null">send_status = #{sendStatus},</if>
+            <if test="reason != null">reason = #{reason},</if>
             <if test="operateFlag != null">operate_flag = #{operateFlag},</if>
+            <if test="sendTime != null">send_time = #{sendTime},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>

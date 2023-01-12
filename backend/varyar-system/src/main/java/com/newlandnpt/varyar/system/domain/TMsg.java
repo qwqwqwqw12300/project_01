@@ -1,9 +1,12 @@
 package com.newlandnpt.varyar.system.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
+
+import java.util.Date;
 
 /**
  * 消息对象 t_msg
@@ -17,6 +20,10 @@ public class TMsg extends BaseEntity
 
     /** 消息id */
     private Long msgId;
+
+    /** 消息类型:1短信 2APP消息 3事件消息 */
+    @Excel(name = "消息类型:1短信 2APP消息 3事件消息", readConverterExp = "1=短信,2=APP消息,3事件消息")
+    private String msgType;
 
     /** 消息编号 */
     @Excel(name = "消息编号")
@@ -42,9 +49,26 @@ public class TMsg extends BaseEntity
     @Excel(name = "处理人会员id")
     private Long memberId;
 
+    /** 操作人员 */
+    @Excel(name = "操作人员")
+    private String operator;
+
+    /** 发送状态 */
+    @Excel(name = "发送状态", readConverterExp = "0=未发送,1=已发送")
+    private String sendStatus;
+
+    /** 失败原因 */
+    @Excel(name = "失败原因")
+    private String reason;
+
     /** 已读未读标志（0未处理 1已处理） */
     @Excel(name = "已读未读标志", readConverterExp = "0=未处理,1=已处理")
     private String operateFlag;
+
+    /** 发送时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "发送时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date sendTime;
 
     public void setMsgId(Long msgId)
     {
@@ -109,6 +133,47 @@ public class TMsg extends BaseEntity
     {
         return memberId;
     }
+
+    public String getMsgType() {
+        return msgType;
+    }
+
+    public void setMsgType(String msgType) {
+        this.msgType = msgType;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public String getSendStatus() {
+        return sendStatus;
+    }
+
+    public void setSendStatus(String sendStatus) {
+        this.sendStatus = sendStatus;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Date getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(Date sendTime) {
+        this.sendTime = sendTime;
+    }
+
     public void setOperateFlag(String operateFlag)
     {
         this.operateFlag = operateFlag;
@@ -121,17 +186,20 @@ public class TMsg extends BaseEntity
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-                .append("msgId", getMsgId())
-                .append("no", getNo())
-                .append("content", getContent())
-                .append("eventId", getEventId())
-                .append("deviceId", getDeviceId())
-                .append("familyId", getFamilyId())
-                .append("memberId", getMemberId())
-                .append("operateFlag", getOperateFlag())
-                .append("createTime", getCreateTime())
-                .append("updateTime", getUpdateTime())
-                .toString();
+        return "TMsg{" +
+                "msgId=" + msgId +
+                ", msgType='" + msgType + '\'' +
+                ", no='" + no + '\'' +
+                ", content='" + content + '\'' +
+                ", eventId=" + eventId +
+                ", deviceId=" + deviceId +
+                ", familyId=" + familyId +
+                ", memberId=" + memberId +
+                ", operator='" + operator + '\'' +
+                ", sendStatus='" + sendStatus + '\'' +
+                ", reason='" + reason + '\'' +
+                ", operateFlag='" + operateFlag + '\'' +
+                ", sendTime=" + sendTime +
+                '}';
     }
 }

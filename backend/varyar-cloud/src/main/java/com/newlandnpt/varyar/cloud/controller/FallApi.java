@@ -2,8 +2,6 @@ package com.newlandnpt.varyar.cloud.controller;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,17 +18,14 @@ import com.newlandnpt.varyar.cloudBase.service.FallService;
 @Controller
 @RequestMapping("/cloud/notify")
 public class FallApi {
-	
-    private static final Logger log = LoggerFactory.getLogger(FallApi.class);
     
     @Resource(name = "cloud.fallService")
 	private FallService fallService;
-
+    
     @GetMapping("/fall")
     @ResponseBody
     public void fall(@RequestBody Fall fall) {
     	fallService.receve(fall);
-    	System.out.println("fall event");
     }
 
 }

@@ -43,14 +43,14 @@ public class AgreementController extends BaseController
     {
         startPage();
         List<TAgreement> list = agreementService.selectTAgreementList(tAgreement);
-        setType(list);
+//        setType(list);
         return getDataTable(list);
     }
-    private void setType(List<TAgreement> list){
-        for(TAgreement item : list){
-            item.setType(item.getType().equals("0")?"隐私协议":"APP协议");
-        }
-    }
+//    private void setType(List<TAgreement> list){
+//        for(TAgreement item : list){
+//            item.setType(item.getType().equals("0")?"隐私协议":"APP协议");
+//        }
+//    }
 
     /**
      * 导出协议列表

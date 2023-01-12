@@ -5,21 +5,41 @@
 			<view class="ui-form-item">
 				<u-icon name="email" size="37"></u-icon>
 				<text class="text">消息推送</text>
-				<u-switch activeColor="#5ac725" inactiveColor="rgb(138, 138, 138)" size="24"> ></u-switch>
+				<u-switch @change="handleSwitch" v-model="flag" activeValue="1" inactiveValue="0" activeColor="#5ac725" inactiveColor="rgb(138, 138, 138)"
+					size="24"> >
+				</u-switch>
 			</view>
 		</view>
 	</app-body>
 </template>
 
 <script>
+	import {
+		PostUpdPushMsg,
+		PostGetPushMsgState,
+	} from '@/common/http/api.js';
 	export default {
 		data() {
 			return {
-
+				flag: '0', //0关闭，1开启
 			}
 		},
 		methods: {
-
+			handleSwitch() {
+				PostUpdPushMsg({
+					flag: this.flag
+				}).then(res => {
+					uni.$u.toast(res.msg)
+				})
+			},
+			handleInit() {
+				PostGetPushMsgState({}).then(res => {
+					this.flag = res + ''
+				})
+			}
+		},
+		mounted() {
+			this.handleInit()
 		}
 	}
 </script>
