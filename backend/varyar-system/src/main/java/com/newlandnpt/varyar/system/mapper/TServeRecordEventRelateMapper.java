@@ -9,7 +9,7 @@ import com.newlandnpt.varyar.system.domain.TServeRecordEventRelate;
  * @author lin.ju
  * @date 2023-01-04
  */
-public interface ServeRecordEventRelateMapper 
+public interface TServeRecordEventRelateMapper
 {
     /**
      * 查询服务记录和事件关联

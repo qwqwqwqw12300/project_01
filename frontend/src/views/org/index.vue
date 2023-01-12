@@ -130,7 +130,7 @@
             <el-form-item label="上级机构" prop="parentId">
               <treeselect v-if="!forView" :value="form.parentId === 0?null:form.parentId" @input="handleParentId" :options="orgOptions" :normalizer="normalizer" placeholder="选择上级机构" >
               </treeselect>
-              <el-input v-model="form.parentName"></el-input>
+              <el-input v-if="forView" disabled v-model="form.parentName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">

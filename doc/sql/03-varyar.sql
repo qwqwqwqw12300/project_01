@@ -227,13 +227,18 @@ create table t_event (
 drop table if exists t_msg;
 create table t_msg (
   msg_id        bigint(20)      not null auto_increment    comment '消息id',
+  msg_type                char(1)     default ''             comment '消息类型:1短信 2APP消息 3事件消息',
   no                varchar(50)     default ''             comment '消息编号',
   content           varchar(50)     default ''             comment '内容',
   event_id       bigint(20)                                comment '事件id',
   device_id         bigint(20)                                comment '设备id',
   family_id         bigint(20)                                comment '家庭id',
   member_id       bigint(20)                                comment '处理人会员id',
+  operator        varchar (150)                                comment '操作人员',
+  send_status     char (1)                                     comment '发送状态',
+  reason          varchar (300)                                comment '失败原因',
   operate_flag        char(1)         default null            comment '已读未读标志（0未处理 1已处理）',
+  send_time         datetime                                comment '发送时间',
   create_time       datetime                               comment '创建时间',
   update_time       datetime                               comment '更新时间',
   primary key (msg_id)

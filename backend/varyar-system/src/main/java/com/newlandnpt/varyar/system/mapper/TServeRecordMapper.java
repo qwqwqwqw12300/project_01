@@ -9,7 +9,7 @@ import com.newlandnpt.varyar.system.domain.TServeRecord;
  * @author lin.ju
  * @date 2023-01-04
  */
-public interface ServeRecordMapper 
+public interface TServeRecordMapper
 {
     /**
      * 查询服务记录

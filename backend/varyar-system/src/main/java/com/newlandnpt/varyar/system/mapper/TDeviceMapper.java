@@ -87,6 +87,14 @@ public interface TDeviceMapper
     public int arrangeDeviceToGroup(@Param("deviceIds")Long[] deviceIds,@Param("deviceGroupId") Long deviceGroupId,@Param("updateBy") String updateBy);
 
     /**
+     * 清空设备的设备组
+     * @param deviceGroupId
+     * @param updateBy
+     * @return
+     */
+    public int clearDeviceGroup(@Param("deviceGroupId") Long deviceGroupId,@Param("updateBy") String updateBy);
+
+    /**
      * 统计已激活设备数量（激活后即使设备下线也包括在内）
      * @return
      * @param device

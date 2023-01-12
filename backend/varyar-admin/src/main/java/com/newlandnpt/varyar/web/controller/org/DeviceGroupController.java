@@ -109,8 +109,8 @@ public class DeviceGroupController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('org:deviceGroup:deviceArrange')")
     @Log(title = "设备组-分配设备", businessType = BusinessType.UPDATE)
-    @PutMapping("{deviceGroupId}/devices/arrange")
-    public AjaxResult edit(@RequestBody Long[] deviceIds,@PathVariable Long deviceGroupId)
+    @PutMapping({"{deviceGroupId}/devices/arrange","/devices/arrange"})
+    public AjaxResult edit(@RequestBody Long[] deviceIds,@PathVariable(required = false) Long deviceGroupId)
     {
         return toAjax(deviceService.arrangeDeviceToGroup(deviceIds,deviceGroupId));
     }

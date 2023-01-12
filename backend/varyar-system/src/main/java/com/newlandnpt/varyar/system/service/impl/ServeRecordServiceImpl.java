@@ -5,7 +5,7 @@ import java.util.List;
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.system.domain.TServeRecordEventRelate;
-import com.newlandnpt.varyar.system.mapper.ServeRecordEventRelateMapper;
+import com.newlandnpt.varyar.system.mapper.TServeRecordEventRelateMapper;
 import com.newlandnpt.varyar.system.mapper.SysUserMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.newlandnpt.varyar.system.mapper.ServeRecordMapper;
+import com.newlandnpt.varyar.system.mapper.TServeRecordMapper;
 import com.newlandnpt.varyar.system.domain.TServeRecord;
 import com.newlandnpt.varyar.system.service.IServeRecordService;
 
@@ -27,9 +27,9 @@ import com.newlandnpt.varyar.system.service.IServeRecordService;
 public class ServeRecordServiceImpl implements IServeRecordService 
 {
     @Autowired
-    private ServeRecordMapper serveRecordMapper;
+    private TServeRecordMapper serveRecordMapper;
     @Autowired
-    private ServeRecordEventRelateMapper serveRecordEventRelateMapper;
+    private TServeRecordEventRelateMapper serveRecordEventRelateMapper;
     @Autowired
     private SysUserMapper sysUserMapper;
 

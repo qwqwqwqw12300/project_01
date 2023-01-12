@@ -1,8 +1,8 @@
 {
-  "name": "varyar",
+  "name": "vayyar",
   "version": "3.8.4",
-  "description": "varyar管理系统",
-  "author": "varyar",
+  "description": "vayyar管理系统",
+  "author": "vayyar",
   "license": "MIT",
   "scripts": {
     "dev": "vue-cli-service serve",
