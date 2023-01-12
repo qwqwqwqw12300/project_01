@@ -38,3 +38,11 @@ insert into sys_dict_data values(42, 3,  '事件消息',     '3',       'sys_msg
 insert into sys_dict_type values(17, '消息类型', 'sys_send_status',   '0', 'admin', sysdate(), '', null, '消息类型');
 insert into sys_dict_data values(43, 1,  '未发送',     '0',      'sys_send_status',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:未发送');
 insert into sys_dict_data values(44, 2,  '已发送',     '1',       'sys_send_status',   '',   'success',  'N', '0', 'admin', sysdate(), '', null, '1:已发送');
+
+-- ----------------------------
+-- 设备类型:0雷达波 1监控设备 2手表
+-- ----------------------------
+insert into sys_dict_type values(null, '设备类型', 'device_type',   '0', 'admin', sysdate(), '', null, '消息类型');
+insert into sys_dict_data values(null, 1,  '雷达波',     '0',      'device_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:雷达波');
+insert into sys_dict_data values(null, 2,  '监控设备',     '1',      'device_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '1:监控设备');
+insert into sys_dict_data values(null, 3,  '手表',     '2',       'device_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '2:手表');

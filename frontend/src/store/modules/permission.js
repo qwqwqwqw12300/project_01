@@ -41,7 +41,20 @@ const permission = {
           const asyncRoutes = filterDynamicRoutes(dynamicRoutes);
           // changeRedirectIndexIfNotExist(constantRoutes, 'index')
           rewriteRoutes.push({path: '*', redirect: '/404', hidden: true})
-          // rewriteRoutes.push({path: '', redirect: 'platformAdminHome', hidden: true})
+          let redirect = undefined;
+          if(JSON.stringify(res.data).indexOf("platformAdminHome")!=-1){
+            redirect = '/platformAdminHome';
+          }else if(JSON.stringify(res.data).indexOf("orgAdminHome")!=-1){
+            redirect = '/orgAdminHome';
+          }else if(JSON.stringify(res.data).indexOf("operateAdminHome")!=-1){
+            redirect = '/operateAdminHome';
+          }
+          if(redirect){
+            rewriteRoutes.push({path: '', redirect: redirect, hidden: true})
+            rewriteRoutes.push({path: '/index', redirect: redirect, hidden: true})
+          }else{
+            rewriteRoutes.push({path: '/index', redirect: '/', hidden: true})
+          }
           router.addRoutes(asyncRoutes);
           commit('SET_ROUTES', rewriteRoutes)
           commit('SET_SIDEBAR_ROUTERS', constantRoutes.concat(sidebarRoutes))

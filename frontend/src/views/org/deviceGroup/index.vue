@@ -66,7 +66,7 @@
           <el-table ref="userTable" v-loading="loading" highlight-current-row
                     :data="userList" @current-change="handleSelectionChange">
             <el-table-column label="序号" align="center" width="65">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <el-radio :label="scope.row.userId" v-model="deviceGroupUserId"
                           @change.native="$refs.userTable.setCurrentRow(scope.row)">{{ scope.$index + 1 }}
                 </el-radio>
