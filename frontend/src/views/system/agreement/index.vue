@@ -78,7 +78,11 @@
       <el-table-column label="协议id" align="center" prop="agreementId" />
       <el-table-column label="协议内容" align="center" prop="content" />
       <el-table-column label="协议版本" align="center" prop="ver" />
-      <el-table-column label="协议类型" align="center" prop="type" />
+      <el-table-column label="协议类型" align="center" prop="type" >
+        <template slot-scope="scope">
+          {{ agreementTypeFormat(scope.row) }}
+        </template> 
+      </el-table-column>       
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -204,6 +208,12 @@ export default {
         this.loading = false;
       });
     },
+
+    // 发送状态字典翻译
+    agreementTypeFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.sys_agreement_type, row.type)
+    },
+
     // 取消按钮
     cancel() {
       this.open = false;
