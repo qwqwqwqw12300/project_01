@@ -15,10 +15,13 @@
 					<view class="ui-menu-item" :border="false" @click="gridClick(baseListItem.id)">
 						<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/myself/home.png"
 							size="60rpx"></u-icon>
-						<text class="grid-text">{{ baseListItem.title }}</text>
-						<view class="ui-edit" @click.stop="editFamliy">
+						<text class="grid-text">{{ baseListItem.name }}</text>
+						<view class="ui-edit" @click.stop="editFamliy(baseListItem)">
 							<u-icon name="edit-pen-fill" size="30rpx" color="#ff9500"></u-icon>
 						</view>
+						<u-icon @click="onDelete(baseListItem.familyId)" class="ui-close active"
+							name="close-circle-fill" size="40rpx">
+						</u-icon>
 					</view>
 				</u-grid-item>
 			</u-grid>
@@ -29,31 +32,37 @@
 			<view class="wd-add">
 				<view>
 					<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="家庭名称"></u-text>
-					<u--input placeholder="请输入家庭名称" border="bottom" clearable></u--input>
+					<u--input v-model="form.name" placeholder="请输入家庭名称" border="bottom" clearable></u--input>
 				</view>
 				<view>
 					<u-text size="28rpx" prefixIcon="map-fill" iconStyle="font-size: 36rpx" text="家庭地址(必填)"></u-text>
-					<u--input placeholder="请输入家庭名称" border="bottom" clearable></u--input>
+					<u--input v-model="form.address" placeholder="请输入家庭地址" border="bottom" clearable></u--input>
 				</view>
 				<view class="wd-btn-gloup">
 					<button @click="onSubmit">提交</button>
-					<button @click="onDelete">删除</button>
+					<button @click="onclose">取消</button>
 				</view>
 			</view>
 		</u-popup>
-		<add-family ref="addFamily" @next="familyNext" />
+		<add-family @update="getFamilyList" :btnName="'提交'" ref="addFamily" @next="familyNext" />
 	</app-body>
 </template>
 
 <script>
+	import {
+		PostFamilyList,
+		PostDelFamily,
+		PostEditFamily,
+	} from '@/common/http/api.js';
 	export default {
 		data() {
 			return {
 				isEditShow: false,
-				baseList: [{
-					title: '家庭1',
-					id: ''
-				}]
+				baseList: [],
+				form: {
+					name: '', //家庭名称
+					address: '', //家庭地址
+				}
 			};
 		},
 		methods: {
@@ -67,7 +76,8 @@
 			/**
 			 * 修改家庭
 			 */
-			editFamliy() {
+			editFamliy(item) {
+				this.form = item
 				this.isEditShow = true;
 			},
 
@@ -75,24 +85,46 @@
 			 * 关闭弹窗
 			 */
 			close() {
+				this.form = {}
 				this.isEditShow = false;
 			},
 			/**
 			 * 提交
 			 */
 			onSubmit() {
-				this.close();
+				const {
+					name,
+					address,
+					familyId,
+				} = this.form
+				if (!name) {
+					return uni.$u.toast('请填写家庭名称')
+				}
+				if (!address) {
+					return uni.$u.toast('请填写家庭地址')
+				}
+				PostEditFamily({
+					familyName: name,
+					address,
+					familyId
+				}).then(res => {
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						this.close();
+						this.getFamilyList()
+					}, 1000)
+				})
 			},
 			/**
-			 * 删除
+			 * 删除弹窗
 			 */
-			onDelete() {
+			onDelete(familyId) {
 				uni.showModal({
 					title: '提示',
 					content: '是否确认删除家庭',
 					success: res => {
 						if (res.confirm) {
-							this.close();
+							this.handleDelete(familyId)
 							console.log('用户点击确定');
 						} else if (res.cancel) {
 							console.log('用户点击取消');
@@ -104,14 +136,40 @@
 			 * 添加家庭
 			 */
 			add() {
-				this.$refs.addFamily.open();
+				this.$refs.addFamily.open({
+					btnName: '提交'
+				});
 			},
 
 			/**
 			 * 家庭添加完成
 			 */
-			familyNext() {}
+			familyNext() {},
 
+			/**
+			 * 获取家庭列表
+			 */
+			getFamilyList() {
+				PostFamilyList({}).then(res => {
+					this.baseList = res.rows
+				})
+			},
+			/**
+			 * 删除家庭列表
+			 */
+			handleDelete(familyId) {
+				PostDelFamily({
+					familyId
+				}).then(res => {
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						this.getFamilyList()
+					}, 1000)
+				})
+			}
+		},
+		mounted() {
+			this.getFamilyList()
 		}
 	};
 </script>
@@ -151,11 +209,18 @@
 				right: 10rpx;
 				z-index: 10;
 			}
+
+			.ui-close {
+				position: absolute;
+				right: -10rpx;
+				top: -10rpx;
+			}
 		}
 	}
 
 	.ui-btn {
 		text-align: center;
+		margin-top: 100rpx;
 
 		button {
 			width: 276rpx;

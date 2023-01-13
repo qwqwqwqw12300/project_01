@@ -89,3 +89,23 @@ export const PostVersionInfo = (params) => http.get('/api/version/selectVersionI
  *修改密码
  */
 export const PostUpdatePwd = (params) => http.post('/api/memberInfo/updatePwd', params)
+
+/* 
+ *获取家庭列表
+ */
+export const PostFamilyList = (params) => http.get('/api/family/list', params)
+
+/* 
+ *删除家庭
+ */
+export const PostDelFamily = (params) => http.post('/api/family/remFamily', params)
+
+/* 
+ *创建家庭
+ */
+export const PostAddFamily = (params) => http.post('/api/family/creFamily', params)
+
+/* 
+ *编辑家庭
+ */
+export const PostEditFamily = (params) => http.post('/api/family/editFamily', params)
