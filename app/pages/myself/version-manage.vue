@@ -3,18 +3,37 @@
 		<view class="ui-main">
 			<image class="ui-main-img" src="../../static/images/logo.png"></image>
 			<text class="ui-main-name">艾吉通</text>
-			<text class="ui-main-version">版本：2.1.0</text>
+			<text class="ui-main-version">版本：{{ version }}</text>
 
 			<view class="ui-main-button">
-				<button class="ui-button">检查更新</button>
+				<button class="ui-button" @click="handleQuery">检查更新</button>
 			</view>
 		</view>
 	</app-body>
 </template>
 
 <script>
+	import {
+		PostVersionInfo,
+	} from '@/common/http/api.js';
 	export default {
-
+		data() {
+			return {
+				version: ''
+			}
+		},
+		methods: {
+			handleQuery() {
+				PostVersionInfo({
+					versionType: '1',
+				}).then(res => {
+					this.version = res.data.content
+				})
+			}
+		},
+		mounted() {
+			this.handleQuery()
+		}
 	}
 </script>
 
@@ -47,7 +66,8 @@
 		.ui-main-button {
 			margin-top: 300px;
 			width: 600rpx;
-			.ui-button{
+
+			.ui-button {
 				width: 100%;
 				height: 80rpx;
 				line-height: 80rpx;

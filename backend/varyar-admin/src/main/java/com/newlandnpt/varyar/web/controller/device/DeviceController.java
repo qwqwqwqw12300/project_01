@@ -3,6 +3,8 @@ package com.newlandnpt.varyar.web.controller.device;
 import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.newlandnpt.varyar.system.service.IOrgService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,8 @@ public class DeviceController extends BaseController
 {
     @Autowired
     private IDeviceService tDeviceService;
+    @Autowired
+    private IOrgService orgService;
 
     /**
      * 查询设备列表
@@ -90,9 +94,14 @@ public class DeviceController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('device:groupArrange')")
     @Log(title = "设备-分配设备组", businessType = BusinessType.UPDATE)
-    @PutMapping("{deviceId}/arrange/group/{deviceGroupId}")
-    public AjaxResult arrangeDeviceToGroup(@PathVariable Long deviceId,@PathVariable Long deviceGroupId)
+    @PutMapping({"{deviceId}/arrange/group/{deviceGroupId}","{deviceId}/arrange/group"})
+    public AjaxResult arrangeDeviceToGroup(@PathVariable Long deviceId,@PathVariable(required = false) Long deviceGroupId)
     {
+
+        TDevice device = tDeviceService.selectDeviceByDeviceId(deviceId);
+        if(device!=null&&device.getOrgId()!=null){
+            orgService.checkOrgDataScope(device.getOrgId());
+        }
         return toAjax(tDeviceService.arrangeDeviceToGroup(Arrays.asList(deviceId).toArray(new Long[1]),deviceGroupId));
     }
     /**
@@ -103,6 +112,10 @@ public class DeviceController extends BaseController
     @PutMapping("/{deviceId}/status/active")
     public AjaxResult statusActive(@PathVariable Long deviceId)
     {
+        TDevice device = tDeviceService.selectDeviceByDeviceId(deviceId);
+        if(device!=null&&device.getOrgId()!=null){
+            orgService.checkOrgDataScope(device.getOrgId());
+        }
         return toAjax(tDeviceService.active(deviceId));
     }
 
@@ -114,6 +127,10 @@ public class DeviceController extends BaseController
     @PutMapping("/{deviceId}/status/offline")
     public AjaxResult statusOffline(@PathVariable Long deviceId)
     {
+        TDevice device = tDeviceService.selectDeviceByDeviceId(deviceId);
+        if(device!=null&&device.getOrgId()!=null){
+            orgService.checkOrgDataScope(device.getOrgId());
+        }
         return toAjax(tDeviceService.offline(deviceId));
     }
 
@@ -126,19 +143,10 @@ public class DeviceController extends BaseController
     @PutMapping("associate")
     public AjaxResult associate(@RequestBody TDevice device)
     {
+        //执行设备配对时校验数据权限
+        if(device.getOrgId()!=null)
+            orgService.checkOrgDataScope(device.getOrgId());
         return toAjax(tDeviceService.associate(device));
     }
 
-
-
-    /**
-     * 删除设备
-     */
-    @PreAuthorize("@ss.hasPermi('device:remove')")
-    @Log(title = "设备", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{deviceIds}")
-    public AjaxResult remove(@PathVariable Long[] deviceIds)
-    {
-        return toAjax(tDeviceService.deleteDeviceByDeviceIds(deviceIds));
-    }
 }

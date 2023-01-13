@@ -7,8 +7,10 @@ package com.newlandnpt.varyar.common.constant;
  */
 public class UserConstants
 {
-    /** 管理员角色权限标识 */
+    /** 超级管理员角色权限标识 */
     public static final String SUPER_ADMIN = "superAdmin";
+    /** 平台管理员角色权限标识 */
+    public static final String ADMIN = "admin";
     /**
      * 平台内系统用户的唯一标志
      */

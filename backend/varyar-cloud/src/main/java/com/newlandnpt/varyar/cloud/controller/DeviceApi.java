@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.newlandnpt.varyar.cloud.controller.rocketmq.DeviceConfigListener;
-import com.newlandnpt.varyar.cloudBase.domain.device.DeviceConfig;
+import com.newlandnpt.varyar.cloudBase.domain.device.config.DeviceConfig;
 import com.newlandnpt.varyar.cloudBase.service.FallService;
 
 /**

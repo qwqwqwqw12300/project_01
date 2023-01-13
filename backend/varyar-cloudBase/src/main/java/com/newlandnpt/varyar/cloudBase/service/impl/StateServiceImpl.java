@@ -1,5 +1,7 @@
 package com.newlandnpt.varyar.cloudBase.service.impl;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
@@ -19,8 +21,6 @@ import com.newlandnpt.varyar.cloudBase.mapper.StateMapper;
 import com.newlandnpt.varyar.cloudBase.service.StateService;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.utils.spring.SpringUtils;
-import com.newlandnpt.varyar.system.domain.TDevice;
-import com.newlandnpt.varyar.system.service.IDeviceService;
 
 
 @Service("cloud.stateService")
@@ -31,9 +31,6 @@ public class StateServiceImpl implements StateService {
 	@Resource(name = "cloud.stateMapper")
 	private StateMapper stateMapper;
 	
-	 @Autowired
-	 private IDeviceService deviceService;
-	 
 	 @Autowired
 	 private RocketMQTemplate rocketMQTemplate;
 	 
@@ -46,17 +43,13 @@ public class StateServiceImpl implements StateService {
 		 if(StringUtils.isBlank(deviceId)) {
 			 return ;
 		 }
-		 TDevice device = deviceService.selectByDeviceNo(deviceId);
-		 if(device == null) {
-			 return ;
-		 }
 		 State obj = stateMapper.selectByDeviceId(deviceId);
 		 if(obj == null) {
 			 stateMapper.insert(t);
 		 } else {
 			 stateMapper.update(t);
 		 }
-		 SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.DEVICE_STATE_KEY + t.getDeviceId(), t);
+		 SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.DEVICE_STATE_KEY + t.getDeviceId(), t, CacheConstants.STATE_EXPIRATION, TimeUnit.MINUTES);
 		 SendResult result = rocketMQTemplate.syncSend(deviceStateTopic, MessageBuilder.withPayload(t).build());
 		 //System.out.println(JSON.toJSONString(result));
 		 if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {

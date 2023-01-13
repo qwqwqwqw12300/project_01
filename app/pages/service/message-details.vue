@@ -29,12 +29,12 @@
 			initData(msgId) {
 				PostMessageDeatil({
 					msgId
-				}).then(res=>{
+				}).then(res => {
 					this.content = res.rows[0].content
 				})
 			}
 		},
-		onLoad(options){
+		onLoad(options) {
 			this.initData(options.msgId)
 		}
 	}

@@ -13,7 +13,8 @@
 			<view class="ui-form-item">
 				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="原密码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u-input placeholder="请输入原密码" :password="true" :border="'none'" fontSize="28rpx" clearable>
+					<u-input v-model="form.oldPassword" placeholder="请输入原密码" :password="true" :border="'none'"
+						fontSize="28rpx" clearable>
 						<template slot="suffix">
 							<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
 						</template>
@@ -23,7 +24,8 @@
 			<view class="ui-form-item">
 				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u-input placeholder="请输入新密码" :border="'none'" :password="true" fontSize="28rpx" clearable>
+					<u-input v-model="form.newPassword" placeholder="请输入新密码" :border="'none'" :password="true"
+						fontSize="28rpx" clearable>
 						<template slot="suffix">
 							<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
 						</template>
@@ -33,7 +35,8 @@
 			<view class="ui-form-item">
 				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="确认密码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u-input placeholder="再次输入新密码" :border="'none'" :password="true" fontSize="28rpx" clearable>
+					<u-input v-model="form.reNewPassword" placeholder="再次输入新密码" :border="'none'" :password="true"
+						fontSize="28rpx" clearable>
 						<template slot="suffix">
 							<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
 						</template>
@@ -41,26 +44,65 @@
 				</view>
 			</view>
 			<view class="wd-btn-gloup">
-				<button @click="goLogin">重置</button>
-				<button @click="goLogin">取消</button>
+				<button @click="handleReset">重置</button>
+				<button @click="handleCancel">取消</button>
 			</view>
 		</view>
 	</app-body>
 </template>
 
 <script>
+	import {
+		PostUpdatePwd,
+	} from '@/common/http/api.js';
+	import jsencrypt from '@/common/utils/jsencrypt.vue'
+	import {
+		env
+	} from "@/config/env.js";
 	export default {
 		data() {
-			return {};
+			return {
+				form: {
+					oldPassword: '',
+					newPassword: '',
+					reNewPassword: '',
+				}
+			};
 		},
 		methods: {
 			/**
-			 * 跳转登录
+			 * 重置
 			 */
-			goLogin() {
-				uni.navigateTo({
-					url: '/pages/login/login'
-				});
+			handleReset() {
+				const {
+					oldPassword,
+					newPassword,
+					reNewPassword
+				} = this.form
+				if (!oldPassword) {
+					return uni.$u.toast('请填写原密码')
+				}
+				if (!newPassword || !reNewPassword) {
+					return uni.$u.toast('请填写新密码')
+				}
+				if (newPassword !== reNewPassword) {
+					return uni.$u.toast('两次密码不一致')
+				}
+				const submitForm = {
+					newPassword: jsencrypt.setEncrypt(env.publicKey, newPassword),
+					oldPassword: jsencrypt.setEncrypt(env.publicKey, oldPassword)
+				}
+				PostUpdatePwd({
+					...submitForm
+				}).then(res => {
+					uni.$u.toast(res.msg)
+					this.handleCancel()
+				})
+			},
+			handleCancel() {
+				setTimeout(() => {
+					uni.navigateBack()
+				}, 500)
 			}
 		}
 	};

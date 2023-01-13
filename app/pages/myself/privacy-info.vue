@@ -4,20 +4,33 @@
 		<app-logo text="隐私协议"></app-logo>
 		<view class="uni-agreement">
 			<scroll-view scroll-y class="uni-agreement-scroll">
-	
+				{{ content }}
 			</scroll-view>
 		</view>
 	</app-body>
 </template>
 
 <script>
+	import {
+		PostSelectAgreement,
+	} from '@/common/http/api.js';
 	export default {
 		data() {
 			return {
+				content: '',
 			}
 		},
 		methods: {
-
+			handleInit() {
+				PostSelectAgreement({
+					agreementType: '0'
+				}).then(res => {
+					this.content = res.data.content
+				})
+			}
+		},
+		mounted() {
+			this.handleInit()
 		}
 	}
 </script>

@@ -60,6 +60,7 @@ const request = (url, options, process, method = 'POST') => {
 			},
 			withCredentials: true,
 			success: result => {
+				console.log(result, '887')
 				const {
 					statusCode,
 					data

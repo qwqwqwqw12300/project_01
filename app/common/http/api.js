@@ -101,3 +101,43 @@ export const getDeviceList = (data) => http.post('/api/device/list', data);
 export const selectEventInfo = (data) => http.post('/api/event/selectEventInfo', data);
 /**事件信息**/
 export const getEventList = () => http.get('/api/event/list');
+export const PostEditContacts = (params) => http.post('/api/memberContacts/editMemberCon', params)
+
+/* 
+ *查询协议*
+ */
+export const PostSelectAgreement = (params) => http.post('/api/agreement/selectAgreement', params)
+/* 
+ *查询版本*
+ */
+export const PostVersionInfo = (params) => http.get('/api/version/selectVersionInfo', params)
+
+/* 
+ *修改密码
+ */
+export const PostUpdatePwd = (params) => http.post('/api/memberInfo/updatePwd', params)
+
+/* 
+ *获取家庭列表
+ */
+export const PostFamilyList = (params) => http.get('/api/family/list', params)
+
+/* 
+ *删除家庭
+ */
+export const PostDelFamily = (params) => http.post('/api/family/remFamily', params)
+
+/* 
+ *创建家庭
+ */
+export const PostAddFamily = (params) => http.post('/api/family/creFamily', params)
+
+/* 
+ *编辑家庭
+ */
+export const PostEditFamily = (params) => http.post('/api/family/editFamily', params)
+
+/* 
+ *编辑家庭
+ */
+export const PostDeviceList = (params) => http.post('/api/device/list', params)
