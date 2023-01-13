@@ -101,7 +101,6 @@ export const getDeviceList = (data) => http.post('/api/device/list', data);
 export const selectEventInfo = (data) => http.post('/api/event/selectEventInfo', data);
 /**事件信息**/
 export const getEventList = () => http.get('/api/event/list');
-export const PostEditContacts = (params) => http.post('/api/memberContacts/editMemberCon', params)
 
 /* 
  *查询协议*
