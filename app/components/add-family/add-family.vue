@@ -13,24 +13,36 @@
 			<view>
 				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
 					text="家庭名称"></u-text>
-				<u--input placeholder="请输入家庭名称" border="bottom" clearable></u--input>
+				<u--input v-model="form.familyName" placeholder="请输入家庭名称" border="bottom" clearable></u--input>
 			</view>
 			<view>
 				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
 					text="家庭地址(必填)"></u-text>
-				<u--input placeholder="请输入家庭名称" border="bottom" clearable></u--input>
+				<u--input v-model="form.address" placeholder="请输入家庭地址" border="bottom" clearable></u--input>
 			</view>
-			<view class="ui-btn"><button @click="next" class="wd-sms">下一步</button></view>
+			<view class="ui-btn"><button @click="next" class="wd-sms">{{ btnName }}</button></view>
 		</view>
 	</u-popup>
 </template>
 
 <script>
+	import {
+		PostAddFamily,
+	} from '@/common/http/api.js';
 	export default {
-		props: {},
+		props: {
+			btnName: {
+				type: String,
+				default: '下一步'
+			}
+		},
 		data() {
 			return {
-				show: false
+				show: false,
+				form: {
+					familyName: '', //家庭名称
+					address: '', //家庭地址
+				}
 			};
 		},
 
@@ -43,8 +55,25 @@
 				this.show = true;
 			},
 			next() {
-				this.close();
-				this.$emit('next')
+				const {
+					familyName,
+					address
+				} = this.form
+				if (!familyName) {
+					return uni.$u.toast('请填写家庭名称')
+				}
+				if (!address) {
+					return uni.$u.toast('请填写家庭地址')
+				}
+				PostAddFamily({
+					...this.form
+				}).then(res => {
+					uni.$u.toast(res.msg)
+					this.close();
+					setTimeout(() => {
+						this.$emit('update')
+					}, 1000)
+				})
 			}
 		}
 	};

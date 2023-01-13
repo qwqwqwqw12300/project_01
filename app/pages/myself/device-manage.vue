@@ -12,14 +12,14 @@
 			<app-logo text="设备管理"></app-logo>
 			<view class="ui-menu">
 				<u-grid col="2">
-					<u-grid-item v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
+					<u-grid-item v-for="(item, index) in list" :key="index">
 						<view class="ui-menu-item" :border="false">
 							<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/myself/device.png"
 								size="80rpx"></u-icon>
 							<!-- <text class="grid-text">{{ baseListItem.title }}</text> -->
 							<u-text class="grid-text" @click="edit" suffixIcon="edit-pen-fill"
-								iconStyle="font-size: 36rpx" align="center" :text="baseListItem.title"></u-text>
-							<text class="grid-text">{{ baseListItem.site }}</text>
+								iconStyle="font-size: 36rpx" align="center" :text="item.familyName"></u-text>
+							<text class="grid-text">{{ item.roomName }}</text>
 							<view class="ui-wifi active">
 								<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="wifi" size="40rpx"
 									color="#0dab1c"></u-icon>
@@ -28,22 +28,6 @@
 							</u-icon>
 						</view>
 						<view class="ui-btn"><button class="wd-sms" @click="unbinding">解绑</button></view>
-					</u-grid-item>
-					<u-grid-item v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex + 1">
-						<view class="ui-menu-item" :border="false">
-							<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/myself/device.png"
-								size="80rpx"></u-icon>
-							<u-text class="grid-text" @click="edit" suffixIcon="edit-pen-fill"
-								iconStyle="font-size: 36rpx" align="center" :text="baseListItem.title"></u-text>
-							<text class="grid-text">{{ baseListItem.site }}</text>
-							<view class="ui-wifi">
-								<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="wifi-off" size="40rpx"
-									color="#ff4800"></u-icon>
-							</view>
-							<u-icon @click="onDelete" class="ui-close active" name="close-circle-fill" size="40rpx">
-							</u-icon>
-						</view>
-						<view class="ui-btn"><button @click="bind">绑定</button></view>
 					</u-grid-item>
 				</u-grid>
 			</view>
@@ -87,6 +71,9 @@
 </template>
 
 <script>
+	import {
+		PostDeviceList,
+	} from '@/common/http/api.js';
 	export default {
 		data() {
 			return {
@@ -104,7 +91,7 @@
 					value: 2,
 					text: '房间三'
 				}],
-				baseList: [{
+				list: [{
 					title: '家庭1',
 					site: '卧室',
 					id: ''
@@ -180,7 +167,17 @@
 			 */
 			bindRoom() {
 				this.bindRoomShow = true;
+			},
+			handleInit() {
+				PostDeviceList({
+
+				}).then(res => {
+					this.list = res.rows
+				})
 			}
+		},
+		mounted() {
+			this.handleInit()
 		}
 	};
 </script>
