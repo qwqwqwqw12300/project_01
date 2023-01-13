@@ -13,42 +13,42 @@
 				<view class="ui-list">
 					<text>我的家庭:</text>
 					<view class="ui-select">
-						<uni-data-select v-model="value" :clear="false" :localdata="range"></uni-data-select>
+						<uni-data-select v-model="value" :clear="false" :localdata="familyRange"></uni-data-select>
 						<!-- 	<view class="ui-icon"><u-icon name="arrow-down-fill" color="#414141" size="30rpx"></u-icon></view> -->
 					</view>
 				</view>
 				<view class="ui-list">
 					<text>开始时间:</text>
 					<view class="ui-date active" @click="openDate('start')">
-						<text>2022/12/28</text>
+						<text>{{eventInfo.startTime}}</text>
 						<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
 					</view>
 				</view>
 				<view class="ui-list">
 					<text>结束时间:</text>
 					<view class="ui-date active" @click="openDate('end')">
-						<text>2022/12/28</text>
+						<text>{{eventInfo.endTime}}</text>
 						<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
 					</view>
 				</view>
 				<view class="ui-list">
 					<text>设备类型:</text>
 					<view class="ui-select">
-						<uni-data-select v-model="value" :clear="false" :localdata="range"></uni-data-select>
+						<uni-data-select v-model="value" :clear="false" :localdata="typeRang"></uni-data-select>
 
 					</view>
 				</view>
 				<view class="ui-list">
 					<text>事件类型:</text>
 					<view class="ui-select">
-						<uni-data-select v-model="value" :clear="false" :localdata="range"></uni-data-select>
+						<uni-data-select v-model="value" :clear="false" :localdata="eventRang"></uni-data-select>
 
 					</view>
 				</view>
 				<view class="ui-list">
 					<text>已读标识:</text>
 					<view class="ui-select">
-						<uni-data-select v-model="value" :clear="false" :localdata="range"></uni-data-select>
+						<uni-data-select v-model="value" :clear="false" :localdata="operateRang"></uni-data-select>
 
 					</view>
 				</view>
@@ -66,12 +66,17 @@
 </template>
 
 <script>
+	import {
+		getEventList,
+		getFamilyList,
+		selectEventInfo
+	} from '../../common/http/api';
 	const dateTime = new Date();
 	export default {
 		data() {
 			return {
 				value: 0,
-				range: [{
+				familyRange: [{
 					value: 0,
 					text: '设备一'
 				}, {
@@ -81,6 +86,33 @@
 					value: 2,
 					text: '设备三'
 				}],
+				typeRang: [{
+						value: 0,
+						text: '雷达波'
+					},
+					{
+						value: 1,
+						text: '监控设备'
+					}
+				],
+				eventRang: [{
+						value: 0,
+						text: '重要事件'
+					},
+					{
+						value: 1,
+						text: '普通事件'
+					}
+				],
+				operateRang: [{
+						value: 0,
+						text: '已读'
+					},
+					{
+						value: 1,
+						text: '未读'
+					}
+				],
 				/**日期控制**/
 				dateHandle: {
 					/**是否展示**/
@@ -90,8 +122,30 @@
 					max: dateTime.getTime(),
 					min: new Date(new Date().setFullYear(dateTime.getFullYear() - 1)).getTime()
 				},
+				/**事件信息**/
+				eventInfo: {
+					/**家庭id**/
+					familyId: '',
+					/**开始时间**/
+					startTime: '',
+					/**结束时间**/
+					endTime: '',
+					/**事件类型**/
+					type: '0',
+					/**事件等级**/
+					level: '0',
+					/**是否已读**/
+					operateFlag: '0'
+				}
 
 			};
+		},
+		mounted() {
+			const date = new Date();
+			console.log(date.getDay(), 'date.getDay()');
+			this.eventInfo.endTime = uni.$u.timeFormat(date, 'yyyy-mm-dd');
+			this.eventInfo.startTime = uni.$u.timeFormat(date.setDate(date.getDay() - 3), 'yyyy-mm-dd');
+			this.init();
 		},
 		methods: {
 			/**
@@ -106,14 +160,33 @@
 				this.dateHandle.show = false;
 			},
 			/**
-			 * 开启日期 
+			 * 开启日期
 			 **/
 			openDate(type) {
 				Object.assign(this.dateHandle, {
 					type,
 					show: true
 				});
+			},
+			/**
+			 * 查询设备消息
+			 */
+			selectEventInfo() {
+
+			},
+			/**
+			 * 初始化信息获取
+			 */
+			init() {
+				Promise.all([
+					getEventList(),
+					getFamilyList()
+				]).then(res => {
+					console.log('res', res);
+				})
 			}
+
+
 		}
 	};
 </script>

@@ -61,7 +61,9 @@
 			 * 菜单点击
 			 */
 			gridClick(url) {
-				console.log(12);
+				uni.navigateTo({
+					url: '/pages/myself/room-manage'
+				})
 			},
 
 			/**

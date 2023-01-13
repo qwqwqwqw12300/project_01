@@ -10,8 +10,8 @@
 		<u-text prefixIcon="email" iconStyle="font-size: 32rpx" text="短信码" color="#444" size="28rpx">
 		</u-text>
 		<view class="ui-input">
-			<u-input placeholder="请输入短信认证码" :readonly="status === 'checked'" @input="check" :border="'none'"
-				fontSize="28rpx" clearable>
+			<u-input placeholder="请输入短信认证码" v-model="checkPayLoad.code" type="number" maxlength="4"
+				:readonly="status === 'checked'" @input="checkSms" :border="'none'" fontSize="28rpx" clearable>
 				<template slot="suffix">
 					<button class="wd-sms ui-mini" @click="sendCode" size="mini">{{suffix}}</button>
 				</template>
@@ -21,13 +21,29 @@
 </template>
 
 <script>
+	import {
+		sendSms,
+		checkSms
+	} from '@/common/http/api.js';
 	export default {
 		props: {
 			/**请求与验证地址**/
-			// urls: {
-			// 	default: {}
-			// }
+			urls: {
+				default: () => {
+					return {
+						sendSms,
+						checkSms
+					}
+				}
+			},
+			/**发送短信时需要携带的验证参数**/
+			payload: {
+				default: () => {
+					return {}
+				}
+			},
 		},
+		emit: ['checked'],
 		data() {
 			return {
 				/**短信倒计时**/
@@ -40,26 +56,41 @@
 				display: false,
 				/**倒计时实例**/
 				timer: null,
-				/**验证码**/
-				code: ''
+				/**校验参数**/
+				checkPayLoad: {
+					code: ''
+				}
+
 			};
 		},
 		methods: {
 			/**
 			 * 发送短信验证码
 			 */
-			sendCode() {
+			async sendCode() {
 				if (this.status !== 'init') return;
-				this.suffix = '发送中..';
-				this.status = 'send';
-				this.timer = setInterval(() => {
-					this.count--;
-					if (this.count <= 0) {
+				const payload = typeof this.payload === 'function' ? await this.payload() : this.payload;
+				if (this.verification(payload)) {
+					this.suffix = '发送中..';
+					this.status = 'send';
+					this.urls.sendSms && this.urls.sendSms(payload).then(res => {
+						Object.assign(this.checkPayLoad, {
+							uuid: res.smsUuid,
+							phone: payload.phone
+						});
+						this.timer = setInterval(() => {
+							this.count--;
+							if (this.count <= 0) {
+								this.reset();
+							} else {
+								this.suffix = this.count + 's';
+							}
+						}, 1000);
+					}, () => { // 发送失败
 						this.reset();
-					} else {
-						this.suffix = this.count + 's';
-					}
-				}, 1000);
+					})
+				}
+
 			},
 
 			/**
@@ -75,12 +106,46 @@
 			/**
 			 * 校验
 			 */
-			check(code) {
-				if (this.status === 'send' && code.length === 6) {
-					this.status = 'checked';
-					this.suffix = '已认证';
-					this.timer && clearInterval(this.timer);
+			checkSms(code) {
+				if (this.status === 'send' && code.length === 4) {
+					this.urls.checkSms({
+						...this.checkPayLoad,
+						captcha: code
+					}).then(res => {
+						this.status = 'checked';
+						this.suffix = '已认证';
+						this.timer && clearInterval(this.timer);
+						this.$emit('checked', {
+							...this.checkPayLoad
+						});
+					});
+
 				}
+			},
+
+			/**
+			 * 发送状态校验 
+			 **/
+			verification(payload) {
+				if (payload) {
+					if (!payload.phone) { // 无uuid
+						uni.showToast({
+							icon: 'none',
+							title: '请输入手机号码',
+							duration: 2000
+						});
+						return false;
+					}
+					if (!payload.uuid) { // 无uuid
+						uni.showToast({
+							icon: 'none',
+							title: '请先输入图片验证码',
+							duration: 2000
+						});
+						return false;
+					}
+				}
+				return true;
 			}
 		}
 	}

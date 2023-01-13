@@ -13,7 +13,9 @@ import {
 	isApp
 } from '../utils/util';
 
-import { getToken } from '@/common/utils/auth.js'
+import {
+	getToken
+} from '@/common/utils/auth.js'
 
 /**错误处理文案**/
 const errText = {
@@ -62,12 +64,13 @@ const request = (url, options, process, method = 'POST') => {
 					statusCode,
 					data
 				} = result;
-				if (statusCode == 200) {
+				console.log(result, '请求结果');
+				if (statusCode == 200 && data.code === 200) {
 					resolve(data);
 				} else {
 					if (errorHandle) uni.showModal({
 						title: '提示',
-						content: errText[statusCode] || '系统错误'
+						content: data.msg || errText[statusCode] || '系统错误'
 					});
 					reject();
 				}

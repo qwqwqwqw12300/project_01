@@ -75,3 +75,29 @@ export const PostDelContacts = (params) => http.post('/api/memberContacts/remMem
  *编辑紧急联系人*
  */
 export const PostEditContacts = (params) => http.post('/api/memberContacts/editMemberCon', params)
+
+/**发送短信**/
+export const sendSms = (data) => http.post('/api/sendSms', data);
+
+/**短信登录**/
+export const loginBySms = (data) => http.post('/api/loginBySms', data);
+
+/**短信校验**/
+export const checkSms = (data) => http.post('/api/checkSms', data);
+
+/**注册**/
+export const regMember = (data) => http.post('/api/regMember', data);
+
+/**重置密码**/
+export const resetMemberPwd = (data) => http.post('/api/resetMemberPwd', data);
+
+/**获取家庭列表**/
+export const getFamilyList = () => http.get('/api/family/list');
+
+/**获取设备列表**/
+export const getDeviceList = (data) => http.post('/api/device/list', data);
+
+/**设备事件查询**/
+export const selectEventInfo = (data) => http.post('/api/event/selectEventInfo', data);
+/**事件信息**/
+export const getEventList = () => http.get('/api/event/list');

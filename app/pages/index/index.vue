@@ -32,12 +32,12 @@
 			</view>
 			<app-logo></app-logo>
 			<!-- 家庭列表 -->
-			<template v-if="true">
-				<view class="ui-group">
+			<template v-if="familyList.length">
+				<view class="ui-group" v-for="(familyItem, index) of familyList" :key="'family' + index">
 					<view class="ui-title">
 						<view>
-							<text>我的家庭1</text>
-							<text>共两个设备</text>
+							<text>{{familyItem.name}}</text>
+							<text>共{{(familyItem.devices && familyItem.devices.length) || 0}}个设备</text>
 							<text>在线两个设备</text>
 						</view>
 						<u-text @click="goPage('/pages/share/share')" prefixIcon="share-square" size="28rpx"
@@ -47,11 +47,11 @@
 						}" text="分享"></u-text>
 					</view>
 					<view class="ui-device">
-						<view class="ui-list">
+						<view class="ui-list" v-for="device of familyItem.devices" :key="device.deviceId">
 							<view class="ui-list-box active" @click="goPage('/pages/equipment/radar-detail')">
 								<image src="../../static/images/device.png"></image>
-								<text>xx设备名称</text>
-								<text>位置</text>
+								<text>{{device.name || '--'}}</text>
+								<text>{{device.location || '--'}}</text>
 								<view class="ui-list-static">
 									<u-icon name="wifi" color="#0dab1c" size="28"></u-icon>
 								</view>
@@ -68,67 +68,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="ui-list">
-							<view class="ui-list-box active">
-								<image src="../../static/images/device.png"></image>
-								<text>xx设备名称</text>
-								<text>位置</text>
-								<view class="ui-list-static">
-									<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
-								</view>
-							</view>
-						</view>
 					</view>
-
-				</view>
-
-				<view class="ui-group">
-					<view class="ui-title">
-						<view>
-							<text>我的家庭1</text>
-							<text>共两个设备</text>
-							<text>在线两个设备</text>
-						</view>
-						<u-text prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff"
-							:iconStyle="{
-							fontSize: '44rpx',
-							color: '#fff'
-						}" @click="goPage('/pages/share/share')" text="分享"></u-text>
-					</view>
-					<view class="ui-device">
-						<view class="ui-list">
-							<view class="ui-list-box active">
-								<image src="../../static/images/device.png"></image>
-								<text>xx设备名称</text>
-								<text>位置</text>
-								<view class="ui-list-static">
-									<u-icon name="wifi" color="#0dab1c" size="28"></u-icon>
-								</view>
-								<u-badge :offset="[-9, 0]" :value="9" absolute></u-badge>
-							</view>
-						</view>
-						<view class="ui-list">
-							<view class="ui-list-box active">
-								<image src="../../static/images/device.png"></image>
-								<text>xx设备名称</text>
-								<text>位置</text>
-								<view class="ui-list-static">
-									<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
-								</view>
-							</view>
-						</view>
-						<view class="ui-list">
-							<view class="ui-list-box active">
-								<image src="../../static/images/device.png"></image>
-								<text>xx设备名称</text>
-								<text>位置</text>
-								<view class="ui-list-static">
-									<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
-								</view>
-							</view>
-						</view>
-					</view>
-
 				</view>
 			</template>
 			<!-- /家庭列表 -->
@@ -150,14 +90,21 @@
 
 </template>
 <script>
+	import {
+		getDeviceList,
+		getFamilyList
+	} from '../../common/http/api';
 	export default {
 		data() {
 			return {
 				/**是否展示添加弹窗**/
-				isAddShow: false
+				isAddShow: false,
+				familyList: []
 			}
 		},
-		onLoad() {},
+		onLoad() {
+			this.getInfo();
+		},
 		methods: {
 			/**
 			 * 打开添加按钮
@@ -206,6 +153,26 @@
 						console.log(res, '扫码结果');
 					}
 				})
+			},
+
+			async getInfo() {
+				const familyList = await getFamilyList();
+				this.familyList = familyList.rows;
+				// this.familyList.forEach(ele => {
+				// 	getDeviceList({
+				// 		familyId: ele.familyId
+				// 	}).then(deviceList => {
+				// 		ele.deviceList = deviceList.rows;
+				// 	})
+				// });
+
+				this.familyList.forEach((ele, index) => {
+					getDeviceList({
+						familyId: 106
+					}).then(deviceList => {
+						ele.devices = deviceList.rows;
+					})
+				});
 			}
 		}
 	}

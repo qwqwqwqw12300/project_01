@@ -9,65 +9,63 @@
 	<app-body :needService="false" :hideTitle="true" :bodyStyle="{backgroundPositionY: '-200rpx'}">
 		<view class="ui-body">
 			<text class="ui-logo">注册账号</text>
-			<view class="ui-form">
+			<u-form class="ui-form">
 				<view class="ui-form-item">
 					<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="手机号码" color="#444" size="28rpx">
 					</u-text>
-					<view class="ui-input">
-						<u--input placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input>
+					<view class="ui-input" prop="formParams.phone">
+						<u-input placeholder="请输入手机号码" v-model="formParams.phone" :border="'none'" fontSize="28rpx"
+							clearable></u-input>
 					</view>
 				</view>
 				<view class="ui-form-item">
-					<graphic-input></graphic-input>
+					<graphic-input ref="codeRef"></graphic-input>
 				</view>
 				<view class="ui-form-item">
-					<sms-input></sms-input>
+					<sms-input ref="sms" @checked="smsChecked" :payload="smsPayload"></sms-input>
 				</view>
-				<view class="ui-form-item">
-					<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx"></u-text>
-					<view class="ui-input">
-						<u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable>
-							<template slot="suffix">
-								<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
-							</template>
-						</u-input>
-					</view>
-				</view>
-				<view class="ui-form-item">
-					<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="确认密码" color="#444" size="28rpx">
-					</u-text>
-					<view class="ui-input">
-						<u-input placeholder="请输入你的密码" :password="true" :border="'none'" fontSize="28rpx" clearable>
-							<template slot="suffix">
-								<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
-							</template>
-						</u-input>
-					</view>
-				</view>
+				()
 				<view class="ui-agreement">
-					<u-radio :customStyle="{ marginRight: '8rpx' }" @change="radioChange" shape="square"
-						activeColor="#fdbc2b" size="24rpx"></u-radio>
+					<u-checkbox-group v-model="radiovalue">
+						<u-checkbox :customStyle="{ marginRight: '8rpx' }" shape="square" activeColor="#fdbc2b"
+							size="30rpx" name="ag"></u-checkbox>
+					</u-checkbox-group>
 					<text>同意</text>
 					<text>用户协议</text>
 				</view>
-				<view class="ui-btn"><button @click="goLogin">注册</button></view>
-				<text class="ui-link active">老朋友？点此登录</text>
-			</view>
+				<view class="ui-btn"><button @click="register">注册</button></view>
+				<text class="ui-link active" @click="goLogin">老朋友？点此登录</text>
+			</u-form>
 		</view>
 	</app-body>
-
 </template>
 
 <script>
+	import {
+		regMember
+	} from '../../common/http/api';
+	import jsencrypt from '@/common/utils/jsencrypt.js'
+	import {
+		env
+	} from '../../config/env';
 	export default {
 		data() {
-			return {};
+			return {
+				eyes: {
+					pwd: true,
+					confirm: true
+				},
+				formParams: {
+					phone: '',
+					pwd: '',
+					confirm: '',
+					uuid: '',
+					code: ''
+				},
+				radiovalue: []
+			};
 		},
 		methods: {
-			/**
-			 * 勾选协议
-			 */
-			radioChange() {},
 
 			/**
 			 * 跳转登录
@@ -76,6 +74,80 @@
 				uni.navigateTo({
 					url: '/pages/login/login'
 				});
+			},
+
+			/**
+			 * 注册
+			 */
+			register() {
+				if (this.formParams.uuid && this.formParams.pwd && this.formParams.confirm) {
+					if (!this.radiovalue.includes('ag')) {
+						uni.showToast({
+							icon: 'none',
+							title: '请先勾选协议',
+							duration: 2000
+						});
+						return;
+					}
+					regMember({
+						phone: this.formParams.phone,
+						password: jsencrypt.setEncrypt(env.publicKey, this.formParams.pwd),
+						code: this.formParams.code,
+						smsUuid: this.formParams.uuid
+					}).then(res => {
+						uni.showModal({
+							title: '',
+							content: '注册成功，是否立即前往登录？',
+							success: res => {
+								if (res.confirm) {
+									this.goLogin();
+								}
+							}
+						});
+					}, err => {
+						this.$refs.sms.reset();
+					});
+				} else {
+					uni.showToast({
+						icon: 'none',
+						title: '请先完善输入框信息',
+						duration: 2000
+					});
+				}
+			},
+
+			/**
+			 * 点击密码眼睛
+			 * @param {Object} 
+			 */
+			eyesChange(type) {
+				this.eyes[type] = !this.eyes[type];
+			},
+
+			/**
+			 * 获取短信请求参数
+			 */
+			smsPayload() {
+				const {
+					code,
+					uuid
+				} = this.$refs.codeRef.returnCodeData();
+				console.log(this.formParams.phone, ' this.formParams.phone')
+				return {
+					uuid,
+					captcha: code,
+					phone: this.formParams.phone
+				}
+			},
+
+			/**
+			 * 短信验证成功
+			 */
+			smsChecked(uuid) {
+				this.formParams = {
+					...this.formParams,
+					...uuid
+				};
 			}
 		}
 	};
