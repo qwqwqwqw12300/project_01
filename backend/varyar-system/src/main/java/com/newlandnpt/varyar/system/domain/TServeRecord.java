@@ -12,6 +12,7 @@ import org.springframework.data.annotation.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class TServeRecord extends BaseEntity
     private String servedInfo;
 
     /** 设备id */
-    @NotBlank(message = "设备id不能为空")
+    @NotNull(message = "设备id不能为空")
     private Long deviceId;
 
     /**
