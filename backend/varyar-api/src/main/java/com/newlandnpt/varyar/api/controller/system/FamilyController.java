@@ -78,7 +78,7 @@ public class FamilyController extends BaseController {
         if( tFamily == null){
             error("无法查到需要修改的记录！");
         }
-        if(tFamily.getCreateBy().equals(this.getLoginUser().getMemberId())){
+        if(!tFamily.getCreateById().equals(String.valueOf(this.getLoginUser().getMemberId()))){
             error("非创建者无权限修改！");
         }
         try {
@@ -105,7 +105,7 @@ public class FamilyController extends BaseController {
         if( tFamily == null){
             error("无法查到需要修改的记录！");
         }
-        if(tFamily.getCreateBy().equals(this.getLoginUser().getMemberId())){
+        if(!tFamily.getCreateById().equals(String.valueOf(this.getLoginUser().getMemberId()))){
             error("非创建者无权限删除！");
         }
         try {

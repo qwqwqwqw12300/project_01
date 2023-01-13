@@ -5,10 +5,7 @@ import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.system.domain.TVersion;
 import com.newlandnpt.varyar.system.service.IVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 版本查询Controller
@@ -26,8 +23,8 @@ public class VersionController extends BaseController
     /**
      * 获取版本详细信息
      */
-    @PostMapping(value = "/selectVersionInfo")
-    public AjaxResult selectVersionInfo(@RequestParam("versionType") String versionType)
+    @GetMapping(value = "/selectVersionInfo")
+    public AjaxResult selectVersionInfo(String versionType)
     {
         TVersion tVersion = versionService.selectTVersionByVersionType(versionType);
         if (tVersion == null){

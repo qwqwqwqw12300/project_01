@@ -1,7 +1,10 @@
 package com.newlandnpt.varyar.common.core.domain.model;
 
+import com.newlandnpt.varyar.common.core.domain.entity.BatchMessage;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 public class MessageRequest {
     /**
@@ -15,6 +18,16 @@ public class MessageRequest {
      * */
     @Size(min = 0, max = 1, message = "消息标识不能超过1个字符")
     private String msgFlag;
+
+    private List<BatchMessage> msgFlags;
+
+    public List<BatchMessage> getMsgFlags() {
+        return msgFlags;
+    }
+
+    public void setMsgFlags(List<BatchMessage> msgFlags) {
+        this.msgFlags = msgFlags;
+    }
 
     public String getMsgFlag() {
         return msgFlag;

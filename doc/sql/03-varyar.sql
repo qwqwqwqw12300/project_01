@@ -63,6 +63,7 @@ create table t_device (
   org_name          varchar(50)      default ''                comment '机构名称',
   del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
   create_by         varchar(64)     default ''                 comment '创建者',
+  create_by_id         varchar(64)     default ''              comment '创建者id',
   create_time       datetime                                   comment '创建时间',
   update_by         varchar(64)     default ''                 comment '更新者',
   update_time       datetime                                   comment '更新时间',
@@ -105,6 +106,7 @@ create table t_family (
   name              varchar(50)     default ''                 comment '家庭名称',
   address            varchar(100)    default ''                 comment '家庭地址',
   del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
+  create_by_id         varchar(64)     default ''                 comment '创建者id',
   create_time       datetime                                   comment '创建时间',
   update_time       datetime                                   comment '更新时间',
   primary key (family_id)
@@ -133,6 +135,7 @@ create table t_room (
   room_left        decimal(10,2)                               comment '左侧',
   room_right       decimal(10,2)                               comment '右侧',
   height           decimal(10,2)                               comment '高度',
+  create_by_id         varchar(64)     default ''                 comment '创建者id',
   del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
   create_time       datetime                                   comment '创建时间',
   update_time       datetime                                   comment '更新时间',

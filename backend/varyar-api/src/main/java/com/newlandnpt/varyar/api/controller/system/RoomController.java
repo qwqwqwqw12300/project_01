@@ -108,7 +108,7 @@ public class RoomController extends BaseController {
         }
         //查询我的房间（需要修改的）
         TRoom tRoom =  iRoomService.selectTRoomByRoomId(Long.valueOf(roomRequest.getRoomId()));
-        if(tRoom.getCreateBy().equals(this.getLoginUser().getMemberId())){
+        if(!tRoom.getCreateById().equals(String.valueOf(this.getLoginUser().getMemberId()))){
             ajax = AjaxResult.error("非创建者无权限修改！");
             return ajax;
         }
@@ -134,7 +134,7 @@ public class RoomController extends BaseController {
         }
         //查找我的房间
         TRoom tRoom = iRoomService.selectTRoomByRoomId(Long.valueOf(roomRequest.getRoomId()));
-        if(tRoom.getCreateBy().equals(this.getLoginUser().getMemberId())){
+        if(!tRoom.getCreateById().equals(String.valueOf(this.getLoginUser().getMemberId()))){
             ajax = AjaxResult.error("非创建者无权限删除！");
             return ajax;
         }
