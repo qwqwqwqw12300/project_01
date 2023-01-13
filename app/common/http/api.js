@@ -84,3 +84,8 @@ export const PostSelectAgreement = (params) => http.post('/api/agreement/selectA
  *查询版本*
  */
 export const PostVersionInfo = (params) => http.get('/api/version/selectVersionInfo', params)
+
+/* 
+ *修改密码
+ */
+export const PostUpdatePwd = (params) => http.post('/api/memberInfo/updatePwd', params)
