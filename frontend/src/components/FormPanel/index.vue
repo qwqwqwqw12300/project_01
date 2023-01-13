@@ -28,6 +28,13 @@ export default {
       default: ''
     }
   },
+  // watch:{
+  //   "$route.name":function(){
+  //     if(this.visible){
+  //       this.$emit('update:visible', false)
+  //     }
+  //   }
+  // },
   methods: {
     back() {
       this.$emit('update:visible', false)

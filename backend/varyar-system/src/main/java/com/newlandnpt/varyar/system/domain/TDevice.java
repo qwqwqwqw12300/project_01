@@ -40,7 +40,7 @@ public class TDevice extends BaseEntity
     private String status;
 
     /** 类型（0雷达波 1监控设备 2手表） */
-    @Excel(name = "设备类型",type = Excel.Type.EXPORT,readConverterExp = "0=雷达波,1=监控设备")
+    @Excel(name = "设备类型",readConverterExp = "0=雷达波,1=监控设备,2=手表",combo={"雷达波","监控设备","手表"})
     private String type;
     /** 设备参数信息 */
     private DeviceParameter parameter;
