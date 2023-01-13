@@ -35,7 +35,7 @@ public class PlatformAdminHomeController extends BaseController {
 
 
     /**
-     * 已激活设备数量（激活后即使设备下线也包括在内）
+     * 设备数量
      *
      * @return
      */

@@ -142,7 +142,7 @@
         <el-button type="primary" @click="submitAssociateForm">确 定</el-button>
         <el-button @click="associateOpen = false">取 消</el-button>
       </div>
-    </el-dialog >
+    </el-dialog>
     <!--    设备配对弹窗-->
     <el-dialog title="分配设备组" :visible.sync="groupArrangeOpen" center width="400px">
       <el-form ref="groupArrangeForm" :model="groupArrangeForm" :rules="groupArrangeRules" label-width="80px">
@@ -151,10 +151,10 @@
             <el-form-item label="设备组" porp="groupArrangeGroupId">
               <el-select v-model="groupArrangeForm.groupArrangeGroupId" placeholder="请输入设备设备组" clearable>
                 <el-option
-                v-for="item in groupArrangeGroupList"
-                :key="item.deviceGroupId"
-                :label="item.name"
-                :value="item.deviceGroupId">
+                  v-for="item in groupArrangeGroupList"
+                  :key="item.deviceGroupId"
+                  :label="item.name"
+                  :value="item.deviceGroupId">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -171,7 +171,7 @@
 
 <script>
 import {orgTreeSelect} from "@/api/system/user";
-import {pageDevice,associateDevice,groupArrange} from "@/api/device/device";
+import {pageDevice, associateDevice, groupArrange} from "@/api/device/device";
 import {pageDeviceGroup} from "@/api/org/deviceGroup"
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -225,13 +225,13 @@ export default {
       associateOpen: false,
       associateRules: {
         location: [
-          { required: true, message: "设备位置不能为空", trigger: "blur" }
+          {required: true, message: "设备位置不能为空", trigger: "blur"}
         ],
         name: [
-          { required: true, message: "设备名称不能为空", trigger: "blur" }
+          {required: true, message: "设备名称不能为空", trigger: "blur"}
         ],
         orgId: [
-          { required: true, message: "请选择机构", trigger: "blur" }
+          {required: true, message: "请选择机构", trigger: "blur"}
         ],
       },
       associateForm: {
@@ -240,19 +240,34 @@ export default {
         orgId: undefined,
       },
       /** 设备分组相关 */
-      groupArrangeOpen:false,
-      groupArrangeForm:{
+      groupArrangeOpen: false,
+      groupArrangeForm: {
         groupArrangeGroupId: undefined,
         groupArrangeDeviceId: undefined
       },
-      groupArrangeRules:{},
-      groupArrangeGroupList:[],
+      groupArrangeRules: {},
+      groupArrangeGroupList: [],
+      currentDistributeFlag: undefined
 
     }
   },
   created() {
-    this.getList();
+    this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
+    this.resetQuery();
     this.getDeptTree();
+  },
+  watch: {
+    "$route.query.distributeFlag": {
+      immediate: true,
+      handler: function (val) {
+        if (this.$route.name == "Device") {
+          if (this.currentDistributeFlag != val) {
+            this.currentDistributeFlag = val==undefined?undefined:Number(val);
+            this.resetQuery();
+          }
+        }
+      }
+    }
   },
   methods: {
     /** 查询设备列表 */
@@ -279,7 +294,16 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.dateRange = [];
-      this.resetForm("queryForm");
+      this.queryParams = {
+        pageNum: 1,
+        pageSize: 10,
+        no: undefined,
+        name: undefined,
+        type: undefined,
+        orgId: undefined,
+        distributeFlag: this.currentDistributeFlag
+      }
+      // this.resetForm("queryForm");
       this.handleQuery();
     },
     /** 设备配对相关 */
@@ -288,7 +312,7 @@ export default {
       // this.associateForm = row;
       this.resetForm("associateForm");
     },
-    submitAssociateForm(){
+    submitAssociateForm() {
       this.$refs["associateForm"].validate(valid => {
         if (valid) {
           associateDevice(this.associateForm).then(response => {
@@ -308,19 +332,19 @@ export default {
         groupArrangeDeviceId: row.deviceId
       }
       const queryForm = {
-        pageNo:1,
-        pageSize:1000,
-        orgId:row.orgId
+        pageNo: 1,
+        pageSize: 1000,
+        orgId: row.orgId
       }
       this.groupArrangeGroupList = []
       pageDeviceGroup(queryForm).then(response => {
         this.groupArrangeGroupList = response.rows
       })
     },
-    submitGroupArrangeForm(){
+    submitGroupArrangeForm() {
       this.$refs["groupArrangeForm"].validate(valid => {
         if (valid) {
-          groupArrange(this.groupArrangeForm.groupArrangeDeviceId,this.groupArrangeForm.groupArrangeGroupId).then(response => {
+          groupArrange(this.groupArrangeForm.groupArrangeDeviceId, this.groupArrangeForm.groupArrangeGroupId).then(response => {
             this.$modal.msgSuccess("设备分组成功");
             this.groupArrangeOpen = false;
             this.getList();
