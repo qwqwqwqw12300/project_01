@@ -75,3 +75,12 @@ export const PostDelContacts = (params) => http.post('/api/memberContacts/remMem
  *编辑紧急联系人*
  */
 export const PostEditContacts = (params) => http.post('/api/memberContacts/editMemberCon', params)
+
+/* 
+ *查询协议*
+ */
+export const PostSelectAgreement = (params) => http.post('/api/agreement/selectAgreement', params)
+/* 
+ *查询版本*
+ */
+export const PostVersionInfo = (params) => http.get('/api/version/selectVersionInfo', params)
