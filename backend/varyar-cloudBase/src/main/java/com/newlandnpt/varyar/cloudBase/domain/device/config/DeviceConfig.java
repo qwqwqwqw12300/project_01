@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.cloudBase.domain.device;
+package com.newlandnpt.varyar.cloudBase.domain.device.config;
 
 import java.io.Serializable;
 

@@ -39,6 +39,14 @@ insert into sys_dict_type values(17, '消息类型', 'sys_send_status',   '0', '
 insert into sys_dict_data values(43, 1,  '未发送',     '0',      'sys_send_status',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:未发送');
 insert into sys_dict_data values(44, 2,  '已发送',     '1',       'sys_send_status',   '',   'success',  'N', '0', 'admin', sysdate(), '', null, '1:已发送');
 
+
+-- ----------------------------
+-- 分配标志（0未分配 1已分配）
+-- ----------------------------
+insert into sys_dict_type values(18, '分配标志', 'sys_distribute_flag',   '0', 'admin', sysdate(), '', null, '分配标志（0未分配 1已分配');
+insert into sys_dict_data values(45, 1,  '未分配',     '0',      'sys_distribute_flag',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:未分配');
+insert into sys_dict_data values(46, 2,  '已分配',     '1',       'sys_distribute_flag',   '',   'success',  'N', '0', 'admin', sysdate(), '', null, '1:已分配');
+
 -- ----------------------------
 -- 设备类型:0雷达波 1监控设备 2手表
 -- ----------------------------

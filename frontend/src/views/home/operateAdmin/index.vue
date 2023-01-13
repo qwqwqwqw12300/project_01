@@ -6,22 +6,80 @@
 
       </el-col>
     </el-row>
+<!-- 测试 -->
+    <el-row>
+      <member-info-card :value="100"></member-info-card>
+    </el-row>
+
+    <el-row :gutter="20">
+      <device-info-card  :value="100"></device-info-card>
+    </el-row>
+
   </div>
 </template>
 
 <script>
+
+// import {getMemberId} from "@/api/member/member";
+import memberInfoCard from "@/views/member/components/memberInfoCard";
+import DeviceInfoCard from "@/views/device/components/DeviceInfoCard";
+
+
 export default {
   name: "Index",
+  components:{memberInfoCard,DeviceInfoCard},
+
   data() {
     return {
       // 版本号
       version: "3.8.4",
     };
   },
+  // computed: {
+  //   memberId() {
+  //     // return this.$route.query.orgId || this.userOrgId
+  //   }
+  // },
+  // async created() {
+  //   await this.initUserOrg();
+  //   this.initOrg();
+  //   this.getList();
+  //   this.reset();
+  // },
+  // watch: {
+  //   "$route.query.orgId": {
+  //     immediate: true,
+  //     handler: function (val) {
+  //       if (this.$route.name == "DeviceGroup") {
+  //         if (this.org.orgId != this.orgId) {
+  //           this.initOrg();
+  //           this.getList();
+  //           this.reset();
+  //         }
+  //       }
+  //     }
+  //   }
+  // },
   methods: {
-    goTarget(href) {
-      window.open(href, "_blank");
+    // async initUserOrg() {
+    //   const response = await getUserProfile();
+    //   this.userOrgId = response.data.orgId;
+    // },
+    initMember() {
+      if(this.membergId != undefined)
+        getOrg(this.membergId).then(response => {
+          this.member = response.data;
+        })
     },
+    // reset() {
+    //   this.form = {
+    //     orgId: this.orgId,
+    //     name: undefined
+    //   }
+    // },
+    // goTarget(href) {
+    //   window.open(href, "_blank");
+    // },
   },
 };
 </script>

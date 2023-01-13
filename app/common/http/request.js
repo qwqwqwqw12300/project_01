@@ -13,7 +13,9 @@ import {
 	isApp
 } from '../utils/util';
 
-import { getToken } from '@/common/utils/auth.js'
+import {
+	getToken
+} from '@/common/utils/auth.js'
 
 /**错误处理文案**/
 const errText = {
@@ -58,6 +60,7 @@ const request = (url, options, process, method = 'POST') => {
 			},
 			withCredentials: true,
 			success: result => {
+				console.log(result, '887')
 				const {
 					statusCode,
 					data

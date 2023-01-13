@@ -6,6 +6,10 @@ package com.newlandnpt.varyar.cloudBase.constant;
  */
 public class CacheConstants {
     
+	 /**
+     * 状态缓存时间
+     */
+    public static final Integer STATE_EXPIRATION = 1;
 
     /**
      * 设备状态

@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
-import com.newlandnpt.varyar.cloudBase.domain.device.DeviceConfig;
+import com.newlandnpt.varyar.cloudBase.domain.device.config.DeviceConfig;
 
 /**
  * MQ监听 - 设备状态事件
