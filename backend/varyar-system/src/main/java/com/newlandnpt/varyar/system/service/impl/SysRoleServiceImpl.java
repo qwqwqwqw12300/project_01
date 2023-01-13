@@ -22,6 +22,7 @@ import com.newlandnpt.varyar.system.mapper.SysRoleMenuMapper;
 import com.newlandnpt.varyar.system.mapper.SysUserRoleMapper;
 import com.newlandnpt.varyar.system.service.ISysRoleService;
 
+import static com.newlandnpt.varyar.common.constant.UserConstants.ADMIN;
 import static com.newlandnpt.varyar.common.constant.UserConstants.SUPER_ADMIN;
 
 /**
@@ -53,13 +54,22 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Override
     public List<SysRole> selectRoleList(SysRole role)
     {
+        List<String> roleKeyExcludes = new ArrayList<>();
         //不是超管的情况排除超管角色
         if(!SecurityUtils.isAdmin(SecurityUtils.getUserId())){
+            roleKeyExcludes.add(SUPER_ADMIN);
+        }
+        // 不是顶级机构管理员，排除平台管理员角色
+        if(SecurityUtils.getLoginUser().getOrgId()!=null&&SecurityUtils.getLoginUser().getOrgId()!=100){
+            roleKeyExcludes.add(ADMIN);
+        }
+        if(roleKeyExcludes.size()>0){
             Map<String,Object> params = role.getParams();
             if(params == null){
                 params = new HashMap<>();
+                role.setParams(params);
             }
-            params.put("roleKeyExclude",SUPER_ADMIN);
+            params.put("roleKeyExcludes",roleKeyExcludes);
         }
         return roleMapper.selectRoleList(role);
     }
@@ -259,6 +269,14 @@ public class SysRoleServiceImpl implements ISysRoleService
         return insertRoleMenu(role);
     }
 
+    @Override
+    @Transactional
+    public int menuArrange(Long roleId, Long[] menuIds) {
+        // 删除角色与菜单关联
+        roleMenuMapper.deleteRoleMenuByRoleId(roleId);
+        return insertRoleMenu(roleId,menuIds);
+    }
+
     /**
      * 修改角色状态
      * 
@@ -294,15 +312,18 @@ public class SysRoleServiceImpl implements ISysRoleService
      * 
      * @param role 角色对象
      */
-    public int insertRoleMenu(SysRole role)
-    {
+    public int insertRoleMenu(SysRole role){
+        return insertRoleMenu(role.getRoleId(),role.getMenuIds());
+    }
+
+    protected int insertRoleMenu(Long roleId,Long[] menuIds){
         int rows = 1;
         // 新增用户与角色管理
         List<SysRoleMenu> list = new ArrayList<SysRoleMenu>();
-        for (Long menuId : role.getMenuIds())
+        for (Long menuId : menuIds)
         {
             SysRoleMenu rm = new SysRoleMenu();
-            rm.setRoleId(role.getRoleId());
+            rm.setRoleId(roleId);
             rm.setMenuId(menuId);
             list.add(rm);
         }

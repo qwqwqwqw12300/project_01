@@ -63,7 +63,7 @@
           <div slot="header" class="clearfix">
             <span>选择设备组的运营人员</span>
           </div>
-          <el-table ref="userTable" v-loading="loading" highlight-current-row
+          <el-table ref="userTable" v-loading="userLoading" highlight-current-row
                     :data="userList" @current-change="handleSelectionChange">
             <el-table-column label="序号" align="center" width="65">
               <template slot-scope="scope">
@@ -97,7 +97,7 @@
         <device-group-info-card :value="deviceGroupId"></device-group-info-card>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-transfer v-model="arrangedDeviceIds" :titles="['待分配设备','已分配设备']" :data="devicesData"></el-transfer>
+        <el-transfer v-loading="notArrangeDeviceListLoading||arrangedDeviceListLoading" v-model="arrangedDeviceIds" :titles="['待分配设备','已分配设备']" :data="devicesData"></el-transfer>
       </el-row>
       <el-row type="flex" justify="center">
         <el-button type="primary" @click="submitDeviceArrange">提 交</el-button>
@@ -136,13 +136,18 @@ export default {
       deviceGroupId: undefined,
 
       /**修改运营人员相关属性*/
+      userLoading:false,
       userList: [],
       userTotal: 0,
       deviceGroupUserId: undefined,
       userQueryParams: {
         pageNum: 1,
         pageSize: 10,
-        orgId: undefined
+        orgId: undefined,
+        params:{
+          roleKey:"biz",
+          orgIdStrict:true
+        }
       },
       // 用户列信息
       userColumns: [
@@ -182,6 +187,8 @@ export default {
         }
       ],
       /** 分配设备相关 */
+      arrangedDeviceListLoading:false,
+      notArrangeDeviceListLoading:false,
       arrangedDeviceList: [],
       notArrangeDeviceList: [],
       arrangedDeviceIds: []
@@ -212,6 +219,8 @@ export default {
             this.currentOrgId = this.orgId
             this.getList();
             this.reset();
+            this.arrangeUserOpen = false;
+            this.deviceArrangeOpen = false;
           }
         }
       }
@@ -243,7 +252,11 @@ export default {
       this.loading = true;
       const queryParams = {
         orgId: this.orgId,
-        pageSize: 10000
+        pageSize: 10000,
+        params:{}
+      }
+      if(queryParams.orgId == null){
+        queryParams.params.orgIdIsNull = true;
       }
       pageDeviceGroup(queryParams).then(response => {
         this.deviceGroupList = response.rows;
@@ -280,7 +293,7 @@ export default {
       this.deviceGroupUserId = currentRow.userId;
     },
     submitArrangeUser() {
-      arrangeUser([this.deviceGroup.deviceGroupId], this.deviceGroupUserId)
+      arrangeUser([this.deviceGroupId], this.deviceGroupUserId)
         .then(response => {
           this.arrangeUserOpen = false;
           this.getList();
@@ -294,7 +307,9 @@ export default {
         pageSize: 10000,
         devicegroupId: this.deviceGroupId
       }
+      this.arrangedDeviceListLoading = true;
       pageDevice(queryParams).then(response => {
+        this.arrangedDeviceListLoading = false;
         this.arrangedDeviceList = response.rows;
         this.arrangedDeviceIds = response.rows.map(x => x.deviceId);
       })
@@ -305,9 +320,12 @@ export default {
         pageSize: 10000,
         params: {
           arrangeDeviceGroup: false
-        }
+        },
+        orgId:this.orgId
       }
+      this.notArrangeDeviceListLoading = true;
       pageDevice(queryParams).then(response => {
+        this.notArrangeDeviceListLoading = false
         this.notArrangeDeviceList = response.rows;
       })
     },

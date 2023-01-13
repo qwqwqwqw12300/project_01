@@ -30,7 +30,7 @@ const permission = {
   },
   actions: {
     // 生成路由
-    GenerateRoutes({commit}) {
+    GenerateRoutes({commit},roles) {
       return new Promise(resolve => {
         // 向后端请求路由数据
         getRouters().then(res => {
@@ -49,6 +49,7 @@ const permission = {
           }else if(JSON.stringify(res.data).indexOf("operateAdminHome")!=-1){
             redirect = '/operateAdminHome';
           }
+          console.log(redirect);
           if(redirect){
             rewriteRoutes.push({path: '', redirect: redirect, hidden: true})
             rewriteRoutes.push({path: '/index', redirect: redirect, hidden: true})

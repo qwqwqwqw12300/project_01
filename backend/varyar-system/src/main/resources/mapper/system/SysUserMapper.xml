@@ -69,8 +69,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select u.user_id, u.org_id, u.nick_name, u.user_name, u.name, u.email, u.avatar, u.mobile_phone, u.telephone, u.extension_number, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.org_name, d.leader
 		from sys_user u
 		left join t_org d on u.org_id = d.org_id
-		left join sys_user_role ur on u.user_id = ur.user_id
-		left join sys_role r on r.role_id = ur.role_id
 		where u.del_flag = '0'
 		<if test="userId != null and userId != 0">
 			AND u.user_id = #{userId}
@@ -98,7 +96,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			)
 		</if>
 		<if test="orgId != null and orgId != 0">
-			AND (u.org_id = #{orgId} OR u.org_id IN ( SELECT t.org_id FROM t_org t WHERE find_in_set(#{orgId}, ancestors) ))
+			AND (u.org_id = #{orgId}
+			<if test="params.orgIdStrict == null or params.orgIdStrict =='false'">
+				OR u.org_id IN ( SELECT t.org_id FROM t_org t WHERE find_in_set(#{orgId}, ancestors) )
+			</if>)
+		</if>
+		<if test="params.roleKey != null" >
+			and exists (select 1 from sys_role r, sys_user_role ur where r.role_id = ur.role_id and r.role_key = #{params.roleKey} and ur.user_id = u.user_id)
 		</if>
 		<!-- 数据范围过滤 -->
 		${params.dataScope}

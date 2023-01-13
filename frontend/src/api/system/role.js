@@ -34,6 +34,14 @@ export function updateRole(data) {
     data: data
   })
 }
+// 修改角色
+export function menuArrange(roleId,data) {
+  return request({
+    url: '/system/role/'+roleId+'/menuArrange',
+    method: 'put',
+    data: data
+  })
+}
 
 // 角色数据权限
 export function dataScope(data) {

@@ -39,7 +39,8 @@
             </el-select>
           </el-form-item>
           <el-form-item label="归属机构" prop="orgId">
-            <treeselect style="width: 240px" v-model="queryParams.orgId" :options="orgOptions" :show-count="true" placeholder="请选择归属机构" />
+            <treeselect style="width: 240px" v-model="queryParams.orgId" :options="orgOptions" :show-count="true"
+                        placeholder="请选择归属机构"/>
           </el-form-item>
           <el-form-item label="是否已分配" prop="distributeFlag">
             <el-select
@@ -81,13 +82,6 @@
                 @click="handleAssociate(scope.row)"
                 v-hasPermi="['device:associate']"
               >设备配对
-              </el-button><el-button
-                size="mini"
-                type="text"
-                icon="el-icon-edit"
-                @click="handleAssociate(scope.row)"
-                v-hasPermi="['device:associate']"
-              >设备配对
               </el-button>
               <el-button
                 size="mini"
@@ -103,7 +97,7 @@
                 icon="el-icon-circle-check"
                 @click="handleSettings(scope.row)"
                 v-hasPermi="['device:settings']"
-              >设备设置
+              >设备参数设置
               </el-button>
             </template>
           </el-table-column>
@@ -118,19 +112,74 @@
         />
       </el-col>
     </el-row>
+    <!--    设备配对弹窗-->
+    <el-dialog title="设备配对" :visible.sync="associateOpen" center>
+      <el-form ref="associateForm" :model="associateForm" :rules="associateRules" label-width="80px">
+        <el-row type="flex" justify="center">
+          <el-col :span="24">
+            <el-form-item label="设备位置" porp="location">
+              <el-input v-model="associateForm.location" placeholder="请输入设备位置" maxlength="100"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row type="flex" justify="center">
+          <el-col :span="24">
+            <el-form-item label="设备名称" porp="name">
+              <el-input v-model="associateForm.name" placeholder="请输入设备名称" maxlength="30"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row type="flex" justify="center">
+          <el-col :span="24">
+            <el-form-item label="归属机构" porp="orgId">
+              <treeselect style="width: 240px" v-model="associateForm.orgId" :options="orgOptions" :show-count="true"
+                          placeholder="请选择归属机构"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitAssociateForm">确 定</el-button>
+        <el-button @click="associateOpen = false">取 消</el-button>
+      </div>
+    </el-dialog >
+    <!--    设备配对弹窗-->
+    <el-dialog title="分配设备组" :visible.sync="groupArrangeOpen" center width="400px">
+      <el-form ref="groupArrangeForm" :model="groupArrangeForm" :rules="groupArrangeRules" label-width="80px">
+        <el-row type="flex" justify="center">
+          <el-col :span="24">
+            <el-form-item label="设备组" porp="groupArrangeGroupId">
+              <el-select v-model="groupArrangeForm.groupArrangeGroupId" placeholder="请输入设备设备组" clearable>
+                <el-option
+                v-for="item in groupArrangeGroupList"
+                :key="item.deviceGroupId"
+                :label="item.name"
+                :value="item.deviceGroupId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitGroupArrangeForm">确 定</el-button>
+        <el-button @click="groupArrangeOpen = false">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import {orgTreeSelect} from "@/api/system/user";
-import {pageDevice} from "@/api/device/device";
+import {pageDevice,associateDevice,groupArrange} from "@/api/device/device";
+import {pageDeviceGroup} from "@/api/org/deviceGroup"
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Device",
   dicts: ['device_type'],
-  components: { Treeselect },
+  components: {Treeselect},
   data() {
     return {
       // 遮罩层
@@ -148,8 +197,7 @@ export default {
         name: undefined,
         type: undefined,
         orgId: undefined,
-        distributeFlag: undefined,
-
+        distributeFlag: undefined
       },
       columns: [
         {key: 0, label: `设备名称`, prop: `name`, visible: true},
@@ -172,7 +220,34 @@ export default {
           formatter: (row, column, cellValue) => this.dict.type.device_type.find(x => cellValue == x.value)?.label
         },
         {key: 7, label: `机构名称`, prop: `orgName`, visible: true},
-      ]
+      ],
+      /** 设备配对相关 */
+      associateOpen: false,
+      associateRules: {
+        location: [
+          { required: true, message: "设备位置不能为空", trigger: "blur" }
+        ],
+        name: [
+          { required: true, message: "设备名称不能为空", trigger: "blur" }
+        ],
+        orgId: [
+          { required: true, message: "请选择机构", trigger: "blur" }
+        ],
+      },
+      associateForm: {
+        location: undefined,
+        name: undefined,
+        orgId: undefined,
+      },
+      /** 设备分组相关 */
+      groupArrangeOpen:false,
+      groupArrangeForm:{
+        groupArrangeGroupId: undefined,
+        groupArrangeDeviceId: undefined
+      },
+      groupArrangeRules:{},
+      groupArrangeGroupList:[],
+
     }
   },
   created() {
@@ -207,12 +282,53 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
+    /** 设备配对相关 */
     handleAssociate(row) {
+      this.associateOpen = true;
+      // this.associateForm = row;
+      this.resetForm("associateForm");
+    },
+    submitAssociateForm(){
+      this.$refs["associateForm"].validate(valid => {
+        if (valid) {
+          associateDevice(this.associateForm).then(response => {
+            this.$modal.msgSuccess("配对成功");
+            this.associateOpen = false;
+            this.getList();
+          })
+        }
+      })
 
     },
+    /** 分配设备组相关 */
     handleGroupArrange(row) {
-
+      this.groupArrangeOpen = true;
+      this.groupArrangeForm = {
+        groupArrangeGroupId: row.devicegroupId,
+        groupArrangeDeviceId: row.deviceId
+      }
+      const queryForm = {
+        pageNo:1,
+        pageSize:1000,
+        orgId:row.orgId
+      }
+      this.groupArrangeGroupList = []
+      pageDeviceGroup(queryForm).then(response => {
+        this.groupArrangeGroupList = response.rows
+      })
     },
+    submitGroupArrangeForm(){
+      this.$refs["groupArrangeForm"].validate(valid => {
+        if (valid) {
+          groupArrange(this.groupArrangeForm.groupArrangeDeviceId,this.groupArrangeForm.groupArrangeGroupId).then(response => {
+            this.$modal.msgSuccess("设备分组成功");
+            this.groupArrangeOpen = false;
+            this.getList();
+          })
+        }
+      })
+    },
+    /** 设备参数配置相关 */
     handleSettings(row) {
 
     }

@@ -96,7 +96,6 @@
 <!--      </el-col>-->
 <!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
     </el-row>
-
     <el-table v-loading="loading" :data="roleList" @selection-change="handleSelectionChange">
       <el-table-column v-for="column in columns" :label="column.label" :key="column.key" :prop="column.prop"
                        v-if="column.visible" :width="column.width" :formatter="column.formatter"
@@ -104,11 +103,12 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope"
-                  v-if="scope.row.roleKey !== 'superAdmin'&&scope.row.roleKey !== 'admin'&&scope.row.roleKey !== 'orgadmin'&&scope.row.roleKey !== 'biz'">
+                  v-if="scope.row.roleKey !== 'superAdmin'&&(isSuperAdmin||(scope.row.roleKey !== 'admin'&&scope.row.roleKey !== 'orgadmin'&&scope.row.roleKey !== 'biz'))">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
+            v-if="scope.row.roleKey !== 'superAdmin'&&scope.row.roleKey !== 'admin'&&scope.row.roleKey !== 'orgadmin'&&scope.row.roleKey !== 'biz'"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:role:edit']"
           >修改</el-button>
@@ -117,6 +117,7 @@
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
+            v-if="scope.row.roleKey !== 'superAdmin'&&scope.row.roleKey !== 'admin'&&scope.row.roleKey !== 'orgadmin'&&scope.row.roleKey !== 'biz'"
             v-hasPermi="['system:role:remove']"
           >删除</el-button>
           <el-button
@@ -219,8 +220,9 @@
 </template>
 
 <script>
-import { listRole, getRole, delRole, addRole, updateRole, changeRoleStatus, deptTreeSelect } from "@/api/system/role";
+import { listRole, getRole, delRole, addRole, updateRole, changeRoleStatus, deptTreeSelect, menuArrange } from "@/api/system/role";
 import { treeselect as menuTreeselect, roleMenuTreeselect } from "@/api/system/menu";
+import store from "@/store";
 
 export default {
   name: "Role",
@@ -316,6 +318,11 @@ export default {
         ]
       }
     };
+  },
+  computed:{
+    isSuperAdmin(){
+      return store.getters.roles?.includes('superAdmin')
+    }
   },
   created() {
     this.getList();
@@ -559,9 +566,8 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.roleId != undefined) {
-            this.form.menuIds = this.getMenuAllCheckedKeys();
-            updateRole(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+            menuArrange(this.form.roleId,this.getMenuAllCheckedKeys()).then(response => {
+              this.$modal.msgSuccess("分配权限成功");
               this.openMenuArrange = false;
               this.getList();
             });
