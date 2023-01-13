@@ -1,15 +1,10 @@
-<!--
-* @Author: zhanch
-* @Date: 2023-01-05 14:58:17
-* @FilePath: /pages/service/message-details.vue
-* @Description: 系统信息详情
--->
 <!-- 隐私协议 -->
 <template>
-	<app-body leftText="返回">
+	<app-body>
+		<app-logo text="APP协议"></app-logo>
 		<view class="uni-agreement">
 			<scroll-view scroll-y class="uni-agreement-scroll">
-				<text>{{ content }}</text>
+				{{ content }}
 			</scroll-view>
 		</view>
 	</app-body>
@@ -17,7 +12,7 @@
 
 <script>
 	import {
-		PostMessageDeatil,
+		PostSelectAgreement,
 	} from '@/common/http/api.js';
 	export default {
 		data() {
@@ -26,16 +21,16 @@
 			}
 		},
 		methods: {
-			initData(msgId) {
-				PostMessageDeatil({
-					msgId
+			handleInit() {
+				PostSelectAgreement({
+					agreementType: '1'
 				}).then(res => {
-					this.content = res.rows[0].content
+					this.content = res.data.content
 				})
 			}
 		},
-		onLoad(options) {
-			this.initData(options.msgId)
+		mounted() {
+			this.handleInit()
 		}
 	}
 </script>

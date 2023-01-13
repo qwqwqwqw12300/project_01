@@ -510,7 +510,7 @@ export default {
     resetQuery() {
       this.dateRange = [];
       this.resetForm("queryForm");
-      this.$refs.tree.setCurrentKey(null);
+      // this.$refs.tree.setCurrentKey(null);
       this.handleQuery();
     },
     // 多选框选中数据

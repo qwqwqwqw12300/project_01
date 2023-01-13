@@ -27,5 +27,5 @@ public class FallApi {
     public void fall(@RequestBody Fall fall) {
     	fallService.receve(fall);
     }
-
+    
 }

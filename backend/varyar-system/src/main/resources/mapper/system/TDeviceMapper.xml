@@ -39,10 +39,11 @@
                devicegroup_id,
                name, no, status, type,
             register_time,
-            location, family_id, member_id, room_id, distribute_flag, org_id, org_name, del_flag, create_by, create_time, update_by, update_time,device_parameter,
+            location, family_id, member_id, room_id, distribute_flag, org_id, del_flag, create_by, create_time, update_by, update_time,device_parameter,
             (select name from t_devicegroup where devicegroup_id = d.devicegroup_id) device_group_name,
             (select type from t_org where org_id = d.org_id) org_type,
             (select org_no from t_org where org_id = d.org_id) org_no,
+            (select org_name from t_org where org_id = d.org_id) org_name,
             (select no from t_member where member_id = d.member_id) member_no,
             (select name from t_family where family_id = d.family_id) family_name,
             (select name from t_room where room_id = d.room_id) room_name,create_by_id

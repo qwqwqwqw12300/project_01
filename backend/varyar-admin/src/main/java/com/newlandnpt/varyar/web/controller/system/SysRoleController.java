@@ -110,7 +110,7 @@ public class SysRoleController extends BaseController
     /**
      * 修改保存角色
      */
-    @PreAuthorize("@ss.hasAnyPermi('system:role:edit,system:role:menuArrange')")
+    @PreAuthorize("@ss.hasAnyPermi('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysRole role)
@@ -140,6 +140,28 @@ public class SysRoleController extends BaseController
             return success();
         }
         return error("修改角色'" + role.getRoleName() + "'失败，请联系管理员");
+    }
+    /**
+     * 分配权限
+     */
+    @PreAuthorize("@ss.hasAnyPermi('system:role:menuArrange')")
+    @Log(title = "角色管理-分配权限", businessType = BusinessType.UPDATE)
+    @PutMapping("{roleId}/menuArrange")
+    public AjaxResult menuArrange(@PathVariable Long roleId,@RequestBody Long[] menuIds){
+        roleService.checkRoleAllowed(roleService.selectRoleById(roleId));
+        roleService.checkRoleDataScope(roleId);
+        if(roleService.menuArrange(roleId,menuIds)>0){
+            // 更新缓存用户权限
+            LoginUser loginUser = getLoginUser();
+            if (StringUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin())
+            {
+                loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
+                loginUser.setUser(userService.selectUserByUserName(loginUser.getUser().getUserName()));
+                tokenService.setLoginUser(loginUser);
+            }
+            return success();
+        }
+        return error("角色分配权限失败，请联系管理员");
     }
 
     /**

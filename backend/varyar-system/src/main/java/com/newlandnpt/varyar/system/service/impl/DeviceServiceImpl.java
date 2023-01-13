@@ -117,9 +117,13 @@ public class DeviceServiceImpl implements IDeviceService {
 
     @Override
     public int associate(TDevice device) {
+
         TDevice target = deviceMapper.selectTDeviceByDeviceId(device.getDeviceId());
         if(target == null){
             throw new ServiceException("设备不存在");
+        }
+        if(target.getDevicegroupId()!=null){
+            throw new ServiceException("设备已经分配设备组，需解除分配才能重新配对");
         }
         Long orgId = device.getOrgId();
         if(orgId!=null){
@@ -158,7 +162,6 @@ public class DeviceServiceImpl implements IDeviceService {
     public int arrangeDeviceToGroup(Long[] deviceIds, Long deviceGroupId) {
         return deviceMapper.arrangeDeviceToGroup(deviceIds,deviceGroupId,getLoginUserName());
     }
-
 
     /**
      * 根据设备号查询设备
@@ -202,6 +205,8 @@ public class DeviceServiceImpl implements IDeviceService {
                 //设置机构id
                 device.setOrgId(orgId);
                 device.setOrgName(org.getOrgName());
+                //默认使用设备编号作为名称
+                device.setName(device.getNo());
                 //默认未激活
                 device.setStatus(STATUS_NOT_ACTIVE);
                 //默认未分配

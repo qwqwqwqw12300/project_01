@@ -114,6 +114,14 @@ public interface ISysRoleService
     public int updateRole(SysRole role);
 
     /**
+     * 给角色分配菜单（按提供的全覆盖）
+     * @param roleId
+     * @param menuIds
+     * @return
+     */
+    public int menuArrange(Long roleId,Long[] menuIds);
+
+    /**
      * 修改角色状态
      * 
      * @param role 角色信息

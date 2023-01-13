@@ -1,8 +1,8 @@
-package com.newlandnpt.varyar.cloudBase.domain.device;
+package com.newlandnpt.varyar.cloudBase.domain.device.config;
 
 import java.io.Serializable;
 
-public class Config implements Serializable {
+public class DeviceConfig implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 

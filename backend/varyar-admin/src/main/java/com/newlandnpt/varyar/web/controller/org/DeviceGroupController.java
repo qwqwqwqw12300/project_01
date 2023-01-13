@@ -3,8 +3,12 @@ package com.newlandnpt.varyar.web.controller.org;
 import java.util.List;
 
 import com.newlandnpt.varyar.common.constant.UserConstants;
+import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
 import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.service.IDeviceService;
+import com.newlandnpt.varyar.system.service.IOrgService;
+import com.newlandnpt.varyar.system.service.ISysUserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +41,10 @@ public class DeviceGroupController extends BaseController
     private IDeviceGroupService deviceGroupService;
     @Autowired
     private IDeviceService deviceService;
+    @Autowired
+    private IOrgService orgService;
+    @Autowired
+    private ISysUserService userService;
 
     /**
      * 查询设备组列表
@@ -86,6 +94,7 @@ public class DeviceGroupController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody TDeviceGroup devicegroup)
     {
+        orgService.checkOrgDataScope(devicegroup.getOrgId());
         if (UserConstants.NOT_UNIQUE.equals(deviceGroupService.checkOrgNameUnique(devicegroup)))
         {
             return error("修改设备组'" + devicegroup.getName() + "'失败，设备组名称已存在");
@@ -101,6 +110,17 @@ public class DeviceGroupController extends BaseController
     @PutMapping("/arrange/user/{userId}")
     public AjaxResult arrangeDeviceGroups(@RequestBody Long[] deviceGroupIds,@PathVariable Long userId)
     {
+        for(Long deviceGroupId:deviceGroupIds){
+            TDeviceGroup deviceGroup = deviceGroupService.selectDeviceGroupByDeviceGroupId(deviceGroupId);
+            if(deviceGroup!=null){
+                orgService.checkOrgDataScope(deviceGroup.getOrgId());
+            }
+        }
+        SysUser user = userService.selectUserById(userId);
+        if(user!=null){
+            orgService.checkOrgDataScope(user.getOrgId());
+        }
+
         return toAjax(deviceGroupService.arrangeDeviceGroups(deviceGroupIds,userId));
     }
 
@@ -112,6 +132,11 @@ public class DeviceGroupController extends BaseController
     @PutMapping({"{deviceGroupId}/devices/arrange","/devices/arrange"})
     public AjaxResult edit(@RequestBody Long[] deviceIds,@PathVariable(required = false) Long deviceGroupId)
     {
+
+        TDeviceGroup deviceGroup = deviceGroupService.selectDeviceGroupByDeviceGroupId(deviceGroupId);
+        if(deviceGroup!=null){
+            orgService.checkOrgDataScope(deviceGroup.getOrgId());
+        }
         return toAjax(deviceService.arrangeDeviceToGroup(deviceIds,deviceGroupId));
     }
 
@@ -123,6 +148,12 @@ public class DeviceGroupController extends BaseController
 	@DeleteMapping("/{devicegroupIds}")
     public AjaxResult remove(@PathVariable Long[] devicegroupIds)
     {
+        for(Long deviceGroupId:devicegroupIds){
+            TDeviceGroup deviceGroup = deviceGroupService.selectDeviceGroupByDeviceGroupId(deviceGroupId);
+            if(deviceGroup!=null){
+                orgService.checkOrgDataScope(deviceGroup.getOrgId());
+            }
+        }
         return toAjax(deviceGroupService.deleteDeviceGroupByDeviceGroupIds(devicegroupIds));
     }
 }

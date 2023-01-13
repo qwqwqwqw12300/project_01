@@ -221,8 +221,8 @@
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button v-if="!forView" type="primary" @click="submitForm">提 交</el-button>
+      <div v-if="!forView" slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">提 交</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </form-panel>
@@ -501,6 +501,7 @@ export default {
       if (row) {
         this.form.parentId = row.orgId;
       }
+      this.forView = false;
       this.open = true;
       this.title = "添加机构";
       listOrg().then(response => {
@@ -520,6 +521,7 @@ export default {
       this.reset();
       getOrg(row.orgId).then(response => {
         this.form = response.data;
+        this.forView = false;
         this.open = true;
         this.title = "修改机构";
         listOrg().then(response => {
