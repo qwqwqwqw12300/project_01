@@ -109,3 +109,8 @@ export const PostAddFamily = (params) => http.post('/api/family/creFamily', para
  *编辑家庭
  */
 export const PostEditFamily = (params) => http.post('/api/family/editFamily', params)
+
+/* 
+ *编辑家庭
+ */
+export const PostDeviceList = (params) => http.post('/api/device/list', params)
