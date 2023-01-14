@@ -55,7 +55,7 @@
 	import {
 		PostUpdatePwd,
 	} from '@/common/http/api.js';
-	import jsencrypt from '@/common/utils/jsencrypt.vue'
+	import jsencrypt from '@/common/utils/jsencrypt.js'
 	import {
 		env
 	} from "@/config/env.js";

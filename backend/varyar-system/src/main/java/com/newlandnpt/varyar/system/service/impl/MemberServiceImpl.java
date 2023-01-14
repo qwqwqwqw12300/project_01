@@ -120,13 +120,13 @@ public class MemberServiceImpl implements IMemberService
     }
 
     @Override
-    @DataScope(orgAlias = "d")
+    @DataScope(orgAlias = "u")
     public long total(TMember member) {
         return memberMapper.total(member);
     }
 
     @Override
-    @DataScope(orgAlias = "d")
+    @DataScope(orgAlias = "u")
     public long notArrangeMemberCount(TMember member) {
         return memberMapper.notArrangeMemberCount(member);
     }

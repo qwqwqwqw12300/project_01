@@ -10,7 +10,7 @@
 		<view class="ui-user">
 			<text>13222222222</text>
 			<u-icon @click="editMobile" name="edit-pen" color="#fff" size="50rpx"></u-icon>
-			<button>注销</button>
+			<button @click="loginOut">注销</button>
 		</view>
 		<view class="ui-menu">
 			<u-grid>
@@ -27,6 +27,12 @@
 </template>
 
 <script>
+	import {
+		PostLoginOut,
+	} from '@/common/http/api.js';
+	import {
+		removeToken
+	} from '@/common/utils/auth.js';
 	export default {
 		data() {
 			return {
@@ -95,6 +101,31 @@
 				uni.navigateTo({
 					url: '/pages/myself/mobile'
 				})
+			},
+			/**
+			 * 注销
+			 */
+			loginOut() {
+				uni.showModal({
+					title: '提示',
+					content: '是否确认注销',
+					success: res => {
+						if (res.confirm) {
+							PostLoginOut({}).then(() => {
+								removeToken()
+								uni.$u.toast('注销成功')
+								setTimeout(() => {
+									console.log('54565')
+									uni.navigateTo({
+										url: '/pages/login/login'
+									})
+								}, 1000)
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
 			}
 		}
 	};

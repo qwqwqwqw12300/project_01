@@ -12,15 +12,18 @@
 			<!-- <view class="ui-logo">我的房间管理</view> -->
 			<view class="ui-menu">
 				<u-grid>
-					<u-grid-item v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
-						<view class="ui-menu-item" :border="false" @click="gridClick(baseListItem.id)">
+					<u-grid-item v-for="(item, index) in list" :key="index">
+						<view class="ui-menu-item" :border="false">
 							<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/myself/room.png"
 								size="60rpx"></u-icon>
-							<text class="grid-text">{{ baseListItem.title }}</text>
-							<view class="ui-edit" @click.stop="editFamliy">
+							<text class="grid-text">{{ item.name }}</text>
+							<view class="ui-edit" @click.stop="editFamliy(item)">
 								<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="edit-pen-fill" size="30rpx"
 									color="#ff9500"></u-icon>
 							</view>
+							<u-icon @click.native.stop="onDelete(item.roomId)" class="ui-close active"
+								name="close-circle-fill" size="40rpx">
+							</u-icon>
 						</view>
 					</u-grid-item>
 				</u-grid>
@@ -31,43 +34,50 @@
 				<view class="wd-add">
 					<view>
 						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间名称"></u-text>
-						<u--input placeholder="请输入房间名称" border="bottom" clearable></u--input>
+						<u--input v-model="roomName" placeholder="请输入房间名称" border="bottom" clearable></u--input>
 					</view>
 					<view class="wd-btn-gloup">
 						<button @click="onSubmit">提交</button>
-						<button @click="onDelete">删除</button>
+						<button @click="close">取消</button>
 					</view>
 				</view>
 			</u-popup>
-			<add-room ref="addRoom" @next="roomNext" />
+			<add-room ref="addRoom" @update="handleInitList" />
 		</app-body>
 	</view>
 
 </template>
 
 <script>
+	import {
+		PostDelRoom,
+		PostRoomList,
+		PostEditRoom,
+	} from '@/common/http/api.js';
 	export default {
 		data() {
 			return {
 				isEditShow: false,
-				baseList: [{
-					title: '房间1',
-					id: ''
-				}]
+				form: {
+					roomName: '',
+					roomId: '',
+				},
+				list: []
 			};
 		},
 		methods: {
 			/**
 			 * 菜单点击
 			 */
-			gridClick(url) {
-				console.log(12);
-			},
+			// gridClick(url) {
+			// 	console.log(12);
+			// },
 
 			/**
 			 * 修改家庭
 			 */
-			editFamliy() {
+			editFamliy(item) {
+				this.form = item
 				this.isEditShow = true;
 			},
 
@@ -75,13 +85,30 @@
 			 * 关闭弹窗
 			 */
 			close() {
+				this.form = {}
 				this.isEditShow = false;
 			},
 			/**
 			 * 提交
 			 */
 			onSubmit() {
-				this.close();
+				const {
+					roomId,
+					roomName
+				} = this.form
+				if (!this.roomName) {
+					return uni.$u.toast('请填写房间名称')
+				}
+				PostEditRoom({
+					roomId,
+					roomName
+				}).then(res=>{
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						this.close();
+						this.handleInitList()
+					}, 1000)
+				})
 			},
 			/**
 			 * 删除
@@ -92,8 +119,15 @@
 					content: '是否确认删除房间',
 					success: res => {
 						if (res.confirm) {
-							this.close();
-							console.log('用户点击确定');
+							PostDelRoom({
+								familyId
+							}).then(res => {
+								uni.$u.toast(res.msg)
+								setTimeout(() => {
+									this.close();
+									this.handleInitList()
+								}, 1000)
+							})
 						} else if (res.cancel) {
 							console.log('用户点击取消');
 						}
@@ -104,14 +138,31 @@
 			 * 添加家庭
 			 */
 			add() {
-				this.$refs.addRoom.open();
+				this.$refs.addRoom.open({
+					id: this.familyId,
+					subTitle: '提交'
+				});
 			},
 
 			/**
 			 * 家庭添加完成
 			 */
-			roomNext() {}
+			roomNext() {},
 
+			/**
+			 * 初始化家庭列表
+			 */
+			handleInitList() {
+				PostRoomList({
+					familyId: this.familyId,
+				}).then(res => {
+					console.log(res)
+				})
+			}
+		},
+		onLoad(options) {
+			this.familyId = options.familyId
+			this.handleInitList()
 		}
 	};
 </script>
@@ -150,6 +201,12 @@
 				bottom: 10rpx;
 				right: 10rpx;
 				z-index: 10;
+			}
+
+			.ui-close {
+				position: absolute;
+				right: -10rpx;
+				top: -10rpx;
 			}
 		}
 	}

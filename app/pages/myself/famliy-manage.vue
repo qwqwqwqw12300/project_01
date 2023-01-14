@@ -12,14 +12,14 @@
 		<view class="ui-menu">
 			<u-grid>
 				<u-grid-item v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
-					<view class="ui-menu-item" :border="false" @click="gridClick(baseListItem.id)">
+					<view class="ui-menu-item" :border="false" @click="gridClick(baseListItem.familyId)">
 						<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/myself/home.png"
 							size="60rpx"></u-icon>
 						<text class="grid-text">{{ baseListItem.name }}</text>
 						<view class="ui-edit" @click.stop="editFamliy(baseListItem)">
 							<u-icon name="edit-pen-fill" size="30rpx" color="#ff9500"></u-icon>
 						</view>
-						<u-icon @click="onDelete(baseListItem.familyId)" class="ui-close active"
+						<u-icon @click.native.stop="onDelete(baseListItem.familyId)" class="ui-close active"
 							name="close-circle-fill" size="40rpx">
 						</u-icon>
 					</view>
@@ -40,44 +40,54 @@
 				</view>
 				<view class="wd-btn-gloup">
 					<button @click="onSubmit">提交</button>
-					<button @click="onclose">取消</button>
+					<button @click="close">取消</button>
 				</view>
 			</view>
 		</u-popup>
-		<add-family @update="getFamilyList" :btnName="'提交'" ref="addFamily" @next="familyNext" />
+		<add-family @update="getFamilyList" :btnName="'提交'" ref="addFamily"/>
 	</app-body>
 </template>
 
 <script>
 	import {
-		PostFamilyList,
+		GetFamilyList,
 		PostDelFamily,
 		PostEditFamily,
 	} from '@/common/http/api.js';
+	import {
+		mapState
+	} from 'vuex';
 	export default {
 		data() {
 			return {
 				isEditShow: false,
-				baseList: [],
 				form: {
 					name: '', //家庭名称
 					address: '', //家庭地址
 				}
 			};
 		},
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				baseList: state => state.familyList
+			}),
+		},
 		methods: {
 			/**
 			 * 菜单点击
 			 */
-			gridClick(url) {
-				console.log(12);
+			gridClick(id) {
+				uni.navigateTo({
+					url: '/pages/myself/room-manage?familyId=' + id
+				})
 			},
 
 			/**
 			 * 修改家庭
 			 */
 			editFamliy(item) {
-				this.form = item
+				this.form = {...item}; // 解耦，修改失败不该原值
 				this.isEditShow = true;
 			},
 
@@ -142,17 +152,10 @@
 			},
 
 			/**
-			 * 家庭添加完成
-			 */
-			familyNext() {},
-
-			/**
 			 * 获取家庭列表
 			 */
 			getFamilyList() {
-				PostFamilyList({}).then(res => {
-					this.baseList = res.rows
-				})
+				this.$store.dispatch('getAllFamily');
 			},
 			/**
 			 * 删除家庭列表
@@ -162,10 +165,24 @@
 					familyId
 				}).then(res => {
 					uni.$u.toast(res.msg)
+					// this.handleBack()
 					setTimeout(() => {
 						this.getFamilyList()
-					}, 1000)
+					}, 1000);
 				})
+			},
+			handleBack() {
+				let pages = getCurrentPages(); // 当前页面
+				const prevPage = pages[pages.length - 2]; //上一页页面实例
+				if (typeof(prevPage) == "undefined") {
+					//没上一页面
+					return;
+				}
+				//把数据返回给上一个页面
+				prevPage.$vm.handleInit(); //上一页面的刷新方法
+				setTimeout(() => {
+					uni.navigateBack()
+				}, 500)
 			}
 		},
 		mounted() {
