@@ -90,13 +90,14 @@
 				}, {
 					value: 2,
 					text: '房间三'
-				}],
-				list: [{
-					title: '家庭1',
-					site: '卧室',
-					id: ''
 				}]
 			};
+		},
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				list: state => state.getDeviceList
+			}),
 		},
 		methods: {
 			/**

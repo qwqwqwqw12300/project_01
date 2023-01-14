@@ -19,9 +19,10 @@
 						<view class="ui-edit" @click.stop="editFamliy(baseListItem)">
 							<u-icon name="edit-pen-fill" size="30rpx" color="#ff9500"></u-icon>
 						</view>
-						<u-icon @click="onDelete(baseListItem.familyId)" class="ui-close active"
-							name="close-circle-fill" size="40rpx">
-						</u-icon>
+						<view class="ui-close active" @click.stop="onDelete(baseListItem.familyId)" >
+							<u-icon name="close-circle-fill" size="40rpx"></u-icon>
+						</view>
+						
 					</view>
 				</u-grid-item>
 			</u-grid>
@@ -44,7 +45,7 @@
 				</view>
 			</view>
 		</u-popup>
-		<add-family @update="getFamilyList" :btnName="'提交'" ref="addFamily" @next="familyNext" />
+		<add-family @update="getFamilyList" :btnName="'提交'" ref="addFamily"/>
 	</app-body>
 </template>
 
@@ -54,16 +55,24 @@
 		PostDelFamily,
 		PostEditFamily,
 	} from '@/common/http/api.js';
+	import {
+		mapState
+	} from 'vuex';
 	export default {
 		data() {
 			return {
 				isEditShow: false,
-				baseList: [],
 				form: {
 					name: '', //家庭名称
 					address: '', //家庭地址
 				}
 			};
+		},
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				baseList: state => state.familyList
+			}),
 		},
 		methods: {
 			/**
@@ -79,7 +88,7 @@
 			 * 修改家庭
 			 */
 			editFamliy(item) {
-				this.form = item
+				this.form = {...item}; // 解耦，修改失败不该原值
 				this.isEditShow = true;
 			},
 
@@ -144,17 +153,10 @@
 			},
 
 			/**
-			 * 家庭添加完成
-			 */
-			familyNext() {},
-
-			/**
 			 * 获取家庭列表
 			 */
 			getFamilyList() {
-				PostFamilyList({}).then(res => {
-					this.baseList = res.rows
-				})
+				this.$store.dispatch('getAllFamily');
 			},
 			/**
 			 * 删除家庭列表

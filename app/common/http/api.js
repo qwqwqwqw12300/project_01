@@ -139,4 +139,10 @@ export const PostEditFamily = (params) => http.post('/api/family/editFamily', pa
 /* 
  *编辑家庭
  */
-export const PostDeviceList = (params) => http.post('/api/device/list', params)
+export const PostDeviceList = (params) => http.post('/api/device/list', params);
+
+/**
+ * 获取房间列表
+ */
+export const PostRoomList = (params) => http.post('/api/room/list', params);
+

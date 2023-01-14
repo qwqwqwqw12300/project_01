@@ -33,7 +33,7 @@
 		props: {},
 		data() {
 			return {
-				show: true,
+				show: false,
 				value: 0,
 				range: [{
 					value: 0,

@@ -68,11 +68,11 @@
 				PostAddFamily({
 					...this.form
 				}).then(res => {
-					uni.$u.toast(res.msg)
+					uni.$u.toast(res.msg);
 					this.close();
 					setTimeout(() => {
 						this.$emit('update')
-					}, 1000)
+					}, 1000);
 				})
 			}
 		}

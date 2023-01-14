@@ -47,7 +47,7 @@
 						}" text="分享"></u-text>
 					</view>
 					<view class="ui-device">
-						<view class="ui-list" v-for="device of familyItem.devices" :key="device.deviceId">
+						<view class="ui-list" v-for="device of getDeviceOnFamily(familyItem.familyId)" :key="device.deviceId">
 							<view class="ui-list-box active" @click="goPage('/pages/equipment/radar-detail')">
 								<image src="../../static/images/device.png"></image>
 								<text>{{device.name || '--'}}</text>
@@ -76,14 +76,13 @@
 			<template v-else>
 				<view class="ui-default">
 					<image src="../../static/images/tb.png" mode=""></image>
-					<button @click="addFamily">创建家庭</button>
+					<button @click="addStep">创建家庭</button>
 				</view>
 			</template>
 			<!-- /空户 -->
+			<add-step ref="addStepRef"></add-step>
 		</app-body>
-		<add-family ref="addFamily" @next="familyNext" />
-		<add-room ref="addRoom" @next="roomNext" />
-		<bind-device ref="bindDev" />
+		
 
 	</view>
 
@@ -94,18 +93,33 @@
 		getDeviceList,
 		getFamilyList
 	} from '../../common/http/api';
+	import {
+		mapState,
+		mapActions,
+		mapGetters
+	} from 'vuex';
 	export default {
 		data() {
 			return {
 				/**是否展示添加弹窗**/
 				isAddShow: false,
-				familyList: []
 			}
 		},
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				familyList: state => state.familyList
+			}),
+			...mapGetters(['getDeviceOnFamily'])
+		},
 		onLoad() {
-			this.getInfo();
+			Promise.all([
+				this.getAllFamily(),
+				this.getAllDevices()
+			]);
 		},
 		methods: {
+			...mapActions(['getAllFamily', 'getAllDevices']),
 			/**
 			 * 打开添加按钮
 			 */
@@ -119,24 +133,6 @@
 			 */
 			closeDevice() {
 				this.isAddShow = false;
-			},
-			/**
-			 * 添加家庭
-			 */
-			addFamily() {
-				this.$refs.addFamily.open();
-			},
-			/**
-			 * 添加家庭下一步
-			 */
-			familyNext() {
-				this.$refs.addRoom.open();
-			},
-			/**
-			 * 添加房间下一步
-			 */
-			roomNext() {
-				this.$refs.bindDev.open();
 			},
 			/**
 			 * 页面跳转
@@ -165,14 +161,16 @@
 				// 		ele.deviceList = deviceList.rows;
 				// 	})
 				// });
-
-				this.familyList.forEach((ele, index) => {
-					getDeviceList({
-						familyId: 106
-					}).then(deviceList => {
-						ele.devices = deviceList.rows;
-					})
-				});
+				getDeviceList({}).then(deviceList => {
+					ele.devices = deviceList.rows;
+				})
+			},
+			
+			/**
+			 * 添加房间
+			 */
+			addStep() {
+				this.$refs.addStepRef.open();
 			}
 		}
 	}
