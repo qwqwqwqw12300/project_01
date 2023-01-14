@@ -33,6 +33,10 @@ export const PostLoginByPwd = (params) => http.post('/api/loginByPwd', params)
 export const PostLoginOut = (params) => http.post('/api/loginOut', params)
 
 /* 
+ *修改手机号*
+ */
+export const PostUpdatePhone = (params) => http.post('/api/memberInfo/updatePhone', params)
+/* 
  *查看消息列表 *
  */
 export const GetMessageList = (params) => http.get('/api/message/list', params)

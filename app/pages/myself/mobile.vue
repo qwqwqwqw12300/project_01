@@ -12,20 +12,26 @@
 			<view class="ui-form-item">
 				<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="原手机号码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u--input placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input>
+					<u--input v-model="form.oldPhone" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input>
 				</view>
 			</view>
 			<view class="ui-form-item">
-				<sms-input @checked="oldCheckedBySms"></sms-input>
+				<graphic-input ref="oldCodeRefbySms"></graphic-input>
+			</view>
+			<view class="ui-form-item">
+				<sms-input :payload="oldSmsPayload" @checked="oldCheckedBySms"></sms-input>
 			</view>
 			<view class="ui-form-item">
 				<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="新手机号码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u--input placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input>
+					<u--input v-model="form.newPhone" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input>
 				</view>
 			</view>
 			<view class="ui-form-item">
-				<sms-input @checked="newCheckedBySms"></sms-input>
+				<graphic-input ref="newCodeRefbySms"></graphic-input>
+			</view>
+			<view class="ui-form-item">
+				<sms-input  :payload="newSmsPayload" @checked="newCheckedBySms"></sms-input>
 			</view>
 			<view class="ui-form-item">
 				<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx">
@@ -33,15 +39,11 @@
 				<view class="ui-input">
 					<u-input v-model="form.password" placeholder="请输入你的密码" :password="true" :border="'none'"
 						fontSize="28rpx" clearable>
-
 					</u-input>
-					<!-- 		<u-input v-model="form.password" placeholder="请输入你的密码" :password="true"
-						:border="'none'" fontSize="28rpx" clearable>
-					</u-input> -->
 				</view>
 			</view>
 			<view class="wd-btn-gloup">
-				<button type="default" @click="goLogin">重置</button>
+				<button type="default" @click="handleSubmit">重置</button>
 				<button type="default" @click="goLogin">取消</button>
 			</view>
 		</view>
@@ -49,35 +51,81 @@
 </template>
 
 <script>
+	import {
+		PostUpdatePhone,
+	} from '@/common/http/api.js';
 	export default {
 		data() {
 			return {
 				form: {
 					password: '',
+					newPhone: '',
+					oldPhone: '',
+					oldCode: '',
+					newCode: '',
 				}
 			};
 		},
 		methods: {
 
 			/**
-			 * 跳转登录
+			 * 提交
 			 */
-			goLogin() {
-				uni.navigateTo({
-					url: '/pages/login/login'
-				});
+			handleSubmit() {
+				PostUpdatePhone({
+					...this.form
+				}).then(res=>{
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						this.handleBack()
+					}, 500)
+				})
+			},
+			/**
+			 * 取消
+			 */
+			handleBack(){
+				uni.navigateBack()
 			},
 			/**
 			 * 原手机短信认证通过
 			 */
-			oldCheckedBySms(smsInfo) {
-				console.log(smsInfo, 'ssss')
+			oldCheckedBySms(uuid) {
+				this.form.uuid = uuid
 			},
 			/**
 			 * 新手机短信认证通过
 			 */
-			newCheckedBySms(smsInfo) {
-
+			newCheckedBySms(uuid) {
+				this.form.newCode = uuid
+			},
+			/**
+			 * 旧手机获取短信请求参数
+			 */
+			oldSmsPayload() {
+				const {
+					code,
+					uuid
+				} = this.$refs.oldCodeRefbySms.returnCodeData();
+				return {
+					uuid,
+					captcha: code,
+					phone: this.form.oldPhone
+				};
+			},
+			/**
+			 * 新手机获取短信请求参数
+			 */
+			newSmsPayload() {
+				const {
+					code,
+					uuid
+				} = this.$refs.newCodeRefbySms.returnCodeData();
+				return {
+					uuid,
+					captcha: code,
+					phone: this.form.newPhone
+				};
 			}
 		}
 	};
@@ -95,7 +143,7 @@
 	}
 
 	.ui-form {
-		margin-top: 156rpx;
+		margin-top: 50rpx;
 		padding: 0 80rpx;
 		padding-bottom: 120rpx;
 
@@ -118,7 +166,7 @@
 		}
 
 		.wd-btn-gloup {
-			margin: 120rpx 0;
+			margin: 80rpx 0;
 		}
 	}
 </style>
