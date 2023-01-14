@@ -1,7 +1,7 @@
 /*
  * @Author: zhanch
  * @Date: 2022-12-13 14:37:03
- * @LastEditors: zhanch
+ * @LastEditors: Please set LastEditors
  * @FilePath: /http/api.js
  * @Description: 请求接口
  */
@@ -119,7 +119,7 @@ export const PostUpdatePwd = (params) => http.post('/api/memberInfo/updatePwd', 
 /* 
  *获取家庭列表
  */
-export const PostFamilyList = (params) => http.get('/api/family/list', params)
+export const GetFamilyList = (params) => http.get('/api/family/list', params)
 
 /* 
  *删除家庭
@@ -140,3 +140,23 @@ export const PostEditFamily = (params) => http.post('/api/family/editFamily', pa
  *编辑家庭
  */
 export const PostDeviceList = (params) => http.post('/api/device/list', params)
+
+/* 
+ *获取房间列表
+ */
+export const PostRoomList = (params) => http.post('/api/room/list', params)
+
+/* 
+ *删除家庭
+ */
+export const PostDelRoom = (params) => http.post('/api/room/remRoom', params)
+
+/* 
+ *创建家庭
+ */
+export const PostAddRoom = (params) => http.post('/api/room/creRoom', params)
+
+/* 
+ *编辑家庭
+ */
+export const PostEditRoom = (params) => http.post('/api/room/editRoom', params)

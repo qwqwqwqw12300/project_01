@@ -13,34 +13,56 @@
 			<view class="ui-add-box">
 				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
 					text="房间名称"></u-text>
-				<u--input placeholder="请输入房间名称" border="bottom" clearable></u--input>
+				<u--input v-model="roomName" placeholder="请输入房间名称" border="bottom" clearable></u--input>
 			</view>
-			<view class="ui-btn"><button @click="next" class="wd-sms">下一步</button></view>
+			<view class="ui-btn"><button @click="next" class="wd-sms">{{ subTitle }}</button></view>
 		</view>
 	</u-popup>
 </template>
 
 <script>
+	import {
+		PostAddRoom,
+	} from '@/common/http/api.js';
 	export default {
 		emit: [],
 		props: {},
 		data() {
 			return {
-				show: false
-			};
+				show: false,
+				id: '',
+				subTitle: '',
+				roomName: '',
+			}
 		},
-
-		mounted(options) {},
 		methods: {
 			close() {
 				this.show = false;
 			},
-			open() {
+			open(obj) {
 				this.show = true;
+				const {
+					id,
+					subTitle
+				} = obj
+				this.id = id
+				this.subTitle = subTitle || '下一步'
 			},
 			next() {
-				this.close();
-				this.$emit('next')
+				if (!this.roomName) {
+					return uni.$u.toast('请填写房间名称')
+				}
+				PostRoomList({
+					roomName: this.roomName,
+					familyId: this.id,
+				}).then(res => {
+					uni.$u.toast(res.msg)
+					this.close();
+					setTimeout(() => {
+						this.$emit('update')
+					}, 1000)
+				})
+
 			}
 		}
 	};

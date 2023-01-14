@@ -12,14 +12,14 @@
 		<view class="ui-menu">
 			<u-grid>
 				<u-grid-item v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
-					<view class="ui-menu-item" :border="false" @click="gridClick(baseListItem.id)">
+					<view class="ui-menu-item" :border="false" @click="gridClick(baseListItem.familyId)">
 						<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/myself/home.png"
 							size="60rpx"></u-icon>
 						<text class="grid-text">{{ baseListItem.name }}</text>
 						<view class="ui-edit" @click.stop="editFamliy(baseListItem)">
 							<u-icon name="edit-pen-fill" size="30rpx" color="#ff9500"></u-icon>
 						</view>
-						<u-icon @click="onDelete(baseListItem.familyId)" class="ui-close active"
+						<u-icon @click.native.stop="onDelete(baseListItem.familyId)" class="ui-close active"
 							name="close-circle-fill" size="40rpx">
 						</u-icon>
 					</view>
@@ -40,7 +40,7 @@
 				</view>
 				<view class="wd-btn-gloup">
 					<button @click="onSubmit">提交</button>
-					<button @click="onclose">取消</button>
+					<button @click="close">取消</button>
 				</view>
 			</view>
 		</u-popup>
@@ -50,7 +50,7 @@
 
 <script>
 	import {
-		PostFamilyList,
+		GetFamilyList,
 		PostDelFamily,
 		PostEditFamily,
 	} from '@/common/http/api.js';
@@ -69,9 +69,9 @@
 			/**
 			 * 菜单点击
 			 */
-			gridClick(url) {
+			gridClick(id) {
 				uni.navigateTo({
-					url: '/pages/myself/room-manage'
+					url: '/pages/myself/room-manage?familyId=' + id
 				})
 			},
 
@@ -152,7 +152,7 @@
 			 * 获取家庭列表
 			 */
 			getFamilyList() {
-				PostFamilyList({}).then(res => {
+				GetFamilyList({}).then(res => {
 					this.baseList = res.rows
 				})
 			},
