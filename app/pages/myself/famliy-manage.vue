@@ -164,10 +164,24 @@
 					familyId
 				}).then(res => {
 					uni.$u.toast(res.msg)
-					setTimeout(() => {
-						this.getFamilyList()
-					}, 1000)
+					this.handleBack()
+					// setTimeout(() => {
+					// 	this.getFamilyList()
+					// }, 1000)
 				})
+			},
+			handleBack() {
+				let pages = getCurrentPages(); // 当前页面
+				const prevPage = pages[pages.length - 2]; //上一页页面实例
+				if (typeof(prevPage) == "undefined") {
+					//没上一页面
+					return;
+				}
+				//把数据返回给上一个页面
+				prevPage.$vm.handleInit(); //上一页面的刷新方法
+				setTimeout(() => {
+					uni.navigateBack()
+				}, 500)
 			}
 		},
 		mounted() {

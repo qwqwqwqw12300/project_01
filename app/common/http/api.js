@@ -26,6 +26,12 @@ export const GetCaptchaImage = (params) => http.get('/api/captchaImage', params)
  */
 export const PostLoginByPwd = (params) => http.post('/api/loginByPwd', params)
 
+
+/* 
+ *注销*
+ */
+export const PostLoginOut = (params) => http.post('/api/loginOut', params)
+
 /* 
  *查看消息列表 *
  */

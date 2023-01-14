@@ -16,7 +16,7 @@
 				</view>
 			</view>
 			<view class="ui-form-item">
-				<sms-input></sms-input>
+				<sms-input @checked="oldCheckedBySms"></sms-input>
 			</view>
 			<view class="ui-form-item">
 				<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="新手机号码" color="#444" size="28rpx"></u-text>
@@ -25,7 +25,20 @@
 				</view>
 			</view>
 			<view class="ui-form-item">
-				<sms-input></sms-input>
+				<sms-input @checked="newCheckedBySms"></sms-input>
+			</view>
+			<view class="ui-form-item">
+				<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx">
+				</u-text>
+				<view class="ui-input">
+					<u-input v-model="form.password" placeholder="请输入你的密码" :password="true" :border="'none'"
+						fontSize="28rpx" clearable>
+
+					</u-input>
+					<!-- 		<u-input v-model="form.password" placeholder="请输入你的密码" :password="true"
+						:border="'none'" fontSize="28rpx" clearable>
+					</u-input> -->
+				</view>
 			</view>
 			<view class="wd-btn-gloup">
 				<button type="default" @click="goLogin">重置</button>
@@ -38,7 +51,11 @@
 <script>
 	export default {
 		data() {
-			return {};
+			return {
+				form: {
+					password: '',
+				}
+			};
 		},
 		methods: {
 
@@ -49,6 +66,18 @@
 				uni.navigateTo({
 					url: '/pages/login/login'
 				});
+			},
+			/**
+			 * 原手机短信认证通过
+			 */
+			oldCheckedBySms(smsInfo) {
+				console.log(smsInfo, 'ssss')
+			},
+			/**
+			 * 新手机短信认证通过
+			 */
+			newCheckedBySms(smsInfo) {
+
 			}
 		}
 	};
