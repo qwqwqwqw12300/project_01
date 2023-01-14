@@ -90,18 +90,21 @@ const store = {
 	},
 	getters: {
 		/**
-		 * 获取家庭中得所有设备
+		 * 获取指定条件的设备j
 		 */
-		getDeviceOnFamily: state => id => {
-			return state.devicesList.filter(item => item.familyId === id || item.familyId === 106);
+		filterDevice: state => obj => {
+			let devices = state.devicesList;
+			for(let item in obj) {
+				devices = devices.filter(ele => ele[item] === obj[item]);
+			}
+			// return devices;
+			return state.devicesList;
 		},
 		
 		/**
 		 * 获取家庭中得所有房间
 		 */
-		getRoomOnFamily: state => id => {
-			return state.roomList.filter(item => item.familyId === id);
-		}
+		filterRoom: state => id => state.roomList.filter(item => item.familyId === id)
 	}
 }
 

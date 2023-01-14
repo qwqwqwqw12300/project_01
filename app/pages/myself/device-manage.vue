@@ -27,7 +27,7 @@
 							<u-icon @click="onDelete" class="ui-close active" name="close-circle-fill" size="40rpx">
 							</u-icon>
 						</view>
-						<view class="ui-btn"><button class="wd-sms" @click="unbinding">解绑</button></view>
+						<view class="ui-btn"><button class="wd-sms" @click="unbinding(item)">解绑</button></view>
 					</u-grid-item>
 				</u-grid>
 			</view>
@@ -72,8 +72,13 @@
 
 <script>
 	import {
-		PostDeviceList,
+		PostDeviceList,setDevice 
 	} from '@/common/http/api.js';
+	import {
+		mapState,
+		mapActions
+	} from 'vuex';
+	
 	export default {
 		data() {
 			return {
@@ -96,10 +101,11 @@
 		computed: {
 			...mapState({
 				/**所有家庭列表**/
-				list: state => state.getDeviceList
+				list: state => state.devicesList
 			}),
 		},
 		methods: {
+			...mapActions(['getAllDevices']),
 			/**
 			 * 绑定
 			 */
@@ -149,12 +155,23 @@
 			/**
 			 * 解绑
 			 */
-			unbinding() {
+			unbinding({deviceId, familyId, roomId}) {
 				uni.showModal({
 					title: '提示',
 					content: '是否和房间解除绑定',
 					success: res => {
 						if (res.confirm) {
+							setDevice({
+								deviceId,
+								familyId,
+								roomId
+							}).then(res=> {
+								uni.$u.toast(res.msg);
+								setTimeout(() => {
+									this.getAllDevices();
+								}, 1000);
+								
+							})
 							console.log('用户点击确定');
 						} else if (res.cancel) {
 							console.log('用户点击取消');
@@ -168,17 +185,10 @@
 			 */
 			bindRoom() {
 				this.bindRoomShow = true;
-			},
-			handleInit() {
-				PostDeviceList({
-
-				}).then(res => {
-					this.list = res.rows
-				})
 			}
 		},
 		mounted() {
-			this.handleInit()
+			this.getAllDevices();
 		}
 	};
 </script>

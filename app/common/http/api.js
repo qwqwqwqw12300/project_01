@@ -137,12 +137,17 @@ export const PostAddFamily = (params) => http.post('/api/family/creFamily', para
 export const PostEditFamily = (params) => http.post('/api/family/editFamily', params)
 
 /* 
- *编辑家庭
+ *修改设备列表
  */
 export const PostDeviceList = (params) => http.post('/api/device/list', params);
 
 /**
+ * 绑定/解绑设备
+ */
+export const setDevice = (params) => http.post('/api/device/setDevice', params);
+
+/**
  * 获取房间列表
  */
-export const PostRoomList = (params) => http.post('/api/room/list', params);
+export const getRoomList = (params) => http.post('/api/room/list', params);
 

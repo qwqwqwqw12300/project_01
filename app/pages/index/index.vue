@@ -47,7 +47,7 @@
 						}" text="分享"></u-text>
 					</view>
 					<view class="ui-device">
-						<view class="ui-list" v-for="device of getDeviceOnFamily(familyItem.familyId)" :key="device.deviceId">
+						<view class="ui-list" v-for="device of filterDevice({familyId: familyItem.familyId})" :key="device.deviceId">
 							<view class="ui-list-box active" @click="goPage('/pages/equipment/radar-detail')">
 								<image src="../../static/images/device.png"></image>
 								<text>{{device.name || '--'}}</text>
@@ -110,7 +110,7 @@
 				/**所有家庭列表**/
 				familyList: state => state.familyList
 			}),
-			...mapGetters(['getDeviceOnFamily'])
+			...mapGetters(['filterDevice'])
 		},
 		onLoad() {
 			Promise.all([

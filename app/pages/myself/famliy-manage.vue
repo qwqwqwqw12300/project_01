@@ -12,17 +12,16 @@
 		<view class="ui-menu">
 			<u-grid>
 				<u-grid-item v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
-					<view class="ui-menu-item" :border="false" @click="gridClick(baseListItem.id)">
+					<view class="ui-menu-item" :border="false" @click="gridClick(baseListItem.familyId)">
 						<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/myself/home.png"
 							size="60rpx"></u-icon>
 						<text class="grid-text">{{ baseListItem.name }}</text>
 						<view class="ui-edit" @click.stop="editFamliy(baseListItem)">
 							<u-icon name="edit-pen-fill" size="30rpx" color="#ff9500"></u-icon>
 						</view>
-						<view class="ui-close active" @click.stop="onDelete(baseListItem.familyId)" >
-							<u-icon name="close-circle-fill" size="40rpx"></u-icon>
-						</view>
-						
+						<u-icon @click.native.stop="onDelete(baseListItem.familyId)" class="ui-close active"
+							name="close-circle-fill" size="40rpx">
+						</u-icon>
 					</view>
 				</u-grid-item>
 			</u-grid>
@@ -41,7 +40,7 @@
 				</view>
 				<view class="wd-btn-gloup">
 					<button @click="onSubmit">提交</button>
-					<button @click="onclose">取消</button>
+					<button @click="close">取消</button>
 				</view>
 			</view>
 		</u-popup>
@@ -51,7 +50,7 @@
 
 <script>
 	import {
-		PostFamilyList,
+		GetFamilyList,
 		PostDelFamily,
 		PostEditFamily,
 	} from '@/common/http/api.js';
@@ -78,9 +77,9 @@
 			/**
 			 * 菜单点击
 			 */
-			gridClick(url) {
+			gridClick(id) {
 				uni.navigateTo({
-					url: '/pages/myself/room-manage'
+					url: '/pages/myself/room-manage?familyId=' + id
 				})
 			},
 
@@ -166,10 +165,24 @@
 					familyId
 				}).then(res => {
 					uni.$u.toast(res.msg)
+					// this.handleBack()
 					setTimeout(() => {
 						this.getFamilyList()
-					}, 1000)
+					}, 1000);
 				})
+			},
+			handleBack() {
+				let pages = getCurrentPages(); // 当前页面
+				const prevPage = pages[pages.length - 2]; //上一页页面实例
+				if (typeof(prevPage) == "undefined") {
+					//没上一页面
+					return;
+				}
+				//把数据返回给上一个页面
+				prevPage.$vm.handleInit(); //上一页面的刷新方法
+				setTimeout(() => {
+					uni.navigateBack()
+				}, 500)
 			}
 		},
 		mounted() {

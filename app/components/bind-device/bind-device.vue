@@ -47,7 +47,6 @@
 				}]
 			};
 		},
-
 		mounted(options) {},
 		methods: {
 			close() {

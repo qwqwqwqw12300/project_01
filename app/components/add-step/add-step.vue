@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<add-family ref="addFamily" @update="familyNext" />
-		<add-room ref="addRoom" @next="roomNext" />
+		<add-room ref="addRoom" :familyId="familyId" @next="roomNext" />
 		<bind-device ref="bindDev" />
 	</view>
 </template>
@@ -13,7 +13,8 @@
 	export default {
 		data() {
 			return {
-				
+				/**新增的房间id**/
+				familyId: 's'
 			};
 		},
 		methods: {
@@ -27,7 +28,8 @@
 			/**
 			 * 添加家庭下一步
 			 */
-			familyNext() {
+			familyNext(familyId) {
+				this.familyId = familyId;
 				this.getAllFamily();
 				this.$refs.addRoom.open();
 			},
