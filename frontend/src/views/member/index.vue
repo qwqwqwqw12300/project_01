@@ -162,23 +162,51 @@
     </el-dialog> -->
     <!-- 添加或修改机构对话框 -->
     <form-panel :title="title" :visible.sync="open" width="600px" append-to-body >
-      <h4 class="form-header h4">基本信息</h4>
-      <!-- 测试 -->
+      <h4 class="form-header h4">会员基本信息</h4>
 		<el-row>
 		  <member-info-card :value="form.memberId"></member-info-card>
 		</el-row>	  
+    
+
+
+    <!-- 先用表格代替卡片组 -->
+    <el-card class="box-card">
+
+    <h3 class="form-header h4">家庭组信息</h3>
+    <el-table v-loading="familyLoading" :data="familyList" >
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="家庭名称：" align="center" prop="name" />
+      <el-table-column label="家庭地址：" align="center" prop="address" />
+      <el-table-column label="共享标志：" align="center" prop="shareFlag">
+        <template slot-scope="scope">
+          {{ shareFlagFormat(scope.row) }}
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="" align="center" prop="userName" />
+      <el-table-column label="设备名称：" align="center" prop="userPhone" />
+      <el-table-column label="位置：" align="center" prop="createTime" />
+      <el-table-column label="状态：" align="center" prop="createTime" /> -->
+    </el-table>
+    <pagination
+      v-show="familyTotal>0"
+      :total="familyTotal"
+      :page.sync="queryFamilyParams.pageNum"
+      :limit.sync="queryFamilyParams.pageSize"
+      @pagination="familyList"
+    />
+    </el-card>
     </form-panel>
   </div>
 </template>
 
 <script>
-import { listMember, getMember } from "@/api/member/member";
+import { listMember, getMember,listFamily } from "@/api/member/member";
 import MemberInfoCard from "@/views/member/components/MemberInfoCard";
 
 export default {
   name: "Member",
   components:{MemberInfoCard},
-  dicts: ['sys_distribute_flag'],
+  dicts: ['sys_distribute_flag','sys_share_flag'],
   data() {
     return {
       // 遮罩层
@@ -195,6 +223,20 @@ export default {
       total: 0,
       // 会员表格数据
       memberList: [],
+
+      //家庭设备组表格数据
+      // 遮罩层
+      familyTotal:0,
+      familyLoading: true,
+      familyList: [],
+      queryFamilyParams: {
+        pageNum: 1,
+        pageSize: 10,
+        memberId: 100,
+
+      },
+
+
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -247,10 +289,28 @@ export default {
         this.loading = false;
       });
     },
+
+    /** 查询家庭组信息列表 */
+    // getfamilyList() {
+    //   this.familyLoading = true;
+    //   listFamily(this.queryFamilyParams).then(response => {
+    //     this.familyList = response.rows;
+    //     this.familyTotal = response.total;
+    //     this.familyLoading = false;
+    //   });
+    // },
+
+    //字典翻译部分
      // 分配标志字典翻译
-     distributeFlagFormat(row, column) {
-      return this.selectDictLabel(this.dict.type.sys_distribute_flag, row.distributeFlag)
+    distributeFlagFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.sys_distribute_flag, row.distributeFlagFormat)
     },
+
+    // 共享标志字典翻译
+    shareFlagFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.sys_share_flag, row.shareFlagFormat)
+    },
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -323,7 +383,16 @@ export default {
         this.open = true;
         this.title = "查看会员";
       });
-     
+      //家庭组信息查询触发
+      this.familyLoading = true;
+      listFamily(this.queryFamilyParams).then(response => {
+      //listFamily(memberId).then(response => {
+
+        this.familyList = response.rows;
+        this.familyTotal = response.total;
+        this.familyLoading = false;
+      });
+
     },
 
 
