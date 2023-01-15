@@ -3,9 +3,9 @@
 		<view class="ui-detail">
 			<image class="ui-detail-icon" src="../../static/images/device.png" mode=""></image>
 			<view class="ui-detail-device">
-				<text class="title">xx设备名称</text>
+				<text class="title">{{deviceInfo.name || '未命名设备'}}</text>
 				<view class="info">
-					<text class="position">位置</text>
+					<text class="position">{{deviceInfo.location || '--'}}</text>
 					<view class="status">
 						<image src="../../static/images/online.png"></image>
 						<text>在线</text>
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex';
 	export default {
 		data() {
 			return {
@@ -68,6 +69,11 @@
 					name: '已读',
 				}]
 			}
+		},
+		computed: {
+			...mapState({
+				deviceInfo: state => state.deviceInfo
+			})
 		},
 		methods: {
 			handleBack() {
