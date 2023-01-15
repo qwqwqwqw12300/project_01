@@ -48,9 +48,9 @@
 					</view>
 					<view class="ui-device">
 						<view class="ui-list" v-for="device of filterDevice({familyId: familyItem.familyId})" :key="device.deviceId">
-							<view class="ui-list-box active" @click="goPage('/pages/equipment/radar-detail')">
+							<view class="ui-list-box active" @click="goDeciveDetails(device)">
 								<image src="../../static/images/device.png"></image>
-								<text>{{device.name || '--'}}</text>
+								<text>{{device.name || '未命名设备'}}</text>
 								<text>{{device.location || '--'}}</text>
 								<view class="ui-list-static">
 									<u-icon name="wifi" color="#0dab1c" size="28"></u-icon>
@@ -115,11 +115,12 @@
 		onLoad() {
 			Promise.all([
 				this.getAllFamily(),
-				this.getAllDevices()
+				this.getAllDevices(),
+				this.getAllRoom()
 			]);
 		},
 		methods: {
-			...mapActions(['getAllFamily', 'getAllDevices']),
+			...mapActions(['getAllFamily', 'getAllDevices', 'getAllRoom']),
 			/**
 			 * 打开添加按钮
 			 */
@@ -150,24 +151,17 @@
 					}
 				})
 			},
-
-			async getInfo() {
-				const familyList = await getFamilyList();
-				this.familyList = familyList.rows;
-				// this.familyList.forEach(ele => {
-				// 	getDeviceList({
-				// 		familyId: ele.familyId
-				// 	}).then(deviceList => {
-				// 		ele.deviceList = deviceList.rows;
-				// 	})
-				// });
-				getDeviceList({}).then(deviceList => {
-					ele.devices = deviceList.rows;
-				})
-			},
-			
 			/**
-			 * 添加房间
+			 * 跳转设备详情
+			 */
+			goDeciveDetails(info) {
+				this.$store.commit('setDeviceInfo', info);
+				this.goPage('/pages/equipment/radar-detail');
+				
+			},
+				
+			/**
+			 * 添加家庭
 			 */
 			addStep() {
 				this.$refs.addStepRef.open();
