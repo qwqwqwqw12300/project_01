@@ -1,27 +1,60 @@
 <template>
   <div class="app-container home">
-    <el-row :gutter="20">
-      <el-col :sm="24" :lg="12" style="padding-left: 20px">
-        <h2>运营首页</h2>
-
-      </el-col>
+    <el-row>
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span class="el-dialog__title">紧急处理设备</span>
+        </div>
+        <water-fall :value="deviceList">
+          <template slot-scope="{item}">
+            {{item}}
+          </template>
+        </water-fall>
+      </el-card>
+    </el-row>
+    <el-row>
+      <el-card>
+        <water-fall :value="deviceList">
+          <template slot-scope="{item}">
+            {{item}}
+          </template>
+        </water-fall>
+      </el-card>
     </el-row>
   </div>
 </template>
 
 <script>
+import {notArrangeMemberCount,countUnHandleByDeviceGroupByLevel} from '@/api/home/bizHome'
+
 export default {
-  name: "Index",
+  name: "OperateAdmin",
   data() {
     return {
-      // 版本号
-      version: "3.8.4",
+      deviceList:[],
+      urgentLevel:"urgent"
     };
+  },
+  created(){
+    notArrangeMemberCount();
+  },
+  computed:{
+    urgentDevices(){
+      return this.deviceList.filter(x=>x.countUnHandleByDeviceGroupByLevel?.find(p=>p.level=this.urgentLevel&&p.count>0))
+    },
+    notUrgentDevices(){
+      return this.deviceList.filter(x=>!(x.countUnHandleByDeviceGroupByLevel?.find(p=>p.level=this.urgentLevel&&p.count>0)))
+    },
   },
   methods: {
     goTarget(href) {
       window.open(href, "_blank");
     },
+    getList(){
+      notArrangeMemberCount().then(response=>{
+        this.deviceList = response.rows;
+      })
+    }
   },
 };
 </script>
@@ -90,3 +123,14 @@ export default {
 }
 </style>
 
+<style scoped lang="scss">
+
+.el-row {
+  margin-bottom: 20px;
+
+  &
+  :last-child {
+    margin-bottom: 0;
+  }
+}
+</style>

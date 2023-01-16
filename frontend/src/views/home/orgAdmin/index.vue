@@ -7,10 +7,10 @@
         </div>
         <water-fall :value="orgList">
           <template slot-scope="{item}">
-            <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotAssosiateDevice()">
-              {{item.orgName}}
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotAssosiateDevice(item.orgId)">
+              {{ item.orgName }}
               <br>
-              共{{orgUnHandleEventCountMap.get(item.orgId)}}台设备
+              共{{ orgUnHandleEventCountMap[item.orgId] }}台设备
             </el-card>
           </template>
         </water-fall>
@@ -30,24 +30,24 @@
             </el-card>
           </el-col>
           <el-col :span="6">
-            <el-card shadow="hover" class="card-item card-item-click">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotArrangeDevice()">
               待分组设备
               <br>
               {{ notArrangeDeviceCount }}台
             </el-card>
           </el-col>
           <el-col :span="6">
-            <el-card shadow="hover" class="card-item card-item-click">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotArrangeDeviceGroup()">
               待分配运营人员设备组
               <br>
-              {{notArrangeDeviceGroupCount}}组
+              {{ notArrangeDeviceGroupCount }}组
             </el-card>
           </el-col>
           <el-col :span="6">
-            <el-card shadow="hover" class="card-item card-item-click" @click.native="goOrg()">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goOrgUnHandleEvent">
               机构设备消息（未处理）
               <br>
-              {{orgUnHandleEventCount}}条
+              {{ orgUnHandleEventCount }}条
             </el-card>
           </el-col>
         </el-row>
@@ -57,7 +57,14 @@
 </template>
 
 <script>
-import {subOrgList,subOrgDeviceCount,orgUnHandleEventCount,notAssociateDeviceCount,notArrangeDeviceCount,notArrangeDeviceGroupCount} from "@/api/home/orgAdminHome"
+import {
+  subOrgList,
+  subOrgDeviceCount,
+  orgUnHandleEventCount,
+  notAssociateDeviceCount,
+  notArrangeDeviceCount,
+  notArrangeDeviceGroupCount
+} from "@/api/home/orgAdminHome"
 import {getUserProfile, getUser, pageUser} from "@/api/system/user";
 
 export default {
@@ -65,43 +72,48 @@ export default {
   name: "Index",
   data() {
     return {
-      orgList:[],
-      orgDeviceCountList:[],
-      orgUnHandleEventCount:undefined,
-      notAssociateDeviceCount:undefined,
-      notArrangeDeviceCount:undefined,
-      notArrangeDeviceGroupCount:undefined,
-      orgUnHandleEventCountMap:new Map()
+      orgList: [],
+      currentOrgId: undefined,
+      orgDeviceCountList: [],
+      orgUnHandleEventCount: undefined,
+      notAssociateDeviceCount: undefined,
+      notArrangeDeviceCount: undefined,
+      notArrangeDeviceGroupCount: undefined,
+      orgUnHandleEventCountMap: {}
     };
   },
-  created(){
+  created() {
     this.init()
   },
-  activated(){
+  activated() {
     this.init()
   },
   methods: {
+    setOrgUnHandleEventCountMap(key, value) {
+      this.$set(this.orgUnHandleEventCountMap, key, value)
+    },
     init() {
-      this.orgList=[];
-      this.orgDeviceCountList=[];
-      this.orgUnHandleEventCount=undefined;
-      this.notAssociateDeviceCount=undefined;
-      this.notArrangeDeviceCount=undefined;
-      this.notArrangeDeviceGroupCount=undefined;
+      this.orgList = [];
+      this.orgDeviceCountList = [];
+      this.orgUnHandleEventCount = undefined;
+      this.notAssociateDeviceCount = undefined;
+      this.notArrangeDeviceCount = undefined;
+      this.notArrangeDeviceGroupCount = undefined;
       subOrgList().then(response => {
         this.orgList = response.data;
-        this.orgList.forEach(org=>{
+        this.orgList.forEach(org => {
           orgUnHandleEventCount(org.orgId).then(response => {
-            this.orgUnHandleEventCountMap.set(org.orgId,response.data)
-            console.log(JSON.stringify(response)+">>>>>"+org.orgId+">>>>>>>"+JSON.stringify(this.orgUnHandleEventCountMap))
+            this.setOrgUnHandleEventCountMap(org.orgId, response.data)
+            // console.log(JSON.stringify(response) + ">>>>>" + org.orgId + ">>>>>>>" + JSON.stringify(this.orgUnHandleEventCountMap))
           })
         });
       });
       subOrgDeviceCount().then(response => this.orgDeviceCountList = response.data);
-      getUserProfile().then(user =>{
-        if(user.data.orgId == undefined){
-          this.orgUnHandleEventCount=0
-        }else{
+      getUserProfile().then(user => {
+        this.currentOrgId = user.data.orgId;
+        if (user.data.orgId == undefined) {
+          this.orgUnHandleEventCount = 0
+        } else {
           orgUnHandleEventCount(user.data.orgId).then(response => this.orgUnHandleEventCount = response.data)
         }
       });
@@ -109,6 +121,18 @@ export default {
       notArrangeDeviceCount().then(response => this.notArrangeDeviceCount = response.data);
       notArrangeDeviceGroupCount().then(response => this.notArrangeDeviceGroupCount = response.data);
     },
+    goNotAssosiateDevice(orgId) {
+      this.$router.push({path: '/devices/device', query: {orgId: orgId, distributeFlag: 0}})
+    },
+    goNotArrangeDevice() {
+      this.$router.push({path: '/org/deviceGroup'})
+    },
+    goNotArrangeDeviceGroup() {
+      this.$router.push({path: '/org/deviceGroupArrangeUser'})
+    },
+    goOrgUnHandleEvent() {
+
+    }
   },
 };
 </script>

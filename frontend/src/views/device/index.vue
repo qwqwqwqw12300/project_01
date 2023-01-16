@@ -247,12 +247,14 @@ export default {
       },
       groupArrangeRules: {},
       groupArrangeGroupList: [],
-      currentDistributeFlag: undefined
+      currentDistributeFlag: undefined,
+      currentOrgId:undefined,
 
     }
   },
   created() {
     this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
+    this.currentOrgId = this.$route.query.currentOrgId==undefined?undefined:this.$route.query.currentOrgId
     this.resetQuery();
     this.getDeptTree();
   },
@@ -263,6 +265,17 @@ export default {
         if (this.$route.name == "Device") {
           if (this.currentDistributeFlag != val) {
             this.currentDistributeFlag = val==undefined?undefined:Number(val);
+            this.resetQuery();
+          }
+        }
+      }
+    },
+    "$route.query.orgId": {
+      immediate: true,
+      handler: function (val) {
+        if (this.$route.name == "Device") {
+          if (this.currentOrgId != val) {
+            this.currentOrgId = val;
             this.resetQuery();
           }
         }
@@ -300,7 +313,7 @@ export default {
         no: undefined,
         name: undefined,
         type: undefined,
-        orgId: undefined,
+        orgId: this.currentOrgId,
         distributeFlag: this.currentDistributeFlag
       }
       // this.resetForm("queryForm");

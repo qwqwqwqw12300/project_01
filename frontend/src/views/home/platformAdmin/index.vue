@@ -5,7 +5,6 @@
         <div slot="header" class="clearfix">
           <span class="el-dialog__title">数据面板</span>
         </div>
-
         <el-row>
           <el-col :span="6">
             <el-card shadow="hover" class="card-item card-item-click"
@@ -54,14 +53,14 @@
             </el-card>
           </el-col>
           <el-col :span="6">
-            <el-card shadow="hover" class="card-item card-item-click">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotArrangeMember()">
               待分配运营人员的会员
               <br>
               {{ notArrangeMemberCount }}名
             </el-card>
           </el-col>
           <el-col :span="6">
-            <el-card shadow="hover" class="card-item card-item-click">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotHandleMemberEvent()">
               未处理的会员事件
             </el-card>
           </el-col>
@@ -130,6 +129,15 @@ export default {
       this.$router.push({path:'/member'})
     },
     goOrg(){
+      this.$router.push({path:'/org/org'})
+    },
+    goUnHandleEvent(){
+      this.$router.push({path:'/org/org'})
+    },
+    goNotArrangeMember(){
+      this.$router.push({path:'/org/org'})
+    },
+    goNotHandleMemberEvent(){
       this.$router.push({path:'/org/org'})
     }
   },
