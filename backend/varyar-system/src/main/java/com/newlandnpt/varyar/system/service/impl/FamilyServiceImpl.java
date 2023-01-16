@@ -61,7 +61,6 @@ public class FamilyServiceImpl implements IFamilyService
     public List<TFamily> selectMembersFamilyList(Long memberId) {
         return familyMapper.selectMembersFamilyList(memberId);
     }
-
     /**
      * 新增家庭
      * 

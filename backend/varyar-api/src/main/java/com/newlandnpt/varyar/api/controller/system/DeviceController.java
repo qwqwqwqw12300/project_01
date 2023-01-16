@@ -5,6 +5,7 @@ import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.model.DevicePhoneRequest;
 import com.newlandnpt.varyar.common.core.domain.model.DeviceRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
+import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.domain.TDevice;
@@ -29,6 +30,9 @@ public class DeviceController extends BaseController {
 
     @Autowired
     private IDeviceService iDeviceService;
+
+    @Autowired
+    private RedisCache redisCache;
     /**
      * 获取设备列表
      * */
@@ -76,6 +80,7 @@ public class DeviceController extends BaseController {
         device.setDelFlag("0");
         device.setMemberId(getLoginUser().getMemberId());
         device.setCreateTime(DateUtils.getNowDate());
+        device.setCreateById(String.valueOf(this.getLoginUser().getMemberId()));
         try {
             iDeviceService.insertDevice(device);
         } catch (Exception e){
@@ -187,7 +192,7 @@ public class DeviceController extends BaseController {
         Set<String> type4 = new HashSet<String>();
         for(DevicePhone item :list){
             ajax = checkPhoneInfo(item,ajax);
-            if(!CollectionUtils.isEmpty(ajax)){
+            if(ajax != null){
                 return ajax;
             }else {
                 ajax = AjaxResult.success();
@@ -282,29 +287,68 @@ public class DeviceController extends BaseController {
         list = device.getParameter().getList();
         return getDataTable(list);
     }
+
+    /**
+     * 获取家庭设备数量
+     * */
+    @GetMapping("/getFamilyNum")
+    public String getFamilyNum(Long familyId) {
+        TDevice tDevice = new TDevice();
+        tDevice.setFamilyId(familyId);
+        List<TDevice> list = iDeviceService.selectDeviceList(tDevice);
+        return String.valueOf(list.size());
+    }
+    /**
+     * 获取家庭设备数量(在线)
+     * */
+    @GetMapping("/getFNumOnline")
+    public String getFamilyNumOnline(Long familyId) {
+        TDevice tDevice = new TDevice();
+        tDevice.setFamilyId(familyId);
+        List<TDevice> list = iDeviceService.selectDeviceList(tDevice);
+        //设备在线信息
+        int number = 0;
+        for (int i = 0; i <list.size() ; i++) {
+            TDevice item = list.get(i);
+            if(item.getOnlineFlag()!=null && item.getOnlineFlag().equals("1")){
+                number = number++;
+            }
+        }
+        return String.valueOf(number);
+    }
+
+
     private AjaxResult checkPhoneInfo(DevicePhone devicePhone ,AjaxResult ajax){
         if (devicePhone.getPhoneName().equals("")|| devicePhone.getPhoneName()==null){
-            error("联系人名称不能为空！");
+            ajax = AjaxResult.error("联系人名称不能为空！");
+            return ajax;
         }
         if (devicePhone.getPhone().length()>20){
-            error("联系人名称20个字符！");
+            ajax = AjaxResult.error("联系人名称20个字符！");
+            return ajax;
+
         }
         if (devicePhone.getPhone().equals("")|| devicePhone.getPhone()==null){
-            error("联系人电话不能为空！");
+            ajax = AjaxResult.error("联系人电话不能为空！");
+            return ajax;
         }
         if (devicePhone.getPhone().length()>11){
-            error("联系人电话长度11个字符！");
+            ajax = AjaxResult.error("联系人电话长度11个字符！");
+            return ajax;
         }
         if (devicePhone.getType().equals("")|| devicePhone.getType()==null){
-            error("联系人电话类型不能为空！");
+            ajax = AjaxResult.error("联系人电话类型不能为空！");
+            return ajax;
         }
         if (devicePhone.getPhone().length()>20){
-            error("联系人名称20个字符！");
+            ajax = AjaxResult.error("联系人名称20个字符！");
+            return ajax;
         }
         String type = devicePhone.getType();
         if (!(type.equals("0")||type.equals("1")||type.equals("2")
                 ||type.equals("3")||type.equals("4")||type.equals("P"))){
-            error("联系人电话类型错误！");
+            ajax = AjaxResult.error("联系人电话类型错误！");
+            return ajax;
         }
         return null;
     }

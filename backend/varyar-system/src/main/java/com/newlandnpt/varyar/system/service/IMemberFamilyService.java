@@ -26,7 +26,13 @@ public interface IMemberFamilyService
      * @return 会员和家庭关联
      */
     public List<TMemberFamily> selectTMemberFamilyByPhone(String phone);
-
+    /**
+     * 用 会员id 查询
+     *
+     * @param memberId
+     * @return 会员和家庭关联
+     */
+    public List<TMemberFamily> selectTMemberFamilyByMember(Long memberId);
     /**
      * 查询会员和家庭关联列表
      * 

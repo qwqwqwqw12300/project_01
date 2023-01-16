@@ -100,8 +100,19 @@ public class TDevice extends BaseEntity
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
+    /**是否在线 0:不在线  1:在线*/
+    @Transient
+    private String onlineFlag;
 
-    public void setDeviceId(Long deviceId) 
+    public String getOnlineFlag() {
+        return onlineFlag;
+    }
+
+    public void setOnlineFlag(String onlineFlag) {
+        this.onlineFlag = onlineFlag;
+    }
+
+    public void setDeviceId(Long deviceId)
     {
         this.deviceId = deviceId;
     }

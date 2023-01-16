@@ -25,6 +25,14 @@ public class TMsg extends BaseEntity
     @Excel(name = "消息类型:1短信 2APP消息 3事件消息", readConverterExp = "1=短信,2=APP消息,3事件消息")
     private String msgType;
 
+    /** 设备类型: 0雷达波  1监控设备 */
+    @Excel(name = "消息类型:0雷达波 1监控设备", readConverterExp = "0=雷达波,1=监控设备")
+    private String deviceType;
+
+    /** 事件等级:0:重要事件  1：普通事件 */
+    @Excel(name = "事件等级:0:重要事件 1：普通事件", readConverterExp = "0=重要事件,1=普通事件")
+    private String eventLevel;
+
     /** 消息编号 */
     @Excel(name = "消息编号")
     private String no;
@@ -182,6 +190,22 @@ public class TMsg extends BaseEntity
     public String getOperateFlag()
     {
         return operateFlag;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
+    public String getEventLevel() {
+        return eventLevel;
+    }
+
+    public void setEventLevel(String eventLevel) {
+        this.eventLevel = eventLevel;
     }
 
     @Override

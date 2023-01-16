@@ -6,6 +6,7 @@ import com.newlandnpt.varyar.common.core.domain.entity.BatchMessage;
 import com.newlandnpt.varyar.common.core.domain.entity.MemberParameter;
 import com.newlandnpt.varyar.common.core.domain.model.BatchMessageRequest;
 import com.newlandnpt.varyar.common.core.domain.model.MessagePushRequest;
+import com.newlandnpt.varyar.common.core.domain.model.MessageQueryRequest;
 import com.newlandnpt.varyar.common.core.domain.model.MessageRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.exception.ServiceException;
@@ -43,6 +44,20 @@ public class MessageController extends BaseController {
         startPage();
         Long memberId = getLoginUser().getMemberId();
         List<TMsg> list = itMsgService.selectTMsgList(memberId);
+        return getDataTable(list);
+    }
+    /**
+     * 获取消息详情
+     * */
+    @PostMapping("/familyList")
+    public TableDataInfo familyList(@RequestBody @Validated MessageQueryRequest messageRequest) {
+        startPage();
+        TMsg tMsg = new TMsg();
+        tMsg.setOperateFlag(messageRequest.getReadFlag());
+        tMsg.setEventLevel(messageRequest.getEventlevel());
+        tMsg.setFamilyId(Long.valueOf(messageRequest.getFamilyId()));
+        tMsg.setDeviceType(messageRequest.getDeviceType());
+        List<TMsg> list = itMsgService.selectTMsgList(tMsg);
         return getDataTable(list);
     }
     /**
@@ -91,7 +106,6 @@ public class MessageController extends BaseController {
                 error("设置推送消息开关异常！");
             }
         }
-
         return ajax;
     }
     /**
@@ -136,5 +150,15 @@ public class MessageController extends BaseController {
         flag = member.getParameter().getPushMessage();
         return flag;
     }
-
+    /**
+     * 设备消息未读数量
+     */
+    @GetMapping("/getDMsgUnReadNum")
+    public String  getDeviceMsgUnRead(Long deviceId){
+        TMsg tMsg = new TMsg();
+        tMsg.setDeviceId(deviceId);
+        tMsg.setOperateFlag("0");
+        List<TMsg> list = itMsgService.selectTMsgList(tMsg);
+        return String.valueOf(list.size());
+    }
 }

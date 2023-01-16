@@ -38,6 +38,15 @@ public class MemberServiceImpl implements IMemberService
     {
         return memberMapper.selectMemberByMemberId(memberId);
     }
+    /**
+     * 查询会员
+     *
+     * @param phone 手机号
+     * @return 会员
+     */
+    public TMember selectMemberByPhone(String phone){
+        return memberMapper.selectMemberByPhone(phone);
+    }
 
     /**
      * 查询会员列表

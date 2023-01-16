@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
+import org.springframework.data.annotation.Transient;
 
 /**
  * 会员和家庭关联对象 t_member_family
@@ -39,6 +40,17 @@ public class TMemberFamily extends BaseEntity
 
     /** 手机号*/
     private String phone;
+
+    @Transient
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getPhone() {
         return phone;

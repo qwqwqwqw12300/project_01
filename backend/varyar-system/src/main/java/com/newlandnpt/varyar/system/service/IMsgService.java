@@ -33,7 +33,6 @@ public interface IMsgService
      * @return 消息集合
      */
     public List<TMsg> selectTMsgList(Long memberId);
-
     /**
      * 新增消息
      * 

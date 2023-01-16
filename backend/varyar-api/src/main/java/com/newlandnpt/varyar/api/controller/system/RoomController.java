@@ -66,19 +66,16 @@ public class RoomController extends BaseController {
             @RequestBody @Validated RoomRequest roomRequest){
         AjaxResult ajax = AjaxResult.success();
         if (roomRequest.getRoomName().equals("")|| roomRequest.getRoomName()==null){
-            ajax = AjaxResult.error("房间名称不能为空！");
-            return ajax;
+            error("房间名称不能为空！");
         }
         if (roomRequest.getFamilyId().equals("")|| roomRequest.getFamilyId()==null){
-            ajax = AjaxResult.error("家庭Id不能为空！");
-            return ajax;
+            error("家庭Id不能为空！");
         }
         Long memberId = getLoginUser().getMemberId();
         //校验家庭信息是否存在
         TFamily tFamily = tFamilyService.selectTFamilyByFamilyId(Long.valueOf(roomRequest.getFamilyId()));
         if(tFamily == null ){
-            ajax = AjaxResult.error("家庭信息不存在！");
-            return ajax;
+            error("家庭信息不存在！");
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String roomNo = "R"+sdf.format(new Date());
@@ -86,12 +83,15 @@ public class RoomController extends BaseController {
             TRoom  tRoom = new TRoom();
             tRoom.setFamilyId(Long.valueOf(roomRequest.getFamilyId()));
             tRoom.setDelFlag("0");
-            tRoom.setCreateBy(String.valueOf(this.getLoginUser().getMemberId()));
+            tRoom.setCreateById(String.valueOf(this.getLoginUser().getMemberId()));
             tRoom.setName(roomRequest.getRoomName());
+            tRoom.setRoomLength(roomRequest.getRoomLength());
+            tRoom.setRoomHeight(roomRequest.getRoomHeight());
+            tRoom.setRoomLeft(roomRequest.getRoomLeft());
+            tRoom.setRoomRight(roomRequest.getRoomRight());
             iRoomService.insertTRoom(tRoom);
         } catch (Exception e){
-            ajax = AjaxResult.error("新增我的房间失败！");
-            return ajax;
+            error("新增我的房间失败！");
         }
         return ajax;
     }
@@ -103,21 +103,22 @@ public class RoomController extends BaseController {
             @RequestBody @Validated RoomRequest roomRequest){
         AjaxResult ajax = AjaxResult.success();
         if (roomRequest.getRoomId().equals("")|| roomRequest.getRoomId()==null){
-            ajax = AjaxResult.error("房间Id不能为空！");
-            return ajax;
+            error("房间Id不能为空！");
         }
         //查询我的房间（需要修改的）
         TRoom tRoom =  iRoomService.selectTRoomByRoomId(Long.valueOf(roomRequest.getRoomId()));
         if(!tRoom.getCreateById().equals(String.valueOf(this.getLoginUser().getMemberId()))){
-            ajax = AjaxResult.error("非创建者无权限修改！");
-            return ajax;
+            error("非创建者无权限修改！");
         }
         try {
             tRoom.setName(roomRequest.getRoomName());
+            tRoom.setRoomLength(roomRequest.getRoomLength());
+            tRoom.setRoomHeight(roomRequest.getRoomHeight());
+            tRoom.setRoomLeft(roomRequest.getRoomLeft());
+            tRoom.setRoomRight(roomRequest.getRoomRight());
             iRoomService.updateTRoom(tRoom);
         } catch (Exception e){
-            ajax = AjaxResult.error("修改我的房间失败！");
-            return ajax;
+            error("修改我的房间失败！");
         }
         return ajax;
     }
