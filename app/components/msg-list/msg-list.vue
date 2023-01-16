@@ -251,7 +251,7 @@
 			margin-top: 20rpx;
 			border-radius: 10rpx;
 			padding: 0 20rpx;
-			font-size: 28rpx;
+			font-size: 24rpx;
 			filter: drop-shadow(7.824rpx 10.382rpx 8rpx rgba(7, 5, 5, 0.08));
 			background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
 		}
