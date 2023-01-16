@@ -103,7 +103,7 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/member',
+    path: '/members',
     component: Layout,
     hidden: true,
     redirect: 'noredirect',
@@ -113,29 +113,13 @@ export const constantRoutes = [
         component: () => import('@/views/member/deviceEvents/index'),
         name: 'DeviceEvents',
         meta: { title: '未处理消息', icon: 'user' }
-      }
-    ]
-  },
-  {
-    path: '/member',
-    component: Layout,
-    hidden: true,
-    redirect: 'noredirect',
-    children: [
+      },
       {
         path: 'memberArrange',
         component: () => import('@/views/member/arrange/index'),
         name: 'MemberArrange',
         meta: { title: '待分配运营的会员', icon: 'user' }
-      }
-    ]
-  },
-  {
-    path: '/member',
-    component: Layout,
-    hidden: true,
-    redirect: 'noredirect',
-    children: [
+      },
       {
         path: 'unHandleEvents',
         component: () => import('@/views/member/memberAndDevice/unHandleEvents/index'),
