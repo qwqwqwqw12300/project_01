@@ -187,7 +187,7 @@ export default {
       showSearch: true,
       distributeFlagDict: [{label: '已分配', value: 1}, {label: '未分配', value: 0}],
       // 机构树选项
-      orgOptions: undefined,
+      orgOptions: [],
       total: 0,
       deviceList: [],
       queryParams: {
@@ -254,9 +254,9 @@ export default {
   },
   created() {
     this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
-    this.currentOrgId = this.$route.query.currentOrgId==undefined?undefined:this.$route.query.currentOrgId
-    this.resetQuery();
+    this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)
     this.getDeptTree();
+    this.resetQuery();
   },
   watch: {
     "$route.query.distributeFlag": {
@@ -294,10 +294,9 @@ export default {
       );
     },
     /** 查询机构下拉树结构 */
-    getDeptTree() {
-      orgTreeSelect().then(response => {
-        this.orgOptions = response.data;
-      });
+    async getDeptTree() {
+      const response = await orgTreeSelect()
+      this.orgOptions = response.data;
     },
     /** 搜索按钮操作 */
     handleQuery() {

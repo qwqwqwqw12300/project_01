@@ -58,6 +58,15 @@
             <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
             <if test="no != null  and no != ''">and no = #{no}</if>
             <if test="userId != null ">and user_id = #{userId}</if>
+            <if test="params.arrangeUser != null ">
+                <if test='params.arrangeUser == "false" '>
+                    and user_id is null
+                </if>
+
+                <if test='params.arrangeUser == "true" '>
+                    and user_id is not null
+                </if>
+            </if>
             <if test="userName != null  and userName != ''">and user_name like concat('%', #{userName}, '%')</if>
 
             and del_flag = '0'

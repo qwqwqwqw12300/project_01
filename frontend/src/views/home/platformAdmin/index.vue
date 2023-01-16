@@ -131,14 +131,17 @@ export default {
     goOrg(){
       this.$router.push({path:'/org/org'})
     },
+    //未处理消息
     goUnHandleEvent(){
-      this.$router.push({path:'/org/org'})
+      this.$router.push({path:'/members/deviceEvents',query: {operateFlag: 0}})
     },
+    //待分配运营的会员
     goNotArrangeMember(){
-      this.$router.push({path:'/org/org'})
+      this.$router.push({path:'/members/memberArrange'})
     },
+    //未处理的会员事件
     goNotHandleMemberEvent(){
-      this.$router.push({path:'/org/org'})
+      this.$router.push({path:'/members/unHandleEvents',query: {operateFlag: 0}})
     }
   },
 };

@@ -10,7 +10,9 @@
             <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotAssosiateDevice(item.orgId)">
               {{ item.orgName }}
               <br>
-              共{{ orgUnHandleEventCountMap[item.orgId] }}台设备
+              共{{ getDeviceCount(item.orgId)}}台设备
+              <br>
+              共{{ orgUnHandleEventCountMap[item.orgId] }}条消息未处理
             </el-card>
           </template>
         </water-fall>
@@ -91,6 +93,9 @@ export default {
   methods: {
     setOrgUnHandleEventCountMap(key, value) {
       this.$set(this.orgUnHandleEventCountMap, key, value)
+    },
+    getDeviceCount(orgId){
+      return this.orgDeviceCountList.find(x=>x.orgId = orgId)?.count || 0;
     },
     init() {
       this.orgList = [];
