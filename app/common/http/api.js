@@ -95,7 +95,7 @@ export const resetMemberPwd = (data) => http.post('/api/resetMemberPwd', data);
 export const getFamilyList = () => http.get('/api/family/list');
 
 /**获取设备列表**/
-export const getDeviceList = (data) => http.post('/api/device/list', data);
+export const getDeviceList = (data) => http.post('/api/device/listState', data);
 
 /**设备事件查询**/
 export const selectEventInfo = (data) => http.post('/api/event/selectEventInfo', data);
@@ -151,3 +151,13 @@ export const setDevice = (params) => http.post('/api/device/setDevice', params);
  */
 export const getRoomList = (params) => http.post('/api/room/list', params);
 
+/**
+ * 查询消息
+ */
+export const getMessage = (params) => http.post('/api/message/familyList', params);
+
+
+/**
+ * 标志所有消息状态
+ */
+export const PostSetBatchMsgInfo = (params) => http.post('/api/message/setBatchMsgInfo', params);

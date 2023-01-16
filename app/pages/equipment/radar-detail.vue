@@ -14,7 +14,8 @@
 			</view>
 		</view>
 		<view class="ui-msg-list">
-			<msg-list srollHeight="calc(100vh - var(--window-bottom) - 600rpx - var(--status-bar-height))"></msg-list>
+			<msg-list @navClick="onNavClick" @onRefresh="onRefresh" :list="messageList"
+				srollHeight="calc(100vh - var(--window-bottom) - 600rpx - var(--status-bar-height))"></msg-list>
 		</view>
 		<!-- <view class="ui-tabs">
 			<view class="ui-tabs-content">
@@ -59,7 +60,13 @@
 </template>
 
 <script>
-	import { mapState } from 'vuex';
+	import {
+		mapState
+	} from 'vuex';
+	import {
+		getMessage,
+		PostMessageDeatil
+	} from '../../common/http/api';
 	export default {
 		data() {
 			return {
@@ -67,7 +74,10 @@
 					name: '未读',
 				}, {
 					name: '已读',
-				}]
+				}],
+				/**消息列表**/
+				messageList: [],
+				navActive: 0,
 			}
 		},
 		computed: {
@@ -75,9 +85,44 @@
 				deviceInfo: state => state.deviceInfo
 			})
 		},
+		mounted() {
+			this.getMessage();
+		},
 		methods: {
-			handleBack() {
-				uni.navigateBack()
+			getMessage() {
+				return new Promise(resolve => {
+					const {
+						type,
+						familyId,
+						deviceId
+					} = this.deviceInfo;
+					getMessage({
+						deviceType: type,
+						familyId,
+						deviceId,
+						readFlag: this.navActive,
+						eventlevel: ''
+					}).then(res => {
+						this.messageList = res.rows || [];
+						resolve(this.messageList);
+					})
+				});
+			},
+
+			/**
+			 * 上拉刷新
+			 * @param {Object} $e
+			 */
+			onRefresh(cb) {
+				this.getMessage().then(res => cb());
+			},
+
+			/**
+			 * tab切换
+			 */
+			onNavClick(index) {
+				this.navActive = index;
+				this.getMessage();
 			}
 		}
 	}

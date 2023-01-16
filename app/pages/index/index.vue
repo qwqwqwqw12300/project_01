@@ -47,7 +47,8 @@
 						}" text="分享"></u-text>
 					</view>
 					<view class="ui-device">
-						<view class="ui-list" v-for="device of filterDevice({familyId: familyItem.familyId})" :key="device.deviceId">
+						<view class="ui-list" v-for="device of filterDevice({familyId: familyItem.familyId})"
+							:key="device.deviceId">
 							<view class="ui-list-box active" @click="goDeciveDetails(device)">
 								<image src="../../static/images/device.png"></image>
 								<text>{{device.name || '未命名设备'}}</text>
@@ -82,7 +83,7 @@
 			<!-- /空户 -->
 			<add-step ref="addStepRef"></add-step>
 		</app-body>
-		
+
 
 	</view>
 
@@ -116,7 +117,7 @@
 			Promise.all([
 				this.getAllFamily(),
 				this.getAllDevices(),
-				this.getAllRoom()
+				// this.getAllRoom()
 			]);
 		},
 		methods: {
@@ -157,9 +158,9 @@
 			goDeciveDetails(info) {
 				this.$store.commit('setDeviceInfo', info);
 				this.goPage('/pages/equipment/radar-detail');
-				
+
 			},
-				
+
 			/**
 			 * 添加家庭
 			 */
