@@ -162,11 +162,31 @@ export const PostRoomList = (params) => http.post('/api/room/list', params)
 export const PostDelRoom = (params) => http.post('/api/room/remRoom', params)
 
 /* 
- *创建家庭
+ *创建房间
  */
 export const PostAddRoom = (params) => http.post('/api/room/creRoom', params)
 
 /* 
- *编辑家庭
+ *编辑房间
  */
 export const PostEditRoom = (params) => http.post('/api/room/editRoom', params)
+
+/* 
+ *获取通讯录列表
+ */
+export const PostDevicePhoneList = (params) => http.post('/api/device/getDevicePhone', params)
+
+/* 
+ *创建电话
+ */
+export const PostAddDevicePhone = (params) => http.post('/api/device/creDevicePhone', params)
+
+/* 
+ *设置普通电话
+ */
+export const PostSetDevicePhone = (params) => http.post('/api/device/setDevicephone', params)
+
+/* 
+ *设置SOS电话
+ */
+export const PostSetSosDevicePhone = (params) => http.post('/api/device/setSOSDevicePhone', params)
