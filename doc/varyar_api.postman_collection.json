@@ -48,7 +48,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"uuid\": \"c8916a767204456fa970c675c71048e5\",\r\n    \"captcha\":\"6d23\"\r\n}",
+							"raw": "{\r\n    \"phone\":\"13900001111\",\r\n    \"uuid\": \"1605c6583507413c8781db0436a7063a\",\r\n    \"captcha\":\"g2we\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -70,13 +70,41 @@
 					"response": []
 				},
 				{
+					"name": "短信验证",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phone\":\"13900001111\",\r\n    \"uuid\": \"18c27748c6914654adeb09c0e561db47\",\r\n    \"captcha\":\"gyp8\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/checkSms",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"checkSms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "账号密码登录",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{  \"phone\":\"13900001111\",\r\n    \"password\":\"1234\", \r\n    \"uuid\":\"94933796aed3481a9d9758be40da3153\",\r\n    \"code\":\"xemb\"\r\n}",
+							"raw": "{  \"phone\":\"13900001111\",\r\n    \"password\":\"OvIzjg3WdI/bDFTnETejm2M5s2/OSEQKaZW0NLZbRiiR2Fsze2AxHGyWdQ/WcO23y8R1b9kMsz5wwcspff7w+txkZeFy6uRDNi5C0N4HLQtnU72q8dm3fPNSKRIFnrElTEEW08kolt8AfOgMr3VkGZQVafBuIEkzHvLRqPHBv/I=\", \r\n    \"uuid\":\"33719c1efc7e49c9b4e0854663baead6\",\r\n    \"code\":\"g83p\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -104,7 +132,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"smsUuid\"：258295b3f46646c4b6c75126e917d03f\",\r\n    \"\":\"\"\r\n\r\n}",
+							"raw": "{\r\n    \"phone\":\"13900001111\",\r\n    \"code\":\"3602\",\r\n    \"uuid\":\"47f01186c98a4801be7fad3d5c85c810\"\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -152,6 +180,35 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "获取公钥",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/publicKey",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"publicKey"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -166,7 +223,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImRlMjEwNWY4LTczMzgtNGRlMi05YzI0LTQwZDY2MTE3NDIyOCJ9.O7vNaZJHBltso6jgbsUSkhkTfhXKGkEB-EvggY76be8Qbwu6yuE42HuEkkAtYDw8EBm8pr53MC9xSKgT4Pq-ag",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImRhNTU2YWJmLTI5YTktNDgxZS05NDNkLTdmZDMzZTA1MThkNiJ9.QgsrIKHBE8yZFV6YOq2463ykNKb8dsah6ad1A_nwKP9Y5O1fuo9OR8b96KdaX9-KowWVl3_xCjTyYuZD_2hOMA",
 									"type": "string"
 								}
 							]
@@ -175,7 +232,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"familyId\":\"106\"\r\n}",
+							"raw": "{\r\n    \"familyId\":\"107\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -205,7 +262,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjAyMTdhMjkwLTU0NDUtNDNjMS05N2ZjLWJlZTQ0MTk3MDQ1ZCJ9.rDMdT6pXJ1nIgbcFTwxXBa6AgRbWfdDd7hiJ2pX9777dJ8ZhyMhognyuRMRqq2FJ7WGaMMo8WGqyPSyJEADuXg",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImFlMjNkODA4LTIxNTQtNGNjYi04YTY0LWIxNTQyYTVlMGVhNiJ9.LBhxEZCGOLSj53pnBLj59hXs4k4XGKPq5EdnhavjZ6pq6bgUmCyBSqBmloOzvspV56z--d2KxtEWmuRjQWHGtQ",
 									"type": "string"
 								}
 							]
@@ -214,7 +271,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"familyId\":\"106\",\r\n    \"roomName\":\"room001\"\r\n}",
+							"raw": "{\r\n    \"familyId\":\"107\",\r\n    \"roomName\":\"room001\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -330,7 +387,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImI2YWVhYTJjLTI5M2UtNDdmYi04YzJlLWNkYzMzY2ExOTdiYyJ9.9v2zzWIMuDCcxgbs-4QF0CjymVsZegs0ZBjSVnX3nYjCJ6myeHpQaOxT4rEK8gJ2xVUe6oo0kOJvjvI_VxcPwQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImFlMjNkODA4LTIxNTQtNGNjYi04YTY0LWIxNTQyYTVlMGVhNiJ9.LBhxEZCGOLSj53pnBLj59hXs4k4XGKPq5EdnhavjZ6pq6bgUmCyBSqBmloOzvspV56z--d2KxtEWmuRjQWHGtQ",
 									"type": "string"
 								}
 							]
@@ -369,7 +426,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjEwMjFmYTlkLWIyMjMtNDE1Yy05MTQxLWNkYWEyN2UzOGJlNyJ9.o1aMhjnXfkWJ3g_2SvZSVt7ViI2BJR8-RD1kosAX_P4p8U9GNAVScFgpCDRCM0k6G2jmaF5X_ULZELru3JCAfw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImFlMjNkODA4LTIxNTQtNGNjYi04YTY0LWIxNTQyYTVlMGVhNiJ9.LBhxEZCGOLSj53pnBLj59hXs4k4XGKPq5EdnhavjZ6pq6bgUmCyBSqBmloOzvspV56z--d2KxtEWmuRjQWHGtQ",
 									"type": "string"
 								}
 							]
@@ -378,7 +435,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"familyName\":\"其为以为002\",\r\n    \"address\":\"饵位器2号\"\r\n}",
+							"raw": "{\r\n    \"familyName\":\"其为以为005\",\r\n    \"address\":\"饵位器5号\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -477,6 +534,123 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "创建分享家庭",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImI1MzQ1NTM3LWI1N2MtNDUyMy04OGIxLTExZTYyN2Y0OGJmYSJ9.a86OTkojryPOqbOORAfQIsiydvK1wmgqjWE7071gqQwqCBEcp2T18FR_rPZruJ3qBb5IUWDdpz-r_uEQeVHOfA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phone\":\"13900001110\",\r\n    \"code\":\"1234\",\r\n    \"familyId\":\"121\",\r\n    \"smsUuid\":\"3397885bd9724d17a6d634b4f77b06f9\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/family/shareFamily",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"family",
+								"shareFamily"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除分享家庭",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImRhNTU2YWJmLTI5YTktNDgxZS05NDNkLTdmZDMzZTA1MThkNiJ9.QgsrIKHBE8yZFV6YOq2463ykNKb8dsah6ad1A_nwKP9Y5O1fuo9OR8b96KdaX9-KowWVl3_xCjTyYuZD_2hOMA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"familyId\":\"121\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/family/remShareFamily",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"family",
+								"remShareFamily"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取分享家庭列表",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImIwZjllM2NiLTcxODMtNGMyNy05Mzk5LTUxOTQ4YjA5MWJlYSJ9.ygi2y557nxjZPyNFQbdnE_z_l_8Dk1RP_h8bSuk6P72Zwh3_Y9WJ6bY0u2YBhWSudGzEsk7REV6ernXZMvq6sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"familyId\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/family/sharelist",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"family",
+								"sharelist"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -546,6 +720,120 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "批量标志消息状态",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjU2ZDE0MTlmLWM5ODQtNDUyOS1hNDI2LWE5YThkZWU3ZTRjNiJ9.csK0aQ4WoSOMuSfpgqU9XMjl-si58InkL5eHb-RUWQYqadP-Wyo-ss__-d1Hz6tADxMzhuuTb-q-BQ4iouUf0Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"msgFlags\":[\r\n        { \"msgId\":\"100\", \"msgFlag\":\"1\"},\r\n        { \"msgId\":\"100\", \"msgFlag\":\"0\"}\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/message/setBatchMsgInfo",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"message",
+								"setBatchMsgInfo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询消息列表(家庭)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImRhNTU2YWJmLTI5YTktNDgxZS05NDNkLTdmZDMzZTA1MThkNiJ9.QgsrIKHBE8yZFV6YOq2463ykNKb8dsah6ad1A_nwKP9Y5O1fuo9OR8b96KdaX9-KowWVl3_xCjTyYuZD_2hOMA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"deviceType\":\"\",\r\n    \"eventlevel\":\"0\",\r\n    \"familyId\":\"121\",\r\n    \"readFlag\":\"0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/message/familyList",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"message",
+								"familyList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "设备消息未读数量",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImIwZjllM2NiLTcxODMtNGMyNy05Mzk5LTUxOTQ4YjA5MWJlYSJ9.ygi2y557nxjZPyNFQbdnE_z_l_8Dk1RP_h8bSuk6P72Zwh3_Y9WJ6bY0u2YBhWSudGzEsk7REV6ernXZMvq6sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/message/getDMsgUnReadNum?deviceId=101",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"message",
+								"getDMsgUnReadNum"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "101"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -560,7 +848,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjQ4YTBjYTUwLWY3OTktNGVkYy04ODFkLWQwNmY0MDhlNGY1YiJ9.pY3U0HmL80Bcmf__D9WugZ45WLRWBo66ZNKZEu3W0LxmbNZ0r-eeooxiI_7lRYDcJhRb60Luuxl21jQlnpGBbg",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6Ijg4YzczMzE1LWY0NGYtNGI5Ny1hZGY0LTQ0ZTU1MjU0NGEzNCJ9.2Ubd6usz9LgHU-FwO-CGJYLD_rEtFyfX0smhSDYiRvAeeP32HlA5J8TBReWmXwXCdZbztJdtfS0NnOyc4wxO_g",
 									"type": "string"
 								}
 							]
@@ -569,7 +857,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"deviceId\":\"\",\r\n    \"familyId\":\"\",\r\n    \"roomId\":\"\"\r\n}",
+							"raw": "{\r\n    \"familyId\":\"106\",\r\n    \"roomId\":\"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -647,7 +935,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"deviceName\":\"监控摄像头2\",\r\n    \"deviceNo\":\"s00002\",\r\n    \"deviceType\":\"1\",\r\n    \"location\":\"a\"\r\n}",
+							"raw": "{\r\n    \"deviceName\":\"监控摄像头2\",\r\n    \"deviceNo\":\"s00002\",\r\n    \"deviceType\":\"1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -686,7 +974,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"deviceId\":\"100\",\r\n    \"deviceName\":\"监控摄像头1_1\",\r\n    \"deviceNo\":\"s00001\",\r\n    \"deviceType\":\"1\",\r\n    \"location\":\"a2311\"\r\n}",
+							"raw": "{\r\n    \"deviceId\":\"100\",\r\n    \"deviceName\":\"监控摄像头1_1\"\r\n   \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -833,7 +1121,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6Ijg0ODlkNTIzLTI0MjAtNDRkMS1iYjc0LWQyNTBlYjdlYTdlMyJ9.0M6S4M0nOB5cMHSCiAUP0S780iwLGuHjhpXArOpR_HhEwt64pk_x1JKrLvGdpRc9dI8cbKHdQsvAeUq4JiVHpA",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImExMzUzOTEyLWFlNGQtNGQyYi04ODJlLTYzNTcyNmMwMTJmMyJ9.dknubsCfJMIxEF8xpu4EA87IyzlISyG34AMeeRf1nC8RZ73bGnsxQ75h6je7jTRygYOXWXp8ZgDTbNpWOeNdhQ",
 									"type": "string"
 								}
 							]
@@ -842,7 +1130,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"deviceId\":\"105\",\r\n    \"list\":[\r\n        {\"phoneName\":\"青石\",\"phone\":\"1345678901\",\"type\":\"0\"},\r\n        {\"phoneName\":\"青水2\",\"phone\":\"1345672221\",\"type\":\"1\"},\r\n        {\"phoneName\":\"青水4\",\"phone\":\"1345672221\",\"type\":\"2\"},\r\n        {\"phoneName\":\"青水5\",\"phone\":\"1345672221\",\"type\":\"3\"},\r\n        {\"phoneName\":\"青水6\",\"phone\":\"1345672221\",\"type\":\"4\"},\r\n        {\"phoneName\":\"青木5\",\"phone\":\"1345673331\",\"type\":\"p\"},\r\n        {\"phoneName\":\"青木1\",\"phone\":\"1345673331\",\"type\":\"p\"},\r\n        {\"phoneName\":\"青木2\",\"phone\":\"1345673332\",\"type\":\"p\"},\r\n        {\"phoneName\":\"青木3\",\"phone\":\"1345673333\",\"type\":\"p\"}\r\n    ]\r\n}",
+							"raw": "{\r\n    \"deviceId\":\"105\",\r\n    \"list\":[\r\n        {\"phoneName\":\"青石\",\"phone\":\"1345678901\",\"type\":\"0\"},\r\n        {\"phoneName\":\"青水2\",\"phone\":\"1345672221\",\"type\":\"1\"},\r\n        {\"phoneName\":\"青水4\",\"phone\":\"1345672221\",\"type\":\"2\"},\r\n        {\"phoneName\":\"青水5\",\"phone\":\"1345672221\",\"type\":\"3\"},\r\n        {\"phoneName\":\"青水6\",\"phone\":\"1345672221\",\"type\":\"4\"},\r\n        {\"phoneName\":\"青木5\",\"phone\":\"1345673331\",\"type\":\"P\"},\r\n        {\"phoneName\":\"青木1\",\"phone\":\"1345673331\",\"type\":\"P\"},\r\n        {\"phoneName\":\"青木2\",\"phone\":\"1345673332\",\"type\":\"P\"},\r\n        {\"phoneName\":\"青木3\",\"phone\":\"1345673333\",\"type\":\"P\"},\r\n        {\"phoneName\":\"青木13\",\"phone\":\"1345673333\",\"type\":\"P\"}\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -931,6 +1219,85 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "获取手表设备的通讯录",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjBiZmUxMjFlLWU2MDMtNGRhMi1iMmQ4LTBmMzc2NTkzMmM3NiJ9.rrC5ZvhIe_2rNVvlqrNt1tSSjXffW2SpFrkBV80tE1fCGC_4zku1u_MNsQFxvdTz0UPkfsaphXR3CAfT-1Wz-Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"deviceId\":\"105\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/device/getDevicePhone",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"device",
+								"getDevicePhone"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取家庭设备数量",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/device/getFamilyNum",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"device",
+								"getFamilyNum"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取家庭设备数量(在线)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/device/getFNumOnline",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"device",
+								"getFNumOnline"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -945,7 +1312,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImI2NjEyZTE3LTM5ODctNDA1NS05OTE1LTE1NjczYzc3ZTBhOSJ9.c7rxCvH5_4ZhqpmEJRKQPbj41wBy6SkZZANhJLvknezzigUeO6i0--RYcoiRBKUepsxCWKhnd9A-DCZUKfk98w",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjkxYTVkMWRjLTIyN2YtNDg2Yy05YjhhLWEwMDYxYmEyNjU5MyJ9.dCwrFHxaw0623aJqrXeBuReomcc5aaIE9roqSl_fQIZDcpX-7g5uWffwEF3VmQgWPsPmf3vU1FpHju3tOcywPA",
 									"type": "string"
 								}
 							]
@@ -954,7 +1321,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"flag\":\"0\"\r\n}",
+							"raw": "{\r\n    \"flag\":\"1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -975,6 +1342,36 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "获取推送状态",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjkxYTVkMWRjLTIyN2YtNDg2Yy05YjhhLWEwMDYxYmEyNjU5MyJ9.dCwrFHxaw0623aJqrXeBuReomcc5aaIE9roqSl_fQIZDcpX-7g5uWffwEF3VmQgWPsPmf3vU1FpHju3tOcywPA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/message/getPushMsgState",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"message",
+								"getPushMsgState"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -989,7 +1386,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImVkMGYxODE1LWUxZTctNGE4MS05MGJhLWI1M2M5NDZiOTE4ZiJ9.ivFWGt61u2Q__hehG1NLTIFRRAcvcIu-o8bfQMY5K5zIq60PdfT3W2IaGonlhYnRr4fe6Oucec-putmvVD_Low",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImFlMjNkODA4LTIxNTQtNGNjYi04YTY0LWIxNTQyYTVlMGVhNiJ9.LBhxEZCGOLSj53pnBLj59hXs4k4XGKPq5EdnhavjZ6pq6bgUmCyBSqBmloOzvspV56z--d2KxtEWmuRjQWHGtQ",
 									"type": "string"
 								}
 							]
@@ -1019,7 +1416,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImI5OWZhMmM3LTE5NzMtNDk0My04ZTQyLTE5ZjQ5NDJhN2VjNSJ9.1YUOVyvCquhUP4XfRKBlskrPjrsO0uoXmhRAiPiDqoYvY3F93soIzXI5mYqqdJx4EFep_ssYfOX2D_3Zfhymug",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImFlMjNkODA4LTIxNTQtNGNjYi04YTY0LWIxNTQyYTVlMGVhNiJ9.LBhxEZCGOLSj53pnBLj59hXs4k4XGKPq5EdnhavjZ6pq6bgUmCyBSqBmloOzvspV56z--d2KxtEWmuRjQWHGtQ",
 									"type": "string"
 								}
 							]
@@ -1028,7 +1425,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phoneName\":\"101\",\r\n    \"phone\":\"13223234141\",\r\n    \"orderNum\":\"1\"\r\n}\r\n",
+							"raw": "{\r\n    \"phoneName\":\"name1\",\r\n    \"phone\":\"1300000001\",\r\n    \"orderNum\":\"1\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1097,7 +1494,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImI5OWZhMmM3LTE5NzMtNDk0My04ZTQyLTE5ZjQ5NDJhN2VjNSJ9.1YUOVyvCquhUP4XfRKBlskrPjrsO0uoXmhRAiPiDqoYvY3F93soIzXI5mYqqdJx4EFep_ssYfOX2D_3Zfhymug",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImFjMjYzYzIxLWE1NTctNGE3MC05NTMzLTEyZjQ5YWMwY2JiYiJ9.rSK_-cQdBEYE9kQo8DzCqF2EjSubXkTBYHtlP3BTiH19b4dHwkwhevQ8RjwUg3DNF6Tca8fhtwPCJOi2riKFUg",
 									"type": "string"
 								}
 							]
@@ -1106,7 +1503,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\":\"100\"\r\n}",
+							"raw": "{\r\n    \"memberContactsId\":\"102\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1203,15 +1600,24 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjMxYWQxYzg5LWZhNTItNDRhOS1iNjYxLTQwNWYwYTdiNWY0NCJ9.H-31oOlfPju0YG1Mcv0ZBf_sc2hH7a_zMR1TKHoZPhz6fUIInKJCup2NLkiTLbdTEtKWglKkfcvrCbuou2fr-w",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjcxZjBkODA2LWRjMmUtNGJjYi1hYjM0LWQ2YWVjNDUwMTg0MCJ9._pNC9nNREn_Tu7k1FGBOkj4fvYWuWIxzac2KgVdEzIz7kYNIVTSPH7IbHxyiwJ4IFd3-oyjXjb0C-LYv-Zg5Ng",
 									"type": "string"
 								}
 							]
 						},
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"newPassword\":\"FJQrvSW5ZN/fONUIKOmnwvARUjvqTE2i0wEr2v+nxvBoYdU2u5dNUi9LZsxGyg6gG+9hxUbcFJvf/uVOPlfxn4VNPMD+JWXeaRlT0ScQHgDQT1AEq/mY318FWJp0a05ebSI/GT0MzezfSTUz/ej4NBiHkVvL86LuFmLW3KRDp8o=\",\r\n    \"oldPassword\":\"B+h/nfaExFnD1EvqKx+pq2/UBAPvsJvgiSw/3G9YYkCgrjttWHLvV2tnphdpC50E7KgeEszlPrpBCABC/BUVq3Y0HnU4RuZ5PExYpKRODNpzCpLIPwM5w95yFIdHUxfKXvrRaB7FwoZ1A6RVAF6fYSemKjBQ+Fx2nNewbh3p/Mo=\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "localhost:8081/api/memberInfo/updatePwd?oldPassword=7777777&newPassword=666666",
+							"raw": "localhost:8081/api/memberInfo/updatePwd",
 							"host": [
 								"localhost"
 							],
@@ -1220,16 +1626,6 @@
 								"api",
 								"memberInfo",
 								"updatePwd"
-							],
-							"query": [
-								{
-									"key": "oldPassword",
-									"value": "7777777"
-								},
-								{
-									"key": "newPassword",
-									"value": "666666"
-								}
 							]
 						}
 					},
@@ -1287,7 +1683,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjE0ZDRhYmVmLWIyYjYtNGZiZC04ZTU2LWRhNGZmNWZhMGYwZSJ9.C1fkOH1_TZcTJpxe6_d0oA0pGGFKB4-M-OKaGWpd2o_dsmg2gI8H4xfeaCuGn6RsUHy2EUHE2rpXxtGU370VBw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImFlMjNkODA4LTIxNTQtNGNjYi04YTY0LWIxNTQyYTVlMGVhNiJ9.LBhxEZCGOLSj53pnBLj59hXs4k4XGKPq5EdnhavjZ6pq6bgUmCyBSqBmloOzvspV56z--d2KxtEWmuRjQWHGtQ",
 									"type": "string"
 								}
 							]
@@ -1357,7 +1753,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phone\":\"13774522537\",\r\n    \"code\":\"sdf2\",\r\n    \"smscode\":\"sdff\",\r\n    \"password\":\"111111\",\r\n    \"uuid\":\"dsfefefwwegeeg\"\r\n\r\n}",
+							"raw": "{\r\n    \"phone\":\"13900001111\",\r\n    \"code\":\"e66w\",\r\n    \"password\":\"Elpf3ENkWyvAF3byoBd1BDpJtP/c+2L72BZ3B4xULr4U0Ef1a0nnyBO70etc5lTCP0a8SNWiViC/379+jbmTqfEkgBV6bP9ImFtkXlB2KO2DoQyijfb0QH6nVMicm/MRwI7w9nr/5OfIWFAzQ3HymrpTApjbCAi0uXGJ7yLI/QQ=\",\r\n    \"uuid\":\"a6758c07071940b69b184c6ab25229d0\"\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1392,7 +1788,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjE0ZDRhYmVmLWIyYjYtNGZiZC04ZTU2LWRhNGZmNWZhMGYwZSJ9.C1fkOH1_TZcTJpxe6_d0oA0pGGFKB4-M-OKaGWpd2o_dsmg2gI8H4xfeaCuGn6RsUHy2EUHE2rpXxtGU370VBw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImFlMjNkODA4LTIxNTQtNGNjYi04YTY0LWIxNTQyYTVlMGVhNiJ9.LBhxEZCGOLSj53pnBLj59hXs4k4XGKPq5EdnhavjZ6pq6bgUmCyBSqBmloOzvspV56z--d2KxtEWmuRjQWHGtQ",
 									"type": "string"
 								}
 							]
@@ -1401,7 +1797,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"captcha\":\"c3e3\",\r\n    \"content\":\"这是个优化建13774522537\",   \r\n    \"uuid\":\"165acb081e0c4767804c8f36e078f340\"\r\n}",
+							"raw": "{\r\n    \"captcha\":\"bgwn\",\r\n    \"content\":\"这是个优化建13774522537\",   \r\n    \"uuid\":\"dd401746e9604d8ba1b973230c738354\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1441,7 +1837,7 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "GET",
 						"header": [],
 						"url": {
 							"raw": "localhost:8081/api/version/selectVersionInfo?versionType=1",
@@ -1477,7 +1873,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImFkMDZmZDdjLWQyYWMtNDZjYy1hNTA5LTZhMGJiYjRjZTU4MSJ9._PJJlSl-SI3_uOlqQVa-I7Wu03DP_-0S4o8hMR5Ll1gyyHoaxy1_70irzFqgDrtzUyUhqC0QfvOgRWRD3Y04Eg",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImFlMjNkODA4LTIxNTQtNGNjYi04YTY0LWIxNTQyYTVlMGVhNiJ9.LBhxEZCGOLSj53pnBLj59hXs4k4XGKPq5EdnhavjZ6pq6bgUmCyBSqBmloOzvspV56z--d2KxtEWmuRjQWHGtQ",
 									"type": "string"
 								}
 							]
@@ -1739,7 +2135,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"deviceFenceId\":\"109\",\r\n    \"geoFenceId\":\"12323231\",\r\n    \"deviceId\":\"1001\",\r\n    \"deviceNo\":\"11233\",\r\n    \"address\":\"福州22市\",\r\n    \"longitude\":\"134.3323312\",\r\n    \"latitude\":\"111.2343432\",\r\n    \"radius\":\"200\"\r\n}",
+							"raw": "{\r\n    \r\n    \"deviceId\":\"1001\",\r\n    \"address\":\"福州22市\",\r\n    \"longitude\":\"134.3323312\",\r\n    \"latitude\":\"111.2343432\",\r\n    \"radius\":\"200\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1792,6 +2188,10 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "系统公告",
+			"item": []
 		}
 	]
 }

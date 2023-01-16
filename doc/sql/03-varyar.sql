@@ -259,13 +259,17 @@ create table t_room_zone (
   y1                decimal(10,2)                         comment '最近的点',
   y2                decimal(10,2)                         comment '最远的点',
   z1                decimal(10,2)                         comment '最底部的点',
-  z2                decimal(10,2)                         comment '最顶部的点',
+  z2                decimal(10,2)                         comment '最顶部的点',x
   exist_flag        char(1)                               comment '存在监测标志（0是 1否）',
   fall_flag         char(1)                               comment '跌倒监测标志（0是 1否）',
   entry_time        int                                   comment '进入时间(s)',
   departure_time    int                                   comment '离开时间(s)',
-  create_time       datetime                               comment '创建时间',
-  update_time       datetime                               comment '更新时间',
+  in_monitor_flag        char(1)                          comment '进入监控区域超时报警（0是 1否）',
+  out_monitor_flag       char(1)                          comment '离开监控区域超时报警（0是 1否）',
+  start_time        datetime                              comment '开始时间(s)',
+  end_time    		datetime                              comment '结束时间(s)',
+  create_time       datetime                              comment '创建时间',
+  update_time       datetime                              comment '更新时间',
   primary key (room_zone_id)
 ) engine=innodb auto_increment=100 comment = '子区域表';
 

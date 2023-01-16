@@ -45,10 +45,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="delFlag != null">del_flag,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
-            <if test="roomLength != null">,room_length</if>
-            <if test="roomLeft != null">,room_left</if>
-            <if test="roomRight != null">,room_right</if>
-            <if test="roomHeight != null">,height</if>
+            <if test="createById != null">create_by_id,</if>
+            <if test="roomLength != null">room_length,</if>
+            <if test="roomLeft != null">room_left,</if>
+            <if test="roomRight != null">room_right,</if>
+            <if test="roomHeight != null">height,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null">#{name},</if>
@@ -56,6 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="delFlag != null">#{delFlag},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
+            <if test="createById != null">#{createById},</if>
             <if test="roomLength != null">#{roomLength},</if>
             <if test="roomLeft != null">#{roomLeft},</if>
             <if test="roomRight != null">#{roomRight},</if>
