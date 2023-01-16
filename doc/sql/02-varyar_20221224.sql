@@ -160,7 +160,7 @@ INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2010, '设备组管理', 2033, 2, 'deviceGroup', 'org/deviceGroup/index', NULL, 1, 0, 'C', '0', '0', 'org:deviceGroup:list', 'tool', 'superAdmin', NULL, '');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2063, '事件管理', 2035, 1, 'event', 'eventAndMessage/event/index', NULL, 1, 0, 'C', '0', '0', 'eventAndMessage:event:list', 'log', 'superAdmin', NULL, '');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2021, '消息管理', 2035, 2, 'message', 'eventAndMessage/message/index', NULL, 1, 0, 'C', '0', '0', 'eventAndMessage:message:list', 'message', 'superAdmin', NULL, '');
-
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2065, '服务人员操作记录', 0, 8, '/serve/record', 'member/servedOprLog/index', NULL, 1, 0, 'C', '0', '0', 'device:serveRecord:list', 'documentation', 'superAdmin', '2023-01-16 07:38:28', 'superAdmin', '2023-01-16 07:38:54', '');
 -- 按钮
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1000, '查询', 100, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:user:query', '#', 'superAdmin', NULL, '');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (1001, '新增', 100, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:user:add', '#', 'superAdmin', NULL, '');
@@ -250,6 +250,8 @@ INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2038, '修改', 2032, 3, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:version:edit', '#', 'superAdmin', NULL, '');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2039, '删除', 2032, 4, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:version:remove', '#', 'superAdmin', NULL, '');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2064, '查询', 2063, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'eventAndMessage:event:query', '#', 'superAdmin', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2067, '导出', 2065, 2, '', NULL, NULL, 1, 0, 'F', '0', '0', 'device:serveRecord:export', '#', 'superAdmin', '2023-01-16 07:39:51', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2066, '查询', 2065, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'device:serveRecord:query', '#', 'superAdmin', '2023-01-16 07:39:31', '', NULL, '');
 
 
 -- ----------------------------
@@ -409,7 +411,15 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2061);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2062);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2063);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2064);
-
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2067);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2067);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2067);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2066);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2066);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2066);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2065);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2065);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2065);
 -- ----------------------------
 -- 8、角色和机构关联表  角色1-N机构
 -- ----------------------------
