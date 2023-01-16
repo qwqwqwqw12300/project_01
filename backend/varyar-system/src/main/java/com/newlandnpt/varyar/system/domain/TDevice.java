@@ -39,7 +39,7 @@ public class TDevice extends BaseEntity
     /** 状态（0未激活 1激活 2下线） */
     private String status;
 
-    /** 类型（0雷达波 1监控设备） */
+    /** 类型（0雷达波 1监控设备 ） */
     @Excel(name = "设备类型",readConverterExp = "0=雷达波,1=监控设备",combo={"雷达波","监控设备"})
     private String type;
     /** 设备参数信息 */

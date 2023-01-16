@@ -49,10 +49,14 @@ public class DeviceController extends BaseController {
     /**
      * 获取设备列表
      * */
-    @GetMapping("/listState")
-    public TableDataInfo listState() {
+    @PostMapping("/listState")
+    public TableDataInfo listState( @RequestBody @Validated DeviceRequest deviceRequest) {
         startPage();
-        List<TDevice> list = iDeviceService.selectDeviceByMember(this.getLoginUser().getMemberId());
+        Map map = new HashMap();
+        map.put("memberId",this.getLoginUser().getMemberId());
+        map.put("familyId",deviceRequest.getFamilyId());
+        map.put("roomId",deviceRequest.getRoomId());
+        List<TDevice> list = iDeviceService.selectDeviceByMemberId(map);
         return getDataTable(list);
     }
     /**
@@ -179,8 +183,8 @@ public class DeviceController extends BaseController {
         if (device == null){
             error("设备信息不存在！");
         }
-        if(!device.getType().equals("2")){
-            error("该设备不是手表！");
+        if(!device.getType().equals("1")){
+            error("该设备不是监控设备！");
         }
         List<DevicePhone> list = devicePhoneRequest.getList();
         //校验是否有sos电话信息
@@ -274,8 +278,8 @@ public class DeviceController extends BaseController {
         if (device == null){
             throw new ServiceException("设备信息不存在!");
         }
-        if(!device.getType().equals("2")){
-            throw new ServiceException("该设备不是手表!");
+        if(!device.getType().equals("1")){
+            throw new ServiceException("该设备不是监控设备!");
         }
         if(!device.getMemberId().equals(this.getLoginUser().getMemberId())){
             throw new ServiceException("无权限获取本设备通讯录!");
