@@ -39,11 +39,12 @@ const errText = {
  */
 const request = (url, options, process, method = 'POST') => {
 	let _url;
-	if (isApp()) {
-		_url = env.basePath + url;
-	} else {
-		_url = url;
-	}
+	// if (isApp()) {
+	// 	_url = env.basePath + url;
+	// } else {
+	// 	_url = url;
+	// }
+	_url = env.basePath + url;
 	const showLoading = process.showLoading !== false,
 		errorHandle = process.error !== false;
 	console.info('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));
