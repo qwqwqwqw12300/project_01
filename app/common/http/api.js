@@ -200,3 +200,26 @@ export const PostSetDevicePhone = (params) => http.post('/api/device/setDeviceph
  *设置SOS电话
  */
 export const PostSetSosDevicePhone = (params) => http.post('/api/device/setSOSDevicePhone', params)
+
+/**
+ * 获取设备定位
+ */
+export const PostListState= (params) => http.post('/api/device/listState', params)
+
+/**
+ * 获取分享家庭列表
+ */
+
+export const PostSharelist= (params) => http.post('/api/family/sharelist', params)
+
+/**
+ * 创建分享家庭
+ */
+export const PostShareFamily= (params) => http.post('/api/family/shareFamily', params)
+
+/**
+ * 删除分享家庭
+ */
+export const PostRemShareFamily= (params) => http.post('/api/family/remShareFamily', params)
+
+
