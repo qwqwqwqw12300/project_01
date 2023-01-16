@@ -294,7 +294,7 @@
 			"disableHostCheck": true,
 			"proxy": {
 				"/api": {
-					"target": "https://67c805463f.zicp.fun"
+					"target": "http://192.168.1.109:8081"
 				}
 			}
 		},
