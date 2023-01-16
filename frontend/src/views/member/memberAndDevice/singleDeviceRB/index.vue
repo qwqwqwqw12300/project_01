@@ -200,7 +200,7 @@
 
       <!-- 设备基本信息嵌入位置 -->
       <el-row>
-        <device-info-card></device-info-card>
+        <device-info-card :value="102"></device-info-card>
 		  </el-row>	  
 
       <!-- 添加或修改事件对话框 -->

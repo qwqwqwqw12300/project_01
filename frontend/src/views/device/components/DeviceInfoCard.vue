@@ -4,13 +4,13 @@
       <span>设备基本信息</span>
     </div>
     <el-descriptions :column="2">
-      <el-descriptions-item label="设备名称：">XX雷达波设备</el-descriptions-item>
-      <el-descriptions-item label="设备位置：">卫生间</el-descriptions-item>
-      <el-descriptions-item label="雷达波设备：">雷达波设备</el-descriptions-item>
-      <el-descriptions-item label="设备供应商：">中国雷达公司</el-descriptions-item>
-      <el-descriptions-item label="设备编号：">100000022201111</el-descriptions-item>
-      <el-descriptions-item label="设备配网时间：">2022-10-01 00:00:00</el-descriptions-item>
-      <el-descriptions-item label="是否在线：">在线</el-descriptions-item>
+      <el-descriptions-item label="设备名称：">{{ device== undefined?"":device.name}}</el-descriptions-item>
+      <el-descriptions-item label="设备位置：">{{ device== undefined?"":device.location}}</el-descriptions-item>
+      <el-descriptions-item label="雷达波设备：">{{ device== undefined?"":device.type}}</el-descriptions-item>
+      <el-descriptions-item label="设备供应商：">{{ device== undefined?"":device.org_name}}</el-descriptions-item>
+      <el-descriptions-item label="设备编号：">{{ device== undefined?"":device.no}}</el-descriptions-item>
+      <el-descriptions-item label="设备配网时间：">{{ device== undefined?"":device.register_time}}</el-descriptions-item>
+      <el-descriptions-item label="是否在线：">{{ device== undefined?"":device.status}}</el-descriptions-item>
     </el-descriptions>
   </el-card>
 </template>
@@ -32,7 +32,7 @@ created() {
 },
 data() {
   return {
-    org: undefined
+    device: undefined
   }
 },
 watch: {

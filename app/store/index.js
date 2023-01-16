@@ -14,7 +14,9 @@ const store = {
 		/**家庭列表**/
 		familyList:[],
 		/**房间列表**/
-		roomList:[]
+		roomList:[],
+		/**设备信息**/
+		deviceInfo:{}
 	},
 	mutations: {
 		/**
@@ -44,10 +46,18 @@ const store = {
 		/**
 		 * 设置家庭列表
 		 * @param {Object} state
-		 * @param {Object} familyList 房间列表
+		 * @param {Object} familyList 家庭列表
 		 */
 		setFamilyList(state, familyList) {
 			state.familyList = familyList;
+		},
+		/**
+		 * 设置设备信息
+		 * @param {Object} state
+		 * @param {Object} info
+		 */
+		setDeviceInfo(state, info) {
+			state.deviceInfo = info;
 		}
 	},
 	actions: {

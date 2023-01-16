@@ -1,139 +1,95 @@
 <template>
   <div class="app-container">
     <h1>服务人员操作记录</h1>
+
+        
+       
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="服务人员id" prop="servedUserId">
+      <el-form-item label="服务人员姓名" prop="nickName">
         <el-input
-          v-model="queryParams.servedUserId"
-          placeholder="请输入服务人员id"
+          v-model="queryParams.nickName"
+          placeholder="请输入服务人员姓名"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="设备id" prop="deviceId">
+      <el-form-item label="服务人员号码" prop="phonenumber">
         <el-input
-          v-model="queryParams.deviceId"
-          placeholder="请输入设备id"
+          v-model="queryParams.phonenumber"
+          placeholder="请输入服务人员号码"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <!-- <el-form-item label="设备类型" prop="type">
+        <el-input
+          v-model="queryParams.type"
+          placeholder="请输入设备类型"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item> -->
+      <el-form-item label="设备类型" prop="type">
+            <el-select
+              v-model="queryParams.type"
+              placeholder="设备类型"
+              clearable
+              style="width: 240px"
+            >
+              <el-option
+                v-for="dict in dict.type.device_type"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
+        </el-form-item>
+
+      <el-form-item label="设备编号" prop="no">
+        <el-input
+          v-model="queryParams.phonenumber"
+          placeholder="请输入设备编号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="设备名称" prop="name">
+        <el-input
+          v-model="queryParams.phonenumber"
+          placeholder="请输入设备名称"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="设备编号" prop="no">
+        <el-input
+          v-model="queryParams.phonenumber"
+          placeholder="请输入设备编号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+
+      <el-form-item label="查询时间">
+            <el-date-picker
+              v-model="dateRange"
+              style="width: 240px"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              type="datetimerange"
+              range-separator="-"
+              start-placeholder="开始查询时间"
+              end-placeholder="结束查询时间"
+            ></el-date-picker>
+          </el-form-item>
+      
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:record:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:record:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:record:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:record:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
 
-    <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="服务记录id" align="center" prop="recordId" />
-      <el-table-column label="服务人员id" align="center" prop="servedUserId" />
-      <el-table-column label="服务人员快照" align="center" prop="servedUserSnapshot" />
-      <el-table-column label="服务类型" align="center" prop="servedType" />
-      <el-table-column label="服务信息，根据服务类型而定，例：拨打电话记录电话号码" align="center" prop="servedInfo" />
-      <el-table-column label="设备id" align="center" prop="deviceId" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:record:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:record:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
 
-    <!-- 添加或修改服务记录对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="服务人员id" prop="servedUserId">
-          <el-input v-model="form.servedUserId" placeholder="请输入服务人员id" />
-        </el-form-item>
-        <el-form-item label="服务人员快照" prop="servedUserSnapshot">
-          <el-input v-model="form.servedUserSnapshot" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="服务信息，根据服务类型而定，例：拨打电话记录电话号码" prop="servedInfo">
-          <el-input v-model="form.servedInfo" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="设备id" prop="deviceId">
-          <el-input v-model="form.deviceId" placeholder="请输入设备id" />
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="删除标志" prop="delFlag">
-          <el-input v-model="form.delFlag" placeholder="请输入删除标志" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -142,6 +98,8 @@ import { listRecord, getRecord, delRecord, addRecord, updateRecord } from "@/api
 
 export default {
   name: "Record",
+  dicts: ['sys_device_status','device_type'],
+
   data() {
     return {
       // 遮罩层
@@ -162,26 +120,32 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 日期范围
+      dateRange: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        servedUserId: null,
-        servedUserSnapshot: null,
-        servedType: null,
-        servedInfo: null,
-        deviceId: null,
+        //服务人员姓名
+        nickName: null,
+        //服务人员号码
+        phonenumber:null,
+        //设备类型
+        type: null,
+        //设备编号
+        no: null,
+        //设备名称
+        name:null,
+        //处理时间起始
+        createTimeBegin: null,
+        //处理时间截止
+        createTimeEnd: null,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        servedUserId: [
-          { required: true, message: "服务人员id不能为空", trigger: "blur" }
-        ],
-        deviceId: [
-          { required: true, message: "设备id不能为空", trigger: "blur" }
-        ],
+       
       }
     };
   },
@@ -198,6 +162,16 @@ export default {
         this.loading = false;
       });
     },
+
+    // 设备类型字典翻译
+    deviceTypeFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.device_type, row.type)
+    },
+    // 设备状态字典翻译
+    deviceStatusFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.sys_device_status, row.status)
+    },
+
     // 取消按钮
     cancel() {
       this.open = false;

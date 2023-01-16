@@ -16,3 +16,13 @@ export function getMember(memberId) {
     method: 'get'
   })
 }
+
+// 查询家庭组信息列表
+export function listFamily(query) {
+  return request({
+    url: '/member/' + query.memberId + '/family/page',
+    method: 'get',
+    params: query
+    
+  })
+}
