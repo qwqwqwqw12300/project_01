@@ -282,7 +282,7 @@ export default {
   name: "MemberDeviceEvents",
   dicts: ['sys_operate_flag'],
   // components: { Treeselect },
-  components: { MemberInfoCard ,DeviceInfoCard},
+  // components: { MemberInfoCard ,DeviceInfoCard},
   data() {
     return {
       // 遮罩层

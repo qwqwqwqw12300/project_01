@@ -101,6 +101,48 @@ export const constantRoutes = [
         meta: { title: '设备组分配运营人员', icon: 'user' }
       }
     ]
+  },
+  {
+    path: '/member',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'deviceEvents',
+        component: () => import('@/views/member/deviceEvents/index'),
+        name: 'DeviceEvents',
+        meta: { title: '未处理消息', icon: 'user' }
+      }
+    ]
+  },
+  {
+    path: '/member',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'memberArrange',
+        component: () => import('@/views/member/arrange/index'),
+        name: 'MemberArrange',
+        meta: { title: '待分配运营的会员', icon: 'user' }
+      }
+    ]
+  },
+  {
+    path: '/member',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'unHandleEvents',
+        component: () => import('@/views/member/memberAndDevice/unHandleEvents/index'),
+        name: 'UnHandleEvents',
+        meta: { title: '未处理的会员事件', icon: 'user' }
+      }
+    ]
   }
 ]
 
