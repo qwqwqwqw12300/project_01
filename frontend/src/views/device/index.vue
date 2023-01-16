@@ -92,6 +92,24 @@
               >分配设备组
               </el-button>
               <el-button
+                v-if="scope.row.status != '1'"
+                size="mini"
+                type="text"
+                icon="el-icon-circle-check"
+                @click="active(scope.row)"
+                v-hasPermi="['device:activeOrOffline']"
+              >上线
+              </el-button>
+              <el-button
+                v-if="scope.row.status == '1'"
+                size="mini"
+                type="text"
+                icon="el-icon-circle-check"
+                @click="offLine(scope.row)"
+                v-hasPermi="['device:activeOrOffline']"
+              >下线
+              </el-button>
+              <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-circle-check"
@@ -171,7 +189,7 @@
 
 <script>
 import {orgTreeSelect} from "@/api/system/user";
-import {pageDevice, associateDevice, groupArrange} from "@/api/device/device";
+import {pageDevice, associateDevice, groupArrange,active,offline} from "@/api/device/device";
 import {pageDeviceGroup} from "@/api/org/deviceGroup"
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -362,6 +380,18 @@ export default {
             this.getList();
           })
         }
+      })
+    },
+    offLine(row){
+      offline(row.deviceId).then(response=>{
+        this.$modal.msgSuccess("设备下线成功");
+        this.getList();
+      })
+    },
+    active(row){
+      active(row.deviceId).then(response=>{
+        this.$modal.msgSuccess("设备上线成功");
+        this.getList();
       })
     },
     /** 设备参数配置相关 */

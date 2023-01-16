@@ -8,7 +8,7 @@
         <water-fall :value="urgentDevices">
           <template slot-scope="{item}">
             <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId)">
-              {{ item.name }} | {{getEventSum(item)}}条
+              <span style="color: #ff0000">{{ item.name }}</span> | {{getEventSum(item)}}条
               <br>
               {{ item.deviceGroupName }} | {{item.location}} | {{"在线"}}
               <br>
@@ -20,6 +20,9 @@
     </el-row>
     <el-row>
       <el-card>
+        <div slot="header" class="clearfix">
+          <span class="el-dialog__title">运营设备</span>
+        </div>
         <water-fall :value="notUrgentDevices">
           <template slot-scope="{item}">
             <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId)">
@@ -66,6 +69,8 @@ export default {
       careDeviceList().then(response=>{
         this.deviceList = response.data.map(x=>{
           x.countUnHandleByDeviceGroupByLevel = []
+          countUnHandleByDeviceGroupByLevel(x.deviceId)
+            .then(countResponse=>x.countUnHandleByDeviceGroupByLevel=countResponse.data)
           return x;
         });
 
