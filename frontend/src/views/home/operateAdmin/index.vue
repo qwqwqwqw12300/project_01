@@ -1,27 +1,82 @@
 <template>
   <div class="app-container home">
-    <el-row :gutter="20">
-      <el-col :sm="24" :lg="12" style="padding-left: 20px">
-        <h2>运营首页</h2>
-
-      </el-col>
+    <el-row>
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span class="el-dialog__title">紧急处理设备</span>
+        </div>
+        <water-fall :value="urgentDevices">
+          <template slot-scope="{item}">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId)">
+              {{ item.name }} | {{getEventSum(item)}}条
+              <br>
+              {{ item.deviceGroupName }} | {{item.location}} | {{"在线"}}
+              <br>
+              {{ item.memberNo==undefined?"机构业务":("会员编号："+item.memberNo) }}
+            </el-card>
+          </template>
+        </water-fall>
+      </el-card>
+    </el-row>
+    <el-row>
+      <el-card>
+        <water-fall :value="notUrgentDevices">
+          <template slot-scope="{item}">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId)">
+              {{ item.name }} | {{getEventSum(item)}}条
+              <br>
+              {{ item.deviceGroupName }} | {{item.location}} | {{"在线"}}
+              <br>
+              {{ item.memberNo==undefined?"机构业务":("会员编号："+item.memberNo) }}
+            </el-card>
+          </template>
+        </water-fall>
+      </el-card>
     </el-row>
   </div>
 </template>
 
 <script>
+import {careDeviceList,countUnHandleByDeviceGroupByLevel} from '@/api/home/bizHome'
+
 export default {
-  name: "Index",
+  name: "OperateAdmin",
   data() {
     return {
-      // 版本号
-      version: "3.8.4",
+      deviceList:[],
+      urgentLevel:"urgent"
     };
+  },
+  created(){
+    this.getList();
+  },
+  computed:{
+    urgentDevices(){
+      return this.deviceList.filter(x=>x.countUnHandleByDeviceGroupByLevel?.find(p=>p.level=this.urgentLevel&&p.count>0))
+    },
+    notUrgentDevices(){
+      return this.deviceList.filter(x=>!(x.countUnHandleByDeviceGroupByLevel?.find(p=>p.level=this.urgentLevel&&p.count>0)))
+    },
   },
   methods: {
     goTarget(href) {
       window.open(href, "_blank");
     },
+    getList(){
+      careDeviceList().then(response=>{
+        this.deviceList = response.data.map(x=>{
+          x.countUnHandleByDeviceGroupByLevel = []
+          return x;
+        });
+
+      })
+    },
+    getEventSum(device){
+      return device.countUnHandleByDeviceGroupByLevel?.map(x=>x.count).reduce((val, oldVal) => val + oldVal,0)
+    },
+    goDeviceEvent(deviceId){
+
+    }
   },
 };
 </script>
@@ -90,3 +145,14 @@ export default {
 }
 </style>
 
+<style scoped lang="scss">
+
+.el-row {
+  margin-bottom: 20px;
+
+  &
+  :last-child {
+    margin-bottom: 0;
+  }
+}
+</style>

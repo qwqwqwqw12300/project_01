@@ -9,7 +9,7 @@
 	<app-body :hideTitle="true">
 		<u-navbar leftText="返回" :safeAreaInsetTop="false" :autoBack="true" bgColor="transparent" leftIconColor="#fff"
 			:fixed="false">
-			<view class="ui-nav-slot active" slot="right" @click="open">
+			<view class="ui-nav-slot active" slot="right" @click="handleAdd">
 				<u-text prefixIcon="plus" color="#fff" :iconStyle="{
 					fontSize: '40rpx',
 					color: '#fff'
@@ -18,13 +18,13 @@
 		</u-navbar>
 		<view id="mobileBook">
 			<view class="ui-books">
-				<view class="ui-item" v-for="item of 3" :key="item">
-					<view class="ui-icon">{{item || 'S'}}</view>
+				<view class="ui-item" v-for="(item,index) in list" :key="index">
+					<view class="ui-icon">{{index+1 || 'S'}}</view>
 					<view class="ui-msg">
-						<text>SOS</text>
-						<text>13599999999</text>
+						<text>{{ item.phoneName }}</text>
+						<text>{{item.phone}}</text>
 					</view>
-					<button @click="open">设置</button>
+					<button @click="handleSet(item,index)">设置</button>
 				</view>
 			</view>
 		</view>
@@ -32,35 +32,57 @@
 			<view class="wd-add">
 				<view>
 					<u-text size="28rpx" prefixIcon="man-add-fill" iconStyle="font-size: 45rpx" text="姓名"></u-text>
-					<u--input placeholder="请输入姓名" border="bottom" clearable></u--input>
+					<u--input v-model="form.phoneName" placeholder="请输入姓名" border="bottom" clearable></u--input>
 				</view>
 				<view>
 					<u-text size="28rpx" prefixIcon="phone-fill" iconStyle="font-size: 36rpx" text="手机号码"></u-text>
-					<u--input placeholder="请输入手机号码" border="bottom" clearable></u--input>
+					<u--input v-model="form.phone" placeholder="请输入手机号码" border="bottom" clearable></u--input>
 				</view>
 				<view class="ui-check">
-					<u-radio-group>
-						<u-radio shape="square" labelSize="24rpx" size="30rpx" activeColor="#fdbc2b"
-							labelColor="#fdbc2b" label="设为紧急联系号码">
+					<u-radio-group v-model="form.type" placement="column">
+						<u-radio v-for=" (name,value) in typeDict" :key="value" :name="value" shape="circle"
+							labelSize="24rpx" size="30rpx" activeColor="#fdbc2b" labelColor="#fdbc2b" :label="name">
 						</u-radio>
 					</u-radio-group>
 				</view>
 				<view class="wd-btn-gloup">
 					<button @click="onSubmit">提交</button>
-					<button @click="onDelete">删除</button>
+					<!-- 		<button @click="onDelete">删除</button> -->
 				</view>
 			</view>
 		</u-popup>
+		<add-mobile @update="handleInit" ref="addmobile" />
 	</app-body>
 
 
 </template>
 
 <script>
+	import {
+		PostDevicePhoneList,
+		// PostAddDevicePhone,
+		PostSetDevicePhone,
+		PostSetSosDevicePhone,
+	} from '@/common/http/api.js';
 	export default {
 		data() {
 			return {
 				isEditShow: false,
+				deviceId: '105',
+				index: 0,
+				list: [],
+				form: {
+					phoneName: '',
+					phone: '',
+					type: '0',
+				},
+				typeDict: {
+					0: '设置为SOS',
+					1: '设置为按钮1',
+					2: '设置为按钮2',
+					3: '设置为按钮3',
+					P: '暂保存、不设置',
+				}
 			};
 		},
 		methods: {
@@ -68,19 +90,74 @@
 			 * 关闭浮层
 			 */
 			close() {
+				this.form = {}
 				this.isEditShow = false;
 			},
 			/**
 			 * 打开浮层
 			 */
-			open() {
+			handleSet(item, index) {
+				this.form = {
+					...item
+				}
+				this.index = index
 				this.isEditShow = true;
+			},
+			handleAdd() {
+				this.$refs.addmobile.open({
+					deviceId: this.deviceId,
+					list: this.list,
+				});
+			},
+			handleInit() {
+				PostDevicePhoneList({
+					deviceId: this.deviceId,
+				}).then(res => {
+					this.list = res.rows
+				})
+			},
+
+			onSubmit() {
+				const {
+					phone,
+					phoneName,
+					type,
+				} = this.form
+				if (!phoneName) {
+					uni.$u.toast('请填写名称')
+				}
+				if (!phone) {
+					return uni.$u.toast('请填写手机号码')
+				}
+				const InterList = type === 0 ? PostSetSosDevicePhone : PostSetDevicePhone
+				const listArr = uni.$u.deepClone(this.list)
+				listArr[this.index] = this.form
+				InterList({
+					deviceId: this.deviceId,
+					list: listArr
+				}).then(res => {
+					uni.$u.toast(res.msg)
+					this.close()
+					setTimeout(() => {
+						this.handleInit()
+					}, 500);
+				})
 			}
+
+		},
+		mounted() {
+			this.handleInit()
 		}
 	}
 </script>
 
 <style lang="scss">
+	::v-deep {
+		.u-radio {
+			margin-bottom: 16rpx;
+		}
+	}
+
 	.ui-books {
 		margin-top: 90rpx;
 		box-sizing: border-box;
@@ -162,7 +239,7 @@
 
 	.wd-add {
 		width: 582rpx;
-		height: 606rpx;
+		height: 800rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
@@ -170,7 +247,7 @@
 		border: 1px solid #ffcb3d;
 
 		&>view {
-			margin-top: 52rpx;
+			margin-top: 30rpx;
 			padding: 10rpx 20rpx;
 			border-bottom: 1px solid #e4e4e4;
 

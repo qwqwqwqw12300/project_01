@@ -187,7 +187,7 @@ export default {
       showSearch: true,
       distributeFlagDict: [{label: '已分配', value: 1}, {label: '未分配', value: 0}],
       // 机构树选项
-      orgOptions: undefined,
+      orgOptions: [],
       total: 0,
       deviceList: [],
       queryParams: {
@@ -247,14 +247,16 @@ export default {
       },
       groupArrangeRules: {},
       groupArrangeGroupList: [],
-      currentDistributeFlag: undefined
+      currentDistributeFlag: undefined,
+      currentOrgId:undefined,
 
     }
   },
   created() {
     this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
-    this.resetQuery();
+    this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)
     this.getDeptTree();
+    this.resetQuery();
   },
   watch: {
     "$route.query.distributeFlag": {
@@ -263,6 +265,17 @@ export default {
         if (this.$route.name == "Device") {
           if (this.currentDistributeFlag != val) {
             this.currentDistributeFlag = val==undefined?undefined:Number(val);
+            this.resetQuery();
+          }
+        }
+      }
+    },
+    "$route.query.orgId": {
+      immediate: true,
+      handler: function (val) {
+        if (this.$route.name == "Device") {
+          if (this.currentOrgId != val) {
+            this.currentOrgId = val;
             this.resetQuery();
           }
         }
@@ -281,10 +294,9 @@ export default {
       );
     },
     /** 查询机构下拉树结构 */
-    getDeptTree() {
-      orgTreeSelect().then(response => {
-        this.orgOptions = response.data;
-      });
+    async getDeptTree() {
+      const response = await orgTreeSelect()
+      this.orgOptions = response.data;
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -300,7 +312,7 @@ export default {
         no: undefined,
         name: undefined,
         type: undefined,
-        orgId: undefined,
+        orgId: this.currentOrgId,
         distributeFlag: this.currentDistributeFlag
       }
       // this.resetForm("queryForm");

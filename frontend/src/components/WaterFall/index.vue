@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-row v-for="group in rows">
-      <el-col v-for="item in group" :span="span">
+    <el-row :key="'group'+groupIndex" v-for="(group,groupIndex) in rows">
+      <el-col :key="'item'+itemIndex" v-for="(item,itemIndex) in group" :span="span">
         <slot v-bind:item="item"></slot>
       </el-col>
     </el-row>

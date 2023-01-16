@@ -26,9 +26,20 @@ public class MessageQueryRequest {
     private String deviceType;
 
     /** 事件类型 （0:重要事件  1：普通事件）*/
-    @NotBlank(message = "事件类型不能为空")
     @Size(min = 0, max = 50, message = "事件类型不能超过50个字符")
     private String eventlevel;
+
+    /** 设备id */
+    @Size(min = 0, max = 20, message = "设备id不能超过20个字符")
+    private String deviceId;
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
     public String getReadFlag() {
         return readFlag;

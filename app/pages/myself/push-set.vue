@@ -34,7 +34,7 @@
 			},
 			handleInit() {
 				PostGetPushMsgState({}).then(res => {
-					this.flag = res + ''
+					this.flag = res.data.state + ''
 				})
 			}
 		},

@@ -48,12 +48,11 @@ insert into sys_dict_data values(45, 1,  '未分配',     '0',      'sys_distrib
 insert into sys_dict_data values(46, 2,  '已分配',     '1',       'sys_distribute_flag',   '',   'success',  'N', '0', 'admin', sysdate(), '', null, '1:已分配');
 
 -- ----------------------------
--- 设备类型:0雷达波 1监控设备 2手表
+-- 设备类型:0雷达波 1监控设备
 -- ----------------------------
-insert into sys_dict_type values(null, '设备类型', 'device_type',   '0', 'admin', sysdate(), '', null, '设备类型:0雷达波 1监控设备 2手表');
+insert into sys_dict_type values(null, '设备类型', 'device_type',   '0', 'admin', sysdate(), '', null, '设备类型:0雷达波 1监控设备');
 insert into sys_dict_data values(null, 1,  '雷达波',     '0',      'device_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:雷达波');
 insert into sys_dict_data values(null, 2,  '监控设备',     '1',      'device_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '1:监控设备');
-insert into sys_dict_data values(null, 3,  '手表',     '2',       'device_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '2:手表');
 
 -- ----------------------------
 -- 设备状态（0未激活 1激活 2下线）

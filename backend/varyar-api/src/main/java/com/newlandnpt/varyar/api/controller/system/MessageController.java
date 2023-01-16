@@ -3,6 +3,7 @@ package com.newlandnpt.varyar.api.controller.system;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.entity.BatchMessage;
+import com.newlandnpt.varyar.common.core.domain.entity.MemberInfo;
 import com.newlandnpt.varyar.common.core.domain.entity.MemberParameter;
 import com.newlandnpt.varyar.common.core.domain.model.BatchMessageRequest;
 import com.newlandnpt.varyar.common.core.domain.model.MessagePushRequest;
@@ -53,10 +54,17 @@ public class MessageController extends BaseController {
     public TableDataInfo familyList(@RequestBody @Validated MessageQueryRequest messageRequest) {
         startPage();
         TMsg tMsg = new TMsg();
-        tMsg.setOperateFlag(messageRequest.getReadFlag());
+        if(messageRequest.getDeviceId()!=null||!messageRequest.getDeviceId().equals("")){
+            tMsg.setDeviceId(Long.valueOf(messageRequest.getDeviceId()));
+        }
+        if(messageRequest.getFamilyId()!=null||!messageRequest.getFamilyId().equals("")){
+            tMsg.setFamilyId(Long.valueOf(messageRequest.getFamilyId()));
+        }
+        if(messageRequest.getDeviceType()!=null||!messageRequest.getDeviceType().equals("")){
+            tMsg.setDeviceType(messageRequest.getDeviceType());
+        }
         tMsg.setEventLevel(messageRequest.getEventlevel());
-        tMsg.setFamilyId(Long.valueOf(messageRequest.getFamilyId()));
-        tMsg.setDeviceType(messageRequest.getDeviceType());
+        tMsg.setOperateFlag(messageRequest.getReadFlag());
         List<TMsg> list = itMsgService.selectTMsgList(tMsg);
         return getDataTable(list);
     }
@@ -130,10 +138,11 @@ public class MessageController extends BaseController {
         return ajax;
     }
     /**
-     * 我的-消息设置	获取推送开关状态·
+     * 我的-消息设置	获取推送开关状态
      */
     @GetMapping("/getPushMsgState")
-    public String  getPushMessageState(){
+    public AjaxResult  getPushMessageState(){
+        AjaxResult ajax = AjaxResult.success();
         Long memberId = getLoginUser().getMemberId();
         TMember member = new TMember();
         try {
@@ -141,14 +150,14 @@ public class MessageController extends BaseController {
         }  catch (Exception e){
             throw new ServiceException(e.getMessage());
         }
-        String flag = "";
-
+        MemberInfo memberInfo = new MemberInfo();
+        memberInfo.setMemberId(member.getMemberId());
         if(member.getParameter() == null || member.getParameter().getPushMessage()==null){
-            flag = "0";
-            return flag;
+            memberInfo.setState("0");
+            return AjaxResult.success(memberInfo);
         }
-        flag = member.getParameter().getPushMessage();
-        return flag;
+        memberInfo.setState(member.getParameter().getPushMessage());
+        return AjaxResult.success(memberInfo);
     }
     /**
      * 设备消息未读数量
