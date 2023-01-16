@@ -50,7 +50,7 @@ insert into sys_dict_data values(46, 2,  '已分配',     '1',       'sys_distri
 -- ----------------------------
 -- 设备类型:0雷达波 1监控设备
 -- ----------------------------
-insert into sys_dict_type values(null, '设备类型', 'device_type',   '0', 'admin', sysdate(), '', null, '设备类型:0雷达波 1监控设备 2手表');
+insert into sys_dict_type values(null, '设备类型', 'device_type',   '0', 'admin', sysdate(), '', null, '设备类型:0雷达波 1监控设备');
 insert into sys_dict_data values(null, 1,  '雷达波',     '0',      'device_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:雷达波');
 insert into sys_dict_data values(null, 2,  '监控设备',     '1',      'device_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '1:监控设备');
 
