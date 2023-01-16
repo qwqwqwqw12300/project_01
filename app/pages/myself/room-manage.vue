@@ -34,7 +34,23 @@
 				<view class="wd-add">
 					<view>
 						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间名称"></u-text>
-						<u--input v-model="roomName" placeholder="请输入房间名称" border="bottom" clearable></u--input>
+						<u--input v-model="form.name" placeholder="请输入房间名称" border="bottom" clearable></u--input>
+					</view>
+					<view>
+						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间高度"></u-text>
+						<u--input v-model="form.roomHeight" placeholder="请输入房间高度" border="bottom" clearable></u--input>
+					</view>
+					<view>
+						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间长度"></u-text>
+						<u--input v-model="form.roomLength" placeholder="请输入房间长度" border="bottom" clearable></u--input>
+					</view>
+					<view>
+						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间左长度"></u-text>
+						<u--input v-model="form.roomRight" placeholder="请输入房间左长度" border="bottom" clearable></u--input>
+					</view>
+					<view>
+						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间右长度"></u-text>
+						<u--input v-model="form.roomLeft" placeholder="请输入房间右长度" border="bottom" clearable></u--input>
 					</view>
 					<view class="wd-btn-gloup">
 						<button @click="onSubmit">提交</button>
@@ -59,8 +75,12 @@
 			return {
 				isEditShow: false,
 				form: {
-					roomName: '',
+					name: '',
 					roomId: '',
+					roomHeight: '',
+					roomLength: '',
+					roomLeft: '',
+					roomRight: '',
 				},
 				list: []
 			};
@@ -77,7 +97,10 @@
 			 * 修改家庭
 			 */
 			editFamliy(item) {
-				this.form = item
+				this.form = {
+					...item
+				}
+				console.log(this.form, 'fff')
 				this.isEditShow = true;
 			},
 
@@ -93,38 +116,39 @@
 			 */
 			onSubmit() {
 				const {
-					roomId,
-					roomName
+					name,
+					roomHeight,
+					roomLength,
+					roomLeft,
+					roomRight
 				} = this.form
-				if (!this.roomName) {
-					return uni.$u.toast('请填写房间名称')
+				if (!roomHeight || !roomLeft || !roomRight || !roomLength || !name) {
+					return uni.$u.toast('请完善房间信息')
 				}
 				PostEditRoom({
-					roomId,
-					roomName
-				}).then(res=>{
+					...this.form
+				}).then(res => {
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
 						this.close();
 						this.handleInitList()
-					}, 1000)
+					}, 500)
 				})
 			},
 			/**
 			 * 删除
 			 */
-			onDelete() {
+			onDelete(roomId) {
 				uni.showModal({
 					title: '提示',
 					content: '是否确认删除房间',
 					success: res => {
 						if (res.confirm) {
 							PostDelRoom({
-								familyId
+								roomId,
 							}).then(res => {
 								uni.$u.toast(res.msg)
 								setTimeout(() => {
-									this.close();
 									this.handleInitList()
 								}, 1000)
 							})
@@ -156,7 +180,7 @@
 				PostRoomList({
 					familyId: this.familyId,
 				}).then(res => {
-					console.log(res)
+					this.list = res.rows
 				})
 			}
 		},
@@ -235,14 +259,14 @@
 
 	.wd-add {
 		width: 582rpx;
-		height: 400rpx;
+		height: 880rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
 		padding: 53rpx 31rpx;
 
 		&>view {
-			margin-top: 52rpx;
+			margin-top: 18rpx;
 			padding: 10rpx 20rpx;
 			border-bottom: 1px solid #e4e4e4;
 
@@ -254,7 +278,7 @@
 
 		.wd-btn-gloup {
 			text-align: center;
-			margin-top: 70rpx;
+			margin-top: 50rpx;
 
 			button {
 				width: 237rpx;

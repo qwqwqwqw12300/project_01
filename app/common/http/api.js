@@ -151,3 +151,22 @@ export const setDevice = (params) => http.post('/api/device/setDevice', params);
  */
 export const getRoomList = (params) => http.post('/api/room/list', params);
 
+/* 
+ *获取房间列表
+ */
+export const PostRoomList = (params) => http.post('/api/room/list', params)
+
+/* 
+ *删除家庭
+ */
+export const PostDelRoom = (params) => http.post('/api/room/remRoom', params)
+
+/* 
+ *创建家庭
+ */
+export const PostAddRoom = (params) => http.post('/api/room/creRoom', params)
+
+/* 
+ *编辑家庭
+ */
+export const PostEditRoom = (params) => http.post('/api/room/editRoom', params)
