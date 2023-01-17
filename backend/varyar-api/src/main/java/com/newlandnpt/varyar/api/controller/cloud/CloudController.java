@@ -25,10 +25,10 @@ import com.newlandnpt.varyar.cloudBase.service.FallService;
  * @author bean
  */
 @Controller
-@RequestMapping("/api/cloud/device")
-public class DeviceController {
+@RequestMapping("/api/cloud")
+public class CloudController {
     
-	private static final Logger log = LoggerFactory.getLogger(DeviceController.class);
+	private static final Logger log = LoggerFactory.getLogger(CloudController.class);
 	
     @Resource(name = "cloud.fallService")
 	private FallService fallService;
@@ -40,9 +40,9 @@ public class DeviceController {
     private String deviceConfigTopic;
     
     /** 接收下发参数 **/
-    @GetMapping("/config")
+    @GetMapping("/device/config")
     @ResponseBody
-    public void config(@RequestBody DeviceConfig deviceConfig) {
+    public void deviceConfig(@RequestBody DeviceConfig deviceConfig) {
     	
     	SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic, MessageBuilder.withPayload(deviceConfig).build());
     	//System.out.println(JSON.toJSONString(result));
