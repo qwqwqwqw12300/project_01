@@ -161,7 +161,12 @@ const store = {
 		/**
 		 * 获取家庭中得所有房间
 		 */
-		filterRoom: state => id => state.roomList.filter(item => item.familyId === id)
+		filterRoom: state => id => state.roomList.filter(item => item.familyId === id),
+		
+		/**
+		 * 获取用户信息
+		 */
+		userInfo: state => state.userInfo,
 	}
 }
 
