@@ -135,10 +135,10 @@ const store = {
 					error: false
 				}).then(res => {
 					console.log(res, 'res');
-					ctx.commit('setRoomList', res.data);
+					ctx.commit('setUserInfo', res.data);
 					resolve(true);
 				}, err => {
-					ctx.commit('setRoomList', {});
+					ctx.commit('setUserInfo', {});
 					resolve(false)
 				});
 			});
