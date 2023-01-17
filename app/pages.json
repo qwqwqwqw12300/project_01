@@ -217,7 +217,7 @@
 			}
 		},
 		{
-			"path": "pages/myself/agreement-info",
+			"path": "pages/myself/app-agreement",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {

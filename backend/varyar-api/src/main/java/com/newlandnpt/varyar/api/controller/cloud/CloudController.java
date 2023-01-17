@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.cloud.controller;
+package com.newlandnpt.varyar.api.controller.cloud;
 
 import javax.annotation.Resource;
 
@@ -25,10 +25,10 @@ import com.newlandnpt.varyar.cloudBase.service.FallService;
  * @author bean
  */
 @Controller
-@RequestMapping("/cloud/api/msg/device")
-public class DeviceApi {
+@RequestMapping("/api/cloud")
+public class CloudController {
     
-	private static final Logger log = LoggerFactory.getLogger(DeviceApi.class);
+	private static final Logger log = LoggerFactory.getLogger(CloudController.class);
 	
     @Resource(name = "cloud.fallService")
 	private FallService fallService;
@@ -39,10 +39,10 @@ public class DeviceApi {
     @Value("${rocketmq.topic.deviceConfig}")
     private String deviceConfigTopic;
     
-    /** 接收下发参数，可以复制到其他包 **/
-    @GetMapping("/config")
+    /** 接收下发参数 **/
+    @GetMapping("/device/config")
     @ResponseBody
-    public void config(@RequestBody DeviceConfig deviceConfig) {
+    public void deviceConfig(@RequestBody DeviceConfig deviceConfig) {
     	
     	SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic, MessageBuilder.withPayload(deviceConfig).build());
     	//System.out.println(JSON.toJSONString(result));

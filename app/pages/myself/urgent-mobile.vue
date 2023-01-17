@@ -43,7 +43,7 @@
 							size="28rpx">
 						</u-text>
 						<view class="ui-input">
-							<u-input v-model="form.phoneName" placeholder="输入紧急联系人名字" :border="'none'" fontSize="28rpx"
+							<u-input v-model="form.name" placeholder="输入紧急联系人名字" :border="'none'" fontSize="28rpx"
 								clearable>
 							</u-input>
 						</view>
@@ -91,7 +91,7 @@
 				isEditShow: false,
 				form: {
 					orderNum: '',
-					phoneName: '',
+					name: '',
 					phone: '',
 					memberContactsId: '',
 				},
@@ -115,7 +115,7 @@
 								uni.$u.toast(res.msg)
 								setTimeout(() => {
 									this.handleInit()
-								}, 500)				
+								}, 500)
 							})
 						} else if (res.cancel) {
 							console.log('用户点击取消');
@@ -124,16 +124,11 @@
 				});
 			},
 			handleEidt(item) {
-				const {
-					phone,
-					name,
-					memberContactsId,
-					orderNum
-				} = item
-				this.form.phone = phone
-				this.form.phoneName = name
-				this.form.orderNum = orderNum + ''
-				this.form.memberContactsId = memberContactsId
+				this.form = {
+					...item,
+					orderNum: item.orderNum + ''
+				}
+				console.log(this.form, 'ff')
 				this.isEditShow = true
 				// uni.navigateTo({
 				// 	url: '/pages/myself/add-contact?type=edit&data=' + encodeURIComponent(JSON.stringify(item))
@@ -157,23 +152,27 @@
 				const {
 					orderNum,
 					phone,
-					phoneName,
+					name,
+					memberContactsId
 				} = this.form
 				if (!orderNum) {
 					return uni.$u.toast('请选择紧急联系人')
 				}
-				if (!phoneName) {
+				if (!name) {
 					return uni.$u.toast('请填写联系人姓名')
 				}
-				if (!phone) {
-					return uni.$u.toast('请填写联系人手机号码')
+				if (!uni.$u.test.mobile(phone)) {
+					return uni.$u.toast('请填写正确的手机号码')
 				}
 				PostEditContacts({
-					...this.form
+					orderNum,
+					phone,
+					memberContactsId,
+					phoneName: name,
 				}).then(res => {
 					uni.$u.toast(res.msg)
+					this.handleClose();
 					setTimeout(() => {
-						this.handleClose();
 						this.handleInit()
 					}, 500)
 				})
@@ -198,7 +197,7 @@
 
 		.ui-list-card {
 			margin-bottom: 30rpx;
-			padding: 30rpx 30rpx;
+			padding: 24rpx 28rpx;
 			border-radius: 14rpx;
 			background: linear-gradient(#F5F5F5, #E5E5E5);
 
@@ -217,7 +216,7 @@
 			}
 
 			.card-content {
-				margin-top: 50rpx;
+				margin-top: 40rpx;
 				margin-bottom: 20rpx;
 				display: flex;
 				justify-content: space-between;

@@ -16,7 +16,7 @@
 				<u--input v-model="form.familyName" placeholder="请输入家庭名称" border="bottom" clearable></u--input>
 			</view>
 			<view>
-				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
+				<u-text size="28rpx" prefixIcon="map-fill" iconStyle="font-size: 36rpx"
 					text="家庭地址(必填)"></u-text>
 				<u--input v-model="form.address" placeholder="请输入家庭地址" border="bottom" clearable></u--input>
 			</view>
