@@ -1,12 +1,14 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import sdk from './sdk/sdk.js';
+import service from './service/service.js';
 import {
 	getFamilyList,
 	getDeviceList,
 	getRoomList,
 	PostGetPushMsgState
 } from '@/common/http/api.js';
+
 
 Vue.use(Vuex);
 
@@ -173,6 +175,7 @@ const store = {
 export default new Vuex.Store({
 	...store,
 	modules: {
-		sdk
+		sdk,
+		service
 	}
 })

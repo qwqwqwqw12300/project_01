@@ -9,7 +9,7 @@
 	<app-body leftText="返回">
 		<view class="uni-agreement">
 			<scroll-view scroll-y class="uni-agreement-scroll">
-				<text>{{ content }}</text>
+				<text>{{ readInfo }}</text>
 			</scroll-view>
 		</view>
 	</app-body>
@@ -19,23 +19,20 @@
 	import {
 		PostMessageDeatil,
 	} from '@/common/http/api.js';
+	
+	import { mapState } from 'vuex';
 	export default {
 		data() {
 			return {
 				content: '',
 			}
 		},
-		methods: {
-			initData(msgId) {
-				PostMessageDeatil({
-					msgId
-				}).then(res => {
-					this.content = res.rows[0].content
-				})
-			}
+		computed: {
+			...mapState({
+				readInfo: state =>  state.service.readInfo
+			})
 		},
-		onLoad(options) {
-			this.initData(options.msgId)
+		methods: {
 		}
 	}
 </script>

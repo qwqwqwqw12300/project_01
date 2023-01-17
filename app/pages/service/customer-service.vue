@@ -23,9 +23,9 @@
 </script>
 
 <script module="service" lang="renderjs">
-	// import {
-	// 	Crisp
-	// } from "crisp-sdk-web";
+	import {
+		Crisp
+	} from "crisp-sdk-web";
 	import {
 		env
 	} from "@/config/env.js";

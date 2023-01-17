@@ -17,7 +17,7 @@
 				</view>
 			</view>
 			<view class="ui-icon">
-				<u-icon name="map-fill" @click="goMap" size="30" color="#FF7E00" class="ui-detail-map"></u-icon>
+				<u-icon name="phone-fill" @click="goSetMobile" size="30" color="#FF7E00" class="ui-detail-map"></u-icon>
 				<u-icon name="map-fill" @click="goMap" size="30" color="#FF7E00" class="ui-detail-map"></u-icon>
 			</view>
 
@@ -103,6 +103,15 @@
 			goMap() {
 				uni.navigateTo({
 					url: '/pages/equipment/map'
+				})
+			},
+			
+			/**
+			 * 跳转电话设置
+			 */
+			goSetMobile() {
+				uni.navigateTo({
+					url: '/pages/equipment/mobile-book'
 				})
 			}
 		}
@@ -196,6 +205,9 @@
 			// height: 60rpx;
 			right: 20rpx;
 			bottom: 20rpx;
+			&:nth-child(1) {
+				right: 100rpx;
+			}
 		}
 	}
 </style>

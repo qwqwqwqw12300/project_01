@@ -8,7 +8,7 @@
 <template>
 	<app-body :hideTitle="true">
 		<view class="ui-user">
-			<text>{{ userInfo.phone || '暂无手机号' }}</text>
+			<text>{{ userInfoPhone || '暂无手机号' }}</text>
 			<u-icon @click="editMobile" name="edit-pen" color="#fff" size="50rpx"></u-icon>
 			<button @click="loginOut">注销</button>
 		</view>
@@ -66,11 +66,11 @@
 						pic: 'ag.png',
 						url: '/pages/myself/agreement-info'
 					},
-					{
-						title: '常见问题',
-						pic: 'question.png',
-						url: ''
-					},
+					// {
+					// 	title: '常见问题',
+					// 	pic: 'question.png',
+					// 	url: ''
+					// },
 					{
 						title: '问题与建议',
 						pic: 'complaint.png',
@@ -85,9 +85,10 @@
 			};
 		},
 		computed: {
-			userInfo() {
-				console.log(this.$store.getters.userInfo, '00')
-				return this.$store.getters.userInfo
+			userInfoPhone() {
+				 const phone=this.$store.getters.userInfo.phone,
+				     pho=/(\d{3})\d*(\d{4})/;
+				return phone.replace(pho,'$1****$2');
 			}
 		},
 		methods: {
@@ -135,7 +136,6 @@
 			}
 		},
 		onShow() {
-			console.log(this.$store.getters.userInfo, '00')
 		}
 	};
 </script>
