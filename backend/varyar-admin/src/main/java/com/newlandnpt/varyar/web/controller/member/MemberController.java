@@ -2,6 +2,8 @@ package com.newlandnpt.varyar.web.controller.member;
 
 import java.util.List;
 
+import com.newlandnpt.varyar.common.annotation.Log;
+import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.system.domain.TFamily;
 import com.newlandnpt.varyar.system.service.IFamilyService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -64,6 +66,7 @@ public class MemberController extends BaseController
     /**
      * 给会员分配运营
      */
+    @Log(title = "会员管理-分配运营", businessType = BusinessType.UPDATE)
     @PreAuthorize("@ss.hasPermi('member:arrange')")
     @PutMapping(value = "/{memberId}/arrange/user/{userId}")
     public AjaxResult families(@PathVariable("memberId") Long memberId,
@@ -71,6 +74,18 @@ public class MemberController extends BaseController
     {
 
         return success(memberService.arrangeUserToMember(memberId,userId));
+    }
+    /**
+     * 给会员分配运营
+     */
+    @Log(title = "会员管理-分配运营", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('member:arrange')")
+    @PutMapping(value = {"/arrange/user/{userId}","/arrange/user"})
+    public AjaxResult families(@RequestBody Long[] memberIds,
+                               @PathVariable(value = "userId",required = false) Long userId)
+    {
+
+        return success(memberService.arrangeMembers(memberIds,userId));
     }
 
 }

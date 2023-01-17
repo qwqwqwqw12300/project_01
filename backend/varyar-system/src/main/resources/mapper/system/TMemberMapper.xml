@@ -62,6 +62,9 @@
             <if test="password != null  and password != ''">and password = #{password}</if>
             <if test="distributeFlag != null  and distributeFlag != ''">and distribute_flag = #{distributeFlag}</if>
             <if test="userId != null ">and user_id = #{userId}</if>
+            <if test="params.userMobilePhone != null ">
+                and userId in (select user_id from sys_user u where u.mobile_phone like concat('%', #{params.userMobilePhone}, '%'))
+            </if>
             <if test="params.arrangeUser != null ">
                 <if test='params.arrangeUser == "false" '>
                     and user_id is null
@@ -121,8 +124,8 @@
             <if test="password != null">password = #{password},</if>
             <if test="parameter != null">member_parameter = <include refid="parameter"/>,</if>
             <if test="distributeFlag != null">distribute_flag = #{distributeFlag},</if>
-            <if test="userId != null">user_id = #{userId},</if>
-            <if test="userName != null">user_name = #{userName},</if>
+            <if test="userId != null or distributeFlag != null ">user_id = #{userId},</if>
+            <if test="userName != null or distributeFlag != null  ">user_name = #{userName},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
             update_time = sysdate()
         </trim>
