@@ -182,14 +182,14 @@
 					"response": []
 				},
 				{
-					"name": "获取公钥",
+					"name": "获取用户信息",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImM2M2ZkM2RiLTM0OWQtNDE0YS1iNzY1LTdhNTExZmU3NGNiMCJ9.b9b506GpwTDs_qkCqf2C5Y1FWpmgUnUtFuP1DtuFWUXVSq8OJlv9M8izAEKKj38RMfm_pfZvq49Y0KjloBAYwQ",
 									"type": "string"
 								}
 							]
@@ -197,14 +197,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8081/api/publicKey",
+							"raw": "localhost:8081/api/memberInfo/getMeminfo",
 							"host": [
 								"localhost"
 							],
 							"port": "8081",
 							"path": [
 								"api",
-								"publicKey"
+								"memberInfo",
+								"getMeminfo"
 							]
 						}
 					},
@@ -262,7 +263,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImFlMjNkODA4LTIxNTQtNGNjYi04YTY0LWIxNTQyYTVlMGVhNiJ9.LBhxEZCGOLSj53pnBLj59hXs4k4XGKPq5EdnhavjZ6pq6bgUmCyBSqBmloOzvspV56z--d2KxtEWmuRjQWHGtQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImM2M2ZkM2RiLTM0OWQtNDE0YS1iNzY1LTdhNTExZmU3NGNiMCJ9.b9b506GpwTDs_qkCqf2C5Y1FWpmgUnUtFuP1DtuFWUXVSq8OJlv9M8izAEKKj38RMfm_pfZvq49Y0KjloBAYwQ",
 									"type": "string"
 								}
 							]
@@ -271,7 +272,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"familyId\":\"107\",\r\n    \"roomName\":\"room001\"\r\n}",
+							"raw": "{\r\n    \"familyId\":\"107\",\r\n    \"roomName\":\"room001_2\",\r\n    \"roomLength\":\"11\",\r\n    \"roomLeft\":\"21\",\r\n    \"roomRight\":\"21.2\",\r\n    \"roomHeight\":\"15\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -301,7 +302,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImU3MTQ2MTE3LTdiMjItNDJjOC04MzQ3LTYxZjRjYWM4NGIyNCJ9.fXLDaDjHg0-5tKUQ36RqxS7THJYq7M50VrkgXy7HT6JnjP7Q8MoQErPAEdSROGpLub1q8fqVJEFO2HG4vb7hEQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImM2M2ZkM2RiLTM0OWQtNDE0YS1iNzY1LTdhNTExZmU3NGNiMCJ9.b9b506GpwTDs_qkCqf2C5Y1FWpmgUnUtFuP1DtuFWUXVSq8OJlv9M8izAEKKj38RMfm_pfZvq49Y0KjloBAYwQ",
 									"type": "string"
 								}
 							]
@@ -310,7 +311,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"roomName\":\"room001_1\",\r\n    \"roomId\":\"100\"\r\n}",
+							"raw": "{\r\n    \"roomName\":\"room001_2_1\",\r\n    \"roomId\":\"114\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -340,7 +341,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImU3MTQ2MTE3LTdiMjItNDJjOC04MzQ3LTYxZjRjYWM4NGIyNCJ9.fXLDaDjHg0-5tKUQ36RqxS7THJYq7M50VrkgXy7HT6JnjP7Q8MoQErPAEdSROGpLub1q8fqVJEFO2HG4vb7hEQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImM2M2ZkM2RiLTM0OWQtNDE0YS1iNzY1LTdhNTExZmU3NGNiMCJ9.b9b506GpwTDs_qkCqf2C5Y1FWpmgUnUtFuP1DtuFWUXVSq8OJlv9M8izAEKKj38RMfm_pfZvq49Y0KjloBAYwQ",
 									"type": "string"
 								}
 							]
@@ -349,7 +350,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \r\n    \"roomId\":\"104\"\r\n}",
+							"raw": "{   \r\n    \"roomId\":\"114\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -591,7 +592,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"familyId\":\"121\"\r\n}",
+							"raw": "{\r\n    \"shareMemberId\":\"121\",\r\n     \"shareFamilyId\":\"121\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -768,7 +769,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImRhNTU2YWJmLTI5YTktNDgxZS05NDNkLTdmZDMzZTA1MThkNiJ9.QgsrIKHBE8yZFV6YOq2463ykNKb8dsah6ad1A_nwKP9Y5O1fuo9OR8b96KdaX9-KowWVl3_xCjTyYuZD_2hOMA",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjIzZGJmMGY4LWJkYjItNGVlYS05ZmEzLTdjNGUzODliMmJkNyJ9.cXc4I2j7Kl0UouGX5wFyevtJqA7jp_2QtWXcSJTIkvbFY_JTr9mnXM6ay0L6RVY6EapCGgCZ49YjB2xRh7NVEA",
 									"type": "string"
 								}
 							]
@@ -777,7 +778,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"deviceType\":\"\",\r\n    \"eventlevel\":\"0\",\r\n    \"familyId\":\"121\",\r\n    \"readFlag\":\"0\"\r\n}",
+							"raw": "{\r\n    \"deviceType\":\"1\",\r\n    \"eventlevel\":\"\",\r\n    \"familyId\":\"106\",\r\n    \"readFlag\":\"\",\r\n    \"deviceId\":\"\",\r\n    \"startDate\":\"\",\r\n    \"endDate\":\"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -801,21 +802,33 @@
 				},
 				{
 					"name": "设备消息未读数量",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImIwZjllM2NiLTcxODMtNGMyNy05Mzk5LTUxOTQ4YjA5MWJlYSJ9.ygi2y557nxjZPyNFQbdnE_z_l_8Dk1RP_h8bSuk6P72Zwh3_Y9WJ6bY0u2YBhWSudGzEsk7REV6ernXZMvq6sQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImRhNTU2YWJmLTI5YTktNDgxZS05NDNkLTdmZDMzZTA1MThkNiJ9.QgsrIKHBE8yZFV6YOq2463ykNKb8dsah6ad1A_nwKP9Y5O1fuo9OR8b96KdaX9-KowWVl3_xCjTyYuZD_2hOMA",
 									"type": "string"
 								}
 							]
 						},
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "localhost:8081/api/message/getDMsgUnReadNum?deviceId=101",
+							"raw": "localhost:8081/api/message/getDMsgUnReadNum?deviceId=105",
 							"host": [
 								"localhost"
 							],
@@ -828,7 +841,7 @@
 							"query": [
 								{
 									"key": "deviceId",
-									"value": "101"
+									"value": "105"
 								}
 							]
 						}
@@ -1338,36 +1351,6 @@
 								"api",
 								"message",
 								"updPushMsg"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "获取推送状态",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjkxYTVkMWRjLTIyN2YtNDg2Yy05YjhhLWEwMDYxYmEyNjU5MyJ9.dCwrFHxaw0623aJqrXeBuReomcc5aaIE9roqSl_fQIZDcpX-7g5uWffwEF3VmQgWPsPmf3vU1FpHju3tOcywPA",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8081/api/message/getPushMsgState",
-							"host": [
-								"localhost"
-							],
-							"port": "8081",
-							"path": [
-								"api",
-								"message",
-								"getPushMsgState"
 							]
 						}
 					},
@@ -2191,7 +2174,107 @@
 		},
 		{
 			"name": "系统公告",
-			"item": []
+			"item": [
+				{
+					"name": "获取系统公告已读信息",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjFkZjQ4MWM0LWI2ZDktNGU2ZC05Yzg5LTRlYmY1YTk2NGRkYSJ9.rgnG4vypdXaUfAGA5hHUMvj9qzrpdjBjaQB8hZ_8L45-HKP4crU_HI8-E17gjqpSsiKPGnPCykACAzpWwdnRCg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/notice/readInfo",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"notice",
+								"readInfo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "标志系统公告已读",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjBhYzFkMWM2LWRlNjItNDkzZC1iNjdjLWM4YmU1YjA3OTY0YSJ9.xfy8RR7ri4ZGkkY_MeaDThReY8uwq0idToMdkP3iDWWBvEO2ugFZdKYTKrm3IMCrp0MQK4Z0odhVsrB80Jfitg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"noticeId\":\"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/notice/setNoticeFlag",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"notice",
+								"setNoticeFlag"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "获取系统公告",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjBhYzFkMWM2LWRlNjItNDkzZC1iNjdjLWM4YmU1YjA3OTY0YSJ9.xfy8RR7ri4ZGkkY_MeaDThReY8uwq0idToMdkP3iDWWBvEO2ugFZdKYTKrm3IMCrp0MQK4Z0odhVsrB80Jfitg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/notice/sysNotice",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"notice",
+								"sysNotice"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
