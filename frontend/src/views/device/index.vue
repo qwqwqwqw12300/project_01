@@ -339,7 +339,7 @@ export default {
     /** 设备配对相关 */
     handleAssociate(row) {
       this.associateOpen = true;
-      // this.associateForm = row;
+      this.associateForm = row;
       this.resetForm("associateForm");
     },
     submitAssociateForm() {
