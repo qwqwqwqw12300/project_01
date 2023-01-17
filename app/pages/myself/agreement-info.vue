@@ -27,7 +27,7 @@
 					{
 						title: 'APP协议',
 						pic: 'agreement.png',
-						url: '/pages/myself/app-agreement-info'
+						url: '/pages/myself/app-agreement'
 					}
 				]
 			}

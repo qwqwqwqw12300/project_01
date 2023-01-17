@@ -14,17 +14,16 @@
 				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
 					text="房间名称"></u-text>
 				<u--input v-model="form.roomName" placeholder="请输入房间名称" border="bottom" clearable></u--input>
-				<u-text size="28rpx"  prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
-					text="房间高度"></u-text>
-				<u--input type="number" v-model="form.roomHeight" placeholder="请输入房间高度" border="bottom" clearable></u--input>
-				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
-					text="房间长度"></u-text>
-				<u--input type="number" v-model="form.roomLength" placeholder="请输入房间长度" border="bottom" clearable></u--input>
-				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
-					text="房间左长度"></u-text>
-				<u--input type="number" v-model="form.roomLeft" placeholder="请输入房间左长度" border="bottom" clearable></u--input>
-				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
-					text="房间右长度"></u-text>
+				<u-text size="28rpx" prefixIcon="info-circle-fill" iconStyle="font-size: 36rpx" text="房间高度"></u-text>
+				<u--input type="number" v-model="form.roomHeight" placeholder="请输入房间高度" border="bottom" clearable>
+				</u--input>
+				<u-text size="28rpx" prefixIcon="info-circle-fill" iconStyle="font-size: 36rpx" text="房间长度"></u-text>
+				<u--input type="number" v-model="form.roomLength" placeholder="请输入房间长度" border="bottom" clearable>
+				</u--input>
+				<u-text size="28rpx" prefixIcon="info-circle-fill" iconStyle="font-size: 36rpx" text="房间左长度"></u-text>
+				<u--input type="number" v-model="form.roomLeft" placeholder="请输入房间左长度" border="bottom" clearable>
+				</u--input>
+				<u-text size="28rpx" prefixIcon="info-circle-fill" iconStyle="font-size: 36rpx" text="房间右长度"></u-text>
 				<u--input v-model="form.roomRight" placeholder="请输入房间右长度" border="bottom" clearable></u--input>
 			</view>
 			<view class="ui-btn"><button @click="next" class="wd-sms">{{ subTitle }}</button></view>
@@ -37,7 +36,6 @@
 		PostAddRoom,
 	} from '@/common/http/api.js';
 	export default {
-		emit: [],
 		props: {
 			family: String
 		},
