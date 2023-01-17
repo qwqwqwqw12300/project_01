@@ -16,6 +16,9 @@ import {
 import {
 	getToken
 } from '@/common/utils/auth.js'
+import {
+	cookie
+} from 'request';
 
 /**错误处理文案**/
 const errText = {
@@ -69,10 +72,20 @@ const request = (url, options, process, method = 'POST') => {
 				if (statusCode == 200 && data.code === 200) {
 					resolve(data);
 				} else {
-					if (errorHandle) uni.showModal({
-						title: '提示',
-						content: data.msg || errText[statusCode] || '系统错误'
-					});
+					if (errorHandle) {
+						if (data.code === 401) { // 未登录
+							uni.redirectTo({
+								url: '/pages/login/login'
+							})
+						} else {
+							uni.showModal({
+								title: '提示',
+								content: data.msg || errText[statusCode] || '系统错误'
+							});
+						}
+
+
+					}
 					reject();
 				}
 				if (showLoading) uni.hideLoading();

@@ -1,7 +1,7 @@
 /*
  * @Author: zhanch
  * @Date: 2022-12-13 14:37:03
- * @LastEditors: zhanch
+ * @LastEditors: Please set LastEditors
  * @FilePath: /http/api.js
  * @Description: 请求接口
  */
@@ -27,6 +27,11 @@ export const GetCaptchaImage = (params) => http.get('/api/captchaImage', params)
 export const PostLoginByPwd = (params) => http.post('/api/loginByPwd', params)
 
 /* 
+ *注销*
+ */
+export const PostLoginOut = (params) => http.post('/api/loginOut', params)
+
+/* 
  *查看消息列表 *
  */
 export const GetMessageList = (params) => http.get('/api/message/list', params)
@@ -44,7 +49,8 @@ export const PostSetMsgInfo = (params) => http.post('/api/message/setMsgInfo', p
 /* 
  *获取推送开关信息*
  */
-export const PostGetPushMsgState = (params) => http.get('/api/message/getPushMsgState', params)
+export const PostGetPushMsgState = (...params) => http.get.apply(this, ['/api/memberInfo/getMemInfo', ...params]);
+
 
 /* 
  *推送开关*
@@ -115,6 +121,8 @@ export const PostVersionInfo = (params) => http.get('/api/version/selectVersionI
  *修改密码
  */
 export const PostUpdatePwd = (params) => http.post('/api/memberInfo/updatePwd', params)
+
+export const PostUpdatePhone = (params) => http.post('/api/memberInfo/updatePhone',params)
 
 /* 
  *获取家庭列表
@@ -204,22 +212,20 @@ export const PostSetSosDevicePhone = (params) => http.post('/api/device/setSOSDe
 /**
  * 获取设备定位
  */
-export const PostListState= (params) => http.post('/api/device/listState', params)
+export const PostListState = (params) => http.post('/api/device/listState', params)
 
 /**
  * 获取分享家庭列表
  */
 
-export const PostSharelist= (params) => http.post('/api/family/sharelist', params)
+export const PostSharelist = (params) => http.post('/api/family/sharelist', params)
 
 /**
  * 创建分享家庭
  */
-export const PostShareFamily= (params) => http.post('/api/family/shareFamily', params)
+export const PostShareFamily = (params) => http.post('/api/family/shareFamily', params)
 
 /**
  * 删除分享家庭
  */
-export const PostRemShareFamily= (params) => http.post('/api/family/remShareFamily', params)
-
-
+export const PostRemShareFamily = (params) => http.post('/api/family/remShareFamily', params)

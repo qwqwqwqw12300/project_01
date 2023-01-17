@@ -99,6 +99,18 @@ export const constantRoutes = [
         component: () => import('@/views/org/deviceGroup/arrangeUser'),
         name: 'DeviceGroupArrangeUser',
         meta: { title: '设备组分配运营人员', icon: 'user' }
+      },
+      {
+        path: 'orgDeviceEvents',
+        component: () => import('@/views/org/orgDeviceEvents/index'),
+        name: 'OrgDeviceEvents',
+        meta: { title: '机构设备消息监控', icon: 'user' }
+      },
+      {
+        path: 'orgSingleDeviceEvent',
+        component: () => import('@/views/org/orgDeviceEvents/index'),
+        name: 'OrgSingleDeviceEvent',
+        meta: { title: '机构处理单个设备消息', icon: 'user' }
       }
     ]
   },

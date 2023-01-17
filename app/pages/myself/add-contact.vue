@@ -74,8 +74,8 @@
 				if (!phoneName) {
 					return uni.$u.toast('请填写联系人姓名')
 				}
-				if (!phone) {
-					return uni.$u.toast('请填写联系人手机号码')
+				if (!uni.$u.test.mobile(phone)) {
+					return uni.$u.toast('请填写正确的手机号码')
 				}
 				PostAddContacts({
 					...this.form

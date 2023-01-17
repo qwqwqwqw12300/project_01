@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
-      
+
       <el-form-item label="会员手机号" prop="phone">
         <el-input
           v-model="queryParams.phone"
@@ -10,9 +10,9 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="服务人员手机号" prop="userPhone">
+      <el-form-item label="服务人员手机号" prop="params.userMobilePhone">
         <el-input
-          v-model="queryParams.userPhone"
+          v-model="queryParams.params.userMobilePhone"
           placeholder="请输入服务人员手机号"
           clearable
           @keyup.enter.native="handleQuery"
@@ -41,52 +41,8 @@
       </el-form-item>
     </el-form>
     <el-row :gutter="20"></el-row>
+ <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
 
-    <!-- <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:member:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:member:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:member:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:member:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row> -->
 
     <el-table v-loading="loading" :data="memberList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
@@ -109,8 +65,8 @@
               type="text"
               icon="el-icon-info"
               @click="handleView(scope.row)"
-              v-hasPermi="['system:member:query']"
-            >查看</el-button> 
+              v-hasPermi="['member:query']"
+            >查看</el-button>
           <!-- <el-button
             size="mini"
             type="text"
@@ -121,7 +77,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -130,43 +86,13 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改会员对话框 -->
-    <!-- <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="会员编号" prop="no">
-          <el-input v-model="form.no" placeholder="请输入会员编号" />
-        </el-form-item>
-        <el-form-item label="会员手机号" prop="phone">
-          <el-input v-model="form.phone" placeholder="请输入会员手机号" />
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" placeholder="请输入密码" />
-        </el-form-item>
-        <el-form-item label="分配标志" prop="distributeFlag">
-          <el-input v-model="form.distributeFlag" placeholder="请输入分配标志" />
-        </el-form-item>
-        <el-form-item label="运营者id" prop="userId">
-          <el-input v-model="form.userId" placeholder="请输入运营者id" />
-        </el-form-item>
-        <el-form-item label="运营者姓名" prop="userName">
-          <el-input v-model="form.userName" placeholder="请输入运营者姓名" />
-        </el-form-item>
-        <el-form-item label="删除标志" prop="delFlag">
-          <el-input v-model="form.delFlag" placeholder="请输入删除标志" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog> -->
-    <!-- 添加或修改机构对话框 -->
+
     <form-panel :title="title" :visible.sync="open" width="600px" append-to-body >
       <h4 class="form-header h4">会员基本信息</h4>
 		<el-row>
 		  <member-info-card :value="form.memberId"></member-info-card>
-		</el-row>	  
-    
+		</el-row>
+
 
 
     <!-- 先用表格代替卡片组 -->
@@ -182,10 +108,7 @@
           {{ shareFlagFormat(scope.row) }}
         </template>
       </el-table-column>
-      <!-- <el-table-column label="" align="center" prop="userName" />
-      <el-table-column label="设备名称：" align="center" prop="userPhone" />
-      <el-table-column label="位置：" align="center" prop="createTime" />
-      <el-table-column label="状态：" align="center" prop="createTime" /> -->
+
     </el-table>
     <pagination
       v-show="familyTotal>0"
@@ -246,8 +169,10 @@ export default {
         pageNum: 1,
         pageSize: 10,
         phone: null,
-        userPhone: null,
         distributeFlag: null,
+        params:{
+          userMobilePhone:null
+        }
       },
       // 表单参数
       form: {
@@ -303,12 +228,12 @@ export default {
     //字典翻译部分
      // 分配标志字典翻译
     distributeFlagFormat(row, column) {
-      return this.selectDictLabel(this.dict.type.sys_distribute_flag, row.distributeFlagFormat)
+      return this.selectDictLabel(this.dict.type.sys_distribute_flag, row.distributeFlag)
     },
 
     // 共享标志字典翻译
     shareFlagFormat(row, column) {
-      return this.selectDictLabel(this.dict.type.sys_share_flag, row.shareFlagFormat)
+      return this.selectDictLabel(this.dict.type.sys_share_flag, row.shareFlag)
     },
 
     // 取消按钮
@@ -332,7 +257,7 @@ export default {
       };
       this.resetForm("form");
     },
-    
+
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;

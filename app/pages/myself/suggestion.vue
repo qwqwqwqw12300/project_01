@@ -41,7 +41,7 @@
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
 						uni.navigateBack()
-					}, 1500)
+					}, 500)
 				})
 			}
 		}

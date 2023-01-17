@@ -28,11 +28,10 @@ export function listFamily(query) {
 }
 
 // 运营分配会员
-export function memberArrange(memberId,data) {
+export function memberArrange(userId,data) {
   return request({
     // url: deviceGroupId==null?('/org/devicegroup/devices/arrange'):('/org/devicegroup/'+deviceGroupId+'/devices/arrange'),
-    url: userId==null?('/member/'+memberId+'/arrange/user'):('/org/devicegroup/'+memberId+'/devices/arrange'),
-
+    url: userId==null?'/member/arrange/user':'/member/arrange/user/'+userId,
     method: 'put',
     data: data
   })
