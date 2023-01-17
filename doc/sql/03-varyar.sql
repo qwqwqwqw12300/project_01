@@ -259,7 +259,7 @@ create table t_room_zone (
   y1                decimal(10,2)                         comment '最近的点',
   y2                decimal(10,2)                         comment '最远的点',
   z1                decimal(10,2)                         comment '最底部的点',
-  z2                decimal(10,2)                         comment '最顶部的点',x
+  z2                decimal(10,2)                         comment '最顶部的点',
   exist_flag        char(1)                               comment '存在监测标志（0是 1否）',
   fall_flag         char(1)                               comment '跌倒监测标志（0是 1否）',
   entry_time        int                                   comment '进入时间(s)',
