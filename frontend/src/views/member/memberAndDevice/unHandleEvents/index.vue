@@ -2,15 +2,6 @@
     <div class="app-container">
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
 
-        <!-- <el-form-item label="操作时间" prop="operateTime">
-          <el-date-picker clearable
-            v-model="queryParams.operateTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择操作时间">
-          </el-date-picker>
-        </el-form-item> -->
-
         <el-form-item label="查询时间">
             <el-date-picker
               v-model="dateRange"
@@ -117,7 +108,7 @@
             v-hasPermi="['system:event:add']"
           >服务登记</el-button>
         </el-col>
-        <!-- <el-col :span="1.5">
+        <!-- <el-col :span="4">
           <el-button
             type="success"
             plain
@@ -126,30 +117,10 @@
             :disabled="single"
             @click="handleUpdate"
             v-hasPermi="['system:event:edit']"
-          >修改</el-button>
+          >服务登记</el-button>
         </el-col> -->
         
-        <!-- <el-col :span="1.5">
-          <el-button
-            type="danger"
-            plain
-            icon="el-icon-delete"
-            size="mini"
-            :disabled="multiple"
-            @click="handleDelete"
-            v-hasPermi="['system:event:remove']"
-          >删除</el-button>
-        </el-col>
-        <el-col :span="1.5">
-          <el-button
-            type="warning"
-            plain
-            icon="el-icon-download"
-            size="mini"
-            @click="handleExport"
-            v-hasPermi="['system:event:export']"
-          >导出</el-button>
-        </el-col> -->
+       
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
   
@@ -178,34 +149,7 @@
           {{ operateFlagFormat(scope.row) }}
           </template>
         </el-table-column>
-        <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-edit"
-              @click="handleUpdate(scope.row)"
-              v-hasPermi="['system:event:edit']"
-            >修改</el-button>
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-delete"
-              @click="handleDelete(scope.row)"
-              v-hasPermi="['system:event:remove']"
-            >删除</el-button>
-          </template>
-        </el-table-column> --> 
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-info"
-              @click="handleView(scope.row)"
-            >查看消息</el-button>     
-          </template>
-        </el-table-column>
+        
       </el-table>
       
       <pagination
@@ -218,7 +162,7 @@
   
       <!-- 会员基本信息嵌入 -->
      <el-row>
-		  <member-info-card :value="101"></member-info-card>
+		  <member-info-card :value="memberId"></member-info-card>
 		 </el-row>	
 
      <!-- 设备基本信息嵌入位置 -->
@@ -227,17 +171,23 @@
 		  </el-row>	  
 
       <!-- 添加或修改事件对话框 -->
-      <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-        <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-          <el-form-item label="紧急联系电话" prop="no">
-            <el-input v-model="form.no" placeholder="请输入事件编号" />
-          </el-form-item>
+      <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
+        <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+          <el-form-item label="紧急联系人电话" prop="phone">
+          <el-radio-group v-model="form.phone" size="medium">
+            <el-radio v-for="(item, index) in phoneOptions" :key="index" :label="item.value"
+              :disabled="item.disabled" border>{{item.label}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
           <el-form-item label="快捷回复" prop="level">
-            <el-input v-model="form.level" placeholder="请输入级别" />
+            <el-input v-model="form.level" placeholder="" />
           </el-form-item>
-          <el-form-item label="服务备注">
+          <el-form-item label="服务备注" prop="content">
+            <el-input v-model="form.phone" placeholder="" />
+          </el-form-item>
+          <!-- <el-form-item label="服务备注"  prop="phone">
             <editor v-model="form.content" :min-height="192"/>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="submitForm">提 交</el-button>
@@ -250,14 +200,16 @@
   <script>
   //import { listEvent, getEvent, delEvent, addEvent, updateEvent ,orgTreeSelect } from "@/api/eventAndMessage/event";
   import { listEvent, getEvent, delEvent, addEvent, updateEvent  } from "@/api/eventAndMessage/event";
-
+  import {getMember} from "@/api/member/member";
+  //服务登记
+  import {addRecord} from "@/api/member/servedOprLog";
   // import Treeselect from "@riophae/vue-treeselect";
   // import "@riophae/vue-treeselect/dist/vue-treeselect.css";
   import MemberInfoCard from "@/views/member/components/MemberInfoCard";
   import DeviceInfoCard from "@/views/device/components/DeviceInfoCard";
 
   export default {
-    name: "Event",
+    name: "HandleEvents",
     dicts: ['sys_operate_flag'],
     // components: { Treeselect },
     components: { MemberInfoCard ,DeviceInfoCard},
@@ -288,6 +240,19 @@
         // 是否显示弹出层
         open: false,
         // 查询参数
+
+         phoneOptions:[]  ,
+      // {
+      //   "label": "13770000001",
+      //   "value": 13770000001
+      // }, {
+      //   "label": "13774522537",
+      //   "value": 13774522537
+      // }, {
+      //   "label": "13770000002",
+      //   "value": 13770000002
+      // }],
+
         queryParams: {
           pageNum: 1,
           pageSize: 10,
@@ -316,17 +281,9 @@
         }
       };
     },
-  //   watch: {
-  //   // 根据名称筛选机构树
-  //   orgName(val) {
-  //     this.$refs.tree.filter(val);
-  //   },
-  //   'form.name':{
-  //     handler:function (val) {
-  //       this.form.nickName = val;
-  //     }
-  //   }
-  // },
+    watch: {
+ 
+  },
     created() {
       this.getList();
       // this.getDeptTree();
@@ -342,27 +299,14 @@
           this.loading = false;
         });
       },
-      /** 查询用户列表 */
-    // getList() {
-    //   this.loading = true;
-    //   pageUser(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
-    //       this.userList = response.rows;
-    //       this.total = response.total;
-    //       this.loading = false;
-    //     }
-    //   );
-    // },
-         /** 查询机构下拉树结构 */
-    //   getDeptTree() {
-    //     orgTreeSelect().then(response => {
-    //     this.orgOptions = response.data;
-    //   });
-    // },
-    // // 筛选节点
-    // filterNode(value, data) {
-    //   if (!value) return true;
-    //   return data.label.indexOf(value) !== -1;
-    // },
+      initMember() {
+      if (this.value != undefined)
+        getMember(this.value).then(response => {
+          this.member = response.data;
+        })
+    },
+
+     
 
     // 处理标志字典翻译
       operateFlagFormat(row, column) {
@@ -436,21 +380,27 @@
       /** 提交按钮 */
       submitForm() {
         this.$refs["form"].validate(valid => {
-          if (valid) {
-            if (this.form.eventId != null) {
-              updateEvent(this.form).then(response => {
-                this.$modal.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
-              });
-            } else {
-              addEvent(this.form).then(response => {
+          // if (valid) {
+          //   if (this.form.eventId != null) {
+          //     updateEvent(this.form).then(response => {
+          //       this.$modal.msgSuccess("修改成功");
+          //       this.open = false;
+          //       this.getList();
+          //     });
+          //   } else {
+          //     addEvent(this.form).then(response => {
+          //       this.$modal.msgSuccess("新增成功");
+          //       this.open = false;
+          //       this.getList();
+          //     });
+              
+          //   }
+          // }
+          addRecord(this.form).then(response => {
                 this.$modal.msgSuccess("新增成功");
                 this.open = false;
                 this.getList();
-              });
-            }
-          }
+          });
         });
       },
       /** 删除按钮操作 */

@@ -1,7 +1,7 @@
 /*
  * @Author: zhanch
  * @Date: 2022-12-13 14:37:03
- * @LastEditors: zhanch
+ * @LastEditors: Please set LastEditors
  * @FilePath: /http/api.js
  * @Description: 请求接口
  */
@@ -25,6 +25,11 @@ export const GetCaptchaImage = (params) => http.get('/api/captchaImage', params)
  *登录 *
  */
 export const PostLoginByPwd = (params) => http.post('/api/loginByPwd', params)
+
+/* 
+ *注销*
+ */
+export const PostLoginOut = (params) => http.post('/api/loginOut', params)
 
 /* 
  *查看消息列表 *
