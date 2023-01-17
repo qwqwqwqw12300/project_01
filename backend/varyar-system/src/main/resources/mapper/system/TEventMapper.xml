@@ -9,6 +9,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="no"    column="no"    />
         <result property="level"    column="level"    />
         <result property="content"    column="content"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="devicegroupId"    column="devicegroup_id"    />
+        <result property="familyId"    column="family_id"    />
+        <result property="deviceNo"    column="device_no"    />
+        <result property="orgId"    column="org_id"    />
+        <result property="orgName"    column="org_name"    />
         <result property="operateType"    column="operate_type"    />
         <result property="memberId"    column="member_id"    />
         <result property="memberPhone"    column="member_phone"    />
@@ -32,7 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTEventVo">
-        select event_id, no, level, content, operate_type, member_id, member_phone, member_name, user_id, user_name, operate_time, operate_flag, create_time, update_time from t_event
+        select event_id, no, level, content, device_id, devicegroup_id, family_id, device_no, org_id, org_name, operate_type, member_id, member_phone, member_name, user_id, user_name, operate_time, operate_flag, create_time, update_time from t_event
     </sql>
 
     <select id="selectTEventList" parameterType="TEvent" resultMap="TEventResult">
@@ -41,6 +47,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="no != null  and no != ''"> and no = #{no}</if>
             <if test="level != null  and level != ''"> and level = #{level}</if>
             <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="deviceId != null "> and device_id = #{deviceId}</if>
+            <if test="devicegroupId != null "> and devicegroup_id = #{devicegroupId}</if>
+            <if test="familyId != null "> and family_id = #{familyId}</if>
+            <if test="deviceNo != null  and deviceNo != ''"> and device_no = #{deviceNo}</if>
+            <if test="orgId != null "> and org_id = #{orgId}</if>
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
             <if test="operateType != null  and operateType != ''"> and operate_type = #{operateType}</if>
             <if test="memberId != null "> and member_id = #{memberId}</if>
             <if test="memberPhone != null  and memberPhone != ''"> and member_phone = #{memberPhone}</if>
@@ -63,6 +75,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="no != null">no,</if>
             <if test="level != null">level,</if>
             <if test="content != null">content,</if>
+            <if test="deviceId != null">device_id,</if>
+            <if test="devicegroupId != null">devicegroup_id,</if>
+            <if test="familyId != null">family_id,</if>
+            <if test="deviceNo != null">device_no,</if>
+            <if test="orgId != null">org_id,</if>
+            <if test="orgName != null">org_name,</if>
             <if test="operateType != null">operate_type,</if>
             <if test="memberId != null">member_id,</if>
             <if test="memberPhone != null">member_phone,</if>
@@ -78,6 +96,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="no != null">#{no},</if>
             <if test="level != null">#{level},</if>
             <if test="content != null">#{content},</if>
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="devicegroupId != null">#{devicegroupId},</if>
+            <if test="familyId != null">#{familyId},</if>
+            <if test="deviceNo != null">#{deviceNo},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="orgName != null">#{orgName},</if>
             <if test="operateType != null">#{operateType},</if>
             <if test="memberId != null">#{memberId},</if>
             <if test="memberPhone != null">#{memberPhone},</if>
@@ -97,6 +121,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="no != null">no = #{no},</if>
             <if test="level != null">level = #{level},</if>
             <if test="content != null">content = #{content},</if>
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="devicegroupId != null">devicegroup_id = #{devicegroupId},</if>
+            <if test="familyId != null">family_id = #{familyId},</if>
+            <if test="deviceNo != null">device_no = #{deviceNo},</if>
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="orgName != null">org_name = #{orgName},</if>
             <if test="operateType != null">operate_type = #{operateType},</if>
             <if test="memberId != null">member_id = #{memberId},</if>
             <if test="memberPhone != null">member_phone = #{memberPhone},</if>
@@ -153,5 +183,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         ORDER BY eve.create_time DESC
     </select>
+
+    <update id="dealNotMemberEvents">
+        update t_event set operate_type = '1',operate_flag = '1',operate_time = sysdate(),update_time = sysdate()
+        where
+        event_id in
+        <foreach item="eventId" collection="eventIds" open="(" separator="," close=")">
+            #{eventId}
+        </foreach>
+        and member_id is null;
+    </update>
 
 </mapper>

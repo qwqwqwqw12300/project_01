@@ -75,6 +75,14 @@ public interface IMemberService
     public int arrangeUserToMember(Long memberId,Long userId);
 
     /**
+     * 分配运营给会员
+     * @param memberIds
+     * @param userId
+     * @return
+     */
+    public int arrangeMembers(Long[] memberIds,Long userId);
+
+    /**
      * 会员总数
      * @return
      * @param member

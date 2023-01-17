@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TMemberMapper;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IMemberService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 会员Service业务层处理
@@ -117,25 +119,44 @@ public class MemberServiceImpl implements IMemberService
         if(member == null){
             throw new ServiceException("会员不存在");
         }
-        SysUser user = sysUserMapper.selectUserById(userId);
-        if(user == null){
-            throw new ServiceException("运营不存在");
-        }
+        if(userId!=null){
+            SysUser user = sysUserMapper.selectUserById(userId);
+            if(user == null){
+                throw new ServiceException("运营不存在");
+            }
 
-        member.setUserId(user.getUserId());
-        member.setUserName(user.getUserName());
+            member.setDistributeFlag("1");
+            member.setUserId(user.getUserId());
+            member.setUserName(user.getUserName());
+        }else{
+
+            member.setDistributeFlag("0");
+            member.setUserId(null);
+            member.setUserName(null);
+        }
         member.autoSetUpdateByLoginUser();
         return this.updateMember(member);
     }
 
     @Override
-    @DataScope(orgAlias = "u")
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
+    public int arrangeMembers(Long[] memberIds, Long userId) {
+        int sum = 0;
+        if(memberIds!=null){
+            for(long memberId:memberIds){
+                arrangeUserToMember(memberId,userId);
+                sum++;
+            }
+        }
+        return sum;
+    }
+
+    @Override
     public long total(TMember member) {
         return memberMapper.total(member);
     }
 
     @Override
-    @DataScope(orgAlias = "u")
     public long notArrangeMemberCount(TMember member) {
         return memberMapper.notArrangeMemberCount(member);
     }

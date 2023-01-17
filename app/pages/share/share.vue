@@ -4,223 +4,233 @@
 			<view class="ui-user">
 				<text>已分享给</text>
 				<view>
-					<view class="ui-user-item">
-						<u--text prefixIcon="account-fill" :iconStyle="{ color: '#fff', fontSize: '36rpx' }" color="#fff" text="用户1"></u--text>
-						<u-icon class="active" name="close-circle" color="#fff600" size="36rpx"></u-icon>
-					</view>
-					<view class="ui-user-item">
-						<u--text prefixIcon="account-fill" :iconStyle="{ color: '#fff', fontSize: '36rpx' }" color="#fff" text="用户1"></u--text>
-						<u-icon class="active" name="close-circle" color="#fff600" size="36rpx"></u-icon>
+					<view class="ui-user-item" v-for="(item, idx) of shareList" :key="idx">
+						<u--text prefixIcon="account-fill" :iconStyle="{ color: '#fff', fontSize: '36rpx' }"
+							color="#fff" :text="item.userName || '未注册用户'"></u--text>
+						<u-icon @click="remShare(item)" class="active" name="close-circle" color="#fff600" size="36rpx">
+						</u-icon>
 					</view>
 				</view>
 			</view>
 			<view class="ui-form">
 				<view class="ui-form-item">
-					<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="分享人手机号码" color="#444" size="28rpx"></u-text>
+					<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="分享人手机号码" color="#444" size="28rpx">
+					</u-text>
 					<view class="ui-input">
-						<u-input length="11" type="number" v-model="shareForm.phone" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u-input>
+						<u-input length="11" type="number" v-model="shareForm.phone" placeholder="请输入手机号码"
+							:border="'none'" fontSize="28rpx" clearable></u-input>
 					</view>
 				</view>
-				<view class="ui-form-item"><graphic-input ref="graphicRef"></graphic-input></view>
-				<view class="ui-form-item"><sms-input ref="sms" :payload="smsPayload" @checked="checkedBySms" /></view>
+				<view class="ui-form-item">
+					<graphic-input ref="graphicRef"></graphic-input>
+				</view>
+				<view class="ui-form-item">
+					<sms-input ref="sms" :payload="smsPayload" @checked="checkedBySms" />
+				</view>
 				<view class="wd-btn-gloup"><button @click="submit">提交</button></view>
 			</view>
 		</view>
 		<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
-			<view class="ui-code"><canvas id="qrcode" canvas-id="qrcode" :style="{ width: `${size}px`, height: `${size}px` }"></canvas></view>
+			<view class="ui-code"><canvas id="qrcode" canvas-id="qrcode"
+					:style="{ width: `${size}px`, height: `${size}px` }"></canvas></view>
 		</u-popup>
 	</app-body>
 </template>
 
 <script>
-import UQRCode from '@/uni_modules/Sansnn-uQRCode/js_sdk/uqrcode/uqrcode.js';
-import { PostRemShareFamily, PostShareFamily, PostSharelist } from '../../common/http/api';
-export default {
-	data() {
-		return {
-			show: false,
-			text: 'uQRCode',
-			size: 200,
-			/**已分享家庭列表**/
-			shareList: [],
-			/**分享请求参数**/
-			shareForm: {
-				phone: '',
-				code: '',
-				familyId: '',
-				smsUuid: ''
-			}
-		}
-	},
-	onLoad: function(option) {
-		this.shareForm.familyId = option.familyId || 106;
-		this.getShareList();
-	},
-	methods: {
-		async submit() {
-			if(this.shareForm.smsUuid) {
-				 const res = await this.shareFamilys();
-				 this.show = true;
-				 /* 获取uQRCode实例 */
-				 this.$nextTick(() => {
-					const qr = new UQRCode();
-					/* 设置二维码内容 */
-					qr.data = this.text;
-					/* 设置二维码大小，必须与canvas设置的宽高一致 */
-					qr.size = this.size;
-					/* 设置二维码前景图 */
-					qr.foregroundImageSrc = '/static/images/tb.png';
-					qr.foregroundImagePadding = 4;
-					qr.foregroundImageBorderRadius = 4;
-					qr.foregroundImageShadowOffsetX = 0;
-					qr.foregroundImageShadowOffsetY = 0;
-					/* 调用制作二维码方法 */
-					qr.make();
-					const canvasContext = uni.createCanvasContext('qrcode');
-					/* 设置uQRCode实例的canvas上下文 */
-					qr.canvasContext = canvasContext;
-					/* 调用绘制方法将二维码图案绘制到canvas上 */
-					qr.drawCanvas();
-				 });
-			} else {
-				uni.showToast({
-					icon: 'none',
-					title: '请先填写页面信息'
-				})
-			}
-			
-		},
-
-		close() {
-			this.show = false;
-		},
-		/**
-		 * 获取分享列表
-		 */
-		getShareList() {
-			PostSharelist({ familyId: this.shareForm.familyId }).then(res => {
-				this.shareList = res.rows;
-			});
-		},
-
-		/**
-		 * 删除家庭
-		 */
-		remShare(idx) {
-			PostRemShareFamily({
-				familyId: this.shareForm.familyId
-			}).then(res => {
-				uni.showToast({
-					icon: 'none',
-					title: '删除成功'
-				});
-				this.getShareList();
-			});
-		},
-
-		/**
-		 * 创建家庭
-		 */
-		shareFamilys() {
-			return new Promise(resolve => {
-				PostShareFamily({
-					...this.shareForm
-				}).then(res => {
-					resolve(res);
-				});
-			});
-		},
-
-		/**
-		 * 获取短信请求参数
-		 */
-		smsPayload() {
-			const { code, uuid } = this.$refs.graphicRef.returnCodeData();
+	import UQRCode from '@/uni_modules/Sansnn-uQRCode/js_sdk/uqrcode/uqrcode.js';
+	import {
+		PostRemShareFamily,
+		PostShareFamily,
+		PostSharelist
+	} from '../../common/http/api';
+	export default {
+		data() {
 			return {
-				uuid,
-				captcha: code,
-				phone: this.shareForm.phone
-			};
+				show: false,
+				text: 'uQRCode',
+				size: 200,
+				/**已分享家庭列表**/
+				shareList: [],
+				/**分享请求参数**/
+				shareForm: {
+					phone: '',
+					code: '',
+					familyId: '',
+					smsUuid: '',
+					familyPhone: ''
+				}
+			}
 		},
-
-		/**
-		 * 短信认证通过
-		 */
-		checkedBySms(smsInfo) {
-			console.log(smsInfo, 'graphicRef');
+		onLoad: function({
+			familyId,
+			phone
+		}) {
 			Object.assign(this.shareForm, {
-				code: smsInfo.code,
-				smsUuid: smsInfo.uuid
+				familyId,
+				familyPhone: phone
 			});
+			this.getShareList();
+		},
+		methods: {
+			async submit() {
+				if (this.shareForm.smsUuid) {
+					const res = await this.shareFamilys();
+					this.getShareList();
+					uni.showToast({
+						icon: 'none',
+						title: '分享成功'
+					});
+
+				} else {
+					uni.showToast({
+						icon: 'none',
+						title: '请先填写页面信息'
+					})
+				}
+
+			},
+
+			close() {
+				this.show = false;
+			},
+			/**
+			 * 获取分享列表
+			 */
+			getShareList() {
+				PostSharelist({
+					familyId: this.shareForm.familyId
+				}).then(res => {
+					this.shareList = res.data;
+				});
+			},
+
+			/**
+			 * 删除家庭
+			 */
+			remShare(info) {
+				const {
+					familyId,
+					memberId
+				} = info;
+				PostRemShareFamily({
+					shareFamilyId: familyId,
+					shareMemberId: memberId
+				}).then(res => {
+					uni.showToast({
+						icon: 'none',
+						title: '删除成功'
+					});
+					this.getShareList();
+				});
+			},
+
+			/**
+			 * 创建家庭
+			 */
+			shareFamilys() {
+				return new Promise(resolve => {
+					PostShareFamily({
+						...this.shareForm
+					}).then(res => {
+						resolve(res);
+					});
+				});
+			},
+
+			/**
+			 * 获取短信请求参数
+			 */
+			smsPayload() {
+				const {
+					code,
+					uuid
+				} = this.$refs.graphicRef.returnCodeData();
+				return {
+					uuid,
+					captcha: code,
+					phone: this.shareForm.familyPhone
+				};
+			},
+
+			/**
+			 * 短信认证通过
+			 */
+			checkedBySms(smsInfo) {
+				console.log(smsInfo, 'graphicRef');
+				Object.assign(this.shareForm, {
+					code: smsInfo.code,
+					smsUuid: smsInfo.uuid
+				});
+			}
 		}
-	}
-};
+	};
 </script>
 r
 <style lang="scss">
-#share {
-	text-align: center;
-}
-
-.ui-code {
-	height: 600rpx;
-	width: 500rpx;
-	padding: 50rpx;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.ui-user {
-	margin-top: 90rpx;
-	box-sizing: border-box;
-	padding: 25rpx 47rpx;
-	display: inline-block;
-	width: 684rpx;
-	min-height: 200rpx;
-	border-radius: 40rpx;
-	background-color: rgba(0, 0, 0, 0.4);
-	color: #fff;
-	text-align: left;
-	font-size: 30rpx;
-
-	.ui-user-item {
-		margin: 10rpx 20rpx 0 0;
-		display: inline-flex;
-		align-items: center;
-
-		& > *:nth-child(2) {
-			margin-left: 10rpx;
-			margin-top: 10rpx;
-		}
-	}
-}
-
-.ui-form {
-	margin-top: 156rpx;
-	padding: 0 80rpx;
-	padding-bottom: 120rpx;
-
-	.ui-input {
-		margin: 34rpx 0 60rpx 0;
-		border-bottom: 1px solid #e2e2e2;
+	#share {
+		text-align: center;
 	}
 
-	.ui-bot {
+	.ui-code {
+		height: 600rpx;
+		width: 500rpx;
+		padding: 50rpx;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		font-size: 26rpx;
-		color: #484848;
+		justify-content: center;
 	}
 
-	.ui-mini {
-		width: 160rpx;
-		// height: 60rpx;
+	.ui-user {
+		margin-top: 90rpx;
+		box-sizing: border-box;
+		padding: 25rpx 47rpx;
+		display: inline-block;
+		width: 684rpx;
+		min-height: 200rpx;
+		border-radius: 40rpx;
+		background-color: rgba(0, 0, 0, 0.4);
+		color: #fff;
+		text-align: left;
+		font-size: 30rpx;
+
+		.ui-user-item {
+			margin: 10rpx 20rpx 0 0;
+			display: inline-flex;
+			align-items: center;
+
+			&>*:nth-child(2) {
+				margin-left: 10rpx;
+				margin-top: 10rpx;
+			}
+		}
 	}
 
-	.wd-btn-gloup {
-		margin: 120rpx 0;
+	.ui-form {
+		margin-top: 156rpx;
+		padding: 0 80rpx;
+		padding-bottom: 120rpx;
+
+		.ui-input {
+			margin: 34rpx 0 60rpx 0;
+			border-bottom: 1px solid #e2e2e2;
+		}
+
+		.ui-bot {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			font-size: 26rpx;
+			color: #484848;
+		}
+
+		.ui-mini {
+			width: 160rpx;
+			// height: 60rpx;
+		}
+
+		.wd-btn-gloup {
+			margin: 120rpx 0;
+		}
 	}
-}
 </style>

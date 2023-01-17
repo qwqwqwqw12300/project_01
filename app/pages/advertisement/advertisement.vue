@@ -10,7 +10,7 @@
 			<image src="../../static/images/ad-text.png"></image>
 		</view>
 		<view class="ui-btn" :animation="animationData">
-			<button @click="goMain">马上体验</button>
+			<button @click="goRegister">马上体验</button>
 			<text @click="goLogin">老朋友? &nbsp;点此登录</text>
 		</view>
 
@@ -25,12 +25,20 @@
 			};
 		},
 		mounted() {
-			const animation = uni.createAnimation({
-				duration: 3000,
-				timingFunction: 'ease'
+			this.getUserInfo().then(res => {
+				if (!res) {
+					const animation = uni.createAnimation({
+						duration: 3000,
+						timingFunction: 'ease'
+					});
+					animation.opacity(10).step();
+					this.animationData = animation.export();
+				} else {
+					this.goMain();
+				}
+
 			});
-			animation.opacity(10).step();
-			this.animationData = animation.export();
+
 		},
 		methods: {
 			/**
@@ -41,7 +49,14 @@
 					url: '/pages/index/index'
 				});
 			},
-
+			/**
+			 * 跳转注册
+			 */
+			goRegister() {
+				uni.navigateTo({
+					url: '/pages/login/register'
+				});
+			},
 			/**
 			 * 跳转登录
 			 */
@@ -54,8 +69,20 @@
 				uni.navigateTo({
 					url: '/pages/guide/guide'
 				});
+			},
+
+			/**
+			 * 获取用户信息
+			 */
+			getUserInfo() {
+				return new Promise(resolve => {
+					this.$store.dispatch('getPushMsgState').then(res => {
+						resolve(res);
+					});
+				});
 			}
-		}
+		},
+
 	};
 </script>
 

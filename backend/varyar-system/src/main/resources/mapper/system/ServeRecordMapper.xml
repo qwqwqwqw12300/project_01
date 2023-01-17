@@ -121,6 +121,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="device!=null and device.type !=null"> and d.type = #{device.type}</if>
             <if test="device!=null and device.no !=null"> and d.no like concat(#{device.no}, '%')</if>
             <if test="device!=null and device.name !=null"> and d.name like concat('%', #{device.name}, '%')</if>
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
         </where>
     </select>
     

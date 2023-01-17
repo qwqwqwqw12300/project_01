@@ -25,7 +25,7 @@ public interface SysNoticeMapper
      * @return 公告集合
      */
     public List<SysNotice> selectNoticeList(SysNotice notice);
-
+    public List<SysNotice> selectNoticeListByMemberId(Long noticeId);
     /**
      * 新增公告
      * 

@@ -14,7 +14,6 @@
 					<u-icon name="chat" @click="goPage('/pages/service/system-messages')" class="active" color="#fff"
 						size="50rpx"></u-icon>
 				</view>
-				<u-icon name="scan" class="active" @click="scan" color="#fff" size="50rpx"></u-icon>
 				<u-icon name="plus" @click="addDevice" :stop="true" class="active" color="#fff" size="45rpx"></u-icon>
 				<!-- 下拉框 -->
 				<view class="ui-select" v-if="isAddShow">
@@ -40,23 +39,26 @@
 							<text>共{{(familyItem.devices && familyItem.devices.length) || 0}}个设备</text>
 							<text>在线两个设备</text>
 						</view>
-						<u-text @click="goPage('/pages/share/share?familyId='+ familyItem.familyId)" prefixIcon="share-square" size="28rpx"
-							:align="'right'" :block="false" color="#fff" :iconStyle="{
+						<u-text
+							@click="goPage('/pages/share/share?familyId='+ familyItem.familyId + 'phone=' + familyItem.phone)"
+							prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff"
+							:iconStyle="{
 							fontSize: '44rpx',
 							color: '#fff'
 						}" text="分享"></u-text>
 					</view>
 					<view class="ui-device">
-						<view class="ui-list" v-for="device of filterDevice({familyId: familyItem.familyId})"
-							:key="device.deviceId">
+						<view class="ui-list" v-for="device of familyItem.devices" :key="device.deviceId">
 							<view class="ui-list-box active" @click="goDeciveDetails(device)">
 								<image src="../../static/images/device.png"></image>
 								<text>{{device.name || '未命名设备'}}</text>
 								<text>{{device.location || '--'}}</text>
 								<view class="ui-list-static">
-									<u-icon :name="device.onlineFlag === '1' ? 'wifi' : 'wifi-off'" :color="device.onlineFlag === '1' ? '#0dab1c' : '#ff4800'" size="28"></u-icon>
+									<u-icon :name="device.onlineFlag === '1' ? 'wifi' : 'wifi-off'"
+										:color="device.onlineFlag === '1' ? '#0dab1c' : '#ff4800'" size="28"></u-icon>
 								</view>
-								<u-badge :offset="[-9, 0]" :value="9" absolute></u-badge>
+								<u-badge v-if="device.msgNum" :offset="[-9, 0]" :value="device.msgNum" absolute>
+								</u-badge>
 							</view>
 						</view>
 					</view>
@@ -73,8 +75,6 @@
 			<!-- /空户 -->
 			<add-step ref="addStepRef"></add-step>
 		</app-body>
-
-
 	</view>
 
 
@@ -133,14 +133,6 @@
 				uni.navigateTo({
 					url
 				});
-			},
-
-			scan() {
-				uni.scanCode({
-					success: res => {
-						console.log(res, '扫码结果');
-					}
-				})
 			},
 			/**
 			 * 跳转设备详情

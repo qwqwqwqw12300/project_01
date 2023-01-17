@@ -149,7 +149,8 @@
 					code,
 					uuid
 				}).then(res => {
-					setToken(res.token)
+					setToken(res.token);
+					this.$store.dispatch('getPushMsgState');
 					uni.switchTab({
 						url: '/pages/index/index'
 					});
@@ -198,6 +199,7 @@
 						...this.smsLoginForm
 					}).then(res => {
 						setToken(res.token);
+						this.$store.dispatch('getPushMsgState');
 						uni.switchTab({
 							url: '/pages/index/index'
 						});

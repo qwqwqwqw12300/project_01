@@ -8,7 +8,7 @@
 <template>
 	<app-body :hideTitle="true">
 		<view class="ui-user">
-			<text>13222222222</text>
+			<text>{{ userInfo.phone || '暂无手机号' }}</text>
 			<u-icon @click="editMobile" name="edit-pen" color="#fff" size="50rpx"></u-icon>
 			<button @click="loginOut">注销</button>
 		</view>
@@ -84,6 +84,12 @@
 				]
 			};
 		},
+		computed: {
+			userInfo() {
+				console.log(this.$store.getters.userInfo, '00')
+				return this.$store.getters.userInfo
+			}
+		},
 		methods: {
 			/**
 			 * 菜单点击
@@ -127,6 +133,9 @@
 					}
 				});
 			}
+		},
+		onShow() {
+			console.log(this.$store.getters.userInfo, '00')
 		}
 	};
 </script>
