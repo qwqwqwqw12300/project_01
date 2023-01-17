@@ -44,7 +44,8 @@ export const PostSetMsgInfo = (params) => http.post('/api/message/setMsgInfo', p
 /* 
  *获取推送开关信息*
  */
-export const PostGetPushMsgState = (params) => http.get('/api/message/getPushMsgState', params)
+export const PostGetPushMsgState = (...params) => http.get.apply(this, ['/api/memberInfo/getMemInfo', ...params]);
+
 
 /* 
  *推送开关*
@@ -204,22 +205,20 @@ export const PostSetSosDevicePhone = (params) => http.post('/api/device/setSOSDe
 /**
  * 获取设备定位
  */
-export const PostListState= (params) => http.post('/api/device/listState', params)
+export const PostListState = (params) => http.post('/api/device/listState', params)
 
 /**
  * 获取分享家庭列表
  */
 
-export const PostSharelist= (params) => http.post('/api/family/sharelist', params)
+export const PostSharelist = (params) => http.post('/api/family/sharelist', params)
 
 /**
  * 创建分享家庭
  */
-export const PostShareFamily= (params) => http.post('/api/family/shareFamily', params)
+export const PostShareFamily = (params) => http.post('/api/family/shareFamily', params)
 
 /**
  * 删除分享家庭
  */
-export const PostRemShareFamily= (params) => http.post('/api/family/remShareFamily', params)
-
-
+export const PostRemShareFamily = (params) => http.post('/api/family/remShareFamily', params)

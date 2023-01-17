@@ -4,7 +4,8 @@ import sdk from './sdk/sdk.js';
 import {
 	getFamilyList,
 	getDeviceList,
-	getRoomList
+	getRoomList,
+	PostGetPushMsgState
 } from '@/common/http/api.js';
 
 Vue.use(Vuex);
@@ -21,8 +22,8 @@ const store = {
 		roomList: [],
 		/**设备信息**/
 		deviceInfo: {},
-		/**紧急联系人列表**/
-		sosMobileBook: [],
+		/**用户信息**/
+		userInfo: {}
 	},
 	mutations: {
 		/**
@@ -72,6 +73,12 @@ const store = {
 		 */
 		setSosMobileBook(state, list) {
 			state.sosMobileBook = list;
+		},
+		/**
+		 * 设置用户信息
+		 */
+		setUserInfo(state, info) {
+			state.userInfo = info;
 		}
 
 
@@ -120,19 +127,23 @@ const store = {
 			})
 		},
 
-		/**
-		 * 查询紧急联系人列表
-		 */
-		getAllRoom(ctx) {
+		/**查询用户信息**/
+		getPushMsgState(ctx) {
 			return new Promise(resolve => {
-				getRoomList().then(({
-					rows = []
-				}) => {
-					ctx.commit('setRoomList', rows);
-					resolve(rows);
+				PostGetPushMsgState({}, {
+					showLoading: false,
+					error: false
+				}).then(res => {
+					console.log(res, 'res');
+					ctx.commit('setRoomList', res.data);
+					resolve(true);
+				}, err => {
+					ctx.commit('setRoomList', {});
+					resolve(false)
 				});
-			})
-		},
+			});
+
+		}
 	},
 	getters: {
 		/**
