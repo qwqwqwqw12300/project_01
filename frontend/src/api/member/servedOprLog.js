@@ -19,14 +19,14 @@ export function listRecord(query) {
 //   })
 // }
 
-// // 新增服务记录
-// export function addRecord(data) {
-//   return request({
-//     url: '/system/record',
-//     method: 'post',
-//     data: data
-//   })
-// }
+// 新增服务记录
+export function addRecord(data) {
+  return request({
+    url: '/device/serve/record',
+    method: 'post',
+    data: data
+  })
+}
 
 // // 修改服务记录
 // export function updateRecord(data) {
