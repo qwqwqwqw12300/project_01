@@ -44,7 +44,7 @@ export const PostSetMsgInfo = (params) => http.post('/api/message/setMsgInfo', p
 /* 
  *获取推送开关信息*
  */
-export const PostGetPushMsgState = (params) => http.get('/api/message/getPushMsgState', params)
+export const PostGetPushMsgState = (params) => http.get('/api/memberInfo/getMemInfo', params)
 
 /* 
  *推送开关*
