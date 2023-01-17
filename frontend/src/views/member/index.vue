@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
-      
+
       <el-form-item label="会员手机号" prop="phone">
         <el-input
           v-model="queryParams.phone"
@@ -10,9 +10,9 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="服务人员手机号" prop="userPhone">
+      <el-form-item label="服务人员手机号" prop="params.userMobilePhone">
         <el-input
-          v-model="queryParams.userPhone"
+          v-model="queryParams.params.userMobilePhone"
           placeholder="请输入服务人员手机号"
           clearable
           @keyup.enter.native="handleQuery"
@@ -42,7 +42,7 @@
     </el-form>
     <el-row :gutter="20"></el-row>
  <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-     
+
 
     <el-table v-loading="loading" :data="memberList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
@@ -66,12 +66,18 @@
               icon="el-icon-info"
               @click="handleView(scope.row)"
               v-hasPermi="['member:query']"
-            >查看</el-button> 
-          
+            >查看</el-button>
+          <!-- <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['system:member:remove']"
+          >删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -80,13 +86,13 @@
       @pagination="getList"
     />
 
-    
+
     <form-panel :title="title" :visible.sync="open" width="600px" append-to-body >
       <h4 class="form-header h4">会员基本信息</h4>
 		<el-row>
 		  <member-info-card :value="form.memberId"></member-info-card>
-		</el-row>	  
-    
+		</el-row>
+
 
 
     <!-- 先用表格代替卡片组 -->
@@ -102,7 +108,7 @@
           {{ shareFlagFormat(scope.row) }}
         </template>
       </el-table-column>
-      
+
     </el-table>
     <pagination
       v-show="familyTotal>0"
@@ -163,8 +169,10 @@ export default {
         pageNum: 1,
         pageSize: 10,
         phone: null,
-        userPhone: null,
         distributeFlag: null,
+        params:{
+          userMobilePhone:null
+        }
       },
       // 表单参数
       form: {
@@ -249,7 +257,7 @@ export default {
       };
       this.resetForm("form");
     },
-    
+
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;

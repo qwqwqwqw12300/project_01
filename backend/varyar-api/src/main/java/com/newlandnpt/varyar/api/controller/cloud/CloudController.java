@@ -47,7 +47,7 @@ public class CloudController {
     	SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic, MessageBuilder.withPayload(deviceConfig).build());
     	//System.out.println(JSON.toJSONString(result));
         if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
-            log.error("MQ推送失败：{}", "摔倒事件");
+            log.error("MQ推送失败：{}", "参数下发事件");
         }
     }
 

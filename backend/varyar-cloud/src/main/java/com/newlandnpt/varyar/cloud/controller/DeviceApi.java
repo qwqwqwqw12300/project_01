@@ -39,7 +39,7 @@ public class DeviceApi {
     @Value("${rocketmq.topic.deviceConfig}")
     private String deviceConfigTopic;
     
-    /** 接收下发参数，可以复制到其他包 **/
+    /** 接收下发参数测试接口demo，可以复制到其他包 **/
     @GetMapping("/config")
     @ResponseBody
     public void config(@RequestBody DeviceConfig deviceConfig) {
@@ -47,7 +47,7 @@ public class DeviceApi {
     	SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic, MessageBuilder.withPayload(deviceConfig).build());
     	//System.out.println(JSON.toJSONString(result));
         if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
-            log.error("MQ推送失败：{}", "摔倒事件");
+            log.error("MQ推送失败：{}", "参数下发事件");
         }
     }
 
