@@ -164,7 +164,7 @@
 				PostDelFamily({
 					familyId
 				}).then(res => {
-					uni.$u.toast(res.msg)
+					uni.$u.toast(res.msg);
 					// this.handleBack()
 					setTimeout(() => {
 						this.getFamilyList()

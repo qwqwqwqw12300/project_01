@@ -13,46 +13,51 @@
 				<view class="ui-list">
 					<text>我的家庭:</text>
 					<view class="ui-select">
-						<uni-data-select v-model="eventInfo.familyId" :clear="false" :localdata="familyRange"></uni-data-select>
+						<uni-data-select v-model="eventInfo.familyId" :clear="false" :localdata="getFamilyList"></uni-data-select>
 						<!-- 	<view class="ui-icon"><u-icon name="arrow-down-fill" color="#414141" size="30rpx"></u-icon></view> -->
 					</view>
 				</view>
 				<view class="ui-list">
 					<text>开始时间:</text>
 					<view class="ui-date active" @click="openDate('start')">
-						<text>{{ eventInfo.startTime }}</text>
+						<text>{{ eventInfo.startDate }}</text>
 						<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
 					</view>
 				</view>
 				<view class="ui-list">
 					<text>结束时间:</text>
 					<view class="ui-date active" @click="openDate('end')">
-						<text>{{ eventInfo.endTime }}</text>
+						<text>{{ eventInfo.endDate }}</text>
 						<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
 					</view>
 				</view>
 				<view class="ui-list">
 					<text>设备类型:</text>
-					<view class="ui-select"><uni-data-select v-model="eventInfo.type" :clear="false" :localdata="typeRang"></uni-data-select></view>
+					<view class="ui-select"><uni-data-select v-model="eventInfo.deviceType" :clear="false" :localdata="typeRang"></uni-data-select></view>
 				</view>
 				<view class="ui-list">
 					<text>事件类型:</text>
-					<view class="ui-select"><uni-data-select v-model="eventInfo.level" :clear="false" :localdata="eventRang"></uni-data-select></view>
+					<view class="ui-select"><uni-data-select v-model="eventInfo.eventlevel" :clear="false" :localdata="eventRang"></uni-data-select></view>
 				</view>
 				<view class="ui-list">
 					<text>已读标识:</text>
-					<view class="ui-select"><uni-data-select v-model="eventInfo.operateFlag" :clear="false" :localdata="operateRang"></uni-data-select></view>
+					<view class="ui-select"><uni-data-select v-model="eventInfo.readFlag" :clear="false" :localdata="operateRang"></uni-data-select></view>
 				</view>
 			</view>
 			<!-- /筛选框 -->
-			<view class="ui-msg-list"><msg-list :needNav="false" srollHeight="calc(100vh - var(--window-bottom) - 730rpx - var(--status-bar-height))"></msg-list></view>
+			<view class="ui-msg-list">
+				<msg-list @onRefresh="onRefresh" :needNav="false" :list="messageList"
+					srollHeight="calc(100vh - var(--window-bottom) - 730rpx - var(--status-bar-height))"></msg-list>
+			</view>
 			<u-calendar @close="dateClose" :monthNum="13" :maxDate="dateHandle.max" :minDate="dateHandle.min" :show="dateHandle.show" @confirm="dateConfirm"></u-calendar>
 		</view>
 	</app-body>
 </template>
 
 <script>
-import { getEventList, getFamilyList, selectEventInfo } from '../../common/http/api';
+import { getEventList, getFamilgetMessage, getMessage, selectEventInfo } from '../../common/http/api';
+import { mapState } from 'vuex';
+import { rejects } from 'assert';
 const dateTime = new Date();
 export default {
 	data() {
@@ -60,7 +65,7 @@ export default {
 			familyRange: [
 				{
 					value: '',
-					text: '全部',
+					text: '全部'
 				}
 			],
 			typeRang: [
@@ -119,24 +124,47 @@ export default {
 				/**家庭id**/
 				familyId: '',
 				/**开始时间**/
-				startTime: '',
+				startDate: '',
 				/**结束时间**/
-				endTime: '',
-				/**事件类型**/
-				type: '',
+				endDate: '',
 				/**事件等级**/
-				level: '',
+				eventlevel: '',
 				/**是否已读**/
-				operateFlag: ''
-			}
+				readFlag: '',
+				/**设备类型**/
+				deviceType: ''
+			},
+			/**消息列表**/
+			messageList: []
 		};
+	},
+	computed: {
+		...mapState({
+			getFamilyList: state => {
+				const list = state.familyList;
+				return list.map(ele => ({
+					value: ele.familyId,
+					text: ele.name
+				}));
+			}
+		})
+	},
+	watch: {
+		eventInfo: {
+			handler: function(val) {
+				this.selectEventInfo();
+			},
+			deep: true
+		}
 	},
 	mounted() {
 		const date = new Date();
-		console.log(date.getDate(), 'date.getDay()');
-		this.eventInfo.endTime = uni.$u.timeFormat(date, 'yyyy-mm-dd');
-		this.eventInfo.startTime = uni.$u.timeFormat(date.setDate(date.getDate() - 3), 'yyyy-mm-dd');
-		// this.init();
+		Object.assign(this.eventInfo, {
+			endDate: uni.$u.timeFormat(date, 'yyyy-mm-dd'),
+			startDate: uni.$u.timeFormat(date.setDate(date.getDate() - 3), 'yyyy-mm-dd'),
+			familyId: this.getFamilyList[0].value
+		});
+		this.selectEventInfo();
 	},
 	methods: {
 		/**
@@ -145,9 +173,9 @@ export default {
 		dateConfirm(date) {
 			this.dateClose();
 			if (this.dateHandle.type === 'start') {
-				this.eventInfo.startTime = date[0];
+				this.eventInfo.startDate = date[0];
 			} else {
-				this.eventInfo.endTime = date[0];
+				this.eventInfo.endDate = date[0];
 			}
 		},
 
@@ -166,14 +194,29 @@ export default {
 		/**
 		 * 查询设备消息
 		 */
-		selectEventInfo() {},
-		/**
-		 * 初始化信息获取
-		 */
-		init() {
-			Promise.all([getEventList(), getFamilyList()]).then(res => {
-				console.log('res', res);
+		selectEventInfo() {
+			return new Promise(resolve => {
+				const {
+					startDate,
+					endDate
+				} = this.eventInfo;
+				getMessage({
+					...this.eventInfo,
+					startDate: new Date(startDate).getTime(),
+					endDate: new Date(endDate).getTime(),
+				}).then(res => {
+					this.messageList = res.rows || [];
+					resolve(this.messageList);
+				}, err => resolve());
 			});
+		},
+		/**
+		 * 上拉刷新
+		 * @param {Object} $e
+		 */
+		async onRefresh(cb) {
+			await this.selectEventInfo();
+			cb();
 		}
 	}
 };

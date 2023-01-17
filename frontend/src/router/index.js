@@ -112,19 +112,25 @@ export const constantRoutes = [
         path: 'deviceEvents',
         component: () => import('@/views/member/deviceEvents/index'),
         name: 'DeviceEvents',
-        meta: { title: '未处理消息', icon: 'user' }
+        meta: { title: '所有会员设备消息', icon: 'user' }
       },
       {
         path: 'memberArrange',
         component: () => import('@/views/member/arrange/index'),
         name: 'MemberArrange',
-        meta: { title: '待分配运营的会员', icon: 'user' }
+        meta: { title: '分配运营人员', icon: 'user' }
       },
       {
         path: 'unHandleEvents',
         component: () => import('@/views/member/memberAndDevice/unHandleEvents/index'),
         name: 'UnHandleEvents',
         meta: { title: '未处理的会员事件', icon: 'user' }
+      },
+      {
+        path: 'singleDeviceRB',
+        component: () => import('@/views/member/memberAndDevice/singleDeviceRB/index'),
+        name: 'SingleDeviceRB',
+        meta: { title: '会员单个设备总览(雷达波)', icon: 'user' }
       }
     ]
   }
