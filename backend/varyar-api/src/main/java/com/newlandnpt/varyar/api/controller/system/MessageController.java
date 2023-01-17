@@ -10,7 +10,6 @@ import com.newlandnpt.varyar.common.core.domain.model.MessagePushRequest;
 import com.newlandnpt.varyar.common.core.domain.model.MessageQueryRequest;
 import com.newlandnpt.varyar.common.core.domain.model.MessageRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
-import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.domain.TMsg;
 import com.newlandnpt.varyar.system.service.IMemberService;
@@ -54,17 +53,19 @@ public class MessageController extends BaseController {
     public TableDataInfo familyList(@RequestBody @Validated MessageQueryRequest messageRequest) {
         startPage();
         TMsg tMsg = new TMsg();
-        if(messageRequest.getDeviceId()!=null||!messageRequest.getDeviceId().equals("")){
+        if(messageRequest.getDeviceId()!=null&&!messageRequest.getDeviceId().equals("")){
             tMsg.setDeviceId(Long.valueOf(messageRequest.getDeviceId()));
         }
-        if(messageRequest.getFamilyId()!=null||!messageRequest.getFamilyId().equals("")){
+        if(messageRequest.getFamilyId()!=null&&!messageRequest.getFamilyId().equals("")){
             tMsg.setFamilyId(Long.valueOf(messageRequest.getFamilyId()));
         }
-        if(messageRequest.getDeviceType()!=null||!messageRequest.getDeviceType().equals("")){
+        if(messageRequest.getDeviceType()!=null&&!messageRequest.getDeviceType().equals("")){
             tMsg.setDeviceType(messageRequest.getDeviceType());
         }
         tMsg.setEventLevel(messageRequest.getEventlevel());
         tMsg.setOperateFlag(messageRequest.getReadFlag());
+        tMsg.setStartDate(messageRequest.getStartDate());
+        tMsg.setEndDate(messageRequest.getEndDate());
         List<TMsg> list = itMsgService.selectTMsgList(tMsg);
         return getDataTable(list);
     }
@@ -137,28 +138,7 @@ public class MessageController extends BaseController {
         }
         return ajax;
     }
-    /**
-     * 我的-消息设置	获取推送开关状态
-     */
-    @GetMapping("/getPushMsgState")
-    public AjaxResult  getPushMessageState(){
-        AjaxResult ajax = AjaxResult.success();
-        Long memberId = getLoginUser().getMemberId();
-        TMember member = new TMember();
-        try {
-            member = iMemberService.selectMemberByMemberId(memberId);
-        }  catch (Exception e){
-            throw new ServiceException(e.getMessage());
-        }
-        MemberInfo memberInfo = new MemberInfo();
-        memberInfo.setMemberId(member.getMemberId());
-        if(member.getParameter() == null || member.getParameter().getPushMessage()==null){
-            memberInfo.setState("0");
-            return AjaxResult.success(memberInfo);
-        }
-        memberInfo.setState(member.getParameter().getPushMessage());
-        return AjaxResult.success(memberInfo);
-    }
+
     /**
      * 设备消息未读数量
      */
