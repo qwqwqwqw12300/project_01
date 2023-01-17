@@ -110,10 +110,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="servedInfo != null  and servedInfo != ''"> and s.served_info = #{servedInfo}</if>
             <if test="deviceId != null "> and s.device_id = #{deviceId}</if>
             <if test="params.createTimeBegin != null">
-                and s.create_time <![CDATA[>=]]> #{params.createTimeBegin}
+                and date_format(s.create_time,'%y%m%d') <![CDATA[>=]]> date_format(#{params.createTimeBegin},'%y%m%d')
             </if>
             <if test="params.createTimeEnd != null">
-                and s.create_time <![CDATA[<=]]> ${params.createTimeEnd}
+                and date_format(s.create_time,'%y%m%d') <![CDATA[<=]]> date_format(#{params.createTimeEnd},'%y%m%d')
             </if>
             <if test="servedUser!=null and servedUser.name !=null"> and u.name like concat('%', #{servedUser.name}, '%')</if>
             <if test="servedUser!=null and servedUser.mobilePhone !=null"> and u.mobile_phone like concat('%', #{servedUser.mobilePhone}, '%')</if>
