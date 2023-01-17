@@ -57,12 +57,19 @@
 					phone: '',
 					code: '',
 					familyId: '',
-					smsUuid: ''
+					smsUuid: '',
+					familyPhone: ''
 				}
 			}
 		},
-		onLoad: function(option) {
-			this.shareForm.familyId = option.familyId || 106;
+		onLoad: function({
+			familyId,
+			phone
+		}) {
+			Object.assign(this.shareForm, {
+				familyId,
+				familyPhone: phone
+			});
 			this.getShareList();
 		},
 		methods: {
@@ -142,7 +149,7 @@
 				return {
 					uuid,
 					captcha: code,
-					phone: this.shareForm.phone
+					phone: this.shareForm.familyPhone
 				};
 			},
 
