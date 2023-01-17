@@ -16,9 +16,6 @@ import {
 import {
 	getToken
 } from '@/common/utils/auth.js'
-import {
-	cookie
-} from 'request';
 
 /**错误处理文案**/
 const errText = {

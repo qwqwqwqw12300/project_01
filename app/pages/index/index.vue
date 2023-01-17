@@ -39,7 +39,8 @@
 							<text>共{{(familyItem.devices && familyItem.devices.length) || 0}}个设备</text>
 							<text>在线两个设备</text>
 						</view>
-						<u-text @click="goPage('/pages/share/share?familyId='+ familyItem.familyId)"
+						<u-text
+							@click="goPage('/pages/share/share?familyId='+ familyItem.familyId + 'phone=' + familyItem.phone)"
 							prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff"
 							:iconStyle="{
 							fontSize: '44rpx',
@@ -47,8 +48,7 @@
 						}" text="分享"></u-text>
 					</view>
 					<view class="ui-device">
-						<view class="ui-list" v-for="device of filterDevice({familyId: familyItem.familyId})"
-							:key="device.deviceId">
+						<view class="ui-list" v-for="device of familyItem.devices" :key="device.deviceId">
 							<view class="ui-list-box active" @click="goDeciveDetails(device)">
 								<image src="../../static/images/device.png"></image>
 								<text>{{device.name || '未命名设备'}}</text>
@@ -57,7 +57,8 @@
 									<u-icon :name="device.onlineFlag === '1' ? 'wifi' : 'wifi-off'"
 										:color="device.onlineFlag === '1' ? '#0dab1c' : '#ff4800'" size="28"></u-icon>
 								</view>
-								<u-badge :offset="[-9, 0]" :value="9" absolute></u-badge>
+								<u-badge v-if="device.msgNum" :offset="[-9, 0]" :value="device.msgNum" absolute>
+								</u-badge>
 							</view>
 						</view>
 					</view>
