@@ -75,3 +75,151 @@ export const PostDelContacts = (params) => http.post('/api/memberContacts/remMem
  *编辑紧急联系人*
  */
 export const PostEditContacts = (params) => http.post('/api/memberContacts/editMemberCon', params)
+
+/**发送短信**/
+export const sendSms = (data) => http.post('/api/sendSms', data);
+
+/**短信登录**/
+export const loginBySms = (data) => http.post('/api/loginBySms', data);
+
+/**短信校验**/
+export const checkSms = (data) => http.post('/api/checkSms', data);
+
+/**注册**/
+export const regMember = (data) => http.post('/api/regMember', data);
+
+/**重置密码**/
+export const resetMemberPwd = (data) => http.post('/api/resetMemberPwd', data);
+
+/**获取家庭列表**/
+export const getFamilyList = () => http.get('/api/family/list');
+
+/**获取设备列表**/
+export const getDeviceList = (data) => http.post('/api/device/listState', data);
+
+/**设备事件查询**/
+export const selectEventInfo = (data) => http.post('/api/event/selectEventInfo', data);
+/**事件信息**/
+export const getEventList = () => http.get('/api/event/list');
+
+/* 
+ *查询协议*
+ */
+export const PostSelectAgreement = (params) => http.post('/api/agreement/selectAgreement', params)
+/* 
+ *查询版本*
+ */
+export const PostVersionInfo = (params) => http.get('/api/version/selectVersionInfo', params)
+
+/* 
+ *修改密码
+ */
+export const PostUpdatePwd = (params) => http.post('/api/memberInfo/updatePwd', params)
+
+/* 
+ *获取家庭列表
+ */
+export const PostFamilyList = (params) => http.get('/api/family/list', params)
+
+/* 
+ *删除家庭
+ */
+export const PostDelFamily = (params) => http.post('/api/family/remFamily', params)
+
+/* 
+ *创建家庭
+ */
+export const PostAddFamily = (params) => http.post('/api/family/creFamily', params)
+
+/* 
+ *编辑家庭
+ */
+export const PostEditFamily = (params) => http.post('/api/family/editFamily', params)
+
+/* 
+ *修改设备列表
+ */
+export const PostDeviceList = (params) => http.post('/api/device/list', params);
+
+/**
+ * 绑定/解绑设备
+ */
+export const setDevice = (params) => http.post('/api/device/setDevice', params);
+
+/**
+ * 获取房间列表
+ */
+export const getRoomList = (params) => http.post('/api/room/list', params);
+
+/**
+ * 查询消息
+ */
+export const getMessage = (params) => http.post('/api/message/familyList', params);
+
+
+/**
+ * 标志所有消息状态
+ */
+export const PostSetBatchMsgInfo = (params) => http.post('/api/message/setBatchMsgInfo', params);
+/* 
+ *获取房间列表
+ */
+export const PostRoomList = (params) => http.post('/api/room/list', params)
+
+/* 
+ *删除家庭
+ */
+export const PostDelRoom = (params) => http.post('/api/room/remRoom', params)
+
+/* 
+ *创建房间
+ */
+export const PostAddRoom = (params) => http.post('/api/room/creRoom', params)
+
+/* 
+ *编辑房间
+ */
+export const PostEditRoom = (params) => http.post('/api/room/editRoom', params)
+
+/* 
+ *获取通讯录列表
+ */
+export const PostDevicePhoneList = (params) => http.post('/api/device/getDevicePhone', params)
+
+/* 
+ *创建电话
+ */
+export const PostAddDevicePhone = (params) => http.post('/api/device/creDevicePhone', params)
+
+/* 
+ *设置普通电话
+ */
+export const PostSetDevicePhone = (params) => http.post('/api/device/setDevicephone', params)
+
+/* 
+ *设置SOS电话
+ */
+export const PostSetSosDevicePhone = (params) => http.post('/api/device/setSOSDevicePhone', params)
+
+/**
+ * 获取设备定位
+ */
+export const PostListState= (params) => http.post('/api/device/listState', params)
+
+/**
+ * 获取分享家庭列表
+ */
+
+export const PostSharelist= (params) => http.post('/api/family/sharelist', params)
+
+/**
+ * 创建分享家庭
+ */
+export const PostShareFamily= (params) => http.post('/api/family/shareFamily', params)
+
+/**
+ * 删除分享家庭
+ */
+export const PostRemShareFamily= (params) => http.post('/api/family/remShareFamily', params)
+
+

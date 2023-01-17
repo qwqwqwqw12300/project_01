@@ -4,17 +4,21 @@ package com.newlandnpt.varyar.api.controller.system;
 import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.common.core.domain.entity.MemberInfo;
 import com.newlandnpt.varyar.common.core.domain.entity.RsaUtils;
 import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
 import com.newlandnpt.varyar.common.core.domain.model.MemberInfoRequest;
 import com.newlandnpt.varyar.common.core.domain.model.PasswordRequest;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
+import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.framework.web.service.TokenService;
+import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IMemberInfoService;
+import com.newlandnpt.varyar.system.service.IMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -44,6 +48,8 @@ public class MemberInfoController extends BaseController
     @Value("${location.privateKey}")
     private String privateKey;
 
+    @Autowired
+    private IMemberService iMemberService;
     /**
      * 个人中心-重置密码
      */
@@ -144,6 +150,29 @@ public class MemberInfoController extends BaseController
             return error("修改手机号异常，请联系管理员");
         }
 
+    }
+    /**
+     * 获取用户信息
+     */
+    @GetMapping("/getMemInfo")
+    public AjaxResult  getMemberInfo(){
+        AjaxResult ajax = AjaxResult.success();
+        Long memberId = getLoginUser().getMemberId();
+        TMember member = new TMember();
+        try {
+            member = iMemberService.selectMemberByMemberId(memberId);
+        }  catch (Exception e){
+            throw new ServiceException(e.getMessage());
+        }
+        MemberInfo memberInfo = new MemberInfo();
+        memberInfo.setMemberId(member.getMemberId());
+        memberInfo.setPhone(member.getPhone());
+        if(member.getParameter() == null || member.getParameter().getPushMessage()==null){
+            memberInfo.setState("0");
+            return AjaxResult.success(memberInfo);
+        }
+        memberInfo.setState(member.getParameter().getPushMessage());
+        return AjaxResult.success(memberInfo);
     }
 
 }

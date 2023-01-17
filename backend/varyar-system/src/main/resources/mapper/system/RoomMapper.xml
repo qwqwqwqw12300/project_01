@@ -10,14 +10,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="familyId"    column="family_id"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="createTime"    column="create_time"    />
+        <result property="createById"    column="create_by_id"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="roomLength"    column="room_length"    />
+        <result property="roomLeft"    column="room_left"    />
+        <result property="roomRight"    column="room_right"    />
+        <result property="roomHeight"    column="height"    />
     </resultMap>
 
     <sql id="selectTRoomVo">
-        select room_id, name, family_id, del_flag, create_time, update_time from t_room
-    </sql>
-    <sql id="selectTRoomVo1">
-        select r.room_id, r.name, r.family_id, r.del_flag, r.create_time, r.update_time
+        select room_id, name, family_id, del_flag, create_time, update_time,create_by_id,height,room_right,room_left,room_length from t_room
     </sql>
     <select id="selectTRoomList" parameterType="TRoom" resultMap="TRoomResult">
         <include refid="selectTRoomVo"/>
@@ -26,19 +28,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="familyId != null "> and family_id = #{familyId}</if>
         </where>
     </select>
-    <select id="selectByMemberIdList" parameterType="Map" resultMap="TRoomResult">
-        <include refid="selectTRoomVo1"/>
-        from t_room r
-        join t_family tf on tf.family_id = r.family_id and tf.del_flag ="0" and tf.family_id = #{familyId}
-        join  t_member_family tmf on tmf.family_id = tf.family_id and tmf.del_flag ="0"and tmf.create_member_id = #{memberId}
-        where r.del_flag= '0'
-    </select>
-    
+
     <select id="selectTRoomByRoomId" parameterType="Long" resultMap="TRoomResult">
         <include refid="selectTRoomVo"/>
         where room_id = #{roomId}
     </select>
-        
+    <select id="selectTRoomByFamilyId" parameterType="Long" resultMap="TRoomResult">
+        <include refid="selectTRoomVo"/>
+        where family_id = #{familyId} and del_flag = '0'
+    </select>
     <insert id="insertTRoom" parameterType="TRoom" useGeneratedKeys="true" keyProperty="roomId">
         insert into t_room
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -47,6 +45,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="delFlag != null">del_flag,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
+            <if test="createById != null">create_by_id,</if>
+            <if test="roomLength != null">room_length,</if>
+            <if test="roomLeft != null">room_left,</if>
+            <if test="roomRight != null">room_right,</if>
+            <if test="roomHeight != null">height,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null">#{name},</if>
@@ -54,6 +57,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="delFlag != null">#{delFlag},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
+            <if test="createById != null">#{createById},</if>
+            <if test="roomLength != null">#{roomLength},</if>
+            <if test="roomLeft != null">#{roomLeft},</if>
+            <if test="roomRight != null">#{roomRight},</if>
+            <if test="roomHeight != null">#{roomHeight},</if>
          </trim>
     </insert>
 
@@ -65,6 +73,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="delFlag != null">del_flag = #{delFlag},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="roomLength != null">room_length = #{roomLength},</if>
+            <if test="roomLeft != null">room_left = #{roomLeft},</if>
+            <if test="roomRight != null">room_right = #{roomRight},</if>
+            <if test="roomHeight != null">height = #{roomHeight},</if>
         </trim>
         where room_id = #{roomId}
     </update>

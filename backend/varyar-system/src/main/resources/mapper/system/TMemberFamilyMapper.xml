@@ -12,6 +12,8 @@
         <result property="createMemberId" column="create_member_id"/>
         <result property="shareFlag" column="share_flag"/>
         <result property="delFlag" column="del_flag"/>
+        <result property="phone" column="phone"/>
+        <result property="userName" column="userName"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
@@ -25,7 +27,8 @@
                del_flag,
                create_time,
                update_time,
-               phone
+               phone,
+               (select m.user_name from t_member m where mf.member_id = m.member_id) as userName
         from t_member_family mf
     </sql>
 
@@ -53,6 +56,10 @@
         <include refid="selectTMemberFamilyVo"/>
         where phone = #{phone}
     </select>
+    <select id="selectTMemberFamilyByMember" parameterType="Long" resultMap="TMemberFamilyResult">
+    <include refid="selectTMemberFamilyVo"/>
+    where member_id = #{memberId}
+    </select>
     <insert id="insertTMemberFamily" parameterType="TMemberFamily" useGeneratedKeys="true" keyProperty="memberFamilyId">
         insert into t_member_family
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -61,6 +68,7 @@
             <if test="createMemberId != null">create_member_id,</if>
             <if test="shareFlag != null">share_flag,</if>
             <if test="delFlag != null">del_flag,</if>
+            <if test="phone != null">phone,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
         </trim>
@@ -70,6 +78,7 @@
             <if test="createMemberId != null">#{createMemberId},</if>
             <if test="shareFlag != null">#{shareFlag},</if>
             <if test="delFlag != null">#{delFlag},</if>
+            <if test="phone != null">#{phone},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
         </trim>
@@ -82,6 +91,7 @@
             <if test="familyId != null">family_id = #{familyId},</if>
             <if test="createMemberId != null">create_member_id = #{createMemberId},</if>
             <if test="shareFlag != null">share_flag = #{shareFlag},</if>
+            <if test="phone != null">phone =#{phone},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
@@ -91,8 +101,7 @@
 
     <delete id="deleteTMemberFamilyByMemberFamilyId" parameterType="Long">
     <!--> 中间表数据物理删除<-->
-        delete
-        from t_member_family
+        update t_member_family set del_flag = '2',update_time = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')
         where member_family_id = #{memberFamilyId}
     </delete>
 

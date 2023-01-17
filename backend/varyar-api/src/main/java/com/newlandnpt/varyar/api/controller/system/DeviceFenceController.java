@@ -3,13 +3,15 @@ package com.newlandnpt.varyar.api.controller.system;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
+import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TDeviceFence;
 import com.newlandnpt.varyar.system.service.IDeviceFenceService;
+import com.newlandnpt.varyar.system.service.IDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -26,6 +28,8 @@ public class DeviceFenceController extends BaseController
     @Autowired
     private IDeviceFenceService deviceFenceService;
 
+    @Autowired
+    private IDeviceService iDeviceService;
     /**
      * 查询设备电子围栏列表
      */
@@ -54,8 +58,12 @@ public class DeviceFenceController extends BaseController
     @PostMapping("/addFence")
     public AjaxResult add(@RequestBody TDeviceFence tDeviceFence)
     {
-        //获取设备号
+        //获取设备id
         Long deviceFenceId  =  tDeviceFence.getDeviceFenceId();
+        TDevice tdevice =  iDeviceService.selectDeviceByDeviceId(deviceFenceId);
+        if (!tdevice.getCreateById().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            throw new ServiceException("无权限设置本设备！");
+        }
         return toAjax(deviceFenceService.insertTDeviceFence(tDeviceFence));
     }
 

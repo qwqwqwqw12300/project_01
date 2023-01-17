@@ -56,15 +56,34 @@ public class SmsController {
         // 生成验证码
         Random random = new Random();
         StringBuffer randomSb = new StringBuffer();
-        for(int i = 0; i < 4; ++i) {
+        /*for(int i = 0; i < 4; ++i) {
             randomSb.append(random.nextInt(10));
         }
-        String code = randomSb.toString();
+        String code = randomSb.toString();*/
+        String code = "1234";
         redisCache.setCacheObject(smsVerifyKey, code, Constants.SMS_CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
 
         smsService.sendSms(code);
 
         ajax.put("smsUuid", smsUuid);
+        return ajax;
+    }
+    /**
+     * 校验短信验证码
+     */
+    @PostMapping("/checkSms")
+    public AjaxResult checkSms(@RequestBody @Validated SmsRequest smsRequest) {
+        AjaxResult ajax = AjaxResult.success();
+
+        // check sms
+        String verifyKey = CacheConstants.SMS_CODE_KEY + smsRequest.getUuid();
+        String code = redisCache.getCacheObject(verifyKey);
+        if (code == null) {
+            throw new CaptchaExpireException();
+        }
+        if (!code.equalsIgnoreCase(smsRequest.getCaptcha())) {
+            throw new CaptchaException();
+        }
         return ajax;
     }
 }

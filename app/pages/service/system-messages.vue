@@ -88,7 +88,6 @@
 
 			.ui-box {
 				margin-top: 20rpx;
-				min-height: 250rpx;
 				padding: 30rpx 20rpx 0 20rpx;
 				border-radius: 10px;
 				filter: drop-shadow(7.824px 10.382px 8px rgba(7, 5, 5, 0.08));

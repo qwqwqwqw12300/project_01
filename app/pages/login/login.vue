@@ -24,8 +24,8 @@
 							size="28rpx">
 						</u-text>
 						<view class="ui-input">
-							<u--input v-model="loginForm.phone" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx"
-								clearable></u--input>
+							<u--input v-model="loginForm.phone" type="number" placeholder="请输入手机号码" :border="'none'"
+								fontSize="28rpx" clearable></u--input>
 						</view>
 					</view>
 					<view class="ui-form-item">
@@ -56,17 +56,21 @@
 							size="28rpx">
 						</u-text>
 						<view class="ui-input">
-							<u-input placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u-input>
+							<u-input v-model="smsLoginForm.phone" type="number" placeholder="请输入手机号码" :border="'none'"
+								fontSize="28rpx" clearable></u-input>
 						</view>
 					</view>
 					<view class="ui-form-item">
-						<sms-input></sms-input>
+						<graphic-input ref="codeRefbySms"></graphic-input>
+					</view>
+					<view class="ui-form-item">
+						<sms-input ref="sms" :payload="smsPayload" @checked="checkedBySms"></sms-input>
 					</view>
 					<view class="ui-bot">
 						<text class="active" @click="register">免费注册</text>
 						<text class="active" @click="forgot">忘记密码？</text>
 					</view>
-					<view class="ui-btn"><button @click="login">立即登录</button></view>
+					<view class="ui-btn"><button @click="loginBySms">立即登录</button></view>
 				</view>
 			</u-transition>
 
@@ -78,13 +82,16 @@
 
 <script>
 	import {
+		loginBySms,
 		PostLoginByPwd,
 	} from '@/common/http/api.js';
 	import {
 		env
 	} from "@/config/env.js";
-	import { setToken } from '@/common/utils/auth.js'
-	import jsencrypt from '@/common/utils/jsencrypt.vue'
+	import {
+		setToken
+	} from '@/common/utils/auth.js';
+	import jsencrypt from '@/common/utils/jsencrypt.js';
 	export default {
 		data() {
 			return {
@@ -105,7 +112,13 @@
 					code: '',
 					password: '1234',
 					uuid: '',
-				}
+				},
+				/**短信登录参数**/
+				smsLoginForm: {
+					phone: '',
+					uuid: '',
+					code: ''
+				},
 			};
 		},
 		methods: {
@@ -116,7 +129,6 @@
 				setTimeout(() => {
 					this.delay = index
 				}, 200);
-
 			},
 			/**
 			 * 登录
@@ -159,6 +171,48 @@
 				uni.navigateTo({
 					url: '/pages/login/forgot'
 				})
+			},
+
+			/**
+			 * 获取短信请求参数
+			 */
+			smsPayload() {
+				const {
+					code,
+					uuid
+				} = this.$refs.codeRefbySms.returnCodeData();
+				return {
+					uuid,
+					captcha: code,
+					phone: this.smsLoginForm.phone
+				};
+			},
+
+			/**
+			 * 短信登录
+			 */
+			loginBySms() {
+				console.log(this.smsLoginForm.uuid, 'this.smsLoginForm.uuid');
+				if (this.smsLoginForm.uuid) {
+					loginBySms({
+						...this.smsLoginForm
+					}).then(res => {
+						setToken(res.token);
+						uni.switchTab({
+							url: '/pages/index/index'
+						});
+					}, () => {
+						this.$refs.sms.reset();
+					});
+				}
+
+			},
+
+			/**
+			 * 短信认证通过
+			 */
+			checkedBySms(smsInfo) {
+				Object.assign(this.smsLoginForm, smsInfo);
 			}
 		}
 	};
@@ -168,6 +222,7 @@
 	.ui-body {
 		// height: 100vh;
 		text-align: center;
+		padding-bottom: 50rpx;
 		// background-position: 0 -100rpx;
 	}
 
@@ -176,7 +231,7 @@
 		width: 366rpx;
 		font-size: 69rpx;
 		color: #fff;
-		margin-top: 150rpx;
+		margin-top: 100rpx;
 		display: inline-block;
 		font-weight: bold;
 	}

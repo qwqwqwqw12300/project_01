@@ -39,8 +39,8 @@ public class TDevice extends BaseEntity
     /** 状态（0未激活 1激活 2下线） */
     private String status;
 
-    /** 类型（0雷达波 1监控设备 2手表） */
-    @Excel(name = "设备类型",type = Excel.Type.EXPORT,readConverterExp = "0=雷达波,1=监控设备")
+    /** 类型（0雷达波 1监控设备 ） */
+    @Excel(name = "设备类型",readConverterExp = "0=雷达波,1=监控设备",combo={"雷达波","监控设备"})
     private String type;
     /** 设备参数信息 */
     private DeviceParameter parameter;
@@ -100,8 +100,19 @@ public class TDevice extends BaseEntity
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
+    /**是否在线 0:不在线  1:在线*/
+    @Transient
+    private String onlineFlag;
 
-    public void setDeviceId(Long deviceId) 
+    public String getOnlineFlag() {
+        return onlineFlag;
+    }
+
+    public void setOnlineFlag(String onlineFlag) {
+        this.onlineFlag = onlineFlag;
+    }
+
+    public void setDeviceId(Long deviceId)
     {
         this.deviceId = deviceId;
     }

@@ -61,7 +61,6 @@ public class FamilyServiceImpl implements IFamilyService
     public List<TFamily> selectMembersFamilyList(Long memberId) {
         return familyMapper.selectMembersFamilyList(memberId);
     }
-
     /**
      * 新增家庭
      * 
@@ -139,6 +138,9 @@ public class FamilyServiceImpl implements IFamilyService
         tRoom.setFamilyId(familyId);
         //查询对应家庭下的房间信息
         List<TRoom> list = iRoomService.selectTRoomList(tRoom);
+        if(list.size()==0){
+            return 1;
+        }
         for (TRoom item : list){
             roomIdSet.add(item.getRoomId());
         }

@@ -39,6 +39,7 @@ public class RoomZoneController extends BaseController {
         tRoomZone.setExistFlag(radarRequest.getZoneType());
         tRoomZone.setEntryTime(radarRequest.getEntryTime());
         tRoomZone.setDepartureTime(radarRequest.getDepartureTime());
+        tRoomZone.setFallFlag(radarRequest.getFallFlag());
         tRoomZone.setX1(radarRequest.getX1());
         tRoomZone.setX2(radarRequest.getX2());
         tRoomZone.setY1(radarRequest.getY1());

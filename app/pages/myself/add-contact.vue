@@ -1,7 +1,7 @@
 <template>
 	<app-body>
 		<view class="ui-title">
-			<text>{{ type === 'add'? '添加': '修改' }}联系人电话</text>
+			<text>添加联系人电话</text>
 		</view>
 		<view class="ui-form">
 			<view class="ui-form-item">
@@ -38,12 +38,7 @@
 <script>
 	import {
 		PostAddContacts,
-		PostEditContacts,
 	} from '@/common/http/api.js';
-	const interList = {
-		edit: PostEditContacts,
-		add: PostAddContacts,
-	}
 	export default {
 		data() {
 			const range = [{
@@ -61,51 +56,36 @@
 					orderNum: '',
 					phone: '',
 					phoneName: '',
-					memberContactsId: '',
 				},
-				type: 'add',
 				range,
 
 			}
 		},
 		methods: {
 			handleSubmit() {
-				interList[this.type]({
+				const {
+					orderNum,
+					phone,
+					phoneName,
+				} = this.form
+				if (!orderNum) {
+					return uni.$u.toast('请选择紧急联系人')
+				}
+				if (!phoneName) {
+					return uni.$u.toast('请填写联系人姓名')
+				}
+				if (!phone) {
+					return uni.$u.toast('请填写联系人手机号码')
+				}
+				PostAddContacts({
 					...this.form
 				}).then(res => {
 					uni.$u.toast(res.msg)
-					this.handleBack()
+					setTimeout(() => {
+						uni.navigateBack()
+					}, 500)
 				})
 			},
-			handleBack() {
-				let pages = getCurrentPages(); // 当前页面
-				const prevPage = pages[pages.length - 2]; //上一页页面实例
-				if (typeof(prevPage) == "undefined") {
-					//没上一页面
-					return;
-				}
-				//把数据返回给上一个页面
-				prevPage.$vm.handleInit(); //上一页面的刷新方法
-				setTimeout(() => {
-					uni.navigateBack()
-				}, 1000)
-			}
-		},
-		onLoad(e) {
-			this.type = e.type
-			if (this.type === 'edit') {
-				const {
-					phone,
-					name,
-					memberContactsId,
-					orderNum
-				} = JSON.parse(decodeURIComponent(e.data))
-				this.form.phone = phone
-				this.form.phoneName = name
-				this.form.orderNum = orderNum + ''
-				this.form.memberContactsId = memberContactsId
-			}
-
 		}
 	}
 </script>

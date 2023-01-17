@@ -17,7 +17,6 @@ public class DevicePhoneRequest {
     /**
      * 电话列表
      * */
-    @NotNull(message = "电话列表不能为空")
     private List<DevicePhone> list;
 
     public String getDeviceId() {

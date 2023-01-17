@@ -18,7 +18,13 @@ public interface IRoomService
      * @return 房间
      */
     public TRoom selectTRoomByRoomId(Long roomId);
-
+    /**
+     * 查询房间
+     *
+     * @param familyId 家庭id
+     * @return 房间
+     */
+    public List<TRoom>  selectTRoomByFamilyId(Long familyId);
     /**
      * 查询房间列表
      * 
@@ -26,13 +32,6 @@ public interface IRoomService
      * @return 房间集合
      */
     public List<TRoom> selectTRoomList(TRoom tRoom);
-    /**
-     * 通过查询房间列表
-     *
-     * @param tRoom 房间
-     * @return 房间集合
-     */
-    public List<TRoom> selectTRoomList(Long memberId,Long familyId);
 
     /**
      * 新增房间

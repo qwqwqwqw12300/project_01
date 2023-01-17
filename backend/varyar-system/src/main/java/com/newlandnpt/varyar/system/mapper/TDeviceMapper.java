@@ -23,6 +23,13 @@ public interface TDeviceMapper
      * @return 设备
      */
     public TDevice selectTDeviceByDeviceId(Long deviceId);
+    /**
+     * 查询设备
+     *
+     * @param memberId 会员id
+     * @return 设备
+     */
+    public List<TDevice> selectTDeviceByMember(Long memberId);
 
     /**
      * 查询设备列表
@@ -95,11 +102,11 @@ public interface TDeviceMapper
     public int clearDeviceGroup(@Param("deviceGroupId") Long deviceGroupId,@Param("updateBy") String updateBy);
 
     /**
-     * 统计已激活设备数量（激活后即使设备下线也包括在内）
+     * 统计设备数量（激活后即使设备下线也包括在内）
      * @return
      * @param device
      */
-    @Select("select count(*) from t_device where status in ('1','2') ${params.dataScope} and del_flag = '0' ")
+    @Select("select count(*) from t_device where 1=1 ${params.dataScope} and del_flag = '0' ")
     public long total(TDevice device);
 
     /**
@@ -107,14 +114,14 @@ public interface TDeviceMapper
      * @return
      * @param device
      */
-    @Select("select count(*) from t_device where status in ('1','2') and distribute_flag = '0' ${params.dataScope} and del_flag = '0'")
+    @Select("select count(*) from t_device d where status in ('0','1','2') and distribute_flag = '0' ${params.dataScope} and del_flag = '0'")
     public long notAssociateDeviceCount(TDevice device);
     /**
      * 统计未分组激活设备数量
      * @return
      * @param device
      */
-    @Select("select count(*) from t_device where status in ('1','2') and devicegroup_id is null ${params.dataScope} and del_flag = '0'")
+    @Select("select count(*) from t_device d where status in ('0','1','2') and devicegroup_id is null ${params.dataScope} and del_flag = '0'")
     public long notArrangeDeviceCount(TDevice device);
 
     /**
@@ -122,7 +129,7 @@ public interface TDeviceMapper
      * @return
      * @param device
      */
-    @Select("select org_id as orgId,count(*) as count from t_device where status in ('1','2') ${params.dataScope} and del_flag = '0'" +
+    @Select("select org_id as orgId,count(*) as count from t_device d where status in ('0','1','2') ${params.dataScope} and del_flag = '0'" +
             "group by org_id")
     public List<OrgDeviceCountDto> countGroupByOrgId(TDevice device);
 

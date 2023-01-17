@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
+import org.springframework.data.annotation.Transient;
 
 import java.util.Date;
 
@@ -24,6 +25,14 @@ public class TMsg extends BaseEntity
     /** 消息类型:1短信 2APP消息 3事件消息 */
     @Excel(name = "消息类型:1短信 2APP消息 3事件消息", readConverterExp = "1=短信,2=APP消息,3事件消息")
     private String msgType;
+
+    /** 设备类型: 0雷达波  1监控设备 */
+    @Excel(name = "消息类型:0雷达波 1监控设备", readConverterExp = "0=雷达波,1=监控设备")
+    private String deviceType;
+
+    /** 事件等级:0:重要事件  1：普通事件 */
+    @Excel(name = "事件等级:0:重要事件 1：普通事件", readConverterExp = "0=重要事件,1=普通事件")
+    private String eventLevel;
 
     /** 消息编号 */
     @Excel(name = "消息编号")
@@ -69,6 +78,42 @@ public class TMsg extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "发送时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date sendTime;
+
+    /** 设备名称*/
+    @Transient
+    private String deviceName;
+
+    /** 开始时间 */
+    @Transient
+    private Date startDate;
+
+    /** 结束时间 */
+    @Transient
+    private Date endDate;
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
 
     public void setMsgId(Long msgId)
     {
@@ -182,6 +227,22 @@ public class TMsg extends BaseEntity
     public String getOperateFlag()
     {
         return operateFlag;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
+    public String getEventLevel() {
+        return eventLevel;
+    }
+
+    public void setEventLevel(String eventLevel) {
+        this.eventLevel = eventLevel;
     }
 
     @Override

@@ -13,7 +13,9 @@ import {
 	isApp
 } from '../utils/util';
 
-import { getToken } from '@/common/utils/auth.js'
+import {
+	getToken
+} from '@/common/utils/auth.js'
 
 /**错误处理文案**/
 const errText = {
@@ -37,11 +39,12 @@ const errText = {
  */
 const request = (url, options, process, method = 'POST') => {
 	let _url;
-	if (isApp()) {
-		_url = env.basePath + url;
-	} else {
-		_url = url;
-	}
+	// if (isApp()) {
+	// 	_url = env.basePath + url;
+	// } else {
+	// 	_url = url;
+	// }
+	_url = env.basePath + url;
 	const showLoading = process.showLoading !== false,
 		errorHandle = process.error !== false;
 	console.info('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));
@@ -54,7 +57,7 @@ const request = (url, options, process, method = 'POST') => {
 			header: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'Authorization': getToken()
+				'Authorization': getToken(),
 			},
 			withCredentials: true,
 			success: result => {
@@ -62,12 +65,13 @@ const request = (url, options, process, method = 'POST') => {
 					statusCode,
 					data
 				} = result;
-				if (statusCode == 200) {
+				console.log(result, '请求结果');
+				if (statusCode == 200 && data.code === 200) {
 					resolve(data);
 				} else {
 					if (errorHandle) uni.showModal({
 						title: '提示',
-						content: errText[statusCode] || '系统错误'
+						content: data.msg || errText[statusCode] || '系统错误'
 					});
 					reject();
 				}

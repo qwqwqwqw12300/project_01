@@ -37,7 +37,7 @@ public class MsgController extends BaseController
     /**
      * 查询消息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:msg:list')")
+    @PreAuthorize("@ss.hasPermi('eventAndMessage:message:list')")
     @GetMapping("/list")
     public TableDataInfo list(
             TMsg tMsg)
@@ -50,7 +50,7 @@ public class MsgController extends BaseController
     /**
      * 导出消息列表
      */
-    @PreAuthorize("@ss.hasPermi('system:msg:export')")
+    @PreAuthorize("@ss.hasPermi('eventAndMessage:message:export')")
     @Log(title = "消息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, TMsg tMsg)
@@ -63,7 +63,7 @@ public class MsgController extends BaseController
     /**
      * 获取消息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:msg:query')")
+    @PreAuthorize("@ss.hasPermi('eventAndMessage:message:query')")
     @GetMapping(value = "/{msgId}")
     public AjaxResult getInfo(@PathVariable("msgId") Long msgId)
     {
@@ -73,7 +73,7 @@ public class MsgController extends BaseController
     /**
      * 新增消息
      */
-    @PreAuthorize("@ss.hasPermi('system:msg:add')")
+    @PreAuthorize("@ss.hasPermi('eventAndMessage:message:add')")
     @Log(title = "消息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TMsg tMsg)
@@ -84,7 +84,7 @@ public class MsgController extends BaseController
     /**
      * 修改消息
      */
-    @PreAuthorize("@ss.hasPermi('system:msg:edit')")
+    @PreAuthorize("@ss.hasPermi('eventAndMessage:message:edit')")
     @Log(title = "消息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TMsg tMsg)
@@ -96,7 +96,7 @@ public class MsgController extends BaseController
     /**
      * 删除消息
      */
-    @PreAuthorize("@ss.hasPermi('system:msg:remove')")
+    @PreAuthorize("@ss.hasPermi('eventAndMessage:message:remove')")
     @Log(title = "消息", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{msgIds}")
     public AjaxResult remove(@PathVariable Long[] msgIds)

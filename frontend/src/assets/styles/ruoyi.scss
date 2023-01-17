@@ -320,3 +320,16 @@
   color: #ff4949;
   margin-right: 4px;
 }
+
+
+.card-item {
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+  min-height: 80px;
+  vertical-align: middle;
+}
+
+.card-item-click:hover {
+  cursor: pointer;
+}

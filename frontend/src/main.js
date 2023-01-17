@@ -39,6 +39,8 @@ import VueMeta from 'vue-meta'
 import DictData from '@/components/DictData'
 // 表单面板组件
 import FormPanel from '@/components/FormPanel'
+// 瀑布流组件
+import WaterFall from '@/components/WaterFall'
 // 穿梭框组件
 import Transfer from '@/components/Transfer'
 
@@ -63,6 +65,7 @@ Vue.component('ImageUpload', ImageUpload)
 Vue.component('ImagePreview', ImagePreview)
 Vue.component('FormPanel', FormPanel)
 Vue.component('Transfer', Transfer)
+Vue.component('WaterFall', WaterFall)
 
 Vue.use(directive)
 Vue.use(plugins)

@@ -18,6 +18,13 @@ public interface IMemberService
      * @return 会员
      */
     public TMember selectMemberByMemberId(Long memberId);
+    /**
+     * 查询会员
+     *
+     * @param phone 手机号
+     * @return 会员
+     */
+    public TMember selectMemberByPhone(String phone);
 
     /**
      * 查询会员列表

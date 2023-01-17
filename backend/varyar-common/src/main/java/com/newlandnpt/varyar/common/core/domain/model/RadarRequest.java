@@ -32,6 +32,13 @@ public class RadarRequest {
     @Size(min = 0, max = 1, message = "区域类型不能超过1个字符")
     private String zoneType;
     /**
+     *  迭代监测标志  0：是    1：否
+     * */
+    @NotBlank(message = "迭代监测标志不能为空")
+    @Size(min = 0, max = 1, message = "迭代监测标志不能超过1个字符")
+    private String fallFlag;
+
+    /**
      * 最左侧的点
      * */
     @NotNull(message = "最左侧的点不能为空")
@@ -159,5 +166,13 @@ public class RadarRequest {
 
     public void setDepartureTime(Long departureTime) {
         this.departureTime = departureTime;
+    }
+
+    public String getFallFlag() {
+        return fallFlag;
+    }
+
+    public void setFallFlag(String fallFlag) {
+        this.fallFlag = fallFlag;
     }
 }

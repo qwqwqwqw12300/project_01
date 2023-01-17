@@ -39,19 +39,21 @@ public class OrgAdminHomeController extends BaseController {
     private IEventService eventService;
 
     /**
-     * 获取分支机构列表
+     * 获取分支机构列表(包含本身)
      */
     @PreAuthorize("@ss.hasPermi('home:orgAdmin:list')")
     @GetMapping("/suborg/list")
     public AjaxResult list()
     {
         TOrg param = new TOrg();
-        Map<String,Object> params = new HashMap<>();
-        params.put("idNotEQ",getOrgId());
-        param.setParams(params);
+//        Map<String,Object> params = new HashMap<>();
+//        params.put("idNotEQ",getOrgId());
+//        param.setParams(params);
         List<TOrg> orgs = orgService.selectOrgList(param);
         return success(orgs);
     }
+
+
 
     /**
      * 统计分支机构设备数
@@ -75,7 +77,7 @@ public class OrgAdminHomeController extends BaseController {
      * 未分配（配对）设备数量
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('home:platformAdmin:list')")
+    @PreAuthorize("@ss.hasPermi('home:orgAdmin:list')")
     @GetMapping("device/notassociate/count")
     public AjaxResult notAssociateDeviceCount(){
         return success(deviceService.notAssociateDeviceCount(new TDevice()));

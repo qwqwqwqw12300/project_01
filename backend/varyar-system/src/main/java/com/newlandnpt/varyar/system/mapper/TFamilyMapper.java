@@ -34,7 +34,6 @@ public interface TFamilyMapper
      * @return 家庭集合
      */
     public List<TFamily> selectMembersFamilyList(Long memberId);
-
     /**
      * 新增家庭
      * 

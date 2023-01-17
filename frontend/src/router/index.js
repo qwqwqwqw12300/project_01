@@ -61,19 +61,19 @@ export const constantRoutes = [
     component: () => import('@/views/error/401'),
     hidden: true
   },
-  {
-    path: '',
-    component: Layout,
-    redirect: 'index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/index'),
-        name: 'Index',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
-      }
-    ]
-  },
+  // {
+  //   path: '',
+  //   component: Layout,
+  //   redirect: 'index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/index'),
+  //       name: 'Index',
+  //       meta: { title: '首页', icon: 'dashboard', affix: true }
+  //     }
+  //   ]
+  // },
   {
     path: '/user',
     component: Layout,
@@ -99,6 +99,44 @@ export const constantRoutes = [
         component: () => import('@/views/org/deviceGroup/arrangeUser'),
         name: 'DeviceGroupArrangeUser',
         meta: { title: '设备组分配运营人员', icon: 'user' }
+      },
+      {
+        path: 'orgDeviceEvents',
+        component: () => import('@/views/org/orgDeviceEvents/index'),
+        name: 'OrgDeviceEvents',
+        meta: { title: '机构处理单个设备消息', icon: 'user' }
+      }
+    ]
+  },
+  {
+    path: '/members',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'deviceEvents',
+        component: () => import('@/views/member/deviceEvents/index'),
+        name: 'DeviceEvents',
+        meta: { title: '所有会员设备消息', icon: 'user' }
+      },
+      {
+        path: 'memberArrange',
+        component: () => import('@/views/member/arrange/index'),
+        name: 'MemberArrange',
+        meta: { title: '分配运营人员', icon: 'user' }
+      },
+      {
+        path: 'unHandleEvents',
+        component: () => import('@/views/member/memberAndDevice/unHandleEvents/index'),
+        name: 'UnHandleEvents',
+        meta: { title: '未处理的会员事件', icon: 'user' }
+      },
+      {
+        path: 'singleDeviceRB',
+        component: () => import('@/views/member/memberAndDevice/singleDeviceRB/index'),
+        name: 'SingleDeviceRB',
+        meta: { title: '会员单个设备总览(雷达波)', icon: 'user' }
       }
     ]
   }

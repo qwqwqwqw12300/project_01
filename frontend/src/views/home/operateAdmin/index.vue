@@ -1,85 +1,87 @@
 <template>
   <div class="app-container home">
-    <el-row :gutter="20">
-      <el-col :sm="24" :lg="12" style="padding-left: 20px">
-        <h2>运营首页</h2>
-
-      </el-col>
-    </el-row>
-<!-- 测试 -->
     <el-row>
-      <member-info-card :value="100"></member-info-card>
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span class="el-dialog__title">紧急处理设备</span>
+        </div>
+        <water-fall :value="urgentDevices">
+          <template slot-scope="{item}">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId)">
+              <span style="color: #ff0000">{{ item.name }}</span> | {{getEventSum(item)}}条
+              <br>
+              {{ item.deviceGroupName }} | {{item.location}} | {{"在线"}}
+              <br>
+              {{ item.memberNo==undefined?"机构业务":("会员编号："+item.memberNo) }}
+            </el-card>
+          </template>
+        </water-fall>
+      </el-card>
     </el-row>
-
-    <el-row :gutter="20">
-      <device-info-card  :value="100"></device-info-card>
+    <el-row>
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span class="el-dialog__title">运营设备</span>
+        </div>
+        <water-fall :value="notUrgentDevices">
+          <template slot-scope="{item}">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId)">
+              {{ item.name }} | {{getEventSum(item)}}条
+              <br>
+              {{ item.deviceGroupName }} | {{item.location}} | {{"在线"}}
+              <br>
+              {{ item.memberNo==undefined?"机构业务":("会员编号："+item.memberNo) }}
+            </el-card>
+          </template>
+        </water-fall>
+      </el-card>
     </el-row>
-
   </div>
 </template>
 
 <script>
-
-// import {getMemberId} from "@/api/member/member";
-import memberInfoCard from "@/views/member/components/memberInfoCard";
-import DeviceInfoCard from "@/views/device/components/DeviceInfoCard";
-
+import {careDeviceList,countUnHandleByDeviceGroupByLevel} from '@/api/home/bizHome'
 
 export default {
-  name: "Index",
-  components:{memberInfoCard,DeviceInfoCard},
-
+  name: "OperateAdmin",
   data() {
     return {
-      // 版本号
-      version: "3.8.4",
+      deviceList:[],
+      urgentLevel:"urgent"
     };
   },
-  // computed: {
-  //   memberId() {
-  //     // return this.$route.query.orgId || this.userOrgId
-  //   }
-  // },
-  // async created() {
-  //   await this.initUserOrg();
-  //   this.initOrg();
-  //   this.getList();
-  //   this.reset();
-  // },
-  // watch: {
-  //   "$route.query.orgId": {
-  //     immediate: true,
-  //     handler: function (val) {
-  //       if (this.$route.name == "DeviceGroup") {
-  //         if (this.org.orgId != this.orgId) {
-  //           this.initOrg();
-  //           this.getList();
-  //           this.reset();
-  //         }
-  //       }
-  //     }
-  //   }
-  // },
-  methods: {
-    // async initUserOrg() {
-    //   const response = await getUserProfile();
-    //   this.userOrgId = response.data.orgId;
-    // },
-    initMember() {
-      if(this.membergId != undefined)
-        getOrg(this.membergId).then(response => {
-          this.member = response.data;
-        })
+  created(){
+    this.getList();
+  },
+  computed:{
+    urgentDevices(){
+      return this.deviceList.filter(x=>x.countUnHandleByDeviceGroupByLevel?.find(p=>p.level=this.urgentLevel&&p.count>0))
     },
-    // reset() {
-    //   this.form = {
-    //     orgId: this.orgId,
-    //     name: undefined
-    //   }
-    // },
-    // goTarget(href) {
-    //   window.open(href, "_blank");
-    // },
+    notUrgentDevices(){
+      return this.deviceList.filter(x=>!(x.countUnHandleByDeviceGroupByLevel?.find(p=>p.level=this.urgentLevel&&p.count>0)))
+    },
+  },
+  methods: {
+    goTarget(href) {
+      window.open(href, "_blank");
+    },
+    getList(){
+      careDeviceList().then(response=>{
+        this.deviceList = response.data.map(x=>{
+          x.countUnHandleByDeviceGroupByLevel = []
+          countUnHandleByDeviceGroupByLevel(x.deviceId)
+            .then(countResponse=>x.countUnHandleByDeviceGroupByLevel=countResponse.data)
+          return x;
+        });
+
+      })
+    },
+    getEventSum(device){
+      return device.countUnHandleByDeviceGroupByLevel?.map(x=>x.count).reduce((val, oldVal) => val + oldVal,0)
+    },
+    goDeviceEvent(deviceId){
+
+    }
   },
 };
 </script>
@@ -148,3 +150,14 @@ export default {
 }
 </style>
 
+<style scoped lang="scss">
+
+.el-row {
+  margin-bottom: 20px;
+
+  &
+  :last-child {
+    margin-bottom: 0;
+  }
+}
+</style>

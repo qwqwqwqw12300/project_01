@@ -18,6 +18,21 @@ public class SmsRequest {
     @Size(min = 0, max = 32, message = "唯一标识不能超过32个字符")
     private String uuid;
 
+    /**
+     * 手机号
+     */
+    @NotBlank(message = "手机号不能为空")
+    @Size(min = 0, max = 11, message = "手机号不能超过11个字符")
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getCaptcha() {
         return captcha;
     }

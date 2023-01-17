@@ -85,6 +85,8 @@ public interface TDeviceGroupMapper {
      * @param deviceGroup
      * @return
      */
-    @Select("select count(*) from t_devicegroup where org_id = #{orgId} and user_id in null")
+    @Select("<script>" +
+            "select count(*) from t_devicegroup where org_id <![CDATA[ <=> ]]> #{orgId} and user_id is null" +
+            "</script>")
     public long notArrangeCount(TDeviceGroup deviceGroup);
 }

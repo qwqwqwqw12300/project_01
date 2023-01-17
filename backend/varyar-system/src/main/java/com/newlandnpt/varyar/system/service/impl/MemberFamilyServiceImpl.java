@@ -34,16 +34,24 @@ public class MemberFamilyServiceImpl implements IMemberFamilyService
     {
         return tMemberFamilyMapper.selectTMemberFamilyByMemberFamilyId(memberFamilyId);
     }
-    public List<TMemberFamily> selectTMemberFamilyByMemberFamilyId(Long memberFamilyId,Long memberId){
+    public List<TMemberFamily> selectTMemberFamilyByMemberFamilyId(Long FamilyId,Long memberId){
         Map map = new HashMap();
         map.put("memberId",memberId);
-        map.put("familyId",memberId);
+        map.put("familyId",FamilyId);
         return tMemberFamilyMapper.selectTMemberFamilyByFamilyId(map);
     }
     public List<TMemberFamily> selectTMemberFamilyByPhone(String phone){
         return tMemberFamilyMapper.selectTMemberFamilyByPhone(phone);
     }
-
+    /**
+     * 用 会员id 查询
+     *
+     * @param memberId
+     * @return 会员和家庭关联
+     */
+    public List<TMemberFamily> selectTMemberFamilyByMember(Long memberId){
+        return tMemberFamilyMapper.selectTMemberFamilyByMember(memberId);
+    }
     /**
      * 查询会员和家庭关联列表
      * 

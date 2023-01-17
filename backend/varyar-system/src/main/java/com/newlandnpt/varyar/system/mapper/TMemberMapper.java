@@ -97,9 +97,9 @@ public interface TMemberMapper
      * @param member
      */
     @Select(" <script> " +
-            " select count(*) from t_member where distribute_flag = '0' " +
+            " select count(*) from t_member m where distribute_flag = '0' " +
             " <if test=\"params.dataScope != null and params.dataScope != ''\"> " +
-            " user_id in (select user_id from sys_user u where 1=1 ${params.dataScope})</if> " +
+            " and m.user_id in (select user_id from sys_user u where 1=1 ${params.dataScope})</if> " +
             " and del_flag = '0' " +
             " </script> ")
     public long notArrangeMemberCount(TMember member);

@@ -63,6 +63,7 @@ create table t_device (
   org_name          varchar(50)      default ''                comment '机构名称',
   del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
   create_by         varchar(64)     default ''                 comment '创建者',
+  create_by_id         varchar(20)     default ''              comment '创建者id',
   create_time       datetime                                   comment '创建时间',
   update_by         varchar(64)     default ''                 comment '更新者',
   update_time       datetime                                   comment '更新时间',
@@ -105,6 +106,7 @@ create table t_family (
   name              varchar(50)     default ''                 comment '家庭名称',
   address            varchar(100)    default ''                 comment '家庭地址',
   del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
+  create_by_id         varchar(20)     default ''                 comment '创建者id',
   create_time       datetime                                   comment '创建时间',
   update_time       datetime                                   comment '更新时间',
   primary key (family_id)
@@ -133,6 +135,7 @@ create table t_room (
   room_left        decimal(10,2)                               comment '左侧',
   room_right       decimal(10,2)                               comment '右侧',
   height           decimal(10,2)                               comment '高度',
+  create_by_id         varchar(20)     default ''                 comment '创建者id',
   del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
   create_time       datetime                                   comment '创建时间',
   update_time       datetime                                   comment '更新时间',
@@ -203,7 +206,7 @@ drop table if exists t_event;
 create table t_event (
   event_id        bigint(20)      not null auto_increment    comment '事件id',
   no                varchar(50)     default ''                comment '事件编号',
-  level              varchar(50)     default ''               comment '级别',
+  level              varchar(50)     default ''               comment '级别（0:重要事件  1：普通事件）',
   content           varchar(50)     default ''                comment '内容',
   device_id         bigint(20)                                comment '设备id',
   devicegroup_id    bigint(20)                                comment '设备组id',
@@ -228,6 +231,8 @@ drop table if exists t_msg;
 create table t_msg (
   msg_id        bigint(20)      not null auto_increment    comment '消息id',
   msg_type                char(1)     default ''             comment '消息类型:1短信 2APP消息 3事件消息',
+  device_type              char(1)         default '0'       comment '类型（0雷达波 1监控设备）',
+  event_level              varchar(50)     default ''        comment '级别（0:重要事件  1：普通事件）',
   no                varchar(50)     default ''             comment '消息编号',
   content           varchar(50)     default ''             comment '内容',
   event_id       bigint(20)                                comment '事件id',
@@ -259,8 +264,12 @@ create table t_room_zone (
   fall_flag         char(1)                               comment '跌倒监测标志（0是 1否）',
   entry_time        int                                   comment '进入时间(s)',
   departure_time    int                                   comment '离开时间(s)',
-  create_time       datetime                               comment '创建时间',
-  update_time       datetime                               comment '更新时间',
+  in_monitor_flag        char(1)                          comment '进入监控区域超时报警（0是 1否）',
+  out_monitor_flag       char(1)                          comment '离开监控区域超时报警（0是 1否）',
+  start_time        datetime                              comment '开始时间(s)',
+  end_time    		datetime                              comment '结束时间(s)',
+  create_time       datetime                              comment '创建时间',
+  update_time       datetime                              comment '更新时间',
   primary key (room_zone_id)
 ) engine=innodb auto_increment=100 comment = '子区域表';
 
@@ -278,3 +287,14 @@ create table t_device_fence (
   update_time       datetime                                comment '更新时间',
   primary key (device_fence_id)
 ) engine=innodb auto_increment=100 comment = '设备电子围栏表';
+
+drop table if exists t_notice;
+create table t_notice (
+  notice_id			bigint(20)      not null auto_increment    comment '公告id',
+  sys_notice_id     bigint(20)      					       comment '系统公告id',
+  member_id         bigint(20)                                 comment '会员id',
+  read_flag         char(1)                                    comment '阅读标志（0未读 1已读）',
+  create_time        datetime                                  comment '创建时间',
+  update_time       datetime                                   comment '更新时间',
+  primary key (notice_id)
+) engine=innodb auto_increment=100 comment = '公告表';

@@ -37,7 +37,7 @@ public class EventController extends BaseController
     /**
      * 查询事件列表
      */
-    @PreAuthorize("@ss.hasPermi('system:event:list')")
+    @PreAuthorize("@ss.hasPermi('eventAndMessage:event:list')")
     @GetMapping("/list")
     public TableDataInfo list(TEvent tEvent)
     {
@@ -49,7 +49,7 @@ public class EventController extends BaseController
     /**
      * 导出事件列表
      */
-    @PreAuthorize("@ss.hasPermi('system:event:export')")
+    @PreAuthorize("@ss.hasPermi('eventAndMessage:event:export')")
     @Log(title = "事件", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, TEvent tEvent)
@@ -62,7 +62,7 @@ public class EventController extends BaseController
     /**
      * 获取事件详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:event:query')")
+    @PreAuthorize("@ss.hasPermi('eventAndMessage:event:query')")
     @GetMapping(value = "/{eventId}")
     public AjaxResult getInfo(@PathVariable("eventId") Long eventId)
     {
@@ -72,7 +72,7 @@ public class EventController extends BaseController
     /**
      * 新增事件
      */
-    @PreAuthorize("@ss.hasPermi('system:event:add')")
+    @PreAuthorize("@ss.hasPermi('eventAndMessage:event:add')")
     @Log(title = "事件", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TEvent tEvent)
@@ -83,7 +83,7 @@ public class EventController extends BaseController
     /**
      * 修改事件
      */
-    @PreAuthorize("@ss.hasPermi('system:event:edit')")
+    @PreAuthorize("@ss.hasPermi('eventAndMessage:event:edit')")
     @Log(title = "事件", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TEvent tEvent)
@@ -94,7 +94,7 @@ public class EventController extends BaseController
     /**
      * 删除事件
      */
-    @PreAuthorize("@ss.hasPermi('system:event:remove')")
+    @PreAuthorize("@ss.hasPermi('eventAndMessage:event:remove')")
     @Log(title = "事件", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{eventIds}")
     public AjaxResult remove(@PathVariable Long[] eventIds)

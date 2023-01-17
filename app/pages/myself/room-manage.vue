@@ -12,15 +12,18 @@
 			<!-- <view class="ui-logo">我的房间管理</view> -->
 			<view class="ui-menu">
 				<u-grid>
-					<u-grid-item v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
-						<view class="ui-menu-item" :border="false" @click="gridClick(baseListItem.id)">
+					<u-grid-item v-for="(item, index) in list" :key="index">
+						<view class="ui-menu-item" :border="false">
 							<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/myself/room.png"
 								size="60rpx"></u-icon>
-							<text class="grid-text">{{ baseListItem.title }}</text>
-							<view class="ui-edit" @click.stop="editFamliy">
+							<text class="grid-text">{{ item.name }}</text>
+							<view class="ui-edit" @click.stop="editFamliy(item)">
 								<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="edit-pen-fill" size="30rpx"
 									color="#ff9500"></u-icon>
 							</view>
+							<u-icon @click.native.stop="onDelete(item.roomId)" class="ui-close active"
+								name="close-circle-fill" size="40rpx">
+							</u-icon>
 						</view>
 					</u-grid-item>
 				</u-grid>
@@ -31,43 +34,73 @@
 				<view class="wd-add">
 					<view>
 						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间名称"></u-text>
-						<u--input placeholder="请输入房间名称" border="bottom" clearable></u--input>
+						<u--input v-model="form.name" placeholder="请输入房间名称" border="bottom" clearable></u--input>
+					</view>
+					<view>
+						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间高度"></u-text>
+						<u--input v-model="form.roomHeight" placeholder="请输入房间高度" border="bottom" clearable></u--input>
+					</view>
+					<view>
+						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间长度"></u-text>
+						<u--input v-model="form.roomLength" placeholder="请输入房间长度" border="bottom" clearable></u--input>
+					</view>
+					<view>
+						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间左长度"></u-text>
+						<u--input v-model="form.roomRight" placeholder="请输入房间左长度" border="bottom" clearable></u--input>
+					</view>
+					<view>
+						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间右长度"></u-text>
+						<u--input v-model="form.roomLeft" placeholder="请输入房间右长度" border="bottom" clearable></u--input>
 					</view>
 					<view class="wd-btn-gloup">
 						<button @click="onSubmit">提交</button>
-						<button @click="onDelete">删除</button>
+						<button @click="close">取消</button>
 					</view>
 				</view>
 			</u-popup>
-			<add-room ref="addRoom" @next="roomNext" />
+			<add-room ref="addRoom" @update="handleInitList" />
 		</app-body>
 	</view>
 
 </template>
 
 <script>
+	import {
+		PostDelRoom,
+		PostRoomList,
+		PostEditRoom,
+	} from '@/common/http/api.js';
 	export default {
 		data() {
 			return {
 				isEditShow: false,
-				baseList: [{
-					title: '房间1',
-					id: ''
-				}]
+				form: {
+					name: '',
+					roomId: '',
+					roomHeight: '',
+					roomLength: '',
+					roomLeft: '',
+					roomRight: '',
+				},
+				list: []
 			};
 		},
 		methods: {
 			/**
 			 * 菜单点击
 			 */
-			gridClick(url) {
-				console.log(12);
-			},
+			// gridClick(url) {
+			// 	console.log(12);
+			// },
 
 			/**
 			 * 修改家庭
 			 */
-			editFamliy() {
+			editFamliy(item) {
+				this.form = {
+					...item
+				}
+				console.log(this.form, 'fff')
 				this.isEditShow = true;
 			},
 
@@ -75,25 +108,50 @@
 			 * 关闭弹窗
 			 */
 			close() {
+				this.form = {}
 				this.isEditShow = false;
 			},
 			/**
 			 * 提交
 			 */
 			onSubmit() {
-				this.close();
+				const {
+					name,
+					roomHeight,
+					roomLength,
+					roomLeft,
+					roomRight
+				} = this.form
+				if (!roomHeight || !roomLeft || !roomRight || !roomLength || !name) {
+					return uni.$u.toast('请完善房间信息')
+				}
+				PostEditRoom({
+					...this.form
+				}).then(res => {
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						this.close();
+						this.handleInitList()
+					}, 500)
+				})
 			},
 			/**
 			 * 删除
 			 */
-			onDelete() {
+			onDelete(roomId) {
 				uni.showModal({
 					title: '提示',
 					content: '是否确认删除房间',
 					success: res => {
 						if (res.confirm) {
-							this.close();
-							console.log('用户点击确定');
+							PostDelRoom({
+								roomId,
+							}).then(res => {
+								uni.$u.toast(res.msg)
+								setTimeout(() => {
+									this.handleInitList()
+								}, 1000)
+							})
 						} else if (res.cancel) {
 							console.log('用户点击取消');
 						}
@@ -104,14 +162,31 @@
 			 * 添加家庭
 			 */
 			add() {
-				this.$refs.addRoom.open();
+				this.$refs.addRoom.open({
+					id: this.familyId,
+					subTitle: '提交'
+				});
 			},
 
 			/**
 			 * 家庭添加完成
 			 */
-			roomNext() {}
+			roomNext() {},
 
+			/**
+			 * 初始化家庭列表
+			 */
+			handleInitList() {
+				PostRoomList({
+					familyId: this.familyId,
+				}).then(res => {
+					this.list = res.rows
+				})
+			}
+		},
+		onLoad(options) {
+			this.familyId = options.familyId
+			this.handleInitList()
 		}
 	};
 </script>
@@ -151,6 +226,12 @@
 				right: 10rpx;
 				z-index: 10;
 			}
+
+			.ui-close {
+				position: absolute;
+				right: -10rpx;
+				top: -10rpx;
+			}
 		}
 	}
 
@@ -178,14 +259,14 @@
 
 	.wd-add {
 		width: 582rpx;
-		height: 400rpx;
+		height: 880rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
 		padding: 53rpx 31rpx;
 
 		&>view {
-			margin-top: 52rpx;
+			margin-top: 18rpx;
 			padding: 10rpx 20rpx;
 			border-bottom: 1px solid #e4e4e4;
 
@@ -197,7 +278,7 @@
 
 		.wd-btn-gloup {
 			text-align: center;
-			margin-top: 70rpx;
+			margin-top: 50rpx;
 
 			button {
 				width: 237rpx;

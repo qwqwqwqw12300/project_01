@@ -28,6 +28,9 @@ public class BaseEntity implements Serializable
     /** 创建者 */
     private String createBy;
 
+    /** 创建者id */
+    private String createById;
+
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
@@ -138,5 +141,13 @@ public class BaseEntity implements Serializable
                         ReflectUtils.setFieldValue(this,field.getName(),null);
                     }
                 });
+    }
+
+    public String getCreateById() {
+        return createById;
+    }
+
+    public void setCreateById(String createById) {
+        this.createById = createById;
     }
 }
