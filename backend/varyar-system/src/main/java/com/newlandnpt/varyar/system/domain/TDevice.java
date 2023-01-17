@@ -103,6 +103,17 @@ public class TDevice extends BaseEntity
     /**是否在线 0:不在线  1:在线*/
     @Transient
     private String onlineFlag;
+    /**设备未读消息数量*/
+    @Transient
+    private String msgNum;
+
+    public String getMsgNum() {
+        return msgNum;
+    }
+
+    public void setMsgNum(String msgNum) {
+        this.msgNum = msgNum;
+    }
 
     public String getOnlineFlag() {
         return onlineFlag;

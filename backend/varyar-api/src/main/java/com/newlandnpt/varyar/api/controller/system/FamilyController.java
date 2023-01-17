@@ -224,7 +224,7 @@ public class FamilyController extends BaseController {
         }
         TMemberFamily tMemberFamily = new TMemberFamily();
         tMemberFamily.setMemberId(Long.valueOf(familyRequest.getShareMemberId()));
-        tMemberFamily.setFamilyId(Long.valueOf(familyRequest.getFamilyId()));
+        tMemberFamily.setFamilyId(Long.valueOf(familyRequest.getShareFamilyId()));
         tMemberFamily.setCreateMemberId(Long.valueOf(this.getLoginUser().getMemberId()));
         List<TMemberFamily> tMemberFamilys = iMemberFamilyService.selectTMemberFamilyList(tMemberFamily);
         if (tMemberFamilys==null||tMemberFamilys.size()==0){

@@ -122,6 +122,8 @@ export const PostVersionInfo = (params) => http.get('/api/version/selectVersionI
  */
 export const PostUpdatePwd = (params) => http.post('/api/memberInfo/updatePwd', params)
 
+export const PostUpdatePhone = (params) => http.post('/api/memberInfo/updatePhone',params)
+
 /* 
  *获取家庭列表
  */
