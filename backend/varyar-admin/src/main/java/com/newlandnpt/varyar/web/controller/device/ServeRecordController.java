@@ -72,7 +72,7 @@ public class ServeRecordController extends BaseController
     /**
      * 新增服务记录
      */
-    @PreAuthorize("@ss.hasPermi('device:serveRecord:add')")
+//    @PreAuthorize("@ss.hasPermi('device:serveRecord:add')")
     @Log(title = "服务记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody TServeRecord serveRecord)

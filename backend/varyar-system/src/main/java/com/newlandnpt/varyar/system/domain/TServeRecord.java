@@ -215,7 +215,7 @@ public class TServeRecord extends BaseEntity
      */
     public static class ServeEventSimple {
         /** 事件id */
-        @NotBlank(message = "事件id不能为空")
+        @NotNull(message = "事件id不能为空")
         private Long eventId;
 
         /** 事件编号 */

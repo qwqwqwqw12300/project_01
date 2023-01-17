@@ -2,9 +2,11 @@ package com.newlandnpt.varyar.system.service.impl;
 
 import java.util.List;
 
+import com.newlandnpt.varyar.common.annotation.DataScope;
 import com.newlandnpt.varyar.common.core.domain.entity.SysUser;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.system.domain.TServeRecordEventRelate;
+import com.newlandnpt.varyar.system.mapper.TEventMapper;
 import com.newlandnpt.varyar.system.mapper.TServeRecordEventRelateMapper;
 import com.newlandnpt.varyar.system.mapper.SysUserMapper;
 import org.apache.commons.collections4.CollectionUtils;
@@ -32,6 +34,9 @@ public class ServeRecordServiceImpl implements IServeRecordService
     private TServeRecordEventRelateMapper serveRecordEventRelateMapper;
     @Autowired
     private SysUserMapper sysUserMapper;
+    @Autowired
+    private TEventMapper eventMapper;
+
 
     /**
      * 查询服务记录
@@ -52,6 +57,7 @@ public class ServeRecordServiceImpl implements IServeRecordService
      * @return 服务记录
      */
     @Override
+    @DataScope(orgAlias="s")
     public List<TServeRecord> selectServeRecordList(TServeRecord serveRecord)
     {
         return serveRecordMapper.selectServeRecordList(serveRecord);
@@ -86,6 +92,9 @@ public class ServeRecordServiceImpl implements IServeRecordService
             relate.setEventId(serveEventSimple.getEventId());
             serveRecordEventRelateMapper.insertServeRecordEventRelate(relate);
         });
+        //将非会员事件处理状态进行修改
+        eventMapper.dealNotMemberEvents(serveRecord.getServeEvents().stream()
+                .map(p->p.getEventId()).toArray(Long[]::new));
         return effect;
     }
 

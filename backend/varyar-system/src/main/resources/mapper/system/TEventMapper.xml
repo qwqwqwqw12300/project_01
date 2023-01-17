@@ -184,4 +184,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ORDER BY eve.create_time DESC
     </select>
 
+    <update id="dealNotMemberEvents">
+        update t_event set operate_type = '1',operate_flag = '1',operate_time = sysdate(),update_time = sysdate()
+        where
+        event_id in
+        <foreach item="eventId" collection="eventIds" open="(" separator="," close=")">
+            #{eventId}
+        </foreach>
+        and member_id is null;
+    </update>
+
 </mapper>

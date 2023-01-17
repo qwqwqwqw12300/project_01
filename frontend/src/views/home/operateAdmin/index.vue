@@ -55,10 +55,10 @@ export default {
   },
   computed:{
     urgentDevices(){
-      return this.deviceList.filter(x=>x.countUnHandleByDeviceGroupByLevel?.find(p=>p.level=this.urgentLevel&&p.count>0))
+      return this.deviceList.filter(x=>x.countUnHandleByDeviceGroupByLevel?.find(p=>p.level==this.urgentLevel&&p.count>0))
     },
     notUrgentDevices(){
-      return this.deviceList.filter(x=>!(x.countUnHandleByDeviceGroupByLevel?.find(p=>p.level=this.urgentLevel&&p.count>0)))
+      return this.deviceList.filter(x=>!(x.countUnHandleByDeviceGroupByLevel?.find(p=>p.level==this.urgentLevel&&p.count>0)))
     },
   },
   methods: {
@@ -80,7 +80,7 @@ export default {
       return device.countUnHandleByDeviceGroupByLevel?.map(x=>x.count).reduce((val, oldVal) => val + oldVal,0)
     },
     goDeviceEvent(deviceId){
-
+      this.$router.push({path:'/org/orgDeviceEvents',query: {deviceId:deviceId }})
     }
   },
 };
