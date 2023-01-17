@@ -41,7 +41,15 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     {
         return noticeMapper.selectNoticeList(notice);
     }
-
+    /**
+     * 查询公告列表
+     *
+     * @param notice 公告信息
+     * @return 公告集合
+     */
+    public List<SysNotice> selectNoticeListByMemberId(Long memberId){
+        return noticeMapper.selectNoticeListByMemberId(memberId);
+    }
     /**
      * 新增公告
      * 

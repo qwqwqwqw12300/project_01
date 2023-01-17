@@ -15,6 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"       column="update_by"       />
         <result property="updateTime"     column="update_time"     />
         <result property="remark"         column="remark"          />
+        <result property="readFlag"         column="readFlag"          />
     </resultMap>
     
     <sql id="selectNoticeVo">
@@ -41,10 +42,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
     </select>
-    
+    <select id="selectNoticeListByMemberId" parameterType="Long" resultMap="SysNoticeResult">
+        select sn.notice_id, sn.notice_title, sn.notice_type, cast(sn.notice_content as char) as notice_content,
+        sn.status, sn.create_by, sn.create_time, sn.update_by, sn.update_time, sn.remark,
+        (select tn.read_flag  from t_notice tn where tn.sys_notice_id= sn.notice_id and tn.member_id=#{memberId}) as readFlag
+from sys_notice sn
+    </select>
+
     <insert id="insertNotice" parameterType="SysNotice">
         insert into sys_notice (
-			<if test="noticeTitle != null and noticeTitle != '' ">notice_title, </if>
+			<if test="noticeTitle != null and noticeTitle != '' ">notice_title``, ``</if>
 			<if test="noticeType != null and noticeType != '' ">notice_type, </if>
 			<if test="noticeContent != null and noticeContent != '' ">notice_content, </if>
 			<if test="status != null and status != '' ">status, </if>

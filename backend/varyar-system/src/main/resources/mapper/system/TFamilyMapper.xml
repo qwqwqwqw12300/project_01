@@ -25,7 +25,8 @@
             location, family_id, room_id, distribute_flag, org_id, org_name, del_flag, create_by, create_time, update_by, update_time,
             (select name from t_devicegroup where devicegroup_id = d.devicegroup_id) device_group_name,
             (select type from t_org where org_id = d.org_id) org_type,
-            (select org_no from t_org where org_id = d.org_id) org_no
+            (select org_no from t_org where org_id = d.org_id) org_no,
+            (select count(m.msg_id) from  t_msg m where m.device_id = d.device_id and  operate_flag='0')  as msgNum
         from t_device d
         where d.family_id = #{familyId}
     </select>
@@ -53,6 +54,7 @@
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
+        <result property="msgNum" column="msgNum"/>
     </resultMap>
     <sql id="FamilyVo">
         select f.family_id, f.no, f.name, f.address, f.del_flag, f.create_time, f.update_time,f.create_by_id
