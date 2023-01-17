@@ -22,7 +22,7 @@ import com.newlandnpt.varyar.cloudBase.domain.device.config.DeviceConfig;
 import com.newlandnpt.varyar.cloudBase.service.FallService;
 
 /**
- * 进出区域通知
+ * 设备相关接口
  * @author bean
  */
 @Controller
@@ -40,6 +40,7 @@ public class DeviceApi {
     @Value("${rocketmq.topic.deviceConfig}")
     private String deviceConfigTopic;
     
+    /** 接收下发参数，可以复制到其他包 **/
     @GetMapping("/config")
     @ResponseBody
     public void config(@RequestBody DeviceConfig deviceConfig) {
@@ -51,6 +52,7 @@ public class DeviceApi {
         }
     }
 
+    /** 测试接口http post是否收到消息 **/
     @PostMapping("/test")
     @ResponseBody
     public void test(DeviceConfig deviceConfig) {
