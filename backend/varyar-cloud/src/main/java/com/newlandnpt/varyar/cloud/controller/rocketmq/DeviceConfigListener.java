@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSON;
 import com.newlandnpt.varyar.cloudBase.domain.device.config.DeviceConfig;
 import com.newlandnpt.varyar.cloudBase.utils.HttpClientUtil;
+import com.newlandnpt.varyar.common.utils.StringUtils;
 
 /**
  * MQ监听 - 设备状态事件
@@ -21,11 +22,13 @@ public class DeviceConfigListener implements RocketMQListener<DeviceConfig> {
 
 	private static final Logger log = LoggerFactory.getLogger(DeviceConfigListener.class);
 	
-	private static final String URL = "http://127.0.0.1:8088/cloud/api/msg/device/test";
-	
+	//private static final String URL = "http://127.0.0.1:8088/cloud/api/msg/device/test";
+	private static final String URL = "https://api.walabot-home.cn/deviceAdmin/{}/config";
+		
     @Override
     public void onMessage(DeviceConfig deviceConfig) {
+    	String url = StringUtils.format(URL, deviceConfig.getDeviceId());
     	log.debug("监听到[{}], 报文对象：{} ", "设备参数下发消息", JSON.toJSONString(deviceConfig));
-    	HttpClientUtil.sendPost(URL, deviceConfig);
+    	HttpClientUtil.sendPost(url, deviceConfig);
     }
 }

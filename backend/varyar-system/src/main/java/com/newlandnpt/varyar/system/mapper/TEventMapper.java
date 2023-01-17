@@ -125,4 +125,11 @@ public interface TEventMapper
      */
     public List<TEventList> selectEventInfo(EventRequest eventRequest);
 
+    /**
+     * 处理非会员事件
+     * @param eventIds
+     * @return
+     */
+    public int dealNotMemberEvents(@Param("eventIds") Long[] eventIds);
+
 }

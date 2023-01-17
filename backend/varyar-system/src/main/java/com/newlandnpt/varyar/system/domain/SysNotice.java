@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
 import com.newlandnpt.varyar.common.xss.Xss;
+import org.springframework.data.annotation.Transient;
 
 /**
  * 通知公告表 sys_notice
@@ -30,6 +31,17 @@ public class SysNotice extends BaseEntity
 
     /** 公告状态（0正常 1关闭） */
     private String status;
+    /** 已读标识 0：未处理 1：已处理*/
+    @Transient
+    private String readFlag;
+
+    public String getReadFlag() {
+        return readFlag;
+    }
+
+    public void setReadFlag(String readFlag) {
+        this.readFlag = readFlag;
+    }
 
     public Long getNoticeId()
     {
