@@ -5,18 +5,33 @@
         <div slot="header" class="clearfix">
           <span class="el-dialog__title">紧急处理设备</span>
         </div>
-        <water-fall :value="deviceList">
+        <water-fall :value="urgentDevices">
           <template slot-scope="{item}">
-            {{item}}
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId)">
+              <span style="color: #ff0000">{{ item.name }}</span> | {{getEventSum(item)}}条
+              <br>
+              {{ item.deviceGroupName }} | {{item.location}} | {{"在线"}}
+              <br>
+              {{ item.memberNo==undefined?"机构业务":("会员编号："+item.memberNo) }}
+            </el-card>
           </template>
         </water-fall>
       </el-card>
     </el-row>
     <el-row>
       <el-card>
-        <water-fall :value="deviceList">
+        <div slot="header" class="clearfix">
+          <span class="el-dialog__title">运营设备</span>
+        </div>
+        <water-fall :value="notUrgentDevices">
           <template slot-scope="{item}">
-            {{item}}
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId)">
+              {{ item.name }} | {{getEventSum(item)}}条
+              <br>
+              {{ item.deviceGroupName }} | {{item.location}} | {{"在线"}}
+              <br>
+              {{ item.memberNo==undefined?"机构业务":("会员编号："+item.memberNo) }}
+            </el-card>
           </template>
         </water-fall>
       </el-card>
@@ -25,7 +40,7 @@
 </template>
 
 <script>
-import {notArrangeMemberCount,countUnHandleByDeviceGroupByLevel} from '@/api/home/bizHome'
+import {careDeviceList,countUnHandleByDeviceGroupByLevel} from '@/api/home/bizHome'
 
 export default {
   name: "OperateAdmin",
@@ -36,7 +51,7 @@ export default {
     };
   },
   created(){
-    notArrangeMemberCount();
+    this.getList();
   },
   computed:{
     urgentDevices(){
@@ -51,9 +66,21 @@ export default {
       window.open(href, "_blank");
     },
     getList(){
-      notArrangeMemberCount().then(response=>{
-        this.deviceList = response.rows;
+      careDeviceList().then(response=>{
+        this.deviceList = response.data.map(x=>{
+          x.countUnHandleByDeviceGroupByLevel = []
+          countUnHandleByDeviceGroupByLevel(x.deviceId)
+            .then(countResponse=>x.countUnHandleByDeviceGroupByLevel=countResponse.data)
+          return x;
+        });
+
       })
+    },
+    getEventSum(device){
+      return device.countUnHandleByDeviceGroupByLevel?.map(x=>x.count).reduce((val, oldVal) => val + oldVal,0)
+    },
+    goDeviceEvent(deviceId){
+
     }
   },
 };

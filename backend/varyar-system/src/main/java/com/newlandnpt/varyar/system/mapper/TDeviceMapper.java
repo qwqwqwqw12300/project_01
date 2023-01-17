@@ -114,14 +114,14 @@ public interface TDeviceMapper
      * @return
      * @param device
      */
-    @Select("select count(*) from t_device d where status in ('1','2') and distribute_flag = '0' ${params.dataScope} and del_flag = '0'")
+    @Select("select count(*) from t_device d where status in ('0','1','2') and distribute_flag = '0' ${params.dataScope} and del_flag = '0'")
     public long notAssociateDeviceCount(TDevice device);
     /**
      * 统计未分组激活设备数量
      * @return
      * @param device
      */
-    @Select("select count(*) from t_device d where status in ('1','2') and devicegroup_id is null ${params.dataScope} and del_flag = '0'")
+    @Select("select count(*) from t_device d where status in ('0','1','2') and devicegroup_id is null ${params.dataScope} and del_flag = '0'")
     public long notArrangeDeviceCount(TDevice device);
 
     /**
@@ -129,7 +129,7 @@ public interface TDeviceMapper
      * @return
      * @param device
      */
-    @Select("select org_id as orgId,count(*) as count from t_device d where status in ('1','2') ${params.dataScope} and del_flag = '0'" +
+    @Select("select org_id as orgId,count(*) as count from t_device d where status in ('0','1','2') ${params.dataScope} and del_flag = '0'" +
             "group by org_id")
     public List<OrgDeviceCountDto> countGroupByOrgId(TDevice device);
 

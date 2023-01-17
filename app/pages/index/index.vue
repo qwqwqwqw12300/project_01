@@ -40,32 +40,23 @@
 							<text>共{{(familyItem.devices && familyItem.devices.length) || 0}}个设备</text>
 							<text>在线两个设备</text>
 						</view>
-						<u-text @click="goPage('/pages/share/share')" prefixIcon="share-square" size="28rpx"
+						<u-text @click="goPage('/pages/share/share?familyId='+ familyItem.familyId)" prefixIcon="share-square" size="28rpx"
 							:align="'right'" :block="false" color="#fff" :iconStyle="{
 							fontSize: '44rpx',
 							color: '#fff'
 						}" text="分享"></u-text>
 					</view>
 					<view class="ui-device">
-						<view class="ui-list" v-for="device of filterDevice({familyId: familyItem.familyId})" :key="device.deviceId">
+						<view class="ui-list" v-for="device of filterDevice({familyId: familyItem.familyId})"
+							:key="device.deviceId">
 							<view class="ui-list-box active" @click="goDeciveDetails(device)">
 								<image src="../../static/images/device.png"></image>
 								<text>{{device.name || '未命名设备'}}</text>
 								<text>{{device.location || '--'}}</text>
 								<view class="ui-list-static">
-									<u-icon name="wifi" color="#0dab1c" size="28"></u-icon>
+									<u-icon :name="device.onlineFlag === '1' ? 'wifi' : 'wifi-off'" :color="device.onlineFlag === '1' ? '#0dab1c' : '#ff4800'" size="28"></u-icon>
 								</view>
 								<u-badge :offset="[-9, 0]" :value="9" absolute></u-badge>
-							</view>
-						</view>
-						<view class="ui-list">
-							<view class="ui-list-box active" @click="goPage('/pages/equipment/watch-detail')">
-								<image src="../../static/images/device.png"></image>
-								<text>xx设备名称</text>
-								<text>位置</text>
-								<view class="ui-list-static">
-									<u-icon name="wifi-off" color="#ff4800" size="28"></u-icon>
-								</view>
 							</view>
 						</view>
 					</view>
@@ -82,7 +73,7 @@
 			<!-- /空户 -->
 			<add-step ref="addStepRef"></add-step>
 		</app-body>
-		
+
 
 	</view>
 
@@ -116,7 +107,7 @@
 			Promise.all([
 				this.getAllFamily(),
 				this.getAllDevices(),
-				this.getAllRoom()
+				// this.getAllRoom()
 			]);
 		},
 		methods: {
@@ -156,10 +147,16 @@
 			 */
 			goDeciveDetails(info) {
 				this.$store.commit('setDeviceInfo', info);
-				this.goPage('/pages/equipment/radar-detail');
-				
+				let url;
+				if (info.type === '0') { // 雷达波
+					url = '/pages/equipment/radar-detail';
+				} else { // 监控设备
+					url = '/pages/equipment/watch-detail';
+				}
+				this.goPage(url);
+
 			},
-				
+
 			/**
 			 * 添加家庭
 			 */

@@ -95,7 +95,7 @@ export const resetMemberPwd = (data) => http.post('/api/resetMemberPwd', data);
 export const getFamilyList = () => http.get('/api/family/list');
 
 /**获取设备列表**/
-export const getDeviceList = (data) => http.post('/api/device/list', data);
+export const getDeviceList = (data) => http.post('/api/device/listState', data);
 
 /**设备事件查询**/
 export const selectEventInfo = (data) => http.post('/api/event/selectEventInfo', data);
@@ -151,6 +151,16 @@ export const setDevice = (params) => http.post('/api/device/setDevice', params);
  */
 export const getRoomList = (params) => http.post('/api/room/list', params);
 
+/**
+ * 查询消息
+ */
+export const getMessage = (params) => http.post('/api/message/familyList', params);
+
+
+/**
+ * 标志所有消息状态
+ */
+export const PostSetBatchMsgInfo = (params) => http.post('/api/message/setBatchMsgInfo', params);
 /* 
  *获取房间列表
  */
@@ -162,11 +172,54 @@ export const PostRoomList = (params) => http.post('/api/room/list', params)
 export const PostDelRoom = (params) => http.post('/api/room/remRoom', params)
 
 /* 
- *创建家庭
+ *创建房间
  */
 export const PostAddRoom = (params) => http.post('/api/room/creRoom', params)
 
 /* 
- *编辑家庭
+ *编辑房间
  */
 export const PostEditRoom = (params) => http.post('/api/room/editRoom', params)
+
+/* 
+ *获取通讯录列表
+ */
+export const PostDevicePhoneList = (params) => http.post('/api/device/getDevicePhone', params)
+
+/* 
+ *创建电话
+ */
+export const PostAddDevicePhone = (params) => http.post('/api/device/creDevicePhone', params)
+
+/* 
+ *设置普通电话
+ */
+export const PostSetDevicePhone = (params) => http.post('/api/device/setDevicephone', params)
+
+/* 
+ *设置SOS电话
+ */
+export const PostSetSosDevicePhone = (params) => http.post('/api/device/setSOSDevicePhone', params)
+
+/**
+ * 获取设备定位
+ */
+export const PostListState= (params) => http.post('/api/device/listState', params)
+
+/**
+ * 获取分享家庭列表
+ */
+
+export const PostSharelist= (params) => http.post('/api/family/sharelist', params)
+
+/**
+ * 创建分享家庭
+ */
+export const PostShareFamily= (params) => http.post('/api/family/shareFamily', params)
+
+/**
+ * 删除分享家庭
+ */
+export const PostRemShareFamily= (params) => http.post('/api/family/remShareFamily', params)
+
+

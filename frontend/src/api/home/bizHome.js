@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 运营关心的设备列表
-export function notArrangeMemberCount() {
+export function careDeviceList() {
   return request({
     url: '/home/biz/device/care/list',
     method: 'get'

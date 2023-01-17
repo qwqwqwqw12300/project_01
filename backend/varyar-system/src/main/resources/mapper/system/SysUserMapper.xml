@@ -95,6 +95,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 	u.mobile_phone like concat('%', #{params.nameOrMobilePhone}, '%')
 			)
 		</if>
+		<if test="params.orgIdIsNull != null">
+			<if test="params.orgIdIsNull == 'true'">
+				and u.org_id is null
+			</if>
+			<if test="params.orgIdIsNull == 'false'">
+				and u.org_id is not null
+			</if>
+		</if>
 		<if test="orgId != null and orgId != 0">
 			AND (u.org_id = #{orgId}
 			<if test="params.orgIdStrict == null or params.orgIdStrict =='false'">

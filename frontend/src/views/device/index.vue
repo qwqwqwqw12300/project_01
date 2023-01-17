@@ -92,6 +92,24 @@
               >分配设备组
               </el-button>
               <el-button
+                v-if="scope.row.status != '1'"
+                size="mini"
+                type="text"
+                icon="el-icon-circle-check"
+                @click="active(scope.row)"
+                v-hasPermi="['device:activeOrOffline']"
+              >上线
+              </el-button>
+              <el-button
+                v-if="scope.row.status == '1'"
+                size="mini"
+                type="text"
+                icon="el-icon-circle-check"
+                @click="offLine(scope.row)"
+                v-hasPermi="['device:activeOrOffline']"
+              >下线
+              </el-button>
+              <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-circle-check"
@@ -171,7 +189,7 @@
 
 <script>
 import {orgTreeSelect} from "@/api/system/user";
-import {pageDevice, associateDevice, groupArrange} from "@/api/device/device";
+import {pageDevice, associateDevice, groupArrange,active,offline} from "@/api/device/device";
 import {pageDeviceGroup} from "@/api/org/deviceGroup"
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -187,7 +205,7 @@ export default {
       showSearch: true,
       distributeFlagDict: [{label: '已分配', value: 1}, {label: '未分配', value: 0}],
       // 机构树选项
-      orgOptions: undefined,
+      orgOptions: [],
       total: 0,
       deviceList: [],
       queryParams: {
@@ -254,9 +272,9 @@ export default {
   },
   created() {
     this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
-    this.currentOrgId = this.$route.query.currentOrgId==undefined?undefined:this.$route.query.currentOrgId
-    this.resetQuery();
+    this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)
     this.getDeptTree();
+    this.resetQuery();
   },
   watch: {
     "$route.query.distributeFlag": {
@@ -294,10 +312,9 @@ export default {
       );
     },
     /** 查询机构下拉树结构 */
-    getDeptTree() {
-      orgTreeSelect().then(response => {
-        this.orgOptions = response.data;
-      });
+    async getDeptTree() {
+      const response = await orgTreeSelect()
+      this.orgOptions = response.data;
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -363,6 +380,18 @@ export default {
             this.getList();
           })
         }
+      })
+    },
+    offLine(row){
+      offline(row.deviceId).then(response=>{
+        this.$modal.msgSuccess("设备下线成功");
+        this.getList();
+      })
+    },
+    active(row){
+      active(row.deviceId).then(response=>{
+        this.$modal.msgSuccess("设备上线成功");
+        this.getList();
       })
     },
     /** 设备参数配置相关 */

@@ -248,7 +248,6 @@ public class SysUserController extends BaseController
     /**
      * 获取机构树列表
      */
-    @PreAuthorize("@ss.hasPermi('system:user:list')")
     @GetMapping("/orgTree")
     public AjaxResult orgTree(TOrg org)
     {
