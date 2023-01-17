@@ -13,10 +13,10 @@
 			<view class="ui-form-item">
 				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="原密码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u-input v-model="form.oldPassword" placeholder="请输入原密码" :password="true" :border="'none'"
+					<u-input v-model="form.oldPassword" placeholder="请输入原密码" :password="eyes.old" :border="'none'"
 						fontSize="28rpx" clearable>
 						<template slot="suffix">
-							<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
+							<u-icon :name="eyes.old ? 'eye-off' : 'eye-fill'" color="rgb(144, 147, 153)" @click="eyesChange('old')" size="36rpx"></u-icon>
 						</template>
 					</u-input>
 				</view>
@@ -24,10 +24,10 @@
 			<view class="ui-form-item">
 				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u-input v-model="form.newPassword" placeholder="请输入新密码" :border="'none'" :password="true"
+					<u-input v-model="form.newPassword" placeholder="请输入新密码" :border="'none'" :password="eyes.new"
 						fontSize="28rpx" clearable>
 						<template slot="suffix">
-							<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
+							<u-icon :name="eyes.new ? 'eye-off' : 'eye-fill'" color="rgb(144, 147, 153)" @click="eyesChange('new')" size="36rpx"></u-icon>
 						</template>
 					</u-input>
 				</view>
@@ -35,10 +35,10 @@
 			<view class="ui-form-item">
 				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="确认密码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u-input v-model="form.reNewPassword" placeholder="再次输入新密码" :border="'none'" :password="true"
+					<u-input v-model="form.reNewPassword" placeholder="再次输入新密码" :border="'none'" :password="eyes.reNew"
 						fontSize="28rpx" clearable>
 						<template slot="suffix">
-							<u-icon name="eye-fill" color="rgb(144, 147, 153)" size="36rpx"></u-icon>
+							<u-icon :name="eyes.reNew ? 'eye-off' : 'eye-fill'" color="rgb(144, 147, 153)" @click="eyesChange('reNew')" size="36rpx"></u-icon>
 						</template>
 					</u-input>
 				</view>
@@ -66,6 +66,11 @@
 					oldPassword: '',
 					newPassword: '',
 					reNewPassword: '',
+				},
+				eyes: {
+					old: true,
+					new: true,
+					reNew: true,
 				}
 			};
 		},
@@ -99,10 +104,19 @@
 					this.handleCancel()
 				})
 			},
+			/**
+			 * 取消
+			 */
 			handleCancel() {
 				setTimeout(() => {
 					uni.navigateBack()
 				}, 500)
+			},
+			/**
+			 * 密码隐藏显示
+			 */
+			eyesChange(type) {
+				this.eyes[type] = !this.eyes[type];
 			}
 		}
 	};

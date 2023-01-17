@@ -204,12 +204,16 @@ public class FamilyController extends BaseController {
     public AjaxResult removeshareFamily(
             @RequestBody @Validated FamilyRequest familyRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (familyRequest.getFamilyId().equals("")|| familyRequest.getFamilyId()==null){
-            ajax = ajax.error("家庭Id不能为空！");
+        if (familyRequest.getShareFamilyId().equals("")|| familyRequest.getShareFamilyId()==null){
+            ajax = ajax.error("共享家庭Id不能为空！");
+            return ajax;
+        }
+        if (familyRequest.getShareMemberId().equals("")|| familyRequest.getShareMemberId()==null){
+            ajax = ajax.error("共享会员Id不能为空！");
             return ajax;
         }
         //查询我的家庭（需要修改的）
-        TFamily tFamily =  tFamilyService.selectTFamilyByFamilyId(Long.valueOf(familyRequest.getFamilyId()));
+        TFamily tFamily =  tFamilyService.selectTFamilyByFamilyId(Long.valueOf(familyRequest.getShareFamilyId()));
         if( tFamily == null){
             ajax = ajax.error("无法查到需要修改的记录！");
             return ajax;
@@ -219,6 +223,7 @@ public class FamilyController extends BaseController {
             return ajax;
         }
         TMemberFamily tMemberFamily = new TMemberFamily();
+        tMemberFamily.setMemberId(Long.valueOf(familyRequest.getShareMemberId()));
         tMemberFamily.setFamilyId(Long.valueOf(familyRequest.getFamilyId()));
         tMemberFamily.setCreateMemberId(Long.valueOf(this.getLoginUser().getMemberId()));
         List<TMemberFamily> tMemberFamilys = iMemberFamilyService.selectTMemberFamilyList(tMemberFamily);

@@ -49,7 +49,7 @@ public class DeviceGroupController extends BaseController
     /**
      * 查询设备组列表
      */
-    @PreAuthorize("@ss.hasPermi('org:deviceGroup:list')")
+    @PreAuthorize("@ss.hasAnyPermi('org:deviceGroup:list,device:groupArrange')")
     @GetMapping("/page")
     public TableDataInfo page(TDeviceGroup devicegroup)
     {

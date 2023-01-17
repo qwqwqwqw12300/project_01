@@ -9,6 +9,16 @@ public class MemberInfo implements Serializable{
 
     private String state;
 
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public Long getMemberId() {
         return memberId;
     }

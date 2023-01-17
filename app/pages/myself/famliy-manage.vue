@@ -44,7 +44,7 @@
 				</view>
 			</view>
 		</u-popup>
-		<add-family @update="getFamilyList" :btnName="'提交'" ref="addFamily"/>
+		<add-family @update="getFamilyList" :btnName="'提交'" ref="addFamily" />
 	</app-body>
 </template>
 
@@ -87,7 +87,9 @@
 			 * 修改家庭
 			 */
 			editFamliy(item) {
-				this.form = {...item}; // 解耦，修改失败不该原值
+				this.form = {
+					...item
+				}; // 解耦，修改失败不该原值
 				this.isEditShow = true;
 			},
 
@@ -102,6 +104,7 @@
 			 * 提交
 			 */
 			onSubmit() {
+				uni.$u.toast('请填写家庭名称')
 				const {
 					name,
 					address,
@@ -119,10 +122,10 @@
 					familyId
 				}).then(res => {
 					uni.$u.toast(res.msg)
+					this.close();
 					setTimeout(() => {
-						this.close();
 						this.getFamilyList()
-					}, 1000)
+					}, 500)
 				})
 			},
 			/**

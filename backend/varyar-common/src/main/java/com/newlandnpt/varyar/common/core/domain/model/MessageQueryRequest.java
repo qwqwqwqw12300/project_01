@@ -4,6 +4,7 @@ import com.newlandnpt.varyar.common.core.domain.entity.BatchMessage;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.List;
 
 public class MessageQueryRequest {
@@ -21,7 +22,6 @@ public class MessageQueryRequest {
     private String familyId;
 
     /** 设备类型 （0雷达波 1监控设备）*/
-    @NotBlank(message = "设备类型不能为空")
     @Size(min = 0, max = 1, message = "设备类型不能超过1个字符")
     private String deviceType;
 
@@ -32,6 +32,28 @@ public class MessageQueryRequest {
     /** 设备id */
     @Size(min = 0, max = 20, message = "设备id不能超过20个字符")
     private String deviceId;
+
+    /** 开始时间 */
+    private Date startDate;
+
+    /** 结束时间 */
+    private Date endDate;
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
     public String getDeviceId() {
         return deviceId;
