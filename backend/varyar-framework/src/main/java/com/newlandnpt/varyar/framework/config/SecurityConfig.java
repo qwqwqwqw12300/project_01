@@ -117,8 +117,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 // 静态资源，可匿名访问
                 .antMatchers(HttpMethod.GET, "/", "/*.html", "/**/*.html", "/**/*.css", "/**/*.js", "/profile/**").permitAll()
                 .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs", "/druid/**").permitAll()
-                //云端接口
+                //云端接收消息接口
                 .antMatchers("/cloud/**").permitAll()
+                //api端的云端接口转发，有需要登录验证的，可以注释掉
+                .antMatchers("/api/cloud/**").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()

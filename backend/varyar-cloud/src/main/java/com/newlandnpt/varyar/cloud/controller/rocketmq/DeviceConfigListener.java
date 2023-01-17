@@ -21,7 +21,7 @@ public class DeviceConfigListener implements RocketMQListener<DeviceConfig> {
 
 	private static final Logger log = LoggerFactory.getLogger(DeviceConfigListener.class);
 	
-	private static final String URL = "http://127.0.0.1:8080/cloud/api/msg/device/test";
+	private static final String URL = "http://127.0.0.1:8088/cloud/api/msg/device/test";
 	
     @Override
     public void onMessage(DeviceConfig deviceConfig) {
