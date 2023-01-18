@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.system.service.impl;
 
 import java.util.List;
 
+import com.newlandnpt.varyar.common.annotation.DataScope;
 import com.newlandnpt.varyar.common.core.domain.model.EventRequest;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.domain.TEventList;
@@ -42,6 +43,7 @@ public class EventServiceImpl implements IEventService
      * @param tEvent 事件
      * @return 事件
      */
+    @DataScope(orgAlias = "eve")
     @Override
     public List<TEvent> selectTEventList(TEvent tEvent)
     {
