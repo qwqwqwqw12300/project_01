@@ -10,14 +10,14 @@
 		<view id="system">
 			<app-logo text="系统消息"></app-logo>
 			<view class="ui-list">
-				<view class="ui-item" v-for="item in messageList" :key="item.msgId">
+				<view class="ui-item" v-for="item in messageList" :key="item.noticeId">
 					<view class="ui-date">
-						{{ item.updateTime }}
+						{{ item.createTime }}
 						<!-- 2022年10月11日 11：22 -->
 					</view>
-					<view class="ui-box active" @click="details(item.msgId)">
-						<text>标题</text>
-						<u-text size="25rpx" color="#666" :lines="3" :text="item.content"></u-text>
+					<view class="ui-box active" @click="details(item)">
+						<text>{{item.noticeTitle}}</text>
+						<u-text size="25rpx" color="#666" :lines="3" :text="item.noticeContent"></u-text>
 						<view class="ui-detail">
 							<text>立即查看</text>
 							<u-icon name="arrow-right" size="40rpx"></u-icon>
@@ -31,7 +31,7 @@
 
 <script>
 	import {
-		GetMessageList,
+		GetSysNotice, postSetNoticeFlag,
 	} from '@/common/http/api.js';
 	export default {
 		data() {
@@ -40,13 +40,17 @@
 			}
 		},
 		methods: {
-			details(id) {
-				uni.navigateTo({
-					url: `/pages/service/message-details?msgId=${id}`
-				})
+			details({noticeId, noticeContent}) {
+				postSetNoticeFlag({noticeId}).then(res => {
+					this.$store.commit('service/setReadInfo', noticeContent);
+					uni.navigateTo({
+						url: `/pages/service/message-details`
+					})
+				});
+			
 			},
 			initDatd() {
-				GetMessageList({}).then(res => {
+				GetSysNotice().then(res => {
 					this.messageList = res.rows
 				})
 			}

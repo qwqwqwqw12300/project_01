@@ -6,11 +6,22 @@ public class DeviceConfig implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
+	/** 自定义 设备id 根据设备id下发参数 **/
+	private String deviceId;
+	
 	private String direction;
 	
 	private AppConfig appConfig;
 	
 	private WalabotConfig walabotConfig;
+
+	public String getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
 
 	public String getDirection() {
 		return direction;

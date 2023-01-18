@@ -64,11 +64,11 @@
 		PostSetDevicePhone,
 		PostSetSosDevicePhone,
 	} from '@/common/http/api.js';
+	import { mapState } from 'vuex';
 	export default {
 		data() {
 			return {
 				isEditShow: false,
-				deviceId: '105',
 				index: 0,
 				list: [],
 				form: {
@@ -84,6 +84,11 @@
 					P: '暂保存、不设置',
 				}
 			};
+		},
+		comments: {
+			...mapState({
+				deviceId: state => state.deviceInfo.deviceId
+			})
 		},
 		methods: {
 			/**

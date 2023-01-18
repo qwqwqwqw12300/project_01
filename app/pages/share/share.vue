@@ -134,6 +134,9 @@
 						...this.shareForm
 					}).then(res => {
 						resolve(res);
+					}, err => {
+						this.shareForm.smsUuid = '';
+						this.$refs.sms.reset();
 					});
 				});
 			},

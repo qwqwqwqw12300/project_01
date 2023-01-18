@@ -24,7 +24,31 @@
 				<view class="ui-form-item">
 					<sms-input ref="sms" @checked="smsChecked" :payload="smsPayload"></sms-input>
 				</view>
-				()
+				<view class="ui-form-item">
+					<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx"></u-text>
+					<view class="ui-input" prop="formParams.pwd">
+						<u-input placeholder="请输入你的密码" v-model="formParams.pwd" :password="eyes.pwd" :border="'none'"
+							fontSize="28rpx" clearable>
+							<template slot="suffix">
+								<u-icon :name="eyes.pwd ? 'eye-off' : 'eye-fill'" color="rgb(144, 147, 153)"
+									size="36rpx" @click="eyesChange('pwd')"></u-icon>
+							</template>
+						</u-input>
+					</view>
+				</view>
+				<view class="ui-form-item">
+					<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="确认密码" color="#444" size="28rpx">
+					</u-text>
+					<view class="ui-input" prop="formParams.confirm">
+						<u-input placeholder="请再次输入您的密码" v-model="formParams.confirm" :password="eyes.confirm"
+							:border="'none'" fontSize="28rpx" clearable>
+							<template slot="suffix">
+								<u-icon :name="eyes.confirm ? 'eye-off' : 'eye-fill'" @click="eyesChange('confirm')"
+									color="rgb(144, 147, 153)" size="36rpx"></u-icon>
+							</template>
+						</u-input>
+					</view>
+				</view>
 				<view class="ui-agreement">
 					<u-checkbox-group v-model="radiovalue">
 						<u-checkbox :customStyle="{ marginRight: '8rpx' }" shape="square" activeColor="#fdbc2b"
@@ -80,6 +104,7 @@
 			 * 注册
 			 */
 			register() {
+				console.log(this.formParams, 'this.formParams');
 				if (this.formParams.uuid && this.formParams.pwd && this.formParams.confirm) {
 					if (!this.radiovalue.includes('ag')) {
 						uni.showToast({

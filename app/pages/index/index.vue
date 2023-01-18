@@ -10,7 +10,7 @@
 		<app-body :hideTitle="true">
 			<view class="ui-scan">
 				<view class="ui-sys-message">
-					<u-badge :isDot="true" absolute :offset="[0, 0]"></u-badge>
+					<u-badge :isDot="!!readInfo.length" absolute :offset="[0, 0]"></u-badge>
 					<u-icon name="chat" @click="goPage('/pages/service/system-messages')" class="active" color="#fff"
 						size="50rpx"></u-icon>
 				</view>
@@ -82,7 +82,8 @@
 <script>
 	import {
 		getDeviceList,
-		getFamilyList
+		getFamilyList,
+        GetReadInfo
 	} from '../../common/http/api';
 	import {
 		mapState,
@@ -94,6 +95,8 @@
 			return {
 				/**是否展示添加弹窗**/
 				isAddShow: false,
+				/**公告状态**/
+				readInfo: []
 			}
 		},
 		computed: {
@@ -107,6 +110,7 @@
 			Promise.all([
 				this.getAllFamily(),
 				this.getAllDevices(),
+				this.getReadInfo()
 				// this.getAllRoom()
 			]);
 		},
@@ -154,6 +158,19 @@
 			 */
 			addStep() {
 				this.$refs.addStepRef.open();
+			},
+			
+			/**
+			 * 获取公告状态
+			 */
+			getReadInfo() {
+				return new Promise(resolve => {
+					GetReadInfo().then(res => {
+						this.readInfo = res.rows;
+						resolve();
+					});
+				})
+				
 			}
 		}
 	}

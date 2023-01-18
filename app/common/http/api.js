@@ -229,3 +229,21 @@ export const PostShareFamily = (params) => http.post('/api/family/shareFamily', 
  * 删除分享家庭
  */
 export const PostRemShareFamily = (params) => http.post('/api/family/remShareFamily', params)
+
+/**
+ * 获取公告信息
+ */
+export const GetReadInfo = () => http.get('/api/notice/readInfo');
+
+/**
+ * 获取公告
+ */
+export const GetSysNotice = () => http.get('/api/notice/sysNotice');
+
+/**
+ * 获取公告
+ */
+export const postSetNoticeFlag = (params) => http.post('/api/notice/setNoticeFlag', params);
+
+
+
