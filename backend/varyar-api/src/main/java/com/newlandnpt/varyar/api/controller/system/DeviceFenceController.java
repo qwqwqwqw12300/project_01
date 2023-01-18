@@ -58,32 +58,98 @@ public class DeviceFenceController extends BaseController
      * 新增设备电子围栏
      */
     @PostMapping("/addFence")
-    public AjaxResult add(@RequestBody TDeviceFence tDeviceFence)
+    public AjaxResult add( @RequestBody @Validated TDeviceFence tDeviceFence)
     {
+        AjaxResult ajax = AjaxResult.success();
+        if(tDeviceFence.getDeviceId().equals("")||tDeviceFence.getDeviceId()==null){
+            ajax = ajax.error("设备Id不能为空！");
+            return ajax;
+        }
+        if(tDeviceFence.getAddress().equals("")||tDeviceFence.getAddress()==null){
+            ajax = ajax.error("地址信息不能为空！");
+            return ajax;
+        }
+        if(tDeviceFence.getLatitude().equals("")||tDeviceFence.getLatitude()==null){
+            ajax = ajax.error("纬度信息不能为空！");
+            return ajax;
+        }
+        if(tDeviceFence.getLongitude().equals("")||tDeviceFence.getLongitude()==null){
+            ajax = ajax.error("经度信息不能为空！");
+            return ajax;
+        }
+        if(tDeviceFence.getRadius().equals("")||tDeviceFence.getRadius()==null){
+            ajax = ajax.error("半径不能为空！");
+            return ajax;
+        }
         //获取设备id
-        Long deviceFenceId  =  tDeviceFence.getDeviceFenceId();
-        TDevice tdevice =  iDeviceService.selectDeviceByDeviceId(deviceFenceId);
+        TDevice tdevice =  iDeviceService.selectDeviceByDeviceId(Long.valueOf(tDeviceFence.getDeviceId()));
         if (!tdevice.getMemberId().equals(String.valueOf(this.getLoginUser().getMemberId()))){
             throw new ServiceException("无权限设置本设备！");
         }
-        return toAjax(deviceFenceService.insertTDeviceFence(tDeviceFence));
+        TDeviceFence cond = new TDeviceFence();
+        cond.setDeviceId(Long.valueOf(tDeviceFence.getDeviceId()));
+        List<TDeviceFence> TDeviceFences = deviceFenceService.selectTDeviceFenceList(cond);
+        if (TDeviceFences.size()==0){
+            tDeviceFence = new TDeviceFence();
+            deviceFenceService.insertTDeviceFence(tDeviceFence);
+        }else if (TDeviceFences.size()>0){
+            ajax = ajax.error("已设置电子围栏信息！");
+            return ajax;
+        }
+        return ajax;
     }
 
     /**
      * 修改设备电子围栏
      */
     @PutMapping
-    public AjaxResult edit(@RequestBody TDeviceFence tDeviceFence)
-    {
-        return toAjax(deviceFenceService.updateTDeviceFence(tDeviceFence));
+    public AjaxResult edit( @RequestBody @Validated TDeviceFence tDeviceFence){
+        AjaxResult ajax = AjaxResult.success();
+        if(tDeviceFence.getDeviceId().equals("")||tDeviceFence.getDeviceId()==null){
+            ajax = ajax.error("设备Id不能为空！");
+            return ajax;
+        }
+        //获取设备id
+        TDevice tdevice =  iDeviceService.selectDeviceByDeviceId(Long.valueOf(tDeviceFence.getDeviceId()));
+        if (!tdevice.getMemberId().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            throw new ServiceException("无权限修改本设备！");
+        }
+        try {
+            deviceFenceService.updateTDeviceFence(tDeviceFence);
+        }catch (Exception e){
+            ajax = ajax.error("设备修改失败！");
+            return ajax;
+        }
+        return ajax ;
     }
 
     /**
      * 删除设备电子围栏
      */
-    @DeleteMapping("/{deviceFenceIds}")
-    public AjaxResult remove(@PathVariable Long[] deviceFenceIds)
-    {
-        return toAjax(deviceFenceService.deleteTDeviceFenceByDeviceFenceIds(deviceFenceIds));
+    @DeleteMapping("/rem")
+    public AjaxResult remove( @RequestBody @Validated TDeviceFence tDeviceFence){
+        AjaxResult ajax = AjaxResult.success();
+        if(tDeviceFence.getDeviceId().equals("")||tDeviceFence.getDeviceId()==null){
+            ajax = ajax.error("设备Id不能为空！");
+            return ajax;
+        }
+        //获取设备id
+        TDevice tdevice =  iDeviceService.selectDeviceByDeviceId(Long.valueOf(tDeviceFence.getDeviceId()));
+        if (!tdevice.getMemberId().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            throw new ServiceException("无权限删除本设备！");
+        }
+        List<TDeviceFence> TDeviceFences = deviceFenceService.selectTDeviceFenceByDeviceId(Long.valueOf(tDeviceFence.getDeviceId()));
+        if (TDeviceFences.size() == 0) {
+            throw new ServiceException("无设备电子围栏数据！");
+        }
+        for (TDeviceFence item : TDeviceFences){
+            try {
+                deviceFenceService.deleteTDeviceFenceByDeviceFenceId(item.getDeviceFenceId());
+            }catch (Exception e){
+                ajax = ajax.error("设备删除失败！");
+                return ajax;
+            }
+        }
+        return ajax ;
     }
 }

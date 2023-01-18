@@ -25,7 +25,7 @@ public interface IDeviceFenceService
      * @return
      */
     public TDeviceFence selectTDeviceFenceByDeviceNo(String deviceNo);
-
+    public List<TDeviceFence> selectTDeviceFenceByDeviceId(Long deviceId);
     /**
      * 查询设备电子围栏列表
      *

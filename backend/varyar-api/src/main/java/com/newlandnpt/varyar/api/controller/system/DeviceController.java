@@ -132,9 +132,6 @@ public class DeviceController extends BaseController {
         if (deviceRequest.getDeviceNo().equals("")|| deviceRequest.getDeviceNo()==null){
             error("设备编号不能为空！");
         }
-        if (deviceRequest.getLocation().equals("")|| deviceRequest.getLocation()==null){
-            error("设备位置不能为空！");
-        }
         return null;
     }
 
