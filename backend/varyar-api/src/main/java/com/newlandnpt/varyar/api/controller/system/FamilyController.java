@@ -82,6 +82,7 @@ public class FamilyController extends BaseController {
             tFamily.setShareFlag("2");
             tFamily.setCreateById(String.valueOf(memberId));
             tFamilyService.insertTFamily(tFamily,memberId);
+            ajax = AjaxResult.success(tFamily);
         } catch (Exception e){
             ajax = ajax.error("新增我的家庭失败！");
             return ajax;

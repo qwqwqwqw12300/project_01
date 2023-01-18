@@ -85,7 +85,7 @@
 				}
 			};
 		},
-		comments: {
+		computed: {
 			...mapState({
 				deviceId: state => state.deviceInfo.deviceId
 			})

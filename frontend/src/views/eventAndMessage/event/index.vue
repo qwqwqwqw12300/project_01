@@ -48,9 +48,9 @@
           />
         </el-form-item>
 
-        <el-form-item label="设备名称" prop="deviceNo">
+        <el-form-item label="设备名称" prop="deviceName">
           <el-input
-            v-model="queryParams.deviceNo"
+            v-model="queryParams.deviceName"
             placeholder="请输入设备名称"
             clearable
             @keyup.enter.native="handleQuery"
@@ -107,7 +107,7 @@
             icon="el-icon-download"
             size="mini"
             @click="handleExport"
-            v-hasPermi="['system:event:export']"
+            v-hasPermi="['event:export']"
           >导出</el-button>
         </el-col>
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -115,40 +115,29 @@
   
       <el-table v-loading="loading" :data="eventList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="级别" align="center" prop="level" />
-        <el-table-column label="消息编号" align="center" prop="no" />
-        <el-table-column label="消息内容" align="center" prop="content" />
+        <el-table-column label="重要级别" align="center" prop="level" />
+        <el-table-column label="事件编号" align="center" prop="no" />
+        <el-table-column label="事件内容" align="center" prop="content" />
         <el-table-column label="报警时间" align="center" prop="operateTime" width="180" color="#FF0000">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.operateTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="设备名称" align="center" prop="deviceId" />
+        <el-table-column label="设备名称" align="center" prop="deviceName" />
         <el-table-column label="设备编号" align="center" prop="deviceNo" />
+       
+
         <!-- 暂时预留  -->
         <el-table-column label="设备类型" align="center" prop="operateType" />
         <!-- 暂时预留  -->
-        <el-table-column label="设备归属机构" align="center" prop="orgId" /> 
+        <el-table-column label="设备归属机构" align="center" prop="orgName" /> 
         <el-table-column label="机构类型" align="center" prop="orgName" />
-        <el-table-column label="处理标志" align="center" prop="operateFlag" />
-        <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column label="处理标志" align="center" prop="operateFlag" >
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-edit"
-              @click="handleUpdate(scope.row)"
-              v-hasPermi="['system:event:edit']"
-            >修改</el-button>
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-delete"
-              @click="handleDelete(scope.row)"
-              v-hasPermi="['system:event:remove']"
-            >删除</el-button>
+           {{ operateFlagFormat(scope.row) }}
           </template>
-        </el-table-column> -->
+        </el-table-column>
+   
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button
@@ -339,6 +328,12 @@
         this.orgOptions = response.data;
       });
     },
+
+    // 发送状态字典翻译
+    operateFlagFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.sys_operate_flag, row.operateFlag)
+    },
+
     // 筛选节点
     filterNode(value, data) {
       if (!value) return true;

@@ -24,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="memberId != null "> and member_id = #{memberId}</if>
             <if test="readFlag != null  and readFlag != ''"> and read_flag = #{readFlag}</if>
         </where>
+        Order By create_time desc
     </select>
     
     <select id="selectTNoticeByNoticeId" parameterType="Long" resultMap="TNoticeResult">

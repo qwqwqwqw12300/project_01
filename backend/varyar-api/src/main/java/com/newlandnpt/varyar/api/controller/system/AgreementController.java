@@ -3,8 +3,10 @@ package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.system.domain.TAgreement;
 import com.newlandnpt.varyar.system.service.IAgreementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,9 +26,11 @@ public class AgreementController extends BaseController
      * 通过协议类型获取协议详细信息:0隐私协议 1app协议
      */
     @PostMapping(value = "/getAgreementInfo")
-    public AjaxResult getInfo(@RequestParam("agreementType") String agreementType)
-    {
-        return success(agreementService.selectTAgreementByAgreementType(agreementType));
+    public AjaxResult getInfo(@RequestBody @Validated TAgreement tAgreement){
+        if (tAgreement.getType() ==null || tAgreement.getType().equals("")){
+            return error("协议类型不能为空！");
+        }
+        return success(agreementService.selectTAgreementByAgreementType(tAgreement.getType()));
     }
 
     /**
@@ -37,6 +41,7 @@ public class AgreementController extends BaseController
     {
         //用户app接入协议类型
         String agreementType="1";
-        return success(agreementService.selectTAgreementByAgreementType(agreementType));
+        TAgreement tAgreement = agreementService.selectTAgreementByAgreementType(agreementType);
+        return AjaxResult.success(tAgreement);
     }
 }

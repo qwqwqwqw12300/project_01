@@ -52,7 +52,10 @@ public class DeviceFenceServiceImpl implements IDeviceFenceService {
     public TDeviceFence selectTDeviceFenceByDeviceNo(String deviceNo) {
         return deviceFenceMapper.selectTDeviceFenceByDeviceNo(deviceNo);
     }
-
+    @Override
+    public List<TDeviceFence> selectTDeviceFenceByDeviceId(Long deviceId) {
+        return deviceFenceMapper.selectTDeviceFenceByDeviceId(deviceId);
+    }
     /**
      * 查询设备电子围栏列表
      *

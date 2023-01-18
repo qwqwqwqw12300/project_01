@@ -58,6 +58,10 @@ public class TMsg extends BaseEntity
     @Excel(name = "处理人会员id")
     private Long memberId;
 
+    /** 机构id */
+    @Excel(name = "机构id")
+    private Long orgId;
+
     /** 操作人员 */
     @Excel(name = "操作人员")
     private String operator;
@@ -179,6 +183,14 @@ public class TMsg extends BaseEntity
         return memberId;
     }
 
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
+    }
+
     public String getMsgType() {
         return msgType;
     }
@@ -256,6 +268,7 @@ public class TMsg extends BaseEntity
                 ", deviceId=" + deviceId +
                 ", familyId=" + familyId +
                 ", memberId=" + memberId +
+                ", orgId=" + orgId + '\'' +
                 ", operator='" + operator + '\'' +
                 ", sendStatus='" + sendStatus + '\'' +
                 ", reason='" + reason + '\'' +
