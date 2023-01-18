@@ -16,5 +16,9 @@ public class DeviceConstants {
     public static final String STATUS_ACTIVATED = "1";
     /** 状态 2下线 */
     public static final String STATUS_OFFLINE = "2";
+    /** 删除标志 0存在 */
+    public static final String DEL_FLAG_NOT_ACTIVE = "0";
+    /** 删除标志 1删除 */
+    public static final String DEL_FLAG_ACTIVATED = "1";
 
 }
