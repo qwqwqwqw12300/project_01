@@ -1,6 +1,8 @@
 package com.newlandnpt.varyar.system.service.impl;
 
 import java.util.List;
+
+import com.newlandnpt.varyar.common.annotation.DataScope;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,7 @@ public class MsgServiceImpl implements IMsgService
      * @param tMsg 消息
      * @return 消息
      */
+    @DataScope(orgAlias = "m")
     @Override
     public List<TMsg> selectTMsgList(TMsg tMsg)
     {

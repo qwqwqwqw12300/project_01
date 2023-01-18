@@ -73,6 +73,7 @@
 			</template>
 			<!-- /空户 -->
 			<add-step ref="addStepRef"></add-step>
+			<button @click="goPage('/pages/equipment/map')">跳转</button>
 		</app-body>
 	</view>
 

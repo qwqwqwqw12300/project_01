@@ -29,6 +29,7 @@ public class DeviceConfigListener implements RocketMQListener<DeviceConfig> {
     public void onMessage(DeviceConfig deviceConfig) {
     	String url = StringUtils.format(URL, deviceConfig.getDeviceId());
     	log.debug("监听到[{}], 报文对象：{} ", "设备参数下发消息", JSON.toJSONString(deviceConfig));
-    	HttpClientUtil.sendPost(url, deviceConfig);
+    	String result = HttpClientUtil.sendPost(url, deviceConfig);
+    	
     }
 }

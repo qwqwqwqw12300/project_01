@@ -13,6 +13,7 @@
         <result property="deviceId"    column="device_id"    />
         <result property="familyId"    column="family_id"    />
         <result property="memberId"    column="member_id"    />
+        <result property="orgId"    column="org_id"    />
         <result property="operator"    column="operator"    />
         <result property="sendStatus"    column="send_status"    />
         <result property="reason"    column="reason"    />
@@ -25,7 +26,7 @@
     </resultMap>
 
     <sql id="selectTMsgVo">
-        select m.msg_id, m.msg_type,m.device_type,m.event_level, m.no, m.content, m.event_id, m.device_id, m.family_id, m.member_id, m.operator, m.send_status, m.reason, m.operate_flag, m.send_time, m.create_time, m.update_time,(select td.name from t_device td where td.device_id = m.device_id) as device_name from t_msg m
+        select m.msg_id, m.msg_type,m.device_type,m.event_level, m.no, m.content, m.event_id, m.device_id, m.family_id, m.member_id,m.org_id,m.operator, m.send_status, m.reason, m.operate_flag, m.send_time, m.create_time, m.update_time,(select td.name from t_device td where td.device_id = m.device_id) as device_name from t_msg m
     </sql>
     <sql id="selectTMsgByMemberId">
         select tm.msg_id, tm.msg_type, tm.device_type, tm.event_level, tm.no, tm.content, tm.event_id, tm.device_id, tm.family_id, tm.member_id, tm.operate_flag, tm.create_time,
@@ -44,6 +45,7 @@
             <if test="deviceId != null "> and m.device_id = #{deviceId}</if>
             <if test="familyId != null "> and m.family_id = #{familyId}</if>
             <if test="memberId != null "> and m.member_id = #{memberId}</if>
+            <if test="orgId != null "> and m.org_id = #{orgId}</if>
             <if test="operator != null  and operator != ''"> and m.operator = #{operator}</if>
             <if test="sendStatus != null  and sendStatus != ''"> and m.send_status = #{sendStatus}</if>
             <if test="reason != null  and reason != ''"> and m.reason = #{reason}</if>
@@ -51,7 +53,10 @@
             <if test="sendTime != null "> and m.send_time = #{sendTime}</if>
             <if test="startDate != null "> and m.create_time <![CDATA[>=]]> #{startDate}</if>
             <if test="endDate != null "> and m.create_time  <![CDATA[<=]]> #{endDate}</if>
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
         </where>
+        Order By m.create_time desc
     </select>
 
     <select id="selectTMsgByMemberId" parameterType="Long" resultMap="TMsgResult">
@@ -76,6 +81,7 @@
             <if test="deviceId != null">device_id,</if>
             <if test="familyId != null">family_id,</if>
             <if test="memberId != null">member_id,</if>
+            <if test="orgId != null">org_id,</if>
             <if test="operator != null">operator,</if>
             <if test="sendStatus != null">send_status,</if>
             <if test="reason != null">reason,</if>
@@ -92,6 +98,7 @@
             <if test="deviceId != null">#{deviceId},</if>
             <if test="familyId != null">#{familyId},</if>
             <if test="memberId != null">#{memberId},</if>
+            <if test="orgId != null">#{orgId},</if>
             <if test="operator != null">#{operator},</if>
             <if test="sendStatus != null">#{sendStatus},</if>
             <if test="reason != null">#{reason},</if>
@@ -112,6 +119,7 @@
             <if test="deviceId != null">device_id = #{deviceId},</if>
             <if test="familyId != null">family_id = #{familyId},</if>
             <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="orgId != null">org_id = #{orgId},</if>
             <if test="operator != null">operator = #{operator},</if>
             <if test="sendStatus != null">send_status = #{sendStatus},</if>
             <if test="reason != null">reason = #{reason},</if>

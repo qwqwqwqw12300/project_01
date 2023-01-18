@@ -43,7 +43,6 @@
 			handleSelect(val) {
 				uni.$emit('searchData', val)
 				uni.navigateBack()
-				console.log(val, 'val')
 			},
 			searchChange($e) {
 				uni.$u.debounce(() => {

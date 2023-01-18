@@ -49,7 +49,6 @@ public class DeviceGroupController extends BaseController
     /**
      * 查询设备组列表
      */
-    @PreAuthorize("@ss.hasAnyPermi('org:deviceGroup:list,device:groupArrange')")
     @GetMapping("/page")
     public TableDataInfo page(TDeviceGroup devicegroup)
     {
@@ -61,7 +60,6 @@ public class DeviceGroupController extends BaseController
     /**
      * 获取设备组详细信息
      */
-    @PreAuthorize("@ss.hasPermi('org:deviceGroup:query')")
     @GetMapping(value = "/{devicegroupId}")
     public AjaxResult getInfo(@PathVariable("devicegroupId") Long devicegroupId)
     {
@@ -107,8 +105,8 @@ public class DeviceGroupController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('org:deviceGroup:arrangeUser')")
     @Log(title = "设备组-运营人员", businessType = BusinessType.UPDATE)
-    @PutMapping("/arrange/user/{userId}")
-    public AjaxResult arrangeDeviceGroups(@RequestBody Long[] deviceGroupIds,@PathVariable Long userId)
+    @PutMapping({"/arrange/user","/arrange/user/{userId}"})
+    public AjaxResult arrangeDeviceGroups(@RequestBody Long[] deviceGroupIds,@PathVariable(required = false) Long userId)
     {
         for(Long deviceGroupId:deviceGroupIds){
             TDeviceGroup deviceGroup = deviceGroupService.selectDeviceGroupByDeviceGroupId(deviceGroupId);
@@ -116,9 +114,11 @@ public class DeviceGroupController extends BaseController
                 orgService.checkOrgDataScope(deviceGroup.getOrgId());
             }
         }
-        SysUser user = userService.selectUserById(userId);
-        if(user!=null){
-            orgService.checkOrgDataScope(user.getOrgId());
+        if(userId!=null){
+            SysUser user = userService.selectUserById(userId);
+            if(user!=null){
+                orgService.checkOrgDataScope(user.getOrgId());
+            }
         }
 
         return toAjax(deviceGroupService.arrangeDeviceGroups(deviceGroupIds,userId));

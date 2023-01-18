@@ -30,7 +30,6 @@ public class BizHomeController extends BaseController {
      *
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('home:biz:list')")
     @GetMapping("/device/care/list")
     public AjaxResult careDeviceList() {
         return success(deviceService.selectBizCareDeviceList(getUserId()));
@@ -41,7 +40,6 @@ public class BizHomeController extends BaseController {
      *
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('home:biz:list')")
     @GetMapping("/device/{deviceId}/event/unhandle/count/groupbylevel")
     public AjaxResult countUnHandleByDeviceGroupByLevel(@PathVariable Long deviceId) {
         return success(eventService.countUnHandleByDeviceGroupByLevel(deviceId));

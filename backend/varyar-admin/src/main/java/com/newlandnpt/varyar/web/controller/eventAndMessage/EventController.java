@@ -37,7 +37,6 @@ public class EventController extends BaseController
     /**
      * 查询事件列表
      */
-    @PreAuthorize("@ss.hasPermi('eventAndMessage:event:list')")
     @GetMapping("/list")
     public TableDataInfo list(TEvent tEvent)
     {
@@ -62,7 +61,6 @@ public class EventController extends BaseController
     /**
      * 获取事件详细信息
      */
-    @PreAuthorize("@ss.hasPermi('eventAndMessage:event:query')")
     @GetMapping(value = "/{eventId}")
     public AjaxResult getInfo(@PathVariable("eventId") Long eventId)
     {

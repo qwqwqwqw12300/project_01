@@ -5,7 +5,6 @@ package com.newlandnpt.varyar.system.domain.req;
  * @author lisd
  * @date 2022/12/25
  */
-//@Data
 public class CircleReq {
     /**
      * 高德key
@@ -32,8 +31,8 @@ public class CircleReq {
      * 支持中文、英文大小字母、英文下划线"_"、英文横线"-"和数字，长度不大于128个字符
      */
     private String name;
-    
-    
+
+
 
     public String getKey() {
 		return key;

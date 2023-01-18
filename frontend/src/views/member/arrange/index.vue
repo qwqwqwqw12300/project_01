@@ -120,7 +120,7 @@ export default {
     /** 会员相关 */
     membersData() {
       return [...this.arrangeMemberList, ...this.notArrangeMemberList].map(x => {
-        return {key: x.memberId, label: x.name, disabled: false}
+        return {key: x.memberId, label: x.phone, disabled: false}
       });
     }
   },
@@ -185,6 +185,9 @@ export default {
     handleSelectionChange(currentRow) {
       this.deviceGroupUserId = currentRow.userId;
       this.deviceGroupUserOrgId = currentRow.orgId;
+
+      this.loadArrangeMemberList();
+      this.loadNotArrangeMemberList();
     },
     close() {
       this.$tab.closePage();

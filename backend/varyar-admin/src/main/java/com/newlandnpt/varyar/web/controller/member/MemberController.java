@@ -33,7 +33,6 @@ public class MemberController extends BaseController
     /**
      * 查询会员列表
      */
-    @PreAuthorize("@ss.hasPermi('member:list')")
     @GetMapping("/page")
     public TableDataInfo list(TMember member)
     {
@@ -45,7 +44,6 @@ public class MemberController extends BaseController
     /**
      * 获取会员详细信息
      */
-    @PreAuthorize("@ss.hasPermi('member:query')")
     @GetMapping(value = "/{memberId}")
     public AjaxResult getInfo(@PathVariable("memberId") Long memberId)
     {
@@ -54,7 +52,6 @@ public class MemberController extends BaseController
     /**
      * 获取会员家庭分页
      */
-    @PreAuthorize("@ss.hasPermi('member:query')")
     @GetMapping(value = "/{memberId}/family/page")
     public TableDataInfo familyList(@PathVariable("memberId") Long memberId)
     {

@@ -38,7 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTEventVo">
-        select event_id, no, level, content, device_id, devicegroup_id, family_id, device_no, org_id, org_name, operate_type, member_id, member_phone, member_name, user_id, user_name, operate_time, operate_flag, create_time, update_time from t_event
+        select event_id, no, level, content, device_id, devicegroup_id, family_id, device_no, org_id, org_name, operate_type, member_id, member_phone, member_name, user_id, user_name, operate_time, operate_flag, create_time, update_time from t_event eve
     </sql>
 
     <select id="selectTEventList" parameterType="TEvent" resultMap="TEventResult">
@@ -61,6 +61,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
             <if test="operateTime != null "> and operate_time = #{operateTime}</if>
             <if test="operateFlag != null  and operateFlag != ''"> and operate_flag = #{operateFlag}</if>
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
         </where>
     </select>
     

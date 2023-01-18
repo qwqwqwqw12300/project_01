@@ -11,7 +11,7 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import com.newlandnpt.varyar.common.config.RuoYiConfig;
+import com.newlandnpt.varyar.common.config.VayyarConfig;
 import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.framework.interceptor.RepeatSubmitInterceptor;
 
@@ -31,7 +31,7 @@ public class ResourcesConfig implements WebMvcConfigurer
     {
         /** 本地文件上传路径 */
         registry.addResourceHandler(Constants.RESOURCE_PREFIX + "/**")
-                .addResourceLocations("file:" + RuoYiConfig.getProfile() + "/");
+                .addResourceLocations("file:" + VayyarConfig.getProfile() + "/");
 
         /** swagger配置 */
         registry.addResourceHandler("/swagger-ui/**")

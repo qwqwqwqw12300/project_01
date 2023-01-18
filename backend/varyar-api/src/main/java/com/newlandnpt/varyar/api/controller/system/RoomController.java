@@ -93,6 +93,7 @@ public class RoomController extends BaseController {
             tRoom.setRoomLeft(roomRequest.getRoomLeft());
             tRoom.setRoomRight(roomRequest.getRoomRight());
             iRoomService.insertTRoom(tRoom);
+            ajax = AjaxResult.success(tRoom);
         } catch (Exception e){
             ajax = ajax.error("新增我的房间失败！");
             return ajax;

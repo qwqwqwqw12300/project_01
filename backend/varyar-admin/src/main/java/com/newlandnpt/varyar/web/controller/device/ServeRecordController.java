@@ -37,7 +37,6 @@ public class ServeRecordController extends BaseController
     /**
      * 查询服务记录列表
      */
-    @PreAuthorize("@ss.hasPermi('device:serveRecord:list')")
     @GetMapping("/page")
     public TableDataInfo list(TServeRecord serveRecord)
     {
@@ -62,7 +61,6 @@ public class ServeRecordController extends BaseController
     /**
      * 获取服务记录详细信息
      */
-    @PreAuthorize("@ss.hasPermi('device:serveRecord:query')")
     @GetMapping(value = "/{recordId}")
     public AjaxResult getInfo(@PathVariable("recordId") Long recordId)
     {
@@ -72,7 +70,7 @@ public class ServeRecordController extends BaseController
     /**
      * 新增服务记录
      */
-//    @PreAuthorize("@ss.hasPermi('device:serveRecord:add')")
+    @PreAuthorize("@ss.hasPermi('device:serveRecord:add')")
     @Log(title = "服务记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody TServeRecord serveRecord)
