@@ -43,8 +43,18 @@ public class TFamily extends BaseEntity
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
+    /** 创建者id*/
+    private String createById;
 
-    public void setFamilyId(Long familyId) 
+    public String getCreateById() {
+        return createById;
+    }
+
+    public void setCreateById(String createById) {
+        this.createById = createById;
+    }
+
+    public void setFamilyId(Long familyId)
     {
         this.familyId = familyId;
     }

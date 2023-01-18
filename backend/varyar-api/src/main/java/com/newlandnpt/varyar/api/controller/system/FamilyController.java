@@ -175,6 +175,13 @@ public class FamilyController extends BaseController {
             ajax = ajax.error("非创建者无权分享！");
             return ajax;
         }
+        TMemberFamily item = new TMemberFamily();
+        item.setPhone(shareFamilyRequest.getPhone());
+        List<TMemberFamily> tMemberFamilys = iMemberFamilyService.selectTMemberFamilyList(item);
+        if(tMemberFamilys.size()>0){
+            ajax = ajax.error("已分享给该用户！");
+            return ajax;
+        }
         //用手机号查询是否有此用户
         TMember member = iMemberService.selectMemberByPhone(shareFamilyRequest.getPhone());
         TMemberFamily tMemberFamily = new TMemberFamily();

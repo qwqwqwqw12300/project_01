@@ -32,7 +32,7 @@ public interface ISysNoticeService
      * @return 公告集合
      */
     public List<SysNotice> selectNoticeListByMemberId(Long memberId);
-
+    public List<SysNotice> selectNoticeListByReadFlag(Long memberId);
     /**
      * 新增公告
      * 

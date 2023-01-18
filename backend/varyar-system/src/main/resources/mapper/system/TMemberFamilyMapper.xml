@@ -39,6 +39,7 @@
             <if test="familyId != null ">and family_id = #{familyId}</if>
             <if test="createMemberId != null ">and create_member_id = #{createMemberId}</if>
             <if test="shareFlag != null  and shareFlag != ''">and share_flag = #{shareFlag}</if>
+            <if test="phone != null  and phone != ''">and phone = #{phone}</if>
             and del_flag = '0'
         </where>
     </select>

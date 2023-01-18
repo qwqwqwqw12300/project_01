@@ -46,7 +46,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select sn.notice_id, sn.notice_title, sn.notice_type, cast(sn.notice_content as char) as notice_content,
         sn.status, sn.create_by, sn.create_time, sn.update_by, sn.update_time, sn.remark,
         (select tn.read_flag  from t_notice tn where tn.sys_notice_id= sn.notice_id and tn.member_id=#{memberId}) as readFlag
-from sys_notice sn
+from sys_notice sn where sn.status ='0'
+    </select>
+    <select id="selectNoticeListByReadFlag" parameterType="Long" resultMap="SysNoticeResult">
+    select sn.notice_id, sn.notice_title, sn.notice_type, cast(sn.notice_content as char) as notice_content,
+        sn.status, sn.create_by, sn.create_time, sn.update_by, sn.update_time, sn.remark
+    from sys_notice sn join  t_notice tn on tn.sys_notice_id= sn.notice_id
+    where sn.status ='0' and tn.member_id=#{memberId} and tn.read_flag='1'
     </select>
 
     <insert id="insertNotice" parameterType="SysNotice">

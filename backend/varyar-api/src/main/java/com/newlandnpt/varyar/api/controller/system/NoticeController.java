@@ -43,8 +43,13 @@ public class NoticeController extends BaseController {
     @GetMapping("/readInfo")
     public TableDataInfo readInfo()
     {
-        Long memberId = this.getLoginUser().getMemberId();
-        List<TNotice> list = itNoticeService.selectTNoticeByMemberId(memberId);
+        List<SysNotice>  list = iSysNoticeService.selectNoticeListByReadFlag(this.getLoginUser().getMemberId());
+        for (int i = 0; i <list.size() ; i++) {
+            SysNotice item = list.get(i);
+            if (item.getReadFlag()==null|| item.getReadFlag().equals("")){
+                list.remove(i);
+            }
+        }
         return getDataTable(list);
     }
 
@@ -54,17 +59,26 @@ public class NoticeController extends BaseController {
     @PostMapping("/setNoticeFlag")
     public AjaxResult setNoticeFlag(@RequestBody @Validated NoticeRequest noticeRequest)
     {   AjaxResult ajax =  AjaxResult.success();
-        Long memberId = this.getLoginUser().getMemberId();
-      //  List<TNotice> list = itNoticeService.selectTNoticeByMemberId(memberId);
-        TNotice tNotice = new TNotice();
-        tNotice.setReadFlag("1");
-        tNotice.setSysNoticeId(Long.valueOf(noticeRequest.getNoticeId()));
-        tNotice.setMemberId(this.getLoginUser().getMemberId());
-        try {
-            itNoticeService.insertTNotice(tNotice);
-        }catch (Exception e){
-            ajax = ajax.error("标志系统标识失败！");
-            return ajax;
+        TNotice tNotice = itNoticeService.selectTNoticeByNoticeId(Long.valueOf(noticeRequest.getNoticeId()));
+        if (tNotice !=null ){
+            tNotice.setReadFlag("1");
+            try {
+                itNoticeService.updateTNotice(tNotice);
+            }catch (Exception e){
+                ajax = ajax.error("标志系统标识失败！");
+                return ajax;
+            }
+        }else{
+            tNotice = new TNotice();
+            tNotice.setReadFlag("1");
+            tNotice.setSysNoticeId(Long.valueOf(noticeRequest.getNoticeId()));
+            tNotice.setMemberId(this.getLoginUser().getMemberId());
+            try {
+                itNoticeService.insertTNotice(tNotice);
+            }catch (Exception e){
+                ajax = ajax.error("标志系统标识失败！");
+                return ajax;
+            }
         }
         return ajax;
     }

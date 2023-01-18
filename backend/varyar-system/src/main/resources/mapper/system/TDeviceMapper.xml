@@ -28,7 +28,6 @@
         <result property="orgNo" column="org_no"/>
         <result property="delFlag" column="del_flag"/>
         <result property="createBy" column="create_by"/>
-        <result property="createById" column="create_by_id"/>
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
@@ -46,7 +45,7 @@
             (select org_name from t_org where org_id = d.org_id) org_name,
             (select no from t_member where member_id = d.member_id) member_no,
             (select name from t_family where family_id = d.family_id) family_name,
-            (select name from t_room where room_id = d.room_id) room_name,create_by_id
+            (select name from t_room where room_id = d.room_id) room_name
         from t_device d
     </sql>
     <sql id="selectTDeviceByMemberId">

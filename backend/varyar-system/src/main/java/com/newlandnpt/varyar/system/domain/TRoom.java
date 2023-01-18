@@ -42,7 +42,16 @@ public class TRoom extends BaseEntity
 
     /** 高度 */
     private BigDecimal roomHeight;
+    /** 创建者id*/
+    private String createById;
 
+    public String getCreateById() {
+        return createById;
+    }
+
+    public void setCreateById(String createById) {
+        this.createById = createById;
+    }
     public void setRoomId(Long roomId) 
     {
         this.roomId = roomId;

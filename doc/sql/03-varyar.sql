@@ -63,7 +63,6 @@ create table t_device (
   org_name          varchar(50)      default ''                comment '机构名称',
   del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
   create_by         varchar(64)     default ''                 comment '创建者',
-  create_by_id         varchar(20)     default ''              comment '创建者id',
   create_time       datetime                                   comment '创建时间',
   update_by         varchar(64)     default ''                 comment '更新者',
   update_time       datetime                                   comment '更新时间',

@@ -47,8 +47,13 @@ public class SysNoticeServiceImpl implements ISysNoticeService
      * @param notice 公告信息
      * @return 公告集合
      */
+    @Override
     public List<SysNotice> selectNoticeListByMemberId(Long memberId){
         return noticeMapper.selectNoticeListByMemberId(memberId);
+    }
+    @Override
+    public List<SysNotice> selectNoticeListByReadFlag(Long memberId){
+        return noticeMapper.selectNoticeListByReadFlag(memberId);
     }
     /**
      * 新增公告

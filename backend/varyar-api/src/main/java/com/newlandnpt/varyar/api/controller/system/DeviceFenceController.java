@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.common.core.domain.model.DeviceFenceRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
@@ -10,6 +11,7 @@ import com.newlandnpt.varyar.system.domain.TDeviceFence;
 import com.newlandnpt.varyar.system.service.IDeviceFenceService;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,10 +48,10 @@ public class DeviceFenceController extends BaseController
     /**
      * 获取设备电子围栏详细信息
      */
-    @GetMapping(value = "/{deviceFenceId}")
-    public AjaxResult getInfo(@PathVariable("deviceFenceId") Long deviceFenceId)
+    @GetMapping(value = "/getDeFeInfo")
+    public AjaxResult getInfo(@RequestBody @Validated DeviceFenceRequest deviceFenceRequest)
     {
-        return success(deviceFenceService.selectTDeviceFenceByDeviceFenceId(deviceFenceId));
+        return success(deviceFenceService.selectTDeviceFenceByDeviceFenceId(Long.valueOf(deviceFenceRequest.getDeviceFenceId())));
     }
 
     /**
@@ -61,7 +63,7 @@ public class DeviceFenceController extends BaseController
         //获取设备id
         Long deviceFenceId  =  tDeviceFence.getDeviceFenceId();
         TDevice tdevice =  iDeviceService.selectDeviceByDeviceId(deviceFenceId);
-        if (!tdevice.getCreateById().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+        if (!tdevice.getMemberId().equals(String.valueOf(this.getLoginUser().getMemberId()))){
             throw new ServiceException("无权限设置本设备！");
         }
         return toAjax(deviceFenceService.insertTDeviceFence(tDeviceFence));

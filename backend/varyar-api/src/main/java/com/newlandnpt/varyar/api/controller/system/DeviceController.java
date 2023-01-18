@@ -84,7 +84,6 @@ public class DeviceController extends BaseController {
         device.setDelFlag("0");
         device.setMemberId(getLoginUser().getMemberId());
         device.setCreateTime(DateUtils.getNowDate());
-        device.setCreateById(String.valueOf(this.getLoginUser().getMemberId()));
         try {
             iDeviceService.insertDevice(device);
         } catch (Exception e){
@@ -106,7 +105,7 @@ public class DeviceController extends BaseController {
             error("设备id不能为空！");
         }
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
-        if(device.getCreateBy().equals(this.getLoginUser().getMemberId())){
+        if(device.getMemberId().equals(this.getLoginUser().getMemberId())){
             error("非创建者无权限修改！");
         }
         if (device==null){

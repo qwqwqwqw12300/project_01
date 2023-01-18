@@ -91,7 +91,7 @@
             <if test="name != null">name,</if>
             <if test="address != null">address,</if>
             <if test="delFlag != null">del_flag,</if>
-            <if test="createById != null">#{createById},</if>
+            <if test="createById != null">create_by_id,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
         </trim>
