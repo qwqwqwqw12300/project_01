@@ -35,17 +35,9 @@
 				title: 'map',
 				latitude: 39.909,
 				longitude: 116.39742,
-				covers: [{
-						latitude: 39.909,
-						longitude: 116.39742
-						// iconPath: '../../../static/location.png'
-					},
-					{
-						latitude: 39.9,
-						longitude: 116.39
-						// iconPath: '../../../static/location.png'
-					}
-				]
+				address: '',
+				covers: [],
+				circles: [],
 			};
 		},
 		computed: {
@@ -53,7 +45,7 @@
 				deviceInfo: state => state.deviceInfo
 			})
 		},
-		onLoad() {
+		onShow() {
 			this.getListState();
 		},
 		methods: {
@@ -77,7 +69,29 @@
 					familyId,
 					roomId
 				}).then(res => {
-					console.log(res, 'res');
+					const {
+						longitude,
+						latitude,
+						radius,
+						address
+					} = res.rows[0]
+					this.address = address
+					this.longitude = longitude
+					this.latitude = latitude
+					this.covers[0] = {
+						latitude,
+						longitude,
+						iconPath: '../../../static/location.png'
+					}
+					this.circles[0] = {
+						latitude,
+						longitude,
+						color: '#E51860',
+						strokeWidth: 1,
+						radius,
+						fillColor: '#E5186020'
+					}
+					this.$forceUpdate()
 				});
 			}
 		}

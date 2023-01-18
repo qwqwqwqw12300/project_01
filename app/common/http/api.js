@@ -111,7 +111,13 @@ export const getEventList = () => http.get('/api/event/list');
 /* 
  *查询协议*
  */
-export const PostSelectAgreement = (params) => http.post('/api/agreement/selectAgreement', params)
+export const PostSelectAgreement = (params) => http.post('/api/agreement/getAgreementInfo', params)
+
+/* 
+ *用户协议*
+ */
+export const PostUserAgreement = (params) => http.post('/api/agreement/selectAgreement', params)
+
 /* 
  *查询版本*
  */
@@ -244,6 +250,11 @@ export const GetSysNotice = () => http.get('/api/notice/sysNotice');
  * 获取公告
  */
 export const postSetNoticeFlag = (params) => http.post('/api/notice/setNoticeFlag', params);
+
+/**
+ * 设置电子围栏
+ */
+export const PostAddFence = (params) => http.post('/api/fence/addFence', params);
 
 
 
