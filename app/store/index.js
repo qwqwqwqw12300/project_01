@@ -106,7 +106,9 @@ const store = {
 		 */
 		getAllFamily(ctx) {
 			return new Promise(resolve => {
-				getFamilyList().then(({
+				getFamilyList({
+					pageSize: 10000
+				}).then(({
 					rows = []
 				}) => {
 					ctx.commit('setFamilyList', rows);
@@ -120,7 +122,9 @@ const store = {
 		 */
 		getAllRoom(ctx) {
 			return new Promise(resolve => {
-				getRoomList().then(({
+				getRoomList({
+					family: ''
+				}).then(({
 					rows = []
 				}) => {
 					ctx.commit('setRoomList', rows);
@@ -164,7 +168,7 @@ const store = {
 		 * 获取家庭中得所有房间
 		 */
 		filterRoom: state => id => state.roomList.filter(item => item.familyId === id),
-		
+
 		/**
 		 * 获取用户信息
 		 */

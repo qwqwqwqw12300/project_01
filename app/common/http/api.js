@@ -98,7 +98,7 @@ export const regMember = (data) => http.post('/api/regMember', data);
 export const resetMemberPwd = (data) => http.post('/api/resetMemberPwd', data);
 
 /**获取家庭列表**/
-export const getFamilyList = () => http.get('/api/family/list');
+export const getFamilyList = (params) => http.get('/api/family/list', params);
 
 /**获取设备列表**/
 export const getDeviceList = (data) => http.post('/api/device/listState', data);
@@ -122,7 +122,7 @@ export const PostVersionInfo = (params) => http.get('/api/version/selectVersionI
  */
 export const PostUpdatePwd = (params) => http.post('/api/memberInfo/updatePwd', params)
 
-export const PostUpdatePhone = (params) => http.post('/api/memberInfo/updatePhone',params)
+export const PostUpdatePhone = (params) => http.post('/api/memberInfo/updatePhone', params)
 
 /* 
  *获取家庭列表
@@ -155,6 +155,11 @@ export const PostDeviceList = (params) => http.post('/api/device/list', params);
 export const setDevice = (params) => http.post('/api/device/setDevice', params);
 
 /**
+ * 修改设备名称
+ */
+export const PosteditDevice = (params) => http.post('/api/device/editDevice', params);
+
+/**
  * 获取房间列表
  */
 export const getRoomList = (params) => http.post('/api/room/list', params);
@@ -163,7 +168,6 @@ export const getRoomList = (params) => http.post('/api/room/list', params);
  * 查询消息
  */
 export const getMessage = (params) => http.post('/api/message/familyList', params);
-
 
 /**
  * 标志所有消息状态
@@ -244,6 +248,3 @@ export const GetSysNotice = () => http.get('/api/notice/sysNotice');
  * 获取公告
  */
 export const postSetNoticeFlag = (params) => http.post('/api/notice/setNoticeFlag', params);
-
-
-

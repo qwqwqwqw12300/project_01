@@ -2,15 +2,18 @@
 	<app-body :bodyStyle="{ backgroundPositionY: '-100rpx' }">
 		<view id="share">
 			<view class="ui-user">
-				<text>已分享给</text>
-				<view>
-					<view class="ui-user-item" v-for="(item, idx) of shareList" :key="idx">
-						<u--text prefixIcon="account-fill" :iconStyle="{ color: '#fff', fontSize: '36rpx' }"
-							color="#fff" :text="item.userName || '未注册用户'"></u--text>
-						<u-icon @click="remShare(item)" class="active" name="close-circle" color="#fff600" size="36rpx">
-						</u-icon>
+				<template>
+					<text>{{shareList.length ? '已分享给' : '暂无分享信息'}}</text>
+					<view>
+						<view class="ui-user-item" v-for="(item, idx) of shareList" :key="idx">
+							<u--text prefixIcon="account-fill" :iconStyle="{ color: '#fff', fontSize: '36rpx' }"
+								color="#fff" :text="item.userName || '未注册用户'"></u--text>
+							<u-icon @click="remShare(item)" class="active" name="close-circle" color="#fff600"
+								size="36rpx">
+							</u-icon>
+						</view>
 					</view>
-				</view>
+				</template>
 			</view>
 			<view class="ui-form">
 				<view class="ui-form-item">
@@ -67,8 +70,7 @@
 			phone
 		}) {
 			Object.assign(this.shareForm, {
-				familyId,
-				familyPhone: phone
+				familyId
 			});
 			this.getShareList();
 		},
@@ -109,20 +111,31 @@
 			 * 删除家庭
 			 */
 			remShare(info) {
-				const {
-					familyId,
-					memberId
-				} = info;
-				PostRemShareFamily({
-					shareFamilyId: familyId,
-					shareMemberId: memberId
-				}).then(res => {
-					uni.showToast({
-						icon: 'none',
-						title: '删除成功'
-					});
-					this.getShareList();
+				uni.showModal({
+					title: '提示',
+					content: '是否确认删除设备',
+					success: res => {
+						if (res.confirm) {
+							const {
+								familyId,
+								memberId
+							} = info;
+							PostRemShareFamily({
+								shareFamilyId: familyId,
+								shareMemberId: memberId
+							}).then(res => {
+								uni.showToast({
+									icon: 'none',
+									title: '删除成功'
+								});
+								this.getShareList();
+							});
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
 				});
+
 			},
 
 			/**
@@ -152,7 +165,7 @@
 				return {
 					uuid,
 					captcha: code,
-					phone: this.shareForm.familyPhone
+					phone: this.$store.state.userInfo.phone
 				};
 			},
 

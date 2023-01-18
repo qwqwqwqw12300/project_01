@@ -65,7 +65,7 @@ const request = (url, options, process, method = 'POST') => {
 					statusCode,
 					data
 				} = result;
-				console.log(result, '请求结果');
+				console.log(result, '请求结果' + url);
 				if (statusCode == 200 && data.code === 200) {
 					resolve(data);
 				} else {

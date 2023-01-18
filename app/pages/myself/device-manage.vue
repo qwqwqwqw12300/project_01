@@ -17,21 +17,24 @@
 							<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/myself/device.png"
 								size="80rpx"></u-icon>
 							<!-- <text class="grid-text">{{ baseListItem.title }}</text> -->
-							<u-text class="grid-text" @click="edit" suffixIcon="edit-pen-fill"
-								iconStyle="font-size: 36rpx" align="center" :text="item.familyName"></u-text>
-							<text class="grid-text">{{ item.roomName }}</text>
+							<u-text class="grid-text" @click="edit(item)" suffixIcon="edit-pen-fill"
+								iconStyle="font-size: 36rpx" align="center" :text="item.name"></u-text>
+							<text class="grid-text">{{ item.location }}</text>
 							<view class="ui-wifi active">
 								<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="wifi" size="40rpx"
 									color="#0dab1c"></u-icon>
 							</view>
-							<u-icon @click="onDelete" class="ui-close active" name="close-circle-fill" size="40rpx">
-							</u-icon>
+							<!-- 							<u-icon @click="onDelete" class="ui-close active" name="close-circle-fill" size="40rpx">
+							</u-icon> -->
 						</view>
-						<view class="ui-btn"><button class="wd-sms" @click="unbinding(item)">解绑</button></view>
+						<view class="ui-btn">
+							<button v-if="!item.roomId" @click="binding(item)">绑定</button>
+							<button v-else class="wd-sms" @click="unbinding(item)">解绑</button>
+						</view>
 					</u-grid-item>
 				</u-grid>
 			</view>
-			<view class="ui-add-btn"><button @click="add">创建设备</button></view>
+			<view class="ui-add-btn"><button @click="addHandle.show = true">创建设备</button></view>
 			<!-- 绑定房间 -->
 			<u-popup :closeable="true" :round="10" :show="bindRoomShow" mode="center" @close="close">
 				<view class="wd-add">
@@ -40,16 +43,18 @@
 					<view class="ui-add-box">
 						<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="选择家庭"></u-text>
 						<view class="ui-select">
-							<uni-data-select v-model="value" :clear="false" :localdata="range"></uni-data-select>
+							<uni-data-select v-model="bindForm.familyId" @change="familyChange" :clear="false"
+								:localdata="famliyList"></uni-data-select>
 						</view>
 					</view>
 					<view class="ui-add-box">
 						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 36rpx" text="选择房间"></u-text>
 						<view class="ui-select">
-							<uni-data-select v-model="value" :clear="false" :localdata="range"></uni-data-select>
+							<uni-data-select v-model="bindForm.roomId" :clear="false" :localdata="rangRoomList">
+							</uni-data-select>
 						</view>
 					</view>
-					<view class="wd-btn-gloup"><button @click="close">确定</button></view>
+					<view class="wd-btn-gloup"><button @click="bindSubmit">确定</button></view>
 				</view>
 			</u-popup>
 			<!-- /绑定房间 -->
@@ -60,25 +65,34 @@
 						size="30rpx" text="修改名称"></u-text>
 					<view class="ui-add-box">
 						<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="设备名称"></u-text>
-						<u--input placeholder="请输入设备名称" border="bottom" clearable></u--input>
+						<u--input placeholder="请输入设备名称" v-model="editFrom.deviceName" border="bottom" clearable>
+						</u--input>
 					</view>
-					<view class="wd-btn-gloup"><button @click="eidtClose">确定</button></view>
+					<view class="wd-btn-gloup"><button @click="editSubmit">确定</button></view>
 				</view>
 			</u-popup>
 			<!-- /修改名称 -->
+			<u-action-sheet :actions="addHandle.list" :closeOnClickOverlay="true" :safeAreaInsetBottom="true"
+				:closeOnClickAction="true" @close="addHandle.show = false" :show="addHandle.show" @select="sheetSelect"
+				cancelText="取消">
+			</u-action-sheet>
 		</app-body>
 	</view>
 </template>
 
 <script>
 	import {
-		PostDeviceList,setDevice 
+		getFamilyList,
+		getRoomList,
+		PostDeviceList,
+		PosteditDevice,
+		setDevice
 	} from '@/common/http/api.js';
 	import {
 		mapState,
 		mapActions
 	} from 'vuex';
-	
+
 	export default {
 		data() {
 			return {
@@ -86,33 +100,52 @@
 				/**绑定房间**/
 				bindRoomShow: false,
 				value: 0,
-				range: [{
-					value: 0,
-					text: '房间一'
-				}, {
-					value: 1,
-					text: '房间二'
-				}, {
-					value: 2,
-					text: '房间三'
-				}]
+				roomList: [],
+				bindForm: {
+					familyId: '',
+					roomId: '',
+					deviceId: ''
+				},
+				editFrom: {
+					deviceId: '',
+					deviceName: ''
+				},
+				addHandle: {
+					show: false,
+					list: [{
+							name: '雷达波',
+							url: '/pages/equipment/radar'
+						},
+						{
+							name: '监护设备',
+							url: '/pages/equipment/monitor'
+						},
+					]
+				}
 			};
 		},
 		computed: {
 			...mapState({
-				/**所有家庭列表**/
-				list: state => state.devicesList
+				/**所有设备列表**/
+				list: state => state.devicesList,
+				/**家庭列表**/
+				famliyList: state => {
+					return state.familyList.map(ele => ({
+						text: ele.name,
+						value: ele.familyId
+					}));
+				}
 			}),
+			/**房间列表**/
+			rangRoomList() {
+				return this.roomList.map((ele => ({
+					text: ele.name,
+					value: ele.roomId
+				})))
+			}
 		},
 		methods: {
-			...mapActions(['getAllDevices']),
-			/**
-			 * 绑定
-			 */
-			bind() {
-				this.bindRoomShow = true;
-			},
-
+			...mapActions(['getAllDevices', 'getFamilyList']),
 
 			/**
 			 * 关闭弹窗
@@ -124,8 +157,33 @@
 			/**
 			 * 编辑浮层打开
 			 */
-			edit() {
+			edit(item) {
+				Object.assign(this.editFrom, {
+					deviceName: item.name,
+					deviceId: item.deviceId
+				})
 				this.isEditShow = true;
+			},
+
+			/**
+			 * 修改设备
+			 */
+			editSubmit() {
+				if (this.editFrom.deviceName) {
+					PosteditDevice({
+						...this.editFrom
+					}).then(res => {
+						uni.$u.toast(res.msg);
+						this.eidtClose();
+						setTimeout(() => {
+							this.getAllDevices();
+							this.getFamilyList();
+						}, 1000);
+					});
+				} else {
+					uni.$u.toast('请填写新名称');
+				}
+
 			},
 
 			/**
@@ -136,26 +194,19 @@
 			},
 
 			/**
-			 * 删除
+			 * 绑定
 			 */
-			onDelete() {
-				uni.showModal({
-					title: '提示',
-					content: '是否确认删除设备',
-					success: res => {
-						if (res.confirm) {
-							console.log('用户点击确定');
-						} else if (res.cancel) {
-							console.log('用户点击取消');
-						}
-					}
-				});
+			binding(item) {
+				this.bindForm.deviceId = item.deviceId;
+				this.bindRoomShow = true;
 			},
 
 			/**
 			 * 解绑
 			 */
-			unbinding({deviceId, familyId, roomId}) {
+			unbinding({
+				deviceId
+			}) {
 				uni.showModal({
 					title: '提示',
 					content: '是否和房间解除绑定',
@@ -163,18 +214,15 @@
 						if (res.confirm) {
 							setDevice({
 								deviceId,
-								familyId,
-								roomId
-							}).then(res=> {
+								familyId: '',
+								roomId: ''
+							}).then(res => {
 								uni.$u.toast(res.msg);
 								setTimeout(() => {
 									this.getAllDevices();
+									this.getFamilyList();
 								}, 1000);
-								
 							})
-							console.log('用户点击确定');
-						} else if (res.cancel) {
-							console.log('用户点击取消');
 						}
 					}
 				});
@@ -185,11 +233,52 @@
 			 */
 			bindRoom() {
 				this.bindRoomShow = true;
+			},
+
+			/**
+			 * 选择家庭
+			 */
+			familyChange(id) {
+				id && getRoomList({
+					familyId: id
+				}).then(res => {
+					console.log(res);
+					this.roomList = res.rows || [];
+				});
+			},
+			/**
+			 * 绑定提交
+			 */
+			bindSubmit() {
+				if (this.bindForm.familyId && this.bindForm.roomId) {
+					setDevice({
+						...this.bindForm
+					}).then(res => {
+						uni.$u.toast(res.msg);
+						this.close();
+						setTimeout(() => {
+							this.getAllDevices();
+						}, 1000);
+					})
+				} else {
+					uni.$u.toast('请选择要绑定的房间');
+				}
+			},
+
+			/**
+			 * 创建设备
+			 */
+			sheetSelect({
+				url
+			}) {
+				uni.navigateTo({
+					url
+				})
 			}
 		},
 		mounted() {
 			this.getAllDevices();
-		}
+		},
 	};
 </script>
 

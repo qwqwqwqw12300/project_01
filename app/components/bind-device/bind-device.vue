@@ -9,45 +9,57 @@
 	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close" @open="open">
 		<view class="ui-add">
 			<u-text prefixIcon="plus-circle" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
-				size="30rpx" text="XX房间绑定设备"></u-text>
+				size="30rpx" text="绑定设备"></u-text>
 			<view class="ui-add-box">
 				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
 					text="选择设备"></u-text>
 				<view class="ui-select">
-					<uni-data-select v-model="value" :clear="false" :localdata="range"></uni-data-select>
+					<uni-data-select v-model="deviceId" :clear="false" :localdata="devices"></uni-data-select>
 				</view>
 			</view>
 			<view class="ui-btn-group">
-				<button @click="next">确定</button>
-				<button @click="next">取消</button>
-				<button @click="next">创建房间</button>
-
+				<button @click="next">确定{{deviceId}}</button>
+				<button @click="close">取消</button>
+				<button @click="goManager">管理设备</button>
 			</view>
 		</view>
 	</u-popup>
 </template>
 
 <script>
+	import {
+		mapState
+	} from 'vuex';
+	import {
+		setDevice
+	} from '../../common/http/api';
 	export default {
-		emit: [],
-		props: {},
+		props: {
+			payload: {
+				default: () => ({})
+			}
+		},
 		data() {
 			return {
 				show: false,
-				value: 0,
-				range: [{
-					value: 0,
-					text: '设备一'
-				}, {
-					value: 1,
-					text: '设备二'
-				}, {
-					value: 2,
-					text: '设备三'
-				}]
+				deviceId: ''
 			};
 		},
-		mounted(options) {},
+		computed: {
+			...mapState({
+				devices: state => {
+					const list = state.devicesList;
+					console.log(state.devicesList, 'state.devicesList');
+					return list.map(ele => ({
+						text: ele.name,
+						value: ele.deviceId
+					}));
+				}
+			})
+		},
+		mounted(options) {
+
+		},
 		methods: {
 			close() {
 				this.show = false;
@@ -56,8 +68,26 @@
 				this.show = true;
 			},
 			next() {
+				setDevice({
+					...this.payload,
+					deviceId: this.deviceId
+				}).then(res => {
+					uni.showToast({
+						title: '绑定成功',
+						icon: 'none'
+					});
+					this.close();
+					this.$emit('next')
+				});
+			},
+			/**
+			 * 跳转管理
+			 */
+			goManager() {
 				this.close();
-				this.$emit('next')
+				uni.navigateTo({
+					url: '/pages/myself/device-manage'
+				});
 			}
 		}
 	};

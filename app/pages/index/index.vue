@@ -39,8 +39,7 @@
 							<text>共{{(familyItem.devices && familyItem.devices.length) || 0}}个设备</text>
 							<text>在线两个设备</text>
 						</view>
-						<u-text
-							@click="goPage('/pages/share/share?familyId='+ familyItem.familyId + 'phone=' + familyItem.phone)"
+						<u-text @click="goPage('/pages/share/share?familyId='+ familyItem.familyId)"
 							prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff"
 							:iconStyle="{
 							fontSize: '44rpx',
@@ -83,7 +82,7 @@
 	import {
 		getDeviceList,
 		getFamilyList,
-        GetReadInfo
+		GetReadInfo
 	} from '../../common/http/api';
 	import {
 		mapState,
@@ -110,12 +109,13 @@
 			Promise.all([
 				this.getAllFamily(),
 				this.getAllDevices(),
-				this.getReadInfo()
+				this.getReadInfo(),
+				this.getPushMsgState()
 				// this.getAllRoom()
 			]);
 		},
 		methods: {
-			...mapActions(['getAllFamily', 'getAllDevices', 'getAllRoom']),
+			...mapActions(['getAllFamily', 'getAllDevices', 'getPushMsgState', 'getAllRoom']),
 			/**
 			 * 打开添加按钮
 			 */
@@ -159,7 +159,7 @@
 			addStep() {
 				this.$refs.addStepRef.open();
 			},
-			
+
 			/**
 			 * 获取公告状态
 			 */
@@ -170,7 +170,7 @@
 						resolve();
 					});
 				})
-				
+
 			}
 		}
 	}

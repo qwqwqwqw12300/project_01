@@ -17,7 +17,7 @@
 					@click="navClick"></u-tabs>
 			</view>
 			<!-- 账号登录 -->
-			<u-transition mode="fade-left" :show="navActive === 0 && delay === 0">
+			<u-transition :mode="initFlag ? '' : 'fade-left'" :show="navActive === 0 && delay === 0">
 				<view class="ui-form">
 					<view class="ui-form-item">
 						<u-text prefixIcon="phone-fill" iconStyle="font-size: 30rpx" text="手机号码" color="#444"
@@ -107,10 +107,12 @@
 				navActive: 0,
 				/**切换动画延时效果**/
 				delay: 0,
+				/**页面初始化标志**/
+				initFlag: true,
 				loginForm: {
-					phone: '13900001111',
+					phone: '13300000001',
 					code: '',
-					password: '1234',
+					password: '1111',
 					uuid: '',
 				},
 				/**短信登录参数**/
@@ -125,6 +127,7 @@
 			navClick({
 				index
 			}) {
+				this.initFlag = false;
 				this.navActive = index;
 				setTimeout(() => {
 					this.delay = index
