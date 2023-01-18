@@ -23,22 +23,13 @@ import com.newlandnpt.varyar.system.domain.req.MsgSendReq;
  **/
 @RestController
 @RequestMapping("/api/msgApp")
-//@Slf4j
 @SuppressWarnings({"ALL", "pmd:LowerCamelCaseVariableNamingRule"})
 public class MsgSendController extends BaseController {
 
 	private static final Logger log = LoggerFactory.getLogger(MsgSendController.class);
-	
+
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
-
-    /**
-     * 断网事件
-     * 定时任务 从激活的设备中循环判断在redis是否有在线信息，不在线则新增断网事件。
-     * 设备模块重新接收到信息，mq推送，新增断网恢复事件
-     */
-    @Value("${rocketmq.topic.net}")
-    private String netTopic;
 
     /**
      * 跌倒事件
@@ -75,9 +66,6 @@ public class MsgSendController extends BaseController {
         int code = msgSendReq.getCode();
         SendResult result;
         switch (code) {
-            case 1:
-                result = rocketMQTemplate.syncSend(netTopic, MessageBuilder.withPayload(msg).build());
-                break;
             case 2:
                 result = rocketMQTemplate.syncSend(fallTopic, MessageBuilder.withPayload(msg).build());
                 break;

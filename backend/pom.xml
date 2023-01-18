@@ -32,7 +32,6 @@
         <jwt.version>0.9.1</jwt.version>
         <rocketmq.version>2.2.1</rocketmq.version>
         <httpclient.version>4.5.13</httpclient.version>
-        <lombok.version>1.16.22</lombok.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -179,7 +178,7 @@
                 <artifactId>varyar-common</artifactId>
                 <version>${varyar.version}</version>
             </dependency>
-            
+
             <!-- 云对接基础服务包-->
             <dependency>
                 <groupId>com.newlandnpt.varyar</groupId>
