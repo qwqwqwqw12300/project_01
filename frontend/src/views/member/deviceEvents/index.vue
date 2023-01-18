@@ -53,9 +53,9 @@
         />
       </el-form-item>
 <!-- 待调整 -->
-      <el-form-item label="设备名称" prop="deviceNo">
+      <el-form-item label="设备名称" prop="deviceName">
         <el-input
-          v-model="queryParams.deviceNo"
+          v-model="queryParams.deviceName"
           placeholder="请输入设备名称"
           clearable
           @keyup.enter.native="handleQuery"
@@ -68,7 +68,7 @@
         <el-form-item label="设备编号" prop="deviceNo">
         <el-input
           v-model="queryParams.deviceNo"
-          placeholder="请输入设备名称"
+          placeholder="设备编号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -129,15 +129,11 @@
     <el-table v-loading="loading" :data="eventList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="级别" align="center" prop="level" />
-      <el-table-column label="消息编号" align="center" prop="no" />
-      <el-table-column label="消息内容" align="center" prop="content" />
+      <el-table-column label="事件编号" align="center" prop="no" />
+      <el-table-column label="事件内容" align="center" prop="content" />
       <el-table-column label="设备名称" align="center" prop="deviceId" />
       <el-table-column label="设备编号" align="center" prop="deviceNo" />
       <el-table-column label="报警时间" align="center" prop="operateTime" width="180" color="#FF0000">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.operateTime) }}</span>
-        </template>
-      </el-table-column><el-table-column label="报警时间" align="center" prop="operateTime" width="180" color="#FF0000">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.operateTime) }}</span>
         </template>
@@ -147,13 +143,12 @@
           <span>{{ parseTime(scope.row.operateTime) }}</span>
         </template>
       </el-table-column>
-      <!-- 待调整 -->
       <el-table-column label="操作类型" align="center" prop="operateType" />
 
       <!-- 待调整 -->
-      <el-table-column label="会员手机号／操作员手机号" align="center" prop="memberPhone" />
+      <el-table-column label="手机号" align="center" prop="memberPhone" />
       <!-- 待调整 -->
-      <el-table-column label="操作员姓名" align="center" prop="orgId" /> 
+      <el-table-column label="操作员姓名" align="center" prop="userName" /> 
       <el-table-column label="处理标志" align="center" prop="operateFlag">
         <template slot-scope="scope">
         {{ operateFlagFormat(scope.row) }}
@@ -279,7 +274,7 @@ import { listEvent, getEvent, delEvent, addEvent, updateEvent  } from "@/api/eve
 // import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
-  name: "MemberDeviceEvents",
+  name: "DeviceEvents",
   dicts: ['sys_operate_flag'],
   // components: { Treeselect },
   // components: { MemberInfoCard ,DeviceInfoCard},
