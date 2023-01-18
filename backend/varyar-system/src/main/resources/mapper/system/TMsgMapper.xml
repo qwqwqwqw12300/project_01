@@ -56,6 +56,7 @@
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
+        Order By m.create_time desc
     </select>
 
     <select id="selectTMsgByMemberId" parameterType="Long" resultMap="TMsgResult">
