@@ -4,7 +4,6 @@ package com.newlandnpt.varyar.system.domain.vo;
  * @author lisd
  * @date 2023/1/5
  **/
-//@Data
 public class GeoFenceResultVo {
 
     /**
@@ -45,5 +44,5 @@ public class GeoFenceResultVo {
 	public void setIn(Integer in) {
 		this.in = in;
 	}
-    
+
 }

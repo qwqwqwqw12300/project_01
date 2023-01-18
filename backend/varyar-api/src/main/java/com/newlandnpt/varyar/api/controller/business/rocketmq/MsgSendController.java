@@ -23,12 +23,11 @@ import com.newlandnpt.varyar.system.domain.req.MsgSendReq;
  **/
 @RestController
 @RequestMapping("/api/msgApp")
-//@Slf4j
 @SuppressWarnings({"ALL", "pmd:LowerCamelCaseVariableNamingRule"})
 public class MsgSendController extends BaseController {
 
 	private static final Logger log = LoggerFactory.getLogger(MsgSendController.class);
-	
+
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
 
