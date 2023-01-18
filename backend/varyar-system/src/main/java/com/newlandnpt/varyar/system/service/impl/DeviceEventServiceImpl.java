@@ -112,13 +112,6 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         if (!redisCache.hasKey(CacheConstants.DEVICE_DISCONNECTION)) {
             return;
         }
-//        try {
-//            List<String> a = new ArrayList<>();
-//            String b = a.get(1);
-//        }catch (Exception e) {
-//            log.error("定时任务重试");
-//            e.printStackTrace();
-//        }
         List<String> discDevices = redisCache.getCacheList(CacheConstants.DEVICE_DISCONNECTION);
         List<String> reconnects = new ArrayList<>();
         for (String devId : discDevices) {
