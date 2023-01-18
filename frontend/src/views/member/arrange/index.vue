@@ -185,6 +185,9 @@ export default {
     handleSelectionChange(currentRow) {
       this.deviceGroupUserId = currentRow.userId;
       this.deviceGroupUserOrgId = currentRow.orgId;
+
+      this.loadArrangeMemberList();
+      this.loadNotArrangeMemberList();
     },
     close() {
       this.$tab.closePage();

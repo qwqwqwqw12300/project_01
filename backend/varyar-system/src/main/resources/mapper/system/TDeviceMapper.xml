@@ -86,11 +86,13 @@
             and del_flag = '0'
             <!-- 数据范围过滤 -->
             ${params.dataScope}
+
+            Order By create_time desc
             <if test='params.order_registerTime != null and params.order_registerTime == "asc" '>
-                order by register_time
+                ,register_time
             </if>
             <if test='params.order_registerTime != null and params.order_registerTime == "desc"'>
-                order by register_time  desc
+                ,register_time  desc
             </if>
         </where>
     </select>
