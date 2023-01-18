@@ -31,11 +31,20 @@
 				<u-slider @change="onSlider" max="500" v-model="sliderValue" activeColor="#eeaa3d" blockColor="#eeaa3d"
 					inactiveColor="#c0c4cc" />
 			</view>
+			<view class="ui-btn">
+				<button @click="handleSubmit">提交</button>
+			</view>
 		</view>
 	</app-body>
 </template>
 
 <script>
+	import {
+		PostAddFence,
+	} from '@/common/http/api.js';
+	import {
+		mapState
+	} from 'vuex';
 	export default {
 		data() {
 			return {
@@ -70,11 +79,91 @@
 				console.log(item, 'item');
 			}
 			console.log(this.mapSearch, 'this.mapSearch');
+			this.handleGetLocation()
+		},
+		computed: {
+			...mapState({
+				deviceId: state => state.deviceInfo.deviceId
+			})
 		},
 		methods: {
 			close() {
 				this.popShow = false;
 			},
+			/**
+			 * 保存
+			 */
+			handleSubmit() {
+				const {
+					deviceId,
+					siteInfo: address,
+					longitude,
+					latitude,
+					sliderValue,
+				} = this
+				if (sliderValue === 0) {
+					return uni.$u.toast('半径长度大于0')
+				}
+				PostAddFence({
+					deviceId: '106',
+					address,
+					longitude,
+					latitude,
+					radius: sliderValue + ''
+				}).then(res => {
+					uni.navigateBack()
+					uni.$u.toast(res.msg)
+				})
+			},
+			/**
+			 * 获取当前定位
+			 */
+			handleGetLocation() {
+				uni.showLoading({
+					title: '加载中'
+				})
+				uni.getLocation({
+					geocode: true,
+					type: 'gcj02',
+					success: (res) => {
+						const {
+							latitude,
+							longitude,
+							address: {
+								province,
+								city,
+								district,
+								street,
+								streetNum,
+								poiName
+							},
+						} = res
+						this.latitude = latitude
+						this.longitude = longitude
+						this.siteInfo = province + city + district + street + streetNum + poiName
+						this.covers[0] = {
+							latitude,
+							longitude,
+							iconPath: '../../../static/location.png'
+						}
+						this.circles[0] = {
+							latitude,
+							longitude,
+							color: '#E51860',
+							strokeWidth: 1,
+							radius: this.sliderValue,
+							fillColor: '#E5186020'
+						}
+						this.$forceUpdate()
+						uni.hideLoading()
+					},
+					false: (res) => {
+						console.log(res, 'error')
+						uni.hideLoading()
+					}
+				})
+			},
+
 			/**
 			 * 跳转搜索
 			 */
@@ -83,6 +172,9 @@
 					url: '/pages/equipment/search'
 				})
 			},
+			/**
+			 * 半径滑动
+			 */
 			onSlider(e) {
 				if (this.circles.length) {
 					this.circles[0].radius = e
@@ -180,6 +272,8 @@
 			}
 		}
 
-
+		.ui-btn {
+			margin-top: 30rpx;
+		}
 	}
 </style>

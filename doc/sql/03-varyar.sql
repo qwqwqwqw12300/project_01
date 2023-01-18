@@ -238,6 +238,7 @@ create table t_msg (
   device_id         bigint(20)                                comment '设备id',
   family_id         bigint(20)                                comment '家庭id',
   member_id       bigint(20)                                comment '处理人会员id',
+  org_id            bigint(20)                                comment '机构id',
   operator        varchar (150)                                comment '操作人员',
   send_status     char (1)                                     comment '发送状态',
   reason          varchar (300)                                comment '失败原因',
