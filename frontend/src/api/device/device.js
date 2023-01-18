@@ -20,7 +20,7 @@ export function associateDevice(object) {
 //分配设备组
 export function groupArrange(deviceId,deviceGroupId) {
   return request({
-    url: '/device/'+deviceId+'/arrange/group/'+deviceGroupId,
+    url: deviceGroupId==null?'/device/'+deviceId+'/arrange/group':'/device/'+deviceId+'/arrange/group/'+deviceGroupId,
     method: 'put'
   })
 }

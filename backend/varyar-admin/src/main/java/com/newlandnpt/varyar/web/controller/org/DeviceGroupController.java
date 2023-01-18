@@ -105,8 +105,8 @@ public class DeviceGroupController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('org:deviceGroup:arrangeUser')")
     @Log(title = "设备组-运营人员", businessType = BusinessType.UPDATE)
-    @PutMapping("/arrange/user/{userId}")
-    public AjaxResult arrangeDeviceGroups(@RequestBody Long[] deviceGroupIds,@PathVariable Long userId)
+    @PutMapping({"/arrange/user","/arrange/user/{userId}"})
+    public AjaxResult arrangeDeviceGroups(@RequestBody Long[] deviceGroupIds,@PathVariable(required = false) Long userId)
     {
         for(Long deviceGroupId:deviceGroupIds){
             TDeviceGroup deviceGroup = deviceGroupService.selectDeviceGroupByDeviceGroupId(deviceGroupId);
@@ -114,9 +114,11 @@ public class DeviceGroupController extends BaseController
                 orgService.checkOrgDataScope(deviceGroup.getOrgId());
             }
         }
-        SysUser user = userService.selectUserById(userId);
-        if(user!=null){
-            orgService.checkOrgDataScope(user.getOrgId());
+        if(userId!=null){
+            SysUser user = userService.selectUserById(userId);
+            if(user!=null){
+                orgService.checkOrgDataScope(user.getOrgId());
+            }
         }
 
         return toAjax(deviceGroupService.arrangeDeviceGroups(deviceGroupIds,userId));

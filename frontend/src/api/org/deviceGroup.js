@@ -34,7 +34,7 @@ export function updateDeviceGroup(data) {
 // 分配运营人员
 export function arrangeUser(data,userId) {
   return request({
-    url: '/org/devicegroup/arrange/user/'+userId,
+    url: userId==null?'/org/devicegroup/arrange/user':'/org/devicegroup/arrange/user/'+userId,
     method: 'put',
     data: data
   })
