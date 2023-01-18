@@ -40,7 +40,6 @@ public class SysDictDataController extends BaseController
     @Autowired
     private ISysDictTypeService dictTypeService;
 
-    @PreAuthorize("@ss.hasPermi('system:dict:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysDictData dictData)
     {
@@ -62,7 +61,6 @@ public class SysDictDataController extends BaseController
     /**
      * 查询字典数据详细
      */
-    @PreAuthorize("@ss.hasPermi('system:dict:query')")
     @GetMapping(value = "/{dictCode}")
     public AjaxResult getInfo(@PathVariable Long dictCode)
     {

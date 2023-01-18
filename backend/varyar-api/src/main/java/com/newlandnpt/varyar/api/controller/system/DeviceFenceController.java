@@ -24,7 +24,7 @@ import java.util.List;
  * @date 2023-01-06
  */
 @RestController
-    @RequestMapping("/api/fence")
+@RequestMapping("/api/fence")
 public class DeviceFenceController extends BaseController
 {
     @Autowired
@@ -42,8 +42,6 @@ public class DeviceFenceController extends BaseController
         List<TDeviceFence> list = deviceFenceService.selectTDeviceFenceList(tDeviceFence);
         return getDataTable(list);
     }
-
-
 
     /**
      * 获取设备电子围栏详细信息

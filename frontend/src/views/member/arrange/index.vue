@@ -120,7 +120,7 @@ export default {
     /** 会员相关 */
     membersData() {
       return [...this.arrangeMemberList, ...this.notArrangeMemberList].map(x => {
-        return {key: x.memberId, label: x.name, disabled: false}
+        return {key: x.memberId, label: x.phone, disabled: false}
       });
     }
   },

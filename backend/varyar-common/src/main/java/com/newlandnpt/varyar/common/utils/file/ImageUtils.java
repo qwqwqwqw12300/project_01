@@ -7,7 +7,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
 
-import com.newlandnpt.varyar.common.config.RuoYiConfig;
+import com.newlandnpt.varyar.common.config.VayyarConfig;
 import com.newlandnpt.varyar.common.constant.Constants;
 import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
@@ -80,7 +80,7 @@ public class ImageUtils
             else
             {
                 // 本机地址
-                String localPath = RuoYiConfig.getProfile();
+                String localPath = VayyarConfig.getProfile();
                 String downloadPath = localPath + StringUtils.substringAfter(url, Constants.RESOURCE_PREFIX);
                 in = new FileInputStream(downloadPath);
             }

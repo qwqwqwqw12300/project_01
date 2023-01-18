@@ -11,7 +11,7 @@ import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.code.kaptcha.Producer;
-import com.newlandnpt.varyar.common.config.RuoYiConfig;
+import com.newlandnpt.varyar.common.config.VayyarConfig;
 import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
@@ -61,7 +61,7 @@ public class CaptchaController
         BufferedImage image = null;
 
         // 生成验证码
-        String captchaType = RuoYiConfig.getCaptchaType();
+        String captchaType = VayyarConfig.getCaptchaType();
         if ("math".equals(captchaType))
         {
             String capText = captchaProducerMath.createText();

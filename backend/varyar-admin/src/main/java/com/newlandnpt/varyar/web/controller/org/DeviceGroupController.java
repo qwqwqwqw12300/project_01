@@ -49,7 +49,6 @@ public class DeviceGroupController extends BaseController
     /**
      * 查询设备组列表
      */
-    @PreAuthorize("@ss.hasAnyPermi('org:deviceGroup:list,device:groupArrange')")
     @GetMapping("/page")
     public TableDataInfo page(TDeviceGroup devicegroup)
     {
@@ -61,7 +60,6 @@ public class DeviceGroupController extends BaseController
     /**
      * 获取设备组详细信息
      */
-    @PreAuthorize("@ss.hasPermi('org:deviceGroup:query')")
     @GetMapping(value = "/{devicegroupId}")
     public AjaxResult getInfo(@PathVariable("devicegroupId") Long devicegroupId)
     {

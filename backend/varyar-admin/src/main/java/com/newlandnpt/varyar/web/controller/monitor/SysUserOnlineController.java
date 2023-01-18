@@ -38,7 +38,6 @@ public class SysUserOnlineController extends BaseController
     @Autowired
     private RedisCache redisCache;
 
-    @PreAuthorize("@ss.hasPermi('monitor:online:list')")
     @GetMapping("/list")
     public TableDataInfo list(String ipaddr, String userName)
     {
