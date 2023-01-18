@@ -11,7 +11,7 @@
 		<view class="ui-map">
 			<view class="ui-map-box">
 				<map id="map" ref="map" style=" width: 100%; height: 600rpx;" :latitude="latitude"
-					:longitude="longitude" :markers="covers">
+					:longitude="longitude" :markers="covers" :circles="circles">
 				</map>
 			</view>
 			<view class="ui-site">
@@ -28,7 +28,8 @@
 					<text>设置半径长度</text>
 					<text>{{sliderValue}}米</text>
 				</view>
-				<u-slider v-model="sliderValue" activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+				<u-slider @change="onSlider" max="500" v-model="sliderValue" activeColor="#eeaa3d" blockColor="#eeaa3d"
+					inactiveColor="#c0c4cc" />
 			</view>
 		</view>
 	</app-body>
@@ -48,15 +49,17 @@
 				title: 'map',
 				latitude: 39.909,
 				longitude: 116.39742,
-				covers: [{
-					latitude: 39.909,
-					longitude: 116.39742,
-					// iconPath: '../../../static/location.png'
-				}, {
-					latitude: 39.90,
-					longitude: 116.39,
-					// iconPath: '../../../static/location.png'
-				}],
+				covers: [],
+				circles: [],
+				// covers: [{
+				// latitude: 39.909,
+				// longitude: 116.39742,
+				// 	iconPath: '../../../static/location.png'
+				// }, {
+				// latitude: 39.90,
+				// longitude: 116.39,
+				// iconPath: '../../../static/location.png'
+				// }],
 				sliderValue: 0,
 				mapSearch: null
 			}
@@ -79,7 +82,44 @@
 				uni.navigateTo({
 					url: '/pages/equipment/search'
 				})
+			},
+			onSlider(e) {
+				if (this.circles.length) {
+					this.circles[0].radius = e
+					this.circles = [...this.circles]
+				}
 			}
+		},
+		onShow() {
+			uni.$on('searchData', data => {
+				const {
+					province,
+					city,
+					district,
+					address,
+					location: {
+						latitude,
+						longitude
+					}
+				} = data
+				this.siteInfo = province + city + district + address
+				this.latitude = latitude
+				this.longitude = longitude
+				this.covers[0] = {
+					latitude,
+					longitude,
+					iconPath: '../../../static/location.png'
+				}
+				this.circles[0] = {
+					latitude,
+					longitude,
+					color: '#E51860',
+					strokeWidth: 1,
+					radius: this.sliderValue,
+					fillColor: '#E5186020'
+				}
+				this.$forceUpdate()
+			})
 		}
 	}
 </script>

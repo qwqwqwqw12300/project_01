@@ -4,7 +4,7 @@
 			<u-search @change="searchChange" placeholder="请输入地址信息" :showAction="false" v-model="search"></u-search>
 		</view>
 		<view class="ui-site-gloup">
-			<view class="ui-item active" v-for="(item, index) of poiList" :key="index">
+			<view class="ui-item active" v-for="(item, index) of poiList" :key="index" @tap="handleSelect(item)">
 				<u-text prefixIcon="map" iconStyle="font-size: 19px" :text="item.name"></u-text>
 				<text>{{getAddress(item)}}</text>
 			</view>
@@ -40,6 +40,11 @@
 			}
 		},
 		methods: {
+			handleSelect(val) {
+				uni.$emit('searchData', val)
+				uni.navigateBack()
+				console.log(val, 'val')
+			},
 			searchChange($e) {
 				uni.$u.debounce(() => {
 					mapSearch && mapSearch.poiKeywordsSearch({
