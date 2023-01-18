@@ -77,7 +77,7 @@ public class DeviceDisconnectionServiceImpl implements DeviceDisconnectionServic
      * @return 缓存键key
      */
     private String getCacheKey(String key) {
-        return CacheConstants.DEVICE_KEY + key;
+        return CacheConstants.DEVICE_ONLINE_FLAG_KEY + key;
     }
 
 }

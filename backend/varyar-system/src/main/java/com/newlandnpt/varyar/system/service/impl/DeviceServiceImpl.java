@@ -1,7 +1,9 @@
 package com.newlandnpt.varyar.system.service.impl;
 
 import com.newlandnpt.varyar.common.annotation.DataScope;
+import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
+import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +41,17 @@ public class DeviceServiceImpl implements IDeviceService {
     private TDeviceMapper deviceMapper;
     @Autowired
     private TOrgMapper orgMapper;
+    @Autowired
+    private RedisCache redisCache;
+
+    /**
+     * 项目启动时，初始化参数到缓存
+     */
+    @PostConstruct
+    public void init()
+    {
+        loadingDeviceCache();
+    }
 
     /**
      * 查询设备
@@ -78,7 +92,9 @@ public class DeviceServiceImpl implements IDeviceService {
     @Override
     public int insertDevice(TDevice device) {
         device.autoSetCreateByLoginUser();
-        return deviceMapper.insertTDevice(device);
+        int effect = deviceMapper.insertTDevice(device);
+        resetDeviceCache(device);
+        return effect;
     }
 
     /**
@@ -90,7 +106,9 @@ public class DeviceServiceImpl implements IDeviceService {
     @Override
     public int updateDevice(TDevice device) {
         device.setUpdateTime(DateUtils.getNowDate());
-        return deviceMapper.updateTDevice(device);
+        int effect = deviceMapper.updateTDevice(device);
+        resetDeviceCache(device);
+        return effect;
     }
 
     /**
@@ -259,5 +277,38 @@ public class DeviceServiceImpl implements IDeviceService {
     @Override
     public List<TDevice> selectBizCareDeviceList(Long userId) {
         return deviceMapper.selectBizCareDeviceList(userId);
+    }
+
+    @Override
+    public void loadingDeviceCache() {
+        List<TDevice> devices = deviceMapper.selectTDeviceList(new TDevice());
+        for (TDevice device : devices)
+        {
+            redisCache.setCacheObject(getCacheKey(device.getNo()), device);
+        }
+    }
+
+    @Override
+    public TDevice loadDeviceFromCacheByNo(String deviceNo) {
+        return redisCache.getCacheObject(getCacheKey(deviceNo));
+    }
+
+    /**
+     * 重置单个设备缓存
+     */
+    protected void resetDeviceCache(TDevice device){
+        if(device!=null)
+            redisCache.setCacheObject(getCacheKey(device.getNo()), device);
+    }
+
+    /**
+     * 设置cache key
+     *
+     * @param deviceNo 设备编号
+     * @return 缓存键key
+     */
+    private String getCacheKey(String deviceNo)
+    {
+        return CacheConstants.T_DEVICE_KEY + deviceNo;
     }
 }

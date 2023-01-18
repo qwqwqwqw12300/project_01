@@ -155,4 +155,16 @@ public interface IDeviceService
      */
     public List<TDevice> selectBizCareDeviceList(Long userId);
 
+    /**
+     * 加载设备缓存数据
+     */
+    public void loadingDeviceCache();
+
+    /**
+     * 根据设备号从缓存中加载设备信息
+     * @param deviceNo
+     * @return
+     */
+    public TDevice loadDeviceFromCacheByNo(String deviceNo);
+
 }

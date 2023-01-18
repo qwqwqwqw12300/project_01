@@ -35,7 +35,12 @@ public class CacheConstants
     /**
      * 终端管理 cache key
      */
-    public static final String DEVICE_KEY = "device_info:";
+    public static final String T_DEVICE_KEY = "t_device:";
+
+    /**
+     * 终端在线标记 cache key
+     */
+    public static final String DEVICE_ONLINE_FLAG_KEY = "device_online_flag:";
 
     /**
      * 防重提交 redis key
