@@ -74,7 +74,7 @@ spring:
     # 端口，默认为6379
     port: 6379
     # 数据库索引
-    database: 0
+    database: 1
     # 密码
     password:
     # 连接超时时间
@@ -138,21 +138,23 @@ rocketmq:
   producer:
     group: group_msg
   group:
-    net: group_net
     fall: group_fall
     presence: group_presence
     deviceState: group_deviceState
     access: group_access
+    accessDelay: group_access_delay
     location: group_location
     deviceConfig: group_deviceConfig
+    deviceActive: group_deviceActive
   topic:
-    net: netTopic
     fall: fallTopic
     presence: presenceTopic
     deviceState: deviceStateTopic
     access: accessTopic
+    accessDelay: accessDelayTopic
     location: locationTopic
     deviceConfig: deviceConfigTopic
+    deviceActive: deviceActiveTopic
 
 
 location:
