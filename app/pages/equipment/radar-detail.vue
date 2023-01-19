@@ -7,12 +7,19 @@
 				<view class="info">
 					<text class="position">{{deviceInfo.location || '--'}}</text>
 					<view class="status">
-						<u-icon :name="deviceInfo.onlineFlag === '1' ? 'wifi' : 'wifi-off'" :color="deviceInfo.onlineFlag === '1' ? '#0dab1c' : '#ff4800'" size="48rpx"></u-icon>
+						<u-icon :name="deviceInfo.onlineFlag === '1' ? 'wifi' : 'wifi-off'"
+							:color="deviceInfo.onlineFlag === '1' ? '#0dab1c' : '#ff4800'" size="48rpx"></u-icon>
 						<!-- <image src="../../static/images/online.png"></image> -->
-						<text :style="{color: deviceInfo.onlineFlag === '1' ? '#0dab1c' : '#ff4800'}">{{deviceInfo.onlineFlag === '1' ? '在线' : '离线'}}</text>
+						<text
+							:style="{color: deviceInfo.onlineFlag === '1' ? '#0dab1c' : '#ff4800'}">{{deviceInfo.onlineFlag === '1' ? '在线' : '离线'}}</text>
 					</view>
 				</view>
 			</view>
+			<view class="ui-icon">
+				<u-icon name="setting-fill" @click="goSet" size="30" color="#FF7E00" class="ui-detail-map">
+				</u-icon>
+			</view>
+
 		</view>
 		<view class="ui-msg-list">
 			<msg-list @navClick="onNavClick" @onRefresh="onRefresh" :list="messageList"
@@ -86,13 +93,10 @@
 				this.navActive = index;
 				this.getMessage();
 			},
-			
-			/**
-			 * 跳转地图
-			 */
-			goMap() {
+
+			goSet() {
 				uni.navigateTo({
-					url: '/pages/equipment/watch-detail'
+					url: '/pages/myself/position-setting'
 				})
 			}
 		}
@@ -116,6 +120,18 @@
 		padding: 40rpx;
 		position: relative;
 		display: flex;
+
+		.ui-icon {
+			width: 200rpx;
+			display: flex;
+			flex-direction: row;
+
+			.ui-detail-map {
+				position: absolute;
+				right: 40rpx;
+				bottom: 30rpx;
+			}
+		}
 
 		// justify-content: space-between;
 		.ui-detail-icon {
@@ -169,5 +185,4 @@
 			bottom: 20rpx;
 		}
 	}
-
 </style>

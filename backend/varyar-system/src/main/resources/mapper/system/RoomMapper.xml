@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="roomId"    column="room_id"    />
         <result property="name"    column="name"    />
         <result property="familyId"    column="family_id"    />
+        <result property="orgId"    column="org_id"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="createTime"    column="create_time"    />
         <result property="createById"    column="create_by_id"    />
@@ -19,13 +20,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTRoomVo">
-        select room_id, name, family_id, del_flag, create_time, update_time,create_by_id,height,room_right,room_left,room_length from t_room
+        select room_id, name, family_id, org_id, del_flag, create_time, update_time,create_by_id,height,room_right,room_left,room_length from t_room
     </sql>
     <select id="selectTRoomList" parameterType="TRoom" resultMap="TRoomResult">
         <include refid="selectTRoomVo"/>
         <where>  
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="familyId != null "> and family_id = #{familyId}</if>
+            <if test="orgId != null "> and org_id = #{orgId}</if>
         </where>
     </select>
 
@@ -42,6 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">name,</if>
             <if test="familyId != null">family_id,</if>
+            <if test="orgId != null">org_id,</if>
             <if test="delFlag != null">del_flag,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
@@ -54,6 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null">#{name},</if>
             <if test="familyId != null">#{familyId},</if>
+            <if test="orgId != null">#{orgId},</if>
             <if test="delFlag != null">#{delFlag},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
@@ -70,6 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="name != null">name = #{name},</if>
             <if test="familyId != null">family_id = #{familyId},</if>
+            <if test="orgId != null">org_id = #{orgId},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>

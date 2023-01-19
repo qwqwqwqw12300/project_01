@@ -78,8 +78,11 @@
 
 	.ui-u-search {
 		position: fixed;
-		top: calc(var(--status-bar-height) + 20rpx);
+		top: 0;
+		z-index: 9999;
+		padding-top: calc(var(--status-bar-height) + 20rpx);
 		width: calc(100% - 60rpx);
+		background-color: #fff;
 
 	}
 

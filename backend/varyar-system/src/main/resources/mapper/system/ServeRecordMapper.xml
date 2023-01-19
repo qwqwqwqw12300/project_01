@@ -98,9 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectServeRecordList" parameterType="TServeRecord" resultMap="ServeRecordResult">
         <include refid="selectServeRecordVo"/>
-        <if test="servedUser != null and (servedUser.name != null or servedUser.mobilePhone != null)">
             left join sys_user u on u.user_id = s.served_user_id
-        </if>
         <if test="device != null and (device.type != null or device.no!=null or device.name != null)">
             left join t_device d on d.device_id = s.device_id
         </if>

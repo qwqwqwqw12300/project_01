@@ -129,7 +129,8 @@ drop table if exists t_room;
 create table t_room (
   room_id        bigint(20)      not null auto_increment    comment '房间id',
   name              varchar(50)     default ''                 comment '房间名称',
-  family_id        bigint(20)      not null                    comment '家庭id',
+  family_id        bigint(20)      default null                    comment '家庭id',
+  org_id        bigint(20)      default null                    comment '机构id',
   room_length      decimal(10,2)                               comment '长度',
   room_left        decimal(10,2)                               comment '左侧',
   room_right       decimal(10,2)                               comment '右侧',
@@ -253,6 +254,7 @@ drop table if exists t_room_zone;
 create table t_room_zone (
   room_zone_id        bigint(20)      not null auto_increment    comment '子区域id',
   room_id           bigint(20)                            comment '房间id',
+  device_id           bigint(20)                            comment '设备id',
   name               varchar(50)                          comment '子区域名称',
   x1                decimal(10,2)                         comment '最左侧的点',
   x2                decimal(10,2)                         comment '最右侧的点',
@@ -266,8 +268,8 @@ create table t_room_zone (
   departure_time    int                                   comment '离开时间(s)',
   in_monitor_flag        char(1)                          comment '进入监控区域超时报警（0是 1否）',
   out_monitor_flag       char(1)                          comment '离开监控区域超时报警（0是 1否）',
-  start_time        datetime                              comment '开始时间(s)',
-  end_time    		datetime                              comment '结束时间(s)',
+  start_time        datetime                              comment '开始时间',
+  end_time    		datetime                              comment '结束时间',
   create_time       datetime                              comment '创建时间',
   update_time       datetime                              comment '更新时间',
   primary key (room_zone_id)

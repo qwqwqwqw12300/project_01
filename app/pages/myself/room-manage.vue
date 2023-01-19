@@ -9,7 +9,6 @@
 	<view id="roomMagege">
 		<app-body>
 			<app-logo text="我的房间管理"></app-logo>
-			<!-- <view class="ui-logo">我的房间管理</view> -->
 			<view class="ui-menu">
 				<u-grid>
 					<u-grid-item v-for="(item, index) in list" :key="index">
@@ -37,20 +36,36 @@
 						<u--input v-model="form.name" placeholder="请输入房间名称" border="bottom" clearable></u--input>
 					</view>
 					<view>
-						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间高度"></u-text>
-						<u--input v-model="form.roomHeight" placeholder="请输入房间高度" border="bottom" clearable></u--input>
+						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间高度"></u-text>
+						<view class="ui-slider">
+							<u-slider v-model="form.roomHeight" activeColor="#eeaa3d" blockColor="#eeaa3d"
+								inactiveColor="#c0c4cc" />
+							<text>{{$u.priceFormat(form.roomHeight/10, 2)}}米</text>
+						</view>
 					</view>
 					<view>
-						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间长度"></u-text>
-						<u--input v-model="form.roomLength" placeholder="请输入房间长度" border="bottom" clearable></u--input>
+						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间长度"></u-text>
+						<view class="ui-slider">
+							<u-slider v-model="form.roomLength" activeColor="#eeaa3d" blockColor="#eeaa3d"
+								inactiveColor="#c0c4cc" />
+							<text>{{$u.priceFormat(form.roomLength/10, 2)}}米</text>
+						</view>
 					</view>
 					<view>
-						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间左长度"></u-text>
-						<u--input v-model="form.roomRight" placeholder="请输入房间左长度" border="bottom" clearable></u--input>
+						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间左长度"></u-text>
+						<view class="ui-slider">
+							<u-slider v-model="form.roomRight" activeColor="#eeaa3d" blockColor="#eeaa3d"
+								inactiveColor="#c0c4cc" />
+							<text>{{$u.priceFormat(form.roomRight/10, 2)}}米</text>
+						</view>
 					</view>
 					<view>
-						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间右长度"></u-text>
-						<u--input v-model="form.roomLeft" placeholder="请输入房间右长度" border="bottom" clearable></u--input>
+						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间右长度"></u-text>
+						<view class="ui-slider">
+							<u-slider v-model="form.roomLeft" activeColor="#eeaa3d" blockColor="#eeaa3d"
+								inactiveColor="#c0c4cc" />
+							<text>{{$u.priceFormat(form.roomLeft/10, 2)}}米</text>
+						</view>
 					</view>
 					<view class="wd-btn-gloup">
 						<button @click="onSubmit">提交</button>
@@ -255,6 +270,25 @@
 		margin: 20rpx 72rpx;
 		display: inline-block;
 		font-weight: bold;
+	}
+
+	.ui-slider {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+
+		text {
+			font-size: 26rpx;
+			color: #999;
+		}
+
+		&>* {
+			:nth-child(1) {
+				width: 320rpx;
+			}
+		}
 	}
 
 	.wd-add {

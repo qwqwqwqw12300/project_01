@@ -222,7 +222,7 @@ export const PostSetSosDevicePhone = (params) => http.post('/api/device/setSOSDe
 /**
  * 获取设备定位
  */
-export const PostListState = (params) => http.post('/api/device/listState', params)
+export const GetDeviceSize = (params) => http.get('/api/device/getDeviceNow', params)
 
 /**
  * 获取分享家庭列表
@@ -261,4 +261,22 @@ export const postSetNoticeFlag = (params) => http.post('/api/notice/setNoticeFla
 export const PostAddFence = (params) => http.post('/api/fence/addFence', params);
 
 
+/**
+ * 添加设备
+ */
+export const PostcreDevice = (params) => http.post('/api/device/creDevice', params);
 
+/**
+ * 创建子区域
+ */
+export const PostRadarDevice = (params) => http.post('/api/roomZone/setRadarDevice', params);
+
+/**
+ * 删除子区域
+ */
+export const PostRemRadarDevice = (params) => http.post('/api/roomZone/remRadarDevice', params);
+
+/**
+ * 获取子区域列表
+ */
+export const GetRoomZoon = (params) => http.get('/api/roomZone/getRoomZoon', params);

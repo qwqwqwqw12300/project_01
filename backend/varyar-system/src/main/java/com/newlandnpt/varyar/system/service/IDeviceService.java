@@ -167,4 +167,20 @@ public interface IDeviceService
      */
     public TDevice loadDeviceFromCacheByNo(String deviceNo);
 
+    /**
+     * 加载设备参数配置
+     * @param deviceId
+     * @return
+     */
+    public TDevice.DeviceSettings loadSettings(Long deviceId);
+
+    /**
+     * 设置设备参数
+     *
+     * @param deviceId
+     * @param settings
+     * @return
+     */
+    public int setSettings(Long deviceId, TDevice.DeviceSettings settings);
+
 }

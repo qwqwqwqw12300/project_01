@@ -320,7 +320,6 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2017);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2018);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2019);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2021);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2022);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2023);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2024);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2025);

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,15 +39,14 @@ public class DeviceApi {
     private String deviceConfigTopic;
     
     /** 接收下发参数测试接口demo，可以复制到其他包 **/
-    @GetMapping("/config")
+    @PostMapping("/config")
     @ResponseBody
     public void config(@RequestBody DeviceConfig deviceConfig) {
-    	
     	SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic, MessageBuilder.withPayload(deviceConfig).build());
-    	//System.out.println(JSON.toJSONString(result));
-        if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
-            log.error("MQ推送失败：{}", "参数下发事件");
-        }
+//    	System.out.println(JSON.toJSONString(deviceConfig));
+		if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
+			log.error("MQ推送失败：{}", "参数下发事件");
+		}
     }
 
     /** 测试接口http post是否收到消息 **/

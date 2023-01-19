@@ -18,17 +18,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="fallFlag"    column="fall_flag"    />
         <result property="entryTime"    column="entry_time"    />
         <result property="departureTime"    column="departure_time"    />
+        <result property="inMonitorFlag"    column="in_monitor_flag"    />
+        <result property="outMonitorFlag"    column="out_monitor_flag"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="deviceId"    column="device_id"    />
     </resultMap>
 
     <sql id="selectTRoomZoneVo">
-        select room_zone_id, room_id, name, x1, x2, y1, y2, z1, z2, exist_flag, fall_flag, entry_time, departure_time, create_time, update_time from t_room_zone
+        select room_zone_id, room_id, name, x1, x2, y1, y2, z1, z2, exist_flag, fall_flag, entry_time, departure_time, create_time, update_time,in_monitor_flag,out_monitor_flag,start_time,end_time,device_id from t_room_zone
     </sql>
 
     <select id="selectTRoomZoneList" parameterType="TRoomZone" resultMap="TRoomZoneResult">
         <include refid="selectTRoomZoneVo"/>
-        <where>  
+        <where>
+            <if test="deviceId != null "> and device_id = #{deviceId}</if>
             <if test="roomId != null "> and room_id = #{roomId}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="x1 != null "> and x1 = #{x1}</if>
@@ -43,7 +49,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="departureTime != null "> and departure_time = #{departureTime}</if>
         </where>
     </select>
-    
+    <select id="selectTRoomZoneByDeviceId" parameterType="Long" resultMap="TRoomZoneResult">
+        <include refid="selectTRoomZoneVo"/>
+        where device_id = #{deviceId}
+    </select>
+
     <select id="selectTRoomZoneByRoomZoneId" parameterType="Long" resultMap="TRoomZoneResult">
         <include refid="selectTRoomZoneVo"/>
         where room_zone_id = #{roomZoneId}
@@ -53,6 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into t_room_zone
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="roomId != null">room_id,</if>
+            <if test="deviceId != null "> device_id,</if>
             <if test="name != null">name,</if>
             <if test="x1 != null">x1,</if>
             <if test="x2 != null">x2,</if>
@@ -64,11 +75,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="fallFlag != null">fall_flag,</if>
             <if test="entryTime != null">entry_time,</if>
             <if test="departureTime != null">departure_time,</if>
+            <if test="inMonitorFlag != null">in_monitor_flag,</if>
+            <if test="outMonitorFlag != null">out_monitor_flag,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="roomId != null">#{roomId},</if>
+            <if test="deviceId != null "> #{deviceId},</if>
             <if test="name != null">#{name},</if>
             <if test="x1 != null">#{x1},</if>
             <if test="x2 != null">#{x2},</if>
@@ -80,6 +96,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="fallFlag != null">#{fallFlag},</if>
             <if test="entryTime != null">#{entryTime},</if>
             <if test="departureTime != null">#{departureTime},</if>
+            <if test="inMonitorFlag != null">#{inMonitorFlag},</if>
+            <if test="outMonitorFlag != null">#{outMonitorFlag},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
          </trim>
@@ -89,6 +109,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update t_room_zone
         <trim prefix="SET" suffixOverrides=",">
             <if test="roomId != null">room_id = #{roomId},</if>
+            <if test="deviceId != null "> device_id = #{deviceId},</if>
             <if test="name != null">name = #{name},</if>
             <if test="x1 != null">x1 = #{x1},</if>
             <if test="x2 != null">x2 = #{x2},</if>
@@ -100,6 +121,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="fallFlag != null">fall_flag = #{fallFlag},</if>
             <if test="entryTime != null">entry_time = #{entryTime},</if>
             <if test="departureTime != null">departure_time = #{departureTime},</if>
+            <if test="inMonitorFlag != null">in_monitor_flag= #{inMonitorFlag},</if>
+            <if test="outMonitorFlag != null">out_monitor_flag= #{outMonitorFlag},</if>
+            <if test="startTime != null">start_time= #{startTime},</if>
+            <if test="endTime != null">end_time= #{endTime},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
