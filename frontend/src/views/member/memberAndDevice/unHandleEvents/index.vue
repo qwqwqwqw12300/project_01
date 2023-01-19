@@ -39,9 +39,9 @@
           />
         </el-form-item>
 <!-- 待调整 -->
-        <el-form-item label="设备名称" prop="deviceNo">
+        <el-form-item label="设备名称" prop="deviceName">
           <el-input
-            v-model="queryParams.deviceNo"
+            v-model="queryParams.deviceName"
             placeholder="请输入设备名称"
             clearable
             @keyup.enter.native="handleQuery"
@@ -61,9 +61,9 @@
         </el-form-item>
 
         <!-- 待调整 -->
-        <el-form-item label="会员名称" prop="deviceNo">
+        <el-form-item label="会员名称" prop="memberName">
           <el-input
-            v-model="queryParams.deviceNo"
+            v-model="queryParams.memberName"
             placeholder="请输入会员名称"
             clearable
             @keyup.enter.native="handleQuery"
@@ -71,9 +71,9 @@
         </el-form-item>
 
          <!-- 待调整 -->
-         <el-form-item label="处理人员" prop="deviceNo">
+         <el-form-item label="处理人员" prop="userName">
           <el-input
-            v-model="queryParams.deviceNo"
+            v-model="queryParams.userName"
             placeholder="请输入处理人员"
             clearable
             @keyup.enter.native="handleQuery"
@@ -133,9 +133,9 @@
         <el-table-column label="事件内容" align="center" prop="content" />
         <el-table-column label="设备名称" align="center" prop="deviceName" />
         <el-table-column label="设备编号" align="center" prop="deviceNo" />
-        <el-table-column label="报警时间" align="center" prop="operateTime" width="180" color="#FF0000">
+        <el-table-column label="报警时间" align="center" prop="createTime" width="180" color="#FF0000">
           <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.operateTime) }}</span>
+            <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作时间" align="center" prop="operateTime" width="180" color="#FF0000">
@@ -173,7 +173,7 @@
       <!-- 添加或修改事件对话框 -->
       <!-- 服务登记 -->
       <el-dialog :title="title" :visible.sync="open" width="830px" append-to-body>
-        {{this.member}}
+        {{this.phoneOptions}}
         <el-form ref="form" :model="form" :rules="rules" label-width="130px">
           <el-form-item label="紧急联系人电话:" prop="servedInfo">
           <el-radio-group v-model="form.servedInfo" size="medium">
@@ -271,14 +271,13 @@
         // 查询参数
 
         member: undefined,
-        phoneOptions:[],
+        //phoneOptions:[],
         contacts : [ 
        
       ],
-      //   //联络人号码
-      //    phoneOptions:[
+        //联络人号码
+         phoneOptions:[
           
-      //    //]  ,
       // {
       //   "label": "试点",
       //   "value": 13770000001
@@ -288,7 +287,8 @@
       // }, {
       //   "label": "陈琛下",
       //   "value": 13770000002
-      // }],
+      // }
+    ],
       //快捷回复
       replyOptions:[
       {
@@ -306,6 +306,7 @@
     
       ],
 
+      memberId:0,
         queryParams: {
           pageNum: 1,
           pageSize: 10,
@@ -342,9 +343,9 @@
         },
         // 表单校验
         rules: {
-          servedInfo: [
-          { required: true, message: "必须选择手机号", trigger: "blur" },
-        ],
+        //   servedInfo: [
+        //   { required: true, message: "必须选择手机号", trigger: "blur" },
+        // ],
         }
       };
     },
@@ -374,7 +375,8 @@
       /** 查询事件列表 */
       getList() {
         this.loading = true;
-        listEvent(this.queryParams).then(response => {
+        // listEvent(this.queryParams).then(response => {
+        listEvent(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
           this.eventList = response.rows;
           this.total = response.total;
           this.loading = false;
@@ -461,18 +463,25 @@
       handleAdd(row) {
         // this.reset();
 
-
-        const MemberId = 100
-        getMember(MemberId).then(response => {
-        this.member = response.data;
-        console.log("member===============" + this.member)
+        this.phoneOptions = []
+        //row.memberId
+        console.log("row.memberId==============="+this.from.memberId)
+        getMember(Number(row.memberId)).then(response => {
+        this.phoneOptions = response.data.contacts[0].phone;
+        // this.phoneList = response.rows;
+        console.log("member===============" + this.phoneOptions)
       });
-      // this.phoneOptions = this.member.contacts
-      // // this.phoneOptions = this.member.map(item => {
-      // //     return {
-      // //       phone:item.phone,
-      // //     }
-      // //   })
+
+      // this.phoneOptions =this.member.contacts.map(function(item){
+      //   return item.phone
+
+      // }),
+      // // this.phoneOptions = this.member.contacts
+      // // // this.phoneOptions = this.member.map(item => {
+      // // //     return {
+      // // //       phone:item.phone,
+      // // //     }
+      // // //   })
       // console.log("member===============" + this.phoneOptions)
       this.open = true;
       this.title = "服务登记";
@@ -516,3 +525,79 @@
   };
   </script>
   
+  
+<style scoped lang="scss">
+.home {
+  blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 17.5px;
+    border-left: 5px solid #eee;
+  }
+  hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #eee;
+  }
+  .col-item {
+    margin-bottom: 20px;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: #676a6c;
+  overflow-x: hidden;
+
+  ul {
+    list-style-type: none;
+  }
+
+  h4 {
+    margin-top: 0px;
+  }
+
+  h2 {
+    margin-top: 10px;
+    font-size: 26px;
+    font-weight: 100;
+  }
+
+  p {
+    margin-top: 10px;
+
+    b {
+      font-weight: 700;
+    }
+  }
+
+  .update-log {
+    ol {
+      display: block;
+      list-style-type: decimal;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      margin-inline-start: 0;
+      margin-inline-end: 0;
+      padding-inline-start: 40px;
+    }
+  }
+}
+</style>
+
+<style scoped lang="scss">
+
+.el-row {
+  margin-bottom: 30px;
+
+  &
+  :last-child {
+    margin-bottom: 0;
+  }
+}
+</style>

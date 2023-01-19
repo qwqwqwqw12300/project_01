@@ -94,6 +94,8 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
+     <!--查询：device:serveRecord:query  -->
+     <!--服务登记：device:serveRecord:add  -->
 
     <el-row :gutter="10" class="mb8">
         <el-col :span="1.5">
@@ -103,7 +105,7 @@
             icon="el-icon-download"
             size="mini"
             @click="handleExport"
-            v-hasPermi="['system:record:export']"
+            v-hasPermi="['device:serveRecord:export']"
           >导出</el-button>
         </el-col>
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -128,7 +130,7 @@
         </el-table-column>
         <el-table-column label="设备分组＋位置" align="center"  prop="deviceGroupName,location">
           <template slot-scope="scope">
-                    {{scope.row.device.deviceGroupName}} + {{scope.row.device.location}}
+                    {{scope.row.device.deviceGroupName}}  {{scope.row.device.location}}
           </template>
         </el-table-column>
       

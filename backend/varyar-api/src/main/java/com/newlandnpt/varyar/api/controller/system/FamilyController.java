@@ -9,21 +9,13 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
-import com.newlandnpt.varyar.system.domain.TFamily;
-import com.newlandnpt.varyar.system.domain.TMember;
-import com.newlandnpt.varyar.system.domain.TMemberFamily;
-import com.newlandnpt.varyar.system.service.IFamilyService;
-import com.newlandnpt.varyar.system.service.IMemberFamilyService;
-import com.newlandnpt.varyar.system.service.IMemberInfoService;
-import com.newlandnpt.varyar.system.service.IMemberService;
+import com.newlandnpt.varyar.system.domain.*;
+import com.newlandnpt.varyar.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +36,8 @@ public class FamilyController extends BaseController {
 
     @Autowired
     private IMemberService iMemberService;
-
+    @Autowired
+    private IMsgService iMsgService;
     @Autowired
     private RedisCache redisCache;
     /**
@@ -55,6 +48,18 @@ public class FamilyController extends BaseController {
         startPage();
         Long memberId = getLoginUser().getMemberId();
         List<TFamily> list = tFamilyService.selectMembersFamilyList(memberId);
+        for (TFamily item:list){
+            List<TDevice> devices = item.getDevices();
+            if (devices.size()>0){
+                for (TDevice it: devices){
+                    TMsg tMsg = new TMsg();
+                    tMsg.setDeviceId(it.getDeviceId());
+                    tMsg.setOperateFlag("0");
+                    tMsg.setFamilyId(item.getFamilyId());
+                    it.setMsgNum(String.valueOf(iMsgService.selectTMsgList(tMsg).size()));
+                }
+            }
+        }
         return getDataTable(list);
     }
     /**

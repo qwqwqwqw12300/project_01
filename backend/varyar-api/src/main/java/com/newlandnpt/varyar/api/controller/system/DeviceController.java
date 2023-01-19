@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar.api.controller.system;
 
+import com.alibaba.fastjson2.JSON;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.model.DevicePhoneRequest;
@@ -105,7 +106,7 @@ public class DeviceController extends BaseController {
             error("设备id不能为空！");
         }
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
-        if(device.getMemberId().equals(this.getLoginUser().getMemberId())){
+        if(device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
             error("非创建者无权限修改！");
         }
         if (device==null){
@@ -114,7 +115,6 @@ public class DeviceController extends BaseController {
         device.setName(deviceRequest.getDeviceName());
         device.setNo(deviceRequest.getDeviceNo());
         device.setType(deviceRequest.getDeviceType());
-        device.setLocation(deviceRequest.getLocation());
         try {
             iDeviceService.updateDevice(device);
         } catch (Exception e){
@@ -141,28 +141,35 @@ public class DeviceController extends BaseController {
     @PostMapping("/setDevice")
     public AjaxResult setDevice(
             @RequestBody @Validated DeviceRequest deviceRequest) {
-        AjaxResult ajax = AjaxResult.success();
         if (deviceRequest.getDeviceId().equals("")|| deviceRequest.getDeviceId()==null){
-            error("设备id不能为空！");
+            return error("设备id不能为空！");
         }
-        if (deviceRequest.getFamilyId().equals("")|| deviceRequest.getFamilyId()==null){
-            error("家庭id不能为空！");
+        if (deviceRequest.getFamilyId()==null){
+            return error("家庭id不能为空！");
         }
-        if (deviceRequest.getRoomId().equals("")|| deviceRequest.getRoomId()==null){
-            error("房间id不能为空！");
+        if (deviceRequest.getRoomId()==null){
+            return error("房间id不能为空！");
         }
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
         if (device==null){
-            error("无法查找到设备信息！");
+            return error("无法查找到设备信息！");
         }
-        device.setFamilyId(Long.valueOf(deviceRequest.getFamilyId()));
-        device.setRoomId(Long.valueOf(deviceRequest.getRoomId()));
+        if (!deviceRequest.getFamilyId().equals("")){
+            device.setFamilyId(Long.valueOf(deviceRequest.getFamilyId()));
+        }else{
+            device.setFamilyId(Long.valueOf("0"));
+        }
+        if (!deviceRequest.getRoomId().equals("")){
+            device.setRoomId(Long.valueOf(deviceRequest.getRoomId()));
+        }else{
+            device.setRoomId(Long.valueOf("0"));
+        }
         try {
             iDeviceService.updateDevice(device);
         } catch (Exception e){
-            error("修改我的设备失败！");
+           return error("绑定或解绑我的设备失败！");
         }
-        return ajax;
+        return success();
     }
     /**
      * 设置SOS电话
@@ -277,7 +284,7 @@ public class DeviceController extends BaseController {
         if(!device.getType().equals("1")){
             throw new ServiceException("该设备不是监控设备!");
         }
-        if(!device.getMemberId().equals(this.getLoginUser().getMemberId())){
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
             throw new ServiceException("无权限获取本设备通讯录!");
         }
         List<DevicePhone> list = new ArrayList<DevicePhone>();
@@ -315,6 +322,36 @@ public class DeviceController extends BaseController {
             }
         }
         return String.valueOf(number);
+    }
+    /**
+     * 获取设备位置
+     * */
+    @GetMapping("/getDeviceNow")
+    public AjaxResult getDeviceNow(Long deviceId) {
+        TDevice tDevice = iDeviceService.selectDeviceByDeviceId(deviceId);
+        if (!tDevice.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return error("非创建者无权获取设备信息！");
+        }
+        if(!tDevice.getType().equals("1")){
+            return error("设备非监控设备！");
+        }
+        if(tDevice!=null){
+            //经 度
+            String longitude ="213123213992.2132132";
+            //纬度
+            String latitude ="10002932931.2123213";
+            //地址
+            String address = "88888888888";
+            Map<String,String > map = new HashMap<String,String>();
+            map.put("longitude",longitude);
+            map.put("latitude",latitude);
+            map.put("address",address);
+            String nowLocation = JSON.toJSONString(map);
+            tDevice.setNowLoacation(nowLocation);
+        }else{
+            return AjaxResult.error("获取设备信息失败！");
+        }
+        return AjaxResult.success(tDevice);
     }
 
 

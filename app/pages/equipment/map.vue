@@ -12,7 +12,7 @@
 			<view class="ui-map-box"><map style="width: 100%; height: 600rpx;" :latitude="latitude"
 					:longitude="longitude" :markers="covers"></map></view>
 			<u-text prefixIcon="map-fill" iconStyle="font-size: 40rpx" text="当前地址"></u-text>
-			<text>福州市马尾区江滨东路</text>
+			<text>{{ address }}</text>
 		</view>
 		<view class="ui-btn-group">
 			<button class="wd-sms" @click="getListState">立即获取定位</button>
@@ -23,7 +23,7 @@
 
 <script>
 	import {
-		PostListState
+		GetDeviceSize
 	} from '../../common/http/api';
 	import {
 		mapState
@@ -59,25 +59,26 @@
 			 * 获取定位
 			 */
 			getListState() {
-				const {
-					deviceId,
-					familyId,
-					roomId
-				} = this.deviceInfo;
-				PostListState({
-					deviceId,
-					familyId,
-					roomId
+				// const {
+				// 	deviceId,
+				// 	familyId,
+				// 	roomId
+				// } = this.deviceInfo;
+				GetDeviceSize({
+					deviceId: '100',
 				}).then(res => {
+					console.log(res.data.nowLoacation, 'fdd')
 					const {
 						longitude,
 						latitude,
-						radius,
+						// radius,
 						address
-					} = res.rows[0]
+					} = JSON.parse(res.data.nowLoacation)
+					const radius = 200
+					console.log(longitude, latitude, address, 'ppp')
 					this.address = address
 					this.longitude = longitude
-					this.latitude = latitude
+					this.latitude = latitude,
 					this.covers[0] = {
 						latitude,
 						longitude,

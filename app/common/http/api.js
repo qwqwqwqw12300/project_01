@@ -222,7 +222,7 @@ export const PostSetSosDevicePhone = (params) => http.post('/api/device/setSOSDe
 /**
  * 获取设备定位
  */
-export const PostListState = (params) => http.post('/api/device/listState', params)
+export const GetDeviceSize = (params) => http.get('/api/device/getDeviceNow', params)
 
 /**
  * 获取分享家庭列表

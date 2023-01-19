@@ -1,6 +1,8 @@
 package com.newlandnpt.varyar.system.domain;
 
 import java.math.BigDecimal;
+import java.util.Date;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
@@ -66,8 +68,58 @@ public class TRoomZone extends BaseEntity
     /** 离开时间(s) */
     @Excel(name = "离开时间(s)")
     private Long departureTime;
+    /** 进入监控区域超时报警（0是 1否） */
+    private String inMonitorFlag;
+    /** 离开监控区域超时报警（0是 1否）*/
+    private String outMonitorFlag;
+    /** 开始时间 */
+    private Date startTime;
+    /** 结束时间 */
+    private Date endTime;
+    /** 设备id*/
+    private Long deviceId;
 
-    public void setRoomZoneId(Long roomZoneId) 
+    public Long getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(Long deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getInMonitorFlag() {
+        return inMonitorFlag;
+    }
+
+    public void setInMonitorFlag(String inMonitorFlag) {
+        this.inMonitorFlag = inMonitorFlag;
+    }
+
+    public String getOutMonitorFlag() {
+        return outMonitorFlag;
+    }
+
+    public void setOutMonitorFlag(String outMonitorFlag) {
+        this.outMonitorFlag = outMonitorFlag;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setRoomZoneId(Long roomZoneId)
     {
         this.roomZoneId = roomZoneId;
     }
