@@ -2,16 +2,21 @@ package com.newlandnpt.varyar.system.service.impl;
 
 import com.newlandnpt.varyar.common.annotation.DataScope;
 import com.newlandnpt.varyar.common.constant.CacheConstants;
+import com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter;
 import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
+import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.system.domain.TDevice;
+import com.newlandnpt.varyar.system.domain.TDeviceFence;
+import com.newlandnpt.varyar.system.domain.TRoom;
+import com.newlandnpt.varyar.system.domain.TRoomZone;
 import com.newlandnpt.varyar.system.domain.dto.org.OrgDeviceCountDto;
-import com.newlandnpt.varyar.system.mapper.TDeviceMapper;
-import com.newlandnpt.varyar.system.mapper.TOrgMapper;
+import com.newlandnpt.varyar.system.mapper.*;
 import com.newlandnpt.varyar.system.service.IDeviceService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +25,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.newlandnpt.varyar.common.constant.DeviceConstants.*;
 import static com.newlandnpt.varyar.common.utils.SecurityUtils.getLoginUserName;
@@ -43,6 +51,12 @@ public class DeviceServiceImpl implements IDeviceService {
     private TOrgMapper orgMapper;
     @Autowired
     private RedisCache redisCache;
+    @Autowired
+    private RoomMapper roomMapper;
+    @Autowired
+    private RoomZoneMapper roomZoneMapper;
+    @Autowired
+    private DeviceFenceMapper deviceFenceMapper;
 
     /**
      * 项目启动时，初始化参数到缓存
@@ -291,6 +305,109 @@ public class DeviceServiceImpl implements IDeviceService {
     @Override
     public TDevice loadDeviceFromCacheByNo(String deviceNo) {
         return redisCache.getCacheObject(getCacheKey(deviceNo));
+    }
+
+    @Override
+    public TDevice.DeviceSettings loadSettings(Long deviceId) {
+        TDevice device = deviceMapper.selectTDeviceByDeviceId(deviceId);
+        if(device == null){
+            return null;
+        }
+        TDevice.DeviceSettings settings;
+        if(TYPE_READER_WAVE.equals(device.getType())){
+            settings = new TDevice.RadarWaveDeviceSettings();
+            TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings) settings;
+            if(device.getRoomId()!=null){
+                radarWaveDeviceSettings.setRoom(roomMapper.selectTRoomByRoomId(device.getRoomId()));
+                TRoomZone roomZone = new TRoomZone();
+                roomZone.setRoomId(device.getRoomId());
+                radarWaveDeviceSettings.setRoomZones(roomZoneMapper.selectTRoomZoneList(roomZone));
+            }
+        }else if(TYPE_WATCH.equals(device.getType())){
+            settings = new TDevice.WatchSettings();
+            TDevice.WatchSettings watchSettings = (TDevice.WatchSettings) settings;
+            if(device.getParameter()!=null){
+                watchSettings.setList(device.getParameter().getList());
+            }
+            List<TDeviceFence> fences = deviceFenceMapper.selectTDeviceFenceByDeviceId(deviceId);
+            watchSettings.setFence(Optional.ofNullable(fences)
+                    .map(list->list.stream().findFirst().orElse(null))
+                    .orElse(null));
+        }else {
+            settings = null;
+        }
+        return settings;
+    }
+
+    @Override
+    public int setSettings(Long deviceId, TDevice.DeviceSettings settings) {
+        TDevice device = deviceMapper.selectTDeviceByDeviceId(deviceId);
+        if(device == null){
+            throw new ServiceException("设备不存在");
+        }
+        if(TYPE_READER_WAVE.equals(device.getType())){
+            TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings) settings;
+
+            TRoom room = radarWaveDeviceSettings.getRoom();
+            room.setOrgId(device.getOrgId());
+            if(room.getRoomId()==null){
+                room.setCreateById(String.valueOf(SecurityUtils.getUserId()));
+                room.autoSetCreateByLoginUser();
+                roomMapper.insertTRoom(room);
+                device.setRoomId(room.getRoomId());
+                deviceMapper.updateTDevice(device);
+            }else{
+                room.autoSetUpdateByLoginUser();
+                roomMapper.updateTRoom(room);
+            }
+
+            TRoomZone roomZone = new TRoomZone();
+            roomZone.setRoomId(device.getRoomId());
+            List<TRoomZone> roomZones = roomZoneMapper.selectTRoomZoneList(roomZone);
+            List<Long> removeZones = new ArrayList<>();
+            if(CollectionUtils.isEmpty(radarWaveDeviceSettings.getRoomZones())){
+                removeZones.addAll(roomZones.stream()
+                        .map(p->p.getRoomZoneId())
+                        .collect(Collectors.toList()));
+            }else{
+                removeZones.addAll(roomZones.stream()
+                        .filter(p->radarWaveDeviceSettings.getRoomZones().stream().noneMatch(q->q.getRoomZoneId()!=null&&p.getRoomZoneId()== q.getRoomZoneId()))
+                        .map(p->p.getRoomZoneId())
+                        .collect(Collectors.toList()));
+                radarWaveDeviceSettings.getRoomZones().forEach(zone->{
+                    zone.setRoomId(room.getRoomId());
+                    if(zone.getRoomZoneId()!=null){
+                        zone.autoSetUpdateByLoginUser();
+                        roomZoneMapper.updateTRoomZone(zone);
+                    }else{
+                        zone.autoSetCreateByLoginUser();
+                        roomZoneMapper.insertTRoomZone(zone);
+                    }
+                });
+            }
+
+            if(removeZones.size()>0){
+                roomZoneMapper.deleteTRoomZoneByRoomZoneIds(removeZones.stream()
+                        .toArray(Long[]::new));
+            }
+
+        }else if(TYPE_WATCH.equals(device.getType())){
+            TDevice.WatchSettings watchSettings = (TDevice.WatchSettings) settings;
+            if(device.getParameter()==null){
+                device.setParameter(new DeviceParameter());
+            }
+            device.getParameter().setList(watchSettings.getList());
+            deviceMapper.updateTDevice(device);
+            if(watchSettings.getFence()!=null){
+                if(watchSettings.getFence().getDeviceFenceId()!=null){
+                    deviceFenceMapper.updateTDeviceFence(watchSettings.getFence());
+                }else{
+                    deviceFenceMapper.insertTDeviceFence(watchSettings.getFence());
+                }
+            }
+        }
+
+        return 1;
     }
 
     /**

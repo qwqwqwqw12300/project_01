@@ -25,7 +25,9 @@ export default {
     settings: {
       type: Object,
       default(){
-        return {}
+        return {
+          type:"1"
+        }
       }
     },
     visible: {

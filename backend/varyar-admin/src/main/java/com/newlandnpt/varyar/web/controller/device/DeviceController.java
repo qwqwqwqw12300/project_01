@@ -73,6 +73,26 @@ public class DeviceController extends BaseController
     }
 
     /**
+     * 获取设备参数配置
+     */
+    @GetMapping(value = "/{deviceId}/settings")
+    public AjaxResult getSettings(@PathVariable("deviceId") Long deviceId)
+    {
+        return success(tDeviceService.loadSettings(deviceId));
+    }
+
+    /**
+     * 设备参数配置
+     */
+    @PreAuthorize("@ss.hasPermi('device:settings')")
+    @Log(title = "设备参数", businessType = BusinessType.UPDATE)
+    @PutMapping("/{deviceId}/settings")
+    public AjaxResult setSettings(@PathVariable("deviceId") Long deviceId,@RequestBody TDevice.DeviceSettings deviceSettings)
+    {
+        return toAjax(tDeviceService.setSettings(deviceId,deviceSettings));
+    }
+
+    /**
      * 新增设备
      */
     @PreAuthorize("@ss.hasPermi('device:add')")
@@ -102,6 +122,7 @@ public class DeviceController extends BaseController
         }
         return toAjax(tDeviceService.arrangeDeviceToGroup(Arrays.asList(deviceId).toArray(new Long[1]),deviceGroupId));
     }
+
     /**
      * 设备激活
      */
@@ -131,7 +152,6 @@ public class DeviceController extends BaseController
         }
         return toAjax(tDeviceService.offline(deviceId));
     }
-
 
     /**
      * 设备配对

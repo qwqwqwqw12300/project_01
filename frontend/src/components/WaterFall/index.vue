@@ -2,7 +2,7 @@
   <div>
     <el-row :key="'group'+groupIndex" v-for="(group,groupIndex) in rows">
       <el-col :key="'item'+itemIndex" v-for="(item,itemIndex) in group" :span="span">
-        <slot v-bind:item="item"></slot>
+        <slot v-bind:item="item" v-bind:rowIndex="groupIndex" v-bind:colIndex="itemIndex"></slot>
       </el-col>
     </el-row>
   </div>

@@ -129,7 +129,8 @@ drop table if exists t_room;
 create table t_room (
   room_id        bigint(20)      not null auto_increment    comment '房间id',
   name              varchar(50)     default ''                 comment '房间名称',
-  family_id        bigint(20)      not null                    comment '家庭id',
+  family_id        bigint(20)      default null                    comment '家庭id',
+  org_id        bigint(20)      default null                    comment '机构id',
   room_length      decimal(10,2)                               comment '长度',
   room_left        decimal(10,2)                               comment '左侧',
   room_right       decimal(10,2)                               comment '右侧',

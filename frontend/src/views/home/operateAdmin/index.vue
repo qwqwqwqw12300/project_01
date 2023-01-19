@@ -10,9 +10,9 @@
             <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId)">
               <span style="color: #ff0000">{{ item.name }}</span> | {{getEventSum(item)}}条
               <br>
-              {{ item.deviceGroupName }} | {{item.location}} | {{"在线"}}
+              {{ item.memberId==undefined?item.deviceGroupName:item.familyName }} | {{ item.memberId==undefined?item.location:item.roomName }} | {{item.onlineFlag=='1'?"在线":"不在线"}}
               <br>
-              {{ item.memberNo==undefined?"机构业务":("会员编号："+item.memberNo) }}
+              {{ item.memberId==undefined?"机构业务":("会员账号："+item.memberPhone) }}
             </el-card>
           </template>
         </water-fall>
@@ -28,9 +28,9 @@
             <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId)">
               {{ item.name }} | {{getEventSum(item)}}条
               <br>
-              {{ item.deviceGroupName }} | {{item.location}} | {{"在线"}}
+              {{ item.memberId==undefined?item.deviceGroupName:item.familyName }} | {{ item.memberId==undefined?item.location:item.roomName }} | {{item.onlineFlag=='1'?"在线":"不在线"}}
               <br>
-              {{ item.memberNo==undefined?"机构业务":("会员编号："+item.memberNo) }}
+              {{ item.memberId==undefined?"机构业务":("会员账号："+item.memberPhone) }}
             </el-card>
           </template>
         </water-fall>

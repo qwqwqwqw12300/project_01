@@ -1,7 +1,10 @@
 package com.newlandnpt.varyar.system.domain;
 
 import java.util.Date;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -11,6 +14,9 @@ import org.springframework.data.annotation.Transient;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import static com.newlandnpt.varyar.common.constant.DeviceConstants.TYPE_READER_WAVE;
+import static com.newlandnpt.varyar.common.constant.DeviceConstants.TYPE_WATCH;
 
 /**
  * 设备对象 t_device
@@ -63,6 +69,10 @@ public class TDevice extends BaseEntity
     @Transient
     private String memberNo;
 
+    /** 会员手机号 */
+    @Transient
+    private String memberPhone;
+
     /** 家庭id */
     private Long familyId;
 
@@ -106,6 +116,9 @@ public class TDevice extends BaseEntity
     /**设备未读消息数量*/
     @Transient
     private String msgNum;
+    /**设备参数配置*/
+    @Transient
+    private DeviceSettings settings;
     /**seh*/
     @Transient
     private String nowLoacation;
@@ -228,6 +241,14 @@ public class TDevice extends BaseEntity
         this.memberNo = memberNo;
     }
 
+    public String getMemberPhone() {
+        return memberPhone;
+    }
+
+    public void setMemberPhone(String memberPhone) {
+        this.memberPhone = memberPhone;
+    }
+
     public void setFamilyId(Long familyId)
     {
         this.familyId = familyId;
@@ -334,6 +355,14 @@ public class TDevice extends BaseEntity
         this.parameter = parameter;
     }
 
+    public DeviceSettings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(DeviceSettings settings) {
+        this.settings = settings;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -350,13 +379,95 @@ public class TDevice extends BaseEntity
                 .append("memberId", memberId)
                 .append("memberNo", memberNo)
                 .append("familyId", familyId)
+                .append("familyName", familyName)
                 .append("roomId", roomId)
+                .append("roomName", roomName)
                 .append("distributeFlag", distributeFlag)
                 .append("orgId", orgId)
                 .append("orgName", orgName)
                 .append("orgType", orgType)
                 .append("orgNo", orgNo)
                 .append("delFlag", delFlag)
+                .append("onlineFlag", onlineFlag)
+                .append("msgNum", msgNum)
                 .toString();
+    }
+
+    /**
+     * 设备参数设置
+     */
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,include = JsonTypeInfo.As.PROPERTY,property = "type",visible = true)
+    @JsonSubTypes({@JsonSubTypes.Type(value=RadarWaveDeviceSettings.class,name = "0"),@JsonSubTypes.Type(value=WatchSettings.class,name = "1")})
+    public static class DeviceSettings extends DeviceParameter{
+        /** 类型（0雷达波 1监控设备 ） */
+        private String type;
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+    }
+
+    /**
+     * 雷达波设备参数设置
+     */
+    public static class RadarWaveDeviceSettings extends DeviceSettings{
+
+        public RadarWaveDeviceSettings() {
+            this.setType(TYPE_READER_WAVE);
+        }
+
+        /**
+         * 房间
+         */
+        private TRoom room;
+
+        /**
+         * 房间子区域
+         */
+        private List<TRoomZone> roomZones;
+
+
+        public TRoom getRoom() {
+            return room;
+        }
+
+        public void setRoom(TRoom room) {
+            this.room = room;
+        }
+
+        public List<TRoomZone> getRoomZones() {
+            return roomZones;
+        }
+
+        public void setRoomZones(List<TRoomZone> roomZones) {
+            this.roomZones = roomZones;
+        }
+    }
+
+    /**
+     * 监护设备
+     */
+    public static class WatchSettings extends DeviceSettings{
+
+        public WatchSettings() {
+            setType(TYPE_WATCH);
+        }
+
+        /**
+         * 电子围栏
+         */
+        private TDeviceFence fence;
+
+        public TDeviceFence getFence() {
+            return fence;
+        }
+
+        public void setFence(TDeviceFence fence) {
+            this.fence = fence;
+        }
     }
 }
