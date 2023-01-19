@@ -154,8 +154,9 @@
                 ></el-option>
               </el-select>
         </el-form-item>
-        <el-form-item label="内容">
-          <editor v-model="form.content" :min-height="192"/>
+        <el-form-item label="消息内容">
+          <!-- <editor v-model="form.content" :min-height="192"/> -->
+          <el-input v-model="form.content" placeholder="请输入消息内容" />
         </el-form-item>
         <!-- <el-form-item label="事件id" prop="eventId">
           <el-input v-model="form.eventId" placeholder="请输入事件id" />

@@ -4,13 +4,13 @@
       <span>设备基本信息</span>
     </div>
     <el-descriptions :column="2">
-      <el-descriptions-item label="设备名称：">{{ device== undefined?"":device.name}}</el-descriptions-item>
-      <el-descriptions-item label="设备位置：">{{ device== undefined?"":device.location}}</el-descriptions-item>
-      <el-descriptions-item label="雷达波设备：">{{ device== undefined?"":device.type}}</el-descriptions-item>
-      <el-descriptions-item label="设备供应商：">{{ device== undefined?"":device.org_name}}</el-descriptions-item>
-      <el-descriptions-item label="设备编号：">{{ device== undefined?"":device.no}}</el-descriptions-item>
-      <el-descriptions-item label="设备配网时间：">{{ device== undefined?"":device.register_time}}</el-descriptions-item>
-      <el-descriptions-item label="是否在线：">{{ device== undefined?"":device.status}}</el-descriptions-item>
+      <el-descriptions-item label="设备名称">{{ device== undefined?"":device.name}}</el-descriptions-item>
+      <el-descriptions-item label="设备位置">{{ device== undefined?"":device.location}}</el-descriptions-item>
+      <el-descriptions-item label="雷达波设备">{{ device== undefined?"":device.type}}</el-descriptions-item>
+      <el-descriptions-item label="设备供应商">{{ device== undefined?"":device.org_name}}</el-descriptions-item>
+      <el-descriptions-item label="设备编号">{{ device== undefined?"":device.no}}</el-descriptions-item>
+      <el-descriptions-item label="设备配网时间">{{ device== undefined?"":device.register_time}}</el-descriptions-item>
+      <el-descriptions-item label="是否在线">{{ device== undefined?"":device.status}}</el-descriptions-item>
     </el-descriptions>
   </el-card>
 </template>

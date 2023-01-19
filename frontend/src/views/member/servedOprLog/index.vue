@@ -128,7 +128,7 @@
         </el-table-column>
         <el-table-column label="设备分组＋位置" align="center"  prop="deviceGroupName,location">
           <template slot-scope="scope">
-                    {{scope.row.device.deviceGroupName}} + {{scope.row.device.location}}
+                    {{scope.row.device.deviceGroupName}}  {{scope.row.device.location}}
           </template>
         </el-table-column>
       
