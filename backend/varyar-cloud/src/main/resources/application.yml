@@ -147,6 +147,7 @@ rocketmq:
     access: group_access
     location: group_location
     deviceConfig: group_deviceConfig
+    deviceActive: group_deviceActive
   topic:
     net: netTopic
     fall: fallTopic
@@ -155,6 +156,7 @@ rocketmq:
     access: accessTopic
     location: locationTopic
     deviceConfig: deviceConfigTopic
+    deviceActive: deviceActiveTopic
 
 location:
   gaode:
