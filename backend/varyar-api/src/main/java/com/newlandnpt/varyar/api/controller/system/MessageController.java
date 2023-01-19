@@ -12,6 +12,7 @@ import com.newlandnpt.varyar.common.core.domain.model.MessageRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.domain.TMsg;
+import com.newlandnpt.varyar.system.service.IEventService;
 import com.newlandnpt.varyar.system.service.IMemberService;
 import com.newlandnpt.varyar.system.service.IMsgService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,14 +107,16 @@ public class MessageController extends BaseController {
         if (CollectionUtils.isEmpty(messageRequest.getMsgFlags())){
             error("批量消息标识不能为空！");
         }
+        List<TMsg> tMsgs = new ArrayList<TMsg>();
         for (BatchMessage item : messageRequest.getMsgFlags()){
             TMsg msg = itMsgService.selectTMsgByMsgId(Long.valueOf(item.getMsgId()));
             msg.setOperateFlag(item.getMsgFlag());
-            try {
-                itMsgService.updateTMsg(msg);
-            }  catch (Exception e){
-                error("设置推送消息开关异常！");
-            }
+            tMsgs.add(msg);
+        }
+        try {
+            itMsgService.updateTMsgs(tMsgs);
+        }  catch (Exception e){
+            error("批量标记消息状态失败！");
         }
         return ajax;
     }

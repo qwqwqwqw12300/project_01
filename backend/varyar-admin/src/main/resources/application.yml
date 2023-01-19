@@ -1,7 +1,7 @@
 # 项目相关配置
-vayyar:
+ruoyi:
   # 名称
-  name: vayyar
+  name: varyar
   # 版本
   version: 3.8.4
   # 版权年份

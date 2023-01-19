@@ -4,11 +4,15 @@ import java.util.List;
 
 import com.newlandnpt.varyar.common.annotation.DataScope;
 import com.newlandnpt.varyar.common.utils.DateUtils;
+import com.newlandnpt.varyar.system.domain.TEvent;
+import com.newlandnpt.varyar.system.service.IEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TMsgMapper;
 import com.newlandnpt.varyar.system.domain.TMsg;
 import com.newlandnpt.varyar.system.service.IMsgService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 消息Service业务层处理
@@ -21,7 +25,8 @@ public class MsgServiceImpl implements IMsgService
 {
     @Autowired
     private TMsgMapper tMsgMapper;
-
+    @Autowired
+    private IEventService iEventService;
     /**
      * 查询消息
      * 
@@ -71,10 +76,36 @@ public class MsgServiceImpl implements IMsgService
      * @return 结果
      */
     @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
     public int updateTMsg(TMsg tMsg)
     {
         tMsg.setUpdateTime(DateUtils.getNowDate());
-        return tMsgMapper.updateTMsg(tMsg);
+        tMsgMapper.updateTMsg(tMsg);
+        //标志事件已处理
+        TEvent tEvent = iEventService.selectTEventByEventId(tMsg.getEventId());
+        if (tEvent!=null){
+            tEvent.setOperateFlag("1");
+        }
+        return iEventService.updateTEvent(tEvent);
+    }
+    @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
+    public int updateTMsgs(List<TMsg> tMsgs) throws Exception {
+        try{
+            for(TMsg item : tMsgs){
+                item.setUpdateTime(DateUtils.getNowDate());
+                tMsgMapper.updateTMsg(item);
+                //标志事件已处理
+                TEvent tEvent = iEventService.selectTEventByEventId(item.getEventId());
+                if (tEvent!=null){
+                    tEvent.setOperateFlag("1");
+                }
+                iEventService.updateTEvent(tEvent);
+            }
+        }catch (Exception e){
+            throw new Exception("批量修改消息失败！");
+        }
+        return tMsgs.size();
     }
 
     /**
