@@ -69,7 +69,7 @@
 				// longitude: 116.39,
 				// iconPath: '../../../static/location.png'
 				// }],
-				sliderValue: 0,
+				sliderValue: 200,
 				mapSearch: null
 			}
 		},
