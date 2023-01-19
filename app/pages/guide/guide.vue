@@ -15,6 +15,7 @@
 		<button @click="requestPermission">获取权限</button>
 		<button @click="getDemo">get请求测试</button>
 		<button @click="postDemo">post请求测试</button>
+		<button @click="getToken">服务token获取</button>
 
 
 	</view>
@@ -28,6 +29,9 @@
 		getDemo,
 		postDemo
 	} from '../../common/http/api';
+	import {
+		vpsdk
+	} from '../../common/sdk/vpsdk';
 	export default {
 		data() {
 			return {
@@ -84,6 +88,10 @@
 				}).then(res => {
 					console.log(res, 'postDemo');
 				})
+			},
+
+			getToken() {
+				const info = vpsdk.getToken()
 			}
 		},
 	}

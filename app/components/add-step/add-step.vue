@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<add-family ref="addFamily" @update="familyNext" />
-		<add-room ref="addRoom" :familyId="familyId" @next="roomNext" />
-		<bind-device ref="bindDev" />
+		<add-room ref="addRoom" @update="roomNext" />
+		<bind-device :payload="{familyId, roomId}" @next="deviceNext" ref="bindDev" />
 	</view>
 </template>
 
@@ -13,8 +13,9 @@
 	export default {
 		data() {
 			return {
-				/**新增的房间id**/
-				familyId: 's'
+				familyId: '',
+				roomId: '',
+				deviceList: []
 			};
 		},
 		methods: {
@@ -23,23 +24,37 @@
 			 * 添加家庭
 			 */
 			open() {
+				// this.$refs.bindDev.open();
 				this.$refs.addFamily.open();
 			},
 			/**
 			 * 添加家庭下一步
 			 */
 			familyNext(familyId) {
-				this.familyId = familyId;
+				console.log(familyId, 'familyId');
 				this.getAllFamily();
-				this.$refs.addRoom.open();
+				this.familyId = familyId;
+				this.$refs.addRoom.open({
+					id: familyId
+				});
 			},
 			/**
 			 * 添加房间下一步
 			 */
-			roomNext() {
-				this.getAllDevices();
+			roomNext(roomId) {
+				console.log(roomId, 'roomId');
+				this.roomId = roomId;
 				this.$refs.bindDev.open();
 			},
+			/**
+			 * 添加设备下一步
+			 */
+			deviceNext() {
+				Promise.all([
+					this.getAllFamily(),
+					this.getAllDevices()
+				]);
+			}
 		}
 	}
 </script>

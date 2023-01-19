@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlandnpt.varyar.system.mapper.StateMapper">
+
+    <resultMap type="StateVo" id="StateResult">
+        <id property="deviceId"    column="device_id"    />
+        <result property="upTime"     column="up_time"     />
+        <result property="wifiRssi"   column="wifi_rssi"   />
+        <result property="recordTime"    column="record_time"    />
+    </resultMap>
+
+
+    <sql id="selectStateVo">
+        select * from t_cloud_state
+    </sql>
+
+    <select id="selectByTime" parameterType="date" resultMap="StateResult">
+        <include refid="selectStateVo"/>
+        where date_format(record_time,'%y%m%d %H:%i:%s') &lt;= date_format(#{beginTime},'%y%m%d %H:%i:%s')
+    </select>
+
+
+</mapper>

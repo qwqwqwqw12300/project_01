@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.newlandnpt.varyar.cloudBase.domain.Presence;
 import com.newlandnpt.varyar.cloudBase.service.PresenceService;
+import com.newlandnpt.varyar.system.domain.TDevice;
+import com.newlandnpt.varyar.system.service.IDeviceService;
 
 
 @Service("cloud.presenceService")
@@ -21,16 +23,22 @@ public class PresenceServiceImpl implements PresenceService {
 	 private static final Logger log = LoggerFactory.getLogger(PresenceServiceImpl.class);
 	 
 	 @Autowired
+	 private IDeviceService tDeviceService;
+	 
+	 @Autowired
 	 private RocketMQTemplate rocketMQTemplate;
 	 
 	 @Value("${rocketmq.topic.presence}")
 	 private String presenceTopic;
 	    
-	
 	@Override
 	public void receve(Presence t) {
 		String deviceId = t.getDeviceId();
 		if(StringUtils.isBlank(deviceId)) {
+			return ;
+		}
+		TDevice device = tDeviceService.loadDeviceFromCacheByNo(deviceId);
+		if(device == null){
 			return ;
 		}
 		SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());

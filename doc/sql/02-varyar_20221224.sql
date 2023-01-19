@@ -252,7 +252,8 @@ INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `remark`) VALUES (2064, '查询', 2063, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'eventAndMessage:event:query', '#', 'superAdmin', NULL, '');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2067, '导出', 2065, 2, '', NULL, NULL, 1, 0, 'F', '0', '0', 'device:serveRecord:export', '#', 'superAdmin', '2023-01-16 07:39:51', '', NULL, '');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2066, '查询', 2065, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'device:serveRecord:query', '#', 'superAdmin', '2023-01-16 07:39:31', '', NULL, '');
-
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2068, '设备参数配置', 2015, 6, '', NULL, NULL, 1, 0, 'F', '0', '0', 'device:settings', '#', 'superAdmin', '2023-01-18 10:14:52', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2069, '服务登记', 2065, 3, '', NULL, NULL, 1, 0, 'F', '0', '0', 'device:serveRecord:add', '#', 'superAdmin', '2023-01-18 16:49:00', '', NULL, '');
 
 -- ----------------------------
 -- 6、用户和角色关联表  用户N-1角色
@@ -289,6 +290,7 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 100);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 101);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 103);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 107);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 108);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 500);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 501);
@@ -304,6 +306,10 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1016);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1017);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1018);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1019);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1035);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1036);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1037);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1038);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1039);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 1042);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2000);
@@ -359,6 +365,8 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2064);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2065);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2066);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2067);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2068);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (100, 2069);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 100);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 103);
@@ -402,23 +410,13 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2064);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2065);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2066);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2067);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2067);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2066);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2065);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2064);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2063);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2062);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2061);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2059);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2058);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2057);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2052);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2035);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2023);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2021);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2015);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2005);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2068);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2069);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2002);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2065);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2066);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2067);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2069);
 -- ----------------------------
 -- 8、角色和机构关联表  角色1-N机构
 -- ----------------------------
@@ -627,6 +625,8 @@ create table sys_job (
 insert into sys_job values(1, '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams',        '0/10 * * * * ?', '3', '1', '1', 'admin', sysdate(), '', null, '');
 insert into sys_job values(2, '系统默认（有参）', 'DEFAULT', 'ryTask.ryParams(\'ry\')',  '0/15 * * * * ?', '3', '1', '1', 'admin', sysdate(), '', null, '');
 insert into sys_job values(3, '系统默认（多参）', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)',  '0/20 * * * * ?', '3', '1', '1', 'admin', sysdate(), '', null, '');
+insert into sys_job values(4, '设备断网检测', 'DEFAULT', 'deviceNetTask.checkDisconnection',  '0 0/5 * * * ? ', '3', '1', '1', 'admin', sysdate(), '', null, '');
+insert into sys_job values(5, '设备断网恢复检测', 'DEFAULT', 'deviceNetTask.checkReconnection',  '0 2/5 * * * ? ', '3', '1', '1', 'admin', sysdate(), '', null, '');
 
 
 -- ----------------------------

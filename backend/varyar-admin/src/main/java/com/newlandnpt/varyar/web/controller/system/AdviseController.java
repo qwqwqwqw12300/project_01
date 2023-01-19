@@ -37,7 +37,6 @@ public class AdviseController extends BaseController
     /**
      * 查询建议列表
      */
-    @PreAuthorize("@ss.hasPermi('system:advise:list')")
     @GetMapping("/list")
     public TableDataInfo list(TAdvise tAdvise)
     {
@@ -67,7 +66,6 @@ public class AdviseController extends BaseController
     /**
      * 获取建议详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:advise:query')")
     @GetMapping(value = "/{adviseId}")
     public AjaxResult getInfo(@PathVariable("adviseId") Long adviseId)
     {   TAdvise tAdvise = adviseService.selectTAdviseByAdviseId(adviseId);

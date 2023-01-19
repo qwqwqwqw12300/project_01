@@ -44,12 +44,6 @@ public class NoticeController extends BaseController {
     public TableDataInfo readInfo()
     {
         List<SysNotice>  list = iSysNoticeService.selectNoticeListByReadFlag(this.getLoginUser().getMemberId());
-        for (int i = 0; i <list.size() ; i++) {
-            SysNotice item = list.get(i);
-            if (item.getReadFlag()==null|| item.getReadFlag().equals("")){
-                list.remove(i);
-            }
-        }
         return getDataTable(list);
     }
 
@@ -59,17 +53,13 @@ public class NoticeController extends BaseController {
     @PostMapping("/setNoticeFlag")
     public AjaxResult setNoticeFlag(@RequestBody @Validated NoticeRequest noticeRequest)
     {   AjaxResult ajax =  AjaxResult.success();
-        TNotice tNotice = itNoticeService.selectTNoticeByNoticeId(Long.valueOf(noticeRequest.getNoticeId()));
-        if (tNotice !=null ){
-            tNotice.setReadFlag("1");
-            try {
-                itNoticeService.updateTNotice(tNotice);
-            }catch (Exception e){
-                ajax = ajax.error("标志系统标识失败！");
-                return ajax;
-            }
-        }else{
-            tNotice = new TNotice();
+        TNotice cond = new TNotice();
+        cond.setSysNoticeId(Long.valueOf(noticeRequest.getNoticeId()));
+        cond.setMemberId(this.getLoginUser().getMemberId());
+        List<TNotice> tNotices = itNoticeService.selectTNoticeList(cond);
+        TNotice tNotice = new TNotice();
+        if (tNotices.size()>0 && tNotices.size()==1 ){
+            tNotices.get(0);
             tNotice.setReadFlag("1");
             tNotice.setSysNoticeId(Long.valueOf(noticeRequest.getNoticeId()));
             tNotice.setMemberId(this.getLoginUser().getMemberId());
@@ -79,6 +69,17 @@ public class NoticeController extends BaseController {
                 ajax = ajax.error("标志系统标识失败！");
                 return ajax;
             }
+        }else if(tNotices.size()==0){
+            tNotice.setReadFlag("1");
+            try {
+                itNoticeService.updateTNotice(tNotice);
+            }catch (Exception e){
+                ajax = ajax.error("标志系统标识失败！");
+                return ajax;
+            }
+        }else {
+            ajax = ajax.error("标志系统标识失败！");
+            return ajax;
         }
         return ajax;
     }

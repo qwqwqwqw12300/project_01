@@ -48,7 +48,6 @@ public class OrgController extends BaseController
     /**
      * 获取机构列表
      */
-    @PreAuthorize("@ss.hasPermi('org:list')")
     @GetMapping("/list")
     public AjaxResult list(TOrg org)
     {
@@ -58,7 +57,6 @@ public class OrgController extends BaseController
     /**
      * 获取机构分页
      */
-    @PreAuthorize("@ss.hasPermi('org:list')")
     @GetMapping("/page")
     public TableDataInfo page( TOrg org)
     {
@@ -70,7 +68,6 @@ public class OrgController extends BaseController
     /**
      * 查询机构列表（排除节点）
      */
-    @PreAuthorize("@ss.hasPermi('org:list')")
     @GetMapping("/list/exclude/{orgId}")
     public AjaxResult excludeChild(@PathVariable(value = "orgId", required = false) Long orgId)
     {
@@ -82,7 +79,6 @@ public class OrgController extends BaseController
     /**
      * 根据机构编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('org:query')")
     @GetMapping(value = "/{orgId}")
     public AjaxResult getInfo(@PathVariable Long orgId)
     {

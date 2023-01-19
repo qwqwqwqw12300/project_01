@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.annotation.Excels;
-import com.newlandnpt.varyar.common.config.RuoYiConfig;
+import com.newlandnpt.varyar.common.config.VayyarConfig;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.text.Convert;
 import com.newlandnpt.varyar.common.exception.UtilException;
@@ -1322,7 +1322,7 @@ public class ExcelUtil<T>
      */
     public String getAbsoluteFile(String filename)
     {
-        String downloadPath = RuoYiConfig.getDownloadPath() + filename;
+        String downloadPath = VayyarConfig.getDownloadPath() + filename;
         File desc = new File(downloadPath);
         if (!desc.getParentFile().exists())
         {

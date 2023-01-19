@@ -38,7 +38,6 @@ public class SysConfigController extends BaseController
     /**
      * 获取参数配置列表
      */
-    @PreAuthorize("@ss.hasPermi('system:config:list')")
     @GetMapping("/list")
     public TableDataInfo list(SysConfig config)
     {
@@ -60,7 +59,6 @@ public class SysConfigController extends BaseController
     /**
      * 根据参数编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:config:query')")
     @GetMapping(value = "/{configId}")
     public AjaxResult getInfo(@PathVariable Long configId)
     {
