@@ -11,7 +11,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class RadarRequest {
-
+    /**
+     *  房间子区域id 唯一标识
+     * */
+    @Size(min = 0, max = 20, message = "房间子区域id标识不能超过20个字符")
+    private String roomZoneId;
     /**
      *  房间Id 唯一标识
      * */
@@ -79,6 +83,58 @@ public class RadarRequest {
      * */
     @NotNull(message = "离开时间不能为空")
     private Long departureTime;
+    /**
+     *开始时间 data HH:mm:ss
+     * */
+    @NotNull(message = "开始时间不能为空")
+    private Date startTime;
+    /**
+     *结束时间 data HH:mm:ss
+     * */
+    @NotNull(message = "结束时间不能为空")
+    private Date endTime;
+    /**
+     *进入标识 （0是 1否）
+     * */
+    @NotNull(message = "进入标识不能为空")
+    private String inFlag;
+    /**
+     *离开标识 （0是 1否）
+     * */
+    @NotNull(message = "离开标识不能为空")
+    private String outFlag;
+
+    public String getInFlag() {
+        return inFlag;
+    }
+
+    public void setInFlag(String inFlag) {
+        this.inFlag = inFlag;
+    }
+
+    public String getOutFlag() {
+        return outFlag;
+    }
+
+    public void setOutFlag(String outFlag) {
+        this.outFlag = outFlag;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public String getRoomId() {
         return roomId;
@@ -174,5 +230,13 @@ public class RadarRequest {
 
     public void setFallFlag(String fallFlag) {
         this.fallFlag = fallFlag;
+    }
+
+    public String getRoomZoneId() {
+        return roomZoneId;
+    }
+
+    public void setRoomZoneId(String roomZoneId) {
+        this.roomZoneId = roomZoneId;
     }
 }

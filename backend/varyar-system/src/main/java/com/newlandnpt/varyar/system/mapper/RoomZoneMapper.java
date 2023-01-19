@@ -26,7 +26,7 @@ public interface RoomZoneMapper
      * @return 子区域模块生成集合
      */
     public List<TRoomZone> selectTRoomZoneList(TRoomZone tRoomZone);
-
+    public List<TRoomZone> selectTRoomZoneByDeviceId(Long deviceId);
     /**
      * 新增子区域模块生成
      * 

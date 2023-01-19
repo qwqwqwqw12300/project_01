@@ -106,6 +106,17 @@ public class TDevice extends BaseEntity
     /**设备未读消息数量*/
     @Transient
     private String msgNum;
+    /**seh*/
+    @Transient
+    private String nowLoacation;
+
+    public String getNowLoacation() {
+        return nowLoacation;
+    }
+
+    public void setNowLoacation(String nowLoacation) {
+        this.nowLoacation = nowLoacation;
+    }
 
     public String getMsgNum() {
         return msgNum;

@@ -76,13 +76,13 @@
 	export default {
 		data() {
 			const orderNumDict = [{
-				value: '0',
+				value: '1',
 				text: '第一紧急联系人'
 			}, {
-				value: '1',
+				value: '2',
 				text: '第二紧急联系人'
 			}, {
-				value: '2',
+				value: '3',
 				text: '第三紧急联系人'
 			}]
 			return {

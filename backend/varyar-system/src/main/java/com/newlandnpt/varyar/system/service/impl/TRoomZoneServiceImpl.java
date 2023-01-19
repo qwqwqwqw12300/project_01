@@ -44,7 +44,10 @@ public class TRoomZoneServiceImpl implements IRoomZoneService
     {
         return roomZoneMapper.selectTRoomZoneList(tRoomZone);
     }
-
+    @Override
+    public List<TRoomZone> selectTRoomZoneByDeviceId(Long deviceId){
+        return roomZoneMapper.selectTRoomZoneByDeviceId(deviceId);
+    }
     /**
      * 新增子区域模块生成
      * 

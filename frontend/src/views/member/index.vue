@@ -89,33 +89,46 @@
 
     <form-panel :title="title" :visible.sync="open" width="600px" append-to-body >
       <h4 class="form-header h4">会员基本信息</h4>
-		<el-row>
-		  <member-info-card :value="this.memberId"></member-info-card>
-		</el-row>
+        `<el-row>
+          <member-info-card :value="this.memberId"></member-info-card>
+        </el-row>
 
- <!-- 瀑布流布局 -->
-   <el-row>
-    <el-card>
-      <div slot="header" class="clearfix">
-      <span class="el-dialog__title">家庭组信息</span>
-      </div>
-      <water-fall :value="familyGroupList">
-        <template slot-scope="{item}">
-        
-        <el-card shadow="hover" class="card-item card-item-click"  >
-        家庭名称： {{ item.name }}
-        <br>
-        家庭地址：{{ item.address}}
-        <br>
-        共享标志：{{ shareFlagFormat(item.shareFlag)}}
+    <!-- 瀑布流布局 -->
+      <el-row>
+        <el-card>
+          <div slot="header" class="clearfix">
+          <span class="el-dialog__title">家庭组信息</span>
+          </div>
+          <water-fall :value="familyGroupList" :columnNumber="3">
+            <template slot-scope="{item}">        
+              <el-card shadow="hover" class="card-item card-item-click" >
+                家庭名称： {{ item.name }}
+                <br>
+                家庭地址：{{ item.address}}
+                <br>
+                共享标志：{{ shareFlagFormat(item.shareFlag)}}
+                <br>
+                <br>
+                    <water-fall :value="item.devices" :columnNumber="2">
+                      <template slot-scope="{item}">
+                        <!-- 点击事件添加，跳转单个设备消息查询页面 -->
+                        <el-card shadow="hover" class="card-item card-item-cp" @click.native="goSingleDeviceRB(item.deviceId,item.memberId)">
+                            <br>
+                            {{item.name}} 
+                            <br>
+                            {{item.location}} | {{"在线"}}
+                            <br>
+                            <br>
+                        </el-card>
+                      </template>
+                    </water-fall>  
+                </el-card>
+                <br>
+            </template>        
+          </water-fall>
         </el-card>
-        </template>
-      </water-fall>
-    </el-card>
-   </el-row>
-
-
-    </form-panel>
+      </el-row>
+    </form-panel>`
   </div>
 </template>
 
@@ -143,32 +156,11 @@ export default {
       total: 0,
       // 会员表格数据
       memberList: [],
-
-      //家庭设备组表格数据
-      // 遮罩层
-      familyTotal:0,
-      familyLoading: true,
-      familyList: [],
-      queryFamilyParams: {
-        pageNum: 1,
-        pageSize: 1000,
-        memberId: 0,
-
-      },
-
-
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
       // 查询参数
-        // 家庭组列表
-      familyGroupList:[],
-      //家庭设备组表格数据
-      // 遮罩层
-      familyTotal:0,
-      familyLoading: true,
-      familyList: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -178,6 +170,19 @@ export default {
           userMobilePhone:null
         }
       },
+      // 家庭组列表
+      familyGroupList:[],
+      familyTotal:0,
+      // 遮罩层
+      familyLoading: true,
+      queryFamilyParams: {
+        pageNum: 1,
+        pageSize: 50,
+        memberId: 0,
+
+      },
+      memberId:0,     
+
       // 表单参数
       form: {
       },
@@ -205,12 +210,7 @@ export default {
   //页面初始化
   created() {
     this.getList();
-    //页面默认查询未分配
-    // this.queryParams.distributeFlag = this.dict.type.sys_distribute_flag[0].key
   },
-  activated() {
-   this.init()
-   },
   methods: {
     /** 查询会员列表 */
     getList() {
@@ -222,17 +222,17 @@ export default {
       });
     },
 
+    /** 查询家庭组列表 */
+
     init(){
       this.familyGroupList = [];
       this.queryFamilyParams.memberId=this.memberId
-      // console.log(this.queryFamilyParams + ">>>>>" + ">>>>>>>" )
       listFamily(this.queryFamilyParams).then(response => {
       this.familyGroupList = response.rows;
-    // console.log(JSON.stringify(response) + ">>>>>" + ">>>>>>>" )       
+      //console.log(this.familyGroupList + ">>>>>" + ">>>>>>>" )
+
       });
     },
-   
-
     //字典翻译部分
      // 分配标志字典翻译
     distributeFlagFormat(row, column) {
@@ -242,6 +242,13 @@ export default {
     // 共享标志字典翻译
     shareFlagFormat(column) {
       return this.selectDictLabel(this.dict.type.sys_share_flag, column)
+    },
+
+    //页面路由跳转
+    //待分配运营的会员
+    goSingleDeviceRB(deviceId,memberId){
+      this.$router.push({path:'/members/singleDeviceRB',query: {deviceId: deviceId, memberId: memberId} })
+      console.log("deviceId>>>>>>"+deviceId+"=======memberId"+memberId)
     },
 
     // 取消按钮
@@ -301,19 +308,14 @@ export default {
 
     
 
-       /** 查看按钮操作 */
-       handleView(row) {
+    /** 查看按钮操作 */
+    handleView(row) {
         //this.reset();
-       this.memberId = row.memberId || this.ids
-      // getMember(this.memberId).then(response => {
-      //   this.form = response.data;
-
-      // });
-      //家庭组信息查询触发
-       this.init();
        this.open = true;
-       this.title = "查看会员";
-
+       this.title = "会员名下所有设备总览";
+       this.memberId = row.memberId
+      //家庭组信息查询触发
+       this.init();      
     },
 
 
@@ -359,6 +361,7 @@ export default {
 
 
 <style scoped lang="scss">
+
 .home {
   blockquote {
     padding: 10px 20px;
@@ -408,6 +411,10 @@ export default {
     }
   }
 
+.card-item card-item-cp{
+  min-height: 20px;
+  height: 100;
+}
   .update-log {
     ol {
       display: block;

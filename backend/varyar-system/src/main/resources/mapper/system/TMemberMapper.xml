@@ -63,7 +63,7 @@
             <if test="distributeFlag != null  and distributeFlag != ''">and distribute_flag = #{distributeFlag}</if>
             <if test="userId != null ">and user_id = #{userId}</if>
             <if test="params.userMobilePhone != null ">
-                and userId in (select user_id from sys_user u where u.mobile_phone like concat('%', #{params.userMobilePhone}, '%'))
+                and user_id in (select user_id from sys_user u where u.mobile_phone like concat('%', #{params.userMobilePhone}, '%'))
             </if>
             <if test="params.arrangeUser != null ">
                 <if test='params.arrangeUser == "false" '>
