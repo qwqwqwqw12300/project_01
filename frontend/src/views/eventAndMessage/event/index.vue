@@ -118,18 +118,19 @@
         <el-table-column label="重要级别" align="center" prop="level" />
         <el-table-column label="事件编号" align="center" prop="no" />
         <el-table-column label="事件内容" align="center" prop="content" />
-        <el-table-column label="报警时间" align="center" prop="operateTime" width="180" color="#FF0000">
+        <el-table-column label="报警时间" align="center" prop="createTime" width="180" color="#FF0000">
           <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.operateTime) }}</span>
+            <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="设备名称" align="center" prop="deviceName" />
         <el-table-column label="设备编号" align="center" prop="deviceNo" />
        
-
-        <!-- 暂时预留  -->
-        <el-table-column label="设备类型" align="center" prop="operateType" />
-        <!-- 暂时预留  -->
+        <el-table-column label="设备类型" align="center" prop="operateType">
+          <template slot-scope="scope">
+          {{ deviceTypeFormat(scope.row) }}
+          </template>
+        </el-table-column>
         <el-table-column label="设备归属机构" align="center" prop="orgName" /> 
         <el-table-column label="机构类型" align="center" prop="orgName" />
         <el-table-column label="处理标志" align="center" prop="operateFlag" >
@@ -208,7 +209,7 @@
 
   export default {
     name: "Event",
-    dicts: ['sys_operate_flag','sys_msg_type','sys_send_status'],
+    dicts: ['sys_operate_flag','sys_msg_type','sys_send_status','device_type'],
     components: { Treeselect },
     data() {
       return {
@@ -348,6 +349,11 @@
     // 发送状态字典翻译
     sendStatusFormat(row, column) {
       return this.selectDictLabel(this.dict.type.sys_send_status, row.sendStatus)
+    },
+    //设备类型字段翻译(修改)
+    
+    deviceTypeFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.device_type, row.operateType)
     },
 
     // 筛选节点

@@ -67,5 +67,11 @@ insert into sys_dict_data values(null, 3,  '下线',     '2',       'sys_device_
 -- ----------------------------
 insert into sys_dict_type values(19, '共享标志', 'sys_share_flag',   '0', 'admin', sysdate(), '', null, '共享标志（0代表是 2代表非）');
 insert into sys_dict_data values(47, 1,  '共享',     '0',      'sys_share_flag',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:共享');
-insert into sys_dict_data values(48, 2,  '非共享',     '2',       'sys_share_flag',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '2:非共享');
+insert 	into sys_dict_data values(48, 2,  '非共享',     '2',       'sys_share_flag',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '2:非共享');
 
+-- ----------------------------
+-- 操作类型（0会员操作 1后台人工）
+-- ----------------------------
+insert into sys_dict_type values(null, '操作类型', 'sys_operate_type',   '0', 'admin', sysdate(), '', null, '操作类型（0会员操作 1后台人工）');
+insert into sys_dict_data values(null, 1,  '会员操作',     '0',      'sys_operate_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:会员操作');
+insert into sys_dict_data values(null, 2,  '后台人工',     '1',      'sys_operate_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '1:后台人工');

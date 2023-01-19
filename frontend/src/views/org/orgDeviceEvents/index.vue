@@ -129,9 +129,9 @@
         <el-table-column label="设备名称" align="center" prop="deviceName" />
         <el-table-column label="设备编号" align="center" prop="deviceNo" />
         <el-table-column label="事件内容" align="center" prop="content" />
-        <el-table-column label="报警时间" align="center" prop="operateTime" width="180" color="#FF0000">
+        <el-table-column label="报警时间" align="center" prop="createTime" width="180" color="#FF0000">
           <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.operateTime) }}</span>
+            <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作时间" align="center" prop="createTime" width="180" color="#FF0000">

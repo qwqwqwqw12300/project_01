@@ -22,7 +22,7 @@
                devicegroup_id,
                name, no, status, type,
             register_time,
-            location, family_id, room_id, distribute_flag, org_id, org_name, del_flag, create_by, create_time, update_by, update_time,
+            location, family_id, member_id, room_id, distribute_flag, org_id, org_name, del_flag, create_by, create_time, update_by, update_time,
             (select name from t_devicegroup where devicegroup_id = d.devicegroup_id) device_group_name,
             (select type from t_org where org_id = d.org_id) org_type,
             (select org_no from t_org where org_id = d.org_id) org_no,
@@ -42,6 +42,7 @@
         <result property="registerTime" column="register_time"/>
         <result property="location" column="location"/>
         <result property="familyId" column="family_id"/>
+        <result property="memberId" column="member_id"/>
         <result property="roomId" column="room_id"/>
         <result property="distributeFlag" column="distribute_flag"/>
         <result property="orgId" column="org_id"/>
