@@ -25,7 +25,7 @@
         </div>
         <water-fall :value="notUrgentDevices">
           <template slot-scope="{item}">
-            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId)">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId,item.orgId)">
               {{ item.name }} | {{getEventSum(item)}}条
               <br>
               {{ item.deviceGroupName }} | {{item.location}} | {{"在线"}}
@@ -79,8 +79,9 @@ export default {
     getEventSum(device){
       return device.countUnHandleByDeviceGroupByLevel?.map(x=>x.count).reduce((val, oldVal) => val + oldVal,0)
     },
-    goDeviceEvent(deviceId){
-      this.$router.push({path:'/org/orgDeviceEvents',query: {deviceId:deviceId }})
+    //机构处理单个设备消息
+    goDeviceEvent(deviceId,orgId){
+      this.$router.push({path:'/org/orgSingleDeviceEvent',query: {deviceId:deviceId, orgId:orgId }})
     }
   },
 };
