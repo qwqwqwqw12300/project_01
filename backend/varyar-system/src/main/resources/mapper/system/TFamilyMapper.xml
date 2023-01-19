@@ -25,8 +25,7 @@
             location, family_id, member_id, room_id, distribute_flag, org_id, org_name, del_flag, create_by, create_time, update_by, update_time,
             (select name from t_devicegroup where devicegroup_id = d.devicegroup_id) device_group_name,
             (select type from t_org where org_id = d.org_id) org_type,
-            (select org_no from t_org where org_id = d.org_id) org_no,
-            (select count(m.msg_id) from  t_msg m where m.device_id = d.device_id and  operate_flag='0')  as msgNum
+            (select org_no from t_org where org_id = d.org_id) org_no
         from t_device d
         where d.family_id = #{familyId}
     </select>
