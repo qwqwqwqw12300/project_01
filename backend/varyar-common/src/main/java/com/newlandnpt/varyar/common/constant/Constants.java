@@ -149,4 +149,25 @@ public class Constants
      * 高德api成功响应码
      */
     public static final Integer GEO_RESP_SUCCESS = 10000;
+
+    /**
+     * 进出房间事件 延迟触发时间 30分钟
+     */
+    public static final int ACCESS_ISSUE_DELAY_THRITY = 30;
+
+    /**
+     * 时间秒数
+     */
+    public static final class TimeSecond {
+        /**
+         * 两小时对应的秒数
+         */
+        public static final Integer TWO_HOUR = 7200;
+
+        /**
+         * 一分钟对应的秒数
+         */
+        public static final Integer ONE_MINUTE = 60;
+    }
+
 }

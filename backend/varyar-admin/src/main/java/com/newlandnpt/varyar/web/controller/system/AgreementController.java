@@ -37,7 +37,6 @@ public class AgreementController extends BaseController
     /**
      * 查询协议列表
      */
-    @PreAuthorize("@ss.hasPermi('system:agreement:list')")
     @GetMapping("/list")
     public TableDataInfo list(TAgreement tAgreement)
     {
@@ -68,7 +67,6 @@ public class AgreementController extends BaseController
     /**
      * 获取协议详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:agreement:query')")
     @GetMapping(value = "/{agreementId}")
     public AjaxResult getInfo(@PathVariable("agreementId") Long agreementId)
     {

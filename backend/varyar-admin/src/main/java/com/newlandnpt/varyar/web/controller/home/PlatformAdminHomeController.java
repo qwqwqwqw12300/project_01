@@ -39,7 +39,6 @@ public class PlatformAdminHomeController extends BaseController {
      *
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('home:platformAdmin:list')")
     @GetMapping("/device/count")
     public AjaxResult deviceCount() {
         //统计机构下已激活设备数量
@@ -51,7 +50,6 @@ public class PlatformAdminHomeController extends BaseController {
      *
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('home:platformAdmin:list')")
     @GetMapping("/device/notassociate/count")
     public AjaxResult notAssociateDeviceCount() {
         return success(deviceService.notAssociateDeviceCount(new TDevice()));
@@ -63,7 +61,6 @@ public class PlatformAdminHomeController extends BaseController {
      *
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('home:platformAdmin:list')")
     @GetMapping("/member/count")
     public AjaxResult memberCount() {
         //会员数
@@ -75,7 +72,6 @@ public class PlatformAdminHomeController extends BaseController {
      *
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('home:platformAdmin:list')")
     @GetMapping("/member/notarrange/count")
     public AjaxResult notArrangeMemberCount() {
         //会员数
@@ -87,7 +83,6 @@ public class PlatformAdminHomeController extends BaseController {
      *
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('home:platformAdmin:list')")
     @GetMapping("org/count")
     public AjaxResult orgCount() {
         return success(orgService.total());
@@ -98,7 +93,6 @@ public class PlatformAdminHomeController extends BaseController {
      *
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('home:platformAdmin:list')")
     @GetMapping("event/unhandle/count")
     public AjaxResult unHandleEventCount() {
         return success(eventService.unHandleEventCount());
@@ -109,7 +103,6 @@ public class PlatformAdminHomeController extends BaseController {
      *
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('home:platformAdmin:list')")
     @GetMapping("/event/member/unhandle/count")
     public AjaxResult unHandleMemberEventCount() {
         return success(eventService.unHandleMemberEventCount());

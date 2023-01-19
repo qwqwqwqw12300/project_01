@@ -42,7 +42,6 @@ public class DeviceController extends BaseController
     /**
      * 查询设备列表
      */
-    @PreAuthorize("@ss.hasPermi('device:list')")
     @GetMapping("/page")
     public TableDataInfo page(TDevice device)
     {
@@ -67,7 +66,6 @@ public class DeviceController extends BaseController
     /**
      * 获取设备详细信息
      */
-    @PreAuthorize("@ss.hasAnyPermi('device:query,member:query')")
     @GetMapping(value = "/{deviceId}")
     public AjaxResult getInfo(@PathVariable("deviceId") Long deviceId)
     {

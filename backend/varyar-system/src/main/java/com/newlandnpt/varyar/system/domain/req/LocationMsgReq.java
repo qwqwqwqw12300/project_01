@@ -4,7 +4,6 @@ package com.newlandnpt.varyar.system.domain.req;
  * @author lisd
  * @date 2023/1/5
  **/
-//@Data
 public class LocationMsgReq {
     /**
      * 设备编号

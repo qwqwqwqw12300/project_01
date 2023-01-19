@@ -92,7 +92,7 @@
               >分配设备组
               </el-button>
               <el-button
-                v-if="scope.row.status != '1'"
+                v-if="scope.row.status == '2'"
                 size="mini"
                 type="text"
                 icon="el-icon-circle-check"
@@ -196,7 +196,7 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Device",
-  dicts: ['device_type'],
+  dicts: ['device_type','sys_device_status'],
   components: {Treeselect},
   data() {
     return {
@@ -237,7 +237,14 @@ export default {
           visible: true,
           formatter: (row, column, cellValue) => this.dict.type.device_type.find(x => cellValue == x.value)?.label
         },
-        {key: 7, label: `机构名称`, prop: `orgName`, visible: true},
+        {
+          key: 7,
+          label: `设备状态`,
+          prop: `status`,
+          visible: true,
+          formatter: (row, column, cellValue) => this.dict.type.sys_device_status.find(x => cellValue == x.value)?.label
+        },
+        {key: 8, label: `机构名称`, prop: `orgName`, visible: true},
       ],
       /** 设备配对相关 */
       associateOpen: false,

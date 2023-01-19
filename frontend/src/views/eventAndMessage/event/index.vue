@@ -158,68 +158,45 @@
         @pagination="getList"
       />
   
-      <!-- 添加或修改事件对话框 -->
-      <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-        <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-          <el-form-item label="事件编号" prop="no">
-            <el-input v-model="form.no" placeholder="请输入事件编号" />
-          </el-form-item>
-          <el-form-item label="级别" prop="level">
-            <el-input v-model="form.level" placeholder="请输入级别" />
-          </el-form-item>
-          <el-form-item label="内容">
-            <editor v-model="form.content" :min-height="192"/>
-          </el-form-item>
-          <el-form-item label="设备id" prop="deviceId">
-            <el-input v-model="form.deviceId" placeholder="请输入设备id" />
-          </el-form-item>
-          <el-form-item label="设备组id" prop="devicegroupId">
-            <el-input v-model="form.devicegroupId" placeholder="请输入设备组id" />
-          </el-form-item>
-          <el-form-item label="家庭id" prop="familyId">
-            <el-input v-model="form.familyId" placeholder="请输入家庭id" />
-          </el-form-item>
-          <el-form-item label="设备编号" prop="deviceNo">
-            <el-input v-model="form.deviceNo" placeholder="请输入设备编号" />
-          </el-form-item>
-          <el-form-item label="机构id" prop="orgId">
-            <el-input v-model="form.orgId" placeholder="请输入机构id" />
-          </el-form-item>
-          <el-form-item label="机构名称" prop="orgName">
-            <el-input v-model="form.orgName" placeholder="请输入机构名称" />
-          </el-form-item>
-          <el-form-item label="会员id" prop="memberId">
-            <el-input v-model="form.memberId" placeholder="请输入会员id" />
-          </el-form-item>
-          <el-form-item label="会员手机号" prop="memberPhone">
-            <el-input v-model="form.memberPhone" placeholder="请输入会员手机号" />
-          </el-form-item>
-          <el-form-item label="会员姓名" prop="memberName">
-            <el-input v-model="form.memberName" placeholder="请输入会员姓名" />
-          </el-form-item>
-          <el-form-item label="运营者id" prop="userId">
-            <el-input v-model="form.userId" placeholder="请输入运营者id" />
-          </el-form-item>
-          <el-form-item label="运营者姓名" prop="userName">
-            <el-input v-model="form.userName" placeholder="请输入运营者姓名" />
-          </el-form-item>
-          <el-form-item label="操作时间" prop="operateTime">
-            <el-date-picker clearable
-              v-model="form.operateTime"
-              type="date"
-              value-format="yyyy-MM-dd"
-              placeholder="请选择操作时间">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="操作标志" prop="operateFlag">
-            <el-input v-model="form.operateFlag" placeholder="请输入操作标志" />
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
-        </div>
-      </el-dialog>
+      <!--  -->
+      <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
+        <el-table v-loading="loading" :data="msgList" @selection-change="handleMsgSelectionChange">
+          <!-- <el-table-column type="selection" width="60" align="center" /> -->
+          <el-table-column label="消息类型" align="center" prop="msgType" >
+            <template slot-scope="scope">
+              {{ msgTypeFormat(scope.row) }}
+              <!-- <span>{{ dict.type.sys_msg_type?.find(x=>x.value == scope.row.msgType)?.label }}</span> -->
+            </template>
+
+          </el-table-column>
+          <el-table-column label="消息内容" align="center" prop="content" />
+          <el-table-column label="操作人员" align="center" prop="operator" />
+          <el-table-column label="接收人员" align="center" prop="memberId" />
+          <el-table-column label="发送时间" align="center" prop="sendTime" width="180">
+            <template slot-scope="scope">
+              <span>{{ parseTime(scope.row.sendTime) }}</span>
+            </template>
+          </el-table-column>  
+      <el-table-column label="发送状态" align="center" prop="sendStatus">
+        <template slot-scope="scope">
+          {{ sendStatusFormat(scope.row) }}
+          <!-- <span>{{ dict.type.sys_msg_type?.find(x=>x.value == scope.row.msgType)?.label }}</span> -->
+        </template>
+      </el-table-column>
+
+      <el-table-column label="失败原因" align="center" prop="reason" />
+      </el-table>
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryMsgParams.pageNum"
+        :limit.sync="queryMsgParams.pageSize"
+        @pagination="getMsgList"
+      />
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
     </div>
   </template>
   
@@ -227,10 +204,11 @@
   import { listEvent, getEvent, delEvent, addEvent, updateEvent ,orgTreeSelect } from "@/api/eventAndMessage/event";
   import Treeselect from "@riophae/vue-treeselect";
   import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+  import { listMsg, getMsg} from "@/api/eventAndMessage/message";
 
   export default {
     name: "Event",
-    dicts: ['sys_operate_flag'],
+    dicts: ['sys_operate_flag','sys_msg_type','sys_send_status'],
     components: { Treeselect },
     data() {
       return {
@@ -258,6 +236,7 @@
         // 是否显示弹出层
         open: false,
         // 查询参数
+      
         queryParams: {
           pageNum: 1,
           pageSize: 10,
@@ -279,6 +258,15 @@
           operateTime: null,
           operateFlag: null,
         },
+        // 消息表格数据
+        msgList: [],
+        queryMsgParams: {
+           pageNum: 1,
+           pageSize: 100,
+           eventId: 0,
+        
+        },
+        // eventId:0,
         // 表单参数
         form: {},
         // 表单校验
@@ -300,8 +288,12 @@
     created() {
       this.getList();
       this.getDeptTree();
+      //this.getMsgList();
 
     },
+  //   activated() {
+  //  this.getMsgList()
+  //  },
     methods: {
       /** 查询事件列表 */
       getList() {
@@ -312,6 +304,19 @@
           this.loading = false;
         });
       },
+
+      /** 查询消息列表 */
+    getMsgList() {
+
+      this.queryMsgParams.eventId= this.eventId
+
+      listMsg(this.queryMsgParams).then(response => {
+        this.msgList = response.rows;
+        this.total = response.total;
+        // console.log(JSON.stringify(response) + ">>>>>" + ">>>>>>>" )
+      });
+
+    },
       /** 查询用户列表 */
     // getList() {
     //   this.loading = true;
@@ -329,9 +334,20 @@
       });
     },
 
+    // 消息类型字典翻译
+    msgTypeFormat(row, column) {
+      //return this.dict.type.sys_msg_type?.find(x=>x.value == row.msgType)?.label
+      return this.selectDictLabel(this.dict.type.sys_msg_type, row.msgType);
+    },
+
     // 发送状态字典翻译
     operateFlagFormat(row, column) {
       return this.selectDictLabel(this.dict.type.sys_operate_flag, row.operateFlag)
+    },
+
+    // 发送状态字典翻译
+    sendStatusFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.sys_send_status, row.sendStatus)
     },
 
     // 筛选节点
@@ -366,7 +382,8 @@
           operateTime: null,
           operateFlag: null,
           createTime: null,
-          updateTime: null
+          updateTime: null,
+          eventId:null,
         };
         this.resetForm("form");
       },
@@ -375,6 +392,17 @@
         this.queryParams.pageNum = 1;
         this.getList();
       },
+
+       /** 查看按钮操作 */
+       handleView(row) {
+        //this.reset();
+      this.eventId = row.eventId 
+       console.log("eventId=============="+ this.eventId)
+       this.getMsgList();
+       this.open = true;
+
+    },
+
       /** 重置按钮操作 */
       resetQuery() {
         this.dateRange = [];
@@ -388,6 +416,14 @@
         this.single = selection.length!==1
         this.multiple = !selection.length
       },
+
+      // msgId多选框选中数据
+    handleMsgSelectionChange(selection) {
+      this.ids = selection.map(item => item.msgId)
+      this.single = selection.length!==1
+      this.multiple = !selection.length
+    },
+
       /** 新增按钮操作 */
       handleAdd() {
         this.reset();

@@ -5,7 +5,6 @@ package com.newlandnpt.varyar.system.domain.req;
  * @author lisd
  * @date 2022/12/26
  **/
-//@Data
 @SuppressWarnings({"ALL", "pmd:LowerCamelCaseVariableNamingRule"})
 public class FenceReq {
 

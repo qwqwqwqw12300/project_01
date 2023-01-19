@@ -43,6 +43,16 @@ public class CacheConstants
     public static final String DEVICE_ONLINE_FLAG_KEY = "device_online_flag:";
 
     /**
+     * 终端离线列表 cache key
+     */
+    public static final String DEVICE_DISCONNECTION = "device_disconnection";
+
+    /**
+     * 设备状态
+     */
+    public static final String DEVICE_STATE_KEY = "cloud:deviceState:";
+
+    /**
      * 防重提交 redis key
      */
     public static final String REPEAT_SUBMIT_KEY = "repeat_submit:";

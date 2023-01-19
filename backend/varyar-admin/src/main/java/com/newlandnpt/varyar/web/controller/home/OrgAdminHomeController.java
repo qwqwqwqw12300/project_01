@@ -41,7 +41,6 @@ public class OrgAdminHomeController extends BaseController {
     /**
      * 获取分支机构列表(包含本身)
      */
-    @PreAuthorize("@ss.hasPermi('home:orgAdmin:list')")
     @GetMapping("/suborg/list")
     public AjaxResult list()
     {
@@ -58,7 +57,6 @@ public class OrgAdminHomeController extends BaseController {
     /**
      * 统计分支机构设备数
      */
-    @PreAuthorize("@ss.hasPermi('home:orgAdmin:list')")
     @GetMapping("/suborg/device/count/groupbyorg")
     public AjaxResult subOrgDeviceCount(){
         return success(deviceService.countGroupByOrgId(new TDevice()));
@@ -67,7 +65,6 @@ public class OrgAdminHomeController extends BaseController {
     /**
      * 统计机构未处理消息（事件）数
      */
-    @PreAuthorize("@ss.hasPermi('home:orgAdmin:list')")
     @GetMapping("/org/{orgId}/event/unhandle/count")
     public AjaxResult orgUnHandleEventCount(@PathVariable("orgId") Long orgId){
         return success(eventService.unHandleEventCountInOrg(orgId));
@@ -77,7 +74,6 @@ public class OrgAdminHomeController extends BaseController {
      * 未分配（配对）设备数量
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('home:orgAdmin:list')")
     @GetMapping("device/notassociate/count")
     public AjaxResult notAssociateDeviceCount(){
         return success(deviceService.notAssociateDeviceCount(new TDevice()));
@@ -87,7 +83,6 @@ public class OrgAdminHomeController extends BaseController {
      * 未分组设备数量
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('home:orgAdmin:list')")
     @GetMapping("device/notarrange/count")
     public AjaxResult notArrangeDeviceCount(){
         return success(deviceService.notArrangeDeviceCount(new TDevice()));
@@ -99,7 +94,6 @@ public class OrgAdminHomeController extends BaseController {
      * 未分配设备组数量
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('home:orgAdmin:list')")
     @GetMapping("devicegroup/notarrange/count")
     public AjaxResult notArrangeDeviceGroupCount(){
         TDeviceGroup deviceGroup = new TDeviceGroup();

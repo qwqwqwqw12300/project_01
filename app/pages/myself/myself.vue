@@ -86,9 +86,9 @@
 		},
 		computed: {
 			userInfoPhone() {
-				 const phone=this.$store.getters.userInfo.phone,
-				     pho=/(\d{3})\d*(\d{4})/;
-				return phone.replace(pho,'$1****$2');
+				const phone = this.$store.getters.userInfo.phone,
+					pho = /(\d{3})\d*(\d{4})/;
+				return phone.replace(pho, '$1****$2');
 			}
 		},
 		methods: {
@@ -123,7 +123,7 @@
 								uni.$u.toast('注销成功')
 								setTimeout(() => {
 									console.log('54565')
-									uni.navigateTo({
+									uni.reLaunch({
 										url: '/pages/login/login'
 									})
 								}, 1000)
@@ -135,8 +135,7 @@
 				});
 			}
 		},
-		onShow() {
-		}
+		onShow() {}
 	};
 </script>
 

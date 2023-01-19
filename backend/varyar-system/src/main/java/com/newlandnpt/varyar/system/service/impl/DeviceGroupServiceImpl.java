@@ -82,9 +82,11 @@ public class DeviceGroupServiceImpl implements IDeviceGroupService {
 
     @Override
     public int arrangeDeviceGroups(Long[] deviceGroupIds, Long userId) {
-        SysUser sysUser = sysUserMapper.selectUserById(userId);
-        if (sysUser == null) {
-            throw new ServiceException("运营人员不存在");
+        if(userId!=null){
+            SysUser sysUser = sysUserMapper.selectUserById(userId);
+            if (sysUser == null) {
+                throw new ServiceException("运营人员不存在");
+            }
         }
         return devicegroupMapper.arrangeDeviceGroupsUser(deviceGroupIds, userId, getLoginUserName());
     }

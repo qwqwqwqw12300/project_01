@@ -11,20 +11,47 @@
 			<u-text prefixIcon="plus-circle" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
 				size="30rpx" text="新建房间"></u-text>
 			<view class="ui-add-box">
-				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
-					text="房间名称"></u-text>
-				<u--input v-model="form.roomName" placeholder="请输入房间名称" border="bottom" clearable></u--input>
-				<u-text size="28rpx" prefixIcon="info-circle-fill" iconStyle="font-size: 36rpx" text="房间高度"></u-text>
-				<u--input type="number" v-model="form.roomHeight" placeholder="请输入房间高度" border="bottom" clearable>
-				</u--input>
-				<u-text size="28rpx" prefixIcon="info-circle-fill" iconStyle="font-size: 36rpx" text="房间长度"></u-text>
-				<u--input type="number" v-model="form.roomLength" placeholder="请输入房间长度" border="bottom" clearable>
-				</u--input>
-				<u-text size="28rpx" prefixIcon="info-circle-fill" iconStyle="font-size: 36rpx" text="房间左长度"></u-text>
-				<u--input type="number" v-model="form.roomLeft" placeholder="请输入房间左长度" border="bottom" clearable>
-				</u--input>
-				<u-text size="28rpx" prefixIcon="info-circle-fill" iconStyle="font-size: 36rpx" text="房间右长度"></u-text>
-				<u--input v-model="form.roomRight" placeholder="请输入房间右长度" border="bottom" clearable></u--input>
+				<view>
+					<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 40rpx" text="房间名称"></u-text>
+					<u--input class="ui-room-name" v-model="form.roomName" placeholder="请输入房间名称" border="bottom"
+						clearable></u--input>
+				</view>
+				<view>
+					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间高度"></u-text>
+					<view class="ui-slider">
+						<u-slider v-model="form.roomHeight" activeColor="#eeaa3d" blockColor="#eeaa3d"
+							inactiveColor="#c0c4cc" />
+						<text>{{$u.priceFormat(form.roomHeight/10, 2)}}米</text>
+					</view>
+
+					<!-- <u--input type="number" v-model="form.roomHeight" placeholder="请输入房间高度" border="bottom" clearable>
+					</u--input> -->
+				</view>
+				<view>
+					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间长度"></u-text>
+					<view class="ui-slider">
+						<u-slider v-model="form.roomLength" activeColor="#eeaa3d" blockColor="#eeaa3d"
+							inactiveColor="#c0c4cc" />
+						<text>{{$u.priceFormat(form.roomLength/10, 2)}}米</text>
+					</view>
+				</view>
+				<view>
+					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间左长度"></u-text>
+					<view class="ui-slider">
+						<u-slider v-model="form.roomLeft" activeColor="#eeaa3d" blockColor="#eeaa3d"
+							inactiveColor="#c0c4cc" />
+						<text>{{$u.priceFormat(form.roomLeft/10, 2)}}米</text>
+					</view>
+				</view>
+				<view>
+					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间右长度"></u-text>
+					<view class="ui-slider">
+						<u-slider v-model="form.roomRight" activeColor="#eeaa3d" blockColor="#eeaa3d"
+							inactiveColor="#c0c4cc" />
+						<text>{{$u.priceFormat(form.roomRight/10, 2)}}米</text>
+					</view>
+				</view>
+
 			</view>
 			<view class="ui-btn"><button @click="next" class="wd-sms">{{ subTitle }}</button></view>
 		</view>
@@ -42,7 +69,7 @@
 		data() {
 			return {
 				show: false,
-				subTitle: '',
+				subTitle: '下一步',
 				familyId: '',
 				form: {
 					roomName: '', //房间名称
@@ -58,12 +85,12 @@
 				this.form = {}
 				this.show = false;
 			},
-			open(obj) {
+			open(obj = {}) {
 				this.show = true;
 				const {
 					id,
 					subTitle
-				} = obj
+				} = obj;
 				this.familyId = id
 				this.subTitle = subTitle || '下一步'
 			},
@@ -74,9 +101,12 @@
 					roomLength,
 					roomLeft,
 					roomRight
-				} = this.form
+				} = this.form;
 				if (!roomHeight || !roomLeft || !roomRight || !roomLength || !roomName) {
-					return uni.$u.toast('请完善房间信息')
+					return uni.showToast({
+						icon: 'none',
+						title: '请完善房间信息'
+					})
 				}
 				PostAddRoom({
 					...this.form,
@@ -85,7 +115,7 @@
 					uni.$u.toast(res.msg)
 					this.close();
 					setTimeout(() => {
-						this.$emit('update')
+						this.$emit('update', res.data.roomId)
 					}, 500)
 				})
 
@@ -97,7 +127,7 @@
 <style lang="scss">
 	.ui-add {
 		width: 582rpx;
-		height: 806rpx;
+		min-height: 806rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
@@ -112,9 +142,32 @@
 				border-bottom: 1px solid #e4e4e4;
 
 				&>* {
-					margin-top: 10rpx;
+					margin-top: 20rpx;
 				}
 			}
+		}
+
+		.ui-slider {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+
+			text {
+				font-size: 26rpx;
+				color: #999;
+			}
+
+			&>* {
+				:nth-child(1) {
+					width: 320rpx;
+				}
+			}
+		}
+
+		.ui-room-name {
+			margin-left: 20rpx;
 		}
 
 		.ui-btn {
@@ -127,9 +180,6 @@
 				font-size: 28rpx;
 				color: #ffffff;
 			}
-
-			;
-
 		}
 	}
 </style>

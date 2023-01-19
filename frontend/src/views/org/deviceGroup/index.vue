@@ -201,7 +201,7 @@ export default {
     /** 分配设备相关 */
     devicesData() {
       return [...this.arrangedDeviceList, ...this.notArrangeDeviceList].map(x => {
-        return {key: x.deviceId, label: x.name}
+        return {key: x.deviceId, label: x.status == 0?(x.name+'(未激活)'):x.name,disabled:x.status == 0}
       });
     }
   },

@@ -1,6 +1,6 @@
 package com.newlandnpt.varyar.common.utils.ip;
 
-import com.newlandnpt.varyar.common.config.RuoYiConfig;
+import com.newlandnpt.varyar.common.config.VayyarConfig;
 import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.utils.http.HttpUtils;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class AddressUtils
         {
             return "内网IP";
         }
-        if (RuoYiConfig.isAddressEnabled())
+        if (VayyarConfig.isAddressEnabled())
         {
             try
             {

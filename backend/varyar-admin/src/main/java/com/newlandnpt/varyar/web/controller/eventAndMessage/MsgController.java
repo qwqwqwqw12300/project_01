@@ -37,7 +37,6 @@ public class MsgController extends BaseController
     /**
      * 查询消息列表
      */
-    @PreAuthorize("@ss.hasPermi('eventAndMessage:message:list')")
     @GetMapping("/list")
     public TableDataInfo list(
             TMsg tMsg)
@@ -63,7 +62,6 @@ public class MsgController extends BaseController
     /**
      * 获取消息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('eventAndMessage:message:query')")
     @GetMapping(value = "/{msgId}")
     public AjaxResult getInfo(@PathVariable("msgId") Long msgId)
     {
