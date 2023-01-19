@@ -40,7 +40,7 @@ public class CloudController {
     private String deviceConfigTopic;
     
     /** 接收下发参数 **/
-    @GetMapping("/device/config")
+    @PostMapping("/device/config")
     @ResponseBody
     public void deviceConfig(@RequestBody DeviceConfig deviceConfig) {
     	
