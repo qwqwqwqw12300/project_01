@@ -52,6 +52,8 @@ public class RoomZoneController extends BaseController {
              tRoomZone = iRoomZoneService.selectTRoomZoneByRoomZoneId(Long.valueOf(radarRequest.getRoomZoneId()));
         }
         tRoomZone.setName(radarRequest.getZoneName());
+        tRoomZone.setFallFlag(radarRequest.getFallFlag());
+        tRoomZone.setDeviceId(Long.valueOf(radarRequest.getDeviceId()));
         tRoomZone.setRoomId(Long.valueOf(radarRequest.getRoomId()));
         tRoomZone.setExistFlag(radarRequest.getZoneType());
         tRoomZone.setEntryTime(radarRequest.getEntryTime());

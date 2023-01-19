@@ -25,7 +25,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
         <result property="deviceId"    column="device_id"    />
-        deviceId
     </resultMap>
 
     <sql id="selectTRoomZoneVo">

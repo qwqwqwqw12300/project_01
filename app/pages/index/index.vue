@@ -105,7 +105,7 @@
 			}),
 			...mapGetters(['filterDevice'])
 		},
-		onLoad() {
+		onShow() {
 			Promise.all([
 				this.getAllFamily(),
 				this.getAllDevices(),

@@ -21,8 +21,9 @@
 								iconStyle="font-size: 36rpx" align="center" :text="item.name"></u-text>
 							<text class="grid-text">{{ item.location }}</text>
 							<view class="ui-wifi active">
-								<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="wifi" size="40rpx"
-									color="#0dab1c"></u-icon>
+								<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }"
+									:name="item.onlineFlag === '1' ? 'wifi' : 'wifi-off'" size="40rpx"
+									:color="item.onlineFlag === '1' ? '#0dab1c' : '#ff4800'"></u-icon>
 							</view>
 							<!-- 							<u-icon @click="onDelete" class="ui-close active" name="close-circle-fill" size="40rpx">
 							</u-icon> -->
@@ -65,8 +66,9 @@
 						size="30rpx" text="修改名称"></u-text>
 					<view class="ui-add-box">
 						<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="设备名称"></u-text>
-						<u--input placeholder="请输入设备名称" v-model="editFrom.deviceName" border="bottom" clearable>
-						</u--input>
+						<u-input placeholder="请输入设备名称" :maxlength="6" v-model="editFrom.deviceName" border="bottom"
+							clearable>
+						</u-input>
 					</view>
 					<view class="wd-btn-gloup"><button @click="editSubmit">确定</button></view>
 				</view>
@@ -108,7 +110,9 @@
 				},
 				editFrom: {
 					deviceId: '',
-					deviceName: ''
+					deviceName: '',
+					deviceType: '',
+					deviceNo: ''
 				},
 				addHandle: {
 					show: false,
@@ -160,8 +164,11 @@
 			edit(item) {
 				Object.assign(this.editFrom, {
 					deviceName: item.name,
-					deviceId: item.deviceId
-				})
+					deviceId: item.deviceId,
+					deviceType: item.type,
+					deviceNo: item.no
+				});
+				console.log(this.editFrom, 'this.editFrom');
 				this.isEditShow = true;
 			},
 
@@ -176,8 +183,7 @@
 						uni.$u.toast(res.msg);
 						this.eidtClose();
 						setTimeout(() => {
-							this.getAllDevices();
-							this.getFamilyList();
+							this.init();
 						}, 1000);
 					});
 				} else {
@@ -219,8 +225,7 @@
 							}).then(res => {
 								uni.$u.toast(res.msg);
 								setTimeout(() => {
-									this.getAllDevices();
-									this.getFamilyList();
+									this.init();
 								}, 1000);
 							})
 						}
@@ -257,7 +262,7 @@
 						uni.$u.toast(res.msg);
 						this.close();
 						setTimeout(() => {
-							this.getAllDevices();
+							this.init();
 						}, 1000);
 					})
 				} else {
@@ -274,10 +279,20 @@
 				uni.navigateTo({
 					url
 				})
+			},
+
+			/**
+			 * 初始化设备
+			 */
+			init() {
+				Promise.all([
+					this.getAllDevices(),
+					this.getFamilyList()
+				])
 			}
 		},
-		mounted() {
-			this.getAllDevices();
+		onShow() {
+			this.init();
 		},
 	};
 </script>
@@ -360,6 +375,7 @@
 
 	.ui-add-btn {
 		text-align: center;
+		margin-bottom: 20rpx;
 
 		button {
 			width: 276rpx;
