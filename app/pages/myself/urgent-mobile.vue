@@ -12,11 +12,11 @@
 						</view>
 						<view class="card-content">
 							<view class="name">
-								<u-icon name="phone" size="30" color="#fff" />
+								<u-icon name="phone" size="28" color="#fff" />
 								<text>{{ item.name }}</text>
 							</view>
 							<text class="tel">{{ item.phone }}</text>
-							<u-icon @tap="handleDel(item.memberContactsId)" name="close-circle" size="33"
+							<u-icon @tap="handleDel(item.memberContactsId)" name="close-circle" size="26"
 								color="#000" />
 						</view>
 					</view>
@@ -178,7 +178,7 @@
 				})
 			}
 		},
-		mounted() {
+		onShow() {
 			this.handleInit()
 		}
 	}
@@ -223,7 +223,7 @@
 				align-items: center;
 
 				.name {
-					padding: 20rpx 30rpx 20rpx 20rpx;
+					padding: 16rpx 26rpx 16rpx 16rpx;
 					width: 200rpx;
 					border-radius: 16rpx;
 					background-color: #FEC92E;

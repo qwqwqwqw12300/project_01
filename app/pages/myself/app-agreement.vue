@@ -23,9 +23,9 @@
 		methods: {
 			handleInit() {
 				PostSelectAgreement({
-					agreementType: '1'
+					type: '1'
 				}).then(res => {
-					this.content = res.data.content
+					this.content = '643785999999995888888888888888888888888888'
 				})
 			}
 		},
@@ -49,8 +49,12 @@
 
 	.uni-agreement {
 		margin-top: 30rpx;
-		padding: 0px 32rpx 32rpx 32rpx;
+		padding: 0px 20rpx 20rpx 20rpx;
 		box-sizing: content-box;
+		min-height: 200rpx;
+		word-wrap: break-word;
+		word-break: normal;
+		text-indent: 2em;
 
 		.agreement-title {
 			font-size: 19px;
@@ -65,7 +69,7 @@
 		}
 
 		.uni-agreement-scroll {
-			height: calc(100vh - 250rpx);
+			height: 700rpx;
 		}
 	}
 </style>
