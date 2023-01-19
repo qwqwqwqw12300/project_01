@@ -25,12 +25,33 @@
 			<image src="../../static/images/bluetooth.png"></image>
 		</view>
 		<view class="ui-btn">
-			<button>下一步</button>
+			<button @click="next">下一步</button>
 		</view>
+		<!-- 修改名称 -->
+		<u-popup :closeable="true" :round="10" :show="isEditShow" mode="center" @close="eidtClose">
+			<view class="wd-add ui-change">
+				<u-text prefixIcon="edit-pen" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
+					size="30rpx" text="设备设置"></u-text>
+				<view class="ui-add-box">
+					<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="设备名称"></u-text>
+					<u--input placeholder="请输入设备名称" :maxlength="6" v-model="addForm.deviceName" border="bottom"
+						clearable>
+					</u--input>
+					<u-text size="28rpx" prefixIcon="map" iconStyle="font-size: 36rpx" text="设备位置"></u-text>
+					<u--input placeholder="请输入设备位置" :maxlength="6" v-model="addForm.location" border="bottom" clearable>
+					</u--input>
+				</view>
+				<view class="wd-btn-gloup"><button @click="add">确定</button></view>
+			</view>
+		</u-popup>
+		<!-- /修改名称 -->
 	</app-body>
 </template>
 
 <script>
+	import {
+		PostcreDevice
+	} from '../../common/http/api'
 	export default {
 		data() {
 			const deviceList = [{
@@ -51,9 +72,24 @@
 			]
 			return {
 				deviceList,
+				/**创建设备信息**/
+				addForm: {
+					deviceName: '',
+					deviceNo: '',
+					deviceType: '1',
+					location: ''
+				},
+				/**编辑展示**/
+				isEditShow: false
 			}
 		},
 		methods: {
+			/**
+			 * 关闭编辑弹窗
+			 */
+			eidtClose() {
+				this.isEditShow = false;
+			},
 			handleSelect(item) {
 				this.deviceList = this.deviceList.map(n => {
 					n.active = n.key === item.key
@@ -62,6 +98,37 @@
 			},
 			handleBack() {
 				uni.navigateBack()
+			},
+
+			add() {
+				if (this.addForm.location && this.addForm.deviceName) {
+					PostcreDevice({
+						...this.addForm
+					}).then(res => {
+						uni.showToast({
+							icon: 'none',
+							title: '添加成功'
+						});
+						setTimeout(() => {
+							uni.navigateBack();
+						}, 2000)
+
+					})
+				} else {
+					uni.showToast({
+						icon: 'none',
+						title: '请完整填写信息'
+					})
+				}
+
+
+			},
+
+			/**
+			 * 添加设备
+			 */
+			next() {
+				this.isEditShow = true;
 			}
 		}
 	}
@@ -83,6 +150,7 @@
 	.active {
 		background-color: rgb(220, 251, 255);
 	}
+
 
 	.ui-navbar {
 		padding-top: calc(var(--status-bar-height) + 26rpx);
@@ -190,6 +258,45 @@
 
 		&>*:nth-child(1) {
 			margin-bottom: 50rpx;
+		}
+	}
+
+	.wd-add {
+		width: 582rpx;
+		min-height: 500rpx;
+		border-radius: 20rpx;
+		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
+		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
+		padding: 53rpx 31rpx;
+
+		&.ui-change {
+			.ui-add-box {
+				border-bottom: 1px solid #e4e4e4;
+			}
+		}
+
+		&>view {
+			margin-top: 52rpx;
+
+			&.ui-add-box {
+				padding: 10rpx 20rpx;
+
+				&>* {
+					margin-top: 30rpx;
+				}
+			}
+		}
+
+		.wd-btn-gloup {
+			text-align: center;
+			margin-top: 70rpx;
+
+			button {
+				width: 237rpx;
+				height: 71rpx;
+				font-size: 28rpx;
+				color: #ffffff;
+			}
 		}
 	}
 </style>

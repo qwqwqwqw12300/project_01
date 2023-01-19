@@ -105,7 +105,7 @@
 					url: '/pages/equipment/map'
 				})
 			},
-			
+
 			/**
 			 * 跳转电话设置
 			 */
@@ -205,6 +205,7 @@
 			// height: 60rpx;
 			right: 20rpx;
 			bottom: 20rpx;
+
 			&:nth-child(1) {
 				right: 100rpx;
 			}

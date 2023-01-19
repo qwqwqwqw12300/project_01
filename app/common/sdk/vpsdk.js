@@ -44,6 +44,7 @@ class Vpsdk {
 				},
 				withCredentials: true,
 				success: result => {
+					console.log(`Basic ${btoa(email + ':' + password)}`, '12121');
 					console.log(result, 'getToken');
 				},
 				fail: err => {
