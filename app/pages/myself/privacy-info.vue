@@ -23,7 +23,7 @@
 		methods: {
 			handleInit() {
 				PostSelectAgreement({
-					agreementType: '0'
+					type: '0'
 				}).then(res => {
 					this.content = res.data.content
 				})
@@ -49,8 +49,11 @@
 
 	.uni-agreement {
 		margin-top: 30rpx;
-		padding: 0px 32rpx 32rpx 32rpx;
+		padding: 0px 20rpx 20rpx 20rpx;
 		box-sizing: content-box;
+		word-wrap: break-word;
+		word-break: normal;
+		text-indent: 2em;
 
 		.agreement-title {
 			font-size: 19px;
