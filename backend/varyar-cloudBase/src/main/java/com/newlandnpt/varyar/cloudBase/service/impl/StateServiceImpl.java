@@ -41,6 +41,9 @@ public class StateServiceImpl implements StateService {
 	 
 	 @Value("${rocketmq.topic.deviceState}")
 	 private String deviceStateTopic;
+	 
+	 @Value("${rocketmq.topic.deviceActive}")
+	 private String deviceActiveTopic;
 
 	 @Override
 	 public void receve(State t) {
@@ -55,6 +58,11 @@ public class StateServiceImpl implements StateService {
 		 State obj = stateMapper.selectByDeviceId(deviceId);
 		 if(obj == null) {
 			 stateMapper.insert(t);
+			 SendResult result = rocketMQTemplate.syncSend(deviceActiveTopic, MessageBuilder.withPayload(t).build());
+			 //System.out.println(JSON.toJSONString(result));
+			 if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
+				 log.error("MQ推送失败：{}", "设备激活事件");
+			 }
 		 } else {
 			 stateMapper.update(t);
 		 }

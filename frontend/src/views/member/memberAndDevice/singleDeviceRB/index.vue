@@ -1,5 +1,8 @@
 <template>
     <div class="app-container">
+      <h5>设备查询</h5>
+            <!-- 设备基本信息嵌入位置 -->
+
      <!-- 会员基本信息嵌入 -->
      <el-row>
 		  <member-info-card :value="memberId"></member-info-card>
@@ -54,7 +57,7 @@
         </el-form-item>
         <el-form-item label="设备名称" prop="deviceName">
           <el-input
-            v-model="queryParams.deviceNo"
+            v-model="queryParams.deviceName"
             placeholder="请输入设备名称"
             clearable
             @keyup.enter.native="handleQuery"
@@ -88,9 +91,9 @@
             size="mini"
             @click="handleAdd"
             v-hasPermi="['system:event:add']"
-          >新增</el-button>
+          >服务登记</el-button>
         </el-col>
-        <el-col :span="1.5">
+        <!-- <el-col :span="1.5">
           <el-button
             type="success"
             plain
@@ -120,8 +123,8 @@
             size="mini"
             @click="handleExport"
             v-hasPermi="['system:event:export']"
-          >导出</el-button>
-        </el-col>
+          >导出</el-button> 
+        </el-col>-->
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
   
@@ -132,13 +135,9 @@
         <el-table-column label="事件内容" align="center" prop="content" />
         <el-table-column label="设备名称" align="center" prop="deviceName" />
         <el-table-column label="设备编号" align="center" prop="deviceNo" />
-        <el-table-column label="报警时间" align="center" prop="operateTime" width="180" color="#FF0000">
+        <el-table-column label="报警时间" align="center" prop="createTime" width="180" color="#FF0000">
           <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.operateTime) }}</span>
-          </template>
-        </el-table-column><el-table-column label="报警时间" align="center" prop="operateTime" width="180" color="#FF0000">
-          <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.operateTime) }}</span>
+            <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作时间" align="center" prop="operateTime" width="180" color="#FF0000">
@@ -183,7 +182,7 @@
               type="text"
               icon="el-icon-info"
               @click="handleView(scope.row)"
-            >查看</el-button>     
+            >查看消息</el-button>     
           </template>
         </el-table-column>
       </el-table>
@@ -202,84 +201,58 @@
         <device-info-card :value="deviceId"></device-info-card>
 		  </el-row>	  
 
-      <!-- 添加或修改事件对话框 -->
-      <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-        <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-          <el-form-item label="事件编号" prop="no">
-            <el-input v-model="form.no" placeholder="请输入事件编号" />
-          </el-form-item>
-          <el-form-item label="级别" prop="level">
-            <el-input v-model="form.level" placeholder="请输入级别" />
-          </el-form-item>
-          <el-form-item label="内容">
-            <editor v-model="form.content" :min-height="192"/>
-          </el-form-item>
-          <el-form-item label="设备id" prop="deviceId">
-            <el-input v-model="form.deviceId" placeholder="请输入设备id" />
-          </el-form-item>
-          <el-form-item label="设备组id" prop="devicegroupId">
-            <el-input v-model="form.devicegroupId" placeholder="请输入设备组id" />
-          </el-form-item>
-          <el-form-item label="家庭id" prop="familyId">
-            <el-input v-model="form.familyId" placeholder="请输入家庭id" />
-          </el-form-item>
-          <el-form-item label="设备编号" prop="deviceNo">
-            <el-input v-model="form.deviceNo" placeholder="请输入设备编号" />
-          </el-form-item>
-          <el-form-item label="机构id" prop="orgId">
-            <el-input v-model="form.orgId" placeholder="请输入机构id" />
-          </el-form-item>
-          <el-form-item label="机构名称" prop="orgName">
-            <el-input v-model="form.orgName" placeholder="请输入机构名称" />
-          </el-form-item>
-          <el-form-item label="会员id" prop="memberId">
-            <el-input v-model="form.memberId" placeholder="请输入会员id" />
-          </el-form-item>
-          <el-form-item label="会员手机号" prop="memberPhone">
-            <el-input v-model="form.memberPhone" placeholder="请输入会员手机号" />
-          </el-form-item>
-          <el-form-item label="会员姓名" prop="memberName">
-            <el-input v-model="form.memberName" placeholder="请输入会员姓名" />
-          </el-form-item>
-          <el-form-item label="运营者id" prop="userId">
-            <el-input v-model="form.userId" placeholder="请输入运营者id" />
-          </el-form-item>
-          <el-form-item label="运营者姓名" prop="userName">
-            <el-input v-model="form.userName" placeholder="请输入运营者姓名" />
-          </el-form-item>
-          <el-form-item label="操作时间" prop="operateTime">
-            <el-date-picker clearable
-              v-model="form.operateTime"
-              type="date"
-              value-format="yyyy-MM-dd"
-              placeholder="请选择操作时间">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="操作标志" prop="operateFlag">
-            <el-input v-model="form.operateFlag" placeholder="请输入操作标志" />
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
-        </div>
-      </el-dialog>
+      <!--  -->
+      <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
+        <el-table v-loading="loading" :data="msgList" @selection-change="handleMsgSelectionChange">
+          <!-- <el-table-column type="selection" width="60" align="center" /> -->
+          <el-table-column label="消息类型" align="center" prop="msgType" >
+            <template slot-scope="scope">
+              {{ msgTypeFormat(scope.row) }}
+              <!-- <span>{{ dict.type.sys_msg_type?.find(x=>x.value == scope.row.msgType)?.label }}</span> -->
+            </template>
+
+          </el-table-column>
+          <el-table-column label="消息内容" align="center" prop="content" />
+          <el-table-column label="操作人员" align="center" prop="operator" />
+          <el-table-column label="接收人员" align="center" prop="memberId" />
+          <el-table-column label="发送时间" align="center" prop="sendTime" width="180">
+            <template slot-scope="scope">
+              <span>{{ parseTime(scope.row.sendTime) }}</span>
+            </template>
+          </el-table-column>  
+      <el-table-column label="发送状态" align="center" prop="sendStatus">
+        <template slot-scope="scope">
+          {{ sendStatusFormat(scope.row) }}
+          <!-- <span>{{ dict.type.sys_msg_type?.find(x=>x.value == scope.row.msgType)?.label }}</span> -->
+        </template>
+      </el-table-column>
+
+      <el-table-column label="失败原因" align="center" prop="reason" />
+      </el-table>
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryMsgParams.pageNum"
+        :limit.sync="queryMsgParams.pageSize"
+        @pagination="getMsgList"
+      />
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
     </div>
   </template>
   
   <script>
-  //import { listEvent, getEvent, delEvent, addEvent, updateEvent ,orgTreeSelect } from "@/api/eventAndMessage/event";
   import { listEvent, getEvent, delEvent, addEvent, updateEvent  } from "@/api/eventAndMessage/event";
-  //import { listMember, getMember } from "@/api/member/member";
+  import { listMember, getMember } from "@/api/member/member";
+  import { listMsg, getMsg} from "@/api/eventAndMessage/message";
   import MemberInfoCard from "@/views/member/components/MemberInfoCard";
   import DeviceInfoCard from "@/views/device/components/DeviceInfoCard";
 
-  // import Treeselect from "@riophae/vue-treeselect";
-  // import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-
   export default {
     name: "singleDeviceRB",
-    dicts: ['sys_operate_flag'],
+    dicts: ['sys_operate_flag','sys_msg_type','sys_send_status','device_type'],
     // components: { Treeselect },
     components: { MemberInfoCard ,DeviceInfoCard},
     data() {
@@ -329,9 +302,23 @@
           operateTime: null,
           operateFlag: null,
         },
+      // 消息表格数据
+      msgList: [],
+        queryMsgParams: {
+           pageNum: 1,
+           pageSize: 20,
+           eventId: 0,
+        
+        },
+
          //卡片传值使用
-         memberId: null,
+        memberId: null,
         deviceId: null,
+
+        //路由接收参数定义
+        currentDeviceId: undefined,
+        currentMemberId: undefined,
+
         // 表单参数
         form: {},
         // 表单校验
@@ -339,22 +326,47 @@
         }
       };
     },
-  //   watch: {
-  //   // 根据名称筛选机构树
-  //   orgName(val) {
-  //     this.$refs.tree.filter(val);
-  //   },
-  //   'form.name':{
-  //     handler:function (val) {
-  //       this.form.nickName = val;
-  //     }
-  //   }
-  // },
-    created() {
-      this.getList();
-      // this.getDeptTree();
 
+    created() {
+      //初始化获取路由传参
+      this.currentDeviceId = this.$route.query.deviceId==undefined?undefined:Number(this.$route.query.deviceId)  
+      this.currentMemberId = this.$route.query.memberId==undefined?undefined:Number(this.$route.query.memberId) 
+      console.log(this.currentDeviceId + "+++++++" + this.currentMemberId)
+      //this.getList();
+      this.resetQuery();
+
+      // this.getDeptTree();
+  },
+//监听路由配置
+    watch: {
+      //路由传值接收
+      //设备id接收
+      "$route.query.deviceId": {
+      immediate: true,
+      handler: function (val) {
+        if (this.$route.name == "SingleDeviceRB") {
+          if (this.currentDeviceId != val) {
+            this.currentDeviceId = val==undefined?undefined:Number(val);
+            this.resetQuery();
+          }
+        }
+      }
     },
+     //会员id
+    "$route.query.memberId": {
+      immediate: true,
+      handler: function (val) {
+        if (this.$route.name == "SingleDeviceRB") {
+          if (this.currentMemberId != val) {
+            this.currentMemberId = val==undefined?undefined:Number(val);
+            this.resetQuery();
+          }
+        }
+      }
+    },
+ 
+  },
+
     methods: {
       /** 查询事件列表 */
       getList() {
@@ -365,37 +377,54 @@
           this.loading = false;
         });
       },
-      /** 查询用户列表 */
-    // getList() {
-    //   this.loading = true;
-    //   pageUser(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
-    //       this.userList = response.rows;
-    //       this.total = response.total;
-    //       this.loading = false;
-    //     }
-    //   );
-    // },
-         /** 查询机构下拉树结构 */
-    //   getDeptTree() {
-    //     orgTreeSelect().then(response => {
-    //     this.orgOptions = response.data;
-    //   });
-    // },
-    // // 筛选节点
-    // filterNode(value, data) {
-    //   if (!value) return true;
-    //   return data.label.indexOf(value) !== -1;
-    // },
+     
+      /** 查询消息列表 */
+        getMsgList() {
 
+    this.queryMsgParams.eventId= this.eventId
+
+    listMsg(this.queryMsgParams).then(response => {
+      this.msgList = response.rows;
+      this.total = response.total;
+      // console.log(JSON.stringify(response) + ">>>>>" + ">>>>>>>" )
+    });
+
+    },
      //记录行点击事件
      cardDetails(row){
       this.memberId = row.memberId;
       this.deviceId = row.deviceId;
 
     },
-    // 处理标志字典翻译
-      operateFlagFormat(row, column) {
+    // 消息类型字典翻译
+    msgTypeFormat(row, column) {
+      //return this.dict.type.sys_msg_type?.find(x=>x.value == row.msgType)?.label
+      return this.selectDictLabel(this.dict.type.sys_msg_type, row.msgType);
+    },
+
+    // 发送状态字典翻译
+    operateFlagFormat(row, column) {
       return this.selectDictLabel(this.dict.type.sys_operate_flag, row.operateFlag)
+    },
+
+    // 发送状态字典翻译
+    sendStatusFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.sys_send_status, row.sendStatus)
+    },
+    //设备类型字段翻译(修改)
+    
+    deviceTypeFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.device_type, row.operateType)
+    },
+
+    /** 查看按钮操作 */
+    handleView(row) {
+        //this.reset();
+      this.eventId = row.eventId 
+       console.log("eventId=============="+ this.eventId)
+       this.getMsgList();
+       this.open = true;
+
     },
       // 取消按钮
       cancel() {
@@ -436,7 +465,29 @@
       /** 重置按钮操作 */
       resetQuery() {
         this.dateRange = [];
-        this.resetForm("queryForm");
+        
+        this.queryParams= {
+          pageNum: 1,
+          pageSize: 10,
+          no: null,
+          level: null,
+          content: null,
+          deviceId: this.currentDeviceId,
+          devicegroupId: null,
+          familyId: null,
+          deviceNo: null,
+          orgId: null,
+          orgName: null,
+          operateType: null,
+          memberId: this.currentMemberId,
+          memberPhone: null,
+          memberName: null,
+          userId: null,
+          userName: null,
+          operateTime: null,
+          operateFlag: null,
+        },        
+        //this.resetForm("queryForm");
         // this.$refs.tree.setCurrentKey(null);
         this.handleQuery();
       },
@@ -446,11 +497,18 @@
         this.single = selection.length!==1
         this.multiple = !selection.length
       },
+
+       // msgId多选框选中数据
+    handleMsgSelectionChange(selection) {
+      this.ids = selection.map(item => item.msgId)
+      this.single = selection.length!==1
+      this.multiple = !selection.length
+    },
       /** 新增按钮操作 */
       handleAdd() {
         this.reset();
-        this.open = true;
-        this.title = "添加事件";
+        //this.open = true;
+        //this.title = "添加事件";
       },
       /** 修改按钮操作 */
       handleUpdate(row) {

@@ -10,9 +10,9 @@
       <el-descriptions-item label="会员注册时间">{{ member== undefined?"":member.createTime }}</el-descriptions-item>
       <el-descriptions-item label="服务人员">{{ member== undefined?"":member.userName }}</el-descriptions-item>
       <el-descriptions-item label="服务人员手机号码">{{ member== undefined?"":member.userPhone }}</el-descriptions-item>
-      <el-descriptions-item label="紧急联系电话1">{{ contacts == undefined || contacts.length == 0 ?"":member.contacts[0].phone }}</el-descriptions-item>
-      <el-descriptions-item label="紧急联系电话2">{{ contacts == undefined || contacts.length == 0 ?"":member.contacts[1].phone }}</el-descriptions-item>
-      <el-descriptions-item label="紧急联系电话3">{{ contacts == undefined || contacts.length == 0 ?"":member.contacts[2].phone }}</el-descriptions-item>
+      <el-descriptions-item label="紧急联系电话1">{{ member.contacts == undefined || member.contacts.length == 0 ?"":member.contacts[0].phone }}</el-descriptions-item>
+      <el-descriptions-item label="紧急联系电话2">{{ member.contacts == undefined || member.contacts.length == 0 ?"":member.contacts[1].phone }}</el-descriptions-item>
+      <el-descriptions-item label="紧急联系电话3">{{ member.contacts == undefined || member.contacts.length == 0 ?"":member.contacts[2].phone }}</el-descriptions-item>
     </el-descriptions>
   </el-card>
 </template>
