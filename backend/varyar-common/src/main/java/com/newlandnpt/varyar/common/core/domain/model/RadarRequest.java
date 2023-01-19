@@ -104,6 +104,18 @@ public class RadarRequest {
     @NotNull(message = "离开标识不能为空")
     private String outFlag;
 
+    /**设备id*/
+    @NotNull(message = "设备id不能为空")
+    private String deviceId;
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
     public String getInFlag() {
         return inFlag;
     }
