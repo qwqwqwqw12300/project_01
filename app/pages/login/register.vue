@@ -54,8 +54,7 @@
 						<u-checkbox :customStyle="{ marginRight: '8rpx' }" shape="square" activeColor="#fdbc2b"
 							size="30rpx" name="ag"></u-checkbox>
 					</u-checkbox-group>
-					<text>同意</text>
-					<text @tap="userAgreement">用户协议</text>
+					<text @tap="userAgreement">《同意用户协议》</text>
 				</view>
 				<view class="ui-btn"><button @click="register">注册</button></view>
 				<text class="ui-link active" @click="goLogin">老朋友？点此登录</text>
