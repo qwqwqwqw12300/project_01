@@ -127,14 +127,6 @@ public class TDevice extends BaseEntity
     private String nowLoacation;
 
     public String getNowLoacation() {
-        return nowLoacation;
-    }
-
-    public void setNowLoacation(String nowLoacation) {
-        this.nowLoacation = nowLoacation;
-    }
-
-    public String getMsgNum() {
         //经 度
         String longitude ="213123213992.2132132";
         //纬度
@@ -145,8 +137,15 @@ public class TDevice extends BaseEntity
         map.put("longitude",longitude);
         map.put("latitude",latitude);
         map.put("address",address);
-        String nowLocation = JSON.toJSONString(map);
-        return nowLocation;
+        return JSON.toJSONString(map);
+    }
+
+    public void setNowLoacation(String nowLoacation) {
+        this.nowLoacation = nowLoacation;
+    }
+
+    public String getMsgNum() {
+        return this.msgNum;
     }
 
     public void setMsgNum(String msgNum) {
