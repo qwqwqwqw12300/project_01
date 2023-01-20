@@ -108,7 +108,7 @@
             size="mini"
             :disabled="multiple"
             @click="handleAdd"
-            v-hasPermi="['system:event:add']"
+            v-hasPermi="['device:serveRecord:add']"
           >服务登记</el-button>
         </el-col>
         <!-- <el-col :span="4">
@@ -173,11 +173,10 @@
       <!-- 添加或修改事件对话框 -->
       <!-- 服务登记 -->
       <el-dialog :title="title" :visible.sync="open" width="830px" append-to-body>
-        {{this.phoneOptions}}
         <el-form ref="form" :model="form" :rules="rules" label-width="130px">
           <el-form-item label="紧急联系人电话:" prop="servedInfo">
           <el-radio-group v-model="form.servedInfo" size="medium">
-            <el-radio v-for="(item, index) in phoneOptions" :key="index" :label="item.value"
+            <el-radio v-for="(item, index) in phoneListOptions" :key="index" :label="item.value"
               :disabled="item.disabled" border>{{item.value}}</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -271,11 +270,9 @@
         // 查询参数
 
         member: undefined,
-        //phoneOptions:[],
-        contacts : [ 
-       
-      ],
+        
         //联络人号码
+        phoneListOptions:[],
          phoneOptions:[
           
       // {
@@ -343,9 +340,9 @@
         },
         // 表单校验
         rules: {
-        //   servedInfo: [
-        //   { required: true, message: "必须选择手机号", trigger: "blur" },
-        // ],
+          servedInfo: [
+          { required: true, message: "必须选择手机号", trigger: "blur" },
+        ],
         }
       };
     },
@@ -388,6 +385,7 @@
             this.member = response.data;
           })
       },
+
       operateFlag() {
         return this.$route.query.operateFlag
       },
@@ -450,39 +448,19 @@
           }
         })
 
-        // for(var i=0;i<selection.length;i++)
-        // {
-        //   console.log(selection[i].memberId)
-        // }
 
+        //获取选中记录的会员id
         this.form.memberId = selection[0]?.memberId
-        console.log(this.form.memberId)
+           getMember(this.form.memberId).then(response => {
+        this.phoneOptions = response.data.contacts;
+      });
 
       },
       /** 新增按钮操作 */
       handleAdd(row) {
         // this.reset();
-
-        this.phoneOptions = []
-        //row.memberId
-        console.log("row.memberId==============="+this.from.memberId)
-        getMember(Number(row.memberId)).then(response => {
-        this.phoneOptions = response.data.contacts[0].phone;
-        // this.phoneList = response.rows;
-        console.log("member===============" + this.phoneOptions)
-      });
-
-      // this.phoneOptions =this.member.contacts.map(function(item){
-      //   return item.phone
-
-      // }),
-      // // this.phoneOptions = this.member.contacts
-      // // // this.phoneOptions = this.member.map(item => {
-      // // //     return {
-      // // //       phone:item.phone,
-      // // //     }
-      // // //   })
-      // console.log("member===============" + this.phoneOptions)
+        //获取会员紧急联系人联系方式
+        this.phoneListOptions = this.phoneOptions.map(item => ({ value: item.phone, label: item.phone }))       
       this.open = true;
       this.title = "服务登记";
            

@@ -241,12 +241,70 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <!-- 服务登记 -->
+    <el-dialog :title="title" :visible.sync="server" width="830px" append-to-body>
+        <el-form ref="form" :model="form" :rules="rules" label-width="130px">
+          <el-form-item label="紧急联系人电话:" prop="servedInfo">
+          <el-radio-group v-model="form.servedInfo" size="medium">
+            <el-radio v-for="(item, index) in phoneListOptions" :key="index" :label="item.value"
+              :disabled="item.disabled" border>{{item.value}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <!-- <el-form-item label="联系人:" prop="name">
+            <el-select
+              v-model="form.servedInfo"
+              placeholder="联系人"
+              clearable
+              style="width: 240px"
+            >
+          <el-option
+            v-for="item in phoneOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+
+            </el-select>
+          </el-form-item> -->
+          <el-form-item label="快捷回复:" prop="reply">
+            <!-- <el-input v-model="form.name" placeholder="" /> -->
+            <el-select
+              v-model="form.remark"
+              placeholder="快捷回复"
+              clearable
+              style="width: 240px"
+            >
+          <el-option
+            v-for="item in replyOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.label">
+          </el-option>
+
+            </el-select>
+          </el-form-item>
+          <el-form-item label="服务备注" prop="remark">
+            <el-input v-model="form.remark" placeholder=""/>
+            <!-- <editor v-model="form.remark" :min-height="180" /> -->
+
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="submitForm">提 交</el-button>
+          <el-button @click="cancel">返 回</el-button>
+        </div>
+      </el-dialog>
+
     </div>
   </template>
   
   <script>
   import { listEvent, getEvent, delEvent, addEvent, updateEvent  } from "@/api/eventAndMessage/event";
-  import { listMember, getMember } from "@/api/member/member";
+ //获取会员信息
+  import {getMember} from "@/api/member/member";
+  //服务登记操作
+  import {addRecord} from "@/api/member/servedOprLog";
   import { listMsg, getMsg} from "@/api/eventAndMessage/message";
   import MemberInfoCard from "@/views/member/components/MemberInfoCard";
   import DeviceInfoCard from "@/views/device/components/DeviceInfoCard";
@@ -279,8 +337,28 @@
         orgOptions: [],
         // 日期范围
         dateRange: [],
+        //联络人号码
+        phoneListOptions:[],
+         phoneOptions:[],
+      //快捷回复
+      replyOptions:[
+      {
+        "label": "已联系机构联系人",
+        "value": 0
+      },
+      {
+        "label": "无人接听",
+        "value": 1
+      },
+      {
+        "label": "已通知",
+        "value": 2
+      }
+    
+      ],
         // 是否显示弹出层
         open: false,
+        server:false,
         // 查询参数
         queryParams: {
           pageNum: 1,
@@ -320,10 +398,18 @@
         currentDeviceId: undefined,
         currentMemberId: undefined,
 
-        // 表单参数
-        form: {},
+         // 表单参数
+         form: {
+          servedType:0,
+          servedInfo:null,
+          deviceId:null,
+          serveEvents:[],
+        },
         // 表单校验
         rules: {
+          servedInfo: [
+          { required: true, message: "必须选择手机号", trigger: "blur" },
+        ],
         }
       };
     },
@@ -426,6 +512,7 @@
       // 取消按钮
       cancel() {
         this.open = false;
+        this.server = false;
         this.reset();
       },
       // 表单重置
@@ -493,6 +580,22 @@
         this.ids = selection.map(item => item.eventId)
         this.single = selection.length!==1
         this.multiple = !selection.length
+
+        this.form.deviceId = selection[0]?.deviceId
+        this.form.serveEvents =  selection.map(item => {
+          return {
+            eventId:item.eventId,
+          }
+        })
+
+
+        //获取选中记录的会员id
+        this.form.memberId = selection[0]?.memberId
+           getMember(this.form.memberId).then(response => {
+        this.phoneOptions = response.data.contacts;
+        console.log(this.phoneOptions)
+      });
+
       },
 
        // msgId多选框选中数据
@@ -503,9 +606,11 @@
     },
       /** 新增按钮操作 */
       handleAdd() {
-        this.reset();
-        //this.open = true;
-        //this.title = "添加事件";
+        // this.reset();
+        //获取会员紧急联系人联系方式
+      this.phoneListOptions = this.phoneOptions.map(item => ({ value: item.phone, label: item.phone }))       
+      this.server = true;
+      this.title = "服务登记";
       },
       /** 修改按钮操作 */
       handleUpdate(row) {
@@ -520,20 +625,33 @@
       /** 提交按钮 */
       submitForm() {
         this.$refs["form"].validate(valid => {
-          if (valid) {
-            if (this.form.eventId != null) {
-              updateEvent(this.form).then(response => {
-                this.$modal.msgSuccess("修改成功");
-                this.open = false;
+          // if (valid) {
+          //   if (this.form.eventId != null) {
+          //     updateEvent(this.form).then(response => {
+          //       this.$modal.msgSuccess("修改成功");
+          //       this.open = false;
+          //       this.getList();
+          //     });
+          //   } else {
+          //     addEvent(this.form).then(response => {
+          //       this.$modal.msgSuccess("新增成功");
+          //       this.open = false;
+          //       this.getList();
+          //     });
+              
+          //   }
+          // }
+          //this.addData(this.form, this.eventList)
+          // addRecord(this.form).then(response => {
+          if (valid) {  
+          addRecord(this.form).then(response => {
+
+                this.$modal.msgSuccess("服务登记成功");
+                this.server = false;
                 this.getList();
-              });
-            } else {
-              addEvent(this.form).then(response => {
-                this.$modal.msgSuccess("新增成功");
-                this.open = false;
-                this.getList();
-              });
-            }
+                
+          });
+        
           }
         });
       },

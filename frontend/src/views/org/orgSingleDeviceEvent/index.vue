@@ -224,73 +224,67 @@
         </div>
       </el-dialog>  
 
-      <!-- 添加或修改事件对话框 -->
-      <!-- <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-        <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-          <el-form-item label="事件编号" prop="no">
-            <el-input v-model="form.no" placeholder="请输入事件编号" />
+      <!-- 服务登记 -->
+      <el-dialog :title="title" :visible.sync="open" width="830px" append-to-body>
+        <el-form ref="form" :model="form" :rules="rules" label-width="130px">
+          <el-form-item label="紧急联系人电话:" prop="servedInfo">
+          <el-radio-group v-model="form.servedInfo" size="medium">
+            <el-radio v-for="(item, index) in phoneListOptions" :key="index" :label="item.value"
+              :disabled="item.disabled" border>{{item.value}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <!-- <el-form-item label="联系人:" prop="name">
+            <el-select
+              v-model="form.servedInfo"
+              placeholder="联系人"
+              clearable
+              style="width: 240px"
+            >
+          <el-option
+            v-for="item in phoneOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+
+            </el-select>
+          </el-form-item> -->
+          <el-form-item label="快捷回复:" prop="reply">
+            <!-- <el-input v-model="form.name" placeholder="" /> -->
+            <el-select
+              v-model="form.remark"
+              placeholder="快捷回复"
+              clearable
+              style="width: 240px"
+            >
+          <el-option
+            v-for="item in replyOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.label">
+          </el-option>
+
+            </el-select>
           </el-form-item>
-          <el-form-item label="级别" prop="level">
-            <el-input v-model="form.level" placeholder="请输入级别" />
-          </el-form-item>
-          <el-form-item label="内容">
-            <editor v-model="form.content" :min-height="192"/>
-          </el-form-item>
-          <el-form-item label="设备id" prop="deviceId">
-            <el-input v-model="form.deviceId" placeholder="请输入设备id" />
-          </el-form-item>
-          <el-form-item label="设备组id" prop="devicegroupId">
-            <el-input v-model="form.devicegroupId" placeholder="请输入设备组id" />
-          </el-form-item>
-          <el-form-item label="家庭id" prop="familyId">
-            <el-input v-model="form.familyId" placeholder="请输入家庭id" />
-          </el-form-item>
-          <el-form-item label="设备编号" prop="deviceNo">
-            <el-input v-model="form.deviceNo" placeholder="请输入设备编号" />
-          </el-form-item>
-          <el-form-item label="机构id" prop="orgId">
-            <el-input v-model="form.orgId" placeholder="请输入机构id" />
-          </el-form-item>
-          <el-form-item label="机构名称" prop="orgName">
-            <el-input v-model="form.orgName" placeholder="请输入机构名称" />
-          </el-form-item>
-          <el-form-item label="会员id" prop="memberId">
-            <el-input v-model="form.memberId" placeholder="请输入会员id" />
-          </el-form-item>
-          <el-form-item label="会员手机号" prop="memberPhone">
-            <el-input v-model="form.memberPhone" placeholder="请输入会员手机号" />
-          </el-form-item>
-          <el-form-item label="会员姓名" prop="memberName">
-            <el-input v-model="form.memberName" placeholder="请输入会员姓名" />
-          </el-form-item>
-          <el-form-item label="运营者id" prop="userId">
-            <el-input v-model="form.userId" placeholder="请输入运营者id" />
-          </el-form-item>
-          <el-form-item label="运营者姓名" prop="userName">
-            <el-input v-model="form.userName" placeholder="请输入运营者姓名" />
-          </el-form-item>
-          <el-form-item label="操作时间" prop="operateTime">
-            <el-date-picker clearable
-              v-model="form.operateTime"
-              type="date"
-              value-format="yyyy-MM-dd"
-              placeholder="请选择操作时间">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="操作标志" prop="operateFlag">
-            <el-input v-model="form.operateFlag" placeholder="请输入操作标志" />
+          <el-form-item label="服务备注" prop="remark">
+            <el-input v-model="form.remark" placeholder=""/>
+            <!-- <editor v-model="form.remark" :min-height="180" /> -->
+
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
+          <el-button type="primary" @click="submitForm">提 交</el-button>
+          <el-button @click="cancel">返 回</el-button>
         </div>
-      </el-dialog> -->
+      </el-dialog>
+
     </div>
   </template>
   
   <script>
   import { listEvent, getEvent, delEvent, addEvent, updateEvent  } from "@/api/eventAndMessage/event";
+ //获取会员信息
+  import {getMember} from "@/api/member/member";
   //服务登记操作
   import {addRecord} from "@/api/member/servedOprLog";
   import OrgInfoCard from "@/views/org/components/OrgInfoCard";
@@ -326,8 +320,26 @@
         orgOptions: [],
         // 日期范围
         dateRange: [],
-        //联系人列表
-        phoneOptions:[],
+          
+        //联络人号码
+        phoneListOptions:[],
+         phoneOptions:[],
+      //快捷回复
+      replyOptions:[
+      {
+        "label": "已联系机构联系人",
+        "value": 0
+      },
+      {
+        "label": "无人接听",
+        "value": 1
+      },
+      {
+        "label": "已通知",
+        "value": 2
+      }
+    
+      ],
         // 是否显示弹出层
         open: false,
         // 查询参数
@@ -369,6 +381,9 @@
         },
         // 表单校验
         rules: {
+          servedInfo: [
+          { required: true, message: "必须选择手机号", trigger: "blur" },
+        ],
         }
       };
     },
@@ -514,12 +529,21 @@
             eventId:item.eventId,
           }
         })
+
+        
+        //获取选中记录的会员id
+        this.form.memberId = selection[0]?.memberId
+           getMember(this.form.memberId).then(response => {
+        this.phoneOptions = response.data.contacts;
+      });
       },
       /** 新增按钮操作 */
       handleAdd() {
-        //this.reset();
-        this.open = true;
-        this.title = "添加事件";
+       // this.reset();
+        //获取会员紧急联系人联系方式
+        this.phoneListOptions = this.phoneOptions.map(item => ({ value: item.phone, label: item.phone }))       
+      this.open = true;
+      this.title = "服务登记";
       },
       /** 修改按钮操作 */
       handleUpdate(row) {
