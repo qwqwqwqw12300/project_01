@@ -116,6 +116,7 @@
                             <br>
                             {{item.name}} 
                             <br>
+                            <!-- 待调整 -->
                             {{item.location}} | {{"在线"}}
                             <br>
                             <br>
@@ -247,7 +248,7 @@ export default {
     //页面路由跳转
     //待分配运营的会员
     goSingleDeviceRB(deviceId,memberId){
-      this.$router.push({path:'/members/singleDeviceRB',query: {deviceId: deviceId, memberId: memberId} })
+      this.$router.push({path:'/members/singleDeviceRB',query: {deviceId: deviceId, memberId: memberId}})
       console.log("deviceId>>>>>>"+deviceId+"=======memberId"+memberId)
     },
 
@@ -438,5 +439,15 @@ export default {
   :last-child {
     margin-bottom: 0;
   }
+}
+.el-card {
+    margin-top: 20px;
+    border-radius: 4px;
+    border: 1px solid #e6ebf5;
+    background-color: #FFFFFF;
+    overflow: hidden;
+    color: #303133;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
 }
 </style>

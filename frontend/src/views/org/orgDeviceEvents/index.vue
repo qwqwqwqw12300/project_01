@@ -76,7 +76,7 @@
         </el-form-item>
       </el-form>
   
-      <el-row :gutter="10" class="mb8">
+      <!-- <el-row :gutter="10" class="mb8">
         <el-col :span="1.5">
           <el-button
             type="primary"
@@ -86,7 +86,7 @@
             @click="handleAdd"
             v-hasPermi="['system:event:add']"
           >服务登记</el-button>
-        </el-col>
+        </el-col> -->
         <!-- <el-col :span="1.5">
           <el-button
             type="success"
@@ -119,8 +119,8 @@
             v-hasPermi="['system:event:export']"
           >导出</el-button>
         </el-col> -->
-        <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-      </el-row>
+        <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+      </el-row> -->
   
       <el-table v-loading="loading" :data="eventList" @selection-change="handleSelectionChange"  @row-click="cardDetails">
         <el-table-column type="selection" width="55" align="center" />
@@ -134,9 +134,9 @@
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作时间" align="center" prop="createTime" width="180" color="#FF0000">
+        <el-table-column label="操作时间" align="center" prop="operateTime" width="180" color="#FF0000">
           <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.createTime) }}</span>
+            <span>{{ parseTime(scope.row.operateTime) }}</span>
           </template>
         </el-table-column>
         <!-- 待调整 -->
@@ -173,7 +173,7 @@
             >删除</el-button>
           </template>
         </el-table-column> --> 
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -182,7 +182,7 @@
               @click="handleView(scope.row)"
             >查看</el-button>     
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
       
       <pagination
@@ -193,17 +193,17 @@
         @pagination="getList"
       />
   
-
-      <!-- 设备基本信息嵌入位置 -->
+       <!-- 机构基本信息嵌入位置 -->
+       <el-row>
+        <org-info-card :value="currentOrgId"></org-info-card>
+		  </el-row>	
+      <el-row><br></el-row>
+            <!-- 设备基本信息嵌入位置 -->
       <el-row>
         <device-info-card :value="deviceId"></device-info-card>
 		  </el-row>	  
-       <!-- 机构基本信息嵌入位置 -->
-       <el-row>
-        <org-info-card :value="orgId"></org-info-card>
-		  </el-row>	
       <!-- 服务登记 -->
-      <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
+      <!-- <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
         <el-form ref="form" :model="form" :rules="rules" label-width="120px">
           <el-form-item label="紧急联系人电话" prop="phone">
           <el-radio-group v-model="form.phone" size="medium">
@@ -222,7 +222,7 @@
           <el-button type="primary" @click="submitForm">提 交</el-button>
           <el-button @click="cancel">返 回</el-button>
         </div>
-      </el-dialog>  
+      </el-dialog>   -->
 
       <!-- 添加或修改事件对话框 -->
       <!-- <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -290,16 +290,16 @@
   </template>
   
   <script>
-  import { listEvent, getEvent, delEvent, addEvent, updateEvent  } from "@/api/eventAndMessage/event";
+  import { listEvent, getEvent  } from "@/api/eventAndMessage/event";
   //服务登记操作
-  import {addRecord} from "@/api/member/servedOprLog";
+  //import {addRecord} from "@/api/member/servedOprLog";
   import OrgInfoCard from "@/views/org/components/OrgInfoCard";
   import DeviceInfoCard from "@/views/device/components/DeviceInfoCard";
 
  
 
   export default {
-    name: "orgDeviceEvent",
+    name: "orgDeviceEvents",
     dicts: ['sys_operate_flag','sys_operate_type'],
     // components: { Treeselect },
     components: { OrgInfoCard ,DeviceInfoCard},
@@ -355,6 +355,9 @@
          //卡片传值使用
          orgId: null,
          deviceId: null,
+        //路由接收参数定义
+        currentOrgId: undefined,
+        currentOperateFlag: undefined,
         // 表单参数
         form: {
           servedType:0,
@@ -368,18 +371,51 @@
         }
       };
     },
-     watch: {
-  
-     },
+    
     created() {
-      this.getList();
+      //this.getList();
+      //初始化获取路由传参
+      this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)  
+      this.currentOperateFlag = this.$route.query.operateFlag==undefined?undefined:Number(this.$route.query.operateFlag) 
+      //this.getList();
+      this.resetQuery();
 
     },
+    //监听路由配置
+    watch: {
+      //路由传值接收
+      //设备id接收
+      "$route.query.orgId": {
+      immediate: true,
+      handler: function (val) {
+        if (this.$route.name == "orgDeviceEvents") {
+          if (this.currentOrgId != val) {
+            this.currentOrgId = val==undefined?undefined:Number(val);
+            this.resetQuery();
+          }
+        }
+      }
+    },
+     //处理标志
+    "$route.query.operateFlag": {
+      immediate: true,
+      handler: function (val) {
+        if (this.$route.name == "orgDeviceEvents") {
+          if (this.currentOperateFlag != val) {
+            this.currentOperateFlag = val==undefined?undefined:Number(val);
+            this.resetQuery();
+          }
+        }
+      }
+    },
+ 
+  },
+
     methods: {
       /** 查询事件列表 */
       getList() {
         this.loading = true;
-        listEvent(this.queryParams).then(response => {
+        listEvent(this.queryParams, this.dateRange).then(response => {
           this.eventList = response.rows;
           this.total = response.total;
           this.loading = false;
@@ -439,8 +475,29 @@
       /** 重置按钮操作 */
       resetQuery() {
         this.dateRange = [];
-        this.resetForm("queryForm");
+        //this.resetForm("queryForm");
         // this.$refs.tree.setCurrentKey(null);
+        this.queryParams = {
+          pageNum: 1,
+          pageSize: 10,
+          no: null,
+          level: null,
+          content: null,
+          deviceId: null,
+          devicegroupId: null,
+          familyId: null,
+          deviceNo: null,
+          orgId: this.currentOrgId,
+          orgName: null,
+          operateType: null,
+          memberId: null,
+          memberPhone: null,
+          memberName: null,
+          userId: null,
+          userName: null,
+          operateTime: null,
+          operateFlag: this.currentOperateFlag,
+        }
         this.handleQuery();
       },
       // 多选框选中数据

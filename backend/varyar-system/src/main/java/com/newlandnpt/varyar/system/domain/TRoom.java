@@ -28,6 +28,9 @@ public class TRoom extends BaseEntity
     @Excel(name = "家庭id")
     private Long familyId;
 
+    /** 机构id */
+    private Long orgId;
+
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
@@ -82,7 +85,15 @@ public class TRoom extends BaseEntity
         return familyId;
     }
 
-    public void setDelFlag(String delFlag) 
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
+    }
+
+    public void setDelFlag(String delFlag)
     {
         this.delFlag = delFlag;
     }

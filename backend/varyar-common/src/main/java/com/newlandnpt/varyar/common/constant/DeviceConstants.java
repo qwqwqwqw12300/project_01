@@ -20,5 +20,9 @@ public class DeviceConstants {
     public static final String DEL_FLAG_NOT_ACTIVE = "0";
     /** 删除标志 1删除 */
     public static final String DEL_FLAG_ACTIVATED = "1";
+    /** 雷达波 */
+    public static final String TYPE_READER_WAVE = "0";
+    /** 监护设备 */
+    public static final String TYPE_WATCH = "1";
 
 }

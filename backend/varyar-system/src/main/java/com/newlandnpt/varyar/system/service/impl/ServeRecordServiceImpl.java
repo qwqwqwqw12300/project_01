@@ -57,7 +57,7 @@ public class ServeRecordServiceImpl implements IServeRecordService
      * @return 服务记录
      */
     @Override
-    @DataScope(orgAlias="s")
+    @DataScope(orgAlias="u")
     public List<TServeRecord> selectServeRecordList(TServeRecord serveRecord)
     {
         return serveRecordMapper.selectServeRecordList(serveRecord);

@@ -184,20 +184,24 @@
         <el-button @click="groupArrangeOpen = false">取 消</el-button>
       </div>
     </el-dialog>
+    <radar-wave-settings v-model="settings" :visible.sync="radarWaveSettingsOpen" @submit="settingsSubmit"></radar-wave-settings>
+    <watch-settings v-model="settings" :visible.sync="watchSettingsOpen" @submit="settingsSubmit"></watch-settings>
   </div>
 </template>
 
 <script>
 import {orgTreeSelect} from "@/api/system/user";
-import {pageDevice, associateDevice, groupArrange,active,offline} from "@/api/device/device";
+import {pageDevice, associateDevice, groupArrange, active, offline, loadSettings, setSettings} from "@/api/device/device";
 import {pageDeviceGroup} from "@/api/org/deviceGroup"
 import Treeselect from "@riophae/vue-treeselect";
+import RadarWaveSettings from "@/views/device/components/RadarWaveSettings";
+import WatchSettings from "@/views/device/components/WatchSettings";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Device",
   dicts: ['device_type','sys_device_status'],
-  components: {Treeselect},
+  components: {Treeselect, RadarWaveSettings, WatchSettings},
   data() {
     return {
       // 遮罩层
@@ -273,8 +277,14 @@ export default {
       groupArrangeRules: {},
       groupArrangeGroupList: [],
       currentDistributeFlag: undefined,
-      currentOrgId:undefined,
-
+      currentOrgId: undefined,
+      /** 设备配置相关 */
+      //雷达波设置页面开启
+      radarWaveSettingsOpen: false,
+      //监护设备设置页面开启
+      watchSettingsOpen: false,
+      settingsDeviceId: undefined,
+      settings:undefined
     }
   },
   created() {
@@ -402,8 +412,24 @@ export default {
       })
     },
     /** 设备参数配置相关 */
-    handleSettings(row) {
-
+    async handleSettings(row) {
+      const {data} = await loadSettings(row.deviceId);
+      this.settingsDeviceId = row.deviceId;
+      this.settings = data;
+      if (row.type == 0) {
+        this.radarWaveSettingsOpen = true;
+      } else if (row.type == 1) {
+        this.watchSettingsOpen = true;
+      } else {
+        this.$modal.msgWarning("未知类型的设备");
+      }
+    },
+    async settingsSubmit(form){
+      await setSettings(this.settingsDeviceId,form)
+      this.radarWaveSettingsOpen = false;
+      this.watchSettingsOpen = false;
+      this.$modal.msgSuccess("设备参数配置成功");
+      this.getList();
     }
 
   }

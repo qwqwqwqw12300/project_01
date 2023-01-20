@@ -19,6 +19,7 @@
         <result property="familyName" column="family_name"/>
         <result property="memberId" column="member_id"/>
         <result property="memberNo" column="member_no"/>
+        <result property="memberPhone" column="member_phone"/>
         <result property="roomId" column="room_id"/>
         <result property="roomName" column="room_name"/>
         <result property="distributeFlag" column="distribute_flag"/>
@@ -44,6 +45,7 @@
             (select org_no from t_org where org_id = d.org_id) org_no,
             (select org_name from t_org where org_id = d.org_id) org_name,
             (select no from t_member where member_id = d.member_id) member_no,
+            (select phone from t_member where member_id = d.member_id) member_phone,
             (select name from t_family where family_id = d.family_id) family_name,
             (select name from t_room where room_id = d.room_id) room_name
         from t_device d

@@ -35,7 +35,6 @@ export function getDevice(deviceId) {
   })
 }
 
-
 // 设备上线
 export function active(deviceId) {
   return request({
@@ -44,11 +43,27 @@ export function active(deviceId) {
   })
 }
 
-
 // 设备下线
 export function offline(deviceId) {
   return request({
     url: '/device/' + deviceId + '/status/offline',
     method: 'put'
+  })
+}
+
+// 加载设备参数
+export function loadSettings(deviceId) {
+  return request({
+    url: '/device/' + deviceId + '/settings',
+    method: 'get'
+  })
+}
+
+// 设置设备参数
+export function setSettings(deviceId,data) {
+  return request({
+    url: '/device/' + deviceId + '/settings',
+    method: 'put',
+    data:data
   })
 }

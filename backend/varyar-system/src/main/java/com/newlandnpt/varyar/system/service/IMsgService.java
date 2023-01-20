@@ -48,6 +48,14 @@ public interface IMsgService
      * @return 结果
      */
     public int updateTMsg(TMsg tMsg);
+    /**
+     * 修改消息 批量
+     *
+     * @param tMsg 消息
+     * @return 结果
+     */
+    public int updateTMsgs(List<TMsg> tMsgs) throws Exception;
+
 
     /**
      * 批量删除消息
