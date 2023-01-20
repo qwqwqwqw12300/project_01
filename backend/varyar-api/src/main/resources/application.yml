@@ -145,6 +145,7 @@ rocketmq:
     accessDelay: group_access_delay
     location: group_location
     deviceConfig: group_deviceConfig
+    deviceConfigErr: group_deviceConfigErr
     deviceActive: group_deviceActive
   topic:
     fall: fallTopic
@@ -154,6 +155,7 @@ rocketmq:
     accessDelay: accessDelayTopic
     location: locationTopic
     deviceConfig: deviceConfigTopic
+    deviceConfigErr: deviceConfigErrTopic
     deviceActive: deviceActiveTopic
 
 

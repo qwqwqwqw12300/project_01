@@ -219,4 +219,11 @@ public class Fall implements Serializable {
 		this.zCm = zCm;
 	}
 	
+	/**
+	 * 获取设备no
+	 * @return
+	 */
+	public String getDeviceNo() {
+		return deviceId;
+	}
 }

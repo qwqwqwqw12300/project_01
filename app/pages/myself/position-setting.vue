@@ -144,41 +144,44 @@
 		GetRoomZoon,
 		PostRoomList
 	} from '../../common/http/api';
+
+	/**监控区域**/
 	const ZONE = {
-		width: 100,
-		height: 100,
+		/**房间id**/
+		roomZoneId: '',
+		/**设备id**/
+		deviceId: '',
+		/**房间id**/
+		roomId: '',
+		/**区域名称**/
 		zoneName: '',
-		x: 0,
-		y: 0,
-		z: 0,
-		scale: 2,
-		old: {
-			x: 0,
-			y: 0,
-			scale: 2
-		},
-		roomInfo: {},
-		/**是否开启进入报警**/
-		isEntry: false,
-		/**是否开启离开报警**/
-		isDeparture: false,
-		/**进入报警时间**/
+		/*监控类型 0-监控区域  1-私人区域**/
+		zoneType: '',
+		/**跌倒监控**/
+		fallFlag: 0,
+		x1: '',
+		x2: '',
+		y1: '',
+		y2: '',
+		z1: '',
+		z2: '',
+		/**进入报警区域时间**/
 		entryTime: '',
-		/**离开报警时间**/
+		/**离开报警区域时间**/
 		departureTime: '',
 		/**开始监控时间**/
 		startTime: '',
 		/**结束监控时间**/
 		endTime: '',
-		/**是否开启跌倒监控**/
-		isFall: false,
-		/**是否开启进出监控**/
-		isAccess: false
+		/**进入监控区域报警**/
+		inFlag: '',
+		/**离开监控区域报警**/
+		outFlag: ''
 	};
 	export default {
 		data() {
 			return {
-				zoneInfo: assignDeep({}, ZONE),
+				zoneInfo: {},
 				list: [{
 					zoneName: '设备',
 					x: 120,
@@ -225,8 +228,9 @@
 					departureTime: '',
 					startTime: '',
 					endTime: '',
-					inFlag: '',
-					departureTime: ''
+					inFlag: '0',
+					outMonitorFlagt: '0',
+
 				},
 				roomZooes: []
 			};
@@ -248,8 +252,9 @@
 			 * 添加区域
 			 */
 			addZone() {
-				this.list.push(this.zoneInfo);
-				this.zoneInfo = assignDeep({}, ZONE);
+				// this.list.push();
+				// this.zoneInfo = assignDeep({}, ZONE);
+				this.list.push(assignDeep({}, ZONE));
 			},
 			/**
 			 * 区域修改
@@ -348,8 +353,10 @@
 
 					});
 				})
+			},
 
-			}
+
+
 		}
 	};
 </script>
@@ -361,7 +368,7 @@
 		.ui-movable {
 			// height: 300rpx;
 			width: 100%;
-			padding: 100rpx;
+			padding: 30rpx 50rpx;
 			box-sizing: border-box;
 		}
 

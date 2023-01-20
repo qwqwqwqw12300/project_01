@@ -112,5 +112,11 @@ public class Presence implements Serializable {
 	public void setRecordTime(Date recordTime) {
 		this.recordTime = recordTime;
 	}
-
+	/**
+	 * 获取设备no
+	 * @return
+	 */
+	public String getDeviceNo() {
+		return deviceId;
+	}
 }

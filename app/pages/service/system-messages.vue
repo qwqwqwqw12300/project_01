@@ -49,14 +49,14 @@
 				});
 			
 			},
-			initDatd() {
+			initData() {
 				GetSysNotice().then(res => {
 					this.messageList = res.rows
 				})
 			}
 		},
 		mounted() {
-			this.initDatd()
+			this.initData()
 		}
 	}
 </script>
@@ -84,8 +84,8 @@
 				width: 300rpx;
 				border-radius: 10rpx;
 				padding: 10rpx;
-				margin: 20rpx 0;
-				font-size: 20rpx;
+				margin: 16rpx 0;
+				font-size: 24rpx;
 				color: #fff;
 				background-color: rgba(0, 0, 0, 0.3);
 			}

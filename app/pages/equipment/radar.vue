@@ -76,7 +76,7 @@
 				addForm: {
 					deviceName: '',
 					deviceNo: '',
-					deviceType: '1',
+					deviceType: '0',
 					location: ''
 				},
 				/**编辑展示**/

@@ -75,6 +75,13 @@ public class State implements Serializable {
 	public void setFirstTime(Date firstTime) {
 		this.firstTime = firstTime;
 	}
-
+	
+	/**
+	 * 获取设备no
+	 * @return
+	 */
+	public String getDeviceNo() {
+		return deviceId;
+	}
 
 }

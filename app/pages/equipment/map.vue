@@ -64,6 +64,7 @@
 				// 	familyId,
 				// 	roomId
 				// } = this.deviceInfo;
+				console.log('22')
 				GetDeviceSize({
 					deviceId: '100',
 				}).then(res => {
@@ -79,11 +80,11 @@
 					this.address = address
 					this.longitude = longitude
 					this.latitude = latitude,
-					this.covers[0] = {
-						latitude,
-						longitude,
-						iconPath: '../../../static/location.png'
-					}
+						this.covers[0] = {
+							latitude,
+							longitude,
+							iconPath: '../../../static/location.png'
+						}
 					this.circles[0] = {
 						latitude,
 						longitude,

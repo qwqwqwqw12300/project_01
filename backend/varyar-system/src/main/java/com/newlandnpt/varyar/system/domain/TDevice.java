@@ -1,8 +1,11 @@
 package com.newlandnpt.varyar.system.domain;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.alibaba.fastjson2.JSON;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter;
@@ -119,12 +122,22 @@ public class TDevice extends BaseEntity
     /**设备参数配置*/
     @Transient
     private DeviceSettings settings;
-    /**seh*/
+    /**设备实时位置*/
     @Transient
     private String nowLoacation;
 
     public String getNowLoacation() {
-        return nowLoacation;
+        //经 度
+        String longitude ="213123213992.2132132";
+        //纬度
+        String latitude ="10002932931.2123213";
+        //地址
+        String address = "马尾区儒江西路新大陆园区";
+        Map<String,String > map = new HashMap<String,String>();
+        map.put("longitude",longitude);
+        map.put("latitude",latitude);
+        map.put("address",address);
+        return JSON.toJSONString(map);
     }
 
     public void setNowLoacation(String nowLoacation) {
@@ -132,7 +145,7 @@ public class TDevice extends BaseEntity
     }
 
     public String getMsgNum() {
-        return msgNum;
+        return this.msgNum;
     }
 
     public void setMsgNum(String msgNum) {
