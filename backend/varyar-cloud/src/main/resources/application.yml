@@ -147,6 +147,7 @@ rocketmq:
     access: group_access
     location: group_location
     deviceConfig: group_deviceConfig
+    deviceConfigErr: group_deviceConfigErr
     deviceActive: group_deviceActive
   topic:
     net: netTopic
@@ -156,6 +157,7 @@ rocketmq:
     access: accessTopic
     location: locationTopic
     deviceConfig: deviceConfigTopic
+    deviceConfigErr: deviceConfigErrTopic
     deviceActive: deviceActiveTopic
 
 location:
