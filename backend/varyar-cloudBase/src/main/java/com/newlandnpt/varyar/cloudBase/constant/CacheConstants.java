@@ -18,4 +18,10 @@ public class CacheConstants {
     
     /** 进出区域 **/
     public static final String PRESENCE_KEY = "cloud:presence:";
+    
+    public static final String VAYYAR_TOKEN_KEY = "cloud:token";
+    
+    public static final String VAYYAR_EMAIL = "elinker@elinker.cc";
+    
+    public static final String VAYYAR_PWD = "1234567890";
 }
