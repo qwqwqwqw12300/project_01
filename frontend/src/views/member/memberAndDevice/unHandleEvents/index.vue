@@ -105,7 +105,7 @@
             type="primary"
             plain
             icon="el-icon-edit"
-            size="mini"
+            size="medium"
             :disabled="multiple"
             @click="handleAdd"
             v-hasPermi="['device:serveRecord:add']"
@@ -159,7 +159,7 @@
         :limit.sync="queryParams.pageSize"
         @pagination="getList"
       />
-  
+      <el-row><br><br></el-row>
       <!-- 会员基本信息嵌入 -->
      <el-row>
 		  <member-info-card :value="memberId"></member-info-card>
@@ -172,7 +172,7 @@
 
       <!-- 添加或修改事件对话框 -->
       <!-- 服务登记 -->
-      <el-dialog :title="title" :visible.sync="open" width="830px" append-to-body>
+      <el-dialog :title="title" :visible.sync="open" width="650px" append-to-body>
         <el-form ref="form" :model="form" :rules="rules" label-width="130px">
           <el-form-item label="紧急联系人电话:" prop="servedInfo">
           <el-radio-group v-model="form.servedInfo" size="medium">
@@ -214,9 +214,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="服务备注" prop="remark">
-            <el-input v-model="form.remark" placeholder=""/>
-            <!-- <editor v-model="form.remark" :min-height="180" /> -->
-
+            <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -238,7 +236,7 @@
 
   export default {
     name: "HandleEvents",
-    dicts: ['sys_operate_flag'],
+    dicts: ['sys_operate_flag','sys_operate_type'],
     // components: { Treeselect },
     components: { MemberInfoCard ,DeviceInfoCard},
 
@@ -409,6 +407,26 @@
       // 表单重置
       reset() {
         this.form = {
+          eventId: null,
+          no: null,
+          level: null,
+          content: null,
+          deviceId: null,
+          devicegroupId: null,
+          familyId: null,
+          deviceNo: null,
+          orgId: null,
+          orgName: null,
+          operateType: null,
+          memberId: null,
+          memberPhone: null,
+          memberName: null,
+          userId: null,
+          userName: null,
+          operateTime: null,
+          operateFlag: null,
+          createTime: null,
+          updateTime: null,
           servedType:0,
           servedInfo:null,
           deviceId:null,
@@ -442,19 +460,20 @@
         this.multiple = !selection.length
 
         this.form.deviceId = selection[0]?.deviceId
-        this.form.serveEvents =  selection.map(item => {
-          return {
-            eventId:item.eventId,
-          }
-        })
+        if(this.form.deviceId!= undefined){
+          this.form.serveEvents =  selection.map(item => {
+            return {
+              eventId:item.eventId,
+            }
+          })
 
 
-        //获取选中记录的会员id
-        this.form.memberId = selection[0]?.memberId
-           getMember(this.form.memberId).then(response => {
-        this.phoneOptions = response.data.contacts;
-      });
-
+          //获取选中记录的会员id
+          this.form.memberId = selection[0]?.memberId
+            getMember(this.form.memberId).then(response => {
+          this.phoneOptions = response.data.contacts;
+        });
+     }
       },
       /** 新增按钮操作 */
       handleAdd(row) {

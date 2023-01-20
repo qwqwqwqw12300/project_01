@@ -7,7 +7,7 @@
         </div>
         <water-fall :value="urgentDevices">
           <template slot-scope="{item}">
-            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId)">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId,item.orgId,item.memberId)">
               <span style="color: #ff0000">{{ item.name }}</span> | {{getEventSum(item)}}条
               <br>
               {{ item.memberId==undefined?item.deviceGroupName:item.familyName }} | {{ item.memberId==undefined?item.location:item.roomName }} | {{item.onlineFlag=='1'?"在线":"不在线"}}
@@ -25,7 +25,7 @@
         </div>
         <water-fall :value="notUrgentDevices">
           <template slot-scope="{item}">
-            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId,item.orgId)">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId,item.orgId,item.memberId)">
               {{ item.name }} | {{getEventSum(item)}}条
               <br>
               {{ item.memberId==undefined?item.deviceGroupName:item.familyName }} | {{ item.memberId==undefined?item.location:item.roomName }} | {{item.onlineFlag=='1'?"在线":"不在线"}}
@@ -79,10 +79,13 @@ export default {
     getEventSum(device){
       return device.countUnHandleByDeviceGroupByLevel?.map(x=>x.count).reduce((val, oldVal) => val + oldVal,0)
     },
-    //机构处理单个设备消息
-    goDeviceEvent(deviceId,orgId){
-      this.$router.push({path:'/org/orgSingleDeviceEvent',query: {deviceId:deviceId, orgId:orgId }})
-    }
+    //机构处理单个设备消息/会员单个设备消息
+    goDeviceEvent(deviceId,orgId,memberId){
+      //this.$router.push({path:'/org/orgSingleDeviceEvent',query: {deviceId:deviceId, orgId:orgId }})
+      memberId==undefined?this.$router.push({path:'/org/orgSingleDeviceEvent',query: {deviceId:deviceId, orgId:orgId }})
+      :this.$router.push({path:'/members/singleDeviceRB',query: {deviceId: deviceId, memberId: memberId}})
+
+     }
   },
 };
 </script>

@@ -87,7 +87,8 @@
             type="primary"
             plain
             icon="el-icon-plus"
-            size="mini"
+            size="medium"
+            :disabled="multiple"
             @click="handleAdd"
             v-hasPermi="['device:serveRecord:add']"
           >服务登记</el-button>
@@ -285,9 +286,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="服务备注" prop="remark">
-            <el-input v-model="form.remark" placeholder=""/>
-            <!-- <editor v-model="form.remark" :min-height="180" /> -->
-
+            <el-input v-model="form.remark" type="textarea" placeholder=""></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -582,7 +581,8 @@
         this.multiple = !selection.length
 
         this.form.deviceId = selection[0]?.deviceId
-        this.form.serveEvents =  selection.map(item => {
+        if(this.form.deviceId!=undefined){
+          this.form.serveEvents =  selection.map(item => {
           return {
             eventId:item.eventId,
           }
@@ -593,9 +593,10 @@
         this.form.memberId = selection[0]?.memberId
            getMember(this.form.memberId).then(response => {
         this.phoneOptions = response.data.contacts;
-        console.log(this.phoneOptions)
       });
 
+        }
+        
       },
 
        // msgId多选框选中数据
