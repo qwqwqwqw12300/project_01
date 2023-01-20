@@ -43,12 +43,12 @@ public class DeviceEventServiceImpl implements DeviceEventService {
     /**
      * 事件级别 严重
      */
-    private static final String EVENT_LEVEL_HIGH = "严重";
+    private static final String EVENT_LEVEL_HIGH = "urgent";
 
     /**
      * 事件级别 正常
      */
-    private static final String EVENT_LEVEL_NORMAL = "正常";
+    private static final String EVENT_LEVEL_NORMAL = "normal";
 
     /**
      * 事件操作类型默认值 1-后台人工
@@ -169,6 +169,14 @@ public class DeviceEventServiceImpl implements DeviceEventService {
     private void triggerEvent(String level, TDevice device, String content) {
         TEvent event = new TEvent();
         event.setNo(UUID.randomUUID().toString());
+        event.setDeviceId(device.getDeviceId());
+        event.setDevicegroupId(device.getDevicegroupId());
+        event.setFamilyId(device.getFamilyId());
+        event.setDeviceNo(device.getNo());
+        event.setOrgId(device.getOrgId());
+        event.setOrgName(device.getOrgName());
+        event.setMemberId(device.getMemberId());
+        event.setMemberPhone(device.getMemberPhone());
         event.setLevel(level);
         event.setContent(content);
         event.setOperateType(AUTO_EVENT);
