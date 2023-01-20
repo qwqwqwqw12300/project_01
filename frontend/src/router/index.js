@@ -108,7 +108,7 @@ export const constantRoutes = [
       },
       {
         path: 'orgSingleDeviceEvent',
-        component: () => import('@/views/org/orgDeviceEvents/index'),
+        component: () => import('@/views/org/orgSingleDeviceEvent/index'),
         name: 'OrgSingleDeviceEvent',
         meta: { title: '机构处理单个设备消息', icon: 'user' }
       }
@@ -142,7 +142,7 @@ export const constantRoutes = [
         path: 'singleDeviceRB',
         component: () => import('@/views/member/memberAndDevice/singleDeviceRB/index'),
         name: 'SingleDeviceRB',
-        meta: { title: '会员单个设备总览(雷达波)', icon: 'user' }
+        meta: { title: '会员单个设备总览', icon: 'user' }
       }
     ]
   }

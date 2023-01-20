@@ -6,7 +6,7 @@
     <el-descriptions :column="2">
       <el-descriptions-item label="设备名称">{{ device== undefined?"":device.name}}</el-descriptions-item>
       <el-descriptions-item label="设备位置">{{ device== undefined?"":device.location}}</el-descriptions-item>
-      <el-descriptions-item label="雷达波设备">{{ device== undefined?"":device.type}}</el-descriptions-item>
+      <el-descriptions-item label="设备类型">{{ device== undefined?"":device.type}}</el-descriptions-item>
       <el-descriptions-item label="设备供应商">{{ device== undefined?"":device.org_name}}</el-descriptions-item>
       <el-descriptions-item label="设备编号">{{ device== undefined?"":device.no}}</el-descriptions-item>
       <el-descriptions-item label="设备配网时间">{{ device== undefined?"":device.register_time}}</el-descriptions-item>
@@ -19,8 +19,9 @@
 import {getDevice} from "@/api/device/device";
 
 export default {
-name: "DeviceInfoCard"
-,
+name: "DeviceInfoCard",
+dicts: ['sys_operate_flag','sys_msg_type','sys_send_status','device_type'],
+
 props: {
   value: {
     type: Number,

@@ -46,8 +46,8 @@
             </el-card>
           </el-col>
           <el-col :span="6">
-            <el-card shadow="hover" class="card-item card-item-click" @click.native="goOrgUnHandleEvent">
-              机构设备消息（未处理）
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goOrgUnHandleEvent()">
+              机构设备消息
               <br>
               {{ orgUnHandleEventCount }}条
             </el-card>
@@ -136,7 +136,17 @@ export default {
       this.$router.push({path: '/org/deviceGroupArrangeUser'})
     },
     goOrgUnHandleEvent() {
-
+      getUserProfile().then(user => {
+        this.currentOrgId = user.data.orgId;
+        // if (user.data.orgId == undefined) {
+        //   this.orgUnHandleEventCount = 0
+        // } else {
+        //   orgUnHandleEventCount(user.data.orgId).then(response => this.orgUnHandleEventCount = response.data)
+        // }
+        console.log(this.currentOrgId+"=====================")
+      });
+      console.log(this.currentOrgId+"=====================")
+      this.$router.push({path: '/org/orgDeviceEvents', query: {orgId: this.currentOrgId, operateFlag: 0}})
     }
   },
 };
