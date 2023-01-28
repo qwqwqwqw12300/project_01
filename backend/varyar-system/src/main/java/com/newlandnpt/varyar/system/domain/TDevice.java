@@ -125,12 +125,23 @@ public class TDevice extends BaseEntity
     /**设备实时位置*/
     @Transient
     private String nowLoacation;
+    /**电子围栏设备数据*/
+    @Transient
+    private String deviceFences;
+
+    public String getDeviceFences() {
+        return deviceFences;
+    }
+
+    public void setDeviceFences(String deviceFences) {
+        this.deviceFences = deviceFences;
+    }
 
     public String getNowLoacation() {
         //经 度
-        String longitude ="213123213992.2132132";
+        String longitude ="119.42178";
         //纬度
-        String latitude ="10002932931.2123213";
+        String latitude ="26.02571";
         //地址
         String address = "马尾区儒江西路新大陆园区";
         Map<String,String > map = new HashMap<String,String>();

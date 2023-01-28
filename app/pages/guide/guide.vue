@@ -16,8 +16,7 @@
 		<button @click="getDemo">get请求测试</button>
 		<button @click="postDemo">post请求测试</button>
 		<button @click="getToken">token获取</button>
-
-
+		<button @click="goExt">设备连接</button>
 	</view>
 </template>
 <script>
@@ -92,6 +91,12 @@
 
 			getToken() {
 				const info = vpsdk.getToken()
+			},
+
+			goExt() {
+				uni.navigateTo({
+					url: '/pages/guide/ext'
+				})
 			}
 		},
 	}

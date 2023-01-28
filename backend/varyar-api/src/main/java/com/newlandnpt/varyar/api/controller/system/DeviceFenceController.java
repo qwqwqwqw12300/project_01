@@ -81,6 +81,9 @@ public class DeviceFenceController extends BaseController
         }
         //获取设备id
         TDevice tdevice =  iDeviceService.selectDeviceByDeviceId(Long.valueOf(tDeviceFence.getDeviceId()));
+        if(tdevice==null){
+            throw new ServiceException("无法找到设备信息！");
+        }
         if (!tdevice.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
             throw new ServiceException("无权限设置本设备！");
         }
