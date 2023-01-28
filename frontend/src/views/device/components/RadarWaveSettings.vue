@@ -141,7 +141,7 @@
                 <water-fall v-model="settings.roomZones" :column-number="1">
                   <template slot-scope="{item,rowIndex}">
                     <el-card style="margin-bottom: 5px" @click.native="selectZones(rowIndex)">
-                      <el-row>
+                      <el-row :gutter="10">
                         <el-col :span="16">
                           <el-input v-model="item.name" placeholder="子区域名称" clearable></el-input>
                         </el-col>
@@ -245,9 +245,9 @@
                 </el-row>
                 <el-row type="flex" justify="center">
                   <el-col :span="24">
-                    <el-form-item label="结束监控时间" porp="startTime" >
+                    <el-form-item label="结束监控时间" porp="endTime" >
                       <el-date-picker
-                        v-model="roomZone.startTime"
+                        v-model="roomZone.endTime"
                         type="datetime"
                         clearable
                         value-rmat="timestamp"
@@ -255,6 +255,42 @@
                       </el-date-picker>
                     </el-form-item>
                   </el-col>
+                </el-row>
+                <el-row type="flex" justify="center">
+                  <el-col :span="24">
+                    <el-form-item label="进入监控区域超时报警时间" porp="inMonitorFlag" >
+                      <el-row>
+                        <el-col :span="4">
+                          <el-checkbox v-model="roomZone.inMonitorFlag" true-label="0" false-label="1" clearable></el-checkbox>
+                        </el-col>
+                        <el-col :span="20">
+                          <el-select v-model="roomZone.entryTime">
+                            <el-option label="5分钟" :value="5*60"></el-option>
+                            <el-option label="10分钟" :value="10*60"></el-option>
+                            <el-option label="15分钟" :value="15*60"></el-option>
+                          </el-select>
+                        </el-col>
+                      </el-row>
+                      </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row type="flex" justify="center">
+                  <el-col :span="24">
+                    <el-form-item label="离开监控区域超时报警时间" porp="outMonitorFlag" >
+                      <el-row>
+                        <el-col :span="4">
+                          <el-checkbox v-model="roomZone.outMonitorFlag" true-label="0" false-label="1" clearable></el-checkbox>
+                        </el-col>
+                        <el-col :span="20">
+                          <el-select v-model="roomZone.departureTime">
+                            <el-option label="5分钟" :value="5*60"></el-option>
+                            <el-option label="10分钟" :value="10*60"></el-option>
+                            <el-option label="15分钟" :value="15*60"></el-option>
+                          </el-select>
+                        </el-col>
+                      </el-row>
+                      </el-form-item>
+                    </el-col>
                 </el-row>
 
               </el-form>
