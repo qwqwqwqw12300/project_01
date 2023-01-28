@@ -286,7 +286,7 @@ export default {
     /** 查询消息列表 */
     getList() {
       this.loading = true;
-      listMsg(this.queryParams).then(response => {
+      listMsg(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
         this.msgList = response.rows;
         this.total = response.total;
         this.loading = false;

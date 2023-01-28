@@ -130,6 +130,6 @@ public interface TEventMapper
      * @param eventIds
      * @return
      */
-    public int dealNotMemberEvents(@Param("eventIds") Long[] eventIds);
+    public int dealNotMemberEvents(@Param("eventIds") Long[] eventIds,@Param("operatorId") Long operatorId,@Param("operatorType") String operatorType);
 
 }

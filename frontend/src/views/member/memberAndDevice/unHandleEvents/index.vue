@@ -31,13 +31,21 @@
         </el-form-item>
 
         <el-form-item label="重要级别" prop="level">
-          <el-input
-            v-model="queryParams.level"
-            placeholder="请输入级别"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
+          <el-select
+              v-model="queryParams.level"
+              placeholder="重要级别"
+              clearable
+              style="width: 240px"
+            >
+              <el-option
+                v-for="dict in dict.type.event_level"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
         </el-form-item>
+
 <!-- 待调整 -->
         <el-form-item label="设备名称" prop="deviceName">
           <el-input
@@ -105,7 +113,7 @@
             type="primary"
             plain
             icon="el-icon-edit"
-            size="mini"
+            size="medium"
             :disabled="multiple"
             @click="handleAdd"
             v-hasPermi="['device:serveRecord:add']"
@@ -128,7 +136,12 @@
       <!-- 记录行点击事件 -->
       <el-table v-loading="loading" :data="eventList" @selection-change="handleSelectionChange" @row-click="cardDetails">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="重要级别" align="center" prop="level" />
+        <el-table-column label="重要级别" align="center" prop="level">
+          <template slot-scope="scope">
+          {{ eventLevelFormat(scope.row) }}
+          </template>
+        </el-table-column>	
+
         <el-table-column label="事件编号" align="center" prop="no" />
         <el-table-column label="事件内容" align="center" prop="content" />
         <el-table-column label="设备名称" align="center" prop="deviceName" />
@@ -149,7 +162,17 @@
           {{ operateFlagFormat(scope.row) }}
           </template>
         </el-table-column>
-        
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-info"
+              @click="handleView(scope.row) "
+              :style="{display: scope.row.eventId==''?'none':'' }"
+            >查看消息</el-button>     
+          </template>
+        </el-table-column>
       </el-table>
       
       <pagination
@@ -159,7 +182,7 @@
         :limit.sync="queryParams.pageSize"
         @pagination="getList"
       />
-  
+      <el-row><br><br></el-row>
       <!-- 会员基本信息嵌入 -->
      <el-row>
 		  <member-info-card :value="memberId"></member-info-card>
@@ -168,11 +191,51 @@
      <!-- 设备基本信息嵌入位置 -->
      <el-row>
       <device-info-card :value="deviceId"></device-info-card>
-		 </el-row>	  
+		 </el-row>	 
+     
+     <el-dialog :title="title" :visible.sync="msg" width="900px" append-to-body>
+        <el-table v-loading="loading" :data="msgList" @selection-change="handleMsgSelectionChange">
+          <!-- <el-table-column type="selection" width="60" align="center" /> -->
+          <el-table-column label="消息类型" align="center" prop="msgType" >
+            <template slot-scope="scope">
+              {{ msgTypeFormat(scope.row) }}
+              <!-- <span>{{ dict.type.sys_msg_type?.find(x=>x.value == scope.row.msgType)?.label }}</span> -->
+            </template>
+
+          </el-table-column>
+          <el-table-column label="消息内容" align="center" prop="content" />
+          <el-table-column label="操作人员" align="center" prop="operator" />
+          <el-table-column label="接收人员" align="center" prop="memberId" />
+          <el-table-column label="发送时间" align="center" prop="sendTime" width="180">
+            <template slot-scope="scope">
+              <span>{{ parseTime(scope.row.sendTime) }}</span>
+            </template>
+          </el-table-column>  
+      <el-table-column label="发送状态" align="center" prop="sendStatus">
+        <template slot-scope="scope">
+          {{ sendStatusFormat(scope.row) }}
+          <!-- <span>{{ dict.type.sys_msg_type?.find(x=>x.value == scope.row.msgType)?.label }}</span> -->
+        </template>
+      </el-table-column>
+
+      <el-table-column label="失败原因" align="center" prop="reason" />
+      </el-table>
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryMsgParams.pageNum"
+        :limit.sync="queryMsgParams.pageSize"
+        @pagination="getMsgList"
+      />
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
 
       <!-- 添加或修改事件对话框 -->
       <!-- 服务登记 -->
-      <el-dialog :title="title" :visible.sync="open" width="830px" append-to-body>
+      <el-dialog :title="title" :visible.sync="open" width="650px" append-to-body>
         <el-form ref="form" :model="form" :rules="rules" label-width="130px">
           <el-form-item label="紧急联系人电话:" prop="servedInfo">
           <el-radio-group v-model="form.servedInfo" size="medium">
@@ -214,9 +277,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="服务备注" prop="remark">
-            <el-input v-model="form.remark" placeholder=""/>
-            <!-- <editor v-model="form.remark" :min-height="180" /> -->
-
+            <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -233,12 +294,16 @@
   import {getMember} from "@/api/member/member";
   //服务登记操作
   import {addRecord} from "@/api/member/servedOprLog";
+  import { listMsg, getMsg} from "@/api/eventAndMessage/message";
+
   import MemberInfoCard from "@/views/member/components/MemberInfoCard";
   import DeviceInfoCard from "@/views/device/components/DeviceInfoCard";
 
   export default {
     name: "HandleEvents",
-    dicts: ['sys_operate_flag'],
+    dicts: ['sys_operate_flag','sys_operate_type','sys_msg_type','sys_send_status','device_type','event_level'],
+
+    
     // components: { Treeselect },
     components: { MemberInfoCard ,DeviceInfoCard},
 
@@ -267,6 +332,7 @@
         dateRange: [],
         // 是否显示弹出层
         open: false,
+        msg:false,
         // 查询参数
 
         member: undefined,
@@ -326,6 +392,16 @@
           operateFlag: null
 
         },
+
+         // 消息表格数据
+      msgList: [],
+        queryMsgParams: {
+           pageNum: 1,
+           pageSize: 20,
+           eventId: 0,
+        
+        },
+
         //卡片传值使用
         memberId: null,
         deviceId: null,
@@ -379,6 +455,20 @@
           this.loading = false;
         });
       },
+
+       /** 查询消息列表 */
+       getMsgList() {
+
+this.queryMsgParams.eventId= this.eventId
+
+listMsg(this.queryMsgParams).then(response => {
+  this.msgList = response.rows;
+  this.total = response.total;
+  // console.log(JSON.stringify(response) + ">>>>>" + ">>>>>>>" )
+});
+
+},
+
         initMember() {
         if (this.value != undefined)
           getMember(this.value).then(response => {
@@ -396,11 +486,37 @@
 
     },
      
+    // 消息类型字典翻译
+    msgTypeFormat(row, column) {
+      //return this.dict.type.sys_msg_type?.find(x=>x.value == row.msgType)?.label
+      return this.selectDictLabel(this.dict.type.sys_msg_type, row.msgType);
+    },
+
+    // 发送状态字典翻译
+    operateFlagFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.sys_operate_flag, row.operateFlag)
+    },
+
+    // 发送状态字典翻译
+    sendStatusFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.sys_send_status, row.sendStatus)
+    },
 
     // 处理标志字典翻译
       operateFlagFormat(row, column) {
       return this.selectDictLabel(this.dict.type.sys_operate_flag, row.operateFlag)
     },
+
+     // 操作类型字典翻译
+     operateTypeFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.sys_operate_type, row.operateType)
+    },
+
+    //事件级别字段翻译
+    eventLevelFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.event_level, row.level)
+    },		
+
       // 取消按钮
       cancel() {
         this.open = false;
@@ -409,6 +525,26 @@
       // 表单重置
       reset() {
         this.form = {
+          eventId: null,
+          no: null,
+          level: null,
+          content: null,
+          deviceId: null,
+          devicegroupId: null,
+          familyId: null,
+          deviceNo: null,
+          orgId: null,
+          orgName: null,
+          operateType: null,
+          memberId: null,
+          memberPhone: null,
+          memberName: null,
+          userId: null,
+          userName: null,
+          operateTime: null,
+          operateFlag: null,
+          createTime: null,
+          updateTime: null,
           servedType:0,
           servedInfo:null,
           deviceId:null,
@@ -442,20 +578,38 @@
         this.multiple = !selection.length
 
         this.form.deviceId = selection[0]?.deviceId
-        this.form.serveEvents =  selection.map(item => {
-          return {
-            eventId:item.eventId,
-          }
-        })
+        if(this.form.deviceId!= undefined){
+          this.form.serveEvents =  selection.map(item => {
+            return {
+              eventId:item.eventId,
+            }
+          })
 
 
-        //获取选中记录的会员id
-        this.form.memberId = selection[0]?.memberId
-           getMember(this.form.memberId).then(response => {
-        this.phoneOptions = response.data.contacts;
-      });
-
+          //获取选中记录的会员id
+          this.form.memberId = selection[0]?.memberId
+            getMember(this.form.memberId).then(response => {
+          this.phoneOptions = response.data.contacts;
+        });
+     }
       },
+
+       /** 查看按钮操作 */
+    handleView(row) {
+        //this.reset();
+      this.eventId = row.eventId 
+      //  console.log("eventId=============="+ this.eventId)
+       this.getMsgList();
+       this.msg = true;
+
+    },
+       // msgId多选框选中数据
+       handleMsgSelectionChange(selection) {
+      this.ids = selection.map(item => item.msgId)
+      this.single = selection.length!==1
+      this.multiple = !selection.length
+    },
+
       /** 新增按钮操作 */
       handleAdd(row) {
         // this.reset();

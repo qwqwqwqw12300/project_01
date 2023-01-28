@@ -1,7 +1,7 @@
 <!-- 添加联系人 -->
 <template>
 	<app-body>
-		<u-list height="720">
+		<u-list class="ui-body">
 			<u-list-item v-for="item in contactList" :key="item.memberContactsId">
 				<view class="ui-list">
 					<view class="ui-list-card">
@@ -189,6 +189,10 @@
 		.uni-select {
 			border: none;
 		}
+	}
+
+	.ui-body {
+		height: calc(100vh - 300rpx) !important;
 	}
 
 	.ui-list {

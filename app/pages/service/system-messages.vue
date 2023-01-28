@@ -31,7 +31,8 @@
 
 <script>
 	import {
-		GetSysNotice, postSetNoticeFlag,
+		GetSysNotice,
+		postSetNoticeFlag,
 	} from '@/common/http/api.js';
 	export default {
 		data() {
@@ -40,23 +41,29 @@
 			}
 		},
 		methods: {
-			details({noticeId, noticeContent}) {
-				postSetNoticeFlag({noticeId}).then(res => {
-					this.$store.commit('service/setReadInfo', noticeContent);
+			details({
+				noticeId,
+				noticeContent
+			}) {
+				postSetNoticeFlag({
+					noticeId
+				}).then(res => {
+					console.log(this.$store, 'ccc')
+					this.$store.commit('setReadInfo', noticeContent);
 					uni.navigateTo({
 						url: `/pages/service/message-details`
 					})
 				});
-			
+
 			},
-			initDatd() {
+			initData() {
 				GetSysNotice().then(res => {
 					this.messageList = res.rows
 				})
 			}
 		},
 		mounted() {
-			this.initDatd()
+			this.initData()
 		}
 	}
 </script>
@@ -84,8 +91,8 @@
 				width: 300rpx;
 				border-radius: 10rpx;
 				padding: 10rpx;
-				margin: 20rpx 0;
-				font-size: 20rpx;
+				margin: 16rpx 0;
+				font-size: 24rpx;
 				color: #fff;
 				background-color: rgba(0, 0, 0, 0.3);
 			}

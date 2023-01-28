@@ -3,8 +3,11 @@ package com.newlandnpt.varyar.web.controller.member;
 import java.util.List;
 
 import com.newlandnpt.varyar.common.annotation.Log;
+import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.enums.BusinessType;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TFamily;
+import com.newlandnpt.varyar.system.service.IDeviceService;
 import com.newlandnpt.varyar.system.service.IFamilyService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,9 @@ public class MemberController extends BaseController
     private IMemberService memberService;
     @Autowired
     private IFamilyService tFamilyService;
+
+    @Autowired
+    private IDeviceService deviceService;
 
     /**
      * 查询会员列表
@@ -57,6 +63,12 @@ public class MemberController extends BaseController
     {
         startPage();
         List<TFamily> list = tFamilyService.selectMembersFamilyList(memberId);
+        //List<TFamily> newlist = deviceService.loadingDeviceStauts(list);
+        for (TFamily family : list)
+        {
+            family.setDevices(deviceService.loadingDeviceStauts(family.getDevices()));
+        }
+
         return getDataTable(list);
     }
 

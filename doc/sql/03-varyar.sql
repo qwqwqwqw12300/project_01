@@ -221,6 +221,8 @@ create table t_event (
   user_id           bigint(20)                                comment '运营者id',
   user_name         varchar(50)                               comment '运营者姓名',
   operate_time       datetime                                 comment '操作时间',
+  operator_id       bigint(20)        default null            comment '操作人id',
+  operator_type       char(1)         default null            comment '操作人类型（0运营 1会员）',
   operate_flag        char(1)                                 comment '操作标志（0未处理 1已处理）',
   create_time       datetime                                  comment '创建时间',
   update_time       datetime                                  comment '更新时间',

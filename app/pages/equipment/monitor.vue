@@ -31,7 +31,7 @@
 			</view>
 		</view>
 		<view class="ui-btn">
-			<button>下一步</button>
+			<button @click="next">下一步</button>
 		</view>
 		<!-- 修改名称 -->
 		<u-popup :closeable="true" :round="10" :show="isEditShow" mode="center" @close="eidtClose">
@@ -54,6 +54,9 @@
 </template>
 
 <script>
+	import {
+		PostcreDevice
+	} from '../../common/http/api'
 	export default {
 		data() {
 			const deviceList = [{
@@ -118,7 +121,9 @@
 
 
 			},
-
+			eidtClose() {
+				this.isEditShow = false
+			},
 			/**
 			 * 添加设备
 			 */
@@ -282,7 +287,7 @@
 		padding: 53rpx 31rpx;
 
 		&.ui-change {
-			height: 400rpx;
+			height: 500rpx;
 
 			.ui-add-box {
 				border-bottom: 1px solid #e4e4e4;

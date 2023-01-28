@@ -75,3 +75,24 @@ insert 	into sys_dict_data values(48, 2,  '非共享',     '2',       'sys_share
 insert into sys_dict_type values(null, '操作类型', 'sys_operate_type',   '0', 'admin', sysdate(), '', null, '操作类型（0会员操作 1后台人工）');
 insert into sys_dict_data values(null, 1,  '会员操作',     '0',      'sys_operate_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:会员操作');
 insert into sys_dict_data values(null, 2,  '后台人工',     '1',      'sys_operate_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '1:后台人工');
+
+
+-- ----------------------------
+-- 服务处理方式（0电话通知 ）
+-- ----------------------------
+insert into sys_dict_type values(null, '服务处理方式', 'sys_served_type',   '0', 'admin', sysdate(), '', null, '服务处理方式（0电话通知 ）');
+insert into sys_dict_data values(null, 1,  '电话通知',     '0',      'sys_served_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:电话通知');
+
+-- ----------------------------
+-- 设备在线状态（0离线 1在线 ）
+-- ----------------------------
+insert into sys_dict_type values(null, '设备在线状态', 'sys_online_flag',   '0', 'admin', sysdate(), '', null, '设备在线状态（0离线 1在线 ）');
+insert into sys_dict_data values(null, 1,  '离线',     '0',      'sys_online_flag',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:离线');
+insert into sys_dict_data values(null, 2,  '在线',     '1',      'sys_online_flag',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '1:在线');
+
+-- ----------------------------
+-- 事件等级（normal普通 urgent紧急 ）
+-- ----------------------------
+insert into sys_dict_type values(null, '事件等级', 'event_level',   '0', 'admin', sysdate(), '', null, '事件等级（normal普通 urgent紧急 ）');
+insert into sys_dict_data values(null, 1,  '普通',     'normal',      'event_level',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, 'normal:普通');
+insert into sys_dict_data values(null, 2,  '紧急',     'urgent',      'event_level',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, 'urgent:紧急');

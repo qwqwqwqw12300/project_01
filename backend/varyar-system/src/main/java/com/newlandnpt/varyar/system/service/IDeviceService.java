@@ -182,5 +182,17 @@ public interface IDeviceService
      * @return
      */
     public int setSettings(Long deviceId, TDevice.DeviceSettings settings);
+    /**
+     * 加载设备组状态
+     * @param
+     * @return
+     */
+    public List<TDevice> loadingDeviceStauts(List<TDevice> devices);
+    /**
+     * 加载单设备状态
+     * @param
+     * @return
+     */
+    public TDevice loadingDeviceStauts(TDevice devices);
 
 }

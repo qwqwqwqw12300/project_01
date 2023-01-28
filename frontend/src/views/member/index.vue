@@ -100,7 +100,7 @@
           <span class="el-dialog__title">家庭组信息</span>
           </div>
           <water-fall :value="familyGroupList" :columnNumber="3">
-            <template slot-scope="{item}">        
+            <template slot-scope="{item}">
               <el-card shadow="hover" class="card-item card-item-click" >
                 家庭名称： {{ item.name }}
                 <br>
@@ -114,18 +114,19 @@
                         <!-- 点击事件添加，跳转单个设备消息查询页面 -->
                         <el-card shadow="hover" class="card-item card-item-cp" @click.native="goSingleDeviceRB(item.deviceId,item.memberId)">
                             <br>
-                            {{item.name}} 
+                            {{item.name}}
                             <br>
                             <!-- 待调整 -->
-                            {{item.location}} | {{"在线"}}
+                            
+                            {{item.nowLoacation}} | {{item.onlineFlag=='1'?"在线":"不在线"}}
                             <br>
                             <br>
                         </el-card>
                       </template>
-                    </water-fall>  
+                    </water-fall>
                 </el-card>
                 <br>
-            </template>        
+            </template>
           </water-fall>
         </el-card>
       </el-row>
@@ -182,7 +183,7 @@ export default {
         memberId: 0,
 
       },
-      memberId:0,     
+      memberId:0,
 
       // 表单参数
       form: {
@@ -222,9 +223,11 @@ export default {
         this.loading = false;
       });
     },
-
-    /** 查询家庭组列表 */
-
+    // getJSON(){
+    //   const result = JSON.parse(item.nowLoacation)
+    // //console.log("result:========="+result) 
+    // /** 查询家庭组列表 */
+    // },
     init(){
       this.familyGroupList = [];
       this.queryFamilyParams.memberId=this.memberId
@@ -249,7 +252,6 @@ export default {
     //待分配运营的会员
     goSingleDeviceRB(deviceId,memberId){
       this.$router.push({path:'/members/singleDeviceRB',query: {deviceId: deviceId, memberId: memberId}})
-      console.log("deviceId>>>>>>"+deviceId+"=======memberId"+memberId)
     },
 
     // 取消按钮
@@ -307,7 +309,7 @@ export default {
       });
     },
 
-    
+
 
     /** 查看按钮操作 */
     handleView(row) {
@@ -316,7 +318,7 @@ export default {
        this.title = "会员名下所有设备总览";
        this.memberId = row.memberId
       //家庭组信息查询触发
-       this.init();      
+       this.init();
     },
 
 
