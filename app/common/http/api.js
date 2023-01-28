@@ -279,4 +279,4 @@ export const PostRemRadarDevice = (params) => http.post('/api/roomZone/remRadarD
 /**
  * 获取子区域列表
  */
-export const GetRoomZoon = (params) => http.get('/api/roomZone/getRoomZoon', params);
+export const GetRoomZone = (params) => http.get('/api/roomZone/getRoomZoon', params);
