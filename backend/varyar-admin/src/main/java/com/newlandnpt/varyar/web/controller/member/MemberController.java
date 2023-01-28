@@ -3,7 +3,9 @@ package com.newlandnpt.varyar.web.controller.member;
 import java.util.List;
 
 import com.newlandnpt.varyar.common.annotation.Log;
+import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.enums.BusinessType;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TFamily;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import com.newlandnpt.varyar.system.service.IFamilyService;
@@ -62,6 +64,11 @@ public class MemberController extends BaseController
         startPage();
         List<TFamily> list = tFamilyService.selectMembersFamilyList(memberId);
         //List<TFamily> newlist = deviceService.loadingDeviceStauts(list);
+        for (TFamily family : list)
+        {
+            family.setDevices(deviceService.loadingDeviceStauts(family.getDevices()));
+        }
+
         return getDataTable(list);
     }
 
