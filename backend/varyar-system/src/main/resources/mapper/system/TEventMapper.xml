@@ -104,6 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
+        Order By eve.create_time desc
     </select>
     
     <select id="selectTEventByEventId" parameterType="Long" resultMap="TEventResult">
