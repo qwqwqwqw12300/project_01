@@ -90,6 +90,15 @@
 			}
 		},
 		{
+			"path": "pages/guide/ext",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+
+
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationStyle": "custom",
@@ -196,7 +205,7 @@
 					"titleNView": false
 				}
 			}
-		
+
 		},
 		{
 			"path": "pages/myself/agreement-info",
