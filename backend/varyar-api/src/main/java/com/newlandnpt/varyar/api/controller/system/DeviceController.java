@@ -102,19 +102,22 @@ public class DeviceController extends BaseController {
     public AjaxResult editDevice(
             @RequestBody @Validated DeviceRequest deviceRequest){
         AjaxResult ajax = AjaxResult.success();
-        if(checkInfo(deviceRequest,ajax) != null){
+        ajax  = checkInfo(deviceRequest,ajax);
+        if(ajax!= null){
             return ajax;
         }
+        ajax = AjaxResult.success();
         if (deviceRequest.getDeviceId().equals("")|| deviceRequest.getDeviceId()==null){
             return  error("设备id不能为空！");
         }
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
-        if(device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
-            return   error("非创建者无权限修改！");
-        }
         if (device==null){
             return  error("无法查找到设备信息！");
         }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限修改！");
+        }
+
         device.setName(deviceRequest.getDeviceName());
         device.setNo(deviceRequest.getDeviceNo());
         device.setType(deviceRequest.getDeviceType());
