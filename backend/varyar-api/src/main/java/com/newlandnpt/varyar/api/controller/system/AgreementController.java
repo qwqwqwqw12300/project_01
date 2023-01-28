@@ -30,7 +30,11 @@ public class AgreementController extends BaseController
         if (tAgreement.getType() ==null || tAgreement.getType().equals("")){
             return error("协议类型不能为空！");
         }
-        return success(agreementService.selectTAgreementByAgreementType(tAgreement.getType()));
+        tAgreement =agreementService.selectTAgreementByAgreementType(tAgreement.getType());
+        if (tAgreement ==null){
+            tAgreement = new TAgreement();
+        }
+        return success(tAgreement);
     }
 
     /**
