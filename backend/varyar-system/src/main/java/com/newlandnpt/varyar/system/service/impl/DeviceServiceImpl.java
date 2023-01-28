@@ -423,7 +423,7 @@ public class DeviceServiceImpl implements IDeviceService {
         {
             //Redis验证设备断网情况，无记录则确为断网
             String deviceNo = device.getNo();
-            if (!redisCache.hasKey(CacheConstants.DEVICE_ONLINE_FLAG_KEY + deviceNo)) {
+            if (!redisCache.hasKey(CacheConstants.DEVICE_STATE_KEY + deviceNo)) {
                 device.setOnlineFlag("0");
             }else {
                 device.setOnlineFlag("1");
@@ -437,7 +437,7 @@ public class DeviceServiceImpl implements IDeviceService {
     public TDevice loadingDeviceStauts(TDevice device) {
             //Redis验证设备在线离线状态
             String deviceNo = device.getNo();
-            if (!redisCache.hasKey(CacheConstants.DEVICE_ONLINE_FLAG_KEY + deviceNo)) {
+            if (!redisCache.hasKey(CacheConstants.DEVICE_STATE_KEY + deviceNo)) {
                 device.setOnlineFlag("0");
             }else {
                 device.setOnlineFlag("1");

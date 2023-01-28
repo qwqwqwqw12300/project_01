@@ -84,7 +84,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         for (StateVo stateVo : stateList) {
             //Redis验证设备断网情况，无记录则确为断网
             String deviceNo = stateVo.getDeviceId();
-            if (!redisCache.hasKey(CacheConstants.DEVICE_ONLINE_FLAG_KEY + deviceNo)) {
+            if (!redisCache.hasKey(CacheConstants.DEVICE_STATE_KEY + deviceNo)) {
                 TDevice device = deviceMapper.selectByDeviceNo(deviceNo);
                 discDevices.add(device);
             }
@@ -118,7 +118,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         List<String> discDevices = redisCache.getCacheList(CacheConstants.DEVICE_DISCONNECTION);
         List<String> reconnects = new ArrayList<>();
         for (String devId : discDevices) {
-            if (redisCache.hasKey(CacheConstants.DEVICE_ONLINE_FLAG_KEY + devId)) {
+            if (redisCache.hasKey(CacheConstants.DEVICE_STATE_KEY + devId)) {
                 reconnects.add(devId);
             }
         }
