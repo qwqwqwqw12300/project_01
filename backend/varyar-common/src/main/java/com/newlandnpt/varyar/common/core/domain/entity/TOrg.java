@@ -222,7 +222,6 @@ public class TOrg extends BaseEntity {
         this.attendantName1 = attendantName1;
     }
 
-    @NotBlank(message = "第二服务人员姓名不能为空")
     @Size(min = 0, max = 50, message = "第二服务人员姓名长度不能超过50个字符")
     public String getAttendantName2() {
         return attendantName2;
@@ -232,7 +231,6 @@ public class TOrg extends BaseEntity {
         this.attendantName2 = attendantName2;
     }
 
-    @NotBlank(message = "第三服务人员姓名不能为空")
     @Size(min = 0, max = 50, message = "第三服务人员姓名长度不能超过50个字符")
     public String getAttendantName3() {
         return attendantName3;
@@ -248,13 +246,11 @@ public class TOrg extends BaseEntity {
         return phone1;
     }
 
-    @NotBlank(message = "第二服务人员号码不能为空")
     @Size(min = 0, max = 11, message = "第二服务人员号码长度不能超过11个字符")
     public String getPhone2() {
         return phone2;
     }
 
-    @NotBlank(message = "第三服务人员号码不能为空")
     @Size(min = 0, max = 11, message = "第三服务人员号码长度不能超过11个字符")
     public String getPhone3() {
         return phone3;
