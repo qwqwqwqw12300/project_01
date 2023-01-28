@@ -206,8 +206,6 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         } else {
             log.info(">>>>> 设备{}会员id和设备组id都为空，事件忽略运营人员信息录入", device.getNo());
         }
-        event.setUserId(device.getDeviceId());
-        event.setUserName(device.getName());
         event.setCreateTime(new Date());
         tEventMapper.insertTEvent(event);
         log.info("新增事件成功：" + content);
