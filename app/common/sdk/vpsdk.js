@@ -16,14 +16,64 @@ class Vpsdk {
 	/**推送模块**/
 	vpModule;
 
+	connentMap = {
+		1: '正在建立与设备的连接',
+		2: '设备连接到Wi-Fi',
+		3: '将设备连接到您的帐户',
+		4: '云配对',
+		5: '配对完成',
+		6: '重新启动设备',
+		998: '正在检查更新',
+		999: '正在更新设备',
+		7: '正在将设备重新启动到工厂',
+		8: '设备正在扫描Wifi网络'
+	}
+
 	constructor() {
 		if (isApp()) this.vpModule = uni.requireNativePlugin("VPairSDKModule");
 
 	}
 
-	init() {
+	async init(cb) {
 		// this.vpModule.initSDK();
-		this.getToken();
+
+		this.sdkModule.startPairing(userId, token);
+		// 配网成功监听
+		plus.globalEvent.addEventListener('onPairFinish', function(e) {
+			cb({
+				type: e.isSuccess ? 'success' : 'fail',
+				data: e.deviceId
+			});
+		});
+
+		// 配网事件监听
+		plus.globalEvent.addEventListener('onPairEvent', function(e) {
+			cb({
+				type: 'event',
+				data: this.connentMap[e.eventType] || '处理中...'
+			});
+		});
+
+		// 选择wifi监听
+		plus.globalEvent.addEventListener('onWifiShouldSelect', function(e) {
+			console.log(e.wifiList);
+			cb({
+				type: 'wifi',
+				data: e.wifiList
+			});
+			sdkModule.connectWifi(ssid, bssid, rssi, password);
+		});
+
+		// 开始连接
+		this.vpModule.startPairing(uid, token); // 开始配对
+
+	}
+
+	/**
+	 * 连接wifi
+	 */
+	connectWifi(ssid, bssid, rssi, password) {
+		sdkModule.connectWifi(ssid, bssid, rssi, password);
 	}
 
 	getToken() {
@@ -44,7 +94,7 @@ class Vpsdk {
 				},
 				withCredentials: true,
 				success: result => {
-					console.log(`Basic ${btoa(email + ':' + password)}`, '12121');
+					resolve(result);
 					console.log(result, 'getToken');
 				},
 				fail: err => {

@@ -14,19 +14,20 @@
 				<u-divider text="100米"></u-divider>
 				<u-divider text="100米"></u-divider> -->
 				<movable-area>
-					<movable-view v-for="(item, index) of list" :key="index" :x="item.x" :y="item.y"
-						:style="{ height: item.height + 'rpx', width: item.width + 'rpx' }" direction="all" @change="
+					<movable-view v-for="(item, index) of roomZones" :key="index" :x="item.x" :y="item.y"
+						:style="{ height: item.height * 10 + 'rpx', width: item.width * 10 + 'rpx' }" direction="all"
+						@change="
 							e => {
 								onChange(e, index);
 							}
 						">
 						<view class="ui-device" v-if="item.zoneName === '设备'">
-							<text>设备</text>
+							<text class="ui-zone-name">设备</text>
 							<text>x：{{ item.old.x }}</text>
 							<text>y：{{ item.old.y }}</text>
 						</view>
 						<template v-else>
-							<text>{{ item.zoneName || '未命名' }}</text>
+							<text class="ui-zone-name">{{ item.zoneName || '未命名' }}</text>
 							<text>x：{{ item.old.x }}</text>
 							<text>y：{{ item.old.y }}</text>
 						</template>
@@ -50,14 +51,22 @@
 							<text>长</text>
 							<view class="ui-input">
 								<u-input type="number" v-model="zoneInfo.height" placeholder="请输入长度" :border="'none'"
-									fontSize="28rpx"></u-input>
+									fontSize="28rpx">
+									<template slot="suffix">
+										<text>米</text>
+									</template>
+								</u-input>
 							</view>
 						</view>
 						<view>
 							<text>宽</text>
 							<view class="ui-input">
 								<u-input type="number" v-model="zoneInfo.width" placeholder="请输入宽度" :border="'none'"
-									fontSize="28rpx"></u-input>
+									fontSize="28rpx">
+									<template slot="suffix">
+										<text>米</text>
+									</template>
+								</u-input>
 							</view>
 						</view>
 					</view>
@@ -65,64 +74,68 @@
 				<view class="ui-add-btn"><button class="wd-sms" @click="addZone">添加子区域</button></view>
 			</view>
 			<view class="ui-list">
-				<template v-for="(item, index) of list">
+				<template v-for="(item, index) of roomZones">
 					<button :class="activeZone === index ? 'active' : ''" @click="acitve(index)" :key="index"
 						v-if="index!==0">{{item.zoneName || '未命名'}}</button>
 				</template>
 
 			</view>
 			<!-- 区域设置 -->
-			<view class="ui-setting" :key="activeZone" v-if="list.length > 1">
+			<view class="ui-setting" :key="activeZone" v-if="roomZones.length > 1">
 				<view>
 					<u-checkbox-group @change="monitorChange($event, 'isFall')" placement="column">
-						<u-checkbox activeColor="#1aa208" :checked="list[activeZone].isFall"
-							:customStyle="{ marginBottom: '8px' }" label="跌倒监控" name="isFall"></u-checkbox>
+						<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].zoneType === 1"
+							:customStyle="{ marginBottom: '8px' }" label="私人区域" name="zoneType"></u-checkbox>
 					</u-checkbox-group>
-					<u-checkbox-group @change="monitorChange($event, 'isAccess')" placement="column">
+					<u-checkbox-group @change="monitorChange($event, 'isFall')" placement="column">
+						<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].fallFlag === 1"
+							:customStyle="{ marginBottom: '8px' }" label="跌倒监控" name="fallFlag"></u-checkbox>
+					</u-checkbox-group>
+					<!-- <u-checkbox-group @change="monitorChange($event, 'isAccess')" placement="column">
 						<u-checkbox activeColor="#1aa208" :checked="list[activeZone].isAccess"
 							:customStyle="{ marginBottom: '8px' }" label="进出监控" name="isAccess"></u-checkbox>
-					</u-checkbox-group>
+					</u-checkbox-group> -->
 
 					<view class="ui-date-list">
 						<text>开始监控时间</text>
 						<view class="ui-date active" @click="openDate('startTime')">
-							<text>{{list[activeZone].startTime || '未设置'}}</text>
+							<text>{{roomZones[activeZone].startTime || '未设置'}}</text>
 							<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
 						</view>
 					</view>
 					<view class="ui-date-list ui-margin">
 						<text>结束监控时间</text>
 						<view class="ui-date active" @click="openDate('endTime')">
-							<text>{{list[activeZone].endTime || '未设置'}}</text>
+							<text>{{roomZones[activeZone].endTime || '未设置'}}</text>
 							<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
 						</view>
 					</view>
 					<view class="ui-timing">
 						<view class="ui-timing-pos">
-							<u-checkbox-group placement="column" @change="monitorChange($event, 'isEntry')">
-								<u-checkbox activeColor="#1aa208" :checked="list[activeZone].isEntry"
-									:customStyle="{ marginBottom: '40rpx' }" label="进入监控区域超时报警时间" name="isEntry">
+							<u-checkbox-group placement="column" @change="monitorChange($event, 'inFlag')">
+								<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].inFlag == 1"
+									:customStyle="{ marginBottom: '40rpx' }" label="进入监控区域超时报警时间" name="inFlag">
 								</u-checkbox>
 							</u-checkbox-group>
-							<u-checkbox-group placement="column" @change="monitorChange($event, 'isDeparture')">
-								<u-checkbox activeColor="#1aa208" :checked="list[activeZone].isDeparture"
-									label="离开监控区域超时报警时间" name="isDeparture"></u-checkbox>
+							<u-checkbox-group placement="column" @change="monitorChange($event, 'outFlag')">
+								<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].outFlag == 1"
+									label="离开监控区域超时报警时间" name="outFlag"></u-checkbox>
 							</u-checkbox-group>
 						</view>
 						<view class="ui-timing-pos">
 							<view class="ui-timing-active active" @click="openDate('entryTime')">
-								<text>{{list[activeZone].entryTime || '请选择'}}</text>
+								<text>{{roomZones[activeZone].entryTime || '请选择'}}</text>
 								<u-icon name="arrow-down" size="28rpx"></u-icon>
 							</view>
 							<view class="ui-timing-active active" @click="openDate('departureTime')">
-								<text>{{list[activeZone].departureTime || '请选择'}}</text>
+								<text>{{roomZones[activeZone].departureTime || '请选择'}}</text>
 								<u-icon name="arrow-down" size="28rpx"></u-icon>
 							</view>
 						</view>
 					</view>
 					<view class="ui-setting-btn wd-btn-gloup">
-						<button>保存</button>
-						<button>删除</button>
+						<button @click="radarDevice">保存</button>
+						<button @click="deleteZone">删除</button>
 					</view>
 				</view>
 			</view>
@@ -141,13 +154,14 @@
 		mapState
 	} from 'vuex';
 	import {
-		GetRoomZoon,
-		PostRoomList
+		GetRoomZone,
+		PostRoomList,
+		PostRadarDevice
 	} from '../../common/http/api';
 
 	/**监控区域**/
 	const ZONE = {
-		/**房间id**/
+		/**区域id**/
 		roomZoneId: '',
 		/**设备id**/
 		deviceId: '',
@@ -156,15 +170,21 @@
 		/**区域名称**/
 		zoneName: '',
 		/*监控类型 0-监控区域  1-私人区域**/
-		zoneType: '',
+		zoneType: 0,
 		/**跌倒监控**/
 		fallFlag: 0,
-		x1: '',
-		x2: '',
-		y1: '',
-		y2: '',
-		z1: '',
-		z2: '',
+		x1: 0,
+		x2: 0,
+		y1: 0,
+		y2: 0,
+		z1: 100,
+		z2: 100,
+		old: {
+			x: 0,
+			y: 0,
+		},
+		x: 0,
+		y: 0,
 		/**进入报警区域时间**/
 		entryTime: '',
 		/**离开报警区域时间**/
@@ -174,26 +194,14 @@
 		/**结束监控时间**/
 		endTime: '',
 		/**进入监控区域报警**/
-		inFlag: '',
+		inFlag: 0,
 		/**离开监控区域报警**/
-		outFlag: ''
+		outFlag: 0
 	};
 	export default {
 		data() {
 			return {
 				zoneInfo: {},
-				list: [{
-					zoneName: '设备',
-					x: 120,
-					y: 100,
-					z: 0,
-					scale: 2,
-					old: {
-						x: 0,
-						y: 0,
-						scale: 2
-					},
-				}],
 				checkboxValue1: [],
 				range: [{
 						value: '0',
@@ -212,27 +220,12 @@
 				value: null,
 				/**选择的子区域**/
 				activeZone: 1,
-				/**添加参数**/
-				addForm: {
-					roomZoneId: '',
-					roomId: '',
-					zoneName: '',
-					zoneType: '',
-					x1: '',
-					x2: '',
-					y1: '',
-					y2: '',
-					z1: '',
-					z2: '',
-					entryTime: '',
-					departureTime: '',
-					startTime: '',
-					endTime: '',
-					inFlag: '0',
-					outMonitorFlagt: '0',
-
-				},
-				roomZooes: []
+				roomZones: [],
+				/**设备位置**/
+				devices: {
+					x: 0,
+					y: 0
+				}
 			};
 		},
 		computed: {
@@ -243,18 +236,22 @@
 		onLoad() {
 			Promise.all([
 				this.getRoomInfo(),
-				this.getRoomZoon()
+				this.getRoomZone()
 			]);
-
 		},
 		methods: {
 			/**
 			 * 添加区域
 			 */
 			addZone() {
-				// this.list.push();
+				// this.roomZones.push();
 				// this.zoneInfo = assignDeep({}, ZONE);
-				this.list.push(assignDeep({}, ZONE));
+				this.roomZones.push(assignDeep({}, ZONE, this.zoneInfo, {
+					roomId: this.deviceInfo.roomId,
+					deviceId: this.deviceInfo.deviceId
+				}));
+				this.radarDevice().then(r => r, err => this.roomZones.pop());
+
 			},
 			/**
 			 * 区域修改
@@ -262,8 +259,8 @@
 			 * @param {string} 下标 
 			 */
 			onChange: function(e, index) {
-				this.list[index].old.x = e.detail.x;
-				this.list[index].old.y = e.detail.y;
+				this.roomZones[index].old.x = e.detail.x;
+				this.roomZones[index].old.y = e.detail.y;
 			},
 			/**
 			 * 选择子区域
@@ -273,14 +270,14 @@
 				this.activeZone = idx;
 			},
 			del() {
-				this.list.pop();
+				this.roomZones.pop();
 			},
 
 			/**
 			 * 监控区域修改
 			 */
 			monitorChange([active], type) {
-				this.list[this.activeZone][type] = !!active;
+				this.roomZones[this.activeZone][type] = !!active;
 			},
 			/**
 			 * 开启选择时间
@@ -306,7 +303,7 @@
 			dateConfirm({
 				value
 			}) {
-				this.list[this.activeZone][this.dateHandle.type] = (typeof value === 'number') ? uni.$u.date(value,
+				this.roomZones[this.activeZone][this.dateHandle.type] = (typeof value === 'number') ? uni.$u.date(value,
 					'yyyy-mm-dd hh:MM:ss') : value;
 				this.dateHandle.show = false;
 			},
@@ -314,13 +311,30 @@
 			/**
 			 * 创建/修改设备
 			 */
-			radarDevice(id = '') {
-				return new Promise(resolve => {
-					PostRadarDevice({
-
-					}).then(res => {
-
-					})
+			radarDevice() {
+				const x = this.roomZones[0].x1,
+					y = this.roomZones[0].y1;
+				const payload = this.roomZones.map(ele => {
+					const {
+						old,
+						width,
+						height
+					} = ele;
+					return {
+						...ele,
+						x2: old.x - x,
+						x1: old.x - x - width,
+						y2: old.y - y,
+						y1: old.y - y - height,
+					}
+				});
+				delete payload.old;
+				delete payload.x;
+				delete payload.y;
+				return new Promise((resolve, reject) => {
+					PostRadarDevice(payload).then(res => {
+						resolve();
+					}, error => reject());
 				});
 			},
 
@@ -343,20 +357,56 @@
 			/**
 			 * 获取子区域列表
 			 */
-			getRoomZoon() {
-				return new Promise(resolove => {
-					GetRoomZoon({
+			getRoomZone() {
+				return new Promise(async resolve => {
+					const {
+						rows = []
+					} = GetRoomZone({
 						deviceId: this.deviceInfo.deviceId
-					}).then(res => {
-						this.roomZooes = res.rows;
-						resolove(res);
-
 					});
+					if (!rows.length) {
+						rows.push(assignDeep({}, ZONE, {
+							zoneName: '设备',
+							roomId: this.deviceInfo.roomId,
+							deviceId: this.deviceInfo.deviceId
+						}))
+					}
+					const x = rows[0].x1,
+						y = rows[0].y1;
+					rows.forEach((ele, idx) => {
+						if (idx !== 0) {
+							const {
+								x1 = 0, x2 = 0, y1 = 0, y2 = 0
+							} = ele;
+							Object.assign(ele, {
+								height: y1 - y2,
+								width: x1 - x2,
+								x: (x1 + x2) / 2 + x,
+								y: (y1 + y2) / 2 + y,
+								old: {
+									x: (x1 + x2) / 2 + x,
+									y: (y1 + y2) / 2 + y,
+								}
+							});
+						}
+					});
+					this.roomZones = rows;
+					resolve(rows);
 				})
 			},
-
-
-
+			/**
+			 * 删除子区域
+			 */
+			deleteZone() {
+				const {
+					roomZoneId
+				} = this.roomZones[this.activeZone];
+				PostRemRadarDevice({
+					roomZoneId
+				}).then(res => {
+					this.roomZones.splice(this.activeZone, 1);
+				})
+			}
 		}
 	};
 </script>
@@ -388,12 +438,18 @@
 			min-width: 100rpx;
 			background-color: #007aff;
 			color: #fff;
-			font-size: 10rpx;
+			font-size: 16rpx;
+
+			.ui-zone-name {
+				font-size: 20rpx;
+			}
 
 			.ui-device {
 				min-height: 120rpx;
 				min-width: 120rpx;
 				display: flex;
+				align-items: center;
+				justify-content: center;
 				flex-direction: column;
 				text-align: center;
 				background-color: #00eaff;
@@ -499,7 +555,7 @@
 				display: inline-flex;
 				justify-content: space-between;
 				align-items: center;
-				font-size: 20rpx;
+				font-size: 30rpx;
 				color: #414141;
 			}
 
@@ -547,7 +603,7 @@
 						display: flex;
 						justify-content: right;
 						align-items: center;
-						font-size: 20rpx;
+						font-size: 30rpx;
 						line-height: 50rpx;
 						height: 50rpx;
 						width: 170rpx;

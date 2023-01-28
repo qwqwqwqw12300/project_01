@@ -67,9 +67,11 @@ public class DeviceController extends BaseController {
     public AjaxResult createDevice(
             @RequestBody @Validated DeviceRequest deviceRequest){
         AjaxResult ajax = AjaxResult.success();
-        if(checkInfo(deviceRequest,ajax) != null){
+        ajax  = checkInfo(deviceRequest,ajax);
+        if(ajax!= null){
            return ajax;
         }
+        ajax = AjaxResult.success();
         TDevice device = new TDevice();
         if (deviceRequest.getDeviceName().equals("")|| deviceRequest.getDeviceName()==null){
             deviceRequest.setDeviceId(this.getUsername()+"的设备");
@@ -100,22 +102,20 @@ public class DeviceController extends BaseController {
     public AjaxResult editDevice(
             @RequestBody @Validated DeviceRequest deviceRequest){
         AjaxResult ajax = AjaxResult.success();
-        if(checkInfo(deviceRequest,ajax) != null){
-            return ajax;
-        }
         if (deviceRequest.getDeviceId().equals("")|| deviceRequest.getDeviceId()==null){
             return  error("设备id不能为空！");
         }
-        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
-        if(device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
-            return   error("非创建者无权限修改！");
+        if (deviceRequest.getDeviceName().equals("")|| deviceRequest.getDeviceName()==null){
+            return error("设备名称不能为空！");
         }
+        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
         if (device==null){
             return  error("无法查找到设备信息！");
         }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限修改！");
+        }
         device.setName(deviceRequest.getDeviceName());
-        device.setNo(deviceRequest.getDeviceNo());
-        device.setType(deviceRequest.getDeviceType());
         try {
             iDeviceService.updateDevice(device);
         } catch (Exception e){
@@ -129,11 +129,11 @@ public class DeviceController extends BaseController {
             return ajax;
         }
         if (deviceRequest.getDeviceType().equals("")|| deviceRequest.getDeviceType()==null){
-            ajax = AjaxResult.  error("设备类型不能为空！");
+            ajax = AjaxResult.error("设备类型不能为空！");
             return ajax;
         }
         if (deviceRequest.getDeviceNo().equals("")|| deviceRequest.getDeviceNo()==null){
-            ajax = AjaxResult. error("设备编号不能为空！");
+            ajax = AjaxResult.error("设备编号不能为空！");
             return ajax;
         }
         return null;
