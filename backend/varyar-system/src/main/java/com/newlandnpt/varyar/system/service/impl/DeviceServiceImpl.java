@@ -433,6 +433,18 @@ public class DeviceServiceImpl implements IDeviceService {
         return  devices;
     }
 
+    @Override
+    public TDevice loadingDeviceStauts(TDevice device) {
+            //Redis验证设备在线离线状态
+            String deviceNo = device.getNo();
+            if (!redisCache.hasKey(CacheConstants.DEVICE_ONLINE_FLAG_KEY + deviceNo)) {
+                device.setOnlineFlag("0");
+            }else {
+                device.setOnlineFlag("1");
+            }
+        return  device;
+    }
+
     /**
      * 重置单个设备缓存
      */

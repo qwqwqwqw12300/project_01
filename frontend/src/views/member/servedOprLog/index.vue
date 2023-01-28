@@ -44,14 +44,29 @@
               placeholder="结束查询时间"
             ></el-date-picker>
 </el-form-item>    
-      <el-form-item label="处理方式" prop="servedType">
+      <!-- <el-form-item label="处理方式" prop="servedType">
         <el-input
           v-model="queryParams.servedType"
           placeholder="处理方式"
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
+      </el-form-item> -->
+      <el-form-item label="处理方式" prop="servedType">
+          <el-select
+              v-model="queryParams.servedType"
+              placeholder="处理方式"
+              clearable
+              style="width: 240px"
+            >
+              <el-option
+                v-for="dict in dict.type.sys_served_type"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
+        </el-form-item>
       <el-form-item label="设备类型" prop="device.type">
             <el-select
               v-model="queryParams.device.type"
@@ -113,7 +128,12 @@
 
       <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="处理方式" align="center" prop="servedType" />
+        <!-- <el-table-column label="处理方式" align="center" prop="servedType" /> -->
+        <el-table-column label="处理方式" align="center" prop="servedType">
+          <template slot-scope="scope">
+          {{ servedTypeFormat(scope.row) }}
+          </template>
+        </el-table-column>	
         <el-table-column label="处理时间" align="center" prop="createTime" />
         <el-table-column label="服务人员" align="center" prop="servedUser.name" />
         <el-table-column label="服务人员手机号" align="center" prop="servedUser.mobilePhone" />
@@ -162,7 +182,7 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Record",
-  dicts: ['sys_device_status','device_type'],
+  dicts: ['sys_device_status','device_type','sys_served_type'],
   components: { Treeselect },
 
   data() {
@@ -278,6 +298,11 @@ export default {
     deviceStatusFormat(row, column) {
       return this.selectDictLabel(this.dict.type.sys_device_status, row.status)
     },
+
+    //处理方式字段翻译
+    servedTypeFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.sys_served_type, row.servedType)
+    },		
 
     // 取消按钮
     cancel() {

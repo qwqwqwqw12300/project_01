@@ -69,7 +69,10 @@ public class DeviceController extends BaseController
     @GetMapping(value = "/{deviceId}")
     public AjaxResult getInfo(@PathVariable("deviceId") Long deviceId)
     {
-        return success(tDeviceService.selectDeviceByDeviceId(deviceId));
+        //return success(tDeviceService.selectDeviceByDeviceId(deviceId));
+        TDevice device =tDeviceService.selectDeviceByDeviceId(deviceId);
+        TDevice devices = tDeviceService.loadingDeviceStauts(device);
+        return success(devices);
     }
 
     /**
