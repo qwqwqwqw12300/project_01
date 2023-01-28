@@ -102,13 +102,11 @@ public class DeviceController extends BaseController {
     public AjaxResult editDevice(
             @RequestBody @Validated DeviceRequest deviceRequest){
         AjaxResult ajax = AjaxResult.success();
-        ajax  = checkInfo(deviceRequest,ajax);
-        if(ajax!= null){
-            return ajax;
-        }
-        ajax = AjaxResult.success();
         if (deviceRequest.getDeviceId().equals("")|| deviceRequest.getDeviceId()==null){
             return  error("设备id不能为空！");
+        }
+        if (deviceRequest.getDeviceName().equals("")|| deviceRequest.getDeviceName()==null){
+            return error("设备名称不能为空！");
         }
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
         if (device==null){
@@ -117,10 +115,7 @@ public class DeviceController extends BaseController {
         if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
             return  error("非创建者无权限修改！");
         }
-
         device.setName(deviceRequest.getDeviceName());
-        device.setNo(deviceRequest.getDeviceNo());
-        device.setType(deviceRequest.getDeviceType());
         try {
             iDeviceService.updateDevice(device);
         } catch (Exception e){
