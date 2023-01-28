@@ -53,6 +53,12 @@
             <if test="sendTime != null "> and m.send_time = #{sendTime}</if>
             <if test="startDate != null "> and m.create_time <![CDATA[>=]]> #{startDate}</if>
             <if test="endDate != null "> and m.create_time  <![CDATA[<=]]> #{endDate}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(m.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(m.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>

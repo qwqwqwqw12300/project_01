@@ -181,7 +181,8 @@
               size="mini"
               type="text"
               icon="el-icon-info"
-              @click="handleView(scope.row)"
+              @click="handleView(scope.row) "
+              :style="{display: scope.row.eventId==''?'none':'' }"
             >查看消息</el-button>     
           </template>
         </el-table-column>
@@ -286,7 +287,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="服务备注" prop="remark">
-            <el-input v-model="form.remark" type="textarea" placeholder=""></el-input>
+            <el-input v-model="form.remark" type="textarea" placeholder=""  style="width: 500px"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -358,6 +359,7 @@
         // 是否显示弹出层
         open: false,
         server:false,
+        is_view:false,
         // 查询参数
         queryParams: {
           pageNum: 1,
@@ -419,7 +421,9 @@
       this.currentMemberId = this.$route.query.memberId==undefined?undefined:Number(this.$route.query.memberId) 
       // console.log(this.currentDeviceId + "+++++++" + this.currentMemberId)
       //this.getList();
+      this.is_view = false;
       this.resetQuery();
+      
 
       // this.getDeptTree();
   },
@@ -457,7 +461,7 @@
       /** 查询事件列表 */
       getList() {
         this.loading = true;
-        listEvent(this.queryParams, this.dateRange).then(response => {
+        listEvent(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
           this.eventList = response.rows;
           this.total = response.total;
           this.loading = false;

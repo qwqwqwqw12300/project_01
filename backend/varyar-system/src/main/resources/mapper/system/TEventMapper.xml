@@ -13,6 +13,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="devicegroupId"    column="devicegroup_id"    />
         <result property="familyId"    column="family_id"    />
         <result property="deviceNo"    column="device_no"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="deviceType"    column="device_type"    />
         <result property="orgId"    column="org_id"    />
         <result property="orgName"    column="org_name"    />
         <result property="operateType"    column="operate_type"    />
@@ -38,29 +40,67 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTEventVo">
-        select event_id, no, level, content, device_id, devicegroup_id, family_id, device_no, org_id, org_name, operate_type, member_id, member_phone, member_name, user_id, user_name, operate_time, operate_flag, create_time, update_time from t_event eve
+                         SELECT
+                             eve.event_id,
+                             eve.no,
+                             eve.level,
+                             eve.content,
+                             eve.device_id,
+                             eve.devicegroup_id,
+                             eve.family_id,
+                             eve.device_no,
+                             dev.name as device_name,
+                             dev.type as device_type,
+                             eve.org_id,
+                             eve.org_name,
+                             eve.operate_type,
+                             eve.member_id,
+                             eve.member_phone,
+                             eve.member_name,
+                             eve.user_id,
+                             eve.user_name,
+                             eve.operate_time,
+                             eve.operate_flag,
+                             eve.create_time,
+                             eve.update_time
+                         FROM
+                             t_event eve
+                         left join t_device dev
+                         on eve.device_id = dev.device_id
     </sql>
+
 
     <select id="selectTEventList" parameterType="TEvent" resultMap="TEventResult">
         <include refid="selectTEventVo"/>
         <where>  
-            <if test="no != null  and no != ''"> and no = #{no}</if>
-            <if test="level != null  and level != ''"> and level = #{level}</if>
-            <if test="content != null  and content != ''"> and content = #{content}</if>
-            <if test="deviceId != null "> and device_id = #{deviceId}</if>
-            <if test="devicegroupId != null "> and devicegroup_id = #{devicegroupId}</if>
-            <if test="familyId != null "> and family_id = #{familyId}</if>
-            <if test="deviceNo != null  and deviceNo != ''"> and device_no = #{deviceNo}</if>
-            <if test="orgId != null "> and org_id = #{orgId}</if>
-            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
-            <if test="operateType != null  and operateType != ''"> and operate_type = #{operateType}</if>
-            <if test="memberId != null "> and member_id = #{memberId}</if>
-            <if test="memberPhone != null  and memberPhone != ''"> and member_phone = #{memberPhone}</if>
-            <if test="memberName != null  and memberName != ''"> and member_name like concat('%', #{memberName}, '%')</if>
-            <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
-            <if test="operateTime != null "> and operate_time = #{operateTime}</if>
-            <if test="operateFlag != null  and operateFlag != ''"> and operate_flag = #{operateFlag}</if>
+            <if test="no != null  and no != ''"> and eve.no = #{no}</if>
+            <if test="level != null  and level != ''"> and eve.level = #{level}</if>
+            <if test="content != null  and content != ''"> and eve.content = #{content}</if>
+            <if test="deviceId != null "> and eve.device_id = #{deviceId}</if>
+            <if test="devicegroupId != null "> and eve.devicegroup_id = #{devicegroupId}</if>
+            <if test="familyId != null "> and eve.family_id = #{familyId}</if>
+            <if test="deviceNo != null  and deviceNo != ''"> and eve.device_no like concat('%', #{deviceNo}, '%')</if>
+
+            <if test="deviceName != null  and deviceName != ''"> and dev.name like concat('%', #{deviceName}, '%') </if>
+
+            <if test="deviceType != null  and deviceType != ''"> and dev.type = #{deviceType}</if>
+
+            <if test="orgId != null "> and eve.org_id = #{orgId}</if>
+            <if test="orgName != null  and orgName != ''"> and eve.org_name like concat('%', #{orgName}, '%')</if>
+            <if test="operateType != null  and operateType != ''"> and eve.operate_type = #{operateType}</if>
+            <if test="memberId != null "> and eve.member_id = #{memberId}</if>
+            <if test="memberPhone != null  and memberPhone != ''"> and eve.member_phone = #{memberPhone}</if>
+            <if test="memberName != null  and memberName != ''"> and eve.member_name like concat('%', #{memberName}, '%')</if>
+            <if test="userId != null "> and eve.user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and eve.user_name like concat('%', #{userName}, '%')</if>
+<!--            <if test="operateTime != null "> and eve.operate_time = #{operateTime}</if>-->
+            <if test="operateFlag != null  and operateFlag != ''"> and eve.operate_flag = #{operateFlag}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(eve.operate_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(eve.operate_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>

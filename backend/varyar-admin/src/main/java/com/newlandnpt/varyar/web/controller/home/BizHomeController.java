@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.web.controller.home;
 
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import com.newlandnpt.varyar.system.service.IEventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 运营首页
@@ -25,6 +28,7 @@ public class BizHomeController extends BaseController {
     @Autowired
     private IEventService eventService;
 
+
     /**
      * 运营关心的设备列表
      *
@@ -32,7 +36,10 @@ public class BizHomeController extends BaseController {
      */
     @GetMapping("/device/care/list")
     public AjaxResult careDeviceList() {
-        return success(deviceService.selectBizCareDeviceList(getUserId()));
+        List<TDevice> list = deviceService.selectBizCareDeviceList(getUserId());
+        //return success(deviceService.selectBizCareDeviceList(getUserId()));
+        List<TDevice> newList =deviceService.loadingDeviceStauts(list); ;
+        return success(newList);
     }
 
     /**

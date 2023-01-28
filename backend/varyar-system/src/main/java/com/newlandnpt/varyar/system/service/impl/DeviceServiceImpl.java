@@ -410,6 +410,29 @@ public class DeviceServiceImpl implements IDeviceService {
         return 1;
     }
 
+
+
+    @Override
+    public List<TDevice> loadingDeviceStauts(List<TDevice> devices) {
+        //模拟测试数据
+        //redisCache.setCacheObject(CacheConstants.DEVICE_ONLINE_FLAG_KEY + "12305","online:1");
+        //redisCache.setCacheObject(CacheConstants.DEVICE_ONLINE_FLAG_KEY + "12306", "online:1");
+        //redisCache.setCacheObject(CacheConstants.DEVICE_ONLINE_FLAG_KEY + "201", "{"deviceNo":"203","online":"1"}");
+
+        for (TDevice device : devices)
+        {
+            //Redis验证设备断网情况，无记录则确为断网
+            String deviceNo = device.getNo();
+            if (!redisCache.hasKey(CacheConstants.DEVICE_ONLINE_FLAG_KEY + deviceNo)) {
+                device.setOnlineFlag("0");
+            }else {
+                device.setOnlineFlag("1");
+            }
+
+        }
+        return  devices;
+    }
+
     /**
      * 重置单个设备缓存
      */

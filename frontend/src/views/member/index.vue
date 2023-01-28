@@ -118,7 +118,7 @@
                             <br>
                             <!-- 待调整 -->
                             
-                            {{item.nowLoacation}} | {{"在线"}}
+                            {{item.nowLoacation}} | {{item.onlineFlag=='1'?"在线":"不在线"}}
                             <br>
                             <br>
                         </el-card>
@@ -223,11 +223,11 @@ export default {
         this.loading = false;
       });
     },
-    getJSON(){
-      const result = JSON.parse(item.nowLoacation)
-    console.log("result:========="+result) 
-    /** 查询家庭组列表 */
-    },
+    // getJSON(){
+    //   const result = JSON.parse(item.nowLoacation)
+    // //console.log("result:========="+result) 
+    // /** 查询家庭组列表 */
+    // },
     init(){
       this.familyGroupList = [];
       this.queryFamilyParams.memberId=this.memberId

@@ -51,6 +51,16 @@ public class TEvent extends BaseEntity
     @Excel(name = "设备编号")
     private String deviceNo;
 
+    /** 设备名称 */
+    @Excel(name = "设备名称")
+    @Transient
+    private String deviceName;
+
+    /** 设备类型 */
+    @Excel(name = "设备类型", readConverterExp = "0=雷达波,1=监控设备")
+    @Transient
+    private String deviceType;
+
     /** 机构id */
     @Excel(name = "机构id")
     private Long orgId;
@@ -92,26 +102,26 @@ public class TEvent extends BaseEntity
     @Excel(name = "操作标志", readConverterExp = "0=未处理,1=已处理")
     private String operateFlag;
 
-    /** 服务人员快照 */
-    private SysUser servedUserSnapshot;
-    /** 服务人员信息 */
-    @Excels({
-            @Excel(name = "服务人员", targetAttr = "nickName", type = Excel.Type.EXPORT,sort = 2),
-            @Excel(name = "服务人员手机号码", targetAttr = "mobilePhone", type = Excel.Type.EXPORT,sort = 3),
-            @Excel(name = "处理人归属机构", targetAttr = "orgName", type = Excel.Type.EXPORT,sort = 4)
-    })
-    @Transient
-    private TServeRecord.SysUserSimple servedUser;
-    /**
-     * 设备信息
-     */
-//    @Transient
+//    /** 服务人员快照 */
+//    private SysUser servedUserSnapshot;
+//    /** 服务人员信息 */
 //    @Excels({
-//            @Excel(name = "设备名称", targetAttr = "name", type = Excel.Type.EXPORT,sort = 6),
-//            @Excel(name = "设备编号", targetAttr = "no", type = Excel.Type.EXPORT,sort = 7),
-//            @Excel(name = "设备分组+位置", targetAttr = "deviceGroupName+location", separator = " ",type = Excel.Type.EXPORT,sort = 9)
+//            @Excel(name = "服务人员", targetAttr = "nickName", type = Excel.Type.EXPORT,sort = 2),
+//            @Excel(name = "服务人员手机号码", targetAttr = "mobilePhone", type = Excel.Type.EXPORT,sort = 3),
+//            @Excel(name = "处理人归属机构", targetAttr = "orgName", type = Excel.Type.EXPORT,sort = 4)
 //    })
-    private TDevice device;
+//    @Transient
+//    private TServeRecord.SysUserSimple servedUser;
+//    /**
+//     * 设备信息
+//     */
+////    @Transient
+////    @Excels({
+////            @Excel(name = "设备名称", targetAttr = "name", type = Excel.Type.EXPORT,sort = 6),
+////            @Excel(name = "设备编号", targetAttr = "no", type = Excel.Type.EXPORT,sort = 7),
+////            @Excel(name = "设备分组+位置", targetAttr = "deviceGroupName+location", separator = " ",type = Excel.Type.EXPORT,sort = 9)
+////    })
+//    private TDevice device;
 
 
     public void setEventId(Long eventId)
@@ -186,6 +196,23 @@ public class TEvent extends BaseEntity
     {
         return deviceNo;
     }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
     public void setOrgId(Long orgId)
     {
         this.orgId = orgId;
@@ -288,6 +315,8 @@ public class TEvent extends BaseEntity
                 .append("devicegroupId", getDevicegroupId())
                 .append("familyId", getFamilyId())
                 .append("deviceNo", getDeviceNo())
+                .append("deviceName", getDeviceName())
+                .append("deviceType", getDeviceType())
                 .append("orgId", getOrgId())
                 .append("orgName", getOrgName())
                 .append("operateType", getOperateType())

@@ -82,7 +82,8 @@
             type="primary"
             plain
             icon="el-icon-plus"
-            size="mini"
+            size="medium"
+            :disabled="multiple"
             @click="handleAdd"
             v-hasPermi="['device:serveRecord:add']"
           >服务登记</el-button>
@@ -134,9 +135,9 @@
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作时间" align="center" prop="createTime" width="180" color="#FF0000">
+        <el-table-column label="操作时间" align="center" prop="operateTime" width="180" color="#FF0000">
           <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.createTime) }}</span>
+            <span>{{ parseTime(scope.row.operateTime) }}</span>
           </template>
         </el-table-column>
         <!-- 待调整 -->
@@ -202,35 +203,15 @@
        <el-row>
         <org-info-card :value="currentOrgId"></org-info-card>
 		  </el-row>	
-      <!-- 服务登记 -->
-      <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
-        <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-          <el-form-item label="紧急联系人电话" prop="phone">
-          <el-radio-group v-model="form.phone" size="medium">
-            <el-radio v-for="(item, index) in phoneOptions" :key="index" :label="item.value"
-              :disabled="item.disabled" border>{{item.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-          <el-form-item label="快捷回复" prop="level">
-            <el-input v-model="form.level" placeholder="" />
-          </el-form-item>
-          <el-form-item label="服务备注" prop="remark">
-            <el-input v-model="form.remark" placeholder="" />
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="submitForm">提 交</el-button>
-          <el-button @click="cancel">返 回</el-button>
-        </div>
-      </el-dialog>  
+     
 
       <!-- 服务登记 -->
-      <el-dialog :title="title" :visible.sync="open" width="830px" append-to-body>
+      <el-dialog :title="title" :visible.sync="open" width="630px" append-to-body>
         <el-form ref="form" :model="form" :rules="rules" label-width="130px">
-          <el-form-item label="紧急联系人电话:" prop="servedInfo">
-          <el-radio-group v-model="form.servedInfo" size="medium">
-            <el-radio v-for="(item, index) in phoneListOptions" :key="index" :label="item.value"
-              :disabled="item.disabled" border>{{item.value}}</el-radio>
+          <el-form-item label="紧急电话:" prop="servedInfo">
+          <el-radio-group v-model="form.servedInfo" size="small">
+            <el-radio v-for="(item) in phoneOptions" :key="item" :label="item"
+              :disabled="item.disabled" border>{{item}}</el-radio>
           </el-radio-group>
         </el-form-item>
         <!-- <el-form-item label="联系人:" prop="name">
@@ -255,7 +236,7 @@
               v-model="form.remark"
               placeholder="快捷回复"
               clearable
-              style="width: 240px"
+              style="width: 300px"
             >
           <el-option
             v-for="item in replyOptions"
@@ -267,7 +248,8 @@
             </el-select>
           </el-form-item>
           <el-form-item label="服务备注" prop="remark">
-            <el-input v-model="form.remark" placeholder=""/>
+            <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"
+            style="width: 300px"></el-input>
             <!-- <editor v-model="form.remark" :min-height="180" /> -->
 
           </el-form-item>
@@ -289,6 +271,9 @@
   import {addRecord} from "@/api/member/servedOprLog";
   import OrgInfoCard from "@/views/org/components/OrgInfoCard";
   import DeviceInfoCard from "@/views/device/components/DeviceInfoCard";
+  //获取机构信息
+  import {getOrg} from "@/api/org/org";
+
 
  
 
@@ -322,7 +307,6 @@
         dateRange: [],
           
         //联络人号码
-        phoneListOptions:[],
          phoneOptions:[],
       //快捷回复
       replyOptions:[
@@ -432,7 +416,7 @@
       /** 查询事件列表 */
       getList() {
         this.loading = true;
-        listEvent(this.queryParams, this.dateRange).then(response => {
+        listEvent(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
           this.eventList = response.rows;
           this.total = response.total;
           this.loading = false;
@@ -524,25 +508,34 @@
         this.multiple = !selection.length
 
         this.form.deviceId = selection[0]?.deviceId
+        //加入校验防止勾选取消时报查询类型错误
+        if(this.form.deviceId !=undefined){
         this.form.serveEvents =  selection.map(item => {
           return {
             eventId:item.eventId,
           }
-        })
+        })       
+      
+     //获取选中记录的机构id紧急联系人联系方式   
+     this.phoneOptions=[],
+     getOrg(this.currentOrgId).then(response => {
+            this.phoneOptions.push(response.data.phone1) ;
+            this.phoneOptions.push(response.data.phone2) ;
+            this.phoneOptions.push(response.data.phone3) ;
 
-        
-        //获取选中记录的会员id
-        this.form.memberId = selection[0]?.memberId
-           getMember(this.form.memberId).then(response => {
-        this.phoneOptions = response.data.contacts;
       });
+
+        // this.phoneListOptions = this.phoneOptions.map(item => ({ value: item.phone, label: item.phone }))       
+        // console.log(this.phoneOptions)
+
+      
+    }
       },
       /** 新增按钮操作 */
       handleAdd() {
        // this.reset();
-        //获取会员紧急联系人联系方式
-        this.phoneListOptions = this.phoneOptions.map(item => ({ value: item.phone, label: item.phone }))       
-      this.open = true;
+
+        this.open = true;
       this.title = "服务登记";
       },
       /** 修改按钮操作 */
@@ -599,7 +592,7 @@
     }
   };
   </script>
-  <<style scoped>
+  <!-- <<style scoped>
   .el-card {
     border-radius: 4px;
     border: 1px solid #e6ebf5;
@@ -610,5 +603,5 @@
     transition: 0.3s;
     margin-top: 30px;
 }
-  </style>
+  </style> -->
   

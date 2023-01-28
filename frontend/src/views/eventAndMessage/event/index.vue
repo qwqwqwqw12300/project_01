@@ -299,7 +299,7 @@
       /** 查询事件列表 */
       getList() {
         this.loading = true;
-        listEvent(this.queryParams).then(response => {
+        listEvent(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
           this.eventList = response.rows;
           this.total = response.total;
           this.loading = false;
