@@ -18,7 +18,7 @@
 		<view class="ui-step">
 			<view class="ui-step-icon step2_bg"></view>
 			<view class="ui-step-title">
-				<text>靠近智能设备,</text>
+				<text>长按智能设备开关,</text>
 				<text>等待蓝灯亮起</text>
 			</view>
 		</view>
@@ -30,8 +30,11 @@
 				<image v-show="item.active" class="tick" src="../../static/images/tick.png" />
 			</view>
 		</view>
-		<view class="ui-btn">
+		<view class="ui-btn" v-if="connectStatic === 'init'">
 			<button @click="next">下一步</button>
+		</view>
+		<view class="ui-btn" v-if="connectStatic === 'connect'">
+			<u-loading-icon :text="eventMsg"></u-loading-icon>
 		</view>
 		<!-- 修改名称 -->
 		<u-popup :closeable="true" :round="10" :show="isEditShow" mode="center" @close="eidtClose">
@@ -57,6 +60,9 @@
 	import {
 		PostcreDevice
 	} from '../../common/http/api'
+	import {
+		vpsdk
+	} from '../../common/sdk/vpsdk'
 	export default {
 		data() {
 			const deviceList = [{
@@ -85,7 +91,11 @@
 					location: ''
 				},
 				/**编辑展示**/
-				isEditShow: false
+				isEditShow: false,
+				/**事件说明**/
+				eventMsg: '启动中...',
+				/**设备连接状态 init connect success**/
+				connectStatic: 'connect'
 			}
 		},
 		methods: {
@@ -109,7 +119,7 @@
 						});
 						setTimeout(() => {
 							uni.navigateBack();
-						}, 2000)
+						}, 2000);
 
 					})
 				} else {
@@ -128,7 +138,28 @@
 			 * 添加设备
 			 */
 			next() {
-				this.isEditShow = true;
+				vpsdk.connect(res => {
+					const {
+						type,
+						data
+					} = res;
+					switch (type) {
+						case 'event': // 事件监听
+							this.eventMsg = data;
+							break;
+						case 'wifi': // 选择wifi
+							this.openWifi(data);
+							break;
+						case 'success': // 连接成功
+							this.isEditShow = true;
+							break;
+						default:
+							uni.showModal({
+								title: '设备添加失败，请重试'
+							});
+							break;
+					}
+				});
 			}
 		}
 	}
