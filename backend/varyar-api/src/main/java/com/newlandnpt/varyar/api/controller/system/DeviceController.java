@@ -67,9 +67,11 @@ public class DeviceController extends BaseController {
     public AjaxResult createDevice(
             @RequestBody @Validated DeviceRequest deviceRequest){
         AjaxResult ajax = AjaxResult.success();
-        if(checkInfo(deviceRequest,ajax) != null){
+        ajax  = checkInfo(deviceRequest,ajax);
+        if(ajax!= null){
            return ajax;
         }
+        ajax = AjaxResult.success();
         TDevice device = new TDevice();
         if (deviceRequest.getDeviceName().equals("")|| deviceRequest.getDeviceName()==null){
             deviceRequest.setDeviceId(this.getUsername()+"的设备");
@@ -129,11 +131,11 @@ public class DeviceController extends BaseController {
             return ajax;
         }
         if (deviceRequest.getDeviceType().equals("")|| deviceRequest.getDeviceType()==null){
-            ajax = AjaxResult.  error("设备类型不能为空！");
+            ajax = AjaxResult.error("设备类型不能为空！");
             return ajax;
         }
         if (deviceRequest.getDeviceNo().equals("")|| deviceRequest.getDeviceNo()==null){
-            ajax = AjaxResult. error("设备编号不能为空！");
+            ajax = AjaxResult.error("设备编号不能为空！");
             return ajax;
         }
         return null;
