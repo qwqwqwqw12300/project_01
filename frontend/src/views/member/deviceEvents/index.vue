@@ -143,7 +143,7 @@
         </el-table-column>		      
       <el-table-column label="事件编号" align="center" prop="no" />
       <el-table-column label="事件内容" align="center" prop="content" />
-      <el-table-column label="设备名称" align="center" prop="deviceId" />
+      <el-table-column label="设备名称" align="center" prop="deviceName" />
       <el-table-column label="设备编号" align="center" prop="deviceNo" />
       <el-table-column label="报警时间" align="center" prop="createTime" width="180" color="#FF0000">
         <template slot-scope="scope">

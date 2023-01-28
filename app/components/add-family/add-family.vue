@@ -48,6 +48,7 @@
 		mounted(options) {},
 		methods: {
 			close() {
+				this.form = {}
 				this.show = false;
 			},
 			open() {
