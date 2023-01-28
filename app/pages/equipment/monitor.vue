@@ -30,11 +30,8 @@
 				<image v-show="item.active" class="tick" src="../../static/images/tick.png" />
 			</view>
 		</view>
-		<view class="ui-btn" v-if="connectStatic === 'init'">
+		<view class="ui-btn">
 			<button @click="next">下一步</button>
-		</view>
-		<view class="ui-btn" v-if="connectStatic === 'connect'">
-			<u-loading-icon :text="eventMsg"></u-loading-icon>
 		</view>
 		<!-- 修改名称 -->
 		<u-popup :closeable="true" :round="10" :show="isEditShow" mode="center" @close="eidtClose">
@@ -60,9 +57,6 @@
 	import {
 		PostcreDevice
 	} from '../../common/http/api'
-	import {
-		vpsdk
-	} from '../../common/sdk/vpsdk'
 	export default {
 		data() {
 			const deviceList = [{
@@ -87,15 +81,11 @@
 				addForm: {
 					deviceName: '',
 					deviceNo: uni.$u.random(1, 100),
-					deviceType: '0',
+					deviceType: '1',
 					location: ''
 				},
 				/**编辑展示**/
 				isEditShow: false,
-				/**事件说明**/
-				eventMsg: '启动中...',
-				/**设备连接状态 init connect success**/
-				connectStatic: 'connect'
 			}
 		},
 		methods: {
@@ -138,28 +128,7 @@
 			 * 添加设备
 			 */
 			next() {
-				vpsdk.connect(res => {
-					const {
-						type,
-						data
-					} = res;
-					switch (type) {
-						case 'event': // 事件监听
-							this.eventMsg = data;
-							break;
-						case 'wifi': // 选择wifi
-							this.openWifi(data);
-							break;
-						case 'success': // 连接成功
-							this.isEditShow = true;
-							break;
-						default:
-							uni.showModal({
-								title: '设备添加失败，请重试'
-							});
-							break;
-					}
-				});
+				this.isEditShow = true;
 			}
 		}
 	}
@@ -285,12 +254,16 @@
 	}
 
 	.ui-btn {
-		position: absolute;
-		width: 450rpx;
+		// position: absolute;
+		width: 100%;
+		button {
+			width: 450rpx;
+		}
+	
 		margin: 0 auto;
-		bottom: 80rpx;
-		left: 50%;
-		transform: translateX(-50%);
+		// bottom: 80rpx;
+		// left: 50%;
+		// transform: translateX(-50%);
 		text-align: center;
 
 		text {

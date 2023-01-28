@@ -51,7 +51,7 @@
 			</view>
 		</u-popup>
 		<!-- /修改名称 -->
-		<connect-wifi :list=[]></connect-wifi>
+		<connect-wifi :list="wifiList" ref="wifiRef" @confirm="wifiConfirm"></connect-wifi>
 	</app-body>
 </template>
 
@@ -74,7 +74,24 @@
 				/**事件说明**/
 				eventMsg: '启动中...',
 				/**设备连接状态 init connect success**/
-				connectStatic: 'connect'
+				connectStatic: 'init',
+				wifiList: [
+					{
+						ssid: 'nisdfgdfdgddfdfdfg'
+					},
+					{
+						ssid: 'nisdfgdfdgdg2'
+					},
+					{
+						ssid: 'nisdfgdfdgdg3'
+					},
+					{
+						ssid: 'nisdfgdfdgdg4'
+					},
+					{
+						ssid: 'nisdfgdfdgdg5'
+					}
+				]
 			}
 		},
 		methods: {
@@ -138,6 +155,22 @@
 							break;
 					}
 				});
+			},
+			
+			/**
+			 * wifi确认
+			 */
+			wifiConfirm(info) {
+				const { ssid, bssid, rssi } = info.wifi;
+				vpsdk.connectWifi(ssid, bssid, rssi, info.pwd);
+			},
+			
+			/**
+			 * 打开wifi
+			 */
+			openWifi(data) {
+				this.wifiList = data;
+				this.$refs.wifiRef.open();
 			}
 		}
 	}
