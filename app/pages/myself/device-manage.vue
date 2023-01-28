@@ -155,6 +155,9 @@
 			 * 关闭弹窗
 			 */
 			close() {
+				this.bindForm.familyId = ''
+				this.bindForm.roomId = ''
+				this.bindForm.deviceId = ''
 				this.bindRoomShow = false;
 			},
 
@@ -249,6 +252,7 @@
 				}).then(res => {
 					console.log(res);
 					this.roomList = res.rows || [];
+					this.bindForm.roomId = ''
 				});
 			},
 			/**
