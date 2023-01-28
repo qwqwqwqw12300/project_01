@@ -31,7 +31,8 @@
 
 <script>
 	import {
-		GetSysNotice, postSetNoticeFlag,
+		GetSysNotice,
+		postSetNoticeFlag,
 	} from '@/common/http/api.js';
 	export default {
 		data() {
@@ -40,14 +41,20 @@
 			}
 		},
 		methods: {
-			details({noticeId, noticeContent}) {
-				postSetNoticeFlag({noticeId}).then(res => {
-					this.$store.commit('service/setReadInfo', noticeContent);
+			details({
+				noticeId,
+				noticeContent
+			}) {
+				postSetNoticeFlag({
+					noticeId
+				}).then(res => {
+					console.log(this.$store, 'ccc')
+					this.$store.commit('setReadInfo', noticeContent);
 					uni.navigateTo({
 						url: `/pages/service/message-details`
 					})
 				});
-			
+
 			},
 			initData() {
 				GetSysNotice().then(res => {

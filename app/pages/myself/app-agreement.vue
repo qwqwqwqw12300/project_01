@@ -25,7 +25,7 @@
 				PostSelectAgreement({
 					type: '1'
 				}).then(res => {
-					this.content = '643785999999995888888888888888888888888888'
+					this.content = res.data.content
 				})
 			}
 		},
