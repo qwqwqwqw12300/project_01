@@ -89,6 +89,6 @@ public class DeviceConfigListener implements RocketMQListener<DeviceConfig> {
 				log.error("MQ推送失败：{}", "设备参数下发失败事件");
 			}
     	}
-    	System.out.println(result);
+    	log.info("参数下发response:" + result);
     }
 }
