@@ -37,7 +37,7 @@
 						<view>
 							<text>{{familyItem.name}}</text>
 							<text>共{{(familyItem.devices && familyItem.devices.length) || 0}}个设备</text>
-							<text>在线两个设备</text>
+							<text>在线{{ getOnlineData(familyItem) }}个设备</text>
 						</view>
 						<u-text @click="goPage('/pages/share/share?familyId='+ familyItem.familyId)"
 							prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff"
@@ -103,7 +103,15 @@
 				/**所有家庭列表**/
 				familyList: state => state.familyList
 			}),
-			...mapGetters(['filterDevice'])
+			...mapGetters(['filterDevice']),
+			getOnlineData() {
+				return function(item) {
+					return item.devices.reduce((pre, cur) => {
+						return pre + cur.onlineFlag === '1' ? 1 : 0
+					}, 0)
+				}
+
+			}
 		},
 		onShow() {
 			Promise.all([
