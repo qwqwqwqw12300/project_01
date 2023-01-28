@@ -52,9 +52,9 @@ public class MemberContactsController extends BaseController {
         if (tMemberContacts.size()>0){
             String oNum = convert(Integer.valueOf(memberContactsRequest.getOrderNum()));
             switch (Integer.valueOf(memberContactsRequest.getOrderNum())){
-                case 1 :return error("第"+oNum+"紧急联系人！");
-                case 2 :return error("第"+oNum+"紧急联系人！");
-                case 3 :return error("第"+oNum+"紧急联系人！");
+                case 1 :return error("第"+oNum+"紧急联系人已存在！");
+                case 2 :return error("第"+oNum+"紧急联系人已存在！");
+                case 3 :return error("第"+oNum+"紧急联系人已存在！");
                 default:return error("紧急联系人已存在！");
             }
         }

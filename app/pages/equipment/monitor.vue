@@ -86,7 +86,7 @@
 				/**创建设备信息**/
 				addForm: {
 					deviceName: '',
-					deviceNo: '',
+					deviceNo: uni.$u.random(1, 100),
 					deviceType: '0',
 					location: ''
 				},
