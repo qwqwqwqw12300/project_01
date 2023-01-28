@@ -205,11 +205,12 @@
         @pagination="getList"
       />
      
-
+      <el-row><br></el-row>	
       <!-- 设备基本信息嵌入位置 -->
       <el-row>
         <device-info-card :value="currentDeviceId"></device-info-card>
 		  </el-row>	  
+      <el-row><br></el-row>	
        <!-- 机构基本信息嵌入位置 -->
        <el-row>
         <org-info-card :value="currentOrgId"></org-info-card>
@@ -532,24 +533,30 @@
           }
         })       
       
-     //获取选中记录的机构id紧急联系人联系方式   
-     this.phoneOptions=[],
-     getOrg(this.currentOrgId).then(response => {
-            this.phoneOptions.push(response.data.phone1) ;
-            this.phoneOptions.push(response.data.phone2) ;
-            this.phoneOptions.push(response.data.phone3) ;
-
-      });
-
-        // this.phoneListOptions = this.phoneOptions.map(item => ({ value: item.phone, label: item.phone }))       
-        // console.log(this.phoneOptions)
-
+     
       
     }
       },
       /** 新增按钮操作 */
       handleAdd() {
        // this.reset();
+
+       //获取选中记录的机构id紧急联系人联系方式   
+     this.phoneOptions=[],
+     getOrg(this.currentOrgId).then(response => {
+            // this.phoneOptions.push(response.data.phone1) ;
+            response.data.phone1==null?"":this.phoneOptions.push(response.data.phone1)
+
+            response.data.phone2==null?"":this.phoneOptions.push(response.data.phone2)
+            response.data.phone3==null?"":this.phoneOptions.push(response.data.phone3)
+
+            // this.phoneOptions.push(response.data.phone2) ;
+            // this.phoneOptions.push(response.data.phone3) ;
+
+      });
+
+        // this.phoneListOptions = this.phoneOptions.map(item => ({ value: item.phone, label: item.phone }))       
+        // console.log(this.phoneOptions)
 
         this.open = true;
       this.title = "服务登记";
