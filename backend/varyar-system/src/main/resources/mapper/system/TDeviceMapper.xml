@@ -89,7 +89,14 @@
             <!-- 数据范围过滤 -->
             ${params.dataScope}
 
-            Order By create_time desc
+            Order By
+            <if test='params.order_status != null and params.order_status == "asc" '>
+                status ,
+            </if>
+            <if test='params.order_status != null and params.order_status == "desc"'>
+                ,status  desc ,
+            </if>
+            create_time desc
             <if test='params.order_registerTime != null and params.order_registerTime == "asc" '>
                 ,register_time
             </if>

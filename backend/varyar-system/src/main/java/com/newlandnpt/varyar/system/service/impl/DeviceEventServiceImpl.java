@@ -4,12 +4,9 @@ import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.constant.DeviceConstants;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
-import com.newlandnpt.varyar.system.domain.TDevice;
-import com.newlandnpt.varyar.system.domain.TEvent;
+import com.newlandnpt.varyar.system.domain.*;
 import com.newlandnpt.varyar.system.domain.vo.StateVo;
-import com.newlandnpt.varyar.system.mapper.StateMapper;
-import com.newlandnpt.varyar.system.mapper.TDeviceMapper;
-import com.newlandnpt.varyar.system.mapper.TEventMapper;
+import com.newlandnpt.varyar.system.mapper.*;
 import com.newlandnpt.varyar.system.service.DeviceEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +30,10 @@ public class DeviceEventServiceImpl implements DeviceEventService {
 
     @Autowired
     private TDeviceMapper deviceMapper;
+    @Autowired
+    private TMemberMapper memberMapper;
+    @Autowired
+    private TDeviceGroupMapper deviceGroupMapper;
 
     @Autowired
     private TEventMapper tEventMapper;
@@ -90,6 +91,8 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         }
         if (discDevices.size() > 0) {
             List<String> devIds = new ArrayList<>();
+            // Todo 状态一直是断网的情况不重复发断网事件
+
             for (TDevice device : discDevices) {
                 devIds.add(device.getNo());
                 triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getNo() + " 疑似断网，请及时处理！");
@@ -181,14 +184,35 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         event.setContent(content);
         event.setOperateType(AUTO_EVENT);
         event.setOperateFlag(AUTO_FLAG);
-        //todoL event表 关联设备device信息
+        // 根据设备查找运营人员信息
+        if (device.getMemberId() != null) {
+            // 会员设备查找会员的运营人员
+            TMember member = memberMapper.selectMemberByMemberId(device.getMemberId());
+            if(member!=null){
+                log.info(">>>>> 设备{}所属会员id:{}查不到会员信息，事件忽略运营人员信息录入", device.getNo(), device.getMemberId());
+            }else{
+                event.setUserId(member.getUserId());
+                event.setUserName(member.getUserName());
+            }
+        } else if (device.getDevicegroupId() != null) {
+            // 机构设备查找设备对应设备组
+            TDeviceGroup deviceGroup = deviceGroupMapper.selectDeviceGroupByDeviceGroupId(device.getDevicegroupId());
+            if (deviceGroup != null) {
+                event.setUserId(deviceGroup.getUserId());
+                event.setUserName(deviceGroup.getUserName());
+            } else {
+                log.info(">>>>> 设备{}所属设备组id:{}查不到设备组信息，事件忽略运营人员信息录入", device.getNo(), device.getDevicegroupId());
+            }
+        } else {
+            log.info(">>>>> 设备{}会员id和设备组id都为空，事件忽略运营人员信息录入", device.getNo());
+        }
         event.setUserId(device.getDeviceId());
         event.setUserName(device.getName());
         event.setCreateTime(new Date());
         tEventMapper.insertTEvent(event);
         log.info("新增事件成功：" + content);
+        // todo 会员设备事件同时触发发消息
     }
-
 
 
 }

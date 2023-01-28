@@ -227,7 +227,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <update id="dealNotMemberEvents">
-        update t_event set operate_type = '1',operate_flag = '1',operate_time = sysdate(),update_time = sysdate()
+        update t_event set operate_type = '1',operate_flag = '1',operator_id= #{operatorId},operator_type = #{operatorType},operate_time = sysdate(),update_time = sysdate()
         where
         event_id in
         <foreach item="eventId" collection="eventIds" open="(" separator="," close=")">
