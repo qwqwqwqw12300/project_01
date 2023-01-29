@@ -28,7 +28,7 @@ public class VersionController extends BaseController
     {
         TVersion tVersion = versionService.selectTVersionByVersionType(versionType);
         if (tVersion == null){
-            error("版本信息为空！");
+            return error("版本信息为空！");
         }
         return success(tVersion);
     }
