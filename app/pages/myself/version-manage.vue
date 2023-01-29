@@ -6,7 +6,7 @@
 			<text class="ui-main-version">版本：{{ version }}</text>
 
 			<view class="ui-main-button">
-				<button class="ui-button" @click="handleQuery">检查更新</button>
+				<button class="ui-button" @click="handleUpdate">检查更新</button>
 			</view>
 		</view>
 	</app-body>
@@ -16,6 +16,9 @@
 	import {
 		PostVersionInfo,
 	} from '@/common/http/api.js';
+	import {
+		versionUpdate
+	} from '../../common/utils/util';
 	export default {
 		data() {
 			return {
@@ -25,10 +28,13 @@
 		methods: {
 			handleQuery() {
 				PostVersionInfo({
-					versionType: '1',
+					versionType: isIOS ? '0' : '1',
 				}).then(res => {
 					this.version = res.data.content
 				})
+			},
+			handleUpdate() {
+				versionUpdate(this.version, true)
 			}
 		},
 		mounted() {

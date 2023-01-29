@@ -13,11 +13,16 @@
 			<button @click="goRegister">马上体验</button>
 			<text @click="goLogin">老朋友? &nbsp;点此登录</text>
 		</view>
-
 	</app-body>
 </template>
 
 <script>
+	import {
+		PostVersionInfo,
+	} from '@/common/http/api.js';
+	import {
+		versionUpdate
+	} from '../../common/utils/util';
 	export default {
 		data() {
 			return {
@@ -25,6 +30,7 @@
 			};
 		},
 		mounted() {
+			this.queryVersion()
 			this.getUserInfo().then(res => {
 				if (!res) {
 					const animation = uni.createAnimation({
@@ -80,7 +86,19 @@
 						resolve(res);
 					});
 				});
-			}
+			},
+			/**
+			 * 查询当前版本
+			 */
+			queryVersion() {
+				const isIOS = (uni.getSystemInfoSync().platform === 'ios')
+				PostVersionInfo({
+					versionType: isIOS ? '0' : '1',
+				}).then(res => {
+					const curVersion = res.data.content
+					versionUpdate(curVersion)
+				})
+			},
 		},
 
 	};
