@@ -18,13 +18,21 @@
 		</u-navbar>
 		<view id="mobileBook">
 			<view class="ui-books">
-				<view class="ui-item" v-for="(item,index) in list" :key="index">
-					<view class="ui-icon">{{index+1 || 'S'}}</view>
+				<view class="ui-item" v-for="(item,key) in mapSet" :key="item.phone">
+					<view class="ui-icon">{{ typeShow[key] }}</view>
 					<view class="ui-msg">
 						<text>{{ item.phoneName }}</text>
 						<text>{{item.phone}}</text>
 					</view>
-					<button @click="handleSet(item,index)">设置</button>
+					<button @click="handleMapSet(item,key,'map')">设置</button>
+				</view>
+				<view class="ui-item" v-for="(item,index) in list" :key="index">
+					<view class="ui-icon">P</view>
+					<view class="ui-msg">
+						<text>{{ item.phoneName }}</text>
+						<text>{{item.phone}}</text>
+					</view>
+					<button @click="handleListSet(item,index,'list')">设置</button>
 				</view>
 			</view>
 		</view>
@@ -40,7 +48,7 @@
 				</view>
 				<view class="ui-check">
 					<u-radio-group v-model="form.type" placement="column">
-						<u-radio v-for=" (name,value) in typeDict" :key="value" :name="value" shape="circle"
+						<u-radio v-for=" (name,value) in typeDict" :key="name" :name="value" shape="circle"
 							labelSize="24rpx" size="30rpx" activeColor="#fdbc2b" labelColor="#fdbc2b" :label="name">
 						</u-radio>
 					</u-radio-group>
@@ -64,13 +72,17 @@
 		PostSetDevicePhone,
 		PostSetSosDevicePhone,
 	} from '@/common/http/api.js';
-	import { mapState } from 'vuex';
+	import {
+		mapState
+	} from 'vuex';
 	export default {
 		data() {
 			return {
 				isEditShow: false,
 				index: 0,
+				editType: '', //list map
 				list: [],
+				mapSet: {},
 				form: {
 					phoneName: '',
 					phone: '',
@@ -82,6 +94,13 @@
 					2: '设置为按钮2',
 					3: '设置为按钮3',
 					P: '暂保存、不设置',
+				},
+				typeShow: {
+					0: 'S',
+					1: '1',
+					2: '2',
+					3: '3',
+					P: 'P',
 				}
 			};
 		},
@@ -101,24 +120,39 @@
 			/**
 			 * 打开浮层
 			 */
-			handleSet(item, index) {
+			handleListSet(item, index, type) {
 				this.form = {
 					...item
 				}
 				this.index = index
+				this.editType = type
+				this.isEditShow = true;
+			},
+			/**
+			 * 打开浮层
+			 */
+			handleMapSet(item, key, type) {
+				this.form = {
+					...item,
+					type: key
+				}
+				this.index = key
+				this.editType = type
 				this.isEditShow = true;
 			},
 			handleAdd() {
 				this.$refs.addmobile.open({
 					deviceId: this.deviceId,
 					list: this.list,
+					mapSet: this.mapSet,
 				});
 			},
 			handleInit() {
 				PostDevicePhoneList({
 					deviceId: this.deviceId,
 				}).then(res => {
-					this.list = res.rows
+					this.list = res.data.list || []
+					this.mapSet = res.data.mapSet || {}
 				})
 			},
 
@@ -131,16 +165,38 @@
 				if (!phoneName) {
 					uni.$u.toast('请填写名称')
 				}
-				if (!phone) {
-					return uni.$u.toast('请填写手机号码')
+				if (!uni.$u.test.mobile(phone)) {
+					return uni.$u.toast('请填写正确的手机号码')
 				}
 				const InterList = type === 0 ? PostSetSosDevicePhone : PostSetDevicePhone
 				const listArr = uni.$u.deepClone(this.list)
-				listArr[this.index] = this.form
-				InterList({
+				const mapList = uni.$u.deepClone(this.mapSet)
+				if (this.editType === 'list') {
+					if (type === 'P') {
+						listArr[this.index] = this.form
+					} else {
+						listArr.splice(this.index, 1)
+						// if (mapList.hasOwnProperty(type)) {
+						// 	const mapData = uni.$u.deepClone(mapList[type])
+						// 	listArr.push(mapData)
+						// }
+						mapList[type] = this.form
+					}
+				} else {
+					if (type === 'p') {
+						delete mapList[this.index]
+						listArr.push(this.form)
+					} else {
+						delete mapList[this.index]
+						mapList[type] = this.form
+					}
+				}
+				const json = {
 					deviceId: this.deviceId,
-					list: listArr
-				}).then(res => {
+					list: listArr,
+					mapSet: mapList,
+				}
+				InterList(json).then(res => {
 					uni.$u.toast(res.msg)
 					this.close()
 					setTimeout(() => {
@@ -175,7 +231,7 @@
 			padding: 0 21rpx;
 			align-items: center;
 			justify-content: space-between;
-			margin-bottom: 10rpx;
+			margin-bottom: 16rpx;
 			width: 640rpx;
 			height: 113rpx;
 			border-radius: 10rpx;
@@ -232,7 +288,7 @@
 			}
 
 			@each $idx,
-			$bg in (1: #e5004f, 2:#ec6941, 3:#448aca) {
+			$bg in (1: #e5004f, 2:#ec6941, 3:#448aca, 4: #e563c7, 5:#e7ec83, 6:#7199ca) {
 				&:nth-child(#{$idx}) {
 					.ui-icon {
 						background-color: $bg;

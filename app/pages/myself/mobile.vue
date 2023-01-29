@@ -44,7 +44,7 @@
 			</view>
 			<view class="wd-btn-gloup">
 				<button type="default" @click="handleSubmit">重置</button>
-				<button type="default" @click="goLogin">取消</button>
+				<button type="default" @click="handleBack">取消</button>
 			</view>
 		</view>
 	</app-body>
