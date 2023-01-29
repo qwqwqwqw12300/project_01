@@ -40,6 +40,12 @@ public class MemberFamilyServiceImpl implements IMemberFamilyService
         map.put("familyId",FamilyId);
         return tMemberFamilyMapper.selectTMemberFamilyByFamilyId(map);
     }
+    public List<TMemberFamily> selectTMemberFamilyByShare(Long FamilyId,Long memberId){
+        Map map = new HashMap();
+        map.put("memberId",memberId);
+        map.put("familyId",FamilyId);
+        return tMemberFamilyMapper.selectTMemberFamilyByShare(map);
+    }
     public List<TMemberFamily> selectTMemberFamilyByPhone(String phone){
         return tMemberFamilyMapper.selectTMemberFamilyByPhone(phone);
     }

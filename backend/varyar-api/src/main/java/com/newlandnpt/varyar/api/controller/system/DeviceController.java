@@ -13,6 +13,7 @@ import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter;
 import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
 import com.newlandnpt.varyar.system.service.IDeviceService;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
@@ -182,69 +183,28 @@ public class DeviceController extends BaseController {
     public AjaxResult setSOSDevicephone(
             @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
         AjaxResult ajax = AjaxResult.success();
-        if (CollectionUtils.isEmpty(devicePhoneRequest.getList())){
-            error("电话列表不能为空！");
+        if (devicePhoneRequest.getList() == null){
+            return error("电话列表不能为空！");
+        }
+        if (devicePhoneRequest.getMapSet() == null){
+            devicePhoneRequest.setMapSet(new HashMap<>());
         }
         //查找设备信息
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(devicePhoneRequest.getDeviceId()));
         if (device == null){
-            error("设备信息不存在！");
+            return error("设备信息不存在！");
         }
         if(!device.getType().equals("1")){
-            error("该设备不是监控设备！");
+            return error("该设备不是监控设备！");
         }
-        List<DevicePhone> list = devicePhoneRequest.getList();
-        //校验是否有sos电话信息
-        Boolean sosflag = false;
-        Set<String> types = new HashSet<String>();
-        Set<String> type1 = new HashSet<String>();
-        Set<String> type2 = new HashSet<String>();
-        Set<String> type3 = new HashSet<String>();
-        Set<String> type4 = new HashSet<String>();
-        for(DevicePhone item :list){
-            ajax = checkPhoneInfo(item,ajax);
-            if(ajax != null){
-                return ajax;
-            }else {
-                ajax = AjaxResult.success();
-            }
-            if (item.getType().equals("0")){
-                sosflag =true;
-                if (!types.add(item.getType())){
-                    error("sos电话信息重复！");
-                }
-            }
-            if(item.getType().equals("1")){
-                if (!type1.add(item.getType())){
-                    error("按钮1电话信息重复！");
-                }
-            }
-            if(item.getType().equals("2")){
-                if (!type2.add(item.getType())){
-                    error("按钮2电话信息重复！");
-                }
-            }
-            if(item.getType().equals("3")){
-                if (!type3.add(item.getType())){
-                    error("按钮3电话信息重复！");
-                }
-            }
-            if(item.getType().equals("4")){
-                if (!type4.add(item.getType())){
-                    error("按钮4电话信息重复！");
-                }
-            }
-        }
-        if (!sosflag){
-            error("设备信息sos电话信息不存在！");
-        }
-        DeviceParameter dpt = new DeviceParameter();
-        dpt.setList(list);
-        device.setParameter(dpt);
+        DeviceParameter parameter = new DeviceParameter();
+        parameter.setList(devicePhoneRequest.getList());
+        parameter.setMapSet(devicePhoneRequest.getMapSet());
+        device.setParameter(parameter);
         try {
             iDeviceService.updateDevice(device);
         } catch (Exception e){
-            error("设置SOS电话失败！");
+            error("设置电话失败！");
         }
         return ajax;
     }
@@ -277,7 +237,7 @@ public class DeviceController extends BaseController {
 
     /**获取手表设备的电话列表*/
     @PostMapping("/getDevicePhone")
-    public TableDataInfo getDevicePhone(
+    public AjaxResult getDevicePhone(
             @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
         AjaxResult ajax = AjaxResult.success();
         //查找设备信息
@@ -292,11 +252,10 @@ public class DeviceController extends BaseController {
             throw new ServiceException("无权限获取本设备通讯录!");
         }
         List<DevicePhone> list = new ArrayList<DevicePhone>();
-        if( device.getParameter()==null || device.getParameter().getList()==null ){
-            return getDataTable(list);
+        if(device.getParameter()==null){
+            return AjaxResult.success(null);
         }
-        list = device.getParameter().getList();
-        return getDataTable(list);
+        return AjaxResult.success(device.getParameter());
     }
 
     /**
@@ -377,18 +336,9 @@ public class DeviceController extends BaseController {
             ajax = AjaxResult.error("联系人电话长度11个字符！");
             return ajax;
         }
-        if (devicePhone.getType().equals("")|| devicePhone.getType()==null){
-            ajax = AjaxResult.error("联系人电话类型不能为空！");
-            return ajax;
-        }
+
         if (devicePhone.getPhone().length()>20){
             ajax = AjaxResult.error("联系人名称20个字符！");
-            return ajax;
-        }
-        String type = devicePhone.getType();
-        if (!(type.equals("0")||type.equals("1")||type.equals("2")
-                ||type.equals("3")||type.equals("4")||type.equals("P"))){
-            ajax = AjaxResult.error("联系人电话类型错误！");
             return ajax;
         }
         return null;

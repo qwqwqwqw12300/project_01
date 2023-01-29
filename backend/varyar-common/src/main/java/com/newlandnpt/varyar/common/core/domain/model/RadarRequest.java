@@ -76,22 +76,18 @@ public class RadarRequest {
     /**
      *进入时间   data HH:mm:ss
      * */
-    @NotNull(message = "进入时间不能为空")
     private Long entryTime;
     /**
      *离开时间 data HH:mm:ss
      * */
-    @NotNull(message = "离开时间不能为空")
     private Long departureTime;
     /**
      *开始时间 data HH:mm:ss
      * */
-    @NotNull(message = "开始时间不能为空")
     private Date startTime;
     /**
      *结束时间 data HH:mm:ss
      * */
-    @NotNull(message = "结束时间不能为空")
     private Date endTime;
     /**
      *进入标识 （0是 1否）
