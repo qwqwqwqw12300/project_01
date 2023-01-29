@@ -110,6 +110,10 @@
 				}
 				PostAddRoom({
 					...this.form,
+					roomHeight: uni.$u.priceFormat( roomHeight / 10, 2),
+					roomLength: uni.$u.priceFormat( roomLength / 10, 2),
+					roomLeft: uni.$u.priceFormat( roomLeft / 10, 2),
+					roomRight: uni.$u.priceFormat( roomRight / 10, 2),
 					familyId: this.familyId,
 				}).then(res => {
 					uni.$u.toast(res.msg)

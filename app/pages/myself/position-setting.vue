@@ -14,8 +14,8 @@
 				<u-divider text="100米"></u-divider>
 				<u-divider text="100米"></u-divider> -->
 				<view class="mova-box">
-					<movable-area :style="{height: sizeInfo.box.height + 'px', width: sizeInfo.box.width + 'px'}">
-						<movable-view v-for="(item, index) of roomZones" :key="index" :x="item && item.x"
+					<movable-area :style="getStyle">
+						<movable-view  v-for="(item, index) of roomZones" :key="index" :x="item && item.x"
 							:y="item && item.y" :style="{ height: item.height + 'px', width: item.width + 'px' }"
 							direction="all" @change="
 								e => {
@@ -24,8 +24,10 @@
 							">
 							<template>
 								<text class="ui-zone-name">{{ item.name || '未命名' }}</text>
-								<text>x：{{ $u.priceFormat((item.old.x - sizeInfo.x)/sizeInfo.scale.x, 1) }}</text>
-								<text>y：{{ 0 - $u.priceFormat((item.old.y - sizeInfo.y)/sizeInfo.scale.y , 1) }}</text>
+							<!-- 	<text>x：{{ $u.priceFormat((item.old.x - sizeInfo.x)/sizeInfo.scale.x, 1) }}</text>
+								<text>y：{{ 0 - $u.priceFormat((item.old.y - sizeInfo.y)/sizeInfo.scale.y , 1) }}</text> -->
+								<text>x：{{ $u.priceFormat((item.old.x - sizeInfo.x) / sizeInfo.scale.x, 1) }}</text>
+								<text>y：{{ 0 - $u.priceFormat((item.old.y - sizeInfo.y) / sizeInfo.scale.y, 1)}}</text>
 							</template>
 						</movable-view>
 						<movable-view :x="sizeInfo.x" :y="sizeInfo.y">
@@ -232,8 +234,8 @@
 				sizeInfo: {
 					/**容器盒子大小**/
 					box: {
-						width: 250,
-						height: 300
+						width: 200,
+						height: 250
 					},
 					/**雷达波所处的位置**/
 					x: 125,
@@ -249,7 +251,19 @@
 		computed: {
 			...mapState({
 				deviceInfo: state => state.deviceInfo
-			})
+			}),
+			getStyle() {
+				const minBox = 50;
+				let width = Math.max(this.roomZones.map(ele => ele.width));
+				let height = Math.max(this.roomZones.map(ele => ele.height));
+				width = width>minBox ? width: minBox;
+				height = height>minBox ? height: minBox;
+				console.log(width, height);
+				return {
+					width: this.sizeInfo.box.width + width + 'px',
+					height:  this.sizeInfo.box.height + height + 'px',
+				}
+			}
 		},
 		onLoad() {
 			Promise.all([
@@ -269,8 +283,8 @@
 				} = roomInfo
 				// 盒子比例
 				const scale = {
-						x: (width / (roomLeft + roomRight)).toFixed(2),
-						y: (height / roomLength).toFixed(2)
+						x: width / (roomLeft + roomRight),
+						y: height / roomLength
 					},
 					x = roomLeft,
 					y = roomLength;
@@ -392,28 +406,28 @@
 			 * 添加/修改设备
 			 */
 			radarDevice() {
-				const x = this.roomZones[0].x1,
-					y = this.roomZones[0].y1;
+				const { x, y, scale } = this.sizeInfo;
+				console.log(x, y, 'xy');
 				this.roomZones.forEach(ele => {
 					const {
 						old,
 						width,
 						height
 					} = ele,
-					scale = this.sizeInfo.scale,
 						obj =
 						assignDeep({}, {
 							...ele,
-							x2: (old.x - x) / scale,
-							x1: (old.x - x - width) / scale,
-							y2: (old.y - y) / scale,
-							y1: (old.y - y - height) / scale,
+							x2: (old.x - x) / scale.x,
+							x1: (old.x - x - width) / scale.x,
+							y2: 0 - ((old.y - y) / scale.y),
+							y1: 0 - ((old.y - y - height) / scale.y),
 						});
 					delete obj.old;
 					delete obj.x;
 					delete obj.y;
 					delete obj.height;
 					delete obj.wdith;
+					console.log(obj, 'obj');
 					PostRadarDevice(obj);
 				});
 			},
@@ -483,7 +497,6 @@
 		}
 
 		.mova-box {
-			height: 300px;
 			width: 100%;
 			text-align: center;
 		}
@@ -501,8 +514,8 @@
 			align-items: center;
 			justify-content: center;
 			flex-direction: column;
-			min-height: 100rpx;
-			min-width: 100rpx;
+			min-height: 50px;
+			min-width: 50px;
 			background-color: #007aff;
 			color: #fff;
 			font-size: 16rpx;
@@ -512,8 +525,8 @@
 			}
 
 			.ui-device {
-				min-height: 120rpx;
-				min-width: 120rpx;
+				min-height: 25px;
+				min-width: 25px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -528,6 +541,11 @@
 				&:nth-child(#{$idx}) {
 					background-color: $bg;
 				}
+			}
+			&:nth-last-child(1) {
+				min-height: 50rpx;
+				min-width: 50rpx;
+				background-color: unset;
 			}
 		}
 

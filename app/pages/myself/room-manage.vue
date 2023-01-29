@@ -112,8 +112,18 @@
 			 * 修改家庭
 			 */
 			editFamliy(item) {
+				const {
+					roomHeight = 0,
+					roomLength = 0,
+					roomLeft = 0,
+					roomRight = 0
+				} = item;
 				this.form = {
-					...item
+					...item,
+					roomHeight: roomHeight * 10,
+					roomLength: roomLength * 10,
+					roomLeft: roomLeft * 10,
+					roomRight: roomRight * 10
 				}
 				console.log(this.form, 'fff')
 				this.isEditShow = true;
@@ -141,7 +151,11 @@
 					return uni.$u.toast('请完善房间信息')
 				}
 				PostEditRoom({
-					...this.form
+					...this.form,
+					roomHeight: uni.$u.priceFormat( roomHeight / 10, 2),
+					roomLength: uni.$u.priceFormat( roomLength / 10, 2),
+					roomLeft: uni.$u.priceFormat( roomLeft / 10, 2),
+					roomRight: uni.$u.priceFormat( roomRight / 10, 2),
 				}).then(res => {
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
