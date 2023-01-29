@@ -58,7 +58,7 @@ public class TRoomZone extends BaseEntity
     private String existFlag;
 
     /** 跌倒监测标志（0是 1否） */
-    @Excel(name = "迭代监测标志", readConverterExp = "0=是,1=否")
+    @Excel(name = "跌倒监测标志", readConverterExp = "0=是,1=否")
     private String fallFlag;
 
     /** 进入时间(s) */
