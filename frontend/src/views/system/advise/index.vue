@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="问题内容" prop="content">
         <el-input
           v-model="queryParams.content"
@@ -9,6 +9,20 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="已读/未读" prop="readFlag">
+            <el-select
+              v-model="queryParams.readFlag"
+              placeholder="已读/未读"
+              clearable
+            >
+              <el-option
+                v-for="dict in dict.type.sys_read_flag"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
+        </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -22,8 +36,8 @@
           plain
           icon="el-icon-edit"
           size="mini"
-          :disabled="single"
-          @click="handleUpdate"
+          :disabled="multiple"
+          @click="OneClickRead"
           v-hasPermi="['system:advise:edit']"
         >一键已读</el-button>
       </el-col>
@@ -42,8 +56,9 @@
 
     <el-table v-loading="loading" :data="adviseList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="编号" align="center" prop="adviseId" />
       <el-table-column label="问题内容" align="center" prop="content" />
-      <el-table-column label="会员名称" align="center" prop="memberId" />
+      <el-table-column label="会员名称" align="center" prop="memberName" />
       <el-table-column label="提交时间" align="center" prop="createTime" />
       <el-table-column label="已读标志" align="center" prop="readFlag" >
         <template slot-scope="scope">
@@ -75,10 +90,10 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="建议内容">
-          <el-input v-model="form.content" :disabled="true" Style="width:100% "/>
+          <el-input v-model="form.content" type="textarea" :disabled="true" Style="width:100% "/>
         </el-form-item>
-        <el-form-item label="会员名称" prop="memberId">
-          <el-input v-model="form.memberId" :disabled="true" />
+        <el-form-item label="会员名称" prop="memberName">
+          <el-input v-model="form.memberName" :disabled="true" />
         </el-form-item>
         <el-form-item label="已读标志" prop="readFlag">
             <el-input v-model="form.readFlag" :disabled="true"/>
@@ -94,7 +109,7 @@
 </template>
 
 <script>
-import { listAdvise, getAdvise, delAdvise, addAdvise, updateAdvise } from "@/api/system/advise";
+import { listAdvise, getAdvise, delAdvise, addAdvise, updateAdvise,onReadAdvise } from "@/api/system/advise";
 
 export default {
   name: "Advise",
@@ -204,6 +219,28 @@ export default {
         this.title = "建议已读操作";
       });
     },
+    /** 一键已读按钮 */
+    OneClickRead(row)
+    {
+      this.reset();
+      const adviseIds = row.adviseId || this.ids
+      this.$modal.confirm('是否确认已读编号为"' + adviseIds + '"的记录？').then(function() {
+        return onReadAdvise(adviseIds);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("已读操作完成");
+      }).catch(() => {});
+
+      // if (this.form.adviseId != null) {
+      //       updateAdvise(this.form).then(response => {
+      //         this.$modal.msgSuccess("已读操作完成");
+      //         this.open = false;
+      //         this.getList();
+      //       });
+      //     }
+
+    },
+
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
