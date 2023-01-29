@@ -62,7 +62,10 @@
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           </el-form-item>
         </el-form>
+        <el-row :gutter="10" class="mb8">
 
+          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+        </el-row>
         <el-table v-loading="loading" :data="deviceList">
           <el-table-column v-for="column in columns" :label="column.label" :key="column.key" :prop="column.prop"
                            v-if="column.visible" :formatter="column.formatter"
