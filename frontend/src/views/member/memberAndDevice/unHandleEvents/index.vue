@@ -55,7 +55,7 @@
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        
+
         <!-- <el-form-item label="归属机构" prop="orgId">
             <treeselect style="width: 240px" v-model="queryParams.orgId" :options="orgOptions" :show-count="true" placeholder="请选择归属机构" />
           </el-form-item> -->
@@ -94,7 +94,7 @@
           <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
         </el-form-item>
       </el-form>
-  
+
       <el-row :gutter="10" class="mb8">
         <!-- <el-col :span="1.5">
           <el-button
@@ -129,7 +129,7 @@
             @click="handleUpdate"
             v-hasPermi="['system:event:edit']"
           >服务登记</el-button>
-        </el-col> -->       
+        </el-col> -->
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
 
@@ -140,7 +140,7 @@
           <template slot-scope="scope">
           {{ eventLevelFormat(scope.row) }}
           </template>
-        </el-table-column>	
+        </el-table-column>
 
         <el-table-column label="事件编号" align="center" prop="no" />
         <el-table-column label="事件内容" align="center" prop="content" />
@@ -170,11 +170,11 @@
               icon="el-icon-info"
               @click="handleView(scope.row) "
               :style="{display: scope.row.eventId==''?'none':'' }"
-            >查看消息</el-button>     
+            >查看消息</el-button>
           </template>
         </el-table-column>
       </el-table>
-      
+
       <pagination
         v-show="total>0"
         :total="total"
@@ -186,13 +186,13 @@
       <!-- 会员基本信息嵌入 -->
      <el-row>
 		  <member-info-card :value="memberId"></member-info-card>
-		 </el-row>	
+		 </el-row>
 
      <!-- 设备基本信息嵌入位置 -->
      <el-row>
       <device-info-card :value="deviceId"></device-info-card>
-		 </el-row>	 
-     
+		 </el-row>
+
      <el-dialog :title="title" :visible.sync="msg" width="900px" append-to-body>
         <el-table v-loading="loading" :data="msgList" @selection-change="handleMsgSelectionChange">
           <!-- <el-table-column type="selection" width="60" align="center" /> -->
@@ -210,7 +210,7 @@
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.sendTime) }}</span>
             </template>
-          </el-table-column>  
+          </el-table-column>
       <el-table-column label="发送状态" align="center" prop="sendStatus">
         <template slot-scope="scope">
           {{ sendStatusFormat(scope.row) }}
@@ -287,7 +287,7 @@
       </el-dialog>
     </div>
   </template>
-  
+
   <script>
   import { listEvent} from "@/api/eventAndMessage/event";
   //获取会员信息
@@ -303,7 +303,7 @@
     name: "HandleEvents",
     dicts: ['sys_operate_flag','sys_operate_type','sys_msg_type','sys_send_status','device_type','event_level'],
 
-    
+
     // components: { Treeselect },
     components: { MemberInfoCard ,DeviceInfoCard},
 
@@ -336,11 +336,11 @@
         // 查询参数
 
         member: undefined,
-        
+
         //联络人号码
         phoneListOptions:[],
          phoneOptions:[
-          
+
       // {
       //   "label": "试点",
       //   "value": 13770000001
@@ -366,7 +366,7 @@
         "label": "已通知",
         "value": 2
       }
-    
+
       ],
 
       memberId:0,
@@ -399,7 +399,7 @@
            pageNum: 1,
            pageSize: 20,
            eventId: 0,
-        
+
         },
 
         //卡片传值使用
@@ -435,13 +435,13 @@
         }
       }
     },
- 
+
   },
     created() {
-      this.getList();
+      this.currentOperateFlag = this.$route.query.operateFlag==undefined?undefined:this.$route.query.operateFlag
+      this.resetQuery();
       // this.getDeptTree();
       //初始化获取路由传参
-      this.currentOperateFlag = this.$route.query.operateFlag==undefined?undefined:Number(this.$route.query.operateFlag)  
 
     },
     methods: {
@@ -485,7 +485,7 @@ listMsg(this.queryMsgParams).then(response => {
       this.deviceId = row.deviceId;
 
     },
-     
+
     // 消息类型字典翻译
     msgTypeFormat(row, column) {
       //return this.dict.type.sys_msg_type?.find(x=>x.value == row.msgType)?.label
@@ -515,7 +515,7 @@ listMsg(this.queryMsgParams).then(response => {
     //事件级别字段翻译
     eventLevelFormat(row, column) {
       return this.selectDictLabel(this.dict.type.event_level, row.level)
-    },		
+    },
 
       // 取消按钮
       cancel() {
@@ -560,15 +560,29 @@ listMsg(this.queryMsgParams).then(response => {
       /** 重置按钮操作 */
       resetQuery() {
         this.dateRange = [];
-        this.resetForm("queryForm");
-        // this.$refs.tree.setCurrentKey(null);
-    
         this.queryParams = {
-        pageNum: 1,
-        pageSize: 10,       
-        operateFlag: this.currentOperateFlag
-      }
-      this.handleQuery();
+          pageNum: 1,
+          pageSize: 10,
+          no: null,
+          level: null,
+          content: null,
+          deviceId: null,
+          devicegroupId: null,
+          familyId: null,
+          deviceNo: null,
+          orgId: null,
+          orgName: null,
+          operateType: null,
+          memberId: null,
+          memberPhone: null,
+          memberName: null,
+          userId: null,
+          userName: null,
+          operateTime: null,
+          operateFlag: this.currentOperateFlag
+
+        }
+        this.handleQuery();
 
       },
       // 多选框选中数据
@@ -597,7 +611,7 @@ listMsg(this.queryMsgParams).then(response => {
        /** 查看按钮操作 */
     handleView(row) {
         //this.reset();
-      this.eventId = row.eventId 
+      this.eventId = row.eventId
       //  console.log("eventId=============="+ this.eventId)
        this.getMsgList();
        this.msg = true;
@@ -614,12 +628,12 @@ listMsg(this.queryMsgParams).then(response => {
       handleAdd(row) {
         // this.reset();
         //获取会员紧急联系人联系方式
-        this.phoneListOptions = this.phoneOptions.map(item => ({ value: item.phone, label: item.phone }))       
+        this.phoneListOptions = this.phoneOptions.map(item => ({ value: item.phone, label: item.phone }))
       this.open = true;
       this.title = "服务登记";
-           
+
       },
-      
+
       /** 提交按钮 */
       submitForm() {
         this.$refs["form"].validate(valid => {
@@ -636,18 +650,18 @@ listMsg(this.queryMsgParams).then(response => {
           //       this.open = false;
           //       this.getList();
           //     });
-              
+
           //   }
           // }
           //this.addData(this.form, this.eventList)
           // addRecord(this.form).then(response => {
-          if (valid) {  
+          if (valid) {
           addRecord(this.form).then(response => {
 
                 this.$modal.msgSuccess("服务登记成功");
                 this.open = false;
                 this.getList();
-                
+
           });
         }
 
@@ -656,8 +670,8 @@ listMsg(this.queryMsgParams).then(response => {
     }
   };
   </script>
-  
-  
+
+
 <style scoped lang="scss">
 .home {
   blockquote {
