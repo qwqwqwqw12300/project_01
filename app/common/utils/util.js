@@ -100,88 +100,117 @@ export const isApp = () => {
  * 对象合并深拷贝
  */
 export function assignDeep(target, ...sources) {
-    // 1. 参数校验
-    if (target == null) {
-        throw new TypeError('Cannot convert undefined or null to object');
-    }
+	// 1. 参数校验
+	if (target == null) {
+		throw new TypeError('Cannot convert undefined or null to object');
+	}
 
-    // 2. 如果是基本类型，则转换包装对象
-    const result = Object(target);
-    // 3. 缓存已拷贝过的对象
-    const hash = new WeakMap();
+	// 2. 如果是基本类型，则转换包装对象
+	const result = Object(target);
+	// 3. 缓存已拷贝过的对象
+	const hash = new WeakMap();
 
-    // 4. 目标属性是否可直接覆盖赋值判断
-    function canPropertyCover(node) {
-        if (!node.target[node.key]) {
-            return true;
-        }
-        if (node.target[node.key] == null) {
-            return true;
-        }
-        if (!(typeof node.target[node.key] === 'object')) {
-            return true;
-        }
-        if (Array.isArray(node.target[node.key]) !== Array.isArray(node.data)) {
-            return true;
-        }
-        return false;
-    }
+	// 4. 目标属性是否可直接覆盖赋值判断
+	function canPropertyCover(node) {
+		if (!node.target[node.key]) {
+			return true;
+		}
+		if (node.target[node.key] == null) {
+			return true;
+		}
+		if (!(typeof node.target[node.key] === 'object')) {
+			return true;
+		}
+		if (Array.isArray(node.target[node.key]) !== Array.isArray(node.data)) {
+			return true;
+		}
+		return false;
+	}
 
-    sources.forEach(v => {
-        const source = Object(v);
+	sources.forEach(v => {
+		const source = Object(v);
 
-        const stack = [{
-            data: source,
-            key: undefined,
-            target: result
-        }];
+		const stack = [{
+			data: source,
+			key: undefined,
+			target: result
+		}];
 
-        while (stack.length > 0) {
-            const node = stack.pop();
-            if (typeof node.data === 'object' && node.data !== null) {
-                let isPropertyDone = false;
-                if (hash.get(node.data) && node.key !== undefined) {
-                    if (canPropertyCover(node)) {
-                        node.target[node.key] = hash.get(node.data);
-                        isPropertyDone = true;
-                    }
-                }
+		while (stack.length > 0) {
+			const node = stack.pop();
+			if (typeof node.data === 'object' && node.data !== null) {
+				let isPropertyDone = false;
+				if (hash.get(node.data) && node.key !== undefined) {
+					if (canPropertyCover(node)) {
+						node.target[node.key] = hash.get(node.data);
+						isPropertyDone = true;
+					}
+				}
 
-                if (!isPropertyDone) {
-                    // tslint:disable-next-line:no-shadowed-variable
-                    let target;
-                    if (node.key !== undefined) {
-                        if (canPropertyCover(node)) {
-                            target = Array.isArray(node.data) ? [] : {};
-                            hash.set(node.data, target);
-                            node.target[node.key] = target;
-                        } else {
-                            target = node.target[node.key];
-                        }
-                    } else {
-                        target = node.target;
-                    }
+				if (!isPropertyDone) {
+					// tslint:disable-next-line:no-shadowed-variable
+					let target;
+					if (node.key !== undefined) {
+						if (canPropertyCover(node)) {
+							target = Array.isArray(node.data) ? [] : {};
+							hash.set(node.data, target);
+							node.target[node.key] = target;
+						} else {
+							target = node.target[node.key];
+						}
+					} else {
+						target = node.target;
+					}
 
-                    Reflect.ownKeys(node.data).forEach(key => {
-                        // 过滤不可枚举属性
-                        const desc = Object.getOwnPropertyDescriptor(node.data, key);
-                        if (desc && !desc.enumerable) {
-                            return;
-                        }
-                        stack.push({
-                            data: node.data[key],
-                            key: key,
-                            target: target
-                        });
-                    });
-                }
-            } else {
-                Object.assign(node.target, {
-                    [node.key]: node.data
-                });
-            }
-        }
+					Reflect.ownKeys(node.data).forEach(key => {
+						// 过滤不可枚举属性
+						const desc = Object.getOwnPropertyDescriptor(node.data, key);
+						if (desc && !desc.enumerable) {
+							return;
+						}
+						stack.push({
+							data: node.data[key],
+							key: key,
+							target: target
+						});
+					});
+				}
+			} else {
+				Object.assign(node.target, {
+					[node.key]: node.data
+				});
+			}
+		}
 
-    });
-    return result;
+	});
+	return result;
+}
+
+/**
+ * versionCompare 比较版本大小如果curV 小于 reqV，则返回false，否则返回ture
+ */
+export const versionCompare = (curV, reqV) => {
+	console.log(curV, reqV, 'vvv')
+	const arr1 = curV.toString().split('.')
+	const arr2 = reqV.toString().split('.')
+	//将两个版本号拆成数字
+	const minL = Math.min(arr1.length, arr2.length);
+	let pos = 0; //当前比较位
+	let diff = 0; //当前为位比较是否相等
+	let flag = true;
+	//逐个比较如果当前位相等则继续比较下一位
+	while (pos < minL) {
+		diff = parseInt(arr1[pos]) - parseInt(arr2[pos]);
+		if (diff == 0) {
+			pos++;
+			continue;
+		} else if (diff > 0) {
+			flag = true;
+			break;
+		} else {
+			flag = false;
+			break;
+		}
+	}
+	return flag;
 }

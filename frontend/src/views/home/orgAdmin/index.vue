@@ -7,7 +7,7 @@
         </div>
         <water-fall :value="orgList">
           <template slot-scope="{item}">
-            <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotAssosiateDevice(item.orgId)">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDevice(item.orgId)">
               {{ item.orgName }}
               <br>
               共{{ getDeviceCount(item.orgId)}}台设备
@@ -68,6 +68,7 @@ import {
   notArrangeDeviceGroupCount
 } from "@/api/home/orgAdminHome"
 import {getUserProfile, getUser, pageUser} from "@/api/system/user";
+import router from "@/router";
 
 export default {
 
@@ -126,8 +127,13 @@ export default {
       notArrangeDeviceCount().then(response => this.notArrangeDeviceCount = response.data);
       notArrangeDeviceGroupCount().then(response => this.notArrangeDeviceGroupCount = response.data);
     },
+    goDevice(orgId) {
+      this.$router.push({path: '/devices/device', query: {orgId: orgId}})
+    },
     goNotAssosiateDevice(orgId) {
+      // this.$tab.closePage('Device');
       this.$router.push({path: '/devices/device', query: {orgId: orgId, distributeFlag: 0}})
+        .then(x=>x.reload())
     },
     goNotArrangeDevice() {
       this.$router.push({path: '/org/deviceGroup'})

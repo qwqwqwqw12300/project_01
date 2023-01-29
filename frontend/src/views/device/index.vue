@@ -309,6 +309,12 @@ export default {
     this.getDeptTree();
     this.resetQuery();
   },
+  // activated() {
+  //   this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
+  //   this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)
+  //   this.getDeptTree();
+  //   this.resetQuery();
+  // },
   watch: {
     "$route.query.distributeFlag": {
       immediate: true,
@@ -316,6 +322,7 @@ export default {
         if (this.$route.name == "Device") {
           if (this.currentDistributeFlag != val) {
             this.currentDistributeFlag = val==undefined?undefined:Number(val);
+            this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)
             this.resetQuery();
           }
         }
@@ -327,6 +334,7 @@ export default {
         if (this.$route.name == "Device") {
           if (this.currentOrgId != val) {
             this.currentOrgId = val;
+            this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
             this.resetQuery();
           }
         }

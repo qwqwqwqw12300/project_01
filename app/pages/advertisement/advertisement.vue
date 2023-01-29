@@ -13,11 +13,17 @@
 			<button @click="goRegister">马上体验</button>
 			<text @click="goLogin">老朋友? &nbsp;点此登录</text>
 		</view>
-
 	</app-body>
 </template>
 
 <script>
+	import {
+		PostVersionInfo,
+	} from '@/common/http/api.js';
+	import {
+		versionCompare,
+		isIos
+	} from '../../common/utils/util';
 	export default {
 		data() {
 			return {
@@ -25,20 +31,7 @@
 			};
 		},
 		mounted() {
-			this.getUserInfo().then(res => {
-				if (!res) {
-					const animation = uni.createAnimation({
-						duration: 3000,
-						timingFunction: 'ease'
-					});
-					animation.opacity(10).step();
-					this.animationData = animation.export();
-				} else {
-					this.goMain();
-				}
-
-			});
-
+			this.queryVersion()
 		},
 		methods: {
 			/**
@@ -79,6 +72,52 @@
 					this.$store.dispatch('getPushMsgState').then(res => {
 						resolve(res);
 					});
+				});
+			},
+			/**
+			 * 查询当前版本
+			 */
+			queryVersion() {
+				PostVersionInfo({
+					versionType: isIos ? '0' : '1',
+				}).then(res => {
+					const curVersion = res.data.content
+					plus.runtime.getProperty(plus.runtime.appid, (info) => {
+						const appVersion = info.version
+						const result = versionCompare(appVersion, curVersion)
+						if (!result) {
+							uni.showModal({
+								title: '',
+								content: '发现新版本、是否更新？',
+								success: res => {
+									if (res.confirm) {
+										let appurl = "https://sj.qq.com/"
+										plus.runtime.openURL(appurl)
+									} else {
+										this.initInfo()
+										// plus.runtime.quit()
+									}
+								}
+							});
+						} else {
+							this.initInfo()
+						}
+					})
+				})
+			},
+			initInfo() {
+				this.getUserInfo().then(res => {
+					if (!res) {
+						const animation = uni.createAnimation({
+							duration: 3000,
+							timingFunction: 'ease'
+						});
+						animation.opacity(10).step();
+						this.animationData = animation.export();
+					} else {
+						this.goMain();
+					}
+
 				});
 			}
 		},

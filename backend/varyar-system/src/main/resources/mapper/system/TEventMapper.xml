@@ -93,6 +93,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orgName != null  and orgName != ''"> and eve.org_name like concat('%', #{orgName}, '%')</if>
             <if test="operateType != null  and operateType != ''"> and eve.operate_type = #{operateType}</if>
             <if test="memberId != null "> and eve.member_id = #{memberId}</if>
+            <if test="params.memberEvent != null "> and eve.member_id is not null</if>
             <if test="memberPhone != null  and memberPhone != ''"> and eve.member_phone = #{memberPhone}</if>
             <if test="memberName != null  and memberName != ''"> and eve.member_name like concat('%', #{memberName}, '%')</if>
             <if test="userId != null "> and eve.user_id = #{userId}</if>
