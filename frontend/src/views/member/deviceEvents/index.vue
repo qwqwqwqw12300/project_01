@@ -12,7 +12,7 @@
           v-model="queryParams.operateTime"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择操作时间"> 
+          placeholder="请选择操作时间">
         </el-date-picker>
       </el-form-item> -->
 
@@ -69,7 +69,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      
+
       <!-- <el-form-item label="归属机构" prop="orgId">
           <treeselect style="width: 240px" v-model="queryParams.orgId" :options="orgOptions" :show-count="true" placeholder="请选择归属机构" />
         </el-form-item> -->
@@ -140,7 +140,7 @@
           <template slot-scope="scope">
           {{ eventLevelFormat(scope.row) }}
           </template>
-        </el-table-column>		      
+        </el-table-column>
       <el-table-column label="事件编号" align="center" prop="no" />
       <el-table-column label="事件内容" align="center" prop="content" />
       <el-table-column label="设备名称" align="center" prop="deviceName" />
@@ -164,7 +164,7 @@
       <!-- 待调整 -->
       <el-table-column label="手机号" align="center" prop="memberPhone" />
       <!-- 待调整 -->
-      <el-table-column label="操作员姓名" align="center" prop="userName" /> 
+      <el-table-column label="操作员姓名" align="center" prop="userName" />
       <el-table-column label="处理标志" align="center" prop="operateFlag">
         <template slot-scope="scope">
         {{ operateFlagFormat(scope.row) }}
@@ -187,7 +187,7 @@
             v-hasPermi="['system:event:remove']"
           >删除</el-button>
         </template>
-      </el-table-column> --> 
+      </el-table-column> -->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -195,11 +195,11 @@
             type="text"
             icon="el-icon-info"
             @click="handleView(scope.row)"
-          >查看消息</el-button>     
+          >查看消息</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -231,7 +231,7 @@
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.sendTime) }}</span>
             </template>
-          </el-table-column>  
+          </el-table-column>
       <el-table-column label="发送状态" align="center" prop="sendStatus">
         <template slot-scope="scope">
           {{ sendStatusFormat(scope.row) }}
@@ -253,7 +253,7 @@
       </div>
     </el-dialog>
 
-    
+
   </div>
 </template>
 
@@ -327,7 +327,7 @@ export default {
            pageNum: 1,
            pageSize: 20,
            eventId: 0,
-        
+
         },
       // 表单参数
       form: {},
@@ -348,7 +348,9 @@ export default {
 //   }
 // },
   created() {
-    this.getList();
+    this.currentOperateFlag = this.$route.query.operateFlag==undefined?undefined:this.$route.query.operateFlag
+    this.resetQuery()
+    // this.getList();
     // this.getDeptTree();
 
   },
@@ -398,12 +400,12 @@ export default {
     //事件级别字段翻译
     eventLevelFormat(row, column) {
       return this.selectDictLabel(this.dict.type.event_level, row.level)
-    },	
+    },
 
 /** 查看按钮操作 */
 handleView(row) {
         //this.reset();
-      this.eventId = row.eventId 
+      this.eventId = row.eventId
       //  console.log("eventId=============="+ this.eventId)
        this.getMsgList();
        this.open = true;
@@ -448,7 +450,27 @@ handleView(row) {
     /** 重置按钮操作 */
     resetQuery() {
       this.dateRange = [];
-      this.resetForm("queryForm");
+      this.queryParams = {
+        pageNum: 1,
+        pageSize: 10,
+        no: null,
+        level: null,
+        content: null,
+        deviceId: null,
+        devicegroupId: null,
+        familyId: null,
+        deviceNo: null,
+        orgId: null,
+        orgName: null,
+        operateType: null,
+        memberId: null,
+        memberPhone: null,
+        memberName: null,
+        userId: null,
+        userName: null,
+        operateTime: null,
+        operateFlag: this.currentOperateFlag,
+      }
       // this.$refs.tree.setCurrentKey(null);
       this.handleQuery();
     },
