@@ -46,6 +46,17 @@ public class TFamily extends BaseEntity
     /** 创建者id*/
     private String createById;
 
+    /** 创建者姓名*/
+    private String createMemberName;
+
+    public String getCreateMemberName() {
+        return createMemberName;
+    }
+
+    public void setCreateMemberName(String createMemberName) {
+        this.createMemberName = createMemberName;
+    }
+
     public String getCreateById() {
         return createById;
     }
@@ -124,6 +135,7 @@ public class TFamily extends BaseEntity
             .append("name", getName())
             .append("address", getAddress())
             .append("delFlag", getDelFlag())
+                .append("createMemberName", getCreateMemberName())
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
             .toString();
