@@ -72,7 +72,7 @@ import router from "@/router";
 
 export default {
 
-  name: "Index",
+  name: "OrgAdmin",
   data() {
     return {
       orgList: [],
@@ -87,6 +87,11 @@ export default {
   },
   created() {
     this.init()
+    setInterval(()=>{
+      if (this.$route.name == "OrgAdminHome") {
+        this.init()
+      }
+    }, 5000)
   },
   activated() {
     this.init()

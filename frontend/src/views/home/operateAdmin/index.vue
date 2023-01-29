@@ -53,6 +53,11 @@ export default {
   },
   created(){
     this.getList();
+    setInterval(()=>{
+      if (this.$route.name == "OperateAdminHome") {
+        this.getList()
+      }
+    }, 5000)
   },
   computed:{
     urgentDevices(){
