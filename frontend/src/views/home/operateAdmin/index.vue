@@ -7,10 +7,11 @@
         </div>
         <water-fall :value="urgentDevices">
           <template slot-scope="{item}">
-            <el-card shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId,item.orgId,item.memberId)">
-              <span style="color: #ff0000">{{ item.name }}</span> | {{getEventSum(item)}}条
+            <el-card :style="{background: item.onlineFlag=='0'?'#ff9999':'none'}" shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId,item.orgId,item.memberId)">
+              <span :style="{color:item.urgent?'#ff0000':'none'}">{{ item.name }}</span> | {{getEventSum(item)}}条
               <br>
-              {{ item.memberId==undefined?item.deviceGroupName:item.familyName }} | {{ item.memberId==undefined?item.location:item.roomName }} | {{item.onlineFlag=='1'?"在线":"不在线"}}
+              {{ item.memberId==undefined?item.deviceGroupName:item.familyName }} | {{ item.memberId==undefined?item.location:item.roomName }} |
+              <span :style="{color:item.onlineFlag=='0'?'#ff0000':'none'}">{{item.onlineFlag=='1'?"在线":"不在线"}}</span>
               <br>
               {{ item.memberId==undefined?"机构业务":("会员账号："+item.memberPhone) }}
             </el-card>
@@ -55,10 +56,10 @@ export default {
   },
   computed:{
     urgentDevices(){
-      return this.deviceList.filter(x=>x.countUnHandleByDeviceGroupByLevel?.find(p=>p.level==this.urgentLevel&&p.count>0))
+      return this.deviceList.filter(x=>x.urgent||x.onlineFlag == '0')
     },
     notUrgentDevices(){
-      return this.deviceList.filter(x=>!(x.countUnHandleByDeviceGroupByLevel?.find(p=>p.level==this.urgentLevel&&p.count>0)))
+      return this.deviceList.filter(x=>!(x.urgent||x.onlineFlag == '0'))
     },
   },
   methods: {
@@ -70,7 +71,10 @@ export default {
         this.deviceList = response.data.map(x=>{
           x.countUnHandleByDeviceGroupByLevel = []
           countUnHandleByDeviceGroupByLevel(x.deviceId)
-            .then(countResponse=>x.countUnHandleByDeviceGroupByLevel=countResponse.data)
+            .then(countResponse=>{
+              x.countUnHandleByDeviceGroupByLevel=countResponse.data;
+              x.urgent = x.countUnHandleByDeviceGroupByLevel?.find(p=>(p.level==this.urgentLevel&&p.count>0))!=undefined;
+            })
           return x;
         });
 
