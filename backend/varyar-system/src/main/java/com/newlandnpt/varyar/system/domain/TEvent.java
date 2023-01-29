@@ -69,6 +69,10 @@ public class TEvent extends BaseEntity
     @Excel(name = "机构名称")
     private String orgName;
 
+    /** 机构类型 */
+    @Excel(name = "机构类型", readConverterExp = "0=企业机构,1=个人机构")
+    private String orgType;
+
     /** 操作类型（0会员操作 1后台人工） */
     @Excel(name = "操作类型", readConverterExp = "0=会员操作,1=后台人工")
     private String operateType;
@@ -231,6 +235,15 @@ public class TEvent extends BaseEntity
     {
         return orgName;
     }
+
+    public String getOrgType() {
+        return orgType;
+    }
+
+    public void setOrgType(String orgType) {
+        this.orgType = orgType;
+    }
+
     public void setOperateType(String operateType)
     {
         this.operateType = operateType;
@@ -319,6 +332,7 @@ public class TEvent extends BaseEntity
                 .append("deviceType", getDeviceType())
                 .append("orgId", getOrgId())
                 .append("orgName", getOrgName())
+                .append("orgType", getOrgType())
                 .append("operateType", getOperateType())
                 .append("memberId", getMemberId())
                 .append("memberPhone", getMemberPhone())
