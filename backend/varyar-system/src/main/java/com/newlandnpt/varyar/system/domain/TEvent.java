@@ -23,38 +23,44 @@ public class TEvent extends BaseEntity
     /** 事件id */
     private Long eventId;
 
+    /** 重要级别 */
+    @Excel(name = "重要级别",readConverterExp = "normal=普通,urgent=紧急")
+    private String level;
     /** 事件编号 */
     @Excel(name = "事件编号")
     private String no;
 
-    /** 级别 */
-    @Excel(name = "级别")
-    private String level;
-
-    /** 内容 */
-    @Excel(name = "内容")
+    /** 事件内容 */
+    @Excel(name = "事件内容")
     private String content;
 
+    /** 报警时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "报警时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
+
     /** 设备id */
-    @Excel(name = "设备id")
+    //@Excel(name = "设备id")
     private Long deviceId;
 
     /** 设备组id */
-    @Excel(name = "设备组id")
+    //@Excel(name = "设备组id")
     private Long devicegroupId;
 
     /** 家庭id */
-    @Excel(name = "家庭id")
+    //@Excel(name = "家庭id")
     private Long familyId;
 
-    /** 设备编号 */
-    @Excel(name = "设备编号")
-    private String deviceNo;
+
 
     /** 设备名称 */
     @Excel(name = "设备名称")
     @Transient
     private String deviceName;
+
+    /** 设备编号 */
+    @Excel(name = "设备编号")
+    private String deviceNo;
 
     /** 设备类型 */
     @Excel(name = "设备类型", readConverterExp = "0=雷达波,1=监控设备")
@@ -62,11 +68,11 @@ public class TEvent extends BaseEntity
     private String deviceType;
 
     /** 机构id */
-    @Excel(name = "机构id")
+    //@Excel(name = "机构id")
     private Long orgId;
 
-    /** 机构名称 */
-    @Excel(name = "机构名称")
+    /** 设备归属机构名称 */
+    @Excel(name = "设备归属机构")
     private String orgName;
 
     /** 机构类型 */
@@ -74,36 +80,36 @@ public class TEvent extends BaseEntity
     private String orgType;
 
     /** 操作类型（0会员操作 1后台人工） */
-    @Excel(name = "操作类型", readConverterExp = "0=会员操作,1=后台人工")
+    //@Excel(name = "操作类型", readConverterExp = "0=会员操作,1=后台人工")
     private String operateType;
 
     /** 会员id */
-    @Excel(name = "会员id")
+    //@Excel(name = "会员id")
     private Long memberId;
 
     /** 会员手机号 */
-    @Excel(name = "会员手机号")
+    //@Excel(name = "会员手机号")
     private String memberPhone;
 
     /** 会员姓名 */
-    @Excel(name = "会员姓名")
+    //@Excel(name = "会员姓名")
     private String memberName;
 
     /** 运营者id */
-    @Excel(name = "运营者id")
+    //@Excel(name = "运营者id")
     private Long userId;
 
     /** 运营者姓名 */
-    @Excel(name = "运营者姓名")
+    //@Excel(name = "运营者姓名")
     private String userName;
 
     /** 操作时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "操作时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    //@Excel(name = "操作时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date operateTime;
 
     /** 操作标志（0未处理 1已处理） */
-    @Excel(name = "操作标志", readConverterExp = "0=未处理,1=已处理")
+    @Excel(name = "处理标志", readConverterExp = "0=未处理,1=已处理")
     private String operateFlag;
 
 //    /** 服务人员快照 */
@@ -167,6 +173,16 @@ public class TEvent extends BaseEntity
     public void setDeviceId(Long deviceId)
     {
         this.deviceId = deviceId;
+    }
+
+    @Override
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    @Override
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Long getDeviceId()

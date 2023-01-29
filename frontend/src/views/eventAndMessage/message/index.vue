@@ -413,9 +413,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/msg/export', {
+      this.download('msg/export', {
         ...this.queryParams
-      }, `msg_${new Date().getTime()}.xlsx`)
+      }, `消息_${new Date().getTime()}.xlsx`)
     }
   }
 };

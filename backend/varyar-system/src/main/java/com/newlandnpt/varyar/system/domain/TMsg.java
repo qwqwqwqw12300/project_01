@@ -23,52 +23,57 @@ public class TMsg extends BaseEntity
     private Long msgId;
 
     /** 消息类型:1短信 2APP消息*/
-    @Excel(name = "消息类型:1短信 2APP消息", readConverterExp = "1=短信,2=APP消息,3事件消息")
+    @Excel(name = "消息类型", readConverterExp = "1=短信,2=APP消息")
     private String msgType;
 
     /** 设备类型: 0雷达波  1监控设备 */
-    @Excel(name = "消息类型:0雷达波 1监控设备", readConverterExp = "0=雷达波,1=监控设备")
+    //@Excel(name = "设备类型:0雷达波 1监控设备", readConverterExp = "0=雷达波,1=监控设备")
     private String deviceType;
 
     /** 事件等级:0:重要事件  1：普通事件 */
-    @Excel(name = "事件等级:0:重要事件 1：普通事件", readConverterExp = "0=重要事件,1=普通事件")
+    //@Excel(name = "事件等级:0:重要事件 1：普通事件", readConverterExp = "0=重要事件,1=普通事件")
     private String eventLevel;
 
     /** 消息编号 */
-    @Excel(name = "消息编号")
+    //@Excel(name = "消息编号")
     private String no;
 
     /** 内容 */
-    @Excel(name = "内容")
+    @Excel(name = "消息内容")
     private String content;
-
-    /** 事件id */
-    @Excel(name = "事件id")
-    private Long eventId;
-
-    /** 设备id */
-    @Excel(name = "设备id")
-    private Long deviceId;
-
-    /** 家庭id */
-    @Excel(name = "家庭id")
-    private Long familyId;
-
-    /** 处理人会员id */
-    @Excel(name = "处理人会员id")
-    private Long memberId;
-
-    /** 处理人姓名 */
-    @Excel(name = "处理人姓名")
-    private Long memberName;
-
-    /** 机构id */
-    @Excel(name = "机构id")
-    private Long orgId;
 
     /** 操作人员 */
     @Excel(name = "操作人员")
     private String operator;
+
+    /** 事件id */
+    //@Excel(name = "事件id")
+    private Long eventId;
+
+    /** 设备id */
+    //@Excel(name = "设备id")
+    private Long deviceId;
+
+    /** 家庭id */
+    //@Excel(name = "家庭id")
+    private Long familyId;
+
+    /** 接收会员id */
+    //@Excel(name = "处理人会员id")
+    private Long memberId;
+
+    /** 接收人员 */
+    @Excel(name = "接收人员")
+    private Long memberName;
+
+    /** 机构id */
+    //@Excel(name = "机构id")
+    private Long orgId;
+
+    /** 发送时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "发送时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date sendTime;
 
     /** 发送状态 */
     @Excel(name = "发送状态", readConverterExp = "0=未发送,1=已发送")
@@ -79,13 +84,10 @@ public class TMsg extends BaseEntity
     private String reason;
 
     /** 已读未读标志（0未处理 1已处理） */
-    @Excel(name = "已读未读标志", readConverterExp = "0=未处理,1=已处理")
+    //@Excel(name = "已读未读标志", readConverterExp = "0=未处理,1=已处理")
     private String operateFlag;
 
-    /** 发送时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Excel(name = "发送时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    private Date sendTime;
+
 
     /** 设备名称*/
     @Transient

@@ -128,15 +128,15 @@
           {{ eventLevelFormat(scope.row) }}
           </template>
         </el-table-column>
-        <el-table-column label="事件编号" align="center" prop="no" />
-        <el-table-column label="事件内容" align="center" prop="content" />
+        <el-table-column label="事件编号" align="center" prop="no" width="115" show-overflow-tooltip/>
+        <el-table-column label="事件内容" align="center" prop="content" width="115" show-overflow-tooltip />
         <el-table-column label="报警时间" align="center" prop="createTime" width="180" color="#FF0000">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="设备名称" align="center" prop="deviceName" />
-        <el-table-column label="设备编号" align="center" prop="deviceNo" />
+        <el-table-column label="设备名称" align="center" prop="deviceName" width="115" show-overflow-tooltip/>
+        <el-table-column label="设备编号" align="center" prop="deviceNo" width="115" show-overflow-tooltip/>
        
         <el-table-column label="设备类型" align="center" prop="deviceType">
           <template slot-scope="scope">
@@ -162,7 +162,7 @@
               type="text"
               icon="el-icon-info"
               @click="handleView(scope.row)"
-            >查看</el-button>     
+            >查看消息</el-button>     
           </template>
         </el-table-column>
       </el-table>
@@ -503,11 +503,14 @@
       },
       /** 导出按钮操作 */
       handleExport() {
-        this.download('system/event/export', {
+        this.download('event/export', {
           ...this.queryParams
-        }, `event_${new Date().getTime()}.xlsx`)
+        }, `事件_${new Date().getTime()}.xlsx`)
       }
     }
   };
   </script>
+
+<style land="css">.el-tooltip__popper{max-width:50%}
+</style>
   
