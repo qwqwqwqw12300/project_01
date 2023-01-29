@@ -20,37 +20,51 @@
       </el-card>
     </el-row>
     <el-row>
-      <el-card class="box-card">
-        <el-table
-          v-loading="loading"
-          :data="deviceGroupList"
-          row-key="deviceGroupId"
-        >
-          <el-table-column label="设备组名称" key="0" prop="name" align="center"></el-table-column>
-          <el-table-column label="设备组编号" key="1" prop="no" align="center"></el-table-column>
-          <el-table-column label="运营人员" key="2" prop="user.name" align="center"></el-table-column>
-          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-edit"
-                @click="arrangeUser(scope.row)"
-                v-hasPermi="['org:deviceGroup:arrangeUser']"
-              >修改运营人员
-              </el-button>
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-edit"
-                @click="deviceArrange(scope.row)"
-                v-hasPermi="['org:deviceGroup:deviceArrange']"
-              >分配设备
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-card>
+      <water-fall v-loading="loading"
+                  :value="deviceGroupList">
+        <template slot-scope="{item}">
+          <el-card shadow="hover" class="card-item" >
+            {{item.name}} | <el-tooltip :content="item.no" placement="top"><span>{{subString(item)}}</span></el-tooltip>
+            <br>
+           运营人员：{{item.user.name}}
+            <br>
+            <el-row :gutter="10">
+              <el-col :span="12">
+                <el-button
+                  type="primary"
+                  @click="arrangeUser(item)"
+                  v-hasPermi="['org:deviceGroup:arrangeUser']"
+                >修改运营人员
+                </el-button>
+              </el-col>
+              <el-col :span="12">
+                <el-button
+                  type="primary"
+                  @click="deviceArrange(item)"
+                  v-hasPermi="['org:deviceGroup:deviceArrange']"
+                >分配设备
+                </el-button>
+              </el-col>
+            </el-row>
+          </el-card>
+        </template>
+      </water-fall>
+<!--      <el-card class="box-card">-->
+<!--        <el-table-->
+<!--          v-loading="loading"-->
+<!--          :data="deviceGroupList"-->
+<!--          row-key="deviceGroupId"-->
+<!--        >-->
+<!--          <el-table-column label="设备组名称" key="0" prop="name" align="center"></el-table-column>-->
+<!--          <el-table-column label="设备组编号" key="1" prop="no" align="center"></el-table-column>-->
+<!--          <el-table-column label="运营人员" key="2" prop="user.name" align="center"></el-table-column>-->
+<!--          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
+<!--            <template slot-scope="scope">-->
+
+<!--            </template>-->
+<!--          </el-table-column>-->
+<!--        </el-table>-->
+<!--      </el-card>-->
     </el-row>
 
 
@@ -343,6 +357,14 @@ export default {
       }
       this.deviceArrangeOpen = false
       this.$modal.msgSuccess("分配设备成功");
+    },
+    subString(item){
+      const length = 11;
+      let result = item?.no || ""
+      if(result.length>length){
+        return (result).slice(0,8)+"..."
+      }
+      return result
     }
   }
 }

@@ -86,8 +86,8 @@ export default {
     //机构处理单个设备消息/会员单个设备消息
     goDeviceEvent(deviceId,orgId,memberId){
       //this.$router.push({path:'/org/orgSingleDeviceEvent',query: {deviceId:deviceId, orgId:orgId }})
-      memberId==undefined?this.$router.push({path:'/org/orgSingleDeviceEvent',query: {deviceId:deviceId, orgId:orgId }})
-      :this.$router.push({path:'/members/singleDeviceRB',query: {deviceId: deviceId, memberId: memberId}})
+      memberId==undefined?this.$router.push({path:'/org/orgSingleDeviceEvent',query: {deviceId:deviceId, orgId:orgId,operateFlag:0 }})
+      :this.$router.push({path:'/members/singleDeviceRB',query: {deviceId: deviceId, memberId: memberId,operateFlag:0}})
 
      }
   },
