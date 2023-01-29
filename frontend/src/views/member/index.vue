@@ -102,6 +102,8 @@
           <water-fall :value="familyGroupList" :columnNumber="3">
             <template slot-scope="{item}">
               <el-card shadow="hover" class="card-item card-item-click" >
+                {{ shareFlagFormat(item.shareFlag)  == "共享"?"创建人:"+ item.createMemberName :"" }}
+                <br>
                 家庭名称： {{ item.name }}
                 <br>
                 家庭地址：{{ item.address}}
@@ -116,9 +118,10 @@
                             <br>
                             {{item.name}}
                             <br>
-                            <!-- 待调整 -->
-                            
-                            {{item.nowLoacation}} | {{item.onlineFlag=='1'?"在线":"不在线"}}
+                            <!-- 待调整 --> 
+                            <el-row>
+                            {{JSON.parse(item.nowLoacation).address}} | {{item.onlineFlag=='1'?"在线":"不在线"}}
+                            </el-row>
                             <br>
                             <br>
                         </el-card>

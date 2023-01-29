@@ -14,6 +14,7 @@
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="createById" column="create_by_id"/>
+        <result property="createMemberName" column="create_member_name"/>
         <collection property="devices" ofType="TDevice" select="selectDevices" column="{familyId = family_id}"/>
     </resultMap>
 
@@ -74,7 +75,8 @@
         </where>
     </select>
     <select id="selectMembersFamilyList" parameterType="Long" resultMap="TFamilyResult">
-        <include refid="FamilyVo"/>,mf.share_flag
+        <include refid="FamilyVo"/>,mf.share_flag,
+         (select m.phone from t_member m where f.create_by_id =m.member_id) as create_member_name
         from t_family f
         join t_member_family mf on f.family_id = mf.family_id and mf.del_flag = '0' and mf.member_id = #{memberId}
         where f.del_flag= '0'
