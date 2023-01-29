@@ -98,14 +98,18 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         }
         if (discDevices.size() > 0) {
             List<String> devIds = new ArrayList<>();
-            // Todo 状态一直是断网的情况不重复发断网事件
-
-            for (TDevice device : discDevices) {
-                devIds.add(device.getNo());
-                triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getNo() + " 疑似断网，请及时处理！");
-            }
             //Redis缓存断网设备列表
             List<String> cacheList = redisCache.getCacheList(CacheConstants.DEVICE_DISCONNECTION);
+            for (TDevice device : discDevices) {
+                devIds.add(device.getNo());
+                //状态一直是断网的情况不重复发断网事件
+                if(!cacheList.contains(device.getNo())){
+                    triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getNo() + " 疑似断网，请及时处理！");
+                }else{
+                    log.info(">>>>>>>设备{}仍然是断网,忽略触发事件",device.getNo());
+                }
+            }
+
             cacheList.removeAll(devIds);
             List<String> newCacheList = new ArrayList<>();
             newCacheList.addAll(cacheList);
