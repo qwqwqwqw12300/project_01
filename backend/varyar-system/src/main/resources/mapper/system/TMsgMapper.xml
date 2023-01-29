@@ -14,6 +14,7 @@
         <result property="deviceId"    column="device_id"    />
         <result property="familyId"    column="family_id"    />
         <result property="memberId"    column="member_id"    />
+        <result property="memberName"    column="member_name"    />
         <result property="orgId"    column="org_id"    />
         <result property="operator"    column="operator"    />
         <result property="sendStatus"    column="send_status"    />
@@ -27,7 +28,8 @@
     </resultMap>
 
     <sql id="selectTMsgVo">
-        select m.msg_id, m.msg_type,m.device_type,m.event_level, m.no, m.content, m.event_id, m.device_id, m.family_id, m.member_id,m.org_id,m.operator, m.send_status, m.reason, m.operate_flag, m.send_time, m.create_time, m.update_time,(select td.name from t_device td where td.device_id = m.device_id) as device_name from t_msg m
+        select m.msg_id, m.msg_type,m.device_type,m.event_level, m.no, m.content, m.event_id, m.device_id, m.family_id, m.member_id,me.phone as member_name, m.org_id,m.operator, m.send_status, m.reason, m.operate_flag, m.send_time, m.create_time, m.update_time,(select td.name from t_device td where td.device_id = m.device_id) as device_name from t_msg m
+        left join t_member me on m.member_id=me.member_id
     </sql>
     <sql id="selectTMsgByMemberId">
         select tm.msg_id, tm.msg_type, tm.device_type, tm.event_level, tm.no, tm.content, tm.event_id, tm.device_id, tm.family_id, tm.member_id, tm.operate_flag, tm.create_time,

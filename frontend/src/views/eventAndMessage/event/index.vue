@@ -186,9 +186,9 @@
             </template>
 
           </el-table-column>
-          <el-table-column label="消息内容" align="center" prop="content" />
+          <el-table-column label="消息内容" align="center" prop="content" show-overflow-tooltip/>
           <el-table-column label="操作人员" align="center" prop="operator" />
-          <el-table-column label="接收人员" align="center" prop="memberId" />
+          <el-table-column label="接收人员" align="center" prop="memberName" />
           <el-table-column label="发送时间" align="center" prop="sendTime" width="180">
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.sendTime) }}</span>

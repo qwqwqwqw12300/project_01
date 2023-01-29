@@ -58,6 +58,10 @@ public class TMsg extends BaseEntity
     @Excel(name = "处理人会员id")
     private Long memberId;
 
+    /** 处理人姓名 */
+    @Excel(name = "处理人姓名")
+    private Long memberName;
+
     /** 机构id */
     @Excel(name = "机构id")
     private Long orgId;
@@ -183,6 +187,14 @@ public class TMsg extends BaseEntity
         return memberId;
     }
 
+    public Long getMemberName() {
+        return memberName;
+    }
+
+    public void setMemberName(Long memberName) {
+        this.memberName = memberName;
+    }
+
     public Long getOrgId() {
         return orgId;
     }
@@ -268,6 +280,7 @@ public class TMsg extends BaseEntity
                 ", deviceId=" + deviceId +
                 ", familyId=" + familyId +
                 ", memberId=" + memberId +
+                ", memberName=" + memberName +
                 ", orgId=" + orgId + '\'' +
                 ", operator='" + operator + '\'' +
                 ", sendStatus='" + sendStatus + '\'' +
