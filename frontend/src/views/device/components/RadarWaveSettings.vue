@@ -140,7 +140,7 @@
               <el-card header="子区域列表" :body-style="{width:'100%'}">
                 <water-fall v-model="settings.roomZones" :column-number="1">
                   <template slot-scope="{item,rowIndex}">
-                    <el-card style="margin-bottom: 5px" @click.native="selectZones(rowIndex)">
+                    <el-card :shadow="(index==rowIndex)?'always':'never'" style="margin-bottom: 5px" @click.native="selectZones(rowIndex)">
                       <el-row :gutter="10">
                         <el-col :span="16">
                           <el-input v-model="item.name" placeholder="子区域名称" clearable></el-input>
