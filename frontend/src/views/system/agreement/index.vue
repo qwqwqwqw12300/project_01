@@ -114,8 +114,16 @@
     <!-- 添加或修改用户协议管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="协议内容">
+        <!-- <el-form-item label="协议内容">
           <editor v-model="form.content" :min-height="192"/>
+        </el-form-item> -->
+        <el-form-item label="协议内容" prop="content">
+          <el-input
+            v-model="form.content"
+            type="textarea"
+            :autosize="{ minRows: 3, maxRows: 8}"
+            placeholder="请输入协议内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="协议版本" prop="ver">
           <el-input v-model="form.ver" placeholder="请输入协议版本" />

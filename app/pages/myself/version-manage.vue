@@ -3,10 +3,10 @@
 		<view class="ui-main">
 			<image class="ui-main-img" src="../../static/images/logo.png"></image>
 			<text class="ui-main-name">艾吉通</text>
-			<text class="ui-main-version">版本：{{ version }}</text>
+			<text class="ui-main-version">当前版本：{{ appVersion }}</text>
 
 			<view class="ui-main-button">
-				<button class="ui-button" @click="handleQuery">检查更新</button>
+				<button class="ui-button" @click="handleUpdate">检查更新</button>
 			</view>
 		</view>
 	</app-body>
@@ -16,18 +16,50 @@
 	import {
 		PostVersionInfo,
 	} from '@/common/http/api.js';
+	import {
+		versionCompare,
+		isIos
+	} from '../../common/utils/util';
 	export default {
 		data() {
 			return {
-				version: ''
+				appVersion: ''
 			}
 		},
 		methods: {
 			handleQuery() {
+				plus.runtime.getProperty(plus.runtime.appid, (info) => {
+					this.appVersion = info.version
+				})
+				// PostVersionInfo({
+				// 	versionType: isIos ? '0' : '1',
+				// }).then(res => {
+				// 	this.version = res.data.content
+				// })
+			},
+			handleUpdate() {
 				PostVersionInfo({
-					versionType: '1',
+					versionType: isIos ? '0' : '1',
 				}).then(res => {
-					this.version = res.data.content
+					const curVersion = res.data.content
+					const result = versionCompare(this.appVersion, curVersion)
+					if (!result) {
+						uni.showModal({
+							title: '',
+							content: `发现新版本${curVersion}、是否更新？`,
+							success: res => {
+								if (res.confirm) {
+									let appurl = "https://sj.qq.com/"
+									plus.runtime.openURL(appurl)
+								}
+							}
+						});
+					} else {
+						uni.showModal({
+							title: '',
+							content: '已经是最新版本了',
+						});
+					}
 				})
 			}
 		},

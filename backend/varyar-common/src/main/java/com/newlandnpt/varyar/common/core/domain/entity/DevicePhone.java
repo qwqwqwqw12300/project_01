@@ -20,10 +20,6 @@ public class DevicePhone implements Serializable
      * */
     public String phone;
 
-    /**
-     * 电话类型（P：普通电话  0：sos电话  1：按钮1  2：按钮2  3：按钮3  4：按钮4)
-     * */
-    public String type;
 
     public String getPhoneName() {
         return phoneName;
@@ -39,14 +35,6 @@ public class DevicePhone implements Serializable
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
 }

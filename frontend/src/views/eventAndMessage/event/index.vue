@@ -138,13 +138,17 @@
         <el-table-column label="设备名称" align="center" prop="deviceName" />
         <el-table-column label="设备编号" align="center" prop="deviceNo" />
        
-        <el-table-column label="设备类型" align="center" prop="operateType">
+        <el-table-column label="设备类型" align="center" prop="deviceType">
           <template slot-scope="scope">
           {{ deviceTypeFormat(scope.row) }}
           </template>
         </el-table-column>
         <el-table-column label="设备归属机构" align="center" prop="orgName" /> 
-        <el-table-column label="机构类型" align="center" prop="orgName" />
+        <el-table-column label="机构类型" align="center" prop="orgType">
+        <template slot-scope="scope">
+          {{ orgTypeFormat(scope.row) }}
+          </template>
+        </el-table-column>
         <el-table-column label="处理标志" align="center" prop="operateFlag" >
           <template slot-scope="scope">
            {{ operateFlagFormat(scope.row) }}
@@ -221,7 +225,7 @@
 
   export default {
     name: "Event",
-    dicts: ['sys_operate_flag','sys_msg_type','sys_send_status','device_type','event_level'],
+    dicts: ['sys_operate_flag','sys_msg_type','sys_send_status','device_type','event_level','org_type'],
     components: { Treeselect },
     data() {
       return {
@@ -365,12 +369,18 @@
     //设备类型字段翻译(修改)
     
     deviceTypeFormat(row, column) {
-      return this.selectDictLabel(this.dict.type.device_type, row.operateType)
+      return this.selectDictLabel(this.dict.type.device_type, row.deviceType)
     },
     //事件级别字段翻译
     eventLevelFormat(row, column) {
       return this.selectDictLabel(this.dict.type.event_level, row.level)
     },
+
+    //机构类型字段翻译
+    orgTypeFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.org_type, row.orgType)
+    },
+
     // 筛选节点
     filterNode(value, data) {
       if (!value) return true;

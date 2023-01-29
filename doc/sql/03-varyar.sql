@@ -232,7 +232,7 @@ create table t_event (
 drop table if exists t_msg;
 create table t_msg (
   msg_id        bigint(20)      not null auto_increment    comment '消息id',
-  msg_type                char(1)     default ''             comment '消息类型:1短信 2APP消息 3事件消息',
+  msg_type                char(1)     default ''             comment '消息类型:1短信 2APP消息',
   device_type              char(1)         default '0'       comment '类型（0雷达波 1监控设备）',
   event_level              varchar(50)     default ''        comment '级别（0:重要事件  1：普通事件）',
   no                varchar(50)     default ''             comment '消息编号',

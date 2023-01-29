@@ -9,13 +9,13 @@
 				<u-text size="28rpx" prefixIcon="phone-fill" iconStyle="font-size: 36rpx" text="手机号码"></u-text>
 				<u--input v-model="form.phone" placeholder="请输入手机号码" border="bottom" clearable></u--input>
 			</view>
-			<view class="ui-check">
+			<!-- 			<view class="ui-check">
 				<u-radio-group v-model="form.type" placement="column">
 					<u-radio v-for=" (name,value) in typeDict" :key="value" :name="value" shape="circle"
 						labelSize="24rpx" size="30rpx" activeColor="#fdbc2b" labelColor="#fdbc2b" :label="name">
 					</u-radio>
 				</u-radio-group>
-			</view>
+			</view> -->
 			<view class="ui-btn"><button @click="handleSubmit" class="wd-sms">提交</button></view>
 		</view>
 	</u-popup>
@@ -32,9 +32,10 @@
 				form: {
 					phoneName: '',
 					phone: '',
-					type: '0',
+					type: 'p',
 				},
 				list: [],
+				mapSet: {},
 				deviceId: '',
 				typeDict: {
 					0: '设置为SOS',
@@ -53,8 +54,14 @@
 				this.show = false;
 			},
 			open(options) {
-				this.deviceId = options.deviceId
-				this.list = options.list
+				const {
+					deviceId,
+					list,
+					mapSet
+				} = options
+				this.deviceId = deviceId
+				this.list = list
+				this.mapSet = mapSet
 				this.show = true;
 			},
 			handleSubmit() {
@@ -65,15 +72,17 @@
 				if (!phoneName) {
 					uni.$u.toast('请填写名称')
 				}
-				if (!phone) {
-					return uni.$u.toast('请填写手机号码')
+				if (!uni.$u.test.mobile(phone)) {
+					return uni.$u.toast('请填写正确的手机号码')
 				}
 				const data = {
 					deviceId: this.deviceId,
 					list: [...this.list, {
 						...this.form
-					}]
+					}],
+					mapSet: this.mapSet
 				}
+				console.log(data, '99')
 				PostAddDevicePhone(data).then(res => {
 					uni.$u.toast(res.msg)
 					this.close()
@@ -95,7 +104,7 @@
 
 	.wd-add {
 		width: 582rpx;
-		height: 800rpx;
+		height: 420rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
@@ -104,7 +113,7 @@
 
 		&>view {
 			margin-top: 30rpx;
-			padding: 10rpx 20rpx;
+			// padding: 10rpx 20rpx;
 			border-bottom: 1px solid #e4e4e4;
 
 			&:nth-last-of-type(1),
@@ -120,7 +129,7 @@
 
 		.ui-btn {
 			text-align: center;
-			margin-top: 70rpx;
+			margin-top: 40rpx;
 
 			button {
 				width: 237rpx;

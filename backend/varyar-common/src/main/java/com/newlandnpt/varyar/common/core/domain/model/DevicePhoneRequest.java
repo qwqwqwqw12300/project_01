@@ -3,9 +3,9 @@ package com.newlandnpt.varyar.common.core.domain.model;
 import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Map;
 
 public class DevicePhoneRequest {
     /**
@@ -18,6 +18,16 @@ public class DevicePhoneRequest {
      * 电话列表
      * */
     private List<DevicePhone> list;
+
+    public Map<String ,DevicePhone> mapSet;
+
+    public Map<String, DevicePhone> getMapSet() {
+        return mapSet;
+    }
+
+    public void setMapSet(Map<String, DevicePhone> mapSet) {
+        this.mapSet = mapSet;
+    }
 
     public String getDeviceId() {
         return deviceId;

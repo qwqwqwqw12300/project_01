@@ -1,6 +1,8 @@
 package com.newlandnpt.varyar.system.service.impl;
 
 import java.util.List;
+
+import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +55,14 @@ public class VersionServiceImpl implements IVersionService
     @Override
     public int insertTVersion(TVersion tVersion)
     {
+        //新增时校验版本号
+        List<TVersion> tVersionQuery = tVersionMapper.selectTVersionList(tVersion);
+        System.out.println(tVersionQuery.toString());
+        if (tVersionQuery.size()!=0)
+        {
+            throw new ServiceException("该版本号已存在！");
+        }
+
         tVersion.setCreateTime(DateUtils.getNowDate());
         return tVersionMapper.insertTVersion(tVersion);
     }

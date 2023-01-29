@@ -15,7 +15,7 @@ import com.newlandnpt.varyar.system.domain.TRoom;
 import com.newlandnpt.varyar.system.domain.TRoomZone;
 import com.newlandnpt.varyar.system.domain.dto.org.OrgDeviceCountDto;
 import com.newlandnpt.varyar.system.mapper.*;
-import com.newlandnpt.varyar.system.service.IDeviceService;
+import com.newlandnpt.varyar.system.service.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,15 +48,15 @@ public class DeviceServiceImpl implements IDeviceService {
     @Autowired
     private TDeviceMapper deviceMapper;
     @Autowired
-    private TOrgMapper orgMapper;
+    private IOrgService orgService;
     @Autowired
     private RedisCache redisCache;
     @Autowired
-    private RoomMapper roomMapper;
+    private IRoomService roomService;
     @Autowired
-    private RoomZoneMapper roomZoneMapper;
+    private IRoomZoneService roomZoneService;
     @Autowired
-    private DeviceFenceMapper deviceFenceMapper;
+    private IDeviceFenceService deviceFenceService;
 
     /**
      * 项目启动时，初始化参数到缓存
@@ -158,10 +158,10 @@ public class DeviceServiceImpl implements IDeviceService {
             throw new ServiceException("设备已经分配设备组，需解除分配才能重新配对");
         }
         Long orgId = device.getOrgId();
-        if(orgId!=null){
-            TOrg org = orgMapper.selectOrgById(orgId);
+        if (orgId != null) {
+            TOrg org = orgService.selectOrgById(orgId);
             if (org == null) {
-                throw new ServiceException("机构id: "+orgId+"的机构不存在");
+                throw new ServiceException("机构id: " + orgId + "的机构不存在");
             }
             target.setOrgId(orgId);
             target.setOrgName(org.getOrgName());
@@ -210,7 +210,7 @@ public class DeviceServiceImpl implements IDeviceService {
         if (StringUtils.isNull(devices) || devices.size() == 0) {
             throw new ServiceException("导入设备数据不能为空！");
         }
-        TOrg org = orgMapper.selectOrgById(orgId);
+        TOrg org = orgService.selectOrgById(orgId);
         if (org == null) {
             throw new ServiceException("机构id: "+orgId+"的机构不存在");
         }
@@ -318,10 +318,10 @@ public class DeviceServiceImpl implements IDeviceService {
             settings = new TDevice.RadarWaveDeviceSettings();
             TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings) settings;
             if(device.getRoomId()!=null){
-                radarWaveDeviceSettings.setRoom(roomMapper.selectTRoomByRoomId(device.getRoomId()));
+                radarWaveDeviceSettings.setRoom(roomService.selectTRoomByRoomId(device.getRoomId()));
                 TRoomZone roomZone = new TRoomZone();
                 roomZone.setRoomId(device.getRoomId());
-                radarWaveDeviceSettings.setRoomZones(roomZoneMapper.selectTRoomZoneList(roomZone));
+                radarWaveDeviceSettings.setRoomZones(roomZoneService.selectTRoomZoneList(roomZone));
             }
         }else if(TYPE_WATCH.equals(device.getType())){
             settings = new TDevice.WatchSettings();
@@ -329,7 +329,7 @@ public class DeviceServiceImpl implements IDeviceService {
             if(device.getParameter()!=null){
                 watchSettings.setList(device.getParameter().getList());
             }
-            List<TDeviceFence> fences = deviceFenceMapper.selectTDeviceFenceByDeviceId(deviceId);
+            List<TDeviceFence> fences = deviceFenceService.selectTDeviceFenceByDeviceId(deviceId);
             watchSettings.setFence(Optional.ofNullable(fences)
                     .map(list->list.stream().findFirst().orElse(null))
                     .orElse(null));
@@ -353,17 +353,17 @@ public class DeviceServiceImpl implements IDeviceService {
             if(room.getRoomId()==null){
                 room.setCreateById(String.valueOf(SecurityUtils.getUserId()));
                 room.autoSetCreateByLoginUser();
-                roomMapper.insertTRoom(room);
+                roomService.insertTRoom(room);
                 device.setRoomId(room.getRoomId());
                 deviceMapper.updateTDevice(device);
             }else{
                 room.autoSetUpdateByLoginUser();
-                roomMapper.updateTRoom(room);
+                roomService.updateTRoom(room);
             }
 
             TRoomZone roomZone = new TRoomZone();
             roomZone.setRoomId(device.getRoomId());
-            List<TRoomZone> roomZones = roomZoneMapper.selectTRoomZoneList(roomZone);
+            List<TRoomZone> roomZones = roomZoneService.selectTRoomZoneList(roomZone);
             List<Long> removeZones = new ArrayList<>();
             if(CollectionUtils.isEmpty(radarWaveDeviceSettings.getRoomZones())){
                 removeZones.addAll(roomZones.stream()
@@ -378,16 +378,16 @@ public class DeviceServiceImpl implements IDeviceService {
                     zone.setRoomId(room.getRoomId());
                     if(zone.getRoomZoneId()!=null){
                         zone.autoSetUpdateByLoginUser();
-                        roomZoneMapper.updateTRoomZone(zone);
+                        roomZoneService.updateTRoomZone(zone);
                     }else{
                         zone.autoSetCreateByLoginUser();
-                        roomZoneMapper.insertTRoomZone(zone);
+                        roomZoneService.insertTRoomZone(zone);
                     }
                 });
             }
 
             if(removeZones.size()>0){
-                roomZoneMapper.deleteTRoomZoneByRoomZoneIds(removeZones.stream()
+                roomZoneService.deleteTRoomZoneByRoomZoneIds(removeZones.stream()
                         .toArray(Long[]::new));
             }
 
@@ -400,9 +400,9 @@ public class DeviceServiceImpl implements IDeviceService {
             deviceMapper.updateTDevice(device);
             if(watchSettings.getFence()!=null){
                 if(watchSettings.getFence().getDeviceFenceId()!=null){
-                    deviceFenceMapper.updateTDeviceFence(watchSettings.getFence());
+                    deviceFenceService.updateTDeviceFence(watchSettings.getFence());
                 }else{
-                    deviceFenceMapper.insertTDeviceFence(watchSettings.getFence());
+                    deviceFenceService.insertTDeviceFence(watchSettings.getFence());
                 }
             }
         }
@@ -423,7 +423,7 @@ public class DeviceServiceImpl implements IDeviceService {
         {
             //Redis验证设备断网情况，无记录则确为断网
             String deviceNo = device.getNo();
-            if (!redisCache.hasKey(CacheConstants.DEVICE_ONLINE_FLAG_KEY + deviceNo)) {
+            if (!redisCache.hasKey(CacheConstants.DEVICE_STATE_KEY + deviceNo)) {
                 device.setOnlineFlag("0");
             }else {
                 device.setOnlineFlag("1");
@@ -437,7 +437,7 @@ public class DeviceServiceImpl implements IDeviceService {
     public TDevice loadingDeviceStauts(TDevice device) {
             //Redis验证设备在线离线状态
             String deviceNo = device.getNo();
-            if (!redisCache.hasKey(CacheConstants.DEVICE_ONLINE_FLAG_KEY + deviceNo)) {
+            if (!redisCache.hasKey(CacheConstants.DEVICE_STATE_KEY + deviceNo)) {
                 device.setOnlineFlag("0");
             }else {
                 device.setOnlineFlag("1");

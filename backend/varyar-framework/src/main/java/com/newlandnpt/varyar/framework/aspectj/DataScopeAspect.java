@@ -49,6 +49,10 @@ public class DataScopeAspect
      * 仅本人数据权限
      */
     public static final String DATA_SCOPE_SELF = "5";
+    /**
+     * 仅本人或机构数据权限
+     */
+    public static final String DATA_SCOPE_SELF_OR_ORG = "6";
 
     /**
      * 数据权限过滤关键字
@@ -135,6 +139,24 @@ public class DataScopeAspect
                 else
                 {
                     // 数据权限为仅本人且没有userAlias别名不查询任何数据
+                    sqlString.append(StringUtils.format(" OR {}.org_id = 0 ", orgAlias));
+                }
+            }
+            else if (DATA_SCOPE_SELF_OR_ORG.equals(dataScope))
+            {
+                if (StringUtils.isNotBlank(userAlias))
+                {
+                    sqlString.append(StringUtils.format(" OR {}.user_id = {} ", userAlias, user.getUserId()));
+                }
+                else if (StringUtils.isNotBlank(orgAlias))
+                {
+                    sqlString.append(StringUtils.format(
+                            " OR {}.org_id IN ( SELECT org_id FROM t_org WHERE org_id = {} or find_in_set( {} , ancestors ) )",
+                            orgAlias, user.getOrgId(), user.getOrgId()));
+                }
+                else
+                {
+                    // 数据权限为仅本人且没有userAlias和orgAlias别名不查询任何数据
                     sqlString.append(StringUtils.format(" OR {}.org_id = 0 ", orgAlias));
                 }
             }

@@ -1,6 +1,7 @@
 package com.newlandnpt.varyar.system.service.impl;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,6 +86,15 @@ public class SysRoleServiceImpl implements ISysRoleService
     {
         List<SysRole> userRoles = roleMapper.selectRolePermissionByUserId(userId);
         List<SysRole> roles = selectRoleAll();
+        boolean isAdmin = userRoles.stream().allMatch(p->p.isAdmin());
+        boolean isOrgAdmin = userRoles.stream().allMatch(p->"orgadmin".equals(p.getRoleKey()));
+        boolean isMemberAdmin = userRoles.stream().allMatch(p->"memberadmin".equals(p.getRoleKey()));
+        if (!isAdmin && !isOrgAdmin) {
+            roles = roles.stream().filter(p -> !"orgadmin".equals(p.getRoleKey())).collect(Collectors.toList());
+        }
+        if (!isAdmin && !isMemberAdmin) {
+            roles = roles.stream().filter(p -> !"memberadmin".equals(p.getRoleKey())).collect(Collectors.toList());
+        }
         for (SysRole role : roles)
         {
             for (SysRole userRole : userRoles)

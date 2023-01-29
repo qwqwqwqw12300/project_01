@@ -2,8 +2,8 @@
     <div class="app-container">
 
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-    
-        
+
+
         <el-form-item label="处理人员" prop="userName">
           <el-input
             v-model="queryParams.userName"
@@ -64,7 +64,7 @@
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        
+
         <!-- <el-form-item label="归属机构" prop="orgId">
             <treeselect style="width: 240px" v-model="queryParams.orgId" :options="orgOptions" :show-count="true" placeholder="请选择归属机构" />
           </el-form-item> -->
@@ -82,7 +82,7 @@
           <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
         </el-form-item>
       </el-form>
-  
+
       <!-- <el-row :gutter="10" class="mb8">
         <el-col :span="1.5">
           <el-button
@@ -128,14 +128,14 @@
         </el-col> -->
         <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row> -->
-  
+
       <el-table v-loading="loading" :data="eventList" @selection-change="handleSelectionChange"  @row-click="cardDetails">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="重要级别" align="center" prop="level">
           <template slot-scope="scope">
           {{ eventLevelFormat(scope.row) }}
           </template>
-        </el-table-column>	
+        </el-table-column>
 
         <el-table-column label="事件编号" align="center" prop="no" />
         <el-table-column label="设备名称" align="center" prop="deviceName" />
@@ -161,7 +161,7 @@
         <!-- 待调整 -->
         <el-table-column label="会员手机号" align="center" prop="memberPhone" />
         <!-- 待调整 -->
-        <el-table-column label="操作员姓名" align="center" prop="userName" /> 
+        <el-table-column label="操作员姓名" align="center" prop="userName" />
         <el-table-column label="处理标志" align="center" prop="operateFlag">
           <template slot-scope="scope">
           {{ operateFlagFormat(scope.row) }}
@@ -184,7 +184,7 @@
               v-hasPermi="['system:event:remove']"
             >删除</el-button>
           </template>
-        </el-table-column> --> 
+        </el-table-column> -->
         <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button
@@ -192,11 +192,11 @@
               type="text"
               icon="el-icon-info"
               @click="handleView(scope.row)"
-            >查看</el-button>     
+            >查看</el-button>
           </template>
         </el-table-column> -->
       </el-table>
-      
+
       <pagination
         v-show="total>0"
         :total="total"
@@ -204,16 +204,16 @@
         :limit.sync="queryParams.pageSize"
         @pagination="getList"
       />
-  
+
        <!-- 机构基本信息嵌入位置 -->
        <el-row>
         <org-info-card :value="currentOrgId"></org-info-card>
-		  </el-row>	
+		  </el-row>
       <el-row><br></el-row>
             <!-- 设备基本信息嵌入位置 -->
       <el-row>
         <device-info-card :value="deviceId"></device-info-card>
-		  </el-row>	  
+		  </el-row>
       <!-- 服务登记 -->
       <!-- <el-dialog :title="title" :visible.sync="open" width="900px" append-to-body>
         <el-form ref="form" :model="form" :rules="rules" label-width="120px">
@@ -300,7 +300,7 @@
       </el-dialog> -->
     </div>
   </template>
-  
+
   <script>
   import { listEvent, getEvent  } from "@/api/eventAndMessage/event";
   //服务登记操作
@@ -308,7 +308,7 @@
   import OrgInfoCard from "@/views/org/components/OrgInfoCard";
   import DeviceInfoCard from "@/views/device/components/DeviceInfoCard";
 
- 
+
 
   export default {
     name: "orgDeviceEvents",
@@ -383,12 +383,12 @@
         }
       };
     },
-    
+
     created() {
       //this.getList();
       //初始化获取路由传参
-      this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)  
-      this.currentOperateFlag = this.$route.query.operateFlag==undefined?undefined:Number(this.$route.query.operateFlag) 
+      this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)
+      this.currentOperateFlag = this.$route.query.operateFlag==undefined?undefined:this.$route.query.operateFlag
       //this.getList();
       this.resetQuery();
 
@@ -420,7 +420,7 @@
         }
       }
     },
- 
+
   },
 
     methods: {
@@ -433,7 +433,7 @@
           this.loading = false;
         });
       },
-     
+
       //记录行点击事件
       cardDetails(row){
             this.orgId = row.orgId;
@@ -451,8 +451,8 @@
     //事件级别字段翻译
     eventLevelFormat(row, column) {
       return this.selectDictLabel(this.dict.type.event_level, row.level)
-    },		
-    
+    },
+
       // 取消按钮
       cancel() {
         this.open = false;
@@ -590,4 +590,3 @@
     }
   };
   </script>
-  

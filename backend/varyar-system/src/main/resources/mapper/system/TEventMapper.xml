@@ -17,6 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="deviceType"    column="device_type"    />
         <result property="orgId"    column="org_id"    />
         <result property="orgName"    column="org_name"    />
+        <result property="orgType"    column="org_type"    />
         <result property="operateType"    column="operate_type"    />
         <result property="memberId"    column="member_id"    />
         <result property="memberPhone"    column="member_phone"    />
@@ -53,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                              dev.type as device_type,
                              eve.org_id,
                              eve.org_name,
+                             org.type as org_type,
                              eve.operate_type,
                              eve.member_id,
                              eve.member_phone,
@@ -67,6 +69,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                              t_event eve
                          left join t_device dev
                          on eve.device_id = dev.device_id
+                         left join t_org org
+                                   on eve.org_id = org.org_id
     </sql>
 
 
@@ -89,6 +93,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orgName != null  and orgName != ''"> and eve.org_name like concat('%', #{orgName}, '%')</if>
             <if test="operateType != null  and operateType != ''"> and eve.operate_type = #{operateType}</if>
             <if test="memberId != null "> and eve.member_id = #{memberId}</if>
+            <if test="params.memberEvent != null "> and eve.member_id is not null</if>
             <if test="memberPhone != null  and memberPhone != ''"> and eve.member_phone = #{memberPhone}</if>
             <if test="memberName != null  and memberName != ''"> and eve.member_name like concat('%', #{memberName}, '%')</if>
             <if test="userId != null "> and eve.user_id = #{userId}</if>

@@ -94,7 +94,7 @@
 <!--          v-hasPermi="['system:role:export']"-->
 <!--        >导出</el-button>-->
 <!--      </el-col>-->
-<!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
     <el-table v-loading="loading" :data="roleList" @selection-change="handleSelectionChange">
       <el-table-column v-for="column in columns" :label="column.label" :key="column.key" :prop="column.prop"
@@ -103,12 +103,12 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope"
-                  v-if="scope.row.roleKey !== 'superAdmin'&&(isSuperAdmin||(scope.row.roleKey !== 'admin'&&scope.row.roleKey !== 'orgadmin'&&scope.row.roleKey !== 'biz'))">
+                  v-if="scope.row.roleKey !== 'superAdmin'&&(isSuperAdmin||(scope.row.roleKey !== 'admin'&&scope.row.roleKey !== 'orgadmin'&&scope.row.roleKey !== 'memberadmin'&&scope.row.roleKey !== 'biz'))">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
-            v-if="scope.row.roleKey !== 'superAdmin'&&scope.row.roleKey !== 'admin'&&scope.row.roleKey !== 'orgadmin'&&scope.row.roleKey !== 'biz'"
+            v-if="scope.row.roleKey !== 'superAdmin'&&scope.row.roleKey !== 'admin'&&scope.row.roleKey !== 'orgadmin'&&scope.row.roleKey !== 'memberadmin'&&scope.row.roleKey !== 'biz'"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:role:edit']"
           >修改</el-button>
@@ -117,7 +117,7 @@
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-if="scope.row.roleKey !== 'superAdmin'&&scope.row.roleKey !== 'admin'&&scope.row.roleKey !== 'orgadmin'&&scope.row.roleKey !== 'biz'"
+            v-if="scope.row.roleKey !== 'superAdmin'&&scope.row.roleKey !== 'admin'&&scope.row.roleKey !== 'orgadmin'&&scope.row.roleKey !== 'memberadmin'&&scope.row.roleKey !== 'biz'"
             v-hasPermi="['system:role:remove']"
           >删除</el-button>
           <el-button

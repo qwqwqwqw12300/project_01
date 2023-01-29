@@ -7,7 +7,7 @@
      <el-row><br><br>
     </el-row>	
 
-      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
 
         <!-- <el-form-item label="操作时间" prop="operateTime">
           <el-date-picker clearable
@@ -67,6 +67,7 @@
             v-model="queryParams.deviceName"
             placeholder="请输入设备名称"
             clearable
+            style="width: 240px"
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
@@ -79,6 +80,7 @@
             v-model="queryParams.deviceNo"
             placeholder="请输入设备名称"
             clearable
+            style="width: 240px"
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
@@ -289,10 +291,11 @@
           <el-form-item label="快捷回复:" prop="reply">
             <!-- <el-input v-model="form.name" placeholder="" /> -->
             <el-select
-              v-model="form.remark"
+              v-model="form.reply"
               placeholder="快捷回复"
               clearable
               style="width: 240px"
+              @change="selectReply"
             >
           <el-option
             v-for="item in replyOptions"
@@ -304,7 +307,9 @@
             </el-select>
           </el-form-item>
           <el-form-item label="服务备注" prop="remark">
-            <el-input v-model="form.remark" type="textarea" placeholder=""  style="width: 500px"></el-input>
+            <el-input v-model="form.remark" type="textarea" 
+            :autosize="{ minRows: 2, maxRows: 6}"
+            placeholder=""  style="width: 500px"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -422,6 +427,8 @@
           servedInfo:null,
           deviceId:null,
           serveEvents:[],
+          reply:undefined,
+          remark:undefined,
         },
         // 表单校验
         rules: {
@@ -530,7 +537,15 @@
     //事件级别字段翻译
     eventLevelFormat(row, column) {
       return this.selectDictLabel(this.dict.type.event_level, row.level)
-    },		
+    },	
+    
+   //快捷回复选项框事件
+   selectReply(value) {
+      const item = this.replyOptions.find(
+        (item1) => item1.label === this.form.reply
+      );
+      this.form.remark = item?.label || ""
+    },
 
     /** 查看按钮操作 */
     handleView(row) {

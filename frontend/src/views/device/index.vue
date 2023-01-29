@@ -62,7 +62,10 @@
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           </el-form-item>
         </el-form>
+        <el-row :gutter="10" class="mb8">
 
+          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+        </el-row>
         <el-table v-loading="loading" :data="deviceList">
           <el-table-column v-for="column in columns" :label="column.label" :key="column.key" :prop="column.prop"
                            v-if="column.visible" :formatter="column.formatter"
@@ -105,7 +108,7 @@
                 size="mini"
                 type="text"
                 icon="el-icon-circle-check"
-                @click="offLine(scope.row)"
+                @click="offlineDialog(scope.row)"
                 v-hasPermi="['device:activeOrOffline']"
               >下线
               </el-button>
@@ -186,6 +189,17 @@
     </el-dialog>
     <radar-wave-settings v-model="settings" :visible.sync="radarWaveSettingsOpen" @submit="settingsSubmit"></radar-wave-settings>
     <watch-settings v-model="settings" :visible.sync="watchSettingsOpen" @submit="settingsSubmit"></watch-settings>
+    <el-dialog
+      title="提示"
+      :visible.sync="offlineDialogOpen"
+      width="30%"
+      center>
+      <span>下线后设备将不再触发事件</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="offlineDialogOpen = false">取 消</el-button>
+    <el-button type="primary" @click="offLine">确 定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -284,7 +298,9 @@ export default {
       //监护设备设置页面开启
       watchSettingsOpen: false,
       settingsDeviceId: undefined,
-      settings:undefined
+      settings:undefined,
+      offLineRow:undefined,
+      offlineDialogOpen:false
     }
   },
   created() {
@@ -293,6 +309,12 @@ export default {
     this.getDeptTree();
     this.resetQuery();
   },
+  // activated() {
+  //   this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
+  //   this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)
+  //   this.getDeptTree();
+  //   this.resetQuery();
+  // },
   watch: {
     "$route.query.distributeFlag": {
       immediate: true,
@@ -300,6 +322,7 @@ export default {
         if (this.$route.name == "Device") {
           if (this.currentDistributeFlag != val) {
             this.currentDistributeFlag = val==undefined?undefined:Number(val);
+            this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)
             this.resetQuery();
           }
         }
@@ -311,6 +334,7 @@ export default {
         if (this.$route.name == "Device") {
           if (this.currentOrgId != val) {
             this.currentOrgId = val;
+            this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
             this.resetQuery();
           }
         }
@@ -399,10 +423,16 @@ export default {
         }
       })
     },
-    offLine(row){
-      offline(row.deviceId).then(response=>{
+    offlineDialog(row){
+      this.offLineRow = row;
+      this.offlineDialogOpen = true;
+    },
+    offLine(){
+      offline(this.offLineRow.deviceId).then(response=>{
+        this.offlineDialogOpen = false;
         this.$modal.msgSuccess("设备下线成功");
         this.getList();
+
       })
     },
     active(row){
