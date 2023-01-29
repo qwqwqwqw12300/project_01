@@ -426,12 +426,12 @@ export default {
     addRoomZones(){
       this.settings.roomZones.push({
         name:undefined,
-        x1:undefined,
-        x2:undefined,
-        y1:undefined,
-        y2:undefined,
-        z1:undefined,
-        z2:undefined,
+        x1:0,
+        x2:0,
+        y1:0,
+        y2:0,
+        z1:0,
+        z2:0,
         existFlag:"0",
         fallFlag:"0",
         entryTime:undefined,
