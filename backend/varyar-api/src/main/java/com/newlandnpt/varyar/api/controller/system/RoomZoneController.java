@@ -48,7 +48,7 @@ public class RoomZoneController extends BaseController {
             @RequestBody @Validated RadarRequest radarRequest) {
         AjaxResult ajax = AjaxResult.success();
         TRoomZone tRoomZone = new TRoomZone();
-        if (!radarRequest.getRoomZoneId().equals("")||radarRequest.getRoomZoneId()==null){
+        if (radarRequest.getRoomZoneId()!=null && !radarRequest.getRoomZoneId().equals("")){
              tRoomZone = iRoomZoneService.selectTRoomZoneByRoomZoneId(Long.valueOf(radarRequest.getRoomZoneId()));
         }
         tRoomZone.setName(radarRequest.getZoneName());
@@ -70,7 +70,7 @@ public class RoomZoneController extends BaseController {
         tRoomZone.setStartTime(radarRequest.getStartTime());
         tRoomZone.setEndTime(radarRequest.getEndTime());
         try {
-            if (tRoomZone.getRoomZoneId().equals("")||tRoomZone.getRoomZoneId()==null){
+            if (tRoomZone.getRoomZoneId()==null||tRoomZone.getRoomZoneId().equals("")){
                 iRoomZoneService.insertTRoomZone(tRoomZone);
             }else {
                 iRoomZoneService.updateTRoomZone(tRoomZone);

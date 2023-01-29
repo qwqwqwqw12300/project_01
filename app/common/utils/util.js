@@ -214,29 +214,3 @@ export const versionCompare = (curV, reqV) => {
 	}
 	return flag;
 }
-
-/**
- * versionUpdate 版本更新
- */
-
-export const versionUpdate = (reqV, isTip = false) => {
-	plus.runtime.getProperty(plus.runtime.appid, (info) => {
-		const appVersion = info.version
-		const result = versionCompare(appVersion, reqV)
-		if (!result) {
-			uni.showModal({
-				title: '',
-				content: '发现新版本、是否更新？',
-				success: res => {
-					let appurl = "https://sj.qq.com/"
-					plus.runtime.openURL(appurl)
-				}
-			});
-		} else {
-			isTip && uni.showModal({
-				title: '',
-				content: '已经是最新版本了',
-			});
-		}
-	})
-}

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,12 +29,7 @@ public class NoticeController extends BaseController {
      */
     @GetMapping("/sysNotice")
     public TableDataInfo sysNotice(){
-        List<SysNotice>  list = iSysNoticeService.selectNoticeListByMemberId(this.getLoginUser().getMemberId());
-        for (SysNotice item:list){
-            if (item.getReadFlag()==null|| item.getReadFlag().equals("")){
-                item.setReadFlag("0");
-            }
-        }
+        List<SysNotice>  list = iSysNoticeService.selectNoticeList(new SysNotice());
         return getDataTable(list);
     }
 
@@ -41,10 +37,39 @@ public class NoticeController extends BaseController {
      * 获取系统公告已读信息
      */
     @GetMapping("/readInfo")
-    public TableDataInfo readInfo()
+    public AjaxResult readInfo()
     {
         List<SysNotice>  list = iSysNoticeService.selectNoticeListByReadFlag(this.getLoginUser().getMemberId());
-        return getDataTable(list);
+        List<SysNotice>  newList = new ArrayList<SysNotice>();
+        for(SysNotice item:list){
+            TNotice cond = new TNotice();
+            cond.setSysNoticeId(Long.valueOf(item.getNoticeId()));
+            cond.setMemberId(this.getLoginUser().getMemberId());
+            List<TNotice> tNotices = itNoticeService.selectTNoticeList(cond);
+            if (list.size()>0){
+                newList.add(item);
+            }
+        }
+        return AjaxResult.success(newList);
+    }
+    /**
+     * 获取系统公告未读信息数量
+     */
+    @GetMapping("/unReadNum")
+    public AjaxResult unReadNum()
+    {
+        List<SysNotice>  list = iSysNoticeService.selectNoticeList(new SysNotice());
+        for (SysNotice item:list){
+            TNotice cond = new TNotice();
+            cond.setSysNoticeId(Long.valueOf(item.getNoticeId()));
+            cond.setMemberId(this.getLoginUser().getMemberId());
+            List<TNotice> tNotices = itNoticeService.selectTNoticeList(cond);
+            if(tNotices.size()>0){
+                list.remove(item);
+            }
+        }
+
+        return AjaxResult.success(list);
     }
 
     /**
@@ -58,6 +83,7 @@ public class NoticeController extends BaseController {
         cond.setMemberId(this.getLoginUser().getMemberId());
         List<TNotice> tNotices = itNoticeService.selectTNoticeList(cond);
         TNotice tNotice = new TNotice();
+        //同一个公告一个会员不能重复标记
         if (tNotices.size()>0 && tNotices.size()==1 ){
             tNotices.get(0);
             tNotice.setReadFlag("1");
