@@ -9,14 +9,14 @@ export const env = {
 	mode: 'dev',
 	/**服务器地址**/
 	// basePath: 'https://67c805463f.zicp.fun',
-	// basePath: 'http://192.168.1.109:8081',
-	basePath: 'http://192.168.132.204:8060',
+	basePath: 'http://192.168.1.109:8081',
+	// basePath: 'http://192.168.132.204:8060',
 	/**版本更新地址**/
 	appUpdateUrl: '',
 	/**协议地址**/
 	privacy: {},
 	/**crisp客服Id**/
-	crispWebsoteId: 'f6e8cb47-0c2b-48e0-8506-788ff6af7be1',
+	crispWebsoteId: 'efe4eab0-cdef-4d3b-977f-3d862e79dd32',
 	/**包名**/
 	package: 'uni.UNI9B9BD07',
 	/**加密公钥**/

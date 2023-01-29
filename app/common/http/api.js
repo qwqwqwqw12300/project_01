@@ -243,7 +243,7 @@ export const PostRemShareFamily = (params) => http.post('/api/family/remShareFam
 /**
  * 获取公告信息
  */
-export const GetReadInfo = () => http.get('/api/notice/readInfo');
+export const GetReadInfo = () => http.get(' /api/notice/unReadNum');
 
 /**
  * 获取公告

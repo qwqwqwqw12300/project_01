@@ -13,33 +13,36 @@
 				<u-divider text="100米"></u-divider>
 				<u-divider text="100米"></u-divider>
 				<u-divider text="100米"></u-divider> -->
-				<movable-area>
-					<movable-view v-for="(item, index) of roomZones" :key="index" :x="item.x" :y="item.y"
-						:style="{ height: item.height * 10 + 'rpx', width: item.width * 10 + 'rpx' }" direction="all"
-						@change="
-							e => {
-								onChange(e, index);
-							}
-						">
-						<view class="ui-device" v-if="item.zoneName === '设备'">
-							<text class="ui-zone-name">设备</text>
-							<text>x：{{ item.old.x }}</text>
-							<text>y：{{ item.old.y }}</text>
-						</view>
-						<template v-else>
-							<text class="ui-zone-name">{{ item.zoneName || '未命名' }}</text>
-							<text>x：{{ item.old.x }}</text>
-							<text>y：{{ item.old.y }}</text>
-						</template>
-					</movable-view>
-				</movable-area>
+				<view class="mova-box">
+					<movable-area :style="{height: sizeInfo.box.height + 'px', width: sizeInfo.box.width + 'px'}">
+						<movable-view v-for="(item, index) of roomZones" :key="index" :x="item && item.x"
+							:y="item && item.y" :style="{ height: item.height + 'px', width: item.width + 'px' }"
+							direction="all" @change="
+								e => {
+									onChange(e, index);
+								}
+							">
+							<template>
+								<text class="ui-zone-name">{{ item.name || '未命名' }}</text>
+								<text>x：{{ $u.priceFormat((item.old.x - sizeInfo.x)/sizeInfo.scale.x, 1) }}</text>
+								<text>y：{{ 0 - $u.priceFormat((item.old.y - sizeInfo.y)/sizeInfo.scale.y , 1) }}</text>
+							</template>
+						</movable-view>
+						<movable-view :x="sizeInfo.x" :y="sizeInfo.y">
+							<view class="ui-device">
+								<text class="ui-zone-name">设备</text>
+							</view>
+						</movable-view>
+
+					</movable-area>
+				</view>
 			</view>
 			<view class="ui-add">
 				<view>
 					<u-text prefixIcon="file-text" iconStyle="font-size: 40rpx" text="子区域名称" color="#444" size="28rpx">
 					</u-text>
 					<view class="ui-input">
-						<u-input v-model="zoneInfo.zoneName" placeholder="请输入子区域名称" :border="'none'" fontSize="28rpx"
+						<u-input v-model="zoneInfo.name" placeholder="请输入子区域名称" :border="'none'" fontSize="28rpx"
 							clearable></u-input>
 					</view>
 				</view>
@@ -71,24 +74,26 @@
 						</view>
 					</view>
 				</view>
-				<view class="ui-add-btn"><button class="wd-sms" @click="addZone">添加子区域</button></view>
+				<view class="ui-add-btn">
+					<button class="wd-sms" @click="addZone">添加子区域</button>
+					<button @click="radarDevice">全部保存</button>
+				</view>
 			</view>
 			<view class="ui-list">
 				<template v-for="(item, index) of roomZones">
-					<button :class="activeZone === index ? 'active' : ''" @click="acitve(index)" :key="index"
-						v-if="index!==0">{{item.zoneName || '未命名'}}</button>
+					<button :class="activeZone === index ? 'active' : ''" @click="acitve(index)"
+						:key="index">{{item.name || '未命名'}}</button>
 				</template>
-
 			</view>
 			<!-- 区域设置 -->
-			<view class="ui-setting" :key="activeZone" v-if="roomZones.length > 1">
+			<view class="ui-setting" :key="activeZone" v-if="roomZones.length">
 				<view>
 					<u-checkbox-group @change="monitorChange($event, 'isFall')" placement="column">
-						<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].zoneType === 1"
-							:customStyle="{ marginBottom: '8px' }" label="私人区域" name="zoneType"></u-checkbox>
+						<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].existFlag == 1"
+							:customStyle="{ marginBottom: '8px' }" label="私人区域" name="existFlag"></u-checkbox>
 					</u-checkbox-group>
 					<u-checkbox-group @change="monitorChange($event, 'isFall')" placement="column">
-						<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].fallFlag === 1"
+						<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].fallFlag == 1"
 							:customStyle="{ marginBottom: '8px' }" label="跌倒监控" name="fallFlag"></u-checkbox>
 					</u-checkbox-group>
 					<!-- <u-checkbox-group @change="monitorChange($event, 'isAccess')" placement="column">
@@ -133,8 +138,7 @@
 							</view>
 						</view>
 					</view>
-					<view class="ui-setting-btn wd-btn-gloup">
-						<button @click="radarDevice">保存</button>
+					<view class="ui-setting-btn">
 						<button @click="deleteZone">删除</button>
 					</view>
 				</view>
@@ -156,7 +160,8 @@
 	import {
 		GetRoomZone,
 		PostRoomList,
-		PostRadarDevice
+		PostRadarDevice,
+		PostRemRadarDevice
 	} from '../../common/http/api';
 
 	/**监控区域**/
@@ -168,9 +173,9 @@
 		/**房间id**/
 		roomId: '',
 		/**区域名称**/
-		zoneName: '',
+		name: '',
 		/*监控类型 0-监控区域  1-私人区域**/
-		zoneType: 0,
+		existFlag: 0,
 		/**跌倒监控**/
 		fallFlag: 0,
 		x1: 0,
@@ -186,13 +191,13 @@
 		x: 0,
 		y: 0,
 		/**进入报警区域时间**/
-		entryTime: '',
+		entryTime: null,
 		/**离开报警区域时间**/
-		departureTime: '',
+		departureTime: null,
 		/**开始监控时间**/
-		startTime: '',
+		startTime: null,
 		/**结束监控时间**/
-		endTime: '',
+		endTime: null,
 		/**进入监控区域报警**/
 		inFlag: 0,
 		/**离开监控区域报警**/
@@ -219,12 +224,25 @@
 				},
 				value: null,
 				/**选择的子区域**/
-				activeZone: 1,
+				activeZone: 0,
 				roomZones: [],
-				/**设备位置**/
-				devices: {
-					x: 0,
-					y: 0
+				/**房间信息**/
+				roomInfo: {},
+				/**雷达波信息**/
+				sizeInfo: {
+					/**容器盒子大小**/
+					box: {
+						width: 250,
+						height: 300
+					},
+					/**雷达波所处的位置**/
+					x: 125,
+					y: 300,
+					/**因为图像大小限制，需要按照比例缩放**/
+					scale: {
+						x: 1,
+						y: 1
+					}
 				}
 			};
 		},
@@ -237,7 +255,50 @@
 			Promise.all([
 				this.getRoomInfo(),
 				this.getRoomZone()
-			]);
+			]).then(([roomInfo, rows]) => {
+				// 盒子容器信息
+				const {
+					height,
+					width
+				} = this.sizeInfo.box;
+				// 设备距离墙壁范围
+				const {
+					roomLeft,
+					roomRight,
+					roomLength
+				} = roomInfo
+				// 盒子比例
+				const scale = {
+						x: (width / (roomLeft + roomRight)).toFixed(2),
+						y: (height / roomLength).toFixed(2)
+					},
+					x = roomLeft,
+					y = roomLength;
+				Object.assign(this.sizeInfo, {
+					x: x * scale.x,
+					y: y * scale.y,
+					scale
+				});
+				console.log(this.sizeInfo.scale, 'scale');
+				rows.forEach((ele, idx) => {
+					const {
+						x1 = 0, x2 = 0, y1 = 0, y2 = 0
+					} = ele;
+					Object.assign(ele, {
+						height: (y1 - y2) * scale.y,
+						width: (x1 - x2) * scale.x,
+						x: ((x1 + x2) / 2 + x) * scale.x,
+						y: ((y1 + y2) / 2 + y) * scale.y,
+						old: {
+							x: ((x1 + x2) / 2 + x) * scale.x,
+							y: ((y1 + y2) / 2 + y) * scale.y
+						}
+					});
+				});
+				this.roomZones = rows;
+				console.log(rows, 'rows');
+			})
+
 		},
 		methods: {
 			/**
@@ -246,11 +307,29 @@
 			addZone() {
 				// this.roomZones.push();
 				// this.zoneInfo = assignDeep({}, ZONE);
-				this.roomZones.push(assignDeep({}, ZONE, this.zoneInfo, {
-					roomId: this.deviceInfo.roomId,
-					deviceId: this.deviceInfo.deviceId
-				}));
-				this.radarDevice().then(r => r, err => this.roomZones.pop());
+				const {
+					name,
+					width,
+					height
+				} = this.zoneInfo;
+				if (this.zoneInfo.name && this.zoneInfo.width && this.zoneInfo.height) {
+					const obj = assignDeep({}, ZONE, {
+						roomId: this.deviceInfo.roomId,
+						deviceId: this.deviceInfo.deviceId,
+						z1: 0,
+						z2: this.roomInfo.roomHeight,
+						name,
+						width: width * this.sizeInfo.scale.x,
+						height: height * this.sizeInfo.scale.y,
+					});
+					this.roomZones.push(obj);
+					console.log(this.roomZones, 'this.roomZones');
+				} else {
+					uni.showToast({
+						icon: 'none',
+						title: '请完善区域信息'
+					})
+				}
 
 			},
 			/**
@@ -277,7 +356,7 @@
 			 * 监控区域修改
 			 */
 			monitorChange([active], type) {
-				this.roomZones[this.activeZone][type] = !!active;
+				this.roomZones[this.activeZone][type] = this.roomZones[this.activeZone][type] == 1 ? 0 : 1;
 			},
 			/**
 			 * 开启选择时间
@@ -303,38 +382,39 @@
 			dateConfirm({
 				value
 			}) {
-				this.roomZones[this.activeZone][this.dateHandle.type] = (typeof value === 'number') ? uni.$u.date(value,
+				this.roomZones[this.activeZone][this.dateHandle.type] = (typeof value === 'number') ? uni.$u.date(
+					value,
 					'yyyy-mm-dd hh:MM:ss') : value;
 				this.dateHandle.show = false;
 			},
 
 			/**
-			 * 创建/修改设备
+			 * 添加/修改设备
 			 */
 			radarDevice() {
 				const x = this.roomZones[0].x1,
 					y = this.roomZones[0].y1;
-				const payload = this.roomZones.map(ele => {
+				this.roomZones.forEach(ele => {
 					const {
 						old,
 						width,
 						height
-					} = ele;
-					return {
-						...ele,
-						x2: old.x - x,
-						x1: old.x - x - width,
-						y2: old.y - y,
-						y1: old.y - y - height,
-					}
-				});
-				delete payload.old;
-				delete payload.x;
-				delete payload.y;
-				return new Promise((resolve, reject) => {
-					PostRadarDevice(payload).then(res => {
-						resolve();
-					}, error => reject());
+					} = ele,
+					scale = this.sizeInfo.scale,
+						obj =
+						assignDeep({}, {
+							...ele,
+							x2: (old.x - x) / scale,
+							x1: (old.x - x - width) / scale,
+							y2: (old.y - y) / scale,
+							y1: (old.y - y - height) / scale,
+						});
+					delete obj.old;
+					delete obj.x;
+					delete obj.y;
+					delete obj.height;
+					delete obj.wdith;
+					PostRadarDevice(obj);
 				});
 			},
 
@@ -342,16 +422,19 @@
 			 * 获取房间信息
 			 */
 			getRoomInfo() {
-				const {
-					familyId,
-					roomId
-				} = this.deviceInfo;
-				PostRoomList({
-					familyId
-				}).then(res => {
-					this.roomInfo = res.rows.filter(ele => ele.roomId === roomId)[0] || {};
-					console.log(this.roomInfo, 'this.roomInfo');
+				return new Promise(resolve => {
+					const {
+						familyId,
+						roomId
+					} = this.deviceInfo;
+					PostRoomList({
+						familyId
+					}).then(res => {
+						this.roomInfo = res.rows.filter(ele => ele.roomId === roomId)[0] || {};
+						resolve(this.roomInfo);
+					});
 				});
+
 			},
 
 			/**
@@ -361,51 +444,28 @@
 				return new Promise(async resolve => {
 					const {
 						rows = []
-					} = GetRoomZone({
+					} = await GetRoomZone({
 						deviceId: this.deviceInfo.deviceId
 					});
-					if (!rows.length) {
-						rows.push(assignDeep({}, ZONE, {
-							zoneName: '设备',
-							roomId: this.deviceInfo.roomId,
-							deviceId: this.deviceInfo.deviceId
-						}))
-					}
-					const x = rows[0].x1,
-						y = rows[0].y1;
-					rows.forEach((ele, idx) => {
-						if (idx !== 0) {
-							const {
-								x1 = 0, x2 = 0, y1 = 0, y2 = 0
-							} = ele;
-							Object.assign(ele, {
-								height: y1 - y2,
-								width: x1 - x2,
-								x: (x1 + x2) / 2 + x,
-								y: (y1 + y2) / 2 + y,
-								old: {
-									x: (x1 + x2) / 2 + x,
-									y: (y1 + y2) / 2 + y,
-								}
-							});
-						}
-					});
-					this.roomZones = rows;
 					resolve(rows);
 				})
 			},
 			/**
 			 * 删除子区域
 			 */
-			deleteZone() {
+			async deleteZone() {
 				const {
 					roomZoneId
 				} = this.roomZones[this.activeZone];
-				PostRemRadarDevice({
-					roomZoneId
-				}).then(res => {
+				if (roomZoneId) { // 已经保存过的
+					await PostRemRadarDevice({
+						roomZoneId
+					});
 					this.roomZones.splice(this.activeZone, 1);
-				})
+				} else {
+					this.roomZones.splice(this.activeZone, 1);
+				}
+
 			}
 		}
 	};
@@ -422,9 +482,16 @@
 			box-sizing: border-box;
 		}
 
-		movable-area {
-			height: 600rpx;
+		.mova-box {
+			height: 300px;
 			width: 100%;
+			text-align: center;
+		}
+
+		movable-area {
+			display: inline-block;
+			// height: 300px;
+			// width: 250px;
 			background-color: #d8d8d8;
 			overflow: hidden;
 		}
@@ -457,9 +524,27 @@
 			}
 
 			@each $idx,
-			$bg in (2: unset, 3: #e5004f, 4: #ec6941, 5: #448aca) {
+			$bg in (2: #f8b551, 3: #e5004f, 4: #ec6941, 5: #448aca) {
 				&:nth-child(#{$idx}) {
 					background-color: $bg;
+				}
+			}
+		}
+
+		.ui-add-btn {
+			width: 100%;
+			display: flex;
+			align-items: center;
+
+			button {
+				width: 276rpx;
+				height: 82rpx;
+				border-radius: 35rpx;
+				font-size: 28rpx;
+				line-height: 82rpx;
+
+				&:nth-child(1) {
+					margin-right: 20rpx;
 				}
 			}
 		}
@@ -481,14 +566,6 @@
 		.ui-input {
 			margin: 34rpx 0 60rpx 0;
 			border-bottom: 1px solid #e2e2e2;
-		}
-
-		.wd-sms {
-			width: 276rpx;
-			height: 82rpx;
-			border-radius: 35rpx;
-			font-size: 28rpx;
-			line-height: 82rpx;
 		}
 
 		.ui-shape {
@@ -633,5 +710,6 @@
 				}
 			}
 		}
+
 	}
 </style>
