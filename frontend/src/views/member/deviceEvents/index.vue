@@ -5,7 +5,7 @@
     <member-info-card :value="101"></member-info-card>
    </el-row>	   -->
 
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
 
       <!-- <el-form-item label="操作时间" prop="operateTime">
         <el-date-picker clearable
@@ -66,6 +66,8 @@
           v-model="queryParams.deviceName"
           placeholder="请输入设备名称"
           clearable
+          style="width: 240px"
+
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
@@ -78,6 +80,8 @@
           v-model="queryParams.deviceNo"
           placeholder="设备编号"
           clearable
+          style="width: 240px"
+
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>

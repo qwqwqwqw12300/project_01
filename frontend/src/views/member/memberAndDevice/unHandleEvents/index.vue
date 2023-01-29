@@ -189,7 +189,7 @@
           <span>{{ parseTime(scope.row.operateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="设备归属会员" align="center" prop="memberId" />
+      <el-table-column label="设备归属会员" align="center" prop="memberPhone" />
       <el-table-column label="处理标志" align="center" prop="operateFlag">
         <template slot-scope="scope">
           {{ operateFlagFormat(scope.row) }}
