@@ -7,6 +7,7 @@
     <resultMap type="TMsg" id="TMsgResult">
         <result property="msgId"    column="msg_id"    />
         <result property="msgType"    column="msg_type"    />
+        <result property="eventLevel"    column="event_level"    />
         <result property="no"    column="no"    />
         <result property="content"    column="content"    />
         <result property="eventId"    column="event_id"    />
@@ -81,6 +82,8 @@
         insert into t_msg
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="msgType != null">msg_type,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="eventLevel != null">event_level,</if>
             <if test="no != null">no,</if>
             <if test="content != null">content,</if>
             <if test="eventId != null">event_id,</if>
@@ -98,6 +101,8 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="msgType != null">#{msgType},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="eventLevel != null">#{eventLevel},</if>
             <if test="no != null">#{no},</if>
             <if test="content != null">#{content},</if>
             <if test="eventId != null">#{eventId},</if>
@@ -119,6 +124,8 @@
         update t_msg
         <trim prefix="SET" suffixOverrides=",">
             <if test="msgType != null">msg_type = #{msgType},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="eventLevel != null">event_level = #{eventLevel},</if>
             <if test="no != null">no = #{no},</if>
             <if test="content != null">content = #{content},</if>
             <if test="eventId != null">event_id = #{eventId},</if>
