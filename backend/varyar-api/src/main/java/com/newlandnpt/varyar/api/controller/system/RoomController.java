@@ -48,10 +48,16 @@ public class RoomController extends BaseController {
         }
         startPage();
         Long memberId = getLoginUser().getMemberId();
-        // 查询当前会员与家庭关系
-        List<TMemberFamily> TMemberFamilys =
+        // 查询当前会员与家庭关系  登录会员创建
+        List<TMemberFamily> tMemberFamilys =
                 iMemberFamilyService.selectTMemberFamilyByMemberFamilyId(Long.valueOf(roomRequest.getFamilyId()),memberId);
-        if(CollectionUtils.isEmpty(TMemberFamilys)||TMemberFamilys.size()==0){
+        // 查询当前会员与家庭关系  会员被分享的家庭关系
+        List<TMemberFamily> tMemberFamilysShare =
+                iMemberFamilyService.selectTMemberFamilyByShare(Long.valueOf(roomRequest.getFamilyId()),memberId);
+        for (TMemberFamily item : tMemberFamilysShare){
+            tMemberFamilys.add(item);
+        }
+        if(CollectionUtils.isEmpty(tMemberFamilys)||tMemberFamilys.size()==0){
             throw new ServiceException(String.format("家庭信息不存在！"));
         }
         //获取家庭与房间信息
@@ -79,6 +85,9 @@ public class RoomController extends BaseController {
         if(tFamily == null ){
             ajax = ajax.error("家庭信息不存在！");
             return ajax;
+        }
+        if (!String.valueOf(tFamily.getCreateById()).equals(this.getLoginUser().getMemberId().toString())){
+            return error("非创建者无权限创建！");
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String roomNo = "R"+sdf.format(new Date());

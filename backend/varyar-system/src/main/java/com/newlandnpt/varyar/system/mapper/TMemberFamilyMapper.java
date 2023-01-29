@@ -27,6 +27,7 @@ public interface TMemberFamilyMapper
      * @return 会员和家庭关联
      */
     public List<TMemberFamily> selectTMemberFamilyByFamilyId(Map map);
+    public List<TMemberFamily>  selectTMemberFamilyByShare(Map map);
     /**
      * 查询会员和家庭关联
      *
