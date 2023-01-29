@@ -1,10 +1,10 @@
 <template>
   <form-panel title="雷达波的房间设置" :visible.sync="open" width="600px" append-to-body>
-    <el-tabs v-if="init" value="first">
+    <el-tabs v-if="init" v-model="currentTab">
       <el-tab-pane label="房间设置" name="first">
         <el-row type="flex" justify="center" :gutter="10">
           <el-col :span="10">
-            <el-form ref="radarWaveSettingsForm" :model="settings.room" :rules="settingsRoomRules" label-width="80px">
+            <el-form ref="radarWaveSettingsForm" :model="settings.room" :rules="settingsRoomRules" label-width="140px">
               <el-row type="flex" justify="center">
                 <el-col :span="24">
                   <el-form-item label="长度" porp="length">
@@ -42,6 +42,10 @@
                 </el-col>
               </el-row>
             </el-form>
+            <el-row type="flex" justify="center" :gutter="10">
+              <el-col :span="6"><el-button type="primary" @click="submitForm">提 交</el-button></el-col>
+              <el-col :span="6"><el-button @click="open = false">取 消</el-button></el-col>
+            </el-row>
           </el-col>
           <el-col :span="14">
             <el-card>
@@ -313,7 +317,7 @@
         </el-row>
       </el-tab-pane>
     </el-tabs>
-    <div slot="footer" class="dialog-footer">
+    <div v-if="currentTab!='first'" slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm">提 交</el-button>
       <el-button @click="open = false">取 消</el-button>
     </div>
@@ -374,6 +378,7 @@ export default {
   },
   data(){
     return {
+      currentTab:"first",
       scanAreaLeft,
       scanAreaCenter,
       scanAreaRight,
