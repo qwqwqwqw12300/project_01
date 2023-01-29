@@ -11,10 +11,7 @@ import com.newlandnpt.varyar.system.domain.TEvent;
 import com.newlandnpt.varyar.system.domain.req.FenceReq;
 import com.newlandnpt.varyar.system.domain.req.LocationMsgReq;
 import com.newlandnpt.varyar.system.domain.vo.GeoFenceResultVo;
-import com.newlandnpt.varyar.system.service.GeoFenceService;
-import com.newlandnpt.varyar.system.service.IDeviceFenceService;
-import com.newlandnpt.varyar.system.service.IDeviceService;
-import com.newlandnpt.varyar.system.service.IEventService;
+import com.newlandnpt.varyar.system.service.*;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +39,7 @@ public class LocationListener implements RocketMQListener<String> {
     private IDeviceService deviceService;
 
     @Autowired
-    private IEventService eventService;
+    private DeviceEventService deviceEventService;
 
     @Autowired
     private IDeviceFenceService deviceFenceService;
@@ -86,12 +83,7 @@ public class LocationListener implements RocketMQListener<String> {
             GeoFenceResultVo vo = JSON.parseArray(results).toList(GeoFenceResultVo.class).get(0);
             int in = vo.getIn();
             if (in == 0) {
-                TEvent event = new TEvent();
-                event.setNo(UUID.randomUUID().toString());
-                event.setLevel("严重");
-                event.setContent("设备" + deviceNo + "超出地理围栏范围，请及时处理！");
-                //todoL event表其他值
-                eventService.insertTEvent(event);
+                deviceEventService.deviceLeaveLocationIssue(deviceNo);
             } else {
                 log.info("设备定位在围栏中，状态正常");
             }

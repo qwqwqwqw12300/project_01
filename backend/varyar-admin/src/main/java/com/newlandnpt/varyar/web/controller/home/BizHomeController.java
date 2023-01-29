@@ -38,7 +38,7 @@ public class BizHomeController extends BaseController {
     public AjaxResult careDeviceList() {
         List<TDevice> list = deviceService.selectBizCareDeviceList(getUserId());
         //return success(deviceService.selectBizCareDeviceList(getUserId()));
-        List<TDevice> newList =deviceService.loadingDeviceStauts(list); ;
+        List<TDevice> newList =deviceService.loadingDeviceStauts(list);
         return success(newList);
     }
 

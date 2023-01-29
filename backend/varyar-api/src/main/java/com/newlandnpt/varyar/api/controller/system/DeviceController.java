@@ -67,9 +67,11 @@ public class DeviceController extends BaseController {
     public AjaxResult createDevice(
             @RequestBody @Validated DeviceRequest deviceRequest){
         AjaxResult ajax = AjaxResult.success();
-        if(checkInfo(deviceRequest,ajax) != null){
+        ajax  = checkInfo(deviceRequest,ajax);
+        if(ajax!= null){
            return ajax;
         }
+        ajax = AjaxResult.success();
         TDevice device = new TDevice();
         if (deviceRequest.getDeviceName().equals("")|| deviceRequest.getDeviceName()==null){
             deviceRequest.setDeviceId(this.getUsername()+"的设备");
@@ -79,7 +81,8 @@ public class DeviceController extends BaseController {
         device.setType(deviceRequest.getDeviceType());
         device.setRegisterTime(DateUtils.getNowDate());
         device.setLocation(deviceRequest.getLocation());
-        device.setStatus("1");
+        device.setStatus("0");
+        device.setDistributeFlag("1");
         device.setOrgId(Long.valueOf("101"));
         device.setOrgName("个人机构");
         device.setDelFlag("0");
@@ -88,7 +91,7 @@ public class DeviceController extends BaseController {
         try {
             iDeviceService.insertDevice(device);
         } catch (Exception e){
-            error("新增我的设备失败！");
+            return  error("新增我的设备失败！");
         }
         return ajax;
     }
@@ -99,38 +102,39 @@ public class DeviceController extends BaseController {
     public AjaxResult editDevice(
             @RequestBody @Validated DeviceRequest deviceRequest){
         AjaxResult ajax = AjaxResult.success();
-        if(checkInfo(deviceRequest,ajax) != null){
-            return ajax;
-        }
         if (deviceRequest.getDeviceId().equals("")|| deviceRequest.getDeviceId()==null){
-            error("设备id不能为空！");
+            return  error("设备id不能为空！");
+        }
+        if (deviceRequest.getDeviceName().equals("")|| deviceRequest.getDeviceName()==null){
+            return error("设备名称不能为空！");
         }
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
-        if(device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
-            error("非创建者无权限修改！");
-        }
         if (device==null){
-            error("无法查找到设备信息！");
+            return  error("无法查找到设备信息！");
+        }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限修改！");
         }
         device.setName(deviceRequest.getDeviceName());
-        device.setNo(deviceRequest.getDeviceNo());
-        device.setType(deviceRequest.getDeviceType());
         try {
             iDeviceService.updateDevice(device);
         } catch (Exception e){
-            error("修改我的设备失败！");
+            return  error("修改我的设备失败！");
         }
         return ajax;
     }
     private AjaxResult checkInfo(DeviceRequest deviceRequest,AjaxResult ajax){
         if (deviceRequest.getDeviceName().equals("")|| deviceRequest.getDeviceName()==null){
-            error("设备名称不能为空！");
+            ajax = AjaxResult.error("设备名称不能为空！");
+            return ajax;
         }
         if (deviceRequest.getDeviceType().equals("")|| deviceRequest.getDeviceType()==null){
-            error("设备类型不能为空！");
+            ajax = AjaxResult.error("设备类型不能为空！");
+            return ajax;
         }
         if (deviceRequest.getDeviceNo().equals("")|| deviceRequest.getDeviceNo()==null){
-            error("设备编号不能为空！");
+            ajax = AjaxResult.error("设备编号不能为空！");
+            return ajax;
         }
         return null;
     }

@@ -44,6 +44,14 @@ public interface IAdviseService
     public int updateTAdvise(TAdvise tAdvise);
 
     /**
+     * 一键已读建议
+     *
+     * @param adviseIds 需要已读的建议主键集合
+     * @return 结果
+     */
+    public int onReadTAdvise(Long[] adviseIds);
+
+    /**
      * 批量删除建议
      * 
      * @param adviseIds 需要删除的建议主键集合

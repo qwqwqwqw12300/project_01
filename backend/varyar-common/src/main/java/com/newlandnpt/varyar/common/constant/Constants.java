@@ -170,4 +170,8 @@ public class Constants
         public static final Integer ONE_MINUTE = 60;
     }
 
+    /** 删除标志 0存在 */
+    public static final String DEL_FLAG_NOT_ACTIVE = "0";
+    /** 删除标志 1删除 */
+    public static final String DEL_FLAG_ACTIVATED = "1";
 }

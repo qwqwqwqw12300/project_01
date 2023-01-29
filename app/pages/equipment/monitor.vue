@@ -18,7 +18,7 @@
 		<view class="ui-step">
 			<view class="ui-step-icon step2_bg"></view>
 			<view class="ui-step-title">
-				<text>靠近智能设备,</text>
+				<text>长按智能设备开关,</text>
 				<text>等待蓝灯亮起</text>
 			</view>
 		</view>
@@ -31,7 +31,7 @@
 			</view>
 		</view>
 		<view class="ui-btn">
-			<button>下一步</button>
+			<button @click="next">下一步</button>
 		</view>
 		<!-- 修改名称 -->
 		<u-popup :closeable="true" :round="10" :show="isEditShow" mode="center" @close="eidtClose">
@@ -54,6 +54,9 @@
 </template>
 
 <script>
+	import {
+		PostcreDevice
+	} from '../../common/http/api'
 	export default {
 		data() {
 			const deviceList = [{
@@ -77,12 +80,12 @@
 				/**创建设备信息**/
 				addForm: {
 					deviceName: '',
-					deviceNo: '',
-					deviceType: '0',
+					deviceNo: uni.$u.random(1, 100),
+					deviceType: '1',
 					location: ''
 				},
 				/**编辑展示**/
-				isEditShow: false
+				isEditShow: false,
 			}
 		},
 		methods: {
@@ -106,7 +109,7 @@
 						});
 						setTimeout(() => {
 							uni.navigateBack();
-						}, 2000)
+						}, 2000);
 
 					})
 				} else {
@@ -118,7 +121,9 @@
 
 
 			},
-
+			eidtClose() {
+				this.isEditShow = false
+			},
 			/**
 			 * 添加设备
 			 */
@@ -249,12 +254,16 @@
 	}
 
 	.ui-btn {
-		position: absolute;
-		width: 450rpx;
+		// position: absolute;
+		width: 100%;
+		button {
+			width: 450rpx;
+		}
+	
 		margin: 0 auto;
-		bottom: 80rpx;
-		left: 50%;
-		transform: translateX(-50%);
+		// bottom: 80rpx;
+		// left: 50%;
+		// transform: translateX(-50%);
 		text-align: center;
 
 		text {
@@ -282,7 +291,7 @@
 		padding: 53rpx 31rpx;
 
 		&.ui-change {
-			height: 400rpx;
+			height: 500rpx;
 
 			.ui-add-box {
 				border-bottom: 1px solid #e4e4e4;

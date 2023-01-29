@@ -44,6 +44,15 @@ public interface TAdviseMapper
     public int updateTAdvise(TAdvise tAdvise);
 
     /**
+     * 一键已读建议
+     *
+     * @param adviseIds 需要处理的数据主键集合
+     * @return 结果
+     */
+    public int onReadTAdvise(Long[] adviseIds);
+
+
+    /**
      * 删除建议
      * 
      * @param adviseId 建议主键

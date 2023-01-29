@@ -9,7 +9,9 @@
 			<view class="ui-step-icon step1_bg"></view>
 			<view class="ui-step-title">
 				<text>请确保手机蓝牙</text>
+				<text>定位权限</text>
 				<text>WIFI处于开启状态</text>
+
 			</view>
 		</view>
 		<view class="ui-satellite">
@@ -18,14 +20,18 @@
 		<view class="ui-step">
 			<view class="ui-step-icon step2_bg"></view>
 			<view class="ui-step-title bg">
-				<text style="font-size: 60rpx;">正在扫描</text>
+				<text>长按智能设备开关,</text>
+				<text>等待蓝灯亮起后点击下一步</text>
 			</view>
 		</view>
 		<view class="ui-bluetooth">
 			<image src="../../static/images/bluetooth.png"></image>
 		</view>
-		<view class="ui-btn">
+		<view class="ui-btn" v-if="connectStatic === 'init'">
 			<button @click="next">下一步</button>
+		</view>
+		<view class="ui-btn" v-if="connectStatic === 'connect'">
+			<u-loading-icon :text="eventMsg"></u-loading-icon>
 		</view>
 		<!-- 修改名称 -->
 		<u-popup :closeable="true" :round="10" :show="isEditShow" mode="center" @close="eidtClose">
@@ -45,42 +51,47 @@
 			</view>
 		</u-popup>
 		<!-- /修改名称 -->
+		<connect-wifi :list="wifiList" ref="wifiRef" @confirm="wifiConfirm"></connect-wifi>
 	</app-body>
 </template>
 
 <script>
 	import {
 		PostcreDevice
-	} from '../../common/http/api'
+	} from '../../common/http/api';
 	export default {
 		data() {
-			const deviceList = [{
-					key: 0,
-					name: '设备1 device-01',
-					active: true
-				},
-				{
-					key: 1,
-					name: '设备2 device-03',
-					active: false
-				},
-				{
-					key: 2,
-					name: '设备2 device-03',
-					active: false
-				}
-			]
 			return {
-				deviceList,
 				/**创建设备信息**/
 				addForm: {
 					deviceName: '',
-					deviceNo: '',
+					deviceNo: uni.$u.random(1, 3),
 					deviceType: '0',
 					location: ''
 				},
 				/**编辑展示**/
-				isEditShow: false
+				isEditShow: false,
+				/**事件说明**/
+				eventMsg: '启动中...',
+				/**设备连接状态 init connect success**/
+				connectStatic: 'init',
+				wifiList: [
+					{
+						ssid: 'nisdfgdfdgddfdfdfg'
+					},
+					{
+						ssid: 'nisdfgdfdgdg2'
+					},
+					{
+						ssid: 'nisdfgdfdgdg3'
+					},
+					{
+						ssid: 'nisdfgdfdgdg4'
+					},
+					{
+						ssid: 'nisdfgdfdgdg5'
+					}
+				]
 			}
 		},
 		methods: {
@@ -89,12 +100,6 @@
 			 */
 			eidtClose() {
 				this.isEditShow = false;
-			},
-			handleSelect(item) {
-				this.deviceList = this.deviceList.map(n => {
-					n.active = n.key === item.key
-					return n
-				})
 			},
 			handleBack() {
 				uni.navigateBack()
@@ -128,7 +133,44 @@
 			 * 添加设备
 			 */
 			next() {
-				this.isEditShow = true;
+				vpsdk.connect(res => {
+					const {
+						type,
+						data
+					} = res;
+					switch (type) {
+						case 'event': // 事件监听
+							this.eventMsg = data;
+							break;
+						case 'wifi': // 选择wifi
+							this.openWifi(data);
+							break;
+						case 'success': // 连接成功
+							this.isEditShow = true;
+							break;
+						default:
+							uni.showModal({
+								title: '设备添加失败，请重试'
+							});
+							break;
+					}
+				});
+			},
+			
+			/**
+			 * wifi确认
+			 */
+			wifiConfirm(info) {
+				const { ssid, bssid, rssi } = info.wifi;
+				vpsdk.connectWifi(ssid, bssid, rssi, info.pwd);
+			},
+			
+			/**
+			 * 打开wifi
+			 */
+			openWifi(data) {
+				this.wifiList = data;
+				this.$refs.wifiRef.open();
 			}
 		}
 	}
@@ -233,6 +275,7 @@
 			height: 360rpx;
 		}
 	}
+
 
 
 	.ui-btn {

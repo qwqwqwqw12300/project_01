@@ -30,7 +30,6 @@ insert into sys_dict_data values(39, 2,  '已处理',     '1',       'sys_operat
 insert into sys_dict_type values(16, '消息类型', 'sys_msg_type',   '0', 'admin', sysdate(), '', null, '消息类型');
 insert into sys_dict_data values(40, 1,  '短信',     '1',      'sys_msg_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '1:短信');
 insert into sys_dict_data values(41, 2,  'APP消息',     '2',       'sys_msg_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '2:APP消息');
-insert into sys_dict_data values(42, 3,  '事件消息',     '3',       'sys_msg_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '3:事件消息');
 
 -- ----------------------------
 -- 发送状态:0未发送 1已发送
@@ -89,3 +88,10 @@ insert into sys_dict_data values(null, 1,  '电话通知',     '0',      'sys_se
 insert into sys_dict_type values(null, '设备在线状态', 'sys_online_flag',   '0', 'admin', sysdate(), '', null, '设备在线状态（0离线 1在线 ）');
 insert into sys_dict_data values(null, 1,  '离线',     '0',      'sys_online_flag',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:离线');
 insert into sys_dict_data values(null, 2,  '在线',     '1',      'sys_online_flag',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '1:在线');
+
+-- ----------------------------
+-- 事件等级（normal普通 urgent紧急 ）
+-- ----------------------------
+insert into sys_dict_type values(null, '事件等级', 'event_level',   '0', 'admin', sysdate(), '', null, '事件等级（normal普通 urgent紧急 ）');
+insert into sys_dict_data values(null, 1,  '普通',     'normal',      'event_level',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, 'normal:普通');
+insert into sys_dict_data values(null, 2,  '紧急',     'urgent',      'event_level',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, 'urgent:紧急');

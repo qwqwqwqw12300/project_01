@@ -8,21 +8,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="adviseId"    column="advise_id"    />
         <result property="content"    column="content"    />
         <result property="memberId"    column="member_id"    />
+        <result property="memberName"    column="member_name"    />
         <result property="readFlag"    column="read_flag"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
     </resultMap>
-
+<!--这里会员名称暂无，先用手机号，后续按需调整-->
     <sql id="selectTAdviseVo">
-        select advise_id, content, member_id, read_flag, del_flag, create_time, update_time from t_advise
+        select
+            a.advise_id,
+            a.content,
+            a.member_id,
+            (select m.phone from  t_member m where  a.member_id=m.member_id ) as member_name,
+            a.read_flag,
+            a.del_flag,
+            a.create_time,
+            a.update_time
+        from
+            t_advise a
     </sql>
 
     <select id="selectTAdviseList" parameterType="TAdvise" resultMap="TAdviseResult">
         <include refid="selectTAdviseVo"/>
-        <where>  
-            <if test="content != null  and content != ''"> AND content like concat('%', #{content}, '%')</if>
+        <where>
+            a.del_flag='0'
+            <if test="content != null  and content != ''"> AND a.content like concat('%', #{content}, '%')</if>
+            <if test="readFlag != null  and readFlag != ''"> AND a.read_flag = #{readFlag}</if>
         </where>
+        order by a.create_time desc
     </select>
     
     <select id="selectTAdviseByAdviseId" parameterType="Long" resultMap="TAdviseResult">
@@ -57,6 +71,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where advise_id = #{adviseId}
+    </update>
+
+    <!--一键已读操作-->
+    <update id="onReadTAdvise" parameterType="TAdvise">
+        update t_advise set read_flag ='1',update_time = sysdate()
+        where advise_id in
+        <foreach item="adviseId" collection="array" open="(" separator="," close=")">
+            #{adviseId}
+        </foreach>
     </update>
 
     <delete id="deleteTAdviseByAdviseId" parameterType="Long">

@@ -81,11 +81,11 @@ create table sys_role (
 -- ----------------------------
 -- 初始化-角色信息表数据
 -- ----------------------------
-INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, '超级管理员', 'superAdmin', 1, '4', 1, 1, '0', '0', 'superAdmin', sysdate(), '', NULL, '超级管理员');
-INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, '平台管理员', 'admin', 2, '4', 1, 0, '0', '0', 'superAdmin', sysdate(), '', null, NULL);
-INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, '机构管理员', 'orgadmin', 2, '4', 1, 0, '0', '0', 'superAdmin', sysdate(), '', NULL, NULL);
-INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (102, '运营人员', 'biz', 4, '4', 1, 0, '0', '0', 'superAdmin', sysdate(), '', NULL, NULL);
-
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, '超级管理员', 'superAdmin', 1, '4', 1, 1, '0', '0', 'superAdmin', '2023-01-28 15:18:34', '', NULL, '超级管理员');
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, '平台管理员', 'admin', 2, '4', 1, 0, '0', '0', 'superAdmin', '2023-01-28 15:18:34', '', NULL, NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, '机构管理员', 'orgadmin', 3, '4', 1, 0, '0', '0', 'superAdmin', '2023-01-28 15:18:34', 'superAdmin', '2023-01-29 10:05:27', NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (102, '运营人员', 'biz', 5, '4', 1, 0, '0', '0', 'superAdmin', '2023-01-28 15:18:34', '', NULL, NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `org_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (103, '个人机构管理员', 'memberadmin', 4, '4', 1, 0, '0', '0', 'admin', '2023-01-29 10:02:08', 'superAdmin', '2023-01-29 10:06:59', NULL);
 
 -- ----------------------------
 -- 5、菜单权限表
@@ -270,7 +270,7 @@ create table sys_user_role (
 -- ----------------------------
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (1, 1);
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (2, 100);
-INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (100, 101);
+INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (100, 103);
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (101, 102);
 
 -- ----------------------------
@@ -378,7 +378,6 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1017);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1018);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1019);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2001);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2005);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2010);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2015);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2021);
@@ -398,11 +397,6 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2053);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2054);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2055);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2056);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2057);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2058);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2059);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2060);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2061);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2062);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2063);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2064);
@@ -416,6 +410,51 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2065);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2066);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2067);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (102, 2069);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 1);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 100);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 103);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 1000);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 1001);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 1002);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 1003);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 1016);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 1017);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 1018);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 1019);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2001);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2005);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2010);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2015);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2021);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2023);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2024);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2033);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2035);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2045);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2046);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2047);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2048);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2049);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2050);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2051);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2052);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2053);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2054);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2055);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2056);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2057);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2058);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2059);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2060);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2061);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2062);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2063);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2064);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2065);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2066);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2067);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2068);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (103, 2069);
 -- ----------------------------
 -- 8、角色和机构关联表  角色1-N机构
 -- ----------------------------

@@ -143,10 +143,9 @@ export default {
         // } else {
         //   orgUnHandleEventCount(user.data.orgId).then(response => this.orgUnHandleEventCount = response.data)
         // }
-        console.log(this.currentOrgId+"=====================")
+        this.$router.push({path: '/org/orgDeviceEvents', query: {orgId: this.currentOrgId, operateFlag: 0}})
+
       });
-      console.log(this.currentOrgId+"=====================")
-      this.$router.push({path: '/org/orgDeviceEvents', query: {orgId: this.currentOrgId, operateFlag: 0}})
     }
   },
 };

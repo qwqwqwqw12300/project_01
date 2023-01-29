@@ -221,6 +221,8 @@ create table t_event (
   user_id           bigint(20)                                comment '运营者id',
   user_name         varchar(50)                               comment '运营者姓名',
   operate_time       datetime                                 comment '操作时间',
+  operator_id       bigint(20)        default null            comment '操作人id',
+  operator_type       char(1)         default null            comment '操作人类型（0运营 1会员）',
   operate_flag        char(1)                                 comment '操作标志（0未处理 1已处理）',
   create_time       datetime                                  comment '创建时间',
   update_time       datetime                                  comment '更新时间',
@@ -230,7 +232,7 @@ create table t_event (
 drop table if exists t_msg;
 create table t_msg (
   msg_id        bigint(20)      not null auto_increment    comment '消息id',
-  msg_type                char(1)     default ''             comment '消息类型:1短信 2APP消息 3事件消息',
+  msg_type                char(1)     default ''             comment '消息类型:1短信 2APP消息',
   device_type              char(1)         default '0'       comment '类型（0雷达波 1监控设备）',
   event_level              varchar(50)     default ''        comment '级别（0:重要事件  1：普通事件）',
   no                varchar(50)     default ''             comment '消息编号',

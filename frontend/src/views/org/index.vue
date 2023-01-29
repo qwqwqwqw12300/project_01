@@ -49,6 +49,7 @@
               v-hasPermi="['org:add']"
             >新增</el-button>
           </el-col>
+          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
       </el-col>
 
@@ -365,28 +366,6 @@ export default {
         ],
         phone1: [
           { required: true, message: "第一服务人员号码不能为空", trigger: "blur" },
-          {
-            pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-            message: "请输入正确的手机号码",
-            trigger: "blur"
-          }
-        ],
-        attendantName2: [
-          { required: true, message: "第二服务人员姓名不能为空", trigger: "blur" }
-        ],
-        phone2: [
-          { required: true, message: "第二服务人员号码不能为空", trigger: "blur" },
-          {
-            pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-            message: "请输入正确的手机号码",
-            trigger: "blur"
-          }
-        ],
-        attendantName3: [
-          { required: true, message: "第三服务人员姓名不能为空", trigger: "blur" }
-        ],
-        phone3: [
-          { required: true, message: "第三服务人员号码不能为空", trigger: "blur" },
           {
             pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
             message: "请输入正确的手机号码",

@@ -19,6 +19,8 @@ import com.newlandnpt.varyar.system.mapper.TServeRecordMapper;
 import com.newlandnpt.varyar.system.domain.TServeRecord;
 import com.newlandnpt.varyar.system.service.IServeRecordService;
 
+import static com.newlandnpt.varyar.common.constant.EventConstants.OPERATOR_TYPE_OPER;
+
 /**
  * 服务记录Service业务层处理
  * 
@@ -94,7 +96,7 @@ public class ServeRecordServiceImpl implements IServeRecordService
         });
         //将非会员事件处理状态进行修改
         eventMapper.dealNotMemberEvents(serveRecord.getServeEvents().stream()
-                .map(p->p.getEventId()).toArray(Long[]::new));
+                .map(p->p.getEventId()).toArray(Long[]::new),serveRecord.getServedUserId(),OPERATOR_TYPE_OPER);
         return effect;
     }
 

@@ -97,6 +97,17 @@ public class AdviseController extends BaseController
     }
 
     /**
+     * 一键已读建议
+     */
+    @PreAuthorize("@ss.hasPermi('system:advise:edit')")
+    @Log(title = "建议", businessType = BusinessType.UPDATE)
+    @PutMapping("/{adviseIds}")
+    public AjaxResult onReadTAdvise(@PathVariable Long[] adviseIds)
+    {
+        return toAjax(adviseService.onReadTAdvise(adviseIds));
+    }
+
+    /**
      * 删除建议
      */
     @PreAuthorize("@ss.hasPermi('system:advise:remove')")

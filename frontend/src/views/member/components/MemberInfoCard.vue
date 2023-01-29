@@ -69,7 +69,7 @@ methods: {
       getMember(this.value).then(response => {
         this.member = response.data;
         this.contacts = response.data.contacts;
-        console.log(this.contacts + ">>>>>" + ">>>>>>>" )
+        //console.log(this.contacts + ">>>>>" + ">>>>>>>" )
 
       })
   },

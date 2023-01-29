@@ -39,14 +39,21 @@
               />
             </el-select>
         </el-form-item>
-         <!-- 待调整改下拉枚举 -->
-        <el-form-item label="重要级别" prop="level">
-          <el-input
-            v-model="queryParams.level"
-            placeholder="请输入级别"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
+
+         <el-form-item label="重要级别" prop="level">
+          <el-select
+              v-model="queryParams.level"
+              placeholder="重要级别"
+              clearable
+              style="width: 240px"
+            >
+              <el-option
+                v-for="dict in dict.type.event_level"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
         </el-form-item>
 
         <el-form-item label="设备名称" prop="deviceName">
@@ -125,7 +132,11 @@
   
       <el-table v-loading="loading" :data="eventList" @selection-change="handleSelectionChange"  @row-click="cardDetails">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="重要级别" align="center" prop="level" />
+        <el-table-column label="重要级别" align="center" prop="level">
+          <template slot-scope="scope">
+          {{ eventLevelFormat(scope.row) }}
+          </template>
+        </el-table-column>	
         <el-table-column label="事件编号" align="center" prop="no" />
         <el-table-column label="设备名称" align="center" prop="deviceName" />
         <el-table-column label="设备编号" align="center" prop="deviceNo" />
@@ -194,11 +205,12 @@
         @pagination="getList"
       />
      
-
+      <el-row><br></el-row>	
       <!-- 设备基本信息嵌入位置 -->
       <el-row>
         <device-info-card :value="currentDeviceId"></device-info-card>
 		  </el-row>	  
+      <el-row><br></el-row>	
        <!-- 机构基本信息嵌入位置 -->
        <el-row>
         <org-info-card :value="currentOrgId"></org-info-card>
@@ -279,7 +291,7 @@
 
   export default {
     name: "orgSingleDeviceEvent",
-    dicts: ['sys_operate_flag','sys_operate_type'],
+    dicts: ['sys_operate_flag','sys_operate_type','event_level'],
     // components: { Treeselect },
     components: { OrgInfoCard ,DeviceInfoCard},
     data() {
@@ -436,6 +448,11 @@
     operateTypeFormat(row, column) {
       return this.selectDictLabel(this.dict.type.sys_operate_type, row.operateType)
     },
+
+    //事件级别字段翻译
+    eventLevelFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.event_level, row.level)
+    },		
     
       // 取消按钮
       cancel() {
@@ -516,24 +533,30 @@
           }
         })       
       
-     //获取选中记录的机构id紧急联系人联系方式   
-     this.phoneOptions=[],
-     getOrg(this.currentOrgId).then(response => {
-            this.phoneOptions.push(response.data.phone1) ;
-            this.phoneOptions.push(response.data.phone2) ;
-            this.phoneOptions.push(response.data.phone3) ;
-
-      });
-
-        // this.phoneListOptions = this.phoneOptions.map(item => ({ value: item.phone, label: item.phone }))       
-        // console.log(this.phoneOptions)
-
+     
       
     }
       },
       /** 新增按钮操作 */
       handleAdd() {
        // this.reset();
+
+       //获取选中记录的机构id紧急联系人联系方式   
+     this.phoneOptions=[],
+     getOrg(this.currentOrgId).then(response => {
+            // this.phoneOptions.push(response.data.phone1) ;
+            response.data.phone1==null?"":this.phoneOptions.push(response.data.phone1)
+
+            response.data.phone2==null?"":this.phoneOptions.push(response.data.phone2)
+            response.data.phone3==null?"":this.phoneOptions.push(response.data.phone3)
+
+            // this.phoneOptions.push(response.data.phone2) ;
+            // this.phoneOptions.push(response.data.phone3) ;
+
+      });
+
+        // this.phoneListOptions = this.phoneOptions.map(item => ({ value: item.phone, label: item.phone }))       
+        // console.log(this.phoneOptions)
 
         this.open = true;
       this.title = "服务登记";

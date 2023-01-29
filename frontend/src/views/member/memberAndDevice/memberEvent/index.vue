@@ -40,13 +40,21 @@
         </el-form-item>
 
         <el-form-item label="重要级别" prop="level">
-          <el-input
-            v-model="queryParams.level"
-            placeholder="请输入级别"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
+          <el-select
+              v-model="queryParams.level"
+              placeholder="重要级别"
+              clearable
+              style="width: 240px"
+            >
+              <el-option
+                v-for="dict in dict.type.event_level"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
         </el-form-item>
+
         <el-form-item label="设备名称" prop="deviceName">
           <el-input
             v-model="queryParams.deviceNo"
@@ -122,10 +130,14 @@
   
       <el-table v-loading="loading" :data="eventList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="重要级别" align="center" prop="level" />
+        <el-table-column label="重要级别" align="center" prop="level">
+          <template slot-scope="scope">
+          {{ eventLevelFormat(scope.row) }}
+          </template>
+        </el-table-column>	
         <el-table-column label="事件编号" align="center" prop="no" />
         <el-table-column label="事件内容" align="center" prop="content" />
-        <el-table-column label="设备名称" align="center" prop="deviceId" />
+        <el-table-column label="设备名称" align="center" prop="deviceName" />
         <el-table-column label="设备编号" align="center" prop="deviceNo" />
         <el-table-column label="报警时间" align="center" prop="createTime" width="180" color="#FF0000">
           <template slot-scope="scope">
@@ -137,8 +149,11 @@
             <span>{{ parseTime(scope.row.operateTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作类型" align="center" prop="operateType" />
-
+        <el-table-column label="操作类型" align="center" prop="operateType" >
+          <template slot-scope="scope">
+          {{ operateTypeFormat(scope.row) }}
+          </template>
+        </el-table-column>
         <!-- 待调整 -->
         <el-table-column label="手机号" align="center" prop="memberPhone" />
         <!-- 待调整 -->
@@ -259,7 +274,7 @@
 
   export default {
     name: "memberEvent",
-    dicts: ['sys_operate_flag'],
+    dicts: ['sys_operate_flag','sys_operate_type','event_level'],
     // components: { Treeselect },
     data() {
       return {
@@ -367,6 +382,16 @@
       operateFlagFormat(row, column) {
       return this.selectDictLabel(this.dict.type.sys_operate_flag, row.operateFlag)
     },
+
+     // 操作类型字典翻译
+     operateTypeFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.sys_operate_type, row.operateType)
+    },
+
+    //事件级别字段翻译
+    eventLevelFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.event_level, row.level)
+    },		
       // 取消按钮
       cancel() {
         this.open = false;

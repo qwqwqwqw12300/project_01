@@ -38,11 +38,6 @@ public class CacheConstants
     public static final String T_DEVICE_KEY = "t_device:";
 
     /**
-     * 终端在线标记 cache key
-     */
-    public static final String DEVICE_ONLINE_FLAG_KEY = "device_online_flag:";
-
-    /**
      * 终端离线列表 cache key
      */
     public static final String DEVICE_DISCONNECTION = "device_disconnection";
