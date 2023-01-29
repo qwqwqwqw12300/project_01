@@ -76,6 +76,19 @@ public class AdviseServiceImpl implements IAdviseService
     }
 
     /**
+     * 一键已读建议
+     *
+     * @param adviseIds 需要操作的建议主键
+     * @return 结果
+     */
+    @Override
+    public int onReadTAdvise(Long[] adviseIds)
+    {
+        return tAdviseMapper.onReadTAdvise(adviseIds);
+    }
+
+
+    /**
      * 批量删除建议
      * 
      * @param adviseIds 需要删除的建议主键

@@ -35,6 +35,14 @@ export function updateAdvise(data) {
   })
 }
 
+// 一键已读
+export function onReadAdvise(adviseId) {
+  return request({
+    url: '/system/advise/' + adviseId,
+    method: 'put'
+  })
+}
+
 // 删除问题建议管理
 export function delAdvise(adviseId) {
   return request({

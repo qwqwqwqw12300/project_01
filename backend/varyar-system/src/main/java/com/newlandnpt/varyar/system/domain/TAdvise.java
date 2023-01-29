@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
+import org.springframework.data.annotation.Transient;
 
 /**
  * 建议对象 t_advise
@@ -23,8 +24,14 @@ public class TAdvise extends BaseEntity
     private String content;
 
     /** 会员id */
-    @Excel(name = "会员id")
+    //@Excel(name = "会员id")
     private Long memberId;
+
+    /** 会员名称 */
+    @Transient
+    //@Excel(name = "会员名称",type = Excel.Type.EXPORT)
+    @Excel(name = "会员名称")
+    private String memberName;
 
     /** 已读标志（0未读 1已读） */
     @Excel(name = "已读标志", readConverterExp = "0=未读,1=已读")
@@ -65,7 +72,15 @@ public class TAdvise extends BaseEntity
         this.readFlag = readFlag;
     }
 
-    public String getReadFlag() 
+    public String getMemberName() {
+        return memberName;
+    }
+
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
+    }
+
+    public String getReadFlag()
     {
         return readFlag;
     }
@@ -85,6 +100,7 @@ public class TAdvise extends BaseEntity
             .append("adviseId", getAdviseId())
             .append("content", getContent())
             .append("memberId", getMemberId())
+                .append("memberName", getMemberName())
             .append("readFlag", getReadFlag())
             .append("delFlag", getDelFlag())
             .append("createTime", getCreateTime())
