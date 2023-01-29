@@ -15,7 +15,7 @@ import {
 class Vpsdk {
 	/**推送模块**/
 	vpModule;
-
+	/**连接事件字典**/
 	connentMap = {
 		1: '正在建立与设备的连接',
 		2: '设备连接到Wi-Fi',
@@ -34,7 +34,7 @@ class Vpsdk {
 
 	}
 
-	async init(cb) {
+	async connect(cb) {
 		// this.vpModule.initSDK();
 
 		this.sdkModule.startPairing(userId, token);
@@ -61,7 +61,6 @@ class Vpsdk {
 				type: 'wifi',
 				data: e.wifiList
 			});
-			sdkModule.connectWifi(ssid, bssid, rssi, password);
 		});
 
 		// 开始连接

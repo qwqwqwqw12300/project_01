@@ -1,11 +1,18 @@
 package com.newlandnpt.varyar.system.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.newlandnpt.varyar.common.annotation.DataScope;
 import com.newlandnpt.varyar.common.utils.DateUtils;
+import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
+import com.newlandnpt.varyar.common.utils.uuid.UUID;
 import com.newlandnpt.varyar.system.domain.TEvent;
+import com.newlandnpt.varyar.system.domain.TMemberFamily;
 import com.newlandnpt.varyar.system.service.IEventService;
+import com.newlandnpt.varyar.system.service.IMemberFamilyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TMsgMapper;
@@ -13,6 +20,9 @@ import com.newlandnpt.varyar.system.domain.TMsg;
 import com.newlandnpt.varyar.system.service.IMsgService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.newlandnpt.varyar.common.constant.Constants.DEL_FLAG_NOT_ACTIVE;
+import static com.newlandnpt.varyar.common.constant.MsgConstants.*;
 
 /**
  * 消息Service业务层处理
@@ -27,6 +37,8 @@ public class MsgServiceImpl implements IMsgService
     private TMsgMapper tMsgMapper;
     @Autowired
     private IEventService iEventService;
+    @Autowired
+    private IMemberFamilyService memberFamilyService;
     /**
      * 查询消息
      * 
@@ -154,5 +166,40 @@ public class MsgServiceImpl implements IMsgService
     public int selectMsgCount(String operateFlag)
     {
         return tMsgMapper.selectMsgCount(operateFlag);
+    }
+
+    @Override
+    public int sendMsgByEvent(TEvent event) {
+        // 目前会员事件会同步发送app消息给 设备创建会员以及被分享家庭的会员
+        Long memberId = event.getMemberId();
+        Set<Long> memberIds = new HashSet<>();
+        memberIds.add(memberId);
+
+        TMemberFamily tMemberFamily = new TMemberFamily();
+        tMemberFamily.setCreateMemberId(memberId);
+        tMemberFamily.setFamilyId(event.getFamilyId());
+        tMemberFamily.setDelFlag(DEL_FLAG_NOT_ACTIVE);
+        List<TMemberFamily> memberFamilies = memberFamilyService.selectTMemberFamilyList(tMemberFamily);
+
+        int result = 0;
+        for(TMemberFamily memberFamily:memberFamilies){
+            TMsg msg = new TMsg();
+            msg.setMsgType(MSG_TYPE_APP);
+            msg.setDeviceType(event.getDeviceType());
+            msg.setEventLevel(event.getLevel());
+            msg.setNo(IdUtils.fastSimpleUUID());
+            msg.setContent(event.getContent());
+            msg.setEventId(event.getEventId());
+            msg.setDeviceId(event.getDeviceId());
+            msg.setFamilyId(memberFamily.getFamilyId());
+            msg.setMemberId(memberFamily.getMemberId());
+            msg.setOrgId(event.getOrgId());
+            msg.setOperator("系统");
+            msg.setSendStatus(SEND_STATUS_NOT_SEND);
+            msg.setOperateFlag(OPERATE_FLAG_NOT_HANDLE);
+            result+=insertTMsg(msg);
+        }
+
+        return result;
     }
 }

@@ -30,7 +30,6 @@ insert into sys_dict_data values(39, 2,  '已处理',     '1',       'sys_operat
 insert into sys_dict_type values(16, '消息类型', 'sys_msg_type',   '0', 'admin', sysdate(), '', null, '消息类型');
 insert into sys_dict_data values(40, 1,  '短信',     '1',      'sys_msg_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '1:短信');
 insert into sys_dict_data values(41, 2,  'APP消息',     '2',       'sys_msg_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '2:APP消息');
-insert into sys_dict_data values(42, 3,  '事件消息',     '3',       'sys_msg_type',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '3:事件消息');
 
 -- ----------------------------
 -- 发送状态:0未发送 1已发送

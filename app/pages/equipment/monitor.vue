@@ -18,7 +18,7 @@
 		<view class="ui-step">
 			<view class="ui-step-icon step2_bg"></view>
 			<view class="ui-step-title">
-				<text>靠近智能设备,</text>
+				<text>长按智能设备开关,</text>
 				<text>等待蓝灯亮起</text>
 			</view>
 		</view>
@@ -81,11 +81,11 @@
 				addForm: {
 					deviceName: '',
 					deviceNo: uni.$u.random(1, 100),
-					deviceType: '0',
+					deviceType: '1',
 					location: ''
 				},
 				/**编辑展示**/
-				isEditShow: false
+				isEditShow: false,
 			}
 		},
 		methods: {
@@ -109,7 +109,7 @@
 						});
 						setTimeout(() => {
 							uni.navigateBack();
-						}, 2000)
+						}, 2000);
 
 					})
 				} else {
@@ -254,12 +254,16 @@
 	}
 
 	.ui-btn {
-		position: absolute;
-		width: 450rpx;
+		// position: absolute;
+		width: 100%;
+		button {
+			width: 450rpx;
+		}
+	
 		margin: 0 auto;
-		bottom: 80rpx;
-		left: 50%;
-		transform: translateX(-50%);
+		// bottom: 80rpx;
+		// left: 50%;
+		// transform: translateX(-50%);
 		text-align: center;
 
 		text {
