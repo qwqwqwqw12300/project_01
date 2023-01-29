@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+import static com.newlandnpt.varyar.common.constant.DeviceConstants.STATUS_ACTIVATED;
+
 /**
  * @author lisd
  * @date 2023/1/6
@@ -149,7 +151,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
     public void deviceAccessIssue(String deviceNo) {
         TDevice param = new TDevice();
         param.setNo(deviceNo);
-        param.setStatus(DeviceConstants.STATUS_ACTIVATED);
+        param.setStatus(STATUS_ACTIVATED);
         param.setDelFlag(DeviceConstants.DEL_FLAG_NOT_ACTIVE);
         List<TDevice> devices = deviceMapper.selectTDeviceList(param);
         if ((devices.size() == 0)) {
@@ -160,7 +162,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
             String cacheKey = CacheConstants.T_DEVICE_KEY + device.getNo();
             if (redisCache.hasKey(cacheKey)) {
                 TDevice redisDev = redisCache.getCacheObject(cacheKey);
-                if (redisDev.getStatus().equals(DeviceConstants.STATUS_ACTIVATED)) {
+                if (redisDev.getStatus().equals(STATUS_ACTIVATED)) {
                     //todoL Redis缓存设备结构
                     triggerEvent(EVENT_LEVEL_HIGH, device, "设备 " + device.getNo() + " 监控到房间内【有/无人】超过" + Constants.ACCESS_ISSUE_DELAY_THRITY + "分钟，请及时处理！");
                 }
@@ -172,7 +174,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
     public void deviceLeaveLocationIssue(String deviceNo) {
         TDevice param = new TDevice();
         param.setNo(deviceNo);
-        param.setStatus(DeviceConstants.STATUS_ACTIVATED);
+        param.setStatus(STATUS_ACTIVATED);
         param.setDelFlag(DeviceConstants.DEL_FLAG_NOT_ACTIVE);
         List<TDevice> devices = deviceMapper.selectTDeviceList(param);
         if ((devices.size() == 0)) {
@@ -190,6 +192,9 @@ public class DeviceEventServiceImpl implements DeviceEventService {
      * @param device 终端信息
      */
     private void triggerEvent(String level, TDevice device, String content) {
+        if(!STATUS_ACTIVATED.equals(device.getStatus())){
+            log.warn(">>>> 设备号：{},不是激活状态，不触发事件：{}|{}",device.getNo(),level,content);
+        }
         TEvent event = new TEvent();
         event.setNo(UUID.randomUUID().toString());
         event.setDeviceId(device.getDeviceId());
