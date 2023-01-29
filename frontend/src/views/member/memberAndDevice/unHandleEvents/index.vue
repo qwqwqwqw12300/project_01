@@ -389,7 +389,10 @@
           userId: null,
           userName: null,
           operateTime: null,
-          operateFlag: null
+          operateFlag: null,
+          params:{
+            memberEvent:true
+          }
 
         },
 
@@ -579,7 +582,10 @@ listMsg(this.queryMsgParams).then(response => {
           userId: null,
           userName: null,
           operateTime: null,
-          operateFlag: this.currentOperateFlag
+          operateFlag: this.currentOperateFlag,
+          params:{
+            memberEvent:true
+          }
 
         }
         this.handleQuery();
