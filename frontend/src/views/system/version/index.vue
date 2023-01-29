@@ -29,7 +29,7 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="删除标记" prop="delFlag">
+          <!-- <el-form-item label="删除标记" prop="delFlag">
             <el-select
               v-model="queryParams.delFlag"
               placeholder="删除标记"
@@ -43,7 +43,7 @@
                 :value="dict.value"
               />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
     
     <!-- <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px"> -->
       <el-form-item>
@@ -109,11 +109,11 @@
         </template>
       </el-table-column>
       <!-- <el-table-column label="删除标记" align="center" prop="delFlag" /> -->
-      <el-table-column label="删除标记" align="center" prop="delFlag">
+      <!-- <el-table-column label="删除标记" align="center" prop="delFlag">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_del_flag" :value="scope.row.delFlag"/>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
