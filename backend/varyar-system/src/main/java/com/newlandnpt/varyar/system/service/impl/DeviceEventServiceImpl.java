@@ -8,6 +8,8 @@ import com.newlandnpt.varyar.system.domain.*;
 import com.newlandnpt.varyar.system.domain.vo.StateVo;
 import com.newlandnpt.varyar.system.mapper.*;
 import com.newlandnpt.varyar.system.service.DeviceEventService;
+import com.newlandnpt.varyar.system.service.IEventService;
+import com.newlandnpt.varyar.system.service.IMsgService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,10 @@ public class DeviceEventServiceImpl implements DeviceEventService {
     private TDeviceGroupMapper deviceGroupMapper;
 
     @Autowired
-    private TEventMapper tEventMapper;
+    private IEventService eventService;
+
+    @Autowired
+    private IMsgService msgService;
 
     @Autowired
     private RedisCache redisCache;
@@ -163,6 +168,21 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         }
     }
 
+    @Override
+    public void deviceLeaveLocationIssue(String deviceNo) {
+        TDevice param = new TDevice();
+        param.setNo(deviceNo);
+        param.setStatus(DeviceConstants.STATUS_ACTIVATED);
+        param.setDelFlag(DeviceConstants.DEL_FLAG_NOT_ACTIVE);
+        List<TDevice> devices = deviceMapper.selectTDeviceList(param);
+        if ((devices.size() == 0)) {
+            log.error("未找到设备 " + deviceNo);
+            return;
+        }
+        for (TDevice device : devices) {
+            triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + deviceNo + "超出地理围栏范围，请及时处理！");
+        }
+    }
 
     /**
      * 新增事件
@@ -207,9 +227,12 @@ public class DeviceEventServiceImpl implements DeviceEventService {
             log.info(">>>>> 设备{}会员id和设备组id都为空，事件忽略运营人员信息录入", device.getNo());
         }
         event.setCreateTime(new Date());
-        tEventMapper.insertTEvent(event);
+        eventService.insertTEvent(event);
         log.info("新增事件成功：" + content);
-        // todo 会员设备事件同时触发发消息
+        //会员设备事件同时触发发消息
+        if(device.getMemberId()!=null){
+            msgService.sendMsgByEvent(event);
+        }
     }
 
 

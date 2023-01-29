@@ -1,6 +1,8 @@
 package com.newlandnpt.varyar.system.service;
 
 import java.util.List;
+
+import com.newlandnpt.varyar.system.domain.TEvent;
 import com.newlandnpt.varyar.system.domain.TMsg;
 
 /**
@@ -88,4 +90,11 @@ public interface IMsgService
      * @return 消息总数
      */
     int selectMsgCount(String operateFlag);
+
+    /**
+     * 根据事件触发消息发送
+     * @param event
+     * @return
+     */
+    int sendMsgByEvent(TEvent event);
 }

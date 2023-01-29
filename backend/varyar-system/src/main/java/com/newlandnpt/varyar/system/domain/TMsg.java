@@ -22,8 +22,8 @@ public class TMsg extends BaseEntity
     /** 消息id */
     private Long msgId;
 
-    /** 消息类型:1短信 2APP消息 3事件消息 */
-    @Excel(name = "消息类型:1短信 2APP消息 3事件消息", readConverterExp = "1=短信,2=APP消息,3事件消息")
+    /** 消息类型:1短信 2APP消息*/
+    @Excel(name = "消息类型:1短信 2APP消息", readConverterExp = "1=短信,2=APP消息,3事件消息")
     private String msgType;
 
     /** 设备类型: 0雷达波  1监控设备 */
