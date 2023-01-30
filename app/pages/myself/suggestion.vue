@@ -49,6 +49,12 @@
 </script>
 
 <style lang="scss" scoped>
+	::v-deep {
+		.u-textarea {
+			border: 1px solid #e2e2e2;
+		}
+	}
+
 	.ui-form {
 		margin-top: 256rpx;
 		padding: 0 80rpx;
@@ -61,7 +67,7 @@
 
 		.ui-textarea {
 			margin: 34rpx 0 60rpx 0;
-			border-bottom: 1px solid #e2e2e2;
+			// border: 1px solid #e2e2e2;
 		}
 	}
 

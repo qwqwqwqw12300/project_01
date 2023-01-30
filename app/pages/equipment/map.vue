@@ -64,7 +64,6 @@
 				// 	familyId,
 				// 	roomId
 				// } = this.deviceInfo;
-				console.log('22')
 				GetDeviceSize({
 					deviceId: this.deviceInfo.deviceId,
 				}).then(res => {
@@ -72,11 +71,9 @@
 					const {
 						longitude,
 						latitude,
-						// radius,
+						radius,
 						address
 					} = JSON.parse(res.data.nowLoacation)
-					const radius = '200'
-					console.log(longitude, latitude, address, 'ppp')
 					this.address = address
 					this.longitude = longitude
 					this.latitude = latitude,
@@ -88,12 +85,12 @@
 					this.circles[0] = {
 						latitude,
 						longitude,
-						color: '#E51860',
+						color: '#d81c20',
 						strokeWidth: 1,
-						radius: 200,
-						fillColor: '#E5186020'
+						radius: radius || 200,
+						fillColor: '#df7d7f21'
 					}
-					
+
 					this.$forceUpdate()
 				});
 			}

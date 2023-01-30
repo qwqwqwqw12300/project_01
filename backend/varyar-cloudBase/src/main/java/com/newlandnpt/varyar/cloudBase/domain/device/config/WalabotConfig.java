@@ -1,22 +1,23 @@
 package com.newlandnpt.varyar.cloudBase.domain.device.config;
 
+import java.util.List;
 import java.util.Map;
 
 public class WalabotConfig {
 
-	private Boolean bedExitEnabled;
+	private Boolean bedExitEnabled = false;
 
-	private Integer enterDuration;
+	private Integer enterDuration = 3;
 	
-	private Integer exitDuration;
+	private Integer exitDuration = 10;
 	
-	private Integer fallingSensitivity;
+	private Integer fallingSensitivity = 1;
 	
-	private Integer maxTargetsForFallingTrigger;
+	private Integer maxTargetsForFallingTrigger = 0;
 	
-	private Float sensorHeight;
+	private Float sensorHeight = 1.5f;
 	
-	private Integer sensorMounting;
+	private Integer sensorMounting = 0;
 	
 	/**
 	 * xMax": 0,
@@ -25,6 +26,8 @@ public class WalabotConfig {
       "yMin": 0
 	 */
 	private Map<String, Integer> thresholdRegion;
+	
+	private List<SubRegion> trackerSubRegions;
 	
 	private Float xMax;
 	
@@ -100,6 +103,14 @@ public class WalabotConfig {
 
 	public void setThresholdRegion(Map<String, Integer> thresholdRegion) {
 		this.thresholdRegion = thresholdRegion;
+	}
+
+	public List<SubRegion> getTrackerSubRegions() {
+		return trackerSubRegions;
+	}
+
+	public void setTrackerSubRegions(List<SubRegion> trackerSubRegions) {
+		this.trackerSubRegions = trackerSubRegions;
 	}
 
 	public Float getxMax() {

@@ -5,7 +5,6 @@ import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.model.DeviceFenceRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.exception.ServiceException;
-import com.newlandnpt.varyar.common.utils.poi.ExcelUtil;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TDeviceFence;
 import com.newlandnpt.varyar.system.service.IDeviceFenceService;
@@ -49,7 +48,11 @@ public class DeviceFenceController extends BaseController
     @GetMapping(value = "/getDeFeInfo")
     public AjaxResult getInfo(@RequestBody @Validated DeviceFenceRequest deviceFenceRequest)
     {
-        return success(deviceFenceService.selectTDeviceFenceByDeviceFenceId(Long.valueOf(deviceFenceRequest.getDeviceFenceId())));
+        TDeviceFence tDeviceFence = deviceFenceService.selectTDeviceFenceByDeviceFenceId(Long.valueOf(deviceFenceRequest.getDeviceFenceId()));
+        if (tDeviceFence==null){
+            tDeviceFence =new TDeviceFence();
+        }
+        return success(tDeviceFence);
     }
 
     /**
@@ -91,12 +94,14 @@ public class DeviceFenceController extends BaseController
         cond.setDeviceId(Long.valueOf(tDeviceFence.getDeviceId()));
         List<TDeviceFence> TDeviceFences = deviceFenceService.selectTDeviceFenceList(cond);
         if (TDeviceFences.size()==0){
-            tDeviceFence = new TDeviceFence();
-            deviceFenceService.insertTDeviceFence(tDeviceFence);
+            int di = deviceFenceService.insertTDeviceFence(tDeviceFence);
+            if(di == 0){
+                return error("设置电子围栏失败！");
+            }
         }else if (TDeviceFences.size()>0){
-            ajax = ajax.error("已设置电子围栏信息！");
-            return ajax;
+            return error("已设置电子围栏信息！");
         }
+
         return ajax;
     }
 
@@ -116,10 +121,12 @@ public class DeviceFenceController extends BaseController
             throw new ServiceException("无权限修改本设备！");
         }
         try {
-            deviceFenceService.updateTDeviceFence(tDeviceFence);
+            int di = deviceFenceService.updateTDeviceFence(tDeviceFence);
+            if(di == 0){
+                return error("修改电子围栏失败！");
+            }
         }catch (Exception e){
-            ajax = ajax.error("设备修改失败！");
-            return ajax;
+            return error("设备修改失败！");
         }
         return ajax ;
     }
