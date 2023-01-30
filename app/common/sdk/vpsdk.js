@@ -31,7 +31,6 @@ class Vpsdk {
 
 	constructor() {
 		if (isApp()) this.vpModule = uni.requireNativePlugin("VPairSDKModule");
-
 	}
 
 	async connect(cb) {
@@ -46,7 +45,8 @@ class Vpsdk {
 		console.log(this.vpModule, 'vpModule');
 		try {
 			// 配网成功监听
-			plus.globalEvent.addEventListener('onPairFinish', function(e) {
+			plus.globalEvent.addEventListener('onPairFinish', e => {
+				console.log(e, 'onPairFinish');
 				cb({
 					type: e.isSuccess ? 'success' : 'fail',
 					data: e.deviceId
@@ -54,7 +54,7 @@ class Vpsdk {
 			});
 
 			// 配网事件监听
-			plus.globalEvent.addEventListener('onPairEvent', function(e) {
+			plus.globalEvent.addEventListener('onPairEvent', e => {
 				console.log('配网事件' + e.eventType);
 				cb({
 					type: 'event',
@@ -63,7 +63,7 @@ class Vpsdk {
 			});
 
 			// 选择wifi监听
-			plus.globalEvent.addEventListener('onWifiShouldSelect', function(e) {
+			plus.globalEvent.addEventListener('onWifiShouldSelect', e => {
 				console.log(e.wifiList, 'wifi信息');
 				cb({
 					type: 'wifi',
@@ -87,7 +87,8 @@ class Vpsdk {
 	 * 连接wifi
 	 */
 	connectWifi(ssid, bssid, rssi, password) {
-		sdkModule.connectWifi(ssid, bssid, rssi, password);
+		console.log(ssid, bssid, rssi, password, 'connectWifi');
+		this.vpModule.connectWifi(ssid, bssid, rssi, password);
 	}
 
 	getToken() {
