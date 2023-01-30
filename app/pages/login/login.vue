@@ -110,7 +110,7 @@
 				/**页面初始化标志**/
 				initFlag: true,
 				loginForm: {
-					phone: '13300000001',
+					phone: '13205907108',
 					code: '',
 					password: '1111',
 					uuid: '',

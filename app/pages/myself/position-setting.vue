@@ -15,7 +15,7 @@
 				<u-divider text="100米"></u-divider> -->
 				<view class="mova-box">
 					<movable-area :style="getStyle">
-						<movable-view  v-for="(item, index) of roomZones" :key="index" :x="item && item.x"
+						<movable-view v-for="(item, index) of roomZones" :key="index" :x="item && item.x"
 							:y="item && item.y" :style="{ height: item.height + 'px', width: item.width + 'px' }"
 							direction="all" @change="
 								e => {
@@ -24,7 +24,7 @@
 							">
 							<template>
 								<text class="ui-zone-name">{{ item.name || '未命名' }}</text>
-							<!-- 	<text>x：{{ $u.priceFormat((item.old.x - sizeInfo.x)/sizeInfo.scale.x, 1) }}</text>
+								<!-- 	<text>x：{{ $u.priceFormat((item.old.x - sizeInfo.x)/sizeInfo.scale.x, 1) }}</text>
 								<text>y：{{ 0 - $u.priceFormat((item.old.y - sizeInfo.y)/sizeInfo.scale.y , 1) }}</text> -->
 								<text>x：{{ $u.priceFormat((item.old.x - sizeInfo.x) / sizeInfo.scale.x, 1) }}</text>
 								<text>y：{{ 0 - $u.priceFormat((item.old.y - sizeInfo.y) / sizeInfo.scale.y, 1)}}</text>
@@ -90,13 +90,14 @@
 			<!-- 区域设置 -->
 			<view class="ui-setting" :key="activeZone" v-if="roomZones.length">
 				<view>
-					<u-checkbox-group @change="monitorChange($event, 'isFall')" placement="column">
+					<u-checkbox-group @change="monitorChange($event, 'existFlag')" placement="column">
 						<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].existFlag == 1"
 							:customStyle="{ marginBottom: '8px' }" label="私人区域" name="existFlag"></u-checkbox>
 					</u-checkbox-group>
-					<u-checkbox-group @change="monitorChange($event, 'isFall')" placement="column">
+					<u-checkbox-group @change="monitorChange($event, 'fallFlag')" placement="column">
 						<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].fallFlag == 1"
-							:customStyle="{ marginBottom: '8px' }" label="跌倒监控" name="fallFlag"></u-checkbox>
+							:cusmonitorChangetomStyle="{ marginBottom: '8px' }" label="跌倒监控" name="fallFlag">
+						</u-checkbox>
 					</u-checkbox-group>
 					<!-- <u-checkbox-group @change="monitorChange($event, 'isAccess')" placement="column">
 						<u-checkbox activeColor="#1aa208" :checked="list[activeZone].isAccess"
@@ -119,14 +120,14 @@
 					</view>
 					<view class="ui-timing">
 						<view class="ui-timing-pos">
-							<u-checkbox-group placement="column" @change="monitorChange($event, 'inFlag')">
-								<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].inFlag == 1"
-									:customStyle="{ marginBottom: '40rpx' }" label="进入监控区域超时报警时间" name="inFlag">
+							<u-checkbox-group placement="column" @change="monitorChange($event, 'inMonitorFlag')">
+								<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].inMonitorFlag == 1"
+									:customStyle="{ marginBottom: '40rpx' }" label="进入监控区域超时报警时间" name="inMonitorFlag">
 								</u-checkbox>
 							</u-checkbox-group>
-							<u-checkbox-group placement="column" @change="monitorChange($event, 'outFlag')">
-								<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].outFlag == 1"
-									label="离开监控区域超时报警时间" name="outFlag"></u-checkbox>
+							<u-checkbox-group placement="column" @change="monitorChange($event, 'outMonitorFlag')">
+								<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].outMonitorFlag == 1"
+									label="离开监控区域超时报警时间" name="outMonitorFlag"></u-checkbox>
 							</u-checkbox-group>
 						</view>
 						<view class="ui-timing-pos">
@@ -201,9 +202,9 @@
 		/**结束监控时间**/
 		endTime: null,
 		/**进入监控区域报警**/
-		inFlag: 0,
+		inMonitorFlag: 0,
 		/**离开监控区域报警**/
-		outFlag: 0
+		outMonitorFlag: 0
 	};
 	export default {
 		data() {
@@ -256,12 +257,12 @@
 				const minBox = 50;
 				let width = Math.max(this.roomZones.map(ele => ele.width));
 				let height = Math.max(this.roomZones.map(ele => ele.height));
-				width = width>minBox ? width: minBox;
-				height = height>minBox ? height: minBox;
+				width = width > minBox ? width : minBox;
+				height = height > minBox ? height : minBox;
 				console.log(width, height);
 				return {
 					width: this.sizeInfo.box.width + width + 'px',
-					height:  this.sizeInfo.box.height + height + 'px',
+					height: this.sizeInfo.box.height + height + 'px',
 				}
 			}
 		},
@@ -286,11 +287,11 @@
 						x: width / (roomLeft + roomRight),
 						y: height / roomLength
 					},
-					x = roomLeft,
-					y = roomLength;
+					x = roomLeft * scale.x,
+					y = roomLength * scale.y;
 				Object.assign(this.sizeInfo, {
-					x: x * scale.x,
-					y: y * scale.y,
+					x,
+					y,
 					scale
 				});
 				console.log(this.sizeInfo.scale, 'scale');
@@ -299,14 +300,20 @@
 						x1 = 0, x2 = 0, y1 = 0, y2 = 0
 					} = ele;
 					Object.assign(ele, {
-						height: (y1 - y2) * scale.y,
-						width: (x1 - x2) * scale.x,
-						x: ((x1 + x2) / 2 + x) * scale.x,
-						y: ((y1 + y2) / 2 + y) * scale.y,
+						height: Math.abs((y1 - y2) * scale.y),
+						width: Math.abs((x1 - x2) * scale.x),
+						x: x2 * scale.x + x,
+						y: (0 - y2 * scale.y + y),
 						old: {
-							x: ((x1 + x2) / 2 + x) * scale.x,
-							y: ((y1 + y2) / 2 + y) * scale.y
-						}
+							x: x2 * scale.x + x,
+							y: (0 - y2 * scale.y + y),
+						},
+						departureTime: uni.$u.timeFormat(ele.departureTime, 'hh:MM'),
+						entryTime: uni.$u.timeFormat(ele.entryTime, 'hh:MM'),
+						/**开始监控时间**/
+						startTime: uni.$u.timeFormat(ele.startTime, 'yyyy/mm/dd hh:MM:ss'),
+						/**结束监控时间**/
+						endTime: uni.$u.timeFormat(ele.endTime, 'yyyy/mm/dd hh:MM:ss'),
 					});
 				});
 				this.roomZones = rows;
@@ -319,8 +326,6 @@
 			 * 添加区域
 			 */
 			addZone() {
-				// this.roomZones.push();
-				// this.zoneInfo = assignDeep({}, ZONE);
 				const {
 					name,
 					width,
@@ -370,7 +375,9 @@
 			 * 监控区域修改
 			 */
 			monitorChange([active], type) {
+				console.log(this.roomZones[this.activeZone][type], '修改前', type);
 				this.roomZones[this.activeZone][type] = this.roomZones[this.activeZone][type] == 1 ? 0 : 1;
+				console.log(this.roomZones[this.activeZone][type], '修改后', type);
 			},
 			/**
 			 * 开启选择时间
@@ -398,7 +405,7 @@
 			}) {
 				this.roomZones[this.activeZone][this.dateHandle.type] = (typeof value === 'number') ? uni.$u.date(
 					value,
-					'yyyy-mm-dd hh:MM:ss') : value;
+					'yyyy/mm/dd hh:MM:ss') : value;
 				this.dateHandle.show = false;
 			},
 
@@ -406,30 +413,51 @@
 			 * 添加/修改设备
 			 */
 			radarDevice() {
-				const { x, y, scale } = this.sizeInfo;
-				console.log(x, y, 'xy');
-				this.roomZones.forEach(ele => {
+				const {
+					x,
+					y,
+					scale
+				} = this.sizeInfo;
+
+				const list = this.roomZones.map(ele => {
 					const {
 						old,
 						width,
-						height
+						height,
+						startTime,
+						endTime,
+						entryTime,
+						departureTime
 					} = ele,
-						obj =
+					obj =
 						assignDeep({}, {
 							...ele,
-							x2: (old.x - x) / scale.x,
-							x1: (old.x - x - width) / scale.x,
-							y2: 0 - ((old.y - y) / scale.y),
-							y1: 0 - ((old.y - y - height) / scale.y),
+							x2: uni.$u.priceFormat((old.x - x) / scale.x, 1),
+							x1: uni.$u.priceFormat((old.x - x - width) / scale.x, 1),
+							y2: uni.$u.priceFormat(0 - ((old.y - y) / scale.y), 1),
+							y1: uni.$u.priceFormat(0 - ((old.y - y - height) / scale.y), 1),
+							startTime: startTime && new Date(startTime).getTime(),
+							endTime: startTime && new Date(endTime).getTime(),
+							entryTime: entryTime && new Date('1970-1-1 ' + entryTime + ':00').getTime(),
+							departureTime: entryTime && new Date('1970-1-1 ' + departureTime + ':00')
+								.getTime(),
 						});
+					console.log(old.y, 'old.y');
 					delete obj.old;
 					delete obj.x;
 					delete obj.y;
 					delete obj.height;
-					delete obj.wdith;
+					delete obj.width;
 					console.log(obj, 'obj');
-					PostRadarDevice(obj);
+					return PostRadarDevice(obj);
 				});
+
+				Promise.all(list).then(res => {
+					uni.showToast({
+						icon: 'none',
+						title: '保存成功'
+					});
+				})
 			},
 
 			/**
@@ -476,8 +504,10 @@
 						roomZoneId
 					});
 					this.roomZones.splice(this.activeZone, 1);
+					this.activeZone = 0;
 				} else {
 					this.roomZones.splice(this.activeZone, 1);
+					this.activeZone = 0;
 				}
 
 			}
@@ -542,6 +572,7 @@
 					background-color: $bg;
 				}
 			}
+
 			&:nth-last-child(1) {
 				min-height: 50rpx;
 				min-width: 50rpx;

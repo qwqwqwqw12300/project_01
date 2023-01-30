@@ -119,7 +119,6 @@
 				this.getAllDevices(),
 				this.getReadInfo(),
 				this.getPushMsgState()
-				// this.getAllRoom()
 			]);
 		},
 		methods: {
@@ -174,7 +173,7 @@
 			getReadInfo() {
 				return new Promise(resolve => {
 					GetReadInfo().then(res => {
-						this.readInfo = res.rows;
+						this.readInfo = res.data;
 						resolve();
 					});
 				})
