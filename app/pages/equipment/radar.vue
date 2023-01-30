@@ -14,7 +14,7 @@
 
 			</view>
 		</view>
-		<view class="ui-satellite">
+		<view class="ui-satellite" @click="isEditShow = true">
 			<image src="../../static/images/satellite.png"></image>
 		</view>
 		<view class="ui-step">
@@ -137,8 +137,9 @@
 			 * 添加设备
 			 */
 			next() {
-
+				this.connectStatic = 'connect';
 				vpsdk.connect(res => {
+					console.log(res, '回弹结果');
 					const {
 						type,
 						data
@@ -151,12 +152,14 @@
 							this.openWifi(data);
 							break;
 						case 'success': // 连接成功
+							this.addForm.deviceNo = data;
 							this.isEditShow = true;
 							break;
 						default:
 							uni.showModal({
 								title: '设备添加失败，请重试'
 							});
+							this.connectStatic = 'init';
 							break;
 					}
 				});
