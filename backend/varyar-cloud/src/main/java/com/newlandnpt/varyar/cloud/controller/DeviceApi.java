@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.newlandnpt.varyar.cloudBase.domain.device.config.DeviceConfig;
+import com.newlandnpt.varyar.common.core.domain.config.DeviceConfig;
 import com.newlandnpt.varyar.cloudBase.service.FallService;
 
 /**

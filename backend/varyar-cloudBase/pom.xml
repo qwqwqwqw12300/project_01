@@ -29,6 +29,11 @@
             <groupId>com.newlandnpt.varyar</groupId>
             <artifactId>varyar-framework</artifactId>
         </dependency>
+        <!-- 核心模块-->
+        <dependency>
+            <groupId>com.newlandnpt.varyar</groupId>
+            <artifactId>varyar-common</artifactId>
+        </dependency>
 
     </dependencies>
     

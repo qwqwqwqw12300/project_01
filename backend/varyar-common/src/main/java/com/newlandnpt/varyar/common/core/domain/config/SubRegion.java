@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.cloudBase.domain.device.config;
+package com.newlandnpt.varyar.common.core.domain.config;
 
 /**
  * 子区域
