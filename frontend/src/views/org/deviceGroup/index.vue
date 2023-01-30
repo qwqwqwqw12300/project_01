@@ -26,7 +26,7 @@
           <el-card shadow="hover" class="card-item" >
             {{item.name}} | <el-tooltip :content="item.no" placement="top"><span>{{subString(item)}}</span></el-tooltip>
             <br>
-           运营人员：{{item.user.name}}
+           运营人员：{{item.user?item.user.name:""}}
             <br>
             <el-row :gutter="10">
               <el-col :span="12">
