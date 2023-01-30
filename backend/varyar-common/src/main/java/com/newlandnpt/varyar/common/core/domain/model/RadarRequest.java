@@ -27,14 +27,14 @@ public class RadarRequest {
      * */
     @NotBlank(message = "子区域名称不能为空")
     @Size(min = 0, max = 50, message = "子区域名称不能超过20个字符")
-    private String zoneName;
+    private String name;
 
     /**
      *  区域类型  0：监控区域    1：私人区域
      * */
     @NotBlank(message = "区域类型不能为空")
     @Size(min = 0, max = 1, message = "区域类型不能超过1个字符")
-    private String zoneType;
+    private String existFlag;
     /**
      *  迭代监测标志  0：是    1：否
      * */
@@ -93,12 +93,12 @@ public class RadarRequest {
      *进入标识 （0是 1否）
      * */
     @NotNull(message = "进入标识不能为空")
-    private String inFlag;
+    private String inMonitorFlag;
     /**
      *离开标识 （0是 1否）
      * */
     @NotNull(message = "离开标识不能为空")
-    private String outFlag;
+    private String outMonitorFlag;
 
     /**设备id*/
     @NotNull(message = "设备id不能为空")
@@ -112,21 +112,6 @@ public class RadarRequest {
         this.deviceId = deviceId;
     }
 
-    public String getInFlag() {
-        return inFlag;
-    }
-
-    public void setInFlag(String inFlag) {
-        this.inFlag = inFlag;
-    }
-
-    public String getOutFlag() {
-        return outFlag;
-    }
-
-    public void setOutFlag(String outFlag) {
-        this.outFlag = outFlag;
-    }
 
     public Date getStartTime() {
         return startTime;
@@ -152,21 +137,6 @@ public class RadarRequest {
         this.roomId = roomId;
     }
 
-    public String getZoneName() {
-        return zoneName;
-    }
-
-    public void setZoneName(String zoneName) {
-        this.zoneName = zoneName;
-    }
-
-    public String getZoneType() {
-        return zoneType;
-    }
-
-    public void setZoneType(String zoneType) {
-        this.zoneType = zoneType;
-    }
 
     public BigDecimal getX1() {
         return x1;
@@ -246,5 +216,37 @@ public class RadarRequest {
 
     public void setRoomZoneId(String roomZoneId) {
         this.roomZoneId = roomZoneId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getExistFlag() {
+        return existFlag;
+    }
+
+    public void setExistFlag(String existFlag) {
+        this.existFlag = existFlag;
+    }
+
+    public String getInMonitorFlag() {
+        return inMonitorFlag;
+    }
+
+    public void setInMonitorFlag(String inMonitorFlag) {
+        this.inMonitorFlag = inMonitorFlag;
+    }
+
+    public String getOutMonitorFlag() {
+        return outMonitorFlag;
+    }
+
+    public void setOutMonitorFlag(String outMonitorFlag) {
+        this.outMonitorFlag = outMonitorFlag;
     }
 }

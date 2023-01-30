@@ -46,27 +46,30 @@ public class RoomZoneController extends BaseController {
     @PostMapping("/setRadarDevice")
     public AjaxResult setRadarDevice(
             @RequestBody @Validated RadarRequest radarRequest) {
+        if (radarRequest.getName().equals("")||radarRequest.getName()==null){
+            return error("房间名称不能为空！");
+        }
         AjaxResult ajax = AjaxResult.success();
         TRoomZone tRoomZone = new TRoomZone();
         if (radarRequest.getRoomZoneId()!=null && !radarRequest.getRoomZoneId().equals("")){
              tRoomZone = iRoomZoneService.selectTRoomZoneByRoomZoneId(Long.valueOf(radarRequest.getRoomZoneId()));
         }
-        tRoomZone.setName(radarRequest.getZoneName());
+        tRoomZone.setName(radarRequest.getName());
         tRoomZone.setFallFlag(radarRequest.getFallFlag());
         tRoomZone.setDeviceId(Long.valueOf(radarRequest.getDeviceId()));
         tRoomZone.setRoomId(Long.valueOf(radarRequest.getRoomId()));
-        tRoomZone.setExistFlag(radarRequest.getZoneType());
+        tRoomZone.setExistFlag(radarRequest.getExistFlag());
         tRoomZone.setEntryTime(radarRequest.getEntryTime());
         tRoomZone.setDepartureTime(radarRequest.getDepartureTime());
         tRoomZone.setFallFlag(radarRequest.getFallFlag());
         tRoomZone.setX1(radarRequest.getX1());
         tRoomZone.setX2(radarRequest.getX2());
         tRoomZone.setY1(radarRequest.getY1());
-        tRoomZone.setY1(radarRequest.getY1());
+        tRoomZone.setY2(radarRequest.getY2());
         tRoomZone.setZ1(radarRequest.getZ1());
-        tRoomZone.setZ1(radarRequest.getZ1());
-        tRoomZone.setInMonitorFlag(radarRequest.getInFlag());
-        tRoomZone.setOutMonitorFlag(radarRequest.getOutFlag());
+        tRoomZone.setZ2(radarRequest.getZ2());
+        tRoomZone.setInMonitorFlag(radarRequest.getInMonitorFlag());
+        tRoomZone.setOutMonitorFlag(radarRequest.getOutMonitorFlag());
         tRoomZone.setStartTime(radarRequest.getStartTime());
         tRoomZone.setEndTime(radarRequest.getEndTime());
         try {
@@ -86,7 +89,7 @@ public class RoomZoneController extends BaseController {
      * 删除雷达波设备
      * */
     @PostMapping("/remRadarDevice")
-    public AjaxResult removeRadarDevice(@RequestBody @Validated RadarRequest radarRequest) {
+    public AjaxResult removeRadarDevice(@RequestBody @Validated TRoomZone radarRequest) {
         if (radarRequest.getRoomZoneId().equals("")||radarRequest.getRoomZoneId()==null){
             return error("房间子区域Id不能为空！");
         }

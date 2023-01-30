@@ -86,9 +86,12 @@ public class SysRoleServiceImpl implements ISysRoleService
     {
         List<SysRole> userRoles = roleMapper.selectRolePermissionByUserId(userId);
         List<SysRole> roles = selectRoleAll();
-        boolean isAdmin = userRoles.stream().allMatch(p->p.isAdmin());
-        boolean isOrgAdmin = userRoles.stream().allMatch(p->"orgadmin".equals(p.getRoleKey()));
-        boolean isMemberAdmin = userRoles.stream().allMatch(p->"memberadmin".equals(p.getRoleKey()));
+
+
+        List<SysRole> loginUserRoles = roleMapper.selectRolePermissionByUserId(SecurityUtils.getUserId());
+        boolean isAdmin = loginUserRoles.stream().anyMatch(p->p.isAdmin()||"admin".equals(p.getRoleKey()));
+        boolean isOrgAdmin = loginUserRoles.stream().anyMatch(p->"orgadmin".equals(p.getRoleKey()));
+        boolean isMemberAdmin = loginUserRoles.stream().anyMatch(p->"memberadmin".equals(p.getRoleKey()));
         if (!isAdmin && !isOrgAdmin) {
             roles = roles.stream().filter(p -> !"orgadmin".equals(p.getRoleKey())).collect(Collectors.toList());
         }
