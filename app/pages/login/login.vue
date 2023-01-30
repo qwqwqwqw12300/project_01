@@ -64,7 +64,8 @@
 						<graphic-input ref="codeRefbySms"></graphic-input>
 					</view>
 					<view class="ui-form-item">
-						<sms-input ref="sms" :payload="smsPayload" @checked="checkedBySms"></sms-input>
+						<sms-input ref="sms" @reset="smsReset" :payload="smsPayload" @checked="checkedBySms">
+						</sms-input>
 					</view>
 					<view class="ui-bot">
 						<text class="active" @click="register">免费注册</text>
@@ -157,6 +158,8 @@
 					uni.switchTab({
 						url: '/pages/index/index'
 					});
+				}, err => {
+					this.$refs.codeRef.handleGetCaptcha();
 				})
 			},
 
@@ -211,6 +214,13 @@
 					});
 				}
 
+			},
+
+			/**
+			 * 重置短信
+			 */
+			smsReset() {
+				this.$refs.codeRefbySms.handleGetCaptcha();
 			},
 
 			/**

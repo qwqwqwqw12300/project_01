@@ -91,11 +91,13 @@
 			<view class="ui-setting" :key="activeZone" v-if="roomZones.length">
 				<view>
 					<u-checkbox-group @change="monitorChange($event, 'existFlag')" placement="column">
-						<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].existFlag == 1"
-							:customStyle="{ marginBottom: '8px' }" label="私人区域" name="existFlag"></u-checkbox>
+						<u-checkbox activeColor="#1aa208" labelSize="28rpx"
+							:checked="roomZones[activeZone].existFlag == 1" :customStyle="{ marginBottom: '8px' }"
+							label="私人区域" name="existFlag"></u-checkbox>
 					</u-checkbox-group>
 					<u-checkbox-group @change="monitorChange($event, 'fallFlag')" placement="column">
-						<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].fallFlag == 1"
+						<u-checkbox activeColor="#1aa208" labelSize="28rpx"
+							:checked="roomZones[activeZone].fallFlag == 1"
 							:cusmonitorChangetomStyle="{ marginBottom: '8px' }" label="跌倒监控" name="fallFlag">
 						</u-checkbox>
 					</u-checkbox-group>
@@ -122,12 +124,14 @@
 						<view class="ui-timing-pos">
 							<u-checkbox-group placement="column" @change="monitorChange($event, 'inMonitorFlag')">
 								<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].inMonitorFlag == 1"
-									:customStyle="{ marginBottom: '40rpx' }" label="进入监控区域超时报警时间" name="inMonitorFlag">
+									:customStyle="{ marginBottom: '40rpx'}" labelSize="28rpx" label="进入监控区域超时报警时间"
+									name="inMonitorFlag">
 								</u-checkbox>
 							</u-checkbox-group>
 							<u-checkbox-group placement="column" @change="monitorChange($event, 'outMonitorFlag')">
-								<u-checkbox activeColor="#1aa208" :checked="roomZones[activeZone].outMonitorFlag == 1"
-									label="离开监控区域超时报警时间" name="outMonitorFlag"></u-checkbox>
+								<u-checkbox activeColor="#1aa208" labelSize="28rpx" :checked="
+									roomZones[activeZone].outMonitorFlag==1" label="离开监控区域超时报警时间" name="outMonitorFlag">
+								</u-checkbox>
 							</u-checkbox-group>
 						</view>
 						<view class="ui-timing-pos">
@@ -676,17 +680,17 @@
 			}
 
 			.ui-date-list {
-				margin-top: 10rpx;
+				margin-top: 40rpx;
 				width: 100%;
 				display: inline-flex;
 				justify-content: space-between;
 				align-items: center;
-				font-size: 30rpx;
-				color: #414141;
+				font-size: 28rpx;
+				color: rgb(96, 98, 102);
 			}
 
 			.ui-margin {
-				margin-bottom: 60rpx;
+				margin-bottom: 40rpx;
 			}
 
 			.ui-date {
@@ -721,9 +725,9 @@
 				.ui-timing-pos {
 					width: 250rpx;
 
-					&:nth-child(2) {
-						width: 200rpx;
-					}
+					// &:nth-child(2) {
+					// 	width: 200rpx;
+					// }
 
 					.ui-timing-active {
 						display: flex;
@@ -732,7 +736,7 @@
 						font-size: 30rpx;
 						line-height: 50rpx;
 						height: 50rpx;
-						width: 170rpx;
+						width: 250rpx;
 						border: 1rpx solid #e2e2e2;
 						padding: 0 10rpx;
 						box-sizing: border-box;

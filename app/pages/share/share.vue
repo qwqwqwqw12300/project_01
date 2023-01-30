@@ -28,7 +28,7 @@
 					<graphic-input ref="graphicRef"></graphic-input>
 				</view>
 				<view class="ui-form-item">
-					<sms-input ref="sms" :payload="smsPayload" @checked="checkedBySms" />
+					<sms-input ref="sms" @reset="codeReset" :payload="smsPayload" @checked="checkedBySms" />
 				</view>
 				<view class="wd-btn-gloup"><button @click="submit">提交</button></view>
 			</view>
@@ -173,12 +173,18 @@
 			 * 短信认证通过
 			 */
 			checkedBySms(smsInfo) {
-				console.log(smsInfo, 'graphicRef');
 				Object.assign(this.shareForm, {
 					code: smsInfo.code,
 					smsUuid: smsInfo.uuid
 				});
-			}
+			},
+
+			/**
+			 * 重置验证码
+			 */
+			codeReset() {
+				this.$refs.graphicRef.handleGetCaptcha();
+			},
 		}
 	};
 </script>

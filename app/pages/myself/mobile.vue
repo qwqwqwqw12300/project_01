@@ -12,26 +12,30 @@
 			<view class="ui-form-item">
 				<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="原手机号码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u--input v-model="form.oldPhone" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input>
+					<u--input v-model="form.oldPhone" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable>
+					</u--input>
 				</view>
 			</view>
 			<view class="ui-form-item">
 				<graphic-input ref="oldCodeRefbySms"></graphic-input>
 			</view>
 			<view class="ui-form-item">
-				<sms-input :payload="oldSmsPayload" @checked="oldCheckedBySms"></sms-input>
+				<sms-input ref="oldSmsRef" @reset="oldReset" :payload="oldSmsPayload" @checked="oldCheckedBySms">
+				</sms-input>
 			</view>
 			<view class="ui-form-item">
 				<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="新手机号码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u--input v-model="form.newPhone" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable></u--input>
+					<u--input v-model="form.newPhone" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable>
+					</u--input>
 				</view>
 			</view>
 			<view class="ui-form-item">
 				<graphic-input ref="newCodeRefbySms"></graphic-input>
 			</view>
 			<view class="ui-form-item">
-				<sms-input  :payload="newSmsPayload" @checked="newCheckedBySms"></sms-input>
+				<sms-input ref="newSmsRef" @reset="newReset" :payload="newSmsPayload" @checked="newCheckedBySms">
+				</sms-input>
 			</view>
 			<view class="ui-form-item">
 				<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx">
@@ -74,17 +78,30 @@
 			handleSubmit() {
 				PostUpdatePhone({
 					...this.form
-				}).then(res=>{
+				}).then(res => {
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
 						this.handleBack()
 					}, 500)
+				}, err => {
+					this.$refs.oldSmsRef.reset();
+					this.$refs.newSmsRef.reset();
 				})
 			},
+
+			oldReset() {
+				console.log(123);
+				this.$refs.oldCodeRefbySms.handleGetCaptcha();
+			},
+
+			newReset() {
+				this.$refs.newCodeRefbySms.handleGetCaptcha();
+			},
+
 			/**
 			 * 取消
 			 */
-			handleBack(){
+			handleBack() {
 				uni.navigateBack()
 			},
 			/**

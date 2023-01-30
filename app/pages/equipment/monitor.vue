@@ -13,7 +13,7 @@
 			</view>
 		</view>
 		<view class="ui-bluetooth">
-			<image src="../../static/images/bluetooth.png"></image>
+			<image src="../../static/images/bluetooth.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-step">
 			<view class="ui-step-icon step2_bg"></view>
@@ -175,15 +175,15 @@
 	}
 
 	.ui-step {
-		height: 148rpx;
+		height: 134rpx;
 		display: flex;
 		align-items: center;
 		margin-top: 50rpx;
 		padding: 0 40rpx;
 
 		.ui-step-icon {
-			width: 150rpx;
-			height: 120rpx;
+			width: 140rpx;
+			height: 112rpx;
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
@@ -198,7 +198,7 @@
 
 			text {
 				color: #0e6bc0;
-				font-size: 40rpx;
+				font-size: 34rpx;
 				font-weight: bold;
 				text-shadow: 0 0 3px #fff, 0 0 3px #5acbff;
 			}
@@ -214,8 +214,8 @@
 		justify-content: center;
 
 		image {
-			width: 380rpx;
-			height: 360rpx;
+			// width: 380rpx;
+			height: 400rpx;
 		}
 	}
 

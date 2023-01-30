@@ -35,7 +35,8 @@
 			handleGetCaptcha() {
 				GetCaptchaImage({}).then(res => {
 					this.codeUrl = `data:image/jpeg;base64,${res.img}`
-					this.uuid = res.uuid
+					this.uuid = res.uuid;
+					this.code = '';
 				})
 			},
 			returnCodeData() {

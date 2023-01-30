@@ -22,7 +22,7 @@
 					<graphic-input ref="codeRef"></graphic-input>
 				</view>
 				<view class="ui-form-item">
-					<sms-input ref="sms" :payload="smsPayload" @checked="smsChecked"></sms-input>
+					<sms-input ref="sms" :payload="smsPayload" @reset="codeReset" @checked="smsChecked"></sms-input>
 				</view>
 				<view class="ui-form-item">
 					<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx"></u-text>
@@ -124,7 +124,13 @@
 						duration: 2000
 					});
 				}
+			},
 
+			/**
+			 * 重置验证码
+			 */
+			codeReset() {
+				this.$refs.codeRef.handleGetCaptcha();
 			},
 
 			/**

@@ -15,7 +15,7 @@
 			</view>
 		</view>
 		<view class="ui-satellite" @click="isEditShow = true">
-			<image src="../../static/images/satellite.png"></image>
+			<image src="../../static/images/satellite.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-step">
 			<view class="ui-step-icon step2_bg"></view>
@@ -25,7 +25,7 @@
 			</view>
 		</view>
 		<view class="ui-bluetooth">
-			<image src="../../static/images/bluetooth.png"></image>
+			<image src="../../static/images/bluetooth.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-btn" v-if="connectStatic === 'init'">
 			<button @click="next">下一步</button>
@@ -230,15 +230,15 @@
 	}
 
 	.ui-step {
-		height: 148rpx;
+		height: 134rpx;
 		display: flex;
 		align-items: center;
-		margin-top: 50rpx;
+		margin-top: 40rpx;
 		padding: 0 40rpx;
 
 		.ui-step-icon {
-			width: 150rpx;
-			height: 120rpx;
+			width: 140rpx;
+			height: 112rpx;
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
@@ -253,7 +253,7 @@
 
 			text {
 				color: #0e6bc0;
-				font-size: 40rpx;
+				font-size: 32rpx;
 				font-weight: bold;
 				text-shadow: 0 0 3px #fff, 0 0 3px #5acbff;
 			}
@@ -263,28 +263,28 @@
 	.ui-satellite {
 		margin-top: 30rpx;
 		width: 100%;
-		height: 500rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		image {
-			width: 500rpx;
-			height: 480rpx;
-		}
-	}
-
-	.ui-bluetooth {
-		margin-top: 30rpx;
-		width: 100%;
 		height: 400rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
 		image {
-			width: 380rpx;
-			height: 360rpx;
+			// width: 400rpx;
+			height: 400rpx;
+		}
+	}
+
+	.ui-bluetooth {
+		margin-top: 30rpx;
+		width: 100%;
+		height: 350rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		image {
+			// width: 380rpx;
+			height: 350rpx;
 		}
 	}
 
