@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar.cloudBase.domain.device.config;
 
+import java.util.List;
 import java.util.Map;
 
 public class WalabotConfig {
@@ -25,6 +26,8 @@ public class WalabotConfig {
       "yMin": 0
 	 */
 	private Map<String, Integer> thresholdRegion;
+	
+	private List<SubRegion> trackerSubRegions;
 	
 	private Float xMax;
 	
@@ -100,6 +103,14 @@ public class WalabotConfig {
 
 	public void setThresholdRegion(Map<String, Integer> thresholdRegion) {
 		this.thresholdRegion = thresholdRegion;
+	}
+
+	public List<SubRegion> getTrackerSubRegions() {
+		return trackerSubRegions;
+	}
+
+	public void setTrackerSubRegions(List<SubRegion> trackerSubRegions) {
+		this.trackerSubRegions = trackerSubRegions;
 	}
 
 	public Float getxMax() {
