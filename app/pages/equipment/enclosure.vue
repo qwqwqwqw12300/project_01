@@ -105,7 +105,7 @@
 					return uni.$u.toast('半径长度大于0')
 				}
 				PostAddFence({
-					deviceId: '106',
+					deviceId,
 					address,
 					longitude,
 					latitude,
