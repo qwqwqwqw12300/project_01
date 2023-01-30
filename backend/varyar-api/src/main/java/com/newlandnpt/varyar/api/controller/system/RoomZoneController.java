@@ -65,9 +65,9 @@ public class RoomZoneController extends BaseController {
         tRoomZone.setX1(radarRequest.getX1());
         tRoomZone.setX2(radarRequest.getX2());
         tRoomZone.setY1(radarRequest.getY1());
-        tRoomZone.setY1(radarRequest.getY1());
+        tRoomZone.setY2(radarRequest.getY2());
         tRoomZone.setZ1(radarRequest.getZ1());
-        tRoomZone.setZ1(radarRequest.getZ1());
+        tRoomZone.setZ2(radarRequest.getZ2());
         tRoomZone.setInMonitorFlag(radarRequest.getInMonitorFlag());
         tRoomZone.setOutMonitorFlag(radarRequest.getOutMonitorFlag());
         tRoomZone.setStartTime(radarRequest.getStartTime());
