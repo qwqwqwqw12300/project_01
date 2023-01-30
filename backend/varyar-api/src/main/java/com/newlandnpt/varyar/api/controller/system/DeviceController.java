@@ -59,6 +59,7 @@ public class DeviceController extends BaseController {
         map.put("familyId",deviceRequest.getFamilyId());
         map.put("roomId",deviceRequest.getRoomId());
         List<TDevice> list = iDeviceService.selectDeviceByMemberId(map);
+        list = iDeviceService.loadingDeviceStauts(list);
         return getDataTable(list);
     }
     /**
