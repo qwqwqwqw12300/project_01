@@ -47,11 +47,12 @@
 						}" text="分享"></u-text>
 					</view>
 					<view class="ui-device">
-						<view class="ui-list" v-for="device of familyItem.devices" :key="device.deviceId">
+						<view class="ui-list" v-for="device of filterDevice({familyId: familyItem.familyId})"
+							:key="device.deviceId">
 							<view class="ui-list-box active" @click="goDeciveDetails(device)">
 								<image src="../../static/images/device.png"></image>
 								<text>{{device.name || '未命名设备'}}</text>
-								<text>{{device.location || '--'}}</text>
+								<text>{{device.roomName || '--'}}</text>
 								<view class="ui-list-static">
 									<u-icon :name="device.onlineFlag === '1' ? 'wifi' : 'wifi-off'"
 										:color="device.onlineFlag === '1' ? '#0dab1c' : '#ff4800'" size="28"></u-icon>

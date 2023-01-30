@@ -28,7 +28,7 @@
 						<u-icon name="chat" color="#414141" size="40rpx"></u-icon>
 						<text>{{$u.timeFormat(item.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
 						<text>{{item.deviceName || '--'}}</text>
-						<text>{{item.content || '--'}}</text>
+						<text class="ui-content">{{item.content || '--'}}</text>
 					</view>
 					<!-- /sos事件 -->
 					<view class="ui-sos active" v-else @click="open(item.msgId)" :key="index + 'listSos'">
@@ -36,7 +36,7 @@
 							<u-icon name="arrow-right" color="#414141" size="40rpx"></u-icon>
 							<text>{{$u.timeFormat(item.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
 							<text>{{item.deviceName || '--'}}</text>
-							<text>{{item.content || '--'}}</text>
+							<text class="ui-content">{{item.content || '--'}}</text>
 						</view>
 						<view class="ui-sos-btn active" v-if="contactsList[0]" @click="call(contactsList[0].phone)">
 							<u-text prefixIcon="phone" align="center" :block="false" iconStyle="font-size: 40rpx"
@@ -275,6 +275,13 @@
 				// 	width: 120rpx;
 				// }
 			}
+
+			.ui-content {
+				width: 280rpx;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
 		}
 
 		.ui-sos {
@@ -342,7 +349,7 @@
 
 				text {
 					display: inline-block;
-					font-size: 20rpx;
+					font-size: 25rpx;
 					color: #999;
 					width: 20%;
 					text-align: right;

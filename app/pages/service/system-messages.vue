@@ -126,7 +126,7 @@
 					border-top: 1px solid #e2e2e2;
 
 					text {
-						font-size: 20rpx;
+						font-size: 25rpx;
 					}
 				}
 			}

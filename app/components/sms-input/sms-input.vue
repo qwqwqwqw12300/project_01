@@ -102,6 +102,7 @@
 				this.status = 'init';
 				this.display = false;
 				this.timer && clearInterval(this.timer);
+				this.$emit('reset');
 			},
 			/**
 			 * 校验
@@ -157,6 +158,6 @@
 	}
 
 	.ui-mini {
-		width: 200rpx;
+		width: 250rpx;
 	}
 </style>
