@@ -10,7 +10,7 @@
 		<app-logo text="获取当前定位"></app-logo>
 		<view class="ui-map">
 			<view class="ui-map-box"><map style="width: 100%; height: 600rpx;" :latitude="latitude"
-					:longitude="longitude" :markers="covers"></map></view>
+					:longitude="longitude" :markers="covers" :circles="circles"></map></view>
 			<u-text prefixIcon="map-fill" iconStyle="font-size: 40rpx" text="当前地址"></u-text>
 			<text>{{ address }}</text>
 		</view>
@@ -66,7 +66,7 @@
 				// } = this.deviceInfo;
 				console.log('22')
 				GetDeviceSize({
-					deviceId: '100',
+					deviceId: this.deviceInfo.deviceId,
 				}).then(res => {
 					console.log(res.data.nowLoacation, 'fdd')
 					const {
@@ -75,7 +75,7 @@
 						// radius,
 						address
 					} = JSON.parse(res.data.nowLoacation)
-					const radius = 200
+					const radius = '200'
 					console.log(longitude, latitude, address, 'ppp')
 					this.address = address
 					this.longitude = longitude
@@ -90,9 +90,10 @@
 						longitude,
 						color: '#E51860',
 						strokeWidth: 1,
-						radius,
+						radius: 200,
 						fillColor: '#E5186020'
 					}
+					
 					this.$forceUpdate()
 				});
 			}
