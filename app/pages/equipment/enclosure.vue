@@ -205,10 +205,10 @@
 				this.circles[0] = {
 					latitude,
 					longitude,
-					color: '#E51860',
+					color: '#d81c20',
 					strokeWidth: 1,
 					radius: this.sliderValue,
-					fillColor: '#E5186020'
+					fillColor: '#df7d7f21'
 				}
 				this.$forceUpdate()
 			})
