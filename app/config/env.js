@@ -16,7 +16,7 @@ export const env = {
 	/**协议地址**/
 	privacy: {},
 	/**crisp客服Id**/
-	crispWebsoteId: 'f6e8cb47-0c2b-48e0-8506-788ff6af7be1',
+	crispWebsoteId: 'efe4eab0-cdef-4d3b-977f-3d862e79dd32',
 	/**包名**/
 	package: 'uni.UNI9B9BD07',
 	/**加密公钥**/

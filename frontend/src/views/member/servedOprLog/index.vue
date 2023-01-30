@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
   
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="115px">
       <el-form-item label="服务人员姓名" prop="servedUser.name">
         <el-input
           v-model="queryParams.servedUser.name"
@@ -57,7 +57,6 @@
               v-model="queryParams.servedType"
               placeholder="处理方式"
               clearable
-              style="width: 240px"
             >
               <el-option
                 v-for="dict in dict.type.sys_served_type"
@@ -127,21 +126,21 @@
       </el-row>
 
       <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center" />
+        <el-table-column type="selection" width="60" align="center" />
         <!-- <el-table-column label="处理方式" align="center" prop="servedType" /> -->
         <el-table-column label="处理方式" align="center" prop="servedType">
           <template slot-scope="scope">
           {{ servedTypeFormat(scope.row) }}
           </template>
         </el-table-column>	
-        <el-table-column label="处理时间" align="center" prop="createTime" />
+        <el-table-column label="处理时间" align="center" prop="createTime" width="170" />
         <el-table-column label="服务人员" align="center" prop="servedUser.name" />
         <el-table-column label="服务人员手机号" align="center" prop="servedUser.mobilePhone" />
         <el-table-column label="处理人归属机构" align="center" prop="servedUser.orgName" />
-        <el-table-column label="处理人服务备注" align="center" prop="remark" />
-        <el-table-column label="设备名称" align="center" prop="device.name" />
-        <el-table-column label="设备编号" align="center" prop="device.no" /> 
-        <el-table-column label="关联消息编号" align="center" prop="operateFlag">
+        <el-table-column label="处理人服务备注" align="center" prop="remark" show-overflow-tooltip/>
+        <el-table-column label="设备名称" align="center" prop="device.name" width="170" />
+        <el-table-column label="设备编号" align="center" prop="device.no"  width="170"/> 
+        <el-table-column label="关联消息编号" align="center" prop="operateFlag" show-overflow-tooltip>
           <template slot-scope="scope">
             <span v-for="({no},index) in scope.row.serveEvents" :key="no">{{no}}
             <span v-if="index!==scope.row.serveEvents.length-1">,
@@ -396,3 +395,6 @@ export default {
   }
 };
 </script>
+
+<style land="css">.el-tooltip__popper{max-width:50%}
+</style>

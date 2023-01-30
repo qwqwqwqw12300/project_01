@@ -163,10 +163,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="事件编号" align="center" prop="no" />
-      <el-table-column label="事件内容" align="center" prop="content" />
-      <el-table-column label="设备名称" align="center" prop="deviceName" />
-      <el-table-column label="设备编号" align="center" prop="deviceNo" />
+      <el-table-column label="事件编号" align="center" prop="no" width="120" show-overflow-tooltip/>
+      <el-table-column label="事件内容" align="center" prop="content" width="120" show-overflow-tooltip/>
+      <el-table-column label="设备名称" align="center" prop="deviceName" width="120" show-overflow-tooltip/>
+      <el-table-column label="设备编号" align="center" prop="deviceNo"  width="120" show-overflow-tooltip/>
       <el-table-column
         label="报警时间"
         align="center"
@@ -244,9 +244,9 @@
             <!-- <span>{{ dict.type.sys_msg_type?.find(x=>x.value == scope.row.msgType)?.label }}</span> -->
           </template>
         </el-table-column>
-        <el-table-column label="消息内容" align="center" prop="content" />
+        <el-table-column label="消息内容" align="center" prop="content" show-overflow-tooltip/>
         <el-table-column label="操作人员" align="center" prop="operator" />
-        <el-table-column label="接收人员" align="center" prop="memberId" />
+        <el-table-column label="接收人员" align="center" prop="memberName" />
         <el-table-column
           label="发送时间"
           align="center"
@@ -825,4 +825,7 @@ export default {
     margin-bottom: 0;
   }
 }
+</style>
+
+<style land="css">.el-tooltip__popper{max-width:50%}
 </style>

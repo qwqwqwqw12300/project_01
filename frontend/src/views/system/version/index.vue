@@ -344,7 +344,7 @@ export default {
     handleExport() {
       this.download('system/version/export', {
         ...this.queryParams
-      }, `version_${new Date().getTime()}.xlsx`)
+      }, `版本管理_${new Date().getTime()}.xlsx`)
     }
   }
 };

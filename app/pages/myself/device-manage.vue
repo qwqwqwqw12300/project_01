@@ -84,7 +84,6 @@
 
 <script>
 	import {
-		getFamilyList,
 		getRoomList,
 		PostDeviceList,
 		PosteditDevice,
@@ -149,7 +148,7 @@
 			}
 		},
 		methods: {
-			...mapActions(['getAllDevices', 'getFamilyList']),
+			...mapActions(['getAllDevices', 'getAllFamily']),
 
 			/**
 			 * 关闭弹窗
@@ -291,7 +290,7 @@
 			init() {
 				Promise.all([
 					this.getAllDevices(),
-					this.getFamilyList()
+					this.getAllFamily()
 				])
 			}
 		},

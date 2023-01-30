@@ -2,13 +2,21 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="操作人员" prop="operator">
-            <treeselect style="width: 240px" v-model="queryParams.operator" :options="orgOptions" :show-count="true" placeholder="请选择操作人员" />
+            <!-- <treeselect style="width: 240px" v-model="queryParams.operator" :options="orgOptions" :show-count="true" placeholder="请选择操作人员" /> -->
+      
+            <el-input
+          v-model="queryParams.operator"
+          placeholder="请输入操作人员"
+          clearable
+          style="width: 240px"
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       
       <el-form-item label="查询处理时间">
             <el-date-picker
               v-model="dateRange"
-              style="width: 300px"
+              style="width: 240px"
               value-format="yyyy-MM-dd HH:mm:ss"
               type="datetimerange"
               range-separator="-"
@@ -38,8 +46,8 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+   <el-row :gutter="10" class="mb8">
+       <!-- <el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -70,7 +78,7 @@
           @click="handleDelete"
           v-hasPermi="['system:msg:remove']"
         >删除</el-button>
-      </el-col>
+      </el-col> -->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -93,9 +101,9 @@
         </template>
 
       </el-table-column>
-      <el-table-column label="消息内容" align="center" prop="content" />
+      <el-table-column label="消息内容" align="center" prop="content" show-overflow-tooltip/>
       <el-table-column label="操作人员" align="center" prop="operator" />
-      <el-table-column label="接收人员" align="center" prop="memberId" />
+      <el-table-column label="接收人员" align="center" prop="memberName" />
       <el-table-column label="发送时间" align="center" prop="sendTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.sendTime) }}</span>
@@ -108,9 +116,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="失败原因" align="center" prop="reason" />
+      <el-table-column label="失败原因" align="center" prop="reason"  show-overflow-tooltip/>
         
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -127,7 +135,7 @@
             v-hasPermi="['system:msg:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     
     <pagination
@@ -405,10 +413,13 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/msg/export', {
+      this.download('msg/export', {
         ...this.queryParams
-      }, `msg_${new Date().getTime()}.xlsx`)
+      }, `消息_${new Date().getTime()}.xlsx`)
     }
   }
 };
 </script>
+
+<style land="css">.el-tooltip__popper{max-width:50%}
+</style>

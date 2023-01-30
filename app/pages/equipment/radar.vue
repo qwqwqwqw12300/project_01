@@ -59,6 +59,11 @@
 	import {
 		PostcreDevice
 	} from '../../common/http/api';
+
+	import {
+		vpsdk
+	} from '../../common/sdk/vpsdk.js';
+
 	export default {
 		data() {
 			return {
@@ -75,8 +80,7 @@
 				eventMsg: '启动中...',
 				/**设备连接状态 init connect success**/
 				connectStatic: 'init',
-				wifiList: [
-					{
+				wifiList: [{
 						ssid: 'nisdfgdfdgddfdfdfg'
 					},
 					{
@@ -133,6 +137,7 @@
 			 * 添加设备
 			 */
 			next() {
+
 				vpsdk.connect(res => {
 					const {
 						type,
@@ -156,15 +161,19 @@
 					}
 				});
 			},
-			
+
 			/**
 			 * wifi确认
 			 */
 			wifiConfirm(info) {
-				const { ssid, bssid, rssi } = info.wifi;
+				const {
+					ssid,
+					bssid,
+					rssi
+				} = info.wifi;
 				vpsdk.connectWifi(ssid, bssid, rssi, info.pwd);
 			},
-			
+
 			/**
 			 * 打开wifi
 			 */

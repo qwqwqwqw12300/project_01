@@ -146,30 +146,26 @@
           </template>
         </el-table-column>	
 
-        <el-table-column label="事件编号" align="center" prop="no" />
-        <el-table-column label="事件内容" align="center" prop="content" />
-        <el-table-column label="设备名称" align="center" prop="deviceName" />
-        <el-table-column label="设备编号" align="center" prop="deviceNo" />
-        <el-table-column label="报警时间" align="center" prop="createTime" width="180" color="#FF0000">
+        <el-table-column label="事件编号" align="center" prop="no" width="110" show-overflow-tooltip/>
+        <el-table-column label="事件内容" align="center" prop="content" width="110" show-overflow-tooltip/>
+        <el-table-column label="设备名称" align="center" prop="deviceName" width="110" show-overflow-tooltip/>
+        <el-table-column label="设备编号" align="center" prop="deviceNo" width="110" show-overflow-tooltip/>
+        <el-table-column label="报警时间" align="center" prop="createTime" width="170" color="#FF0000">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作时间" align="center" prop="operateTime" width="180" color="#FF0000">
+        <el-table-column label="操作时间" align="center" prop="operateTime" width="170" color="#FF0000">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.operateTime) }}</span>
           </template>
         </el-table-column>
-        <!-- 待调整 -->
         <el-table-column label="操作类型" align="center" prop="operateType" >
           <template slot-scope="scope">
           {{ operateTypeFormat(scope.row) }}
           </template>
         </el-table-column>
-
-        <!-- 待调整 -->
-        <el-table-column label="会员手机号／操作员手机号" align="center" prop="memberPhone" />
-        <!-- 待调整 -->
+        <el-table-column label="会员手机号" align="center" prop="memberPhone" />
         <el-table-column label="操作员姓名" align="center" prop="userName" /> 
         <el-table-column label="处理标志" align="center" prop="operateFlag">
           <template slot-scope="scope">
@@ -234,9 +230,9 @@
             </template>
 
           </el-table-column>
-          <el-table-column label="消息内容" align="center" prop="content" />
+          <el-table-column label="消息内容" align="center" prop="content"  show-overflow-tooltip/>
           <el-table-column label="操作人员" align="center" prop="operator" />
-          <el-table-column label="接收人员" align="center" prop="memberId" />
+          <el-table-column label="接收人员" align="center" prop="memberName" />
           <el-table-column label="发送时间" align="center" prop="sendTime" width="180">
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.sendTime) }}</span>

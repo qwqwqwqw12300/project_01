@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
 
-      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="85px">
 
 
         <el-form-item label="处理人员" prop="userName">
@@ -9,6 +9,7 @@
             v-model="queryParams.userName"
             placeholder="处理人员"
             clearable
+            style="width: 240px"
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
@@ -61,6 +62,7 @@
             v-model="queryParams.deviceName"
             placeholder="请输入设备名称"
             clearable
+            style="width: 240px"
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
@@ -73,6 +75,7 @@
             v-model="queryParams.deviceNo"
             placeholder="设备编号"
             clearable
+            style="width: 240px"
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
@@ -137,10 +140,10 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="事件编号" align="center" prop="no" />
-        <el-table-column label="设备名称" align="center" prop="deviceName" />
-        <el-table-column label="设备编号" align="center" prop="deviceNo" />
-        <el-table-column label="事件内容" align="center" prop="content" />
+        <el-table-column label="事件编号" align="center" prop="no" show-overflow-tooltip/>
+        <el-table-column label="设备名称" align="center" prop="deviceName" width="120" show-overflow-tooltip />
+        <el-table-column label="设备编号" align="center" prop="deviceNo" width="120" show-overflow-tooltip/>
+        <el-table-column label="事件内容" align="center" prop="content" width="120" show-overflow-tooltip/>
         <el-table-column label="报警时间" align="center" prop="createTime" width="180" color="#FF0000">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -159,7 +162,7 @@
         </el-table-column>
 
         <!-- 待调整 -->
-        <el-table-column label="会员手机号" align="center" prop="memberPhone" />
+        <el-table-column label="会员手机号" align="center" prop="memberPhone"/>
         <!-- 待调整 -->
         <el-table-column label="操作员姓名" align="center" prop="userName" />
         <el-table-column label="处理标志" align="center" prop="operateFlag">
@@ -204,7 +207,8 @@
         :limit.sync="queryParams.pageSize"
         @pagination="getList"
       />
-
+      
+      <br>
        <!-- 机构基本信息嵌入位置 -->
        <el-row>
         <org-info-card :value="currentOrgId"></org-info-card>
@@ -590,3 +594,5 @@
     }
   };
   </script>
+  <style land="css">.el-tooltip__popper{max-width:50%}
+</style>

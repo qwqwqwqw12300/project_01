@@ -22,7 +22,8 @@
 	} from '@/common/http/api.js';
 	import {
 		versionCompare,
-		isIos
+		isIos,
+		isApp
 	} from '../../common/utils/util';
 	export default {
 		data() {
@@ -78,32 +79,37 @@
 			 * 查询当前版本
 			 */
 			queryVersion() {
-				PostVersionInfo({
-					versionType: isIos ? '0' : '1',
-				}).then(res => {
-					const curVersion = res.data.content
-					plus.runtime.getProperty(plus.runtime.appid, (info) => {
-						const appVersion = info.version
-						const result = versionCompare(appVersion, curVersion)
-						if (!result) {
-							uni.showModal({
-								title: '',
-								content: '发现新版本、是否更新？',
-								success: res => {
-									if (res.confirm) {
-										let appurl = "https://sj.qq.com/"
-										plus.runtime.openURL(appurl)
-									} else {
-										this.initInfo()
-										// plus.runtime.quit()
+				if(isApp()) {
+					PostVersionInfo({
+						versionType: isIos ? '0' : '1',
+					}).then(res => {
+						const curVersion = res.data.content;
+						plus.runtime.getProperty(plus.runtime.appid, (info) => {
+							const appVersion = info.version
+							const result = versionCompare(appVersion, curVersion)
+							if (!result) {
+								uni.showModal({
+									title: '',
+									content: '发现新版本、是否更新？',
+									success: res => {
+										if (res.confirm) {
+											let appurl = "https://sj.qq.com/"
+											plus.runtime.openURL(appurl)
+										} else {
+											this.initInfo();
+											// plus.runtime.quit()
+										}
 									}
-								}
-							});
-						} else {
-							this.initInfo()
-						}
+								});
+							} else {
+								
+							}
+						})
 					})
-				})
+				} else {
+					this.initInfo();
+				}
+				
 			},
 			initInfo() {
 				this.getUserInfo().then(res => {

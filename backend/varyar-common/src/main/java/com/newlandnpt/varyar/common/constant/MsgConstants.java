@@ -8,9 +8,9 @@ package com.newlandnpt.varyar.common.constant;
 public class MsgConstants {
 
     /** 消息类型-短信消息 */
-    public static final String MSG_TYPE_SMS = "0";
+    public static final String MSG_TYPE_SMS = "1";
     /** 消息类型-app消息 */
-    public static final String MSG_TYPE_APP = "1";
+    public static final String MSG_TYPE_APP = "2";
     /** 发送状态 未发送*/
     public static final String SEND_STATUS_NOT_SEND="0";
     /** 发送状态 已发送*/

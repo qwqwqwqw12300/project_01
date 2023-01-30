@@ -100,6 +100,11 @@ export default {
   },
   created() {
     this.init();
+    setInterval(()=>{
+      if (this.$route.name == "PlatformAdminHome") {
+        this.init()
+      }
+    }, 5000)
   },
   activated() {
     this.init();

@@ -1,47 +1,51 @@
 <template>
   <form-panel title="雷达波的房间设置" :visible.sync="open" width="600px" append-to-body>
-    <el-tabs v-if="init" value="first">
+    <el-tabs v-if="init" v-model="currentTab">
       <el-tab-pane label="房间设置" name="first">
         <el-row type="flex" justify="center" :gutter="10">
           <el-col :span="10">
-            <el-form ref="radarWaveSettingsForm" :model="settings.room" :rules="settingsRoomRules" label-width="80px">
+            <el-form ref="radarWaveSettingsForm" :model="settings.room" :rules="settingsRoomRules" label-width="140px">
               <el-row type="flex" justify="center">
                 <el-col :span="24">
                   <el-form-item label="长度" porp="length">
-                    <el-input v-model="settings.room.roomLength" placeholder="请输入长度" clearable >
+                    <el-input-number :controls="false" :precision="2"  v-model="settings.room.roomLength" placeholder="请输入长度" clearable >
                       <template slot="append"> 米 </template>
-                    </el-input>
+                    </el-input-number> 米
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row type="flex" justify="center">
                 <el-col :span="24">
                   <el-form-item label="左侧" porp="left">
-                    <el-input v-model="settings.room.roomLeft" placeholder="请输入左侧距离" clearable>
+                    <el-input-number :controls="false" :precision="2"  v-model="settings.room.roomLeft" placeholder="请输入左侧距离" clearable>
                       <template slot="append"> 米 </template>
-                    </el-input>
+                    </el-input-number> 米
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row type="flex" justify="center">
                 <el-col :span="24">
                   <el-form-item label="右侧" porp="right">
-                    <el-input v-model.number="settings.room.roomRight" placeholder="请输入右侧距离" clearable>
+                    <el-input-number :controls="false" :precision="2"  v-model="settings.room.roomRight" placeholder="请输入右侧距离" clearable>
                       <template slot="append"> 米 </template>
-                    </el-input>
+                    </el-input-number> 米
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row type="flex" justify="center">
                 <el-col :span="24">
                   <el-form-item label="设置高度" porp="height">
-                    <el-input v-model="settings.room.roomHeight" placeholder="请设置高度" clearable>
+                    <el-input-number :controls="false" :precision="2"  v-model="settings.room.roomHeight" placeholder="请设置高度" clearable>
                       <template slot="append"> 米 </template>
-                    </el-input>
+                    </el-input-number> 米
                   </el-form-item>
                 </el-col>
               </el-row>
             </el-form>
+            <el-row type="flex" justify="center" :gutter="10">
+              <el-col :span="6"><el-button type="primary" @click="submitForm">提 交</el-button></el-col>
+              <el-col :span="6"><el-button @click="open = false">取 消</el-button></el-col>
+            </el-row>
           </el-col>
           <el-col :span="14">
             <el-card>
@@ -140,7 +144,7 @@
               <el-card header="子区域列表" :body-style="{width:'100%'}">
                 <water-fall v-model="settings.roomZones" :column-number="1">
                   <template slot-scope="{item,rowIndex}">
-                    <el-card style="margin-bottom: 5px" @click.native="selectZones(rowIndex)">
+                    <el-card :shadow="(index==rowIndex)?'always':'never'" style="margin-bottom: 5px" @click.native="selectZones(rowIndex)">
                       <el-row :gutter="10">
                         <el-col :span="16">
                           <el-input v-model="item.name" placeholder="子区域名称" clearable></el-input>
@@ -177,42 +181,42 @@
                 <el-row type="flex" justify="center">
                   <el-col :span="24">
                     <el-form-item label="最近的点Y1" porp="left" class="bluedot">
-                      <el-input v-model="roomZone.y1" clearable></el-input>
+                      <el-input-number :controls="false" :precision="2"  v-model="roomZone.y1" clearable></el-input-number> 米
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row type="flex" justify="center">
                   <el-col :span="24">
                     <el-form-item label="最远的点Y2" porp="left" class="redot">
-                      <el-input v-model="roomZone.y2" clearable></el-input>
+                      <el-input-number :controls="false" :precision="2"  v-model="roomZone.y2" clearable></el-input-number> 米
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row type="flex" justify="center">
                   <el-col :span="24">
                     <el-form-item label="最左侧的点X1" porp="left" class="bluedot">
-                      <el-input v-model="roomZone.x1" clearable></el-input>
+                      <el-input-number :controls="false" :precision="2"  v-model="roomZone.x1" clearable></el-input-number> 米
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row type="flex" justify="center">
                   <el-col :span="24">
                     <el-form-item label="最右侧的点X2" porp="left" class="redot">
-                      <el-input v-model="roomZone.x2" clearable></el-input>
+                      <el-input-number :controls="false" :precision="2"  v-model="roomZone.x2" clearable></el-input-number> 米
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row type="flex" justify="center">
                   <el-col :span="24">
                     <el-form-item label="最顶部的点Z1" porp="left" class="bluedot">
-                      <el-input v-model="roomZone.z1" clearable></el-input>
+                      <el-input-number :controls="false" :precision="2"  v-model="roomZone.z1" clearable></el-input-number> 米
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row type="flex" justify="center">
                   <el-col :span="24">
                     <el-form-item label="最底部的点Z2" porp="left" class="redot">
-                      <el-input v-model="roomZone.z2" clearable></el-input>
+                      <el-input-number :controls="false" :precision="2"  v-model="roomZone.z2" clearable></el-input-number> 米
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -313,7 +317,7 @@
         </el-row>
       </el-tab-pane>
     </el-tabs>
-    <div slot="footer" class="dialog-footer">
+    <div v-if="currentTab!='first'" slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm">提 交</el-button>
       <el-button @click="open = false">取 消</el-button>
     </div>
@@ -374,6 +378,7 @@ export default {
   },
   data(){
     return {
+      currentTab:"first",
       scanAreaLeft,
       scanAreaCenter,
       scanAreaRight,
@@ -421,12 +426,12 @@ export default {
     addRoomZones(){
       this.settings.roomZones.push({
         name:undefined,
-        x1:undefined,
-        x2:undefined,
-        y1:undefined,
-        y2:undefined,
-        z1:undefined,
-        z2:undefined,
+        x1:0,
+        x2:0,
+        y1:0,
+        y2:0,
+        z1:0,
+        z2:0,
         existFlag:"0",
         fallFlag:"0",
         entryTime:undefined,

@@ -1,12 +1,13 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="125px">
 
       <el-form-item label="会员手机号" prop="phone">
         <el-input
           v-model="queryParams.phone"
           placeholder="请输入会员手机号"
           clearable
+          style="width: 220px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
@@ -15,6 +16,7 @@
           v-model="queryParams.params.userMobilePhone"
           placeholder="请输入服务人员手机号"
           clearable
+          style="width: 220px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
@@ -24,7 +26,7 @@
               v-model="queryParams.distributeFlag"
               placeholder="全部"
               clearable
-              style="width: 200px"
+              style="width: 220px"
             >
               <el-option
                 v-for="dict in dict.type.sys_distribute_flag"
@@ -45,9 +47,9 @@
 
 
     <el-table v-loading="loading" :data="memberList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
+      <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="会员手机号" align="center" prop="phone" />
-      <el-table-column label="会员编号" align="center" prop="no" />
+      <el-table-column label="会员编号" align="center" prop="no" show-overflow-tooltip/>
       <el-table-column label="分配标志" align="center" prop="distributeFlag">
         <template slot-scope="scope">
           {{ distributeFlagFormat(scope.row) }}
@@ -170,7 +172,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         phone: null,
-        distributeFlag: null,
+        distributeFlag: "0",
         params:{
           userMobilePhone:null
         }
@@ -365,7 +367,8 @@ export default {
 };
 </script>
 
-
+<style land="css">.el-tooltip__popper{max-width:50%}
+</style>
 <style scoped lang="scss">
 
 .home {
