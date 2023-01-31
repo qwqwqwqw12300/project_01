@@ -13,8 +13,8 @@
 			<view class="ui-add-box">
 				<view>
 					<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 40rpx" text="房间名称"></u-text>
-					<u--input class="ui-room-name" v-model="form.roomName" placeholder="请输入房间名称" border="bottom"
-						clearable></u--input>
+					<u--input class="ui-room-name" v-model="form.name" placeholder="请输入房间名称" border="bottom" clearable>
+					</u--input>
 				</view>
 				<!-- <view>
 					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间高度"></u-text>
@@ -69,7 +69,7 @@
 				subTitle: '下一步',
 				familyId: '',
 				form: {
-					roomName: '', //房间名称
+					name: '', //房间名称
 					// roomHeight: '', //房间高度
 					// roomLength: '', //房间长度
 					// roomLeft: '', //房间左长度
@@ -93,13 +93,13 @@
 			},
 			next() {
 				const {
-					roomName,
+					name,
 					roomHeight,
 					roomLength,
 					roomLeft,
 					roomRight
 				} = this.form;
-				if (!roomName) {
+				if (!name) {
 					return uni.showToast({
 						icon: 'none',
 						title: '请完善房间信息'
