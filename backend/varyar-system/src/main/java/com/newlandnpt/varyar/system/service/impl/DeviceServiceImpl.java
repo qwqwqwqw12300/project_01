@@ -319,7 +319,10 @@ public class DeviceServiceImpl implements IDeviceService {
         }
         TDevice.DeviceParameter settings;
         if(TYPE_READER_WAVE.equals(device.getType())){
-            settings = new TDevice.RadarWaveDeviceSettings();
+            settings = device.getParameter();
+            if(settings == null){
+                settings = new TDevice.RadarWaveDeviceSettings();
+            }
             TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings) settings;
             if(device.getRoomId()!=null){
                 //radarWaveDeviceSettings.setRoom(roomService.selectTRoomByRoomId(device.getRoomId()));
@@ -353,13 +356,12 @@ public class DeviceServiceImpl implements IDeviceService {
         if(TYPE_READER_WAVE.equals(device.getType())){
             TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings) settings;
             if(device.getParameter()==null){
-                device.setParameter(new TDevice.DeviceParameter());
+                device.setParameter(new TDevice.RadarWaveDeviceSettings());
             }
             device.setParameter(radarWaveDeviceSettings);
             //更新设备参数信息
             deviceMapper.updateTDevice(device);
             TRoomZone roomZone = new TRoomZone();
-            roomZone.setRoomId(device.getRoomId());
             roomZone.setDeviceId(device.getDeviceId());
             List<TRoomZone> roomZones = roomZoneService.selectTRoomZoneList(roomZone);
             List<Long> removeZones = new ArrayList<>();

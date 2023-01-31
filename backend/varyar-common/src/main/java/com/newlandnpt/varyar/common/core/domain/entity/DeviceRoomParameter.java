@@ -1,5 +1,7 @@
 package com.newlandnpt.varyar.common.core.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,10 +18,12 @@ public class DeviceRoomParameter implements Serializable{
     /**
      *开始时间 data HH:mm:ss
      * */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
     /**
      *结束时间 data HH:mm:ss
      * */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
     /**
      *进入标识 （0是 1否）
