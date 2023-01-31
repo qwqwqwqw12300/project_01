@@ -44,9 +44,12 @@ public class DeviceController extends BaseController {
        // map.put("memberId",this.getLoginUser().getMemberId());
         map.put("familyId",deviceRequest.getFamilyId());
         map.put("roomId",deviceRequest.getRoomId());
+        TDevice cond = new TDevice();
+        cond.setFamilyId(Long.valueOf(deviceRequest.getFamilyId()));
+        cond.setRoomId(Long.valueOf(deviceRequest.getRoomId()));
         List<TDevice> list = new ArrayList<TDevice>();
         try {
-            list = iDeviceService.selectDeviceByMemberId(map);
+            list = iDeviceService.selectDeviceList(cond);
             for (TDevice item:list){
                 if (item.getParameter()==null){
                     item.setParameter(new TDevice.DeviceParameter());
@@ -67,9 +70,12 @@ public class DeviceController extends BaseController {
         //map.put("memberId",this.getLoginUser().getMemberId());
         map.put("familyId",deviceRequest.getFamilyId());
         map.put("roomId",deviceRequest.getRoomId());
+        TDevice cond = new TDevice();
+        cond.setFamilyId(Long.valueOf(deviceRequest.getFamilyId()));
+        cond.setRoomId(Long.valueOf(deviceRequest.getRoomId()));
         List<TDevice> list = new ArrayList<TDevice>();
         try {
-            list = iDeviceService.selectDeviceByMemberId(map);
+            list = iDeviceService.selectDeviceList(cond);
             if(list.size()>0){
                 for (TDevice item:list){
                     if (item.getParameter()==null){
