@@ -91,7 +91,8 @@
 		PostDeviceList,
 		PosteditDevice,
 		setDevice,
-		relDevice
+		relDevice,
+		getDeviceListState
 	} from '@/common/http/api.js';
 	import {
 		mapState,
@@ -108,7 +109,7 @@
 		roomLeft: 100,
 		roomHeight: 100,
 		roomRight: 100,
-		roomLength: 1000,
+		roomLength: 100,
 		existFlag: 0,
 		fallFlag: 0,
 		entryTime: 0,
@@ -149,13 +150,14 @@
 							url: '/pages/equipment/monitor'
 						},
 					]
-				}
+				},
+				list: []
 			};
 		},
 		computed: {
 			...mapState({
 				/**所有设备列表**/
-				list: state => state.devicesList,
+				// list: state => state.devicesList,
 				/**家庭列表**/
 				famliyList: state => {
 					return state.familyList.map(ele => ({
@@ -173,7 +175,13 @@
 			}
 		},
 		methods: {
-			...mapActions(['getAllDevices', 'getAllFamily']),
+			...mapActions(['getAllFamily']),
+
+			getList() {
+				getDeviceListState({}).then(res => {
+					this.list = res.rows || [];
+				});
+			},
 
 			/**
 			 * 关闭弹窗
@@ -340,7 +348,7 @@
 			 */
 			init() {
 				Promise.all([
-					this.getAllDevices(),
+					this.getList(),
 					this.getAllFamily()
 				])
 			}
