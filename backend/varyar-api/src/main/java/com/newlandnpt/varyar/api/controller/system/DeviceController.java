@@ -198,7 +198,7 @@ public class DeviceController extends BaseController {
         if(!device.getType().equals("1")){
             return error("该设备不是监控设备！");
         }
-        DeviceParameter parameter = new DeviceParameter();
+        TDevice.WatchSettings parameter = (TDevice.WatchSettings)device.getParameter();
         parameter.setList(devicePhoneRequest.getList());
         parameter.setMapSet(devicePhoneRequest.getMapSet());
         device.setParameter(parameter);

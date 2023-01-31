@@ -8,7 +8,9 @@ import java.util.Map;
 import com.alibaba.fastjson2.JSON;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.newlandnpt.varyar.common.core.domain.entity.DeviceLocation;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter;
+import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
@@ -127,13 +129,13 @@ public class TDevice extends BaseEntity
     private String nowLoacation;
     /**电子围栏设备数据*/
     @Transient
-    private String deviceFences;
+    private TDeviceFence deviceFences;
 
-    public String getDeviceFences() {
+    public TDeviceFence getDeviceFences() {
         return deviceFences;
     }
 
-    public void setDeviceFences(String deviceFences) {
+    public void setDeviceFences(TDeviceFence deviceFences) {
         this.deviceFences = deviceFences;
     }
 
@@ -421,7 +423,9 @@ public class TDevice extends BaseEntity
      * 设备参数设置
      */
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,include = JsonTypeInfo.As.PROPERTY,property = "type",visible = true)
-    @JsonSubTypes({@JsonSubTypes.Type(value=RadarWaveDeviceSettings.class,name = "0"),@JsonSubTypes.Type(value=WatchSettings.class,name = "1")})
+    @JsonSubTypes({
+            @JsonSubTypes.Type(value=RadarWaveDeviceSettings.class,name = "0"),
+            @JsonSubTypes.Type(value=WatchSettings.class,name = "1")})
     public static class DeviceSettings extends DeviceParameter{
         /** 类型（0雷达波 1监控设备 ） */
         private String type;
@@ -455,6 +459,20 @@ public class TDevice extends BaseEntity
         private List<TRoomZone> roomZones;
 
 
+        /**
+         * 设备位置信息
+         * */
+        public DeviceLocation deviceLocation;
+
+
+        public DeviceLocation getDeviceLocation() {
+            return deviceLocation;
+        }
+
+        public void setDeviceLocation(DeviceLocation deviceLocation) {
+            this.deviceLocation = deviceLocation;
+        }
+
         public TRoom getRoom() {
             return room;
         }
@@ -485,6 +503,28 @@ public class TDevice extends BaseEntity
          * 电子围栏
          */
         private TDeviceFence fence;
+
+        public List<DevicePhone> list;
+        /**
+         * Map Key值（P：普通电话  0：sos电话  1：按钮1  2：按钮2  3：按钮3  4：按钮4)
+         * */
+        public Map<String ,DevicePhone> mapSet;
+
+        public List<DevicePhone> getList() {
+            return list;
+        }
+
+        public void setList(List<DevicePhone> list) {
+            this.list = list;
+        }
+
+        public Map<String, DevicePhone> getMapSet() {
+            return mapSet;
+        }
+
+        public void setMapSet(Map<String, DevicePhone> mapSet) {
+            this.mapSet = mapSet;
+        }
 
         public TDeviceFence getFence() {
             return fence;

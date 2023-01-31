@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,11 +49,12 @@ public class DeviceFenceController extends BaseController
     @GetMapping(value = "/getDeFeInfo")
     public AjaxResult getInfo(@RequestBody @Validated DeviceFenceRequest deviceFenceRequest)
     {
-        TDeviceFence tDeviceFence = deviceFenceService.selectTDeviceFenceByDeviceFenceId(Long.valueOf(deviceFenceRequest.getDeviceFenceId()));
-        if (tDeviceFence==null){
-            tDeviceFence =new TDeviceFence();
+        List<TDeviceFence> tDeviceFences =
+                deviceFenceService.selectTDeviceFenceByDeviceId(Long.valueOf(deviceFenceRequest.getDeviceId()));
+        if (tDeviceFences==null){
+            tDeviceFences =new ArrayList<TDeviceFence>();
         }
-        return success(tDeviceFence);
+        return success(tDeviceFences);
     }
 
     /**
@@ -99,7 +101,7 @@ public class DeviceFenceController extends BaseController
                 return error("设置电子围栏失败！");
             }
         }else if (TDeviceFences.size()>0){
-            return error("已设置电子围栏信息！");
+            edit(tDeviceFence);
         }
 
         return ajax;
@@ -108,7 +110,6 @@ public class DeviceFenceController extends BaseController
     /**
      * 修改设备电子围栏
      */
-    @PutMapping
     public AjaxResult edit( @RequestBody @Validated TDeviceFence tDeviceFence){
         AjaxResult ajax = AjaxResult.success();
         if(tDeviceFence.getDeviceId().equals("")||tDeviceFence.getDeviceId()==null){
@@ -119,6 +120,12 @@ public class DeviceFenceController extends BaseController
         TDevice tdevice =  iDeviceService.selectDeviceByDeviceId(Long.valueOf(tDeviceFence.getDeviceId()));
         if (!tdevice.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
             throw new ServiceException("无权限修改本设备！");
+        }
+        List<TDeviceFence> tDeviceFences = deviceFenceService.selectTDeviceFenceByDeviceId(Long.valueOf(tDeviceFence.getDeviceId()));
+        if (tDeviceFences.size()==0){
+            return error("修改电子围栏信息失败！");
+        }else if (tDeviceFences.size()>0){
+            tDeviceFence.setDeviceFenceId(tDeviceFences.get(0).getDeviceId());
         }
         try {
             int di = deviceFenceService.updateTDeviceFence(tDeviceFence);

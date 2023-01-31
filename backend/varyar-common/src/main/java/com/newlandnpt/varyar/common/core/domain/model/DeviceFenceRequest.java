@@ -5,17 +5,18 @@ import javax.validation.constraints.Size;
 
 public class DeviceFenceRequest {
     /**
-     * 电子围栏设备id
+     * 设备id
      * */
-    @NotBlank(message = "电子围栏设备Id不能为空")
-    @Size(min = 0, max = 20, message = "电子围栏设备Id不能超过20个字符")
-    private String deviceFenceId;
+    @NotBlank(message = "设备Id不能为空")
+    @Size(min = 0, max = 20, message = "设备Id不能超过20个字符")
+    private String deviceId;
 
-    public String getDeviceFenceId() {
-        return deviceFenceId;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public void setDeviceFenceId(String deviceFenceId) {
-        this.deviceFenceId = deviceFenceId;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
+
 }

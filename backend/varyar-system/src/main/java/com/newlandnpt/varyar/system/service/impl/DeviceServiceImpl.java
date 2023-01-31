@@ -327,7 +327,7 @@ public class DeviceServiceImpl implements IDeviceService {
             settings = new TDevice.WatchSettings();
             TDevice.WatchSettings watchSettings = (TDevice.WatchSettings) settings;
             if(device.getParameter()!=null){
-                watchSettings.setList(device.getParameter().getList());
+                watchSettings.setList(((TDevice.WatchSettings)device.getParameter()).getList());
             }
             List<TDeviceFence> fences = deviceFenceService.selectTDeviceFenceByDeviceId(deviceId);
             watchSettings.setFence(Optional.ofNullable(fences)
@@ -396,7 +396,7 @@ public class DeviceServiceImpl implements IDeviceService {
             if(device.getParameter()==null){
                 device.setParameter(new DeviceParameter());
             }
-            device.getParameter().setList(watchSettings.getList());
+            ((TDevice.WatchSettings)device.getParameter()).setList(watchSettings.getList());
             deviceMapper.updateTDevice(device);
             if(watchSettings.getFence()!=null){
                 if(watchSettings.getFence().getDeviceFenceId()!=null){
