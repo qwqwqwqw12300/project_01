@@ -135,6 +135,11 @@
 		mounted() {
 			this.getRegistrationID()
 		},
+		computed: {
+			registrationType() {
+				return isIos() ? '1' : '0'
+			}
+		},
 		methods: {
 			navClick({
 				index
@@ -163,7 +168,7 @@
 					password: rsaPassword,
 					code,
 					uuid,
-					registrationType: isIos() ? 'ios' : 'android',
+					registrationType: this.registrationType,
 					registrationId: this.registrationId
 				}).then(res => {
 					setToken(res.token);
@@ -216,7 +221,7 @@
 				if (this.smsLoginForm.uuid) {
 					loginBySms({
 						...this.smsLoginForm,
-						registrationType: isIos() ? 'ios' : 'android',
+						registrationType: this.registrationType,
 						registrationId: this.registrationId
 					}).then(res => {
 						setToken(res.token);
