@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.newlandnpt.varyar.cloudBase.domain.Fall;
 import com.newlandnpt.varyar.cloudBase.service.FallService;
 
@@ -29,7 +30,7 @@ public class FallApi {
     @PostMapping("/fall")
     @ResponseBody
     public void fall(@RequestBody Fall fall) {
-    	log.info("收到摔倒事件报文:{}", fall);
+    	log.info("收到摔倒事件报文:{}", JSON.toJSONString(fall));
     	fallService.receve(fall);
     }
     
