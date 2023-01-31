@@ -246,7 +246,7 @@
 			background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
 			text-align: center;
 
-			text {
+			.grid-text {
 				display: inline-block;
 				margin-top: 10rpx;
 				width: 70%;
