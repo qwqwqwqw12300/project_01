@@ -35,7 +35,7 @@ public abstract class DeviceSettingsDisposer<T extends TDevice.DeviceSettings> {
      */
     public static void dispose(String deviceNo,TDevice.DeviceSettings settings){
         if(map.containsKey(settings.getClass())){
-
+            map.get(settings.getClass()).insideDispose(deviceNo,settings);
         }else {
             throw new BaseException("设备编号："+deviceNo+"未找到匹配的下发方式");
         }

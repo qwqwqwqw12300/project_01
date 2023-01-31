@@ -377,6 +377,7 @@ export default {
     }
   },
   data(){
+    // todo 雷达波配置校验
     return {
       currentTab:"first",
       scanAreaLeft,

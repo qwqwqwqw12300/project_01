@@ -63,8 +63,12 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<TDevice.
         deviceConfig.getWalabotConfig().setxMax(settings.getRoom().getRoomRight().floatValue());
         // 高度最小值 ，https://walabot-home.cn/#/config/rooms 控制台页面获取默认值0
         deviceConfig.getWalabotConfig().setzMin(0F);
-        // 房间高度
-        deviceConfig.getWalabotConfig().setzMax(settings.getRoom().getRoomHeight().floatValue());
+        // 高度最大值 ，https://walabot-home.cn/#/config/rooms 控制台页面获取默认值1
+        deviceConfig.getWalabotConfig().setzMax(1F);
+        // 默认墙壁模式：0
+        deviceConfig.getWalabotConfig().setSensorMounting(0);
+        // 墙壁模式下 设置高度
+        deviceConfig.getWalabotConfig().setSensorHeight(settings.getRoom().getRoomHeight().floatValue());
 
         if(CollectionUtils.isNotEmpty(settings.getRoomZones())){
             if(deviceConfig.getWalabotConfig().getTrackerSubRegions() == null){
@@ -94,7 +98,7 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<TDevice.
                     });
         }
 
-
+        // todo 子区域配置下发还需要cloud部署
         SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic, MessageBuilder.withPayload(deviceConfig).build());
         if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
             throw new BaseException("雷达波设备参数下发失败");
