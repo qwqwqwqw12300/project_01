@@ -41,7 +41,7 @@ public class DeviceController extends BaseController {
     public TableDataInfo list( @RequestBody @Validated DeviceRequest deviceRequest) {
         startPage();
         Map map = new HashMap();
-        map.put("memberId",this.getLoginUser().getMemberId());
+       // map.put("memberId",this.getLoginUser().getMemberId());
         map.put("familyId",deviceRequest.getFamilyId());
         map.put("roomId",deviceRequest.getRoomId());
         List<TDevice> list = new ArrayList<TDevice>();
@@ -64,7 +64,7 @@ public class DeviceController extends BaseController {
     public TableDataInfo listState( @RequestBody @Validated DeviceRequest deviceRequest) {
         startPage();
         Map map = new HashMap();
-        map.put("memberId",this.getLoginUser().getMemberId());
+        //map.put("memberId",this.getLoginUser().getMemberId());
         map.put("familyId",deviceRequest.getFamilyId());
         map.put("roomId",deviceRequest.getRoomId());
         List<TDevice> list = new ArrayList<TDevice>();
