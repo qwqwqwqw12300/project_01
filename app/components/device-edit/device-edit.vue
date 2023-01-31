@@ -173,10 +173,18 @@
 					departureTime,
 					entryTime,
 					startTime,
-					endTime
+					endTime,
+					roomLeft,
+					roomHeight,
+					roomRight,
+					roomLength
 				} = this.editFrom;
 				this.$emit('confirm', {
 					...this.editFrom,
+					roomLeft: roomLeft / 10,
+					roomHeight: roomHeight / 10,
+					roomRight: roomRight / 10,
+					roomLength: roomLength / 10,
 					startTime: getHoursTime(startTime) || 0,
 					endTime: getHoursTime(endTime) || 0,
 					entryTime: getHoursTime(entryTime) || 0,

@@ -90,14 +90,10 @@
 			<!-- 区域设置 -->
 			<view class="ui-setting" :key="activeZone" v-if="roomZones.length">
 				<view>
-					<u-checkbox-group @change="monitorChange($event, 'zoneType')" placement="column">
-						<u-checkbox activeColor="#1aa208" labelSize="28rpx"
-							:checked="roomZones[activeZone].zoneType == 1" :customStyle="{ marginBottom: '8px' }"
-							label="私人区域" name="zoneType"></u-checkbox>
-					</u-checkbox-group>
 					<u-checkbox-group @change="monitorChange($event, 'existFlag')" placement="column">
-						<u-checkbox activeColor="#1aa208" labelSize="28rpx" :checked="roomZones.existFlag == 1"
-							:customStyle="{ marginBottom: '8px' }" label="进出监控" name="existFlag"></u-checkbox>
+						<u-checkbox activeColor="#1aa208" labelSize="28rpx"
+							:checked="roomZones[activeZone].existFlag == 1" :customStyle="{ marginBottom: '8px' }"
+							label="进出监控" name="existFlag"></u-checkbox>
 					</u-checkbox-group>
 					<u-checkbox-group @change="monitorChange($event, 'fallFlag')" placement="column">
 						<u-checkbox activeColor="#1aa208" labelSize="28rpx"
@@ -289,7 +285,7 @@
 				// 设备距离墙壁范围
 				const {
 					parameter
-				} = parameter;
+				} = this.deviceInfo;
 				if (parameter && parameter.deviceLocation) {
 					const {
 						roomLeft,
@@ -337,7 +333,10 @@
 						icon: 'none',
 						title: '请先设置雷达波区域'
 					});
-					uni.navigateBack();
+					// setTimeout(() => {
+					// 	uni.navigateBack();
+					// }, 3000)
+
 				}
 
 			})

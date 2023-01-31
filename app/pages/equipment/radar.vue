@@ -21,7 +21,7 @@
 			<view class="ui-step-icon step2_bg"></view>
 			<view class="ui-step-title bg">
 				<text>长按智能设备开关,</text>
-				<text>等待蓝灯亮起后点击下一步</text>
+				<text>等待蓝灯闪烁后点击下一步</text>
 			</view>
 		</view>
 		<view class="ui-bluetooth">
@@ -75,7 +75,7 @@
 				/**创建设备信息**/
 				addForm: {
 					deviceName: '',
-					deviceNo: uni.$u.random(20),
+					deviceNo: uni.$u.guid(),
 					deviceType: '0',
 					location: ''
 				},

@@ -4,9 +4,9 @@ import sdk from './sdk/sdk.js';
 import service from './service/service.js';
 import {
 	getFamilyList,
-	getDeviceList,
 	getRoomList,
-	PostGetPushMsgState
+	PostGetPushMsgState,
+	getDeviceListState
 } from '@/common/http/api.js';
 
 
@@ -92,7 +92,7 @@ const store = {
 		 */
 		getAllDevices(ctx) {
 			return new Promise(resolve => {
-				getDeviceList({}).then(({
+				getDeviceListState({}).then(({
 					rows = []
 				}) => {
 					ctx.commit('setDevicesList', rows);

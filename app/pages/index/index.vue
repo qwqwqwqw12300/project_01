@@ -47,8 +47,7 @@
 						}" text="分享" v-if="familyItem.shareFlag === '2'"></u-text>
 					</view>
 					<view class="ui-device">
-						<view class="ui-list" v-for="device of filterDevice({familyId: familyItem.familyId})"
-							:key="device.deviceId">
+						<view class="ui-list" v-for="device of familyItem.devices" :key="device.deviceId">
 							<view class="ui-list-box active" @click="goDeciveDetails(device)">
 								<image src="../../static/images/device.png"></image>
 								<text>{{device.name || '未命名设备'}}</text>
@@ -108,7 +107,7 @@
 			getOnlineData() {
 				return function(item) {
 					return item.devices.reduce((pre, cur) => {
-						return pre + cur.onlineFlag === '1' ? 1 : 0
+						return pre + (cur.onlineFlag === '1' ? 1 : 0)
 					}, 0)
 				}
 
