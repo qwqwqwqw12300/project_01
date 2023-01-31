@@ -350,7 +350,6 @@ public class DeviceServiceImpl implements IDeviceService {
         if(device == null){
             throw new ServiceException("设备不存在");
         }
-        settings.setType(device.getType());
         if(TYPE_READER_WAVE.equals(device.getType())){
             TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings) settings;
             if(device.getParameter()==null){
