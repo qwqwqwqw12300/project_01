@@ -67,13 +67,13 @@
 				GetDeviceSize({
 					deviceId: this.deviceInfo.deviceId,
 				}).then(res => {
-					console.log(res.data.nowLoacation, 'fdd')
+					console.log(res.data.deviceFences, 'fdd')
 					const {
 						longitude,
 						latitude,
 						radius,
 						address
-					} = JSON.parse(res.data.nowLoacation)
+					} = res.data.deviceFences
 					this.address = address
 					this.longitude = longitude
 					this.latitude = latitude,

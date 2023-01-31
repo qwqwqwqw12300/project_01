@@ -116,7 +116,7 @@
 					longitude,
 					latitude,
 					radius: sliderValue + '',
-					registrationId,
+					deviceNo: registrationId,
 				}).then(res => {
 					uni.navigateBack()
 					uni.$u.toast(res.msg)
