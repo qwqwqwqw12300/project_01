@@ -14,7 +14,7 @@
 					<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="手机号码" color="#444" size="28rpx">
 					</u-text>
 					<view class="ui-input" prop="formParams.phone">
-						<u-input placeholder="请输入手机号码" v-model="formParams.phone" :border="'none'" fontSize="28rpx"
+						<u-input placeholder="请输入手机号码" v-model="formParams.phone"  maxlength="11" :border="'none'" fontSize="28rpx"
 							clearable></u-input>
 					</view>
 				</view>
@@ -111,6 +111,28 @@
 			 */
 			register() {
 				console.log(this.formParams, 'this.formParams');
+				const {
+					phone,
+					pwd,
+					confirm,
+					code
+				} = this.formParams
+				if (!uni.$u.test.mobile(phone)) {
+					return uni.$u.toast('请填写正确的手机号码')
+				}
+				if (code.length !== 4) {
+					return uni.$u.toast('请填写正确的短信码')
+				}
+				if (!pwd) {
+					return uni.$u.toast('请填写密码')
+				}
+				if (!confirm) {
+					return uni.$u.toast('请填写确认密码')
+				}
+
+				if (pwd !== confirm) {
+					return uni.$u.toast('两次密码不一致')
+				}
 				if (this.formParams.uuid && this.formParams.pwd && this.formParams.confirm) {
 					if (!this.radiovalue.includes('ag')) {
 						uni.showToast({
