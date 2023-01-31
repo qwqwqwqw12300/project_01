@@ -35,7 +35,7 @@
 			},
 			/**返回头文字**/
 			leftText: {
-				default: '首页'
+				default: '返回'
 			},
 			/**背景图高度**/
 			bodyStyle: {

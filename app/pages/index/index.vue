@@ -44,7 +44,7 @@
 							:iconStyle="{
 							fontSize: '44rpx',
 							color: '#fff'
-						}" text="分享"></u-text>
+						}" text="分享" v-if="familyItem.shareFlag === '2'"></u-text>
 					</view>
 					<view class="ui-device">
 						<view class="ui-list" v-for="device of filterDevice({familyId: familyItem.familyId})"
