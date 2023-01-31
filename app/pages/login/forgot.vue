@@ -14,8 +14,8 @@
 					<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="手机号码" color="#444" size="28rpx">
 					</u-text>
 					<view class="ui-input">
-						<u-input v-model="formParams.phone" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx"
-							clearable></u-input>
+						<u-input v-model="formParams.phone" placeholder="请输入手机号码" maxlength="11" :border="'none'"
+							fontSize="28rpx" clearable></u-input>
 					</view>
 				</view>
 				<view class="ui-form-item">
@@ -98,6 +98,28 @@
 			 * 重置密码
 			 */
 			reset() {
+				const {
+					phone,
+					pwd,
+					confirm,
+					code
+				} = this.formParams
+				if (!uni.$u.test.mobile(phone)) {
+					return uni.$u.toast('请填写正确的手机号码')
+				}
+				if (code.length !== 4) {
+					return uni.$u.toast('请填写正确的短信码')
+				}
+				if (!pwd) {
+					return uni.$u.toast('请填写密码')
+				}
+				if (!confirm) {
+					return uni.$u.toast('请填写确认密码')
+				}
+
+				if (pwd !== confirm) {
+					return uni.$u.toast('两次密码不一致')
+				}
 				if (this.formParams.uuid && this.formParams.pwd && this.formParams.confirm) {
 					resetMemberPwd({
 						phone: this.formParams.phone,
