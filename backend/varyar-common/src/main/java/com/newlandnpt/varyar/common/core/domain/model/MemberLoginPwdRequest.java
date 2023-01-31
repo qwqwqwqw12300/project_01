@@ -46,7 +46,7 @@ public class MemberLoginPwdRequest {
     /**
      * 会员登录设备注册号
      */
-    @NotBlank(message = "会员登录设备注册号")
+    @NotBlank(message = "会员登录设备注册号不能为空")
     @Size(min = 0, max = 100, message = "会员登录设备注册号不能超过100个字符")
     private String registrationId;
 
