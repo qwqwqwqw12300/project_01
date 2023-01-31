@@ -287,10 +287,18 @@ public class DeviceController extends BaseController {
             device.setRoomId(Long.valueOf("0"));
         }
         try {
-            int i = iDeviceService.setDevice(device);
-            if (i==0){
-                return error("绑定我的设备失败！");
+            if (device.getType().equals("0")){
+                int i = iDeviceService.setDevice(device);
+                if (i==0){
+                    return error("绑定我的设备失败！");
+                }
+            }else {
+                int i = iDeviceService.updateDevice(device);
+                if (i==0){
+                    return error("绑定我的设备失败！");
+                }
             }
+
         } catch (Exception e){
            return error("绑定我的设备失败！");
         }
