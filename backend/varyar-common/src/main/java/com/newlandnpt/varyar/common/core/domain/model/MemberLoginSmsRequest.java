@@ -39,9 +39,26 @@ public class MemberLoginSmsRequest {
     /**
      * 会员登录设备注册号
      */
-    @NotBlank(message = "会员登录设备注册号")
+    @NotBlank(message = "会员登录设备注册号不能为空")
     @Size(min = 0, max = 100, message = "会员登录设备注册号不能超过100个字符")
     private String registrationId;
+
+    public String getRegistrationType() {
+        return registrationType;
+    }
+
+    public void setRegistrationType(String registrationType) {
+        this.registrationType = registrationType;
+    }
+
+    public String getRegistrationId() {
+        return registrationId;
+    }
+
+    public void setRegistrationId(String registrationId) {
+        this.registrationId = registrationId;
+    }
+
     public String getPhone() {
         return phone;
     }

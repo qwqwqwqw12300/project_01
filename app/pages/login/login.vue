@@ -87,6 +87,12 @@
 		PostLoginByPwd,
 	} from '@/common/http/api.js';
 	import {
+		push
+	} from '@/common/sdk/push.js';
+	import {
+		isIos,
+	} from '../../common/utils/util';
+	import {
 		env
 	} from "@/config/env.js";
 	import {
@@ -122,7 +128,17 @@
 					uuid: '',
 					code: ''
 				},
+				//会员登录设备注册号
+				registrationId: '',
 			};
+		},
+		mounted() {
+			this.getRegistrationID()
+		},
+		computed: {
+			registrationType() {
+				return isIos() ? '1' : '0'
+			}
 		},
 		methods: {
 			navClick({
@@ -151,7 +167,9 @@
 					phone,
 					password: rsaPassword,
 					code,
-					uuid
+					uuid,
+					registrationType: this.registrationType,
+					registrationId: this.registrationId
 				}).then(res => {
 					setToken(res.token);
 					this.$store.dispatch('getPushMsgState');
@@ -202,7 +220,9 @@
 				console.log(this.smsLoginForm.uuid, 'this.smsLoginForm.uuid');
 				if (this.smsLoginForm.uuid) {
 					loginBySms({
-						...this.smsLoginForm
+						...this.smsLoginForm,
+						registrationType: this.registrationType,
+						registrationId: this.registrationId
 					}).then(res => {
 						setToken(res.token);
 						this.$store.dispatch('getPushMsgState');
@@ -228,7 +248,16 @@
 			 */
 			checkedBySms(smsInfo) {
 				Object.assign(this.smsLoginForm, smsInfo);
-			}
+			},
+			/**
+			 * 获取登录设备注册号
+			 */
+			getRegistrationID() {
+				push.getRegistrationID().then(res => {
+					console.log(res, 'lllllllllllll')
+					this.registrationId = res
+				});
+			},
 		}
 	};
 </script>
