@@ -4,11 +4,11 @@
       <el-tab-pane label="房间设置" name="first">
         <el-row type="flex" justify="center" :gutter="10">
           <el-col :span="10">
-            <el-form ref="radarWaveSettingsForm" :model="settings.room" :rules="settingsRoomRules" label-width="140px">
+            <el-form ref="radarWaveSettingsForm" :model="settings.deviceLocation" :rules="settingsRoomRules" label-width="140px">
               <el-row type="flex" justify="center">
                 <el-col :span="24">
                   <el-form-item label="长度" prop="roomLength">
-                    <el-input-number :controls="false" :precision="2"  v-model.number="settings.room.roomLength" placeholder="请输入长度" clearable >
+                    <el-input-number :controls="false" :precision="2"  v-model.number="settings.deviceLocation.roomLength" placeholder="请输入长度" clearable >
                     </el-input-number> 米
                   </el-form-item>
                 </el-col>
@@ -16,7 +16,7 @@
               <el-row type="flex" justify="center">
                 <el-col :span="24">
                   <el-form-item label="左侧" prop="roomLeft">
-                    <el-input-number :controls="false" :precision="2"  v-model.number="settings.room.roomLeft" placeholder="请输入左侧距离" clearable>
+                    <el-input-number :controls="false" :precision="2"  v-model.number="settings.deviceLocation.roomLeft" placeholder="请输入左侧距离" clearable>
                     </el-input-number> 米
                   </el-form-item>
                 </el-col>
@@ -24,7 +24,7 @@
               <el-row type="flex" justify="center">
                 <el-col :span="24">
                   <el-form-item label="右侧" prop="roomRight">
-                    <el-input-number :controls="false" :precision="2"  v-model.number="settings.room.roomRight" placeholder="请输入右侧距离" clearable>
+                    <el-input-number :controls="false" :precision="2"  v-model.number="settings.deviceLocation.roomRight" placeholder="请输入右侧距离" clearable>
                     </el-input-number> 米
                   </el-form-item>
                 </el-col>
@@ -32,8 +32,77 @@
               <el-row type="flex" justify="center">
                 <el-col :span="24">
                   <el-form-item label="设置高度" prop="roomHeight">
-                    <el-input-number :controls="false" :precision="2"  v-model.number="settings.room.roomHeight" placeholder="请设置高度" clearable>
+                    <el-input-number :controls="false" :precision="2"  v-model.number="settings.deviceLocation.roomHeight" placeholder="请设置高度" clearable>
                     </el-input-number> 米
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+            <el-form ref="radarWaveRoomParameterForm" :model="settings.deviceRoomParameter"  label-width="140px">
+
+              <el-row type="flex" justify="center">
+                <el-col :span="24">
+                  <el-form-item label="开始监控时间" prop="startTime" >
+                    <el-time-select
+                      clearable
+                      @input="(data)=>settings.deviceRoomParameter.startTime = '1979-01-31 '+data+':00.000'"
+                      :value="settings.deviceRoomParameter&&settings.deviceRoomParameter.startTime?settings.deviceRoomParameter.startTime.substr(11,5):undefined"
+                      value-format="1979-01-31 HH:mm:00.000"
+                      :picker-options="{start: '00:00',step: '00:01',end: '23:59',maxTime:settings.deviceRoomParameter&&settings.deviceRoomParameter.endTime?settings.deviceRoomParameter.endTime.substr(11,5):'23:59'}"
+                      default-value="00:00"
+                      placeholder="选择开始监控时间">
+                    </el-time-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row type="flex" justify="center">
+                <el-col :span="24">
+                  <el-form-item label="结束监控时间" prop="endTime" >
+                    <el-time-select
+                      clearable
+                      @input="(data)=>settings.deviceRoomParameter.endTime = '1979-01-31 '+data+':59.999'"
+                      :value="settings.deviceRoomParameter&&settings.deviceRoomParameter.endTime?settings.deviceRoomParameter.endTime.substr(11,5):undefined"
+                      value-format="1979-01-31 HH:mm:59.999"
+                      :picker-options="{start: '00:00',step: '00:01',end: '23:59',minTime:settings.deviceRoomParameter&&settings.deviceRoomParameter.startTime?settings.deviceRoomParameter.startTime.substr(11,5):'00:00'}"
+                      default-value="23:59"
+                      placeholder="选择结束监控时间">
+                    </el-time-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row type="flex" justify="center">
+                <el-col :span="24">
+                  <el-form-item label="进入监控区域超时报警时间" prop="inMonitorFlag" >
+                    <el-row>
+                      <el-col :span="4">
+                        <el-checkbox v-model="settings.deviceRoomParameter.inMonitorFlag" true-label="0" false-label="1" clearable></el-checkbox>
+                      </el-col>
+                      <el-col :span="20">
+                        <el-select v-model="settings.deviceRoomParameter.entryTime">
+                          <el-option label="5分钟" :value="5*60"></el-option>
+                          <el-option label="10分钟" :value="10*60"></el-option>
+                          <el-option label="15分钟" :value="15*60"></el-option>
+                        </el-select>
+                      </el-col>
+                    </el-row>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row type="flex" justify="center">
+                <el-col :span="24">
+                  <el-form-item label="离开监控区域超时报警时间" prop="outMonitorFlag" >
+                    <el-row>
+                      <el-col :span="4">
+                        <el-checkbox v-model="settings.deviceRoomParameter.outMonitorFlag" true-label="0" false-label="1" clearable></el-checkbox>
+                      </el-col>
+                      <el-col :span="20">
+                        <el-select v-model="settings.deviceRoomParameter.departureTime">
+                          <el-option label="5分钟" :value="5*60"></el-option>
+                          <el-option label="10分钟" :value="10*60"></el-option>
+                          <el-option label="15分钟" :value="15*60"></el-option>
+                        </el-select>
+                      </el-col>
+                    </el-row>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -157,7 +226,7 @@
               </el-card>
             </el-row>
             <el-row type="flex" justify="center" style="margin-top: 10px">
-              <el-button type="primary" @click="addRoomZones"> + 加子区域</el-button>
+              <el-button type="primary" @click="addRoomZones" :disabled="this.settings.roomZones.length >=4"> + 加子区域</el-button>
             </el-row>
           </el-col>
           <el-col :span="8">
@@ -337,11 +406,19 @@ export default {
       default(){
         return {
           type:"0",
-          room:{
+          deviceLocation:{
             roomLength:undefined,
             roomLeft:undefined,
             roomRight:undefined,
             roomHeight:undefined
+          },
+          deviceRoomParameter:{
+            entryTime:undefined,
+            departureTime:undefined,
+            inMonitorFlag:"0",
+            outMonitorFlag:"0",
+            startTime:"1979-01-31 00:00:00.000",
+            endTime:"1979-01-31 23:59:59.999"
           },
           roomZones:[]
         }
@@ -360,8 +437,18 @@ export default {
           if(this.settings.type == undefined){
             this.settings.type = "0"
           }
-          if(this.settings.room == undefined){
-            this.settings.room = {
+          if(this.settings.deviceLocation == undefined){
+            this.settings.deviceLocation = {
+              entryTime:undefined,
+              departureTime:undefined,
+              inMonitorFlag:"0",
+              outMonitorFlag:"0",
+              startTime:"1979-01-31 00:00:00.000",
+              endTime:"1979-01-31 23:59:59.999"
+            }
+          }
+          if(this.settings.deviceRoomParameter == undefined){
+            this.settings.deviceRoomParameter = {
               roomLength:undefined,
               roomLeft:undefined,
               roomRight:undefined,
@@ -378,7 +465,6 @@ export default {
     }
   },
   data(){
-    // todo 雷达波配置校验
     return {
       currentTab:"first",
       scanAreaLeft,
@@ -537,7 +623,7 @@ export default {
       }
     },
     roomWidthValidator(rule,value,callback){
-      let roomWidth = this.settings?.room?.roomLeft + this.settings?.room?.roomRight;
+      let roomWidth = this.settings?.deviceLocation?.roomLeft + this.settings?.deviceLocation?.roomRight;
       if(roomWidth<0||roomWidth>6){
         callback(new Error("必须介于0 - 6之间"))
       }else{
@@ -554,8 +640,8 @@ export default {
     roomZoneXValidator(rule,value,callback){
       if(this.roomZone?.x1>=this.roomZone?.x2){
         callback(new Error("X1必须小于X"))
-      }else if((value<0&&-value>this.settings?.room?.roomLeft)
-        ||(value>=0&&value>this.settings?.room?.roomRight)){
+      }else if((value<0&&-value>this.settings?.deviceLocation?.roomLeft)
+        ||(value>=0&&value>this.settings?.deviceLocation?.roomRight)){
         callback(new Error("不包含在房间内"))
       }else{
         callback()
@@ -564,7 +650,7 @@ export default {
     roomZoneYValidator(rule,value,callback){
       if(this.roomZone?.y1>=this.roomZone?.y2){
         callback(new Error("Y1必须小于Y2"))
-      }else if(value<0.3||value>this.settings?.room?.roomLength){
+      }else if(value<0.3||value>this.settings?.deviceLocation?.roomLength){
         callback(new Error("不包含在房间内"))
       }else{
         callback()

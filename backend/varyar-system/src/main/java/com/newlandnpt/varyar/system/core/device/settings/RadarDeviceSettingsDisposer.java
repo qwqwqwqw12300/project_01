@@ -72,6 +72,11 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
         // 墙壁模式下 设置高度
         deviceConfig.getWalabotConfig().setSensorHeight(settings.getDeviceLocation().getRoomHeight().floatValue());
 
+        deviceConfig.getWalabotConfig().setEnterDuration(FLAG_YES.equals(settings.getDeviceRoomParameter().getInMonitorFlag())?
+                Optional.ofNullable(settings.getDeviceRoomParameter().getEntryTime()).map(p->p.intValue()).orElse(0):0);
+        deviceConfig.getWalabotConfig().setExitDuration(FLAG_YES.equals(settings.getDeviceRoomParameter().getOutMonitorFlag())?
+                Optional.ofNullable(settings.getDeviceRoomParameter().getDepartureTime()).map(p->p.intValue()).orElse(0):0);
+
         if(CollectionUtils.isNotEmpty(settings.getRoomZones())){
             if(deviceConfig.getWalabotConfig().getTrackerSubRegions() == null){
                 deviceConfig.getWalabotConfig().setTrackerSubRegions(new ArrayList<>());
