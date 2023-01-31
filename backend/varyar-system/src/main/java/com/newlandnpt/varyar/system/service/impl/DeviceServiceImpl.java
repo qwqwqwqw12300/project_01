@@ -184,7 +184,7 @@ public class DeviceServiceImpl implements IDeviceService {
         device.setDeviceId(deviceId);
         device.setStatus(STATUS_ACTIVATED);
         device.setUpdateTime(DateUtils.getNowDate());
-        int effect= this.updateDevice(device);
+        int effect= deviceMapper.updateTDevice(device);
         resetDeviceCache(device);
         return effect;
     }
