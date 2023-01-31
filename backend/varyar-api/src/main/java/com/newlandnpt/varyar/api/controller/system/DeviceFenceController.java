@@ -101,7 +101,7 @@ public class DeviceFenceController extends BaseController
                 return error("设置电子围栏失败！");
             }
         }else if (TDeviceFences.size()>0){
-            edit(tDeviceFence);
+            return edit(tDeviceFence);
         }
 
         return ajax;
@@ -125,7 +125,7 @@ public class DeviceFenceController extends BaseController
         if (tDeviceFences.size()==0){
             return error("修改电子围栏信息失败！");
         }else if (tDeviceFences.size()>0){
-            tDeviceFence.setDeviceFenceId(tDeviceFences.get(0).getDeviceId());
+            tDeviceFence.setDeviceFenceId(tDeviceFences.get(0).getDeviceFenceId());
         }
         try {
             int di = deviceFenceService.updateTDeviceFence(tDeviceFence);

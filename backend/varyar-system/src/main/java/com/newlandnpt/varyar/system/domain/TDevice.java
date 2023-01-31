@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar.system.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,10 +10,8 @@ import com.alibaba.fastjson2.JSON;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceLocation;
-import com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter;
 import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import com.newlandnpt.varyar.common.core.domain.entity.DeviceRoomParameter;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
 import org.springframework.data.annotation.Transient;
@@ -121,9 +120,6 @@ public class TDevice extends BaseEntity
     /**设备未读消息数量*/
     @Transient
     private String msgNum;
-    /**设备参数配置*/
-    @Transient
-    private DeviceSettings settings;
     /**设备实时位置*/
     @Transient
     private String nowLoacation;
@@ -381,42 +377,37 @@ public class TDevice extends BaseEntity
         this.parameter = parameter;
     }
 
-    public DeviceSettings getSettings() {
-        return settings;
-    }
-
-    public void setSettings(DeviceSettings settings) {
-        this.settings = settings;
-    }
-
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-                .append("deviceId", deviceId)
-                .append("devicegroupId", devicegroupId)
-                .append("name", name)
-                .append("no", no)
-                .append("status", status)
-                .append("type", type)
-                .append("parameter", parameter)
-                .append("registerTime", registerTime)
-                .append("location", location)
-                .append("deviceGroupName", deviceGroupName)
-                .append("memberId", memberId)
-                .append("memberNo", memberNo)
-                .append("familyId", familyId)
-                .append("familyName", familyName)
-                .append("roomId", roomId)
-                .append("roomName", roomName)
-                .append("distributeFlag", distributeFlag)
-                .append("orgId", orgId)
-                .append("orgName", orgName)
-                .append("orgType", orgType)
-                .append("orgNo", orgNo)
-                .append("delFlag", delFlag)
-                .append("onlineFlag", onlineFlag)
-                .append("msgNum", msgNum)
-                .toString();
+        return "TDevice{" +
+                "deviceId=" + deviceId +
+                ", devicegroupId=" + devicegroupId +
+                ", name='" + name + '\'' +
+                ", no='" + no + '\'' +
+                ", status='" + status + '\'' +
+                ", type='" + type + '\'' +
+                ", parameter=" + parameter +
+                ", registerTime=" + registerTime +
+                ", location='" + location + '\'' +
+                ", deviceGroupName='" + deviceGroupName + '\'' +
+                ", memberId=" + memberId +
+                ", memberNo='" + memberNo + '\'' +
+                ", memberPhone='" + memberPhone + '\'' +
+                ", familyId=" + familyId +
+                ", familyName='" + familyName + '\'' +
+                ", roomId=" + roomId +
+                ", roomName='" + roomName + '\'' +
+                ", distributeFlag='" + distributeFlag + '\'' +
+                ", orgId=" + orgId +
+                ", orgName='" + orgName + '\'' +
+                ", orgType='" + orgType + '\'' +
+                ", orgNo='" + orgNo + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                ", onlineFlag='" + onlineFlag + '\'' +
+                ", msgNum='" + msgNum + '\'' +
+                ", nowLoacation='" + nowLoacation + '\'' +
+                ", deviceFences=" + deviceFences +
+                '}';
     }
 
     /**
@@ -426,7 +417,8 @@ public class TDevice extends BaseEntity
     @JsonSubTypes({
             @JsonSubTypes.Type(value=RadarWaveDeviceSettings.class,name = "0"),
             @JsonSubTypes.Type(value=WatchSettings.class,name = "1")})
-    public static class DeviceSettings extends DeviceParameter{
+    public static class DeviceParameter implements Serializable {
+        private static final long serialVersionUID = 1L;
         /** 类型（0雷达波 1监控设备 ） */
         private String type;
 
@@ -442,28 +434,33 @@ public class TDevice extends BaseEntity
     /**
      * 雷达波设备参数设置
      */
-    public static class RadarWaveDeviceSettings extends DeviceSettings{
+    public static class RadarWaveDeviceSettings extends DeviceParameter{
 
         public RadarWaveDeviceSettings() {
             this.setType(TYPE_READER_WAVE);
         }
-
-        /**
-         * 房间
-         */
-        private TRoom room;
-
         /**
          * 房间子区域
          */
         private List<TRoomZone> roomZones;
 
-
         /**
          * 设备位置信息
          * */
-        public DeviceLocation deviceLocation;
+        private DeviceLocation deviceLocation;
 
+        /**
+         * 设备房间设置信息
+         */
+        private DeviceRoomParameter deviceRoomParameter;
+
+        public DeviceRoomParameter getDeviceRoomParameter() {
+            return deviceRoomParameter;
+        }
+
+        public void setDeviceRoomParameter(DeviceRoomParameter deviceRoomParameter) {
+            this.deviceRoomParameter = deviceRoomParameter;
+        }
 
         public DeviceLocation getDeviceLocation() {
             return deviceLocation;
@@ -471,14 +468,6 @@ public class TDevice extends BaseEntity
 
         public void setDeviceLocation(DeviceLocation deviceLocation) {
             this.deviceLocation = deviceLocation;
-        }
-
-        public TRoom getRoom() {
-            return room;
-        }
-
-        public void setRoom(TRoom room) {
-            this.room = room;
         }
 
         public List<TRoomZone> getRoomZones() {
@@ -493,7 +482,7 @@ public class TDevice extends BaseEntity
     /**
      * 监护设备
      */
-    public static class WatchSettings extends DeviceSettings{
+    public static class WatchSettings extends DeviceParameter{
 
         public WatchSettings() {
             setType(TYPE_WATCH);

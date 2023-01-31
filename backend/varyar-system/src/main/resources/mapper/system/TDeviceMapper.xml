@@ -12,7 +12,7 @@
         <result property="no" column="no"/>
         <result property="status" column="status"/>
         <result property="type" column="type"/>
-        <result property="parameter" column="device_parameter" javaType="com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter" typeHandler="com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler"/>
+        <result property="parameter" column="device_parameter" javaType="com.newlandnpt.varyar.system.domain.TDevice.DeviceParameter" typeHandler="com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler"/>
         <result property="registerTime" column="register_time"/>
         <result property="location" column="location"/>
         <result property="familyId" column="family_id"/>
@@ -74,7 +74,7 @@
         join t_member_family tmf on tmf.family_id = tf.family_id and tmf.del_flag ="0"
     </sql>
     <sql id="parameter">
-        #{parameter,javaType=com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter,typeHandler = com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler}
+        #{parameter,javaType=com.newlandnpt.varyar.system.domain.TDevice.DeviceParameter,typeHandler = com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler}
     </sql>
 
     <select id="selectTDeviceList" parameterType="TDevice" resultMap="TDeviceResult">
@@ -215,13 +215,13 @@
 
     <delete id="deleteTDeviceByDeviceId" parameterType="Long">
         update t_device
-        set del_flag = '2'
+        set del_flag = '2',update_time = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')
         where device_id = #{deviceId}
     </delete>
 
     <delete id="deleteTDeviceByDeviceIds" parameterType="String">
         update t_device
-        set del_flag = '2'
+        set del_flag = '2' ,update_time = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')
         where device_id in
         <foreach item="deviceId" collection="array" open="(" separator="," close=")">
             #{deviceId}
