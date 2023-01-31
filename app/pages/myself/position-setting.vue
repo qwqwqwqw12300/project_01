@@ -90,10 +90,14 @@
 			<!-- 区域设置 -->
 			<view class="ui-setting" :key="activeZone" v-if="roomZones.length">
 				<view>
-					<u-checkbox-group @change="monitorChange($event, 'existFlag')" placement="column">
+					<u-checkbox-group @change="monitorChange($event, 'zoneType')" placement="column">
 						<u-checkbox activeColor="#1aa208" labelSize="28rpx"
-							:checked="roomZones[activeZone].existFlag == 1" :customStyle="{ marginBottom: '8px' }"
-							label="私人区域" name="existFlag"></u-checkbox>
+							:checked="roomZones[activeZone].zoneType == 1" :customStyle="{ marginBottom: '8px' }"
+							label="私人区域" name="zoneType"></u-checkbox>
+					</u-checkbox-group>
+					<u-checkbox-group @change="monitorChange($event, 'existFlag')" placement="column">
+						<u-checkbox activeColor="#1aa208" labelSize="28rpx" :checked="roomZones.existFlag == 1"
+							:customStyle="{ marginBottom: '8px' }" label="进出监控" name="existFlag"></u-checkbox>
 					</u-checkbox-group>
 					<u-checkbox-group @change="monitorChange($event, 'fallFlag')" placement="column">
 						<u-checkbox activeColor="#1aa208" labelSize="28rpx"
@@ -101,6 +105,7 @@
 							:cusmonitorChangetomStyle="{ marginBottom: '8px' }" label="跌倒监控" name="fallFlag">
 						</u-checkbox>
 					</u-checkbox-group>
+
 					<!-- <u-checkbox-group @change="monitorChange($event, 'isAccess')" placement="column">
 						<u-checkbox activeColor="#1aa208" :checked="list[activeZone].isAccess"
 							:customStyle="{ marginBottom: '8px' }" label="进出监控" name="isAccess"></u-checkbox>
@@ -283,45 +288,58 @@
 				} = this.sizeInfo.box;
 				// 设备距离墙壁范围
 				const {
-					roomLeft,
-					roomRight,
-					roomLength
-				} = roomInfo
-				// 盒子比例
-				const scale = {
-						x: width / (roomLeft + roomRight),
-						y: height / roomLength
-					},
-					x = roomLeft * scale.x,
-					y = roomLength * scale.y;
-				Object.assign(this.sizeInfo, {
-					x,
-					y,
-					scale
-				});
-				console.log(this.sizeInfo.scale, 'scale');
-				rows.forEach((ele, idx) => {
+					parameter
+				} = parameter;
+				if (parameter && parameter.deviceLocation) {
 					const {
-						x1 = 0, x2 = 0, y1 = 0, y2 = 0
-					} = ele;
-					Object.assign(ele, {
-						height: Math.abs((y1 - y2) * scale.y),
-						width: Math.abs((x1 - x2) * scale.x),
-						x: x2 * scale.x + x,
-						y: (0 - y2 * scale.y + y),
-						old: {
+						roomLeft,
+						roomRight,
+						roomLength
+					} = parameter.deviceLocation;
+
+					// 盒子比例
+					const scale = {
+							x: width / (roomLeft + roomRight),
+							y: height / roomLength
+						},
+						x = roomLeft * scale.x,
+						y = roomLength * scale.y;
+					Object.assign(this.sizeInfo, {
+						x,
+						y,
+						scale
+					});
+					console.log(this.sizeInfo.scale, 'scale');
+					rows.forEach((ele, idx) => {
+						const {
+							x1 = 0, x2 = 0, y1 = 0, y2 = 0
+						} = ele;
+						Object.assign(ele, {
+							height: Math.abs((y1 - y2) * scale.y),
+							width: Math.abs((x1 - x2) * scale.x),
 							x: x2 * scale.x + x,
 							y: (0 - y2 * scale.y + y),
-						},
-						departureTime: uni.$u.timeFormat(ele.departureTime, 'hh:MM'),
-						entryTime: uni.$u.timeFormat(ele.entryTime, 'hh:MM'),
-						/**开始监控时间**/
-						startTime: uni.$u.timeFormat(ele.startTime, 'yyyy/mm/dd hh:MM:ss'),
-						/**结束监控时间**/
-						endTime: uni.$u.timeFormat(ele.endTime, 'yyyy/mm/dd hh:MM:ss'),
+							old: {
+								x: x2 * scale.x + x,
+								y: (0 - y2 * scale.y + y),
+							},
+							departureTime: uni.$u.timeFormat(ele.departureTime, 'hh:MM'),
+							entryTime: uni.$u.timeFormat(ele.entryTime, 'hh:MM'),
+							/**开始监控时间**/
+							startTime: uni.$u.timeFormat(ele.startTime, 'yyyy/mm/dd hh:MM:ss'),
+							/**结束监控时间**/
+							endTime: uni.$u.timeFormat(ele.endTime, 'yyyy/mm/dd hh:MM:ss'),
+						});
 					});
-				});
-				this.roomZones = rows;
+					this.roomZones = rows;
+				} else {
+					uni.showToast({
+						icon: 'none',
+						title: '请先设置雷达波区域'
+					});
+					uni.navigateBack();
+				}
+
 			})
 
 		},

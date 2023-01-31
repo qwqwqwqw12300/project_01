@@ -90,6 +90,7 @@
 		push
 	} from '@/common/sdk/push.js';
 	import {
+		isApp,
 		isIos,
 	} from '../../common/utils/util';
 	import {
@@ -129,11 +130,11 @@
 					code: ''
 				},
 				//会员登录设备注册号
-				registrationId: '',
+				registrationId: uni.$u.guid(20),
 			};
 		},
 		mounted() {
-			this.getRegistrationID()
+			this.getRegistrationID();
 		},
 		computed: {
 			registrationType() {
@@ -147,7 +148,7 @@
 				this.initFlag = false;
 				this.navActive = index;
 				setTimeout(() => {
-					this.delay = index
+					this.delay = index;
 				}, 200);
 			},
 			/**
@@ -253,7 +254,7 @@
 			 * 获取登录设备注册号
 			 */
 			getRegistrationID() {
-				push.getRegistrationID().then(res => {
+				isApp() && push.getRegistrationID().then(res => {
 					console.log(res, 'lllllllllllll')
 					this.registrationId = res
 				});
