@@ -44,6 +44,9 @@ public class Presence implements Serializable {
 
 	/** 自定义:入库时间 **/
 	private Date recordTime;
+	
+	/** 自定义: 事件类型 **/
+	private String eventType;
 
 	public Date getTimestamp() {
 		return timestamp;
@@ -119,4 +122,13 @@ public class Presence implements Serializable {
 	public String getDeviceNo() {
 		return deviceId;
 	}
+
+	public String getEventType() {
+		return eventType;
+	}
+
+	public void setEventType(String eventType) {
+		this.eventType = eventType;
+	}
+	
 }

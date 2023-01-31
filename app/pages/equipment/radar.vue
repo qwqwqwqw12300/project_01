@@ -230,15 +230,15 @@
 	}
 
 	.ui-step {
-		height: 134rpx;
+		height: 110rpx;
 		display: flex;
 		align-items: center;
-		margin-top: 40rpx;
+		margin-top: 30rpx;
 		padding: 0 40rpx;
 
 		.ui-step-icon {
-			width: 140rpx;
-			height: 112rpx;
+			width: 110rpx;
+			height: 96rpx;
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
@@ -253,7 +253,7 @@
 
 			text {
 				color: #0e6bc0;
-				font-size: 32rpx;
+				font-size: 28rpx;
 				font-weight: bold;
 				text-shadow: 0 0 3px #fff, 0 0 3px #5acbff;
 			}
@@ -263,28 +263,28 @@
 	.ui-satellite {
 		margin-top: 30rpx;
 		width: 100%;
-		height: 400rpx;
+		height: 300rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
 		image {
 			// width: 400rpx;
-			height: 400rpx;
+			height: 300rpx;
 		}
 	}
 
 	.ui-bluetooth {
-		margin-top: 30rpx;
+		margin-top: 20rpx;
 		width: 100%;
-		height: 350rpx;
+		height: 300rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
 		image {
 			// width: 380rpx;
-			height: 350rpx;
+			height: 300rpx;
 		}
 	}
 

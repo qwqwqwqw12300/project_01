@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.newlandnpt.varyar.cloudBase.constant.CacheConstants;
-import com.newlandnpt.varyar.common.core.domain.config.DeviceConfig;
 import com.newlandnpt.varyar.cloudBase.utils.HttpClientUtil;
+import com.newlandnpt.varyar.common.core.domain.config.DeviceConfig;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.common.utils.sign.Base64;
@@ -68,21 +68,26 @@ public class DeviceConfigListener implements RocketMQListener<DeviceConfig> {
     			if (!sendResult.getSendStatus().equals(SendStatus.SEND_OK)) {
     				log.error("MQ推送失败：{}", "设备参数下发失败事件");
     			}
+    			return ;
     		}
     		//时间比给的时间略短一点
     		Integer timeOutSeconds = expiresIn - 60;
     		//System.out.println(idToken);
     		//过期时间最好比idToken的实际过期时间短
     		token = idToken;
+    		log.info("取到token:{}", token);
     		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.VAYYAR_TOKEN_KEY, token, timeOutSeconds, TimeUnit.SECONDS);
     	}
     	String url = StringUtils.format(DeviceConfigURL, deviceConfig.getDeviceId());
-    	String result = HttpClientUtil.sendPost(url, deviceConfig);
+    	//"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjMxODQ1NWFiZTM2ZTlhOTU1MDY2ZTFmIiwiZW1haWwiOiJlbGlua2VyQGVsaW5rZXIuY2MiLCJpYXQiOjE2NzQxMTczMDcsImV4cCI6MTY3NDExNzMwN30.MC-EBlLay7GUvDOSAZx5mN3ToJR4dNDDh7HTZk6k3bI"
+    	String auth = "Bearer " + token;
+    	String result = HttpClientUtil.sendPost(url, deviceConfig, auth);
     	Map map = JSON.parseObject(result, Map.class);
     	JSONObject newConfigJsonObject = (JSONObject) map.get("newConfig");
     	JSONObject oldConfigJsonObject = (JSONObject) map.get("oldConfig");
     	if(newConfigJsonObject == null || oldConfigJsonObject == null){
     		log.error("设备参数下发失败, 设备id:{}", deviceConfig.getDeviceId());
+    		log.error("设备参数下发失败, 报文:{}", JSON.toJSONString(deviceConfig));
     		SendResult sendResult = rocketMQTemplate.syncSend(deviceConfigErrTopic, MessageBuilder.withPayload(deviceConfig.getDeviceId()).build());
 			//System.out.println(JSON.toJSONString(result));
 			if (!sendResult.getSendStatus().equals(SendStatus.SEND_OK)) {

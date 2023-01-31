@@ -27,7 +27,15 @@ public class HttpClientUtil {
 
 	private static final Logger log = LoggerFactory.getLogger(HttpClientUtil.class);
 	
-	public static String sendPost(String url, Object obj) {
+	/**
+	 * 向指定 URL 发送POST方法的请求<br>
+	 * vayyar专用
+	 * @param url 发送请求的 URL
+	 * @param obj 请求对象
+	 * @param authorization Authorization报文头的值
+	 * @return 所代表远程资源的响应结果
+	 */
+	public static String sendPost(String url, Object obj, String authorization) {
 		
 		Assert.notNull(url, "url不可为空");
 		// 创建默认的httpClient实例.    
@@ -44,7 +52,7 @@ public class HttpClientUtil {
 			httpPost.setHeader("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             httpPost.setHeader("Accept-Charset", "utf-8");
             httpPost.setHeader("contentType", "utf-8");
-            httpPost.setHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjMxODQ1NWFiZTM2ZTlhOTU1MDY2ZTFmIiwiZW1haWwiOiJlbGlua2VyQGVsaW5rZXIuY2MiLCJpYXQiOjE2NzQxMTczMDcsImV4cCI6MTY3NDExNzMwN30.MC-EBlLay7GUvDOSAZx5mN3ToJR4dNDDh7HTZk6k3bI");
+            httpPost.setHeader("Authorization", authorization);
 			CloseableHttpResponse response = httpClient.execute(httpPost);
 			try {
 				HttpEntity entity = response.getEntity();

@@ -14,6 +14,8 @@
         <result property="userId" column="user_id"/>
         <result property="userName" column="user_name"/>
         <result property="userPhone" column="user_phone"/>
+        <result property="registrationId" column="registration_id"/>
+        <result property="registrationType" column="registration_type"/>
         <result property="delFlag" column="del_flag"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>

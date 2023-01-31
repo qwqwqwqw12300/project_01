@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.newlandnpt.varyar.cloudBase.domain.Presence;
 import com.newlandnpt.varyar.cloudBase.service.PresenceService;
 
@@ -29,7 +30,7 @@ public class PresenceApi {
     @PostMapping("/presence")
     @ResponseBody
     public void presence(@RequestBody Presence presence) {
-    	log.info("收到进出消息报文:{}", presence);
+    	log.info("收到进出消息报文:{}", JSON.toJSONString(presence));
     	presenceService.receve(presence);
     }
 

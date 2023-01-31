@@ -36,8 +36,8 @@ public class PresenceThread extends Thread {
         	vo.setzPosCm("16.0");
         	trackerTargets.add(vo);
         	presence.setTrackerTargets(trackerTargets);
-        	HttpClientUtil.sendPost("http://"+serverUrl+":"+serverPort+"/cloud/notify/presence", presence);
-        	i++;
+        	HttpClientUtil.sendPost("http://"+serverUrl+":"+serverPort+"/cloud/notify/presence", presence, "");
+        	i++; 
             try {
             	Thread.sleep(10*1000);
             } catch (InterruptedException e) {
