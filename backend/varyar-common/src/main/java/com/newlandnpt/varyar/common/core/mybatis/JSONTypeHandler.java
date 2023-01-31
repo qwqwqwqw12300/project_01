@@ -53,7 +53,7 @@ public class JSONTypeHandler<T extends Object> extends BaseTypeHandler<T> {
     private T toObject(String content, Class<?> clazz) {
         if (content != null && !content.isEmpty()) {
             try {
-                return (T) JSON.parseObject(content, clazz);
+                return (T) JSON.parseObject(content);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
