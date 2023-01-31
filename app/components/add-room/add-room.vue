@@ -128,7 +128,7 @@
 <style lang="scss">
 	.ui-add {
 		width: 582rpx;
-		min-height: 806rpx;
+		min-height: 380rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
@@ -140,7 +140,7 @@
 
 			&.ui-add-box {
 				padding: 10rpx 20rpx;
-				border-bottom: 1px solid #e4e4e4;
+				// border-bottom: 1px solid #e4e4e4;
 
 				&>* {
 					margin-top: 20rpx;

@@ -71,7 +71,7 @@ public class RoomController extends BaseController {
     public AjaxResult createRoom(
             @RequestBody @Validated RoomRequest roomRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (roomRequest.getRoomName().equals("")|| roomRequest.getRoomName()==null){
+        if (roomRequest.getName().equals("")|| roomRequest.getName()==null){
             ajax = ajax.error("房间名称不能为空！");
             return ajax;
         }
@@ -96,7 +96,7 @@ public class RoomController extends BaseController {
             tRoom.setFamilyId(Long.valueOf(roomRequest.getFamilyId()));
             tRoom.setDelFlag("0");
             tRoom.setCreateById(String.valueOf(this.getLoginUser().getMemberId()));
-            tRoom.setName(roomRequest.getRoomName());
+            tRoom.setName(roomRequest.getName());
             tRoom.setRoomLength(roomRequest.getRoomLength());
             tRoom.setRoomHeight(roomRequest.getRoomHeight());
             tRoom.setRoomLeft(roomRequest.getRoomLeft());
@@ -127,7 +127,7 @@ public class RoomController extends BaseController {
             return ajax;
         }
         try {
-            tRoom.setName(roomRequest.getRoomName());
+            tRoom.setName(roomRequest.getName());
             tRoom.setRoomLength(roomRequest.getRoomLength());
             tRoom.setRoomHeight(roomRequest.getRoomHeight());
             tRoom.setRoomLeft(roomRequest.getRoomLeft());
