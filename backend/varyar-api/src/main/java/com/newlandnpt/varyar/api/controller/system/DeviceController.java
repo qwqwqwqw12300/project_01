@@ -65,7 +65,9 @@ public class DeviceController extends BaseController {
         List<TDevice> list = new ArrayList<TDevice>();
         try {
             list = iDeviceService.selectDeviceByMemberId(map);
-            list = iDeviceService.loadingDeviceStauts(list);
+            if(list.size()>0){
+                list = iDeviceService.loadingDeviceStauts(list);
+            }
         } catch (Exception e){
             throw new ServiceException("查询我的设备失败！");
         }
