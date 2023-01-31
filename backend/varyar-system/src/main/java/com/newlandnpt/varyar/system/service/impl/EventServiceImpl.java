@@ -5,6 +5,7 @@ import java.util.List;
 import com.newlandnpt.varyar.common.annotation.DataScope;
 import com.newlandnpt.varyar.common.core.domain.model.EventRequest;
 import com.newlandnpt.varyar.common.utils.DateUtils;
+import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.system.domain.TEventList;
 import com.newlandnpt.varyar.system.domain.dto.event.EventCountGroupByLevelDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +118,7 @@ public class EventServiceImpl implements IEventService
 
     @Override
     public List<EventCountGroupByLevelDto> countUnHandleByDeviceGroupByLevel(Long deviceId) {
-        return tEventMapper.countUnHandleByDeviceGroupByLevel(deviceId);
+        return tEventMapper.countUnHandleByDeviceGroupByLevel(deviceId, SecurityUtils.getOrgId());
     }
 
     /**

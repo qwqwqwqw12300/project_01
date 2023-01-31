@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-  
+
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="115px">
       <el-form-item label="服务人员姓名" prop="servedUser.name">
         <el-input
@@ -43,7 +43,7 @@
               type="datetime"
               placeholder="结束查询时间"
             ></el-date-picker>
-</el-form-item>    
+</el-form-item>
       <!-- <el-form-item label="处理方式" prop="servedType">
         <el-input
           v-model="queryParams.servedType"
@@ -71,7 +71,7 @@
               v-model="queryParams.device.type"
               placeholder="设备类型"
               clearable
-             
+
             >
               <el-option
                 v-for="dict in dict.type.device_type"
@@ -102,7 +102,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -132,14 +132,14 @@
           <template slot-scope="scope">
           {{ servedTypeFormat(scope.row) }}
           </template>
-        </el-table-column>	
+        </el-table-column>
         <el-table-column label="处理时间" align="center" prop="createTime" width="170" />
         <el-table-column label="服务人员" align="center" prop="servedUser.name" />
         <el-table-column label="服务人员手机号" align="center" prop="servedUser.mobilePhone" />
         <el-table-column label="处理人归属机构" align="center" prop="servedUser.orgName" />
         <el-table-column label="处理人服务备注" align="center" prop="remark" show-overflow-tooltip/>
         <el-table-column label="设备名称" align="center" prop="device.name" width="170" />
-        <el-table-column label="设备编号" align="center" prop="device.no"  width="170"/> 
+        <el-table-column label="设备编号" align="center" prop="device.no"  width="170"/>
         <el-table-column label="关联消息编号" align="center" prop="operateFlag" show-overflow-tooltip>
           <template slot-scope="scope">
             <span v-for="({no},index) in scope.row.serveEvents" :key="no">{{no}}
@@ -152,9 +152,9 @@
                     {{scope.row.device.deviceGroupName}}  {{scope.row.device.location}}
           </template>
         </el-table-column>
-      
+
       </el-table>
-      
+
       <pagination
         v-show="total>0"
         :total="total"
@@ -162,7 +162,7 @@
         :limit.sync="queryParams.pageSize"
         @pagination="getList"
       />
-      
+
 
 
 
@@ -223,7 +223,7 @@ export default {
           //设备类型
           type :undefined,
         },
-        
+
         servedUser:{
           //服务人员姓名
           name : undefined,
@@ -239,7 +239,7 @@ export default {
         //处理时间起始
         createTimeBegin: null,
         //处理时间截止
-        createTimeEnd: null, 
+        createTimeEnd: null,
         },
         // //处理时间起始
         // createTimeBegin: null,
@@ -250,7 +250,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
-       
+
       }
     };
   },
@@ -280,7 +280,7 @@ export default {
       this.getDeptTree();
 
 
-      
+
     },
     /** 查询机构下拉树结构 */
     getDeptTree() {
@@ -301,7 +301,7 @@ export default {
     //处理方式字段翻译
     servedTypeFormat(row, column) {
       return this.selectDictLabel(this.dict.type.sys_served_type, row.servedType)
-    },		
+    },
 
     // 取消按钮
     cancel() {
@@ -388,7 +388,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/record/export', {
+      this.download('device/serve/record/export', {
         ...this.queryParams
       }, `record_${new Date().getTime()}.xlsx`)
     }

@@ -96,10 +96,17 @@ public interface TEventMapper
     /**
      * 根据级别聚合统计设备未处理的事件数
      * @param deviceId
+     * @param orgId
      * @return
      */
-    @Select(" select level,count(*) as count from t_event where operate_flag = '0' and device_id = #{deviceId} group by level")
-    public List<EventCountGroupByLevelDto> countUnHandleByDeviceGroupByLevel(Long deviceId);
+    @Select("<script> " +
+            "select level,count(*) as count from t_event where operate_flag = '0' and device_id = #{deviceId} " +
+            "<if test=' orgId != null'>" +
+            " and org_id IN ( SELECT org_id FROM t_org WHERE org_id = #{orgId} or find_in_set( #{orgId} , ancestors ) )" +
+            "</if>" +
+            "group by level" +
+            "</script>")
+    public List<EventCountGroupByLevelDto> countUnHandleByDeviceGroupByLevel(@Param("deviceId")Long deviceId,@Param("orgId") Long orgId);
 
     /**
      * 根据查询消息总数
