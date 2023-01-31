@@ -34,15 +34,18 @@
 					uuid
 				} = this.$refs.codeRef.returnCodeData()
 				PostAddAdvise({
-					content: this.content,
-					captcha,
-					uuid,
-				}).then(res => {
-					uni.$u.toast(res.msg)
-					setTimeout(() => {
-						uni.navigateBack()
-					}, 500)
-				})
+						content: this.content,
+						captcha,
+						uuid,
+					}).then(res => {
+						uni.$u.toast(res.msg)
+						setTimeout(() => {
+							uni.navigateBack()
+						}, 500)
+					}),
+					() => {
+						this.$refs.codeRef.reset();
+					}
 			}
 		}
 	}
