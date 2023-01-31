@@ -80,9 +80,9 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<TDevice.
                     .forEach(roomZone ->{
                         SubRegion subRegion = new SubRegion();
                         subRegion.setEnterDuration(FLAG_YES.equals(roomZone.getInMonitorFlag())?
-                                Optional.ofNullable(roomZone.getEntryTime()).map(p->p.intValue()).orElse(null):null);
+                                Optional.ofNullable(roomZone.getEntryTime()).map(p->p.intValue()).orElse(0):0);
                         subRegion.setExitDuration(FLAG_YES.equals(roomZone.getOutMonitorFlag())?
-                                Optional.ofNullable(roomZone.getDepartureTime()).map(p->p.intValue()).orElse(null):null);
+                                Optional.ofNullable(roomZone.getDepartureTime()).map(p->p.intValue()).orElse(0):0);
 
                         subRegion.setIsFallingDetection(FLAG_YES.equals(roomZone.getFallFlag()));
                         subRegion.setIsPresenceDetection(FLAG_YES.equals(roomZone.getExistFlag()));
@@ -98,7 +98,6 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<TDevice.
                     });
         }
 
-        // todo 子区域配置下发还需要cloud部署
         SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic, MessageBuilder.withPayload(deviceConfig).build());
         if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
             throw new BaseException("雷达波设备参数下发失败");
