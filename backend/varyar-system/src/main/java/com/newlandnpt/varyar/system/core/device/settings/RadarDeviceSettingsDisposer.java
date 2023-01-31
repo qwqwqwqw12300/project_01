@@ -103,6 +103,8 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
                         subRegion.setzMax(Optional.ofNullable(roomZone.getZ2()).map(p->p.floatValue()).orElse(null));
                         deviceConfig.getWalabotConfig().getTrackerSubRegions().add(subRegion);
                     });
+        }else{
+            deviceConfig.getWalabotConfig().setTrackerSubRegions(new ArrayList<>(0));
         }
 
         SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic, MessageBuilder.withPayload(deviceConfig).build());
