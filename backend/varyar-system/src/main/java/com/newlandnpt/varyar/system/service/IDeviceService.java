@@ -58,7 +58,7 @@ public interface IDeviceService
      * @return 结果
      */
     public int updateDevice(TDevice device);
-
+    public int setDevice(TDevice device);
     /**
      * 批量删除设备
      * 

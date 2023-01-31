@@ -119,6 +119,15 @@ public class DeviceServiceImpl implements IDeviceService {
     @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
     public int updateDevice(TDevice device) {
         device.setUpdateTime(DateUtils.getNowDate());
+        int effect = deviceMapper.updateTDevice(device);
+        resetDeviceCache(device);
+        return effect;
+    }
+
+    @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
+    public int setDevice(TDevice device) {
+        device.setUpdateTime(DateUtils.getNowDate());
         Long familyId = device.getFamilyId();
         Long roomId = device.getRoomId();
         setSettings(device.getDeviceId(),device.getParameter());
@@ -398,7 +407,7 @@ public class DeviceServiceImpl implements IDeviceService {
             if(device.getParameter()==null){
                 device.setParameter(new TDevice.DeviceParameter());
             }
-            ((TDevice.WatchSettings)device.getParameter()).setList(watchSettings.getList());
+            device.setParameter(watchSettings);
             deviceMapper.updateTDevice(device);
             if(watchSettings.getFence()!=null){
                 if(watchSettings.getFence().getDeviceFenceId()!=null){

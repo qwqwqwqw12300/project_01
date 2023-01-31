@@ -287,7 +287,7 @@ public class DeviceController extends BaseController {
             device.setRoomId(Long.valueOf("0"));
         }
         try {
-            int i = iDeviceService.updateDevice(device);
+            int i = iDeviceService.setDevice(device);
             if (i==0){
                 return error("绑定我的设备失败！");
             }
