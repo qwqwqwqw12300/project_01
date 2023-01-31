@@ -41,12 +41,17 @@ public class DeviceController extends BaseController {
     public TableDataInfo list( @RequestBody @Validated DeviceRequest deviceRequest) {
         startPage();
         Map map = new HashMap();
-        map.put("memberId",this.getLoginUser().getMemberId());
+       // map.put("memberId",this.getLoginUser().getMemberId());
         map.put("familyId",deviceRequest.getFamilyId());
         map.put("roomId",deviceRequest.getRoomId());
         List<TDevice> list = new ArrayList<TDevice>();
         try {
             list = iDeviceService.selectDeviceByMemberId(map);
+            for (TDevice item:list){
+                if (item.getParameter()==null){
+                    item.setParameter(new TDevice.DeviceParameter());
+                }
+            }
         } catch (Exception e){
             throw new ServiceException("查询我的设备失败！");
         }
@@ -59,13 +64,18 @@ public class DeviceController extends BaseController {
     public TableDataInfo listState( @RequestBody @Validated DeviceRequest deviceRequest) {
         startPage();
         Map map = new HashMap();
-        map.put("memberId",this.getLoginUser().getMemberId());
+        //map.put("memberId",this.getLoginUser().getMemberId());
         map.put("familyId",deviceRequest.getFamilyId());
         map.put("roomId",deviceRequest.getRoomId());
         List<TDevice> list = new ArrayList<TDevice>();
         try {
             list = iDeviceService.selectDeviceByMemberId(map);
             if(list.size()>0){
+                for (TDevice item:list){
+                    if (item.getParameter()==null){
+                        item.setParameter(new TDevice.DeviceParameter());
+                    }
+                }
                 list = iDeviceService.loadingDeviceStauts(list);
             }
         } catch (Exception e){
@@ -357,6 +367,9 @@ public class DeviceController extends BaseController {
             return error("该设备不是监控设备！");
         }
         TDevice.WatchSettings parameter = (TDevice.WatchSettings)device.getParameter();
+        if(parameter==null){
+            parameter = new TDevice.WatchSettings();
+        }
         parameter.setList(devicePhoneRequest.getList());
         parameter.setMapSet(devicePhoneRequest.getMapSet());
         device.setParameter(parameter);
