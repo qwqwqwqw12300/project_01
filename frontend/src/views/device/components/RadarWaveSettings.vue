@@ -107,10 +107,10 @@
                 </el-col>
               </el-row>
             </el-form>
-            <el-row type="flex" justify="center" :gutter="10">
-              <el-col :span="6"><el-button type="primary" @click="submitForm">提 交</el-button></el-col>
-              <el-col :span="6"><el-button @click="open = false">取 消</el-button></el-col>
-            </el-row>
+<!--            <el-row type="flex" justify="center" :gutter="10">-->
+<!--              <el-col :span="6"><el-button type="primary" @click="submitForm">提 交</el-button></el-col>-->
+<!--              <el-col :span="6"><el-button @click="open = false">取 消</el-button></el-col>-->
+<!--            </el-row>-->
           </el-col>
           <el-col :span="14">
             <el-card>
@@ -386,7 +386,7 @@
         </el-row>
       </el-tab-pane>
     </el-tabs>
-    <div v-if="currentTab!='first'" slot="footer" class="dialog-footer">
+    <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="submitForm">提 交</el-button>
       <el-button @click="open = false">取 消</el-button>
     </div>
@@ -437,22 +437,22 @@ export default {
           if(this.settings.type == undefined){
             this.settings.type = "0"
           }
-          if(this.settings.deviceLocation == undefined){
+          if(this.settings.deviceLocation == undefined || this.settings.deviceLocation == null){
             this.settings.deviceLocation = {
+              roomLength:undefined,
+              roomLeft:undefined,
+              roomRight:undefined,
+              roomHeight:undefined
+            }
+          }
+          if(this.settings.deviceRoomParameter == undefined ||this.settings.deviceRoomParameter == null){
+            this.settings.deviceRoomParameter = {
               entryTime:undefined,
               departureTime:undefined,
               inMonitorFlag:"0",
               outMonitorFlag:"0",
               startTime:"1979-01-31 00:00:00.000",
               endTime:"1979-01-31 23:59:59.999"
-            }
-          }
-          if(this.settings.deviceRoomParameter == undefined){
-            this.settings.deviceRoomParameter = {
-              roomLength:undefined,
-              roomLeft:undefined,
-              roomRight:undefined,
-              roomHeight:undefined
             }
           }
           if(this.settings.roomZones == undefined){
@@ -555,8 +555,7 @@ export default {
   methods: {
     async submitForm() {
       try{
-
-        const valid = this.$refs["radarWaveSettingsForm"].validate();
+        const valid = await this.$refs["radarWaveSettingsForm"].validate();
         if(valid){
           if(this.settings?.roomZones?.length>0){
             let currentIndex = this.index;
@@ -575,6 +574,8 @@ export default {
               }
             }
             this.index = currentIndex
+            this.$emit('submit', this.settings)
+          }else{
             this.$emit('submit', this.settings)
           }
         }else{

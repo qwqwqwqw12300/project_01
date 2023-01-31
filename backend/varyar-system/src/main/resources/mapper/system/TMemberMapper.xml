@@ -48,7 +48,7 @@
     <sql id="selectMemberVo">
         select member_id, no, phone, password, distribute_flag, user_id, user_name,
             (select mobile_phone from sys_user where user_id = m.user_id) user_phone,member_parameter,
-            del_flag, create_time, update_time
+            del_flag,m.registration_id,m.registration_type, create_time, update_time
         from t_member m
     </sql>
 
