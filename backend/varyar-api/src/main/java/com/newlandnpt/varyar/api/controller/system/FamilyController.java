@@ -40,6 +40,8 @@ public class FamilyController extends BaseController {
     private IMsgService iMsgService;
     @Autowired
     private RedisCache redisCache;
+    @Autowired
+    private IDeviceService iDeviceService;
     /**
     * 获取家庭列表
     * */
@@ -57,6 +59,7 @@ public class FamilyController extends BaseController {
                     tMsg.setOperateFlag("0");
                     tMsg.setFamilyId(item.getFamilyId());
                     it.setMsgNum(String.valueOf(iMsgService.selectTMsgList(tMsg).size()));
+                    it =iDeviceService.loadingDeviceStauts(it);
                 }
             }
         }
