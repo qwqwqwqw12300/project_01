@@ -19,7 +19,7 @@
 							<!-- <text class="grid-text">{{ baseListItem.title }}</text> -->
 							<u-text class="grid-text" @click="edit(item)" suffixIcon="edit-pen-fill"
 								iconStyle="font-size: 36rpx" align="center" :text="item.name"></u-text>
-							<text class="grid-text">{{ item.location }}</text>
+							<text class="grid-text ui-text">{{ item.location }}</text>
 							<view class="ui-wifi active">
 								<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }"
 									:name="item.onlineFlag === '1' ? 'wifi' : 'wifi-off'" size="40rpx"
@@ -383,7 +383,7 @@
 				}
 			}
 
-			text {
+			.ui-text {
 				display: inline-flex;
 				width: 70%;
 				height: 40rpx;

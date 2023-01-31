@@ -38,11 +38,13 @@
 			<view class="wd-add ui-change">
 				<u-text prefixIcon="edit-pen" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
 					size="30rpx" text="设备设置"></u-text>
-				<view class="ui-add-box">
+				<view class="ui-input">
 					<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="设备名称"></u-text>
 					<u--input placeholder="请输入设备名称" :maxlength="6" v-model="addForm.deviceName" border="bottom"
 						clearable>
 					</u--input>
+				</view>
+				<view class="ui-input">
 					<u-text size="28rpx" prefixIcon="map" iconStyle="font-size: 36rpx" text="设备位置"></u-text>
 					<u--input placeholder="请输入设备位置" :maxlength="6" v-model="addForm.location" border="bottom" clearable>
 					</u--input>
@@ -73,7 +75,7 @@
 				/**创建设备信息**/
 				addForm: {
 					deviceName: '',
-					deviceNo: uni.$u.random(1, 3),
+					deviceNo: uni.$u.random(20),
 					deviceType: '0',
 					location: ''
 				},
@@ -369,20 +371,26 @@
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
 		padding: 53rpx 31rpx;
 
-		&.ui-change {
-			.ui-add-box {
-				border-bottom: 1px solid #e4e4e4;
-			}
-		}
-
 		&>view {
 			margin-top: 52rpx;
 
-			&.ui-add-box {
+			&.ui-input {
+				margin-top: 40rpx;
+				position: relative;
 				padding: 10rpx 20rpx;
 
-				&>* {
-					margin-top: 30rpx;
+				&:nth-child(3) {
+					margin-top: 20rpx;
+				}
+
+				&::after {
+					bottom: 10rpx;
+					left: 40rpx;
+					content: '';
+					width: 500rpx;
+					height: 1rpx;
+					background: #e4e4e4;
+					position: absolute;
 				}
 			}
 		}

@@ -40,17 +40,19 @@ public class DeviceController extends BaseController {
     @PostMapping("/list")
     public TableDataInfo list( @RequestBody @Validated DeviceRequest deviceRequest) {
         startPage();
-        Map map = new HashMap();
-       // map.put("memberId",this.getLoginUser().getMemberId());
-        map.put("familyId",deviceRequest.getFamilyId());
-        map.put("roomId",deviceRequest.getRoomId());
+        TDevice cond = new TDevice();
+        cond.setFamilyId(Long.valueOf(deviceRequest.getFamilyId()));
+        cond.setRoomId(Long.valueOf(deviceRequest.getRoomId()));
         List<TDevice> list = new ArrayList<TDevice>();
         try {
-            list = iDeviceService.selectDeviceByMemberId(map);
-            for (TDevice item:list){
-                if (item.getParameter()==null){
-                    item.setParameter(new TDevice.DeviceParameter());
+            list = iDeviceService.selectDeviceList(cond);
+            if(list.size()>0){
+                for (TDevice item:list){
+                    if (item.getParameter()==null){
+                        item.setParameter(new TDevice.DeviceParameter());
+                    }
                 }
+                list = iDeviceService.loadingDeviceStauts(list);
             }
         } catch (Exception e){
             throw new ServiceException("查询我的设备失败！");
@@ -64,7 +66,7 @@ public class DeviceController extends BaseController {
     public TableDataInfo listState( @RequestBody @Validated DeviceRequest deviceRequest) {
         startPage();
         Map map = new HashMap();
-        //map.put("memberId",this.getLoginUser().getMemberId());
+        map.put("memberId",this.getLoginUser().getMemberId());
         map.put("familyId",deviceRequest.getFamilyId());
         map.put("roomId",deviceRequest.getRoomId());
         List<TDevice> list = new ArrayList<TDevice>();

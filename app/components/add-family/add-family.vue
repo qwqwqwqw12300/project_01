@@ -10,12 +10,12 @@
 		<view class="wd-add">
 			<u-text prefixIcon="plus-circle" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
 				size="30rpx" text="新建家庭"></u-text>
-			<view>
+			<view class="ui-input">
 				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
 					text="家庭名称"></u-text>
 				<u--input v-model="form.familyName" placeholder="请输入家庭名称" border="bottom" clearable></u--input>
 			</view>
-			<view>
+			<view class="ui-input">
 				<u-text size="28rpx" prefixIcon="map-fill" iconStyle="font-size: 36rpx" text="家庭地址(必填)"></u-text>
 				<u--input v-model="form.address" placeholder="请输入家庭地址" border="bottom" clearable></u--input>
 			</view>
@@ -82,7 +82,7 @@
 <style lang="scss">
 	.wd-add {
 		width: 582rpx;
-		height: 606rpx;
+		min-height: 300rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
@@ -91,13 +91,25 @@
 
 		&>view {
 			margin-top: 52rpx;
-			padding: 10rpx 20rpx;
-			border-bottom: 1px solid #e4e4e4;
 
-			&:nth-child(1),
-			&:nth-child(4) {
-				padding-left: 0rpx;
-				border-bottom: none;
+			&.ui-input {
+				margin-top: 40rpx;
+				position: relative;
+				padding: 10rpx 20rpx;
+
+				&:nth-child(3) {
+					margin-top: 20rpx;
+				}
+
+				&::after {
+					bottom: 10rpx;
+					left: 40rpx;
+					content: '';
+					width: 500rpx;
+					height: 1rpx;
+					background: #e4e4e4;
+					position: absolute;
+				}
 			}
 		}
 
