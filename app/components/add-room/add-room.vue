@@ -16,39 +16,6 @@
 					<u--input class="ui-room-name" v-model="form.name" placeholder="请输入房间名称" border="bottom" clearable>
 					</u--input>
 				</view>
-				<!-- <view>
-					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间高度"></u-text>
-					<view class="ui-slider">
-						<u-slider v-model="form.roomHeight" activeColor="#eeaa3d" blockColor="#eeaa3d"
-							inactiveColor="#c0c4cc" />
-						<text>{{$u.priceFormat(form.roomHeight/10, 2)}}米</text>
-					</view>
-				</view>
-				<view>
-					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间长度"></u-text>
-					<view class="ui-slider">
-						<u-slider v-model="form.roomLength" activeColor="#eeaa3d" blockColor="#eeaa3d"
-							inactiveColor="#c0c4cc" />
-						<text>{{$u.priceFormat(form.roomLength/10, 2)}}米</text>
-					</view>
-				</view>
-				<view>
-					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间左长度"></u-text>
-					<view class="ui-slider">
-						<u-slider v-model="form.roomLeft" activeColor="#eeaa3d" blockColor="#eeaa3d"
-							inactiveColor="#c0c4cc" />
-						<text>{{$u.priceFormat(form.roomLeft/10, 2)}}米</text>
-					</view>
-				</view>
-				<view>
-					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间右长度"></u-text>
-					<view class="ui-slider">
-						<u-slider v-model="form.roomRight" activeColor="#eeaa3d" blockColor="#eeaa3d"
-							inactiveColor="#c0c4cc" />
-						<text>{{$u.priceFormat(form.roomRight/10, 2)}}米</text>
-					</view>
-				</view> -->
-
 			</view>
 			<view class="ui-btn"><button @click="next" class="wd-sms">{{ subTitle }}</button></view>
 		</view>
@@ -140,11 +107,23 @@
 
 			&.ui-add-box {
 				padding: 10rpx 20rpx;
+				position: relative;
+
 				// border-bottom: 1px solid #e4e4e4;
+				&::after {
+					bottom: 10rpx;
+					left: 40rpx;
+					content: '';
+					width: 500rpx;
+					height: 1rpx;
+					background: #e4e4e4;
+					position: absolute;
+				}
 
 				&>* {
 					margin-top: 20rpx;
 				}
+
 			}
 		}
 

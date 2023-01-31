@@ -70,12 +70,13 @@
 </script>
 
 <style lang="scss">
-	::v-deep{
-		.u-badge--dot{
+	::v-deep {
+		.u-badge--dot {
 			width: 20rpx !important;
 			height: 20rpx !important;
 		}
 	}
+
 	.ui-list {
 		margin-top: 60rpx;
 		width: 100%;
@@ -112,11 +113,12 @@
 				background: #fff;
 				text-align: left;
 
-				text {
+				>text {
 					width: 100%;
+					margin-bottom: 10rpx;
 
-					&:nth-child(1) {
-						margin-bottom: 10rpx;
+					&:nth-child(2) {
+						margin-bottom: 20rpx;
 						display: inline-block;
 						font-size: 30rpx;
 

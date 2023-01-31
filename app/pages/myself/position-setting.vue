@@ -326,9 +326,9 @@
 							departureTime: uni.$u.timeFormat(ele.departureTime, 'hh:MM'),
 							entryTime: uni.$u.timeFormat(ele.entryTime, 'hh:MM'),
 							/**开始监控时间**/
-							startTime: uni.$u.timeFormat(ele.startTime, 'yyyy/mm/dd hh:MM:ss'),
+							startTime: uni.$u.timeFormat(ele.startTime, 'hh:MM'),
 							/**结束监控时间**/
-							endTime: uni.$u.timeFormat(ele.endTime, 'yyyy/mm/dd hh:MM:ss'),
+							endTime: uni.$u.timeFormat(ele.endTime, 'hh:MM'),
 						});
 					});
 					this.roomZones = rows;

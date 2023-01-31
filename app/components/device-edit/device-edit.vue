@@ -200,9 +200,9 @@
 					departureTime: uni.$u.timeFormat(departureTime, 'hh:MM'),
 					entryTime: uni.$u.timeFormat(entryTime, 'hh:MM'),
 					/**开始监控时间**/
-					startTime: uni.$u.timeFormat(startTime, 'yyyy/mm/dd hh:MM:ss'),
+					startTime: uni.$u.timeFormat(startTime, 'hh:MM'),
 					/**结束监控时间**/
-					endTime: uni.$u.timeFormat(endTime, 'yyyy/mm/dd hh:MM:ss'),
+					endTime: uni.$u.timeFormat(endTime, 'hh:MM'),
 				};
 				this.mode = 'edit';
 			},
