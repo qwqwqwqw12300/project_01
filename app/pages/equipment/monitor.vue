@@ -118,8 +118,6 @@
 						title: '请完整填写信息'
 					})
 				}
-
-
 			},
 			eidtClose() {
 				this.isEditShow = false
@@ -256,10 +254,11 @@
 	.ui-btn {
 		// position: absolute;
 		width: 100%;
+
 		button {
 			width: 450rpx;
 		}
-	
+
 		margin: 0 auto;
 		// bottom: 80rpx;
 		// left: 50%;

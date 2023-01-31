@@ -59,20 +59,23 @@
 				</view>
 			</u-popup>
 			<!-- /绑定房间 -->
+			<device-edit :editFrom="editSubmit" ref="editRef" @confirm="editSubmit"></device-edit>
 			<!-- 修改名称 -->
-			<u-popup :closeable="true" :round="10" :show="isEditShow" mode="center" @close="eidtClose">
+			<!-- <u-popup :closeable="true" :round="10" :show="isEditShow" mode="center" @close="eidtClose">
 				<view class="wd-add ui-change">
 					<u-text prefixIcon="edit-pen" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
 						size="30rpx" text="修改名称"></u-text>
 					<view class="ui-add-box">
-						<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="设备名称"></u-text>
-						<u-input placeholder="请输入设备名称" :maxlength="6" v-model="editFrom.deviceName" border="bottom"
-							clearable>
-						</u-input>
+						<view>
+							<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="设备名称"></u-text>
+							<u-input placeholder="请输入设备名称" :maxlength="6" v-model="editFrom.deviceName" border="bottom"
+								clearable>
+							</u-input>
+						</view>
 					</view>
 					<view class="wd-btn-gloup"><button @click="editSubmit">确定</button></view>
 				</view>
-			</u-popup>
+			</u-popup> -->
 			<!-- /修改名称 -->
 			<u-action-sheet :actions="addHandle.list" :closeOnClickOverlay="true" :safeAreaInsetBottom="true"
 				:closeOnClickAction="true" @close="addHandle.show = false" :show="addHandle.show" @select="sheetSelect"
@@ -87,31 +90,53 @@
 		getRoomList,
 		PostDeviceList,
 		PosteditDevice,
-		setDevice
+		setDevice,
+		relDevice
 	} from '@/common/http/api.js';
 	import {
 		mapState,
 		mapActions
 	} from 'vuex';
-
+	const INIT_BINDFORM = {
+		familyId: '',
+		roomId: '',
+		deviceId: '',
+		deviceName: '',
+		deviceType: '',
+		deviceNo: '',
+		deviceId: '',
+		roomLeft: 100,
+		roomHeight: 100,
+		roomRight: 100,
+		roomLength: 1000,
+		existFlag: 0,
+		fallFlag: 0,
+		entryTime: 0,
+		departureTime: 0,
+		startTime: 0,
+		endTime: 0,
+		inMonitorFlag: 0,
+		outMonitorFlag: 0,
+	};
 	export default {
+
 		data() {
 			return {
-				isEditShow: false,
 				/**绑定房间**/
 				bindRoomShow: false,
-				value: 0,
 				roomList: [],
 				bindForm: {
-					familyId: '',
-					roomId: '',
-					deviceId: ''
+					...INIT_BINDFORM
 				},
 				editFrom: {
 					deviceId: '',
 					deviceName: '',
 					deviceType: '',
-					deviceNo: ''
+					deviceNo: '',
+					roomLeft: 10,
+					roomHeight: 10,
+					roomRight: 10,
+					roomLength: 10
 				},
 				addHandle: {
 					show: false,
@@ -154,9 +179,9 @@
 			 * 关闭弹窗
 			 */
 			close() {
-				this.bindForm.familyId = ''
-				this.bindForm.roomId = ''
-				this.bindForm.deviceId = ''
+				this.bindForm.familyId = '';
+				this.bindForm.roomId = '';
+				this.bindForm.deviceId = '';
 				this.bindRoomShow = false;
 			},
 
@@ -164,23 +189,40 @@
 			 * 编辑浮层打开
 			 */
 			edit(item) {
+				const {
+					name,
+					deviceId,
+					type,
+					no,
+					familyId,
+					roomId,
+					parameter: {
+						deviceLocation = {},
+						deviceRoomParameter = {}
+					} = {},
+
+				} = item;
 				Object.assign(this.editFrom, {
-					deviceName: item.name,
-					deviceId: item.deviceId,
-					deviceType: item.type,
-					deviceNo: item.no
+					deviceName: name,
+					deviceId,
+					deviceType: type,
+					deviceNo: no,
+					familyId,
+					roomId,
+					...deviceLocation,
+					...deviceRoomParameter
 				});
 				console.log(this.editFrom, 'this.editFrom');
-				this.isEditShow = true;
+				this.$refs.editRef.open(this.editFrom);
 			},
 
 			/**
 			 * 修改设备
 			 */
-			editSubmit() {
-				if (this.editFrom.deviceName) {
-					PosteditDevice({
-						...this.editFrom
+			editSubmit(editFrom) {
+				if (editFrom.deviceName) {
+					setDevice({
+						...editFrom
 					}).then(res => {
 						uni.$u.toast(res.msg);
 						this.eidtClose();
@@ -205,7 +247,18 @@
 			 * 绑定
 			 */
 			binding(item) {
-				this.bindForm.deviceId = item.deviceId;
+				const {
+					name,
+					deviceId,
+					type,
+					no
+				} = item;
+				Object.assign(this.bindForm, {
+					deviceName: name,
+					deviceId,
+					deviceType: type,
+					deviceNo: no,
+				});
 				this.bindRoomShow = true;
 			},
 
@@ -220,10 +273,8 @@
 					content: '是否和房间解除绑定',
 					success: res => {
 						if (res.confirm) {
-							setDevice({
+							relDevice({
 								deviceId,
-								familyId: '',
-								roomId: ''
 							}).then(res => {
 								uni.$u.toast(res.msg);
 								setTimeout(() => {
@@ -251,7 +302,7 @@
 				}).then(res => {
 					console.log(res);
 					this.roomList = res.rows || [];
-					this.bindForm.roomId = ''
+					this.bindForm.roomId = '';
 				});
 			},
 			/**
@@ -401,7 +452,7 @@
 
 	.wd-add {
 		width: 582rpx;
-		height: 606rpx;
+		min-height: 606rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);

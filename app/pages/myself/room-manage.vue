@@ -35,7 +35,7 @@
 						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间名称"></u-text>
 						<u--input v-model="form.name" placeholder="请输入房间名称" border="bottom" clearable></u--input>
 					</view>
-					<view>
+					<!-- <view>
 						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间高度"></u-text>
 						<view class="ui-slider">
 							<u-slider v-model="form.roomHeight" activeColor="#eeaa3d" blockColor="#eeaa3d"
@@ -66,10 +66,11 @@
 								inactiveColor="#c0c4cc" />
 							<text>{{$u.priceFormat(form.roomLeft/10, 2)}}米</text>
 						</view>
-					</view>
+					</view> -->
 					<view class="wd-btn-gloup">
-						<button @click="onSubmit">提交</button>
-						<button @click="close">取消</button>
+
+						<button class="gray" @click="close">取消</button>
+						<button class="blue" @click="onSubmit">提交</button>
 					</view>
 				</view>
 			</u-popup>
@@ -91,11 +92,11 @@
 				isEditShow: false,
 				form: {
 					name: '',
-					roomId: '',
-					roomHeight: '',
-					roomLength: '',
-					roomLeft: '',
-					roomRight: '',
+					// roomId: '',
+					// roomHeight: '',
+					// roomLength: '',
+					// roomLeft: '',
+					// roomRight: '',
 				},
 				list: []
 			};
@@ -112,18 +113,18 @@
 			 * 修改家庭
 			 */
 			editFamliy(item) {
-				const {
-					roomHeight = 0,
-					roomLength = 0,
-					roomLeft = 0,
-					roomRight = 0
-				} = item;
+				// const {
+				// 	roomHeight = 0,
+				// 		roomLength = 0,
+				// 		roomLeft = 0,
+				// 		roomRight = 0
+				// } = item;
 				this.form = {
 					...item,
-					roomHeight: roomHeight * 10,
-					roomLength: roomLength * 10,
-					roomLeft: roomLeft * 10,
-					roomRight: roomRight * 10
+					// roomHeight: roomHeight * 10,
+					// roomLength: roomLength * 10,
+					// roomLeft: roomLeft * 10,
+					// roomRight: roomRight * 10
 				}
 				console.log(this.form, 'fff')
 				this.isEditShow = true;
@@ -142,20 +143,23 @@
 			onSubmit() {
 				const {
 					name,
-					roomHeight,
-					roomLength,
-					roomLeft,
-					roomRight
-				} = this.form
-				if (!roomHeight || !roomLeft || !roomRight || !roomLength || !name) {
+					// roomHeight,
+					// roomLength,
+					// roomLeft,
+					// roomRight
+				} = this.form;
+				if (!name) {
 					return uni.$u.toast('请完善房间信息')
 				}
+				// if (!roomHeight || !roomLeft || !roomRight || !roomLength || !name) {
+				// 	return uni.$u.toast('请完善房间信息')
+				// }
 				PostEditRoom({
 					...this.form,
-					roomHeight: uni.$u.priceFormat( roomHeight / 10, 2),
-					roomLength: uni.$u.priceFormat( roomLength / 10, 2),
-					roomLeft: uni.$u.priceFormat( roomLeft / 10, 2),
-					roomRight: uni.$u.priceFormat( roomRight / 10, 2),
+					// roomHeight: uni.$u.priceFormat(roomHeight / 10, 2),
+					// roomLength: uni.$u.priceFormat(roomLength / 10, 2),
+					// roomLeft: uni.$u.priceFormat(roomLeft / 10, 2),
+					// roomRight: uni.$u.priceFormat(roomRight / 10, 2),
 				}).then(res => {
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
@@ -307,7 +311,7 @@
 
 	.wd-add {
 		width: 582rpx;
-		height: 880rpx;
+		max-height: 880rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
