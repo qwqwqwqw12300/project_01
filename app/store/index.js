@@ -160,8 +160,7 @@ const store = {
 			for (let item in obj) {
 				devices = devices.filter(ele => ele[item] === obj[item]);
 			}
-			// return devices;
-			return state.devicesList;
+			return devices;
 		},
 
 		/**

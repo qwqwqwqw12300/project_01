@@ -16,6 +16,8 @@ import com.newlandnpt.varyar.common.core.domain.BaseEntity;
  */
 public class TRoomZone extends BaseEntity
 {
+    public static final String FLAG_YES = "0";
+
     private static final long serialVersionUID = 1L;
 
     /** 子区域id */

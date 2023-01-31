@@ -147,3 +147,11 @@ location:
     fenceList: https://tsapi.amap.com/v1/track/geofence/list
     fenceTerminalBind: https://tsapi.amap.com/v1/track/geofence/terminal/bind
     fenceTerminalStatus: https://tsapi.amap.com/v1/track/geofence/status/terminal
+
+# rocketmq配置
+rocketmq:
+  name-server: 192.168.132.204:9876
+  producer:
+    group: group_msg
+  topic:
+    deviceConfig: deviceConfigTopic

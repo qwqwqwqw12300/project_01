@@ -9,6 +9,7 @@ import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
+import com.newlandnpt.varyar.system.core.device.settings.RadarDeviceSettingsDisposer;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TDeviceFence;
 import com.newlandnpt.varyar.system.domain.TRoom;
@@ -340,6 +341,7 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
     public int setSettings(Long deviceId, TDevice.DeviceSettings settings) {
         TDevice device = deviceMapper.selectTDeviceByDeviceId(deviceId);
         if(device == null){
@@ -406,7 +408,8 @@ public class DeviceServiceImpl implements IDeviceService {
                 }
             }
         }
-
+        //下发设备参数
+        RadarDeviceSettingsDisposer.dispose(device.getNo(),settings);
         return 1;
     }
 

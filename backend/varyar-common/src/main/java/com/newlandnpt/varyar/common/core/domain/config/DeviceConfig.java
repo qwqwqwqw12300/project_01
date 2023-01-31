@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.cloudBase.domain.device.config;
+package com.newlandnpt.varyar.common.core.domain.config;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ public class DeviceConfig implements Serializable {
 	/** 自定义 设备id 根据设备id下发参数 **/
 	private String deviceId;
 	
-	private String direction;
+	private String direction = "downstream";
 	
 	private AppConfig appConfig;
 	

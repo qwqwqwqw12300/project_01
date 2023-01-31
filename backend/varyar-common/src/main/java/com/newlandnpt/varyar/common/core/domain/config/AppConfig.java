@@ -1,44 +1,44 @@
-package com.newlandnpt.varyar.cloudBase.domain.device.config;
+package com.newlandnpt.varyar.common.core.domain.config;
 
 import java.util.Map;
 
 public class AppConfig {
 
-	private Integer confirmedToAlertTimeoutSec;
+	private Integer confirmedToAlertTimeoutSec = 40;
 	
 	private Map<String, DryContacts> dryContacts;
 	
-	private Boolean enableAnalytics;
+	private Boolean enableAnalytics = true;
 	
 	private Long learningModeEndTs;
 	
 	private Long learningModeStartTs;
 	
-	private Integer ledMode;
+	private Integer ledMode = 1;
 	
-	private Integer logLevel;
+	private Integer logLevel = 1;
 	
-	private Boolean otaEnabled;
+	private Boolean otaEnabled = true;
 	
-	private Integer presenceReportMinRateMills;
+	private Integer presenceReportMinRateMills = 30000;
 	
-	private Boolean reportFallsToMqtt;
+	private Boolean reportFallsToMqtt = true;
 	
-	private Boolean reportPresenceToMqtt;
+	private Boolean reportPresenceToMqtt = true;
 	
-	private Boolean silentMode;
+	private Boolean silentMode = true;
 	
-	private Boolean subscriptionExpired;
+	private Boolean subscriptionExpired = false;
 	
 	private Float targetPositionChangeThresholdMeters;
 	
-	private Boolean telemetryEnabled;
+	private Boolean telemetryEnabled = false;
 	
-	private Integer telemetryPolicy;
+	private Integer telemetryPolicy = 0;
 	
-	private Integer telemetryTransport;
+	private Integer telemetryTransport = 1;
 	
-	private Integer volume;
+	private Integer volume = 50;
 
 	public Integer getConfirmedToAlertTimeoutSec() {
 		return confirmedToAlertTimeoutSec;
