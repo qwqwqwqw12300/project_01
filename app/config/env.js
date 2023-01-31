@@ -10,7 +10,7 @@ export const env = {
 	/**服务器地址**/
 	// basePath: 'https://67c805463f.zicp.fun',
 	basePath: 'http://218.66.48.228:8003',
-	// basePath: 'http://192.168.1.109:8081',
+	//  basePath: 'http://192.168.1.109:8081',
 	// basePath: 'http://192.168.132.204:8060',
 	/**版本更新地址**/
 	appUpdateUrl: '',
