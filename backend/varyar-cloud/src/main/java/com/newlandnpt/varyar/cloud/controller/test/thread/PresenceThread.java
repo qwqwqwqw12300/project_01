@@ -37,7 +37,7 @@ public class PresenceThread extends Thread {
         	trackerTargets.add(vo);
         	presence.setTrackerTargets(trackerTargets);
         	HttpClientUtil.sendPost("http://"+serverUrl+":"+serverPort+"/cloud/notify/presence", presence);
-        	i++;
+        	i++; 
             try {
             	Thread.sleep(10*1000);
             } catch (InterruptedException e) {
