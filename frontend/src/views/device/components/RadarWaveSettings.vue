@@ -78,7 +78,7 @@
                         <el-checkbox v-model="settings.deviceRoomParameter.inMonitorFlag" true-label="0" false-label="1" clearable></el-checkbox>
                       </el-col>
                       <el-col :span="20">
-                        <el-select v-model="settings.deviceRoomParameter.entryTime">
+                        <el-select v-model="settings.deviceRoomParameter.entryTime" clearable>
                           <el-option label="5分钟" :value="5*60"></el-option>
                           <el-option label="10分钟" :value="10*60"></el-option>
                           <el-option label="15分钟" :value="15*60"></el-option>
@@ -96,7 +96,7 @@
                         <el-checkbox v-model="settings.deviceRoomParameter.outMonitorFlag" true-label="0" false-label="1" clearable></el-checkbox>
                       </el-col>
                       <el-col :span="20">
-                        <el-select v-model="settings.deviceRoomParameter.departureTime">
+                        <el-select v-model="settings.deviceRoomParameter.departureTime" clearable>
                           <el-option label="5分钟" :value="5*60"></el-option>
                           <el-option label="10分钟" :value="10*60"></el-option>
                           <el-option label="15分钟" :value="15*60"></el-option>
@@ -337,7 +337,7 @@
                           <el-checkbox v-model="roomZone.inMonitorFlag" true-label="0" false-label="1" clearable></el-checkbox>
                         </el-col>
                         <el-col :span="20">
-                          <el-select v-model="roomZone.entryTime">
+                          <el-select v-model="roomZone.entryTime" clearable>
                             <el-option label="5分钟" :value="5*60"></el-option>
                             <el-option label="10分钟" :value="10*60"></el-option>
                             <el-option label="15分钟" :value="15*60"></el-option>
@@ -355,7 +355,7 @@
                           <el-checkbox v-model="roomZone.outMonitorFlag" true-label="0" false-label="1" clearable></el-checkbox>
                         </el-col>
                         <el-col :span="20">
-                          <el-select v-model="roomZone.departureTime">
+                          <el-select v-model="roomZone.departureTime" clearable>
                             <el-option label="5分钟" :value="5*60"></el-option>
                             <el-option label="10分钟" :value="10*60"></el-option>
                             <el-option label="15分钟" :value="15*60"></el-option>
