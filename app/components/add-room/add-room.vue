@@ -16,16 +16,13 @@
 					<u--input class="ui-room-name" v-model="form.roomName" placeholder="请输入房间名称" border="bottom"
 						clearable></u--input>
 				</view>
-				<view>
+				<!-- <view>
 					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间高度"></u-text>
 					<view class="ui-slider">
 						<u-slider v-model="form.roomHeight" activeColor="#eeaa3d" blockColor="#eeaa3d"
 							inactiveColor="#c0c4cc" />
 						<text>{{$u.priceFormat(form.roomHeight/10, 2)}}米</text>
 					</view>
-
-					<!-- <u--input type="number" v-model="form.roomHeight" placeholder="请输入房间高度" border="bottom" clearable>
-					</u--input> -->
 				</view>
 				<view>
 					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间长度"></u-text>
@@ -50,7 +47,7 @@
 							inactiveColor="#c0c4cc" />
 						<text>{{$u.priceFormat(form.roomRight/10, 2)}}米</text>
 					</view>
-				</view>
+				</view> -->
 
 			</view>
 			<view class="ui-btn"><button @click="next" class="wd-sms">{{ subTitle }}</button></view>
@@ -73,10 +70,10 @@
 				familyId: '',
 				form: {
 					roomName: '', //房间名称
-					roomHeight: '', //房间高度
-					roomLength: '', //房间长度
-					roomLeft: '', //房间左长度
-					roomRight: "", //房间右长度
+					// roomHeight: '', //房间高度
+					// roomLength: '', //房间长度
+					// roomLeft: '', //房间左长度
+					// roomRight: "", //房间右长度
 				}
 			}
 		},
@@ -102,7 +99,7 @@
 					roomLeft,
 					roomRight
 				} = this.form;
-				if (!roomHeight || !roomLeft || !roomRight || !roomLength || !roomName) {
+				if (!roomName) {
 					return uni.showToast({
 						icon: 'none',
 						title: '请完善房间信息'
@@ -110,10 +107,10 @@
 				}
 				PostAddRoom({
 					...this.form,
-					roomHeight: uni.$u.priceFormat( roomHeight / 10, 2),
-					roomLength: uni.$u.priceFormat( roomLength / 10, 2),
-					roomLeft: uni.$u.priceFormat( roomLeft / 10, 2),
-					roomRight: uni.$u.priceFormat( roomRight / 10, 2),
+					roomHeight: uni.$u.priceFormat(roomHeight / 10, 2),
+					roomLength: uni.$u.priceFormat(roomLength / 10, 2),
+					roomLeft: uni.$u.priceFormat(roomLeft / 10, 2),
+					roomRight: uni.$u.priceFormat(roomRight / 10, 2),
 					familyId: this.familyId,
 				}).then(res => {
 					uni.$u.toast(res.msg)

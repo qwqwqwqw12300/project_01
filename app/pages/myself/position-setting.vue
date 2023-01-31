@@ -90,10 +90,14 @@
 			<!-- 区域设置 -->
 			<view class="ui-setting" :key="activeZone" v-if="roomZones.length">
 				<view>
-					<u-checkbox-group @change="monitorChange($event, 'existFlag')" placement="column">
+					<u-checkbox-group @change="monitorChange($event, 'zoneType')" placement="column">
 						<u-checkbox activeColor="#1aa208" labelSize="28rpx"
-							:checked="roomZones[activeZone].existFlag == 1" :customStyle="{ marginBottom: '8px' }"
-							label="私人区域" name="existFlag"></u-checkbox>
+							:checked="roomZones[activeZone].zoneType == 1" :customStyle="{ marginBottom: '8px' }"
+							label="私人区域" name="zoneType"></u-checkbox>
+					</u-checkbox-group>
+					<u-checkbox-group @change="monitorChange($event, 'existFlag')" placement="column">
+						<u-checkbox activeColor="#1aa208" labelSize="28rpx" :checked="roomZones.existFlag == 1"
+							:customStyle="{ marginBottom: '8px' }" label="进出监控" name="existFlag"></u-checkbox>
 					</u-checkbox-group>
 					<u-checkbox-group @change="monitorChange($event, 'fallFlag')" placement="column">
 						<u-checkbox activeColor="#1aa208" labelSize="28rpx"
@@ -101,6 +105,7 @@
 							:cusmonitorChangetomStyle="{ marginBottom: '8px' }" label="跌倒监控" name="fallFlag">
 						</u-checkbox>
 					</u-checkbox-group>
+
 					<!-- <u-checkbox-group @change="monitorChange($event, 'isAccess')" placement="column">
 						<u-checkbox activeColor="#1aa208" :checked="list[activeZone].isAccess"
 							:customStyle="{ marginBottom: '8px' }" label="进出监控" name="isAccess"></u-checkbox>
@@ -159,7 +164,8 @@
 
 <script>
 	import {
-		assignDeep
+		assignDeep,
+		getHoursTime
 	} from '../../common/utils/util';
 	import {
 		mapState
@@ -282,46 +288,58 @@
 				} = this.sizeInfo.box;
 				// 设备距离墙壁范围
 				const {
-					roomLeft,
-					roomRight,
-					roomLength
-				} = roomInfo
-				// 盒子比例
-				const scale = {
-						x: width / (roomLeft + roomRight),
-						y: height / roomLength
-					},
-					x = roomLeft * scale.x,
-					y = roomLength * scale.y;
-				Object.assign(this.sizeInfo, {
-					x,
-					y,
-					scale
-				});
-				console.log(this.sizeInfo.scale, 'scale');
-				rows.forEach((ele, idx) => {
+					parameter
+				} = parameter;
+				if (parameter && parameter.deviceLocation) {
 					const {
-						x1 = 0, x2 = 0, y1 = 0, y2 = 0
-					} = ele;
-					Object.assign(ele, {
-						height: Math.abs((y1 - y2) * scale.y),
-						width: Math.abs((x1 - x2) * scale.x),
-						x: x2 * scale.x + x,
-						y: (0 - y2 * scale.y + y),
-						old: {
+						roomLeft,
+						roomRight,
+						roomLength
+					} = parameter.deviceLocation;
+
+					// 盒子比例
+					const scale = {
+							x: width / (roomLeft + roomRight),
+							y: height / roomLength
+						},
+						x = roomLeft * scale.x,
+						y = roomLength * scale.y;
+					Object.assign(this.sizeInfo, {
+						x,
+						y,
+						scale
+					});
+					console.log(this.sizeInfo.scale, 'scale');
+					rows.forEach((ele, idx) => {
+						const {
+							x1 = 0, x2 = 0, y1 = 0, y2 = 0
+						} = ele;
+						Object.assign(ele, {
+							height: Math.abs((y1 - y2) * scale.y),
+							width: Math.abs((x1 - x2) * scale.x),
 							x: x2 * scale.x + x,
 							y: (0 - y2 * scale.y + y),
-						},
-						departureTime: uni.$u.timeFormat(ele.departureTime, 'hh:MM'),
-						entryTime: uni.$u.timeFormat(ele.entryTime, 'hh:MM'),
-						/**开始监控时间**/
-						startTime: uni.$u.timeFormat(ele.startTime, 'yyyy/mm/dd hh:MM:ss'),
-						/**结束监控时间**/
-						endTime: uni.$u.timeFormat(ele.endTime, 'yyyy/mm/dd hh:MM:ss'),
+							old: {
+								x: x2 * scale.x + x,
+								y: (0 - y2 * scale.y + y),
+							},
+							departureTime: uni.$u.timeFormat(ele.departureTime, 'hh:MM'),
+							entryTime: uni.$u.timeFormat(ele.entryTime, 'hh:MM'),
+							/**开始监控时间**/
+							startTime: uni.$u.timeFormat(ele.startTime, 'yyyy/mm/dd hh:MM:ss'),
+							/**结束监控时间**/
+							endTime: uni.$u.timeFormat(ele.endTime, 'yyyy/mm/dd hh:MM:ss'),
+						});
 					});
-				});
-				this.roomZones = rows;
-				console.log(rows, 'rows');
+					this.roomZones = rows;
+				} else {
+					uni.showToast({
+						icon: 'none',
+						title: '请先设置雷达波区域'
+					});
+					uni.navigateBack();
+				}
+
 			})
 
 		},
@@ -379,24 +397,22 @@
 			 * 监控区域修改
 			 */
 			monitorChange([active], type) {
-				console.log(this.roomZones[this.activeZone][type], '修改前', type);
 				this.roomZones[this.activeZone][type] = this.roomZones[this.activeZone][type] == 1 ? 0 : 1;
-				console.log(this.roomZones[this.activeZone][type], '修改后', type);
 			},
 			/**
 			 * 开启选择时间
 			 */
 			openDate(type) {
-				const MAP = {
-					startTime: 'datetime',
-					endTime: 'datetime',
-					departureTime: 'time',
-					entryTime: 'time'
-				};
+				// const MAP = {
+				// 	startTime: 'datetime',
+				// 	endTime: 'datetime',
+				// 	departureTime: 'time',
+				// 	entryTime: 'time'
+				// };
 				Object.assign(this.dateHandle, {
 					type,
 					show: true,
-					mode: MAP[type]
+					mode: 'time'
 				});
 
 			},
@@ -440,11 +456,10 @@
 							x1: uni.$u.priceFormat((old.x - x - width) / scale.x, 1),
 							y2: uni.$u.priceFormat(0 - ((old.y - y) / scale.y), 1),
 							y1: uni.$u.priceFormat(0 - ((old.y - y - height) / scale.y), 1),
-							startTime: startTime && new Date(startTime).getTime(),
-							endTime: startTime && new Date(endTime).getTime(),
-							entryTime: entryTime && new Date('1970-1-1 ' + entryTime + ':00').getTime(),
-							departureTime: entryTime && new Date('1970-1-1 ' + departureTime + ':00')
-								.getTime(),
+							startTime: getHoursTime(startTime),
+							endTime: getHoursTime(endTime),
+							entryTime: getHoursTime(entryTime),
+							departureTime: getHoursTime(departureTime)
 						});
 					console.log(old.y, 'old.y');
 					delete obj.old;
@@ -452,7 +467,6 @@
 					delete obj.y;
 					delete obj.height;
 					delete obj.width;
-					console.log(obj, 'obj');
 					return PostRadarDevice(obj);
 				});
 
@@ -731,20 +745,21 @@
 
 					.ui-timing-active {
 						display: flex;
-						justify-content: right;
+						justify-content: space-evenly;
 						align-items: center;
 						font-size: 30rpx;
 						line-height: 50rpx;
 						height: 50rpx;
 						width: 250rpx;
 						border: 1rpx solid #e2e2e2;
+						color: #606266;
 						padding: 0 10rpx;
 						box-sizing: border-box;
 
 						text {
 							display: inline-block;
 							margin-right: 30rpx;
-							width: 160rpx;
+							// width: 160rpx;
 						}
 
 						&:nth-child(2) {

@@ -63,6 +63,9 @@
 	import {
 		vpsdk
 	} from '../../common/sdk/vpsdk.js';
+	import {
+		isApp
+	} from '../../common/utils/util';
 
 	export default {
 		data() {
@@ -136,33 +139,75 @@
 			/**
 			 * 添加设备
 			 */
-			next() {
+			async next() {
 				this.connectStatic = 'connect';
-				vpsdk.connect(res => {
-					console.log(res, '回弹结果');
-					const {
-						type,
-						data
-					} = res;
-					switch (type) {
-						case 'event': // 事件监听
-							this.eventMsg = data;
-							break;
-						case 'wifi': // 选择wifi
-							this.openWifi(data);
-							break;
-						case 'success': // 连接成功
-							this.addForm.deviceNo = data;
-							this.isEditShow = true;
-							break;
-						default:
-							uni.showModal({
-								title: '设备添加失败，请重试'
-							});
-							this.connectStatic = 'init';
-							break;
-					}
+				if (await this.permissionCheck()) {
+					vpsdk.connect(res => {
+						console.log(res, '回弹结果');
+						const {
+							type,
+							data
+						} = res;
+						switch (type) {
+							case 'event': // 事件监听
+								this.eventMsg = data;
+								break;
+							case 'wifi': // 选择wifi
+								this.openWifi(data);
+								break;
+							case 'success': // 连接成功
+								this.addForm.deviceNo = data;
+								this.isEditShow = true;
+								break;
+							default:
+								uni.showModal({
+									title: '设备添加失败，请重试'
+								});
+								this.connectStatic = 'init';
+								break;
+						}
+					});
+				} else {
+					this.connectStatic = 'init';
+				}
+			},
+
+			/**
+			 * 权限检查
+			 */
+			permissionCheck() {
+				return new Promise(resolve => {
+					console.log('开始验证蓝牙');
+					// 验证蓝牙权限
+					uni.openBluetoothAdapter();
+					console.log('蓝牙模块启动成功');
+					uni.getBluetoothAdapterState({
+						success(res) {
+							//如果res.avaliable==false 说明没打开蓝牙 反之则打开
+							console.log(res.available, '蓝牙是否打开');
+							if (res.available == false) {
+								uni.$u.toast("请先打开手机蓝牙");
+								resolve(false)
+							} else {
+								/*#ifdef APP-PLUS*/
+								uni.startWifi({ // 验证wifi权限
+									success: res => resolve(true),
+									fail: err => {
+										uni.$u.toast("请先打开并连接手机wifi");
+										resolve(false);
+									}
+								})
+								/*#endif*/
+							}
+						},
+						fail: error => {
+							uni.$u.toast("请先打开手机蓝牙");
+							resolve(false);
+						}
+					})
 				});
+
+
 			},
 
 			/**
