@@ -259,7 +259,7 @@
 <style lang="scss">
 	.wd-add {
 		width: 582rpx;
-		min-height: 906rpx;
+		min-height: 1006rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
