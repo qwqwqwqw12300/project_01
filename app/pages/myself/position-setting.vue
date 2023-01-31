@@ -159,7 +159,8 @@
 
 <script>
 	import {
-		assignDeep
+		assignDeep,
+		getHoursTime
 	} from '../../common/utils/util';
 	import {
 		mapState
@@ -321,7 +322,6 @@
 					});
 				});
 				this.roomZones = rows;
-				console.log(rows, 'rows');
 			})
 
 		},
@@ -379,24 +379,22 @@
 			 * 监控区域修改
 			 */
 			monitorChange([active], type) {
-				console.log(this.roomZones[this.activeZone][type], '修改前', type);
 				this.roomZones[this.activeZone][type] = this.roomZones[this.activeZone][type] == 1 ? 0 : 1;
-				console.log(this.roomZones[this.activeZone][type], '修改后', type);
 			},
 			/**
 			 * 开启选择时间
 			 */
 			openDate(type) {
-				const MAP = {
-					startTime: 'datetime',
-					endTime: 'datetime',
-					departureTime: 'time',
-					entryTime: 'time'
-				};
+				// const MAP = {
+				// 	startTime: 'datetime',
+				// 	endTime: 'datetime',
+				// 	departureTime: 'time',
+				// 	entryTime: 'time'
+				// };
 				Object.assign(this.dateHandle, {
 					type,
 					show: true,
-					mode: MAP[type]
+					mode: 'time'
 				});
 
 			},
@@ -440,11 +438,10 @@
 							x1: uni.$u.priceFormat((old.x - x - width) / scale.x, 1),
 							y2: uni.$u.priceFormat(0 - ((old.y - y) / scale.y), 1),
 							y1: uni.$u.priceFormat(0 - ((old.y - y - height) / scale.y), 1),
-							startTime: startTime && new Date(startTime).getTime(),
-							endTime: startTime && new Date(endTime).getTime(),
-							entryTime: entryTime && new Date('1970-1-1 ' + entryTime + ':00').getTime(),
-							departureTime: entryTime && new Date('1970-1-1 ' + departureTime + ':00')
-								.getTime(),
+							startTime: getHoursTime(startTime),
+							endTime: getHoursTime(endTime),
+							entryTime: getHoursTime(entryTime),
+							departureTime: getHoursTime(departureTime)
 						});
 					console.log(old.y, 'old.y');
 					delete obj.old;
@@ -452,7 +449,6 @@
 					delete obj.y;
 					delete obj.height;
 					delete obj.width;
-					console.log(obj, 'obj');
 					return PostRadarDevice(obj);
 				});
 
@@ -731,20 +727,21 @@
 
 					.ui-timing-active {
 						display: flex;
-						justify-content: right;
+						justify-content: space-evenly;
 						align-items: center;
 						font-size: 30rpx;
 						line-height: 50rpx;
 						height: 50rpx;
 						width: 250rpx;
 						border: 1rpx solid #e2e2e2;
+						color: #606266;
 						padding: 0 10rpx;
 						box-sizing: border-box;
 
 						text {
 							display: inline-block;
 							margin-right: 30rpx;
-							width: 160rpx;
+							// width: 160rpx;
 						}
 
 						&:nth-child(2) {

@@ -59,20 +59,23 @@
 				</view>
 			</u-popup>
 			<!-- /绑定房间 -->
+			<device-edit :editFrom="editSubmit" ref="editRef" @confirm="editConfirm"></device-edit>
 			<!-- 修改名称 -->
-			<u-popup :closeable="true" :round="10" :show="isEditShow" mode="center" @close="eidtClose">
+			<!-- <u-popup :closeable="true" :round="10" :show="isEditShow" mode="center" @close="eidtClose">
 				<view class="wd-add ui-change">
 					<u-text prefixIcon="edit-pen" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
 						size="30rpx" text="修改名称"></u-text>
 					<view class="ui-add-box">
-						<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="设备名称"></u-text>
-						<u-input placeholder="请输入设备名称" :maxlength="6" v-model="editFrom.deviceName" border="bottom"
-							clearable>
-						</u-input>
+						<view>
+							<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="设备名称"></u-text>
+							<u-input placeholder="请输入设备名称" :maxlength="6" v-model="editFrom.deviceName" border="bottom"
+								clearable>
+							</u-input>
+						</view>
 					</view>
 					<view class="wd-btn-gloup"><button @click="editSubmit">确定</button></view>
 				</view>
-			</u-popup>
+			</u-popup> -->
 			<!-- /修改名称 -->
 			<u-action-sheet :actions="addHandle.list" :closeOnClickOverlay="true" :safeAreaInsetBottom="true"
 				:closeOnClickAction="true" @close="addHandle.show = false" :show="addHandle.show" @select="sheetSelect"
@@ -100,18 +103,26 @@
 				isEditShow: false,
 				/**绑定房间**/
 				bindRoomShow: false,
-				value: 0,
 				roomList: [],
 				bindForm: {
 					familyId: '',
 					roomId: '',
-					deviceId: ''
+					deviceId: '',
+					roomLeft: 0,
+					roomHeight: 0,
+					roomRight: 0,
+					roomLength: 0
+
 				},
 				editFrom: {
 					deviceId: '',
 					deviceName: '',
 					deviceType: '',
-					deviceNo: ''
+					deviceNo: '',
+					roomLeft: 0,
+					roomHeight: 0,
+					roomRight: 0,
+					roomLength: 0
 				},
 				addHandle: {
 					show: false,
@@ -164,21 +175,36 @@
 			 * 编辑浮层打开
 			 */
 			edit(item) {
+				const {
+					name,
+					deviceId,
+					type,
+					no,
+					roomLeft,
+					roomHeight,
+					roomRight,
+					roomLength
+				} = item;
 				Object.assign(this.editFrom, {
-					deviceName: item.name,
-					deviceId: item.deviceId,
-					deviceType: item.type,
-					deviceNo: item.no
+					deviceName: name,
+					deviceId,
+					deviceType: type,
+					deviceNo: no,
+					roomLeft,
+					roomHeight,
+					roomRight,
+					roomLength
 				});
-				console.log(this.editFrom, 'this.editFrom');
-				this.isEditShow = true;
+				this.$refs.editRef.open();
+				// console.log(this.editFrom, 'this.editFrom');
+				// this.isEditShow = true;
 			},
 
 			/**
 			 * 修改设备
 			 */
-			editSubmit() {
-				if (this.editFrom.deviceName) {
+			editSubmit(editFrom) {
+				if (editFrom.deviceName) {
 					PosteditDevice({
 						...this.editFrom
 					}).then(res => {
