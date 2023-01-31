@@ -23,7 +23,7 @@ public class StateThread extends Thread {
         	state.setTimestamp(new Date());
         	state.setUpTime(System.currentTimeMillis());
         	state.setWifiRssi(-61);
-        	HttpClientUtil.sendPost("http://"+serverUrl+":"+serverPort+"/cloud/notify/state", state);
+        	HttpClientUtil.sendPost("http://"+serverUrl+":"+serverPort+"/cloud/notify/state", state, "");
         	i++;
             try {
                 Thread.sleep(60*1000);

@@ -33,7 +33,7 @@ public class FallThread extends Thread {
         	fall.setIsLearning(false);
         	fall.setIsSilent(false);
         	fall.setTimestampMillis(System.currentTimeMillis());
-        	HttpClientUtil.sendPost("http://"+serverUrl+":"+serverPort+"/cloud/notify/fall", fall);
+        	HttpClientUtil.sendPost("http://"+serverUrl+":"+serverPort+"/cloud/notify/fall", fall, "");
         	i++;
             try {
             	Thread.sleep(30*1000);
