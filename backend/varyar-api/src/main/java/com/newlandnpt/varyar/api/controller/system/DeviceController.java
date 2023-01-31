@@ -3,6 +3,8 @@ package com.newlandnpt.varyar.api.controller.system;
 import com.alibaba.fastjson2.JSON;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.common.core.domain.entity.DeviceLocation;
+import com.newlandnpt.varyar.common.core.domain.entity.DeviceRoomParameter;
 import com.newlandnpt.varyar.common.core.domain.model.DevicePhoneRequest;
 import com.newlandnpt.varyar.common.core.domain.model.DeviceRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
@@ -10,12 +12,9 @@ import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.domain.TDevice;
-import com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter;
 import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
 import com.newlandnpt.varyar.system.service.IDeviceService;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +44,12 @@ public class DeviceController extends BaseController {
         map.put("memberId",this.getLoginUser().getMemberId());
         map.put("familyId",deviceRequest.getFamilyId());
         map.put("roomId",deviceRequest.getRoomId());
-        List<TDevice> list = iDeviceService.selectDeviceByMemberId(map);
+        List<TDevice> list = new ArrayList<TDevice>();
+        try {
+            list = iDeviceService.selectDeviceByMemberId(map);
+        } catch (Exception e){
+            throw new ServiceException("查询我的设备失败！");
+        }
         return getDataTable(list);
     }
     /**
@@ -58,8 +62,15 @@ public class DeviceController extends BaseController {
         map.put("memberId",this.getLoginUser().getMemberId());
         map.put("familyId",deviceRequest.getFamilyId());
         map.put("roomId",deviceRequest.getRoomId());
-        List<TDevice> list = iDeviceService.selectDeviceByMemberId(map);
-        list = iDeviceService.loadingDeviceStauts(list);
+        List<TDevice> list = new ArrayList<TDevice>();
+        try {
+            list = iDeviceService.selectDeviceByMemberId(map);
+            if(list.size()>0){
+                list = iDeviceService.loadingDeviceStauts(list);
+            }
+        } catch (Exception e){
+            throw new ServiceException("查询我的设备失败！");
+        }
         return getDataTable(list);
     }
     /**
@@ -70,6 +81,13 @@ public class DeviceController extends BaseController {
             @RequestBody @Validated DeviceRequest deviceRequest){
         AjaxResult ajax = AjaxResult.success();
         ajax  = checkInfo(deviceRequest,ajax);
+        TDevice cond = new TDevice();
+        cond.setNo(deviceRequest.getDeviceNo());
+        cond.setDelFlag("0");
+        List<TDevice> devices = iDeviceService.selectDeviceList(cond);
+        if (devices.size()>0){
+            return error("此设备已存在！");
+        }
         if(ajax!= null){
            return ajax;
         }
@@ -125,6 +143,32 @@ public class DeviceController extends BaseController {
         }
         return ajax;
     }
+
+    /**
+     * 删除设备
+     * */
+    @PostMapping("/remDevice")
+    public AjaxResult removeDevice(
+            @RequestBody @Validated DeviceRequest deviceRequest){
+        AjaxResult ajax = AjaxResult.success();
+        if (deviceRequest.getDeviceId().equals("")|| deviceRequest.getDeviceId()==null){
+            return  error("设备id不能为空！");
+        }
+        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
+        if (device==null){
+            return  error("无法查找到设备信息！");
+        }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限删除！");
+        }
+        try {
+            iDeviceService.deleteDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
+        } catch (Exception e){
+            return  error("修改我的设备失败！");
+        }
+        return ajax;
+    }
+
     private AjaxResult checkInfo(DeviceRequest deviceRequest,AjaxResult ajax){
         if (deviceRequest.getDeviceName().equals("")|| deviceRequest.getDeviceName()==null){
             ajax = AjaxResult.error("设备名称不能为空！");
@@ -141,6 +185,46 @@ public class DeviceController extends BaseController {
         return null;
     }
 
+    private AjaxResult checkDeviceLocation(DeviceRequest deviceRequest){
+        if (deviceRequest.getRoomLeft()==null||deviceRequest.getRoomLeft().equals("")){
+            return error("左边长度不能为空！");
+        }
+        if (deviceRequest.getRoomRight()==null||deviceRequest.getRoomRight().equals("")){
+            return error("右边长度不能为空！");
+        }
+        if (deviceRequest.getRoomLength()==null||deviceRequest.getRoomLength().equals("")){
+            return error("长度信息不能为空！");
+        }
+        if (deviceRequest.getRoomLength()==null||deviceRequest.getRoomLength().equals("")){
+            return error("高度信息不能为空！");
+        }
+        if (deviceRequest.getInMonitorFlag()==null||deviceRequest.getInMonitorFlag().equals("")){
+            return error("进入标识不能为空！");
+        }
+        if (deviceRequest.getOutMonitorFlag()==null||deviceRequest.getOutMonitorFlag().equals("")){
+            return error("离开标识不能为空！");
+        }
+        if (deviceRequest.getEntryTime()==null||deviceRequest.getEntryTime().equals("")){
+            return error("进入时间不能为空！");
+        }
+        if (deviceRequest.getDepartureTime()==null ||deviceRequest.getDepartureTime().equals("")){
+            return error("离开时间不能为空！");
+        }
+        if ( deviceRequest.getExistFlag()==null||deviceRequest.getExistFlag().equals("")){
+            return error("区域类型不能为空！");
+        }
+        if ( deviceRequest.getFallFlag()==null||deviceRequest.getFallFlag().equals("")){
+            return error("迭代监测不能为空！");
+        }
+        if (deviceRequest.getStartTime()==null){
+            return error("开始时间不能为空！");
+        }
+        if (deviceRequest.getEndTime()==null){
+            return error("结束时间不能为空！");
+        }
+        return null;
+    }
+
     /**
      * 绑定\解绑设备
      * */
@@ -153,12 +237,40 @@ public class DeviceController extends BaseController {
         if (deviceRequest.getFamilyId()==null){
             return error("家庭id不能为空！");
         }
-        if (deviceRequest.getRoomId()==null){
-            return error("房间id不能为空！");
-        }
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
         if (device==null){
             return error("无法查找到设备信息！");
+        }
+        if (device.getType().equals("0")){
+            if (deviceRequest.getRoomId()==null){
+                return error("房间id不能为空！");
+            }
+            //雷达波 判断设备位置信息
+            AjaxResult item = checkDeviceLocation(deviceRequest);
+            if (item!=null){
+                return item;
+            }
+            TDevice.RadarWaveDeviceSettings radarwave = (TDevice.RadarWaveDeviceSettings)device.getParameter();
+            if (radarwave == null){
+                radarwave = new TDevice.RadarWaveDeviceSettings();
+            }
+            DeviceLocation location = new DeviceLocation();
+            location.setRoomHeight(deviceRequest.getRoomHeight());
+            location.setRoomLength(deviceRequest.getRoomLength());
+            location.setRoomLeft(deviceRequest.getRoomLeft());
+            location.setRoomRight(deviceRequest.getRoomRight());
+            DeviceRoomParameter dr = new DeviceRoomParameter();
+            radarwave.setDeviceLocation(location);
+            dr.setInMonitorFlag(deviceRequest.getInMonitorFlag());
+            dr.setOutMonitorFlag(deviceRequest.getOutMonitorFlag());
+            dr.setExistFlag(deviceRequest.getExistFlag());
+            dr.setFallFlag(deviceRequest.getFallFlag());
+            dr.setEntryTime(deviceRequest.getEntryTime());
+            dr.setDepartureTime(deviceRequest.getDepartureTime());
+            dr.setStartTime(deviceRequest.getStartTime());
+            dr.setEndTime(deviceRequest.getEndTime());
+            radarwave.setDeviceRoomParameter(dr);
+            device.setParameter(radarwave);
         }
         if (!deviceRequest.getFamilyId().equals("")){
             device.setFamilyId(Long.valueOf(deviceRequest.getFamilyId()));

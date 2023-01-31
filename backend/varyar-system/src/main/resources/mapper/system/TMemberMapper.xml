@@ -130,6 +130,8 @@
             <if test="userId != null or distributeFlag != null ">user_id = #{userId},</if>
             <if test="userName != null or distributeFlag != null  ">user_name = #{userName},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="registrationId != null">registration_id = #{registrationId},</if>
+            <if test="registrationType != null">registration_type = #{registrationType},</if>
             update_time = sysdate()
         </trim>
         where member_id = #{memberId}

@@ -79,7 +79,7 @@ export const goNavigatePage = url => {
  * 是否为苹果客户端
  * @returns {boolean}
  */
-export const isIos = () => uni.getSystemInfoSync().os.osName === ios;
+export const isIos = () => uni.getSystemInfoSync().platform === 'ios';
 
 /**
  * 是否是APP环境

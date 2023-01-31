@@ -45,6 +45,9 @@
 	import {
 		mapState
 	} from 'vuex';
+	import {
+		push
+	} from '@/common/sdk/push.js';
 	export default {
 		data() {
 			return {
@@ -70,7 +73,8 @@
 				// iconPath: '../../../static/location.png'
 				// }],
 				sliderValue: 200,
-				mapSearch: null
+				mapSearch: null,
+				registrationId: '',
 			}
 		},
 		created() {
@@ -80,6 +84,7 @@
 			}
 			console.log(this.mapSearch, 'this.mapSearch');
 			this.handleGetLocation()
+			this.getRegistrationID()
 		},
 		computed: {
 			...mapState({
@@ -100,6 +105,7 @@
 					longitude,
 					latitude,
 					sliderValue,
+					registrationId,
 				} = this
 				if (sliderValue === 0) {
 					return uni.$u.toast('半径长度大于0')
@@ -109,7 +115,8 @@
 					address,
 					longitude,
 					latitude,
-					radius: sliderValue + ''
+					radius: sliderValue + '',
+					registrationId,
 				}).then(res => {
 					uni.navigateBack()
 					uni.$u.toast(res.msg)
@@ -180,7 +187,15 @@
 					this.circles[0].radius = e
 					this.circles = [...this.circles]
 				}
-			}
+			},
+			/**
+			 * 获取登录设备注册号
+			 */
+			getRegistrationID() {
+				push.getRegistrationID().then(res => {
+					this.registrationId = res
+				});
+			},
 		},
 		onShow() {
 			uni.$on('searchData', data => {
