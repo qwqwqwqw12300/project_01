@@ -226,7 +226,7 @@ public class DeviceController extends BaseController {
     }
 
     /**
-     * 绑定\解绑设备
+     * 绑定设备
      * */
     @PostMapping("/setDevice")
     public AjaxResult setDevice(
@@ -241,6 +241,10 @@ public class DeviceController extends BaseController {
         if (device==null){
             return error("无法查找到设备信息！");
         }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限操作！");
+        }
+        device.setName(deviceRequest.getDeviceName());
         if (device.getType().equals("0")){
             if (deviceRequest.getRoomId()==null){
                 return error("房间id不能为空！");
@@ -283,9 +287,40 @@ public class DeviceController extends BaseController {
             device.setRoomId(Long.valueOf("0"));
         }
         try {
-            iDeviceService.updateDevice(device);
+            int i = iDeviceService.updateDevice(device);
+            if (i==0){
+                return error("绑定我的设备失败！");
+            }
         } catch (Exception e){
-           return error("绑定或解绑我的设备失败！");
+           return error("绑定我的设备失败！");
+        }
+        return success();
+    }
+    /**
+     * 解绑设备
+     * */
+    @PostMapping("/relDevice")
+    public AjaxResult relieveDevice(
+            @RequestBody @Validated DeviceRequest deviceRequest) {
+        if (deviceRequest.getDeviceId().equals("")|| deviceRequest.getDeviceId()==null){
+            return error("设备id不能为空！");
+        }
+        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
+        if (device==null){
+            return error("无法查找到设备信息！");
+        }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限操作！");
+        }
+        device.setFamilyId(Long.valueOf("0"));
+        device.setRoomId(Long.valueOf("0"));
+        try {
+            int i = iDeviceService.updateDevice(device);
+            if (i==0){
+                return error("解绑我的设备失败！");
+            }
+        } catch (Exception e){
+            return error("解绑我的设备失败！");
         }
         return success();
     }
@@ -306,6 +341,9 @@ public class DeviceController extends BaseController {
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(devicePhoneRequest.getDeviceId()));
         if (device == null){
             return error("设备信息不存在！");
+        }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限操作！");
         }
         if(!device.getType().equals("1")){
             return error("该设备不是监控设备！");

@@ -180,10 +180,13 @@ public class DeviceServiceImpl implements IDeviceService {
 
     @Override
     public int active(Long deviceId) {
-        TDevice device = new TDevice();
+        TDevice device = selectDeviceByDeviceId(deviceId);
         device.setDeviceId(deviceId);
         device.setStatus(STATUS_ACTIVATED);
-        return this.updateDevice(device);
+        device.setUpdateTime(DateUtils.getNowDate());
+        int effect= this.updateDevice(device);
+        resetDeviceCache(device);
+        return effect;
     }
 
     @Override
