@@ -104,6 +104,18 @@ public class SysUserController extends BaseController
         userService.checkUserDataScope(userId);
         AjaxResult ajax = AjaxResult.success();
         List<SysRole> roles = roleService.selectRoleAll();
+
+        List<SysRole> loginUserRoles = roleService.selectRolesByUserId(SecurityUtils.getUserId());
+        boolean isAdmin = loginUserRoles.stream().anyMatch(p->p.isAdmin()||"admin".equals(p.getRoleKey()));
+        boolean isOrgAdmin = loginUserRoles.stream().anyMatch(p->"orgadmin".equals(p.getRoleKey()));
+        boolean isMemberAdmin = loginUserRoles.stream().anyMatch(p->"memberadmin".equals(p.getRoleKey()));
+        if (!isAdmin && !isOrgAdmin) {
+            roles = roles.stream().filter(p -> !"orgadmin".equals(p.getRoleKey())).collect(Collectors.toList());
+        }
+        if (!isAdmin && !isMemberAdmin) {
+            roles = roles.stream().filter(p -> !"memberadmin".equals(p.getRoleKey())).collect(Collectors.toList());
+        }
+
         ajax.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
         ajax.put("posts", postService.selectPostAll());
         if (StringUtils.isNotNull(userId))

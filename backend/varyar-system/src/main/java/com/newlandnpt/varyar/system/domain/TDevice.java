@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson2.JSON;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceLocation;
@@ -55,6 +56,7 @@ public class TDevice extends BaseEntity
     /** 设备参数信息 */
     private DeviceParameter parameter;
     /** 激活时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date registerTime;
 
     /** 设备位置 */
