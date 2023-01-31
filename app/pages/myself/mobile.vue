@@ -76,6 +76,7 @@
 			 * 提交
 			 */
 			handleSubmit() {
+				console.log(this.form, '99')
 				PostUpdatePhone({
 					...this.form
 				}).then(res => {
@@ -107,14 +108,15 @@
 			/**
 			 * 原手机短信认证通过
 			 */
-			oldCheckedBySms(uuid) {
-				this.form.uuid = uuid
+			oldCheckedBySms(smsInfo) {
+				this.form.oldCode = smsInfo.code
+
 			},
 			/**
 			 * 新手机短信认证通过
 			 */
-			newCheckedBySms(uuid) {
-				this.form.newCode = uuid
+			newCheckedBySms(smsInfo) {
+				this.form.newCode = smsInfo.code
 			},
 			/**
 			 * 旧手机获取短信请求参数
