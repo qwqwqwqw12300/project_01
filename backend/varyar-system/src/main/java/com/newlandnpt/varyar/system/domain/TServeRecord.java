@@ -37,7 +37,7 @@ public class TServeRecord extends BaseEntity
 
     /** 服务人员信息 */
     @Excels({
-            @Excel(name = "服务人员", targetAttr = "nickName", type = Excel.Type.EXPORT,sort = 2),
+            @Excel(name = "服务人员", targetAttr = "name", type = Excel.Type.EXPORT,sort = 2),
             @Excel(name = "服务人员手机号码", targetAttr = "mobilePhone", type = Excel.Type.EXPORT,sort = 3),
             @Excel(name = "处理人归属机构", targetAttr = "orgName", type = Excel.Type.EXPORT,sort = 4)
     })
