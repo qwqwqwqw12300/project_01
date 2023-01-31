@@ -90,7 +90,7 @@ public class DeviceController extends BaseController
     @PreAuthorize("@ss.hasPermi('device:settings')")
     @Log(title = "设备参数", businessType = BusinessType.UPDATE)
     @PutMapping("/{deviceId}/settings")
-    public AjaxResult setSettings(@PathVariable("deviceId") Long deviceId,@RequestBody TDevice.DeviceSettings deviceSettings)
+    public AjaxResult setSettings(@PathVariable("deviceId") Long deviceId,@RequestBody TDevice.DeviceParameter deviceSettings)
     {
         return toAjax(tDeviceService.setSettings(deviceId,deviceSettings));
     }

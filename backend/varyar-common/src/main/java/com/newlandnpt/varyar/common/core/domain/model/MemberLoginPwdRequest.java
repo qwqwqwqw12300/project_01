@@ -37,6 +37,35 @@ public class MemberLoginPwdRequest {
     @Size(min = 0, max = 32, message = "唯一标识不能超过32个字符")
     private String uuid;
 
+    /**
+     * 登录设备注册类型（0:android 1:ios）
+     */
+    @NotBlank(message = "登录设备注册类型不能为空")
+    @Size(min = 0, max = 1, message = "登录设备注册类型不能超过1个字符")
+    private String registrationType;
+    /**
+     * 会员登录设备注册号
+     */
+    @NotBlank(message = "会员登录设备注册号不能为空")
+    @Size(min = 0, max = 100, message = "会员登录设备注册号不能超过100个字符")
+    private String registrationId;
+
+    public String getRegistrationType() {
+        return registrationType;
+    }
+
+    public void setRegistrationType(String registrationType) {
+        this.registrationType = registrationType;
+    }
+
+    public String getRegistrationId() {
+        return registrationId;
+    }
+
+    public void setRegistrationId(String registrationId) {
+        this.registrationId = registrationId;
+    }
+
     public String getPhone() {
         return phone;
     }

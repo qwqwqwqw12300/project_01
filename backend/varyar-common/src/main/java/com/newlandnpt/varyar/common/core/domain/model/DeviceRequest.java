@@ -1,6 +1,9 @@
 package com.newlandnpt.varyar.common.core.domain.model;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
+import java.util.Date;
 
 public class DeviceRequest {
     /**
@@ -42,7 +45,149 @@ public class DeviceRequest {
     @Size(min = 0, max = 100, message = "位置信息不能超过100个字符")
     private String location;
 
+    /** 长度 */
+    private BigDecimal roomLength;
 
+    /** 左侧 */
+    private BigDecimal roomLeft;
+
+    /** 右侧 */
+    private BigDecimal roomRight;
+
+    /** 高度 */
+    private BigDecimal roomHeight;
+    /**
+     *进入时间   data HH:mm:ss
+     * */
+    private Long entryTime;
+    /**
+     *离开时间 data HH:mm:ss
+     * */
+    private Long departureTime;
+    /**
+     *开始时间 data HH:mm:ss
+     * */
+    private Date startTime;
+    /**
+     *结束时间 data HH:mm:ss
+     * */
+    private Date endTime;
+    /**
+     *进入标识 （0是 1否）
+     * */
+    @Size(min = 0, max = 1, message = "进入标识不能超过1个字符")
+    private String inMonitorFlag;
+    /**
+     *离开标识 （0是 1否）
+     * */
+    @Size(min = 0, max = 1, message = "区域类型不能超过1个字符")
+    private String outMonitorFlag;
+    /**
+     *  区域类型  0：监控区域    1：私人区域
+     * */
+    @Size(min = 0, max = 1, message = "区域类型不能超过1个字符")
+    private String existFlag;
+    /**
+     *  迭代监测标志  0：是    1：否
+     * */
+    @Size(min = 0, max = 1, message = "迭代监测标志不能超过1个字符")
+    private String fallFlag;
+
+    public Long getEntryTime() {
+        return entryTime;
+    }
+
+    public void setEntryTime(Long entryTime) {
+        this.entryTime = entryTime;
+    }
+
+    public Long getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(Long departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getInMonitorFlag() {
+        return inMonitorFlag;
+    }
+
+    public void setInMonitorFlag(String inMonitorFlag) {
+        this.inMonitorFlag = inMonitorFlag;
+    }
+
+    public String getOutMonitorFlag() {
+        return outMonitorFlag;
+    }
+
+    public void setOutMonitorFlag(String outMonitorFlag) {
+        this.outMonitorFlag = outMonitorFlag;
+    }
+
+    public String getExistFlag() {
+        return existFlag;
+    }
+
+    public void setExistFlag(String existFlag) {
+        this.existFlag = existFlag;
+    }
+
+    public String getFallFlag() {
+        return fallFlag;
+    }
+
+    public void setFallFlag(String fallFlag) {
+        this.fallFlag = fallFlag;
+    }
+
+    public BigDecimal getRoomLength() {
+        return roomLength;
+    }
+
+    public void setRoomLength(BigDecimal roomLength) {
+        this.roomLength = roomLength;
+    }
+
+    public BigDecimal getRoomLeft() {
+        return roomLeft;
+    }
+
+    public void setRoomLeft(BigDecimal roomLeft) {
+        this.roomLeft = roomLeft;
+    }
+
+    public BigDecimal getRoomRight() {
+        return roomRight;
+    }
+
+    public void setRoomRight(BigDecimal roomRight) {
+        this.roomRight = roomRight;
+    }
+
+    public BigDecimal getRoomHeight() {
+        return roomHeight;
+    }
+
+    public void setRoomHeight(BigDecimal roomHeight) {
+        this.roomHeight = roomHeight;
+    }
 
     public String getFamilyId() {
         return familyId;

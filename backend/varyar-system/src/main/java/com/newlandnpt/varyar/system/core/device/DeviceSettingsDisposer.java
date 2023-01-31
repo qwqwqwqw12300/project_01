@@ -13,9 +13,9 @@ import java.util.Map;
  * @author lin.ju
  * @date 2023/1/30
  */
-public abstract class DeviceSettingsDisposer<T extends TDevice.DeviceSettings> {
+public abstract class DeviceSettingsDisposer<T extends TDevice.DeviceParameter> {
 
-    private static Map<Class<? extends TDevice.DeviceSettings>,DeviceSettingsDisposer> map =
+    private static Map<Class<? extends TDevice.DeviceParameter>,DeviceSettingsDisposer> map =
             new HashMap<>();
 
     /**
@@ -33,7 +33,7 @@ public abstract class DeviceSettingsDisposer<T extends TDevice.DeviceSettings> {
      * 下发设备设置
      * @param settings
      */
-    public static void dispose(String deviceNo,TDevice.DeviceSettings settings){
+    public static void dispose(String deviceNo, TDevice.DeviceParameter settings){
         if(map.containsKey(settings.getClass())){
             map.get(settings.getClass()).insideDispose(deviceNo,settings);
         }else {
