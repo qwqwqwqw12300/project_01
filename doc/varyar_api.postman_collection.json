@@ -53,7 +53,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phone\":\"13900001111\",\r\n    \"uuid\": \"ad639bc840c145aa8b17573166e0bb35\",\r\n    \"captcha\":\"287b\"\r\n}",
+							"raw": "{\r\n    \"phone\":\"13900001111\",\r\n    \"uuid\": \"de72964f10c54247a1526bf6e72c3bee\",\r\n    \"captcha\":\"gma7\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -112,7 +112,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{  \"phone\":\"13300001111\",\r\n    \"password\":\"OvIzjg3WdI/bDFTnETejm2M5s2/OSEQKaZW0NLZbRiiR2Fsze2AxHGyWdQ/WcO23y8R1b9kMsz5wwcspff7w+txkZeFy6uRDNi5C0N4HLQtnU72q8dm3fPNSKRIFnrElTEEW08kolt8AfOgMr3VkGZQVafBuIEkzHvLRqPHBv/I=\", \r\n    \"uuid\":\"341f1fa09240474bb584efb7d12ec68a\",\r\n    \"code\":\"4cp3\"\r\n}",
+							"raw": "{  \"phone\":\"13300001111\",\r\n    \"password\":\"IyQ8zh6FSRRVqt/VW7F5aaU8+TF1q1DHdIWshta9iWeKsfbfUq1K1NhCTarsBoskpgQLzGwo/EFZoM5KmfEXITM2a4QhmpWJ8AaotKW2a9ZAMFFwjgZnv/AzMh+Hhb7rMAouI7MKmEfZvJ/+eWC0xjTxC0KNo0nAx+4NeOEMaZg=\", \r\n    \"uuid\":\"15ce38c959d843fc8e5a0d833cd5ec0f\",\r\n    \"code\":\"gw78\",\r\n    \"registrationId\":\"sssssssswer234324\",\r\n    \"registrationType\":\"0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -140,7 +140,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phone\":\"13900001111\",\r\n    \"code\":\"1234\",\r\n    \"uuid\":\"3397885bd9724d17a6d634b4f77b06f9\"\r\n\r\n}",
+							"raw": "{\r\n    \"phone\":\"13900001111\",\r\n    \"code\":\"1234\",\r\n    \"uuid\":\"3397885bd9724d17a6d634b4f77b06f9\",\r\n    \"registrationId\":\"sssssssswer234324\",\r\n    \"registrationType\":\"0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -168,7 +168,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phone\":\"13900001111\",\r\n    \"password\":\"OvIzjg3WdI/bDFTnETejm2M5s2/OSEQKaZW0NLZbRiiR2Fsze2AxHGyWdQ/WcO23y8R1b9kMsz5wwcspff7w+txkZeFy6uRDNi5C0N4HLQtnU72q8dm3fPNSKRIFnrElTEEW08kolt8AfOgMr3VkGZQVafBuIEkzHvLRqPHBv/I=\",\r\n    \"code\":\"1234\",\r\n    \"smsUuid\":\"d4f7cdba6aea4c7aaf10f6fcabd800f9\"\r\n}",
+							"raw": "{\r\n    \"phone\":\"13300001111\",\r\n    \"password\":\"OvIzjg3WdI/bDFTnETejm2M5s2/OSEQKaZW0NLZbRiiR2Fsze2AxHGyWdQ/WcO23y8R1b9kMsz5wwcspff7w+txkZeFy6uRDNi5C0N4HLQtnU72q8dm3fPNSKRIFnrElTEEW08kolt8AfOgMr3VkGZQVafBuIEkzHvLRqPHBv/I=\",\r\n    \"code\":\"1234\",\r\n    \"smsUuid\":\"013557e2876147e4b43d81e159f36ae0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -176,14 +176,15 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/api/regMember",
+							"raw": "localhost:8081/api/fence/addFence",
 							"host": [
 								"localhost"
 							],
 							"port": "8081",
 							"path": [
 								"api",
-								"regMember"
+								"fence",
+								"addFence"
 							]
 						}
 					},
@@ -250,7 +251,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"familyId\":\"102\",\r\n    \"roomName\":\"房间-01\",\r\n    \"roomLength\":\"11\",\r\n    \"roomLeft\":\"21\",\r\n    \"roomRight\":\"21.2\",\r\n    \"roomHeight\":\"15\"\r\n}",
+							"raw": "{\r\n    \"familyId\":\"105\",\r\n    \"roomName\":\"房间-01-001\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -339,7 +340,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjZlYTMxMDA4LWVhZTAtNDJmMy1iZjhiLWI5ZGE3OWRlZGMzMyJ9.sFQIubGrr66RlIXUySYH-G4yCcjyjHPgjhhmh0YKvyktLNFDcdIEasAsLZyB5XiH345gD_4ifX5gKQJ4Qypbbw",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImI1Yjc0OTBlLTI5N2ItNDI2YS1hMDU3LTZjMDczMmU3YWUxNCJ9.qk_YIxwJi_gbJfypb-gdyrV29Fiuuy0BvEKF_gxWdL8vovdgizgJqssuueijnScnN5Ls52b122Lp-Cj05TjDVg",
 						"type": "string"
 					}
 				]
@@ -582,6 +583,36 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjMyMTZjNzJhLTk3ZDEtNDgxNi04MDliLWQ5OGJmMjVjZDI4NyJ9.2_cSw12z-Aiz8mtLeR1ch-KMTT1r6-9tGf_GRRBbsHwHjO77SeL-SVkQV9B9C_hcI-djS-Kin0sUKRc70LmbyQ",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -826,21 +857,11 @@
 				{
 					"name": "创建设备",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImE0YTNmN2EzLTVhZmItNGU0Zi1hYjgyLWJhZjc0MDg0MWM1OSJ9.mCZej8JYWAvOUmO_oKHb1hFpnOzyPX7PM4UQZzu3C-RII_8x0FWGpsirDBb-nDVNAb5ABP-bwhyr9mZ-J4jNhg",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"deviceName\":\"雷达波03\",\r\n    \"deviceNo\":\"ssss1\",\r\n    \"deviceType\":\"\",\r\n    \"location\":\"\"\r\n}",
+							"raw": "{\r\n    \"deviceName\":\"ssss手表1101\",\r\n    \"deviceNo\":\"sswwssddd1\",\r\n    \"deviceType\":\"1\",\r\n    \"location\":\"xxy\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -865,21 +886,11 @@
 				{
 					"name": "修改设备",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjA0ZmRjNTIyLTViMzAtNDliOC1iODRjLTkwMzQzZWM0NTI4YSJ9.-xCo-pcE40S4J_jkTvorah2lezweyS1xFcC9lTxuP17FWE4dHjA6Wz9HUcol-U346FDeOF6dlLWU01-SUHpsdQ",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"deviceId\":\"102\",\r\n    \"deviceName\":\"雷达1_1\"\r\n}",
+							"raw": "{\r\n    \"deviceId\":\"117\",\r\n    \"deviceName\":\"雷达波01_1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -902,13 +913,13 @@
 					"response": []
 				},
 				{
-					"name": "绑定\\解绑设备",
+					"name": "删除设备",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"deviceId\":\"108\",\r\n    \"familyId\":\"102\",\r\n    \"roomId\":\"101\"\r\n}",
+							"raw": "{\r\n    \"deviceId\":\"104\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -916,14 +927,40 @@
 							}
 						},
 						"url": {
-							"raw": "192.168.132.204:8060/api/device/setDevice",
+							"raw": "localhost:8081/api/device/remDevice",
 							"host": [
-								"192",
-								"168",
-								"132",
-								"204"
+								"localhost"
 							],
-							"port": "8060",
+							"port": "8081",
+							"path": [
+								"api",
+								"device",
+								"remDevice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "绑定\\解绑设备",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"deviceId\":\"117\",\r\n    \"familyId\":\"105\",\r\n    \"roomId\":\"105\",\r\n    \"existFlag\":\"1\",\r\n    \"fallFlag\":\"0\",\r\n    \"entryTime\":\"23\",\r\n    \"departureTime\": \"223\",\r\n    \"startTime\":\"232233\",\r\n    \"endTime\":\"1222323\",\r\n    \"inMonitorFlag\":\"0\",\r\n    \"outMonitorFlag\": \"0\",\r\n    \"roomLength\":\"11\",\r\n    \"roomLeft\":\"21\",\r\n    \"roomRight\":\"21.2\",\r\n    \"roomHeight\":\"15\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/device/setDevice",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
 							"path": [
 								"api",
 								"device",
@@ -940,7 +977,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"roomZoneId\":\"\",\r\n    \"deviceId\":\"102\",\r\n    \"roomId\":\"106\",\r\n    \"zoneName\":\"xxxds\",\r\n    \"zoneType\":\"1\",\r\n    \"fallFlag\":\"0\",\r\n    \"x1\":\"324\",\r\n    \"x2\":\"132\",\r\n    \"y1\":\"243\",\r\n    \"y2\":\"132\",\r\n    \"z1\":\"2333\",\r\n    \"z2\":\"1323\",\r\n    \"entryTime\":\"\",\r\n    \"departureTime\": \"\",\r\n    \"startTime\":\"2333\",\r\n    \"endTime\":\"1323\",\r\n    \"inFlag\":\"0\",\r\n    \"outFlag\": \"0\"\r\n}",
+							"raw": "{\r\n    \"roomZoneId\":\"\",\r\n    \"deviceId\":\"102\",\r\n    \"roomId\":\"106\",\r\n    \"zoneName\":\"xxxds\",\r\n    \"existFlag\":\"1\",\r\n    \"fallFlag\":\"0\",\r\n    \"x1\":\"324\",\r\n    \"x2\":\"132\",\r\n    \"y1\":\"243\",\r\n    \"y2\":\"132\",\r\n    \"z1\":\"2333\",\r\n    \"z2\":\"1323\",\r\n    \"entryTime\":\"\",\r\n    \"departureTime\": \"\",\r\n    \"startTime\":\"2333\",\r\n    \"endTime\":\"1323\",\r\n    \"inMonitorFlag\":\"0\",\r\n    \"outMonitorFlag\": \"0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1254,7 +1291,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjNhZjhkZDczLWU2MWQtNGZhMC1hNDY5LTk3NzVhYzk1MWViNyJ9.SFdlT4VwfrVNyVMYqxWh0LpA3QMiW-pp2jHXRSe9kAc_8d_iO5LkhGMqiQRd1yAWvAYhZ2EXTenZ90n8YG6TGg",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjMyMTZjNzJhLTk3ZDEtNDgxNi04MDliLWQ5OGJmMjVjZDI4NyJ9.2_cSw12z-Aiz8mtLeR1ch-KMTT1r6-9tGf_GRRBbsHwHjO77SeL-SVkQV9B9C_hcI-djS-Kin0sUKRc70LmbyQ",
 						"type": "string"
 					}
 				]
@@ -1718,7 +1755,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phone\":\"13300001111\",\r\n    \"code\":\"1234\",\r\n    \"password\":\"IyQ8zh6FSRRVqt/VW7F5aaU8+TF1q1DHdIWshta9iWeKsfbfUq1K1NhCTarsBoskpgQLzGwo/EFZoM5KmfEXITM2a4QhmpWJ8AaotKW2a9ZAMFFwjgZnv/AzMh+Hhb7rMAouI7MKmEfZvJ/+eWC0xjTxC0KNo0nAx+4NeOEMaZg=\",\r\n    \"uuid\":\"64d3d506842a453a84eebb953af9448e\"\r\n\r\n}",
+							"raw": "{\r\n    \"phone\":\"13300001111\",\r\n    \"code\":\"1234\",\r\n    \"password\":\"IyQ8zh6FSRRVqt/VW7F5aaU8+TF1q1DHdIWshta9iWeKsfbfUq1K1NhCTarsBoskpgQLzGwo/EFZoM5KmfEXITM2a4QhmpWJ8AaotKW2a9ZAMFFwjgZnv/AzMh+Hhb7rMAouI7MKmEfZvJ/+eWC0xjTxC0KNo0nAx+4NeOEMaZg=\",\r\n    \"uuid\":\"d71a8a91946f47c7a7455e899b38e016\"\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2086,21 +2123,11 @@
 				{
 					"name": "设置电子围栏",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjQ3ZjBjMjRjLTljN2ItNDRkYS1hZTFhLWQyYjRlMmRmMzY4ZiJ9.o9aqCj5yEfop52z00odQ2uGC9lHbedNas_92-mFUBNens94bbjaPhSGn9pMSVj3xmIxW9EYnLqN5CI-s_84OTQ",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \r\n    \"deviceId\":\"112\",\r\n    \"address\":\"福州22市\",\r\n    \"longitude\":\"134.3323312\",\r\n    \"latitude\":\"111.2343432\",\r\n    \"radius\":\"200\"\r\n}",
+							"raw": "{\r\n    \"deviceId\":\"120\",\r\n    \"deviceNo\":\"sswwssddd2\",\r\n    \"address\":\"马尾区儒江西路新大陆园区\",\r\n    \"longitude\":\"119.42178\",\r\n    \"latitude\":\"26.01571\",\r\n    \"radius\":\"201\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2124,22 +2151,15 @@
 				},
 				{
 					"name": "获取电子围栏信息",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjYzYzg0ZTg4LTU1ZDMtNGVjYS1iNjFmLTdjYTcyZTc2ZWYyMSJ9.v1lAp7AF4qd6rMkI8eJ2MLHFKashBL0twI-tNiUa_-BAQnn2-l8svOeWdaJVFdwm_wX5tjXmOXsrAT04dmZLUQ",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"deviceFenceId\":\"109\"\r\n}",
+							"raw": "{\r\n    \"deviceId\":\"104\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2147,7 +2167,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/api/fence//getDeFeInfo",
+							"raw": "localhost:8081/api/fence/getDeFeInfo",
 							"host": [
 								"localhost"
 							],
@@ -2155,7 +2175,6 @@
 							"path": [
 								"api",
 								"fence",
-								"",
 								"getDeFeInfo"
 							]
 						}
@@ -2169,6 +2188,36 @@
 						"header": []
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjQyYjVhN2ZlLWYxNTYtNDk1My1hMTFlLTZkMjc4ZjBkYTQyOSJ9.mI_h57rNqwVoE7gMMiuOBM82h5xdT8-tL8nZ_RBfPtpky_SzP5Ec6Tu00Eq6dwtnK981Ini5fUARuAhz_ixrtA",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
