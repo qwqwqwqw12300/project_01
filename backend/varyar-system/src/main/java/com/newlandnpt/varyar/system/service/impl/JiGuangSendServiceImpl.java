@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * 版本Service业务层处理
- * 
+ *
  * @author chenxw
  * @date 2022-12-24
  */
@@ -72,7 +72,7 @@ public class JiGuangSendServiceImpl implements IJiGuangSendService
                 msg.setSendTime(DateUtils.getNowDate());
                 //发送更新
                 msg.setSendStatus("1");
-                msgService.updateTMsg(msg);
+                msgService.updateTMsgSendStatus(msg);
 
 
             } catch (Exception e) {
@@ -80,7 +80,12 @@ public class JiGuangSendServiceImpl implements IJiGuangSendService
                 String msgResult = "<br/>" + failureNum + "推送消息编号" + msg.getNo() + "失败";
                 failureMsg.append(msg + e.getMessage());
                 //失败原因
-                String reason ="连接失败";
+                String reason =e.getMessage();
+                msg.setSendStatus("0");
+                msg.setSendTime(null);
+                msg.setReason(reason);
+
+                msgService.updateTMsgSendStatus(msg);
                 log.error(msgResult, e);
             }
         }
