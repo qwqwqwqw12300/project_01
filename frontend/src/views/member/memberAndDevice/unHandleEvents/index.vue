@@ -280,7 +280,7 @@
 
     <!-- 添加或修改事件对话框 -->
     <!-- 服务登记 -->
-    <el-dialog :title="title" :visible.sync="open" width="650px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="130px">
         <el-form-item label="紧急联系人电话:" prop="servedInfo">
           <el-radio-group v-model="form.servedInfo" size="medium">
