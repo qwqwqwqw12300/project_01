@@ -4,7 +4,7 @@ import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.entity.RsaUtils;
+import com.newlandnpt.varyar.common.utils.RSA.RsaUtils;
 import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
 import com.newlandnpt.varyar.common.core.domain.model.MemberLoginPwdRequest;
 import com.newlandnpt.varyar.common.core.domain.model.MemberLoginSmsRequest;
