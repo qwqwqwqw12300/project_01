@@ -130,6 +130,12 @@ xss:
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
 
+# 极光推送配置
+jpush:
+  appKey:  3c3f6b5746d37ea030455d83  # 极光平台应用的唯一标识
+  masterSecret: c234f905d96ea4659e07aafd   # masterSecret密钥 与 appKey 配合使用达到鉴权的目的
+  apnsProduction: false   # 是否生产环境，该配置只对ios通知有效（true生产环境，false开发环境）
+
 
 location:
   gaode:

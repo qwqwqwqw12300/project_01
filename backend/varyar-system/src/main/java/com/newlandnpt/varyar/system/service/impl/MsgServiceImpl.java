@@ -1,9 +1,6 @@
 package com.newlandnpt.varyar.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.newlandnpt.varyar.common.annotation.DataScope;
 import com.newlandnpt.varyar.common.utils.DateUtils;
@@ -12,7 +9,10 @@ import com.newlandnpt.varyar.common.utils.uuid.UUID;
 import com.newlandnpt.varyar.system.domain.TEvent;
 import com.newlandnpt.varyar.system.domain.TMemberFamily;
 import com.newlandnpt.varyar.system.service.IEventService;
+import com.newlandnpt.varyar.system.service.IJiGuangSendService;
 import com.newlandnpt.varyar.system.service.IMemberFamilyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TMsgMapper;
@@ -33,12 +33,17 @@ import static com.newlandnpt.varyar.common.constant.MsgConstants.*;
 @Service
 public class MsgServiceImpl implements IMsgService
 {
+    private static final Logger log = LoggerFactory.getLogger(MsgServiceImpl.class);
+
+
     @Autowired
     private TMsgMapper tMsgMapper;
     @Autowired
     private IEventService iEventService;
     @Autowired
     private IMemberFamilyService memberFamilyService;
+    @Autowired
+    private IJiGuangSendService jiGuangSendService;
     /**
      * 查询消息
      * 
@@ -82,7 +87,20 @@ public class MsgServiceImpl implements IMsgService
     }
 
     /**
-     * 修改消息
+     * 修改推送消息状态
+     *
+     * @param tMsg 消息
+     * @return 结果
+     */
+    @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
+    public int updateTMsgSendStatus(TMsg tMsg)
+    {
+        return tMsgMapper.updateTMsg(tMsg);
+    }
+
+    /**
+     * app端设备消息已读状态修改
      * 
      * @param tMsg 消息
      * @return 结果
@@ -198,6 +216,11 @@ public class MsgServiceImpl implements IMsgService
             msg.setSendStatus(SEND_STATUS_NOT_SEND);
             msg.setOperateFlag(OPERATE_FLAG_NOT_HANDLE);
             result+=insertTMsg(msg);
+            try{
+                jiGuangSendService.jiGuangSend(Arrays.asList(msg));
+            }catch (Exception e){
+                log.error(">>>> 极光推送发送失败",e);
+            }
         }
 
         return result;

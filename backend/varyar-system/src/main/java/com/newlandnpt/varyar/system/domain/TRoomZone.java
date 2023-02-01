@@ -3,6 +3,7 @@ package com.newlandnpt.varyar.system.domain;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
@@ -75,8 +76,10 @@ public class TRoomZone extends BaseEntity
     /** 离开监控区域超时报警（0是 1否）*/
     private String outMonitorFlag;
     /** 开始时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
     /** 结束时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
     /** 设备id*/
     private Long deviceId;

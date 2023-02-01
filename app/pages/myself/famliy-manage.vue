@@ -30,11 +30,11 @@
 		<u-popup :closeable="true" :overlay="false" zIndex="99" :round="10" :show="isEditShow" mode="center"
 			@close="close">
 			<view class="wd-add">
-				<view>
+				<view class="ui-input">
 					<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="家庭名称"></u-text>
 					<u--input v-model="form.name" placeholder="请输入家庭名称" border="bottom" clearable></u--input>
 				</view>
-				<view>
+				<view class="ui-input">
 					<u-text size="28rpx" prefixIcon="map-fill" iconStyle="font-size: 36rpx" text="家庭地址(必填)"></u-text>
 					<u--input v-model="form.address" placeholder="请输入家庭地址" border="bottom" clearable></u--input>
 				</view>
@@ -216,7 +216,7 @@
 			background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
 			text-align: center;
 
-			text {
+			.grid-text {
 				display: inline-block;
 				margin-top: 10rpx;
 				width: 70%;
@@ -263,20 +263,29 @@
 
 	.wd-add {
 		width: 582rpx;
-		height: 606rpx;
+		min-height: 300rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
 		padding: 53rpx 31rpx;
 
-		&>view {
-			margin-top: 52rpx;
+		.ui-input {
+			margin-top: 40rpx;
+			position: relative;
 			padding: 10rpx 20rpx;
-			border-bottom: 1px solid #e4e4e4;
 
-			&:nth-last-of-type(1) {
-				padding-left: 0rpx;
-				border-bottom: none;
+			&:nth-child(2) {
+				margin-top: 20rpx;
+			}
+
+			&::after {
+				bottom: 10rpx;
+				left: 40rpx;
+				content: '';
+				width: 500rpx;
+				height: 1rpx;
+				background: #e4e4e4;
+				position: absolute;
 			}
 		}
 

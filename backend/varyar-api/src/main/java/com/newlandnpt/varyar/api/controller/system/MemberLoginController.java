@@ -4,7 +4,7 @@ import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.entity.RsaUtils;
+import com.newlandnpt.varyar.common.utils.RSA.RsaUtils;
 import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
 import com.newlandnpt.varyar.common.core.domain.model.MemberLoginPwdRequest;
 import com.newlandnpt.varyar.common.core.domain.model.MemberLoginSmsRequest;
@@ -14,6 +14,7 @@ import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.framework.web.service.TokenService;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IMemberLoginService;
+import com.newlandnpt.varyar.system.service.IMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +33,8 @@ public class MemberLoginController extends BaseController {
     private RedisCache redisCache;
     @Autowired
     private IMemberLoginService memberLoginService;
+    @Autowired
+    private IMemberService iMemberService;
 
     @Autowired
     private TokenService tokenService;
@@ -69,7 +72,14 @@ public class MemberLoginController extends BaseController {
         loginUser.setMemberPassword(tMember.getPassword());
         String token = tokenService.createToken(loginUser);
         ajax.put(Constants.TOKEN, token);
-
+        //更新登录信息
+        try {
+            tMember.setRegistrationId(memberLoginPwdRequest.getRegistrationId());
+            tMember.setRegistrationType(memberLoginPwdRequest.getRegistrationType());
+            iMemberService.updateMember(tMember);
+        }catch(Exception e){
+            return error("登录失败！");
+        }
         return ajax;
     }
 
@@ -98,7 +108,14 @@ public class MemberLoginController extends BaseController {
         String token = tokenService.createToken(loginUser);
 
         ajax.put(Constants.TOKEN, token);
-
+        //更新登录信息
+        try {
+            tMember.setRegistrationId(memberLoginSmsRequest.getRegistrationId());
+            tMember.setRegistrationType(memberLoginSmsRequest.getRegistrationType());
+            iMemberService.updateMember(tMember);
+        }catch(Exception e){
+            return error("登录失败！");
+        }
         return ajax;
     }
 

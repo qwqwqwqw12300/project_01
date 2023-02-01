@@ -118,8 +118,6 @@
 						title: '请完整填写信息'
 					})
 				}
-
-
 			},
 			eidtClose() {
 				this.isEditShow = false
@@ -175,15 +173,15 @@
 	}
 
 	.ui-step {
-		height: 134rpx;
+		height: 110rpx;
 		display: flex;
 		align-items: center;
 		margin-top: 50rpx;
 		padding: 0 40rpx;
 
 		.ui-step-icon {
-			width: 140rpx;
-			height: 112rpx;
+			width: 110rpx;
+			height: 96rpx;
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
@@ -198,7 +196,7 @@
 
 			text {
 				color: #0e6bc0;
-				font-size: 34rpx;
+				font-size: 28rpx;
 				font-weight: bold;
 				text-shadow: 0 0 3px #fff, 0 0 3px #5acbff;
 			}
@@ -208,14 +206,14 @@
 	.ui-bluetooth {
 		margin-top: 30rpx;
 		width: 100%;
-		height: 400rpx;
+		height: 300rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
 		image {
 			// width: 380rpx;
-			height: 400rpx;
+			height: 300rpx;
 		}
 	}
 
@@ -227,7 +225,7 @@
 
 		.ui-list-item {
 			margin-left: 80rpx;
-			padding: 18rpx 34rpx;
+			padding: 14rpx 34rpx;
 			border-radius: 40rpx;
 			display: flex;
 			align-items: center;
@@ -256,10 +254,11 @@
 	.ui-btn {
 		// position: absolute;
 		width: 100%;
+
 		button {
 			width: 450rpx;
 		}
-	
+
 		margin: 0 auto;
 		// bottom: 80rpx;
 		// left: 50%;

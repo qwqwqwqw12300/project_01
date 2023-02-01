@@ -58,7 +58,7 @@ public interface IDeviceService
      * @return 结果
      */
     public int updateDevice(TDevice device);
-
+    public int setDevice(TDevice device);
     /**
      * 批量删除设备
      * 
@@ -172,7 +172,7 @@ public interface IDeviceService
      * @param deviceId
      * @return
      */
-    public TDevice.DeviceSettings loadSettings(Long deviceId);
+    public TDevice.DeviceParameter loadSettings(Long deviceId);
 
     /**
      * 设置设备参数
@@ -181,7 +181,7 @@ public interface IDeviceService
      * @param settings
      * @return
      */
-    public int setSettings(Long deviceId, TDevice.DeviceSettings settings);
+    public int setSettings(Long deviceId, TDevice.DeviceParameter settings);
     /**
      * 加载设备组状态
      * @param

@@ -15,7 +15,7 @@ public class RoomRequest {
      * 房间名称
     * */
     @Size(min = 0, max = 50, message = "房间名称不能超过50个字符")
-    private String roomName;
+    private String name;
     /**
      *  房间Id 唯一标识
      * */
@@ -74,12 +74,12 @@ public class RoomRequest {
         this.familyId = familyId;
     }
 
-    public String getRoomName() {
-        return roomName;
+    public String getName() {
+        return name;
     }
 
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getRoomId() {

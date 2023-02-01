@@ -53,6 +53,29 @@ public class TMember extends BaseEntity
     /** 会员参数 */
     private MemberParameter parameter;
 
+
+    /** 会员登录设备注册号 */
+    private String registrationId;
+
+    /** 登录设备注册类型（0:android 1:ios） */
+    private String registrationType;
+
+    public String getRegistrationId() {
+        return registrationId;
+    }
+
+    public void setRegistrationId(String registrationId) {
+        this.registrationId = registrationId;
+    }
+
+    public String getRegistrationType() {
+        return registrationType;
+    }
+
+    public void setRegistrationType(String registrationType) {
+        this.registrationType = registrationType;
+    }
+
     public MemberParameter getParameter() {
         return parameter;
     }
@@ -163,6 +186,8 @@ public class TMember extends BaseEntity
                 .append("userName", userName)
                 .append("userPhone", userPhone)
                 .append("delFlag", delFlag)
+                .append("registrationId", registrationId)
+                .append("registrationType", registrationType)
                 .toString();
     }
 }

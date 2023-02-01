@@ -70,6 +70,9 @@
 			async sendCode() {
 				if (this.status !== 'init') return;
 				const payload = typeof this.payload === 'function' ? await this.payload() : this.payload;
+				if (!uni.$u.test.mobile(payload.phone)) {
+					return uni.$u.toast('请填写正确的手机号码');
+				}
 				if (this.verification(payload)) {
 					this.suffix = '发送中..';
 					this.status = 'send';
@@ -102,6 +105,7 @@
 				this.status = 'init';
 				this.display = false;
 				this.timer && clearInterval(this.timer);
+				this.checkPayLoad.code = '';
 				this.$emit('reset');
 			},
 			/**

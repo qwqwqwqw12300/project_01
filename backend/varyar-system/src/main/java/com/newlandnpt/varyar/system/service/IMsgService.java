@@ -44,6 +44,14 @@ public interface IMsgService
     public int insertTMsg(TMsg tMsg);
 
     /**
+     * 修改消息发送状态
+     *
+     * @param tMsg 消息
+     * @return 结果
+     */
+    public int updateTMsgSendStatus(TMsg tMsg);
+
+    /**
      * 修改消息
      * 
      * @param tMsg 消息

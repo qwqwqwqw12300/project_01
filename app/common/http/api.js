@@ -101,7 +101,10 @@ export const resetMemberPwd = (data) => http.post('/api/resetMemberPwd', data);
 export const getFamilyList = (params) => http.get('/api/family/list', params);
 
 /**获取设备列表**/
-export const getDeviceList = (data) => http.post('/api/device/listState', data);
+export const getDeviceList = (data) => http.post('/api/device/list', data);
+
+/**获取设备列表**/
+export const getDeviceListState = (data) => http.post('/api/device/listState', data);
 
 /**设备事件查询**/
 export const selectEventInfo = (data) => http.post('/api/event/selectEventInfo', data);
@@ -156,9 +159,16 @@ export const PostEditFamily = (params) => http.post('/api/family/editFamily', pa
 export const PostDeviceList = (params) => http.post('/api/device/list', params);
 
 /**
- * 绑定/解绑设备
+ * 绑定/
  */
 export const setDevice = (params) => http.post('/api/device/setDevice', params);
+
+
+/**
+ * 解绑设备
+ */
+export const relDevice = (params) => http.post('/api/device/relDevice', params);
+
 
 /**
  * 修改设备名称

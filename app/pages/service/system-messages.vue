@@ -16,6 +16,7 @@
 						<!-- 2022年10月11日 11：22 -->
 					</view>
 					<view class="ui-box active" @click="details(item)">
+						<u-badge :isDot="item.readFlag !== '1'" absolute :offset="[-3, -4]"></u-badge>
 						<text>{{item.noticeTitle}}</text>
 						<u-text size="25rpx" color="#666" :lines="3" :text="item.noticeContent"></u-text>
 						<view class="ui-detail">
@@ -69,6 +70,13 @@
 </script>
 
 <style lang="scss">
+	::v-deep {
+		.u-badge--dot {
+			width: 20rpx !important;
+			height: 20rpx !important;
+		}
+	}
+
 	.ui-list {
 		margin-top: 60rpx;
 		width: 100%;
@@ -105,11 +113,12 @@
 				background: #fff;
 				text-align: left;
 
-				text {
+				>text {
 					width: 100%;
+					margin-bottom: 10rpx;
 
-					&:nth-child(1) {
-						margin-bottom: 10rpx;
+					&:nth-child(2) {
+						margin-bottom: 20rpx;
 						display: inline-block;
 						font-size: 30rpx;
 

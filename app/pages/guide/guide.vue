@@ -17,6 +17,7 @@
 		<button @click="postDemo">post请求测试</button>
 		<button @click="getToken">token获取</button>
 		<button @click="goExt">设备连接</button>
+		<text>RegistrationID: {{id}}</text>
 	</view>
 </template>
 <script>
@@ -38,7 +39,8 @@
 					id: 'range',
 					url: '/pages/guide/range',
 					name: '检测范围'
-				}, ]
+				}, ],
+				id: ''
 			}
 		},
 		methods: {
@@ -51,6 +53,7 @@
 			},
 			getRegistrationID() {
 				push.getRegistrationID().then(res => {
+					this.id = res;
 					console.log(res, 'getRegistrationID');
 				});
 			},

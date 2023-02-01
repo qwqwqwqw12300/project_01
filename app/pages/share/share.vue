@@ -7,7 +7,7 @@
 					<view>
 						<view class="ui-user-item" v-for="(item, idx) of shareList" :key="idx">
 							<u--text prefixIcon="account-fill" :iconStyle="{ color: '#fff', fontSize: '36rpx' }"
-								color="#fff" :text="item.userName || '未注册用户'"></u--text>
+								color="#fff" :text="item.phone || '未注册用户'"></u--text>
 							<u-icon @click="remShare(item)" class="active" name="close-circle" color="#fff600"
 								size="36rpx">
 							</u-icon>

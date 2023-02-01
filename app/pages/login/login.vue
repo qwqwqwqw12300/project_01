@@ -24,8 +24,8 @@
 							size="28rpx">
 						</u-text>
 						<view class="ui-input">
-							<u--input v-model="loginForm.phone" type="number" placeholder="请输入手机号码" :border="'none'"
-								fontSize="28rpx" clearable></u--input>
+							<u--input v-model="loginForm.phone" maxlength="11" type="number" placeholder="请输入手机号码"
+								:border="'none'" fontSize="28rpx" clearable></u--input>
 						</view>
 					</view>
 					<view class="ui-form-item">
@@ -56,8 +56,8 @@
 							size="28rpx">
 						</u-text>
 						<view class="ui-input">
-							<u-input v-model="smsLoginForm.phone" type="number" placeholder="请输入手机号码" :border="'none'"
-								fontSize="28rpx" clearable></u-input>
+							<u-input v-model="smsLoginForm.phone" type="number" placeholder="请输入手机号码" maxlength="11"
+								:border="'none'" fontSize="28rpx" clearable></u-input>
 						</view>
 					</view>
 					<view class="ui-form-item">
@@ -86,6 +86,13 @@
 		loginBySms,
 		PostLoginByPwd,
 	} from '@/common/http/api.js';
+	import {
+		push
+	} from '@/common/sdk/push.js';
+	import {
+		isApp,
+		isIos,
+	} from '../../common/utils/util';
 	import {
 		env
 	} from "@/config/env.js";
@@ -122,7 +129,17 @@
 					uuid: '',
 					code: ''
 				},
+				//会员登录设备注册号
+				registrationId: uni.$u.guid(20),
 			};
+		},
+		mounted() {
+			this.getRegistrationID();
+		},
+		computed: {
+			registrationType() {
+				return isIos() ? '1' : '0'
+			}
 		},
 		methods: {
 			navClick({
@@ -131,7 +148,7 @@
 				this.initFlag = false;
 				this.navActive = index;
 				setTimeout(() => {
-					this.delay = index
+					this.delay = index;
 				}, 200);
 			},
 			/**
@@ -147,11 +164,22 @@
 					code,
 					uuid
 				} = this.$refs.codeRef.returnCodeData()
+				if (!uni.$u.test.mobile(phone)) {
+					return uni.$u.toast('请填写正确的手机号码')
+				}
+				if (!password) {
+					return uni.$u.toast('请填写密码')
+				}
+				if (code.length !== 4) {
+					return uni.$u.toast('请填写正确的验证码')
+				}
 				PostLoginByPwd({
 					phone,
 					password: rsaPassword,
 					code,
-					uuid
+					uuid,
+					registrationType: this.registrationType,
+					registrationId: this.registrationId
 				}).then(res => {
 					setToken(res.token);
 					this.$store.dispatch('getPushMsgState');
@@ -184,6 +212,10 @@
 			 * 获取短信请求参数
 			 */
 			smsPayload() {
+				// console.log(this.smsLoginForm.phone, 'ooo')
+				// if (!uni.$u.test.mobile(this.smsLoginForm.phone)) {
+				// 	return uni.$u.toast('请填写正确的手机号码')
+				// }
 				const {
 					code,
 					uuid
@@ -199,10 +231,22 @@
 			 * 短信登录
 			 */
 			loginBySms() {
-				console.log(this.smsLoginForm.uuid, 'this.smsLoginForm.uuid');
+				console.log(this.smsLoginForm, 'this.smsLoginForm.uuid');
 				if (this.smsLoginForm.uuid) {
+					const {
+						phone,
+						code
+					} = this.smsLoginForm
+					if (!uni.$u.test.mobile(phone)) {
+						return uni.$u.toast('请填写正确的手机号码')
+					}
+					if (code.length !== 4) {
+						return uni.$u.toast('请填写正确的验证码')
+					}
 					loginBySms({
-						...this.smsLoginForm
+						...this.smsLoginForm,
+						registrationType: this.registrationType,
+						registrationId: this.registrationId
 					}).then(res => {
 						setToken(res.token);
 						this.$store.dispatch('getPushMsgState');
@@ -228,7 +272,16 @@
 			 */
 			checkedBySms(smsInfo) {
 				Object.assign(this.smsLoginForm, smsInfo);
-			}
+			},
+			/**
+			 * 获取登录设备注册号
+			 */
+			getRegistrationID() {
+				isApp() && push.getRegistrationID().then(res => {
+					console.log(res, 'lllllllllllll')
+					this.registrationId = res
+				});
+			},
 		}
 	};
 </script>

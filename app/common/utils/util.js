@@ -79,7 +79,7 @@ export const goNavigatePage = url => {
  * 是否为苹果客户端
  * @returns {boolean}
  */
-export const isIos = () => uni.getSystemInfoSync().os.osName === ios;
+export const isIos = () => uni.getSystemInfoSync().platform === 'ios';
 
 /**
  * 是否是APP环境
@@ -213,4 +213,11 @@ export const versionCompare = (curV, reqV) => {
 		}
 	}
 	return flag;
+}
+
+/**
+ * hh:MM 获取时间戳 eg： 01:00
+ */
+export const getHoursTime = (date) => {
+	return date && new Date('1970-1-1 ' + date + ':00').getTime();
 }

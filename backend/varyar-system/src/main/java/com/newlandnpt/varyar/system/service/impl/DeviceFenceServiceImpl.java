@@ -83,7 +83,7 @@ public class DeviceFenceServiceImpl implements IDeviceFenceService {
         //调用高德地理围栏api
         try {
             CircleReq circleReq = new CircleReq();
-            circleReq.setName(tDeviceFence.getDeviceId() + "_fence");
+            circleReq.setName(tDeviceFence.getDeviceNo() + "_fence");
             circleReq.setCenter(tDeviceFence.getLongitude() + "," + tDeviceFence.getLatitude());
             circleReq.setRadius(tDeviceFence.getRadius());
             String result = geoFenceService.addCircleFence(circleReq);
@@ -117,7 +117,7 @@ public class DeviceFenceServiceImpl implements IDeviceFenceService {
         try {
             CircleReq circleReq = new CircleReq();
             circleReq.setGfid(tDeviceFence.getGeoFenceId().toString());
-            circleReq.setName(tDeviceFence.getDeviceId() + "_fence");
+            circleReq.setName(tDeviceFence.getDeviceNo() + "_fence");
             circleReq.setCenter(tDeviceFence.getLongitude() + "," + tDeviceFence.getLatitude());
             circleReq.setRadius(tDeviceFence.getRadius());
             String result = geoFenceService.updateCircleFence(circleReq);

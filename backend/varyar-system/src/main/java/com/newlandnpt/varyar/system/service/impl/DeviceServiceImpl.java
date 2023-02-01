@@ -2,17 +2,14 @@ package com.newlandnpt.varyar.system.service.impl;
 
 import com.newlandnpt.varyar.common.annotation.DataScope;
 import com.newlandnpt.varyar.common.constant.CacheConstants;
-import com.newlandnpt.varyar.common.core.domain.entity.DeviceParameter;
 import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
-import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.system.core.device.settings.RadarDeviceSettingsDisposer;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TDeviceFence;
-import com.newlandnpt.varyar.system.domain.TRoom;
 import com.newlandnpt.varyar.system.domain.TRoomZone;
 import com.newlandnpt.varyar.system.domain.dto.org.OrgDeviceCountDto;
 import com.newlandnpt.varyar.system.mapper.*;
@@ -119,8 +116,23 @@ public class DeviceServiceImpl implements IDeviceService {
      * @return 结果
      */
     @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
     public int updateDevice(TDevice device) {
         device.setUpdateTime(DateUtils.getNowDate());
+        int effect = deviceMapper.updateTDevice(device);
+        resetDeviceCache(device);
+        return effect;
+    }
+
+    @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
+    public int setDevice(TDevice device) {
+        device.setUpdateTime(DateUtils.getNowDate());
+        Long familyId = device.getFamilyId();
+        Long roomId = device.getRoomId();
+        setSettings(device.getDeviceId(),device.getParameter());
+        device.setFamilyId(familyId);
+        device.setRoomId(roomId);
         int effect = deviceMapper.updateTDevice(device);
         resetDeviceCache(device);
         return effect;
@@ -177,10 +189,13 @@ public class DeviceServiceImpl implements IDeviceService {
 
     @Override
     public int active(Long deviceId) {
-        TDevice device = new TDevice();
+        TDevice device = selectDeviceByDeviceId(deviceId);
         device.setDeviceId(deviceId);
         device.setStatus(STATUS_ACTIVATED);
-        return this.updateDevice(device);
+        device.setUpdateTime(DateUtils.getNowDate());
+        int effect= deviceMapper.updateTDevice(device);
+        resetDeviceCache(device);
+        return effect;
     }
 
     @Override
@@ -309,17 +324,20 @@ public class DeviceServiceImpl implements IDeviceService {
     }
 
     @Override
-    public TDevice.DeviceSettings loadSettings(Long deviceId) {
+    public TDevice.DeviceParameter loadSettings(Long deviceId) {
         TDevice device = deviceMapper.selectTDeviceByDeviceId(deviceId);
         if(device == null){
             return null;
         }
-        TDevice.DeviceSettings settings;
+        TDevice.DeviceParameter settings;
         if(TYPE_READER_WAVE.equals(device.getType())){
-            settings = new TDevice.RadarWaveDeviceSettings();
+            settings = device.getParameter();
+            if(settings == null){
+                settings = new TDevice.RadarWaveDeviceSettings();
+            }
             TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings) settings;
             if(device.getRoomId()!=null){
-                radarWaveDeviceSettings.setRoom(roomService.selectTRoomByRoomId(device.getRoomId()));
+                //radarWaveDeviceSettings.setRoom(roomService.selectTRoomByRoomId(device.getRoomId()));
                 TRoomZone roomZone = new TRoomZone();
                 roomZone.setRoomId(device.getRoomId());
                 radarWaveDeviceSettings.setRoomZones(roomZoneService.selectTRoomZoneList(roomZone));
@@ -342,29 +360,21 @@ public class DeviceServiceImpl implements IDeviceService {
 
     @Override
     @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
-    public int setSettings(Long deviceId, TDevice.DeviceSettings settings) {
+    public int setSettings(Long deviceId, TDevice.DeviceParameter settings) {
         TDevice device = deviceMapper.selectTDeviceByDeviceId(deviceId);
         if(device == null){
             throw new ServiceException("设备不存在");
         }
         if(TYPE_READER_WAVE.equals(device.getType())){
             TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings) settings;
-
-            TRoom room = radarWaveDeviceSettings.getRoom();
-            room.setOrgId(device.getOrgId());
-            if(room.getRoomId()==null){
-                room.setCreateById(String.valueOf(SecurityUtils.getUserId()));
-                room.autoSetCreateByLoginUser();
-                roomService.insertTRoom(room);
-                device.setRoomId(room.getRoomId());
-                deviceMapper.updateTDevice(device);
-            }else{
-                room.autoSetUpdateByLoginUser();
-                roomService.updateTRoom(room);
+            if(device.getParameter()==null){
+                device.setParameter(new TDevice.RadarWaveDeviceSettings());
             }
-
+            device.setParameter(radarWaveDeviceSettings);
+            //更新设备参数信息
+            deviceMapper.updateTDevice(device);
             TRoomZone roomZone = new TRoomZone();
-            roomZone.setRoomId(device.getRoomId());
+            roomZone.setDeviceId(device.getDeviceId());
             List<TRoomZone> roomZones = roomZoneService.selectTRoomZoneList(roomZone);
             List<Long> removeZones = new ArrayList<>();
             if(CollectionUtils.isEmpty(radarWaveDeviceSettings.getRoomZones())){
@@ -377,7 +387,6 @@ public class DeviceServiceImpl implements IDeviceService {
                         .map(p->p.getRoomZoneId())
                         .collect(Collectors.toList()));
                 radarWaveDeviceSettings.getRoomZones().forEach(zone->{
-                    zone.setRoomId(room.getRoomId());
                     if(zone.getRoomZoneId()!=null){
                         zone.autoSetUpdateByLoginUser();
                         roomZoneService.updateTRoomZone(zone);
@@ -396,9 +405,9 @@ public class DeviceServiceImpl implements IDeviceService {
         }else if(TYPE_WATCH.equals(device.getType())){
             TDevice.WatchSettings watchSettings = (TDevice.WatchSettings) settings;
             if(device.getParameter()==null){
-                device.setParameter(new DeviceParameter());
+                device.setParameter(new TDevice.DeviceParameter());
             }
-            ((TDevice.WatchSettings)device.getParameter()).setList(watchSettings.getList());
+            device.setParameter(watchSettings);
             deviceMapper.updateTDevice(device);
             if(watchSettings.getFence()!=null){
                 if(watchSettings.getFence().getDeviceFenceId()!=null){

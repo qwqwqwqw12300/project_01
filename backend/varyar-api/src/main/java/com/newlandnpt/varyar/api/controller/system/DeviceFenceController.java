@@ -68,6 +68,10 @@ public class DeviceFenceController extends BaseController
             ajax = ajax.error("设备Id不能为空！");
             return ajax;
         }
+        if(tDeviceFence.getDeviceNo().equals("")||tDeviceFence.getDeviceNo()==null){
+            ajax = ajax.error("设备编号不能为空！");
+            return ajax;
+        }
         if(tDeviceFence.getAddress().equals("")||tDeviceFence.getAddress()==null){
             ajax = ajax.error("地址信息不能为空！");
             return ajax;
@@ -101,7 +105,7 @@ public class DeviceFenceController extends BaseController
                 return error("设置电子围栏失败！");
             }
         }else if (TDeviceFences.size()>0){
-            edit(tDeviceFence);
+            return edit(tDeviceFence);
         }
 
         return ajax;
@@ -125,7 +129,9 @@ public class DeviceFenceController extends BaseController
         if (tDeviceFences.size()==0){
             return error("修改电子围栏信息失败！");
         }else if (tDeviceFences.size()>0){
-            tDeviceFence.setDeviceFenceId(tDeviceFences.get(0).getDeviceId());
+            tDeviceFence.setGeoFenceId(tDeviceFences.get(0).getGeoFenceId());
+            tDeviceFence.setDeviceNo(tDeviceFences.get(0).getDeviceNo());
+            tDeviceFence.setDeviceFenceId(tDeviceFences.get(0).getDeviceFenceId());
         }
         try {
             int di = deviceFenceService.updateTDeviceFence(tDeviceFence);

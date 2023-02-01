@@ -30,16 +30,16 @@ public class RadarRequest {
     private String name;
 
     /**
-     *  区域类型  0：监控区域    1：私人区域
+     *  存在监测标志（0是 1否）
      * */
-    @NotBlank(message = "区域类型不能为空")
-    @Size(min = 0, max = 1, message = "区域类型不能超过1个字符")
+    @NotBlank(message = "存在监测标志不能为空")
+    @Size(min = 0, max = 1, message = "存在监测标志不能超过1个字符")
     private String existFlag;
     /**
-     *  迭代监测标志  0：是    1：否
+     *  跌倒监测标志  0：是    1：否
      * */
-    @NotBlank(message = "迭代监测标志不能为空")
-    @Size(min = 0, max = 1, message = "迭代监测标志不能超过1个字符")
+    @NotBlank(message = "跌倒监测标志不能为空")
+    @Size(min = 0, max = 1, message = "跌倒监测标志不能超过1个字符")
     private String fallFlag;
 
     /**

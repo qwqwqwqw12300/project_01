@@ -27,7 +27,7 @@
 						:key="index + 'list'">
 						<u-icon name="chat" color="#414141" size="40rpx"></u-icon>
 						<text>{{$u.timeFormat(item.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
-						<text>{{item.deviceName || '--'}}</text>
+						<text class="ui-content-date">{{item.deviceName || '--'}}</text>
 						<text class="ui-content">{{item.content || '--'}}</text>
 					</view>
 					<!-- /sos事件 -->
@@ -35,7 +35,7 @@
 						<view>
 							<u-icon name="arrow-right" color="#414141" size="40rpx"></u-icon>
 							<text>{{$u.timeFormat(item.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
-							<text>{{item.deviceName || '--'}}</text>
+							<text class="ui-content-date">{{item.deviceName || '--'}}</text>
 							<text class="ui-content">{{item.content || '--'}}</text>
 						</view>
 						<view class="ui-sos-btn active" v-if="contactsList[0]" @click="call(contactsList[0].phone)">
@@ -211,8 +211,15 @@
 			},
 
 			call(phoneNumber) {
+				console.log(phoneNumber, 'phoneNumber');
 				uni.makePhoneCall({
-					phoneNumber
+					phoneNumber,
+					success: res => {
+						console.log(res, 'res');
+					},
+					fail: res => {
+						console.log(res, 'fail');
+					}
 				});
 			}
 		}
@@ -276,8 +283,16 @@
 				// }
 			}
 
+
 			.ui-content {
 				width: 280rpx;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+
+			.ui-content-date {
+				width: 100rpx;
 				overflow: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;
@@ -329,7 +344,6 @@
 	.ui-pop-box {
 		box-sizing: border-box;
 		width: 582rpx;
-
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
@@ -359,7 +373,6 @@
 						color: #444;
 						width: 70%;
 						margin-left: 40rpx;
-
 					}
 
 				}
