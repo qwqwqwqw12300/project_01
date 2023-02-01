@@ -295,9 +295,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('monitor/operlog/export', {
+      this.download('system/operlog/export', {
         ...this.queryParams
-      }, `operlog_${new Date().getTime()}.xlsx`)
+      }, `操作日志清单_${new Date().getTime()}.xlsx`)
     }
   }
 };
