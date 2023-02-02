@@ -104,7 +104,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
                 devIds.add(device.getNo());
                 //状态一直是断网的情况不重复发断网事件
                 if(!cacheList.contains(device.getNo())){
-                    triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getNo() + " 疑似断网，请及时处理！");
+                    triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getName() + " 疑似断网，请及时处理！");
                 }else{
                     log.info(">>>>>>>设备{}仍然是断网,忽略触发事件",device.getNo());
                 }
@@ -139,7 +139,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
                 if (device == null) {
                     continue;
                 }
-                triggerEvent(EVENT_LEVEL_NORMAL, device, "设备" + deviceNo + " 已恢复网络连接");
+                triggerEvent(EVENT_LEVEL_NORMAL, device, "设备" + device.getName() + " 已恢复网络连接");
             }
             discDevices.removeAll(reconnects);
             //更新Redis
@@ -168,7 +168,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
                 TDevice redisDev = redisCache.getCacheObject(cacheKey);
                 if (redisDev.getStatus().equals(STATUS_ACTIVATED)) {
                     //todoL Redis缓存设备结构
-                    triggerEvent(EVENT_LEVEL_HIGH, device, "设备 " + device.getNo() + " 监控到房间内【有/无人】超过" + Constants.ACCESS_ISSUE_DELAY_THRITY + "分钟，请及时处理！");
+                    triggerEvent(EVENT_LEVEL_HIGH, device, "设备 " + device.getName() + " 监控到房间内【有/无人】超过" + Constants.ACCESS_ISSUE_DELAY_THRITY + "分钟，请及时处理！");
                 }
             }
         }
@@ -186,7 +186,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
             return;
         }
         for (TDevice device : devices) {
-            triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + deviceNo + "超出地理围栏范围，请及时处理！");
+            triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getName() + "超出地理围栏范围，请及时处理！");
         }
     }
 

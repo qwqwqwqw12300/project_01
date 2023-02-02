@@ -336,12 +336,12 @@ public class DeviceServiceImpl implements IDeviceService {
                 settings = new TDevice.RadarWaveDeviceSettings();
             }
             TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings) settings;
-            if(device.getRoomId()!=null){
+//            if(device.getRoomId()!=null){
                 //radarWaveDeviceSettings.setRoom(roomService.selectTRoomByRoomId(device.getRoomId()));
                 TRoomZone roomZone = new TRoomZone();
-                roomZone.setRoomId(device.getRoomId());
+                roomZone.setDeviceId(device.getDeviceId());
                 radarWaveDeviceSettings.setRoomZones(roomZoneService.selectTRoomZoneList(roomZone));
-            }
+//            }
         }else if(TYPE_WATCH.equals(device.getType())){
             settings = new TDevice.WatchSettings();
             TDevice.WatchSettings watchSettings = (TDevice.WatchSettings) settings;
@@ -391,6 +391,8 @@ public class DeviceServiceImpl implements IDeviceService {
                         zone.autoSetUpdateByLoginUser();
                         roomZoneService.updateTRoomZone(zone);
                     }else{
+                        zone.setRoomId(device.getRoomId());
+                        zone.setDeviceId(deviceId);
                         zone.autoSetCreateByLoginUser();
                         roomZoneService.insertTRoomZone(zone);
                     }
