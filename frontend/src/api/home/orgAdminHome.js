@@ -55,3 +55,11 @@ export function notArrangeDeviceGroupCount() {
     method: 'get'
   })
 }
+
+// 未分配会员总数
+export function notArrangeMemberCount() {
+  return request({
+    url: '/home/org/admin/member/notarrange/count',
+    method: 'get'
+  })
+}

@@ -4,11 +4,11 @@
       <span>设备分组信息</span>
     </div>
     <el-descriptions :column="3">
-      <el-descriptions-item label="设备组名称">{{ deviceGroup==undefined?"":deviceGroup.name }}</el-descriptions-item>
-      <el-descriptions-item span="2" label="设备组编号">{{ deviceGroup==undefined?"":deviceGroup.no }}</el-descriptions-item>
-      <el-descriptions-item label="姓名">{{ deviceGroupUser==undefined?"":deviceGroupUser.name }}</el-descriptions-item>
-      <el-descriptions-item label="手机号">{{ deviceGroupUser==undefined?"":deviceGroupUser.mobilePhone }}</el-descriptions-item>
-      <el-descriptions-item label="登录账号">{{ deviceGroupUser==undefined?"":deviceGroupUser.userName }}</el-descriptions-item>
+      <el-descriptions-item span="3" label="设备组名称">{{ deviceGroup==undefined?"":deviceGroup.name }}</el-descriptions-item>
+<!--      <el-descriptions-item span="2" label="设备组编号">{{ deviceGroup==undefined?"":deviceGroup.no }}</el-descriptions-item>-->
+      <el-descriptions-item label="运营人员姓名">{{ deviceGroupUser==undefined?"":deviceGroupUser.name }}</el-descriptions-item>
+      <el-descriptions-item label="运营人员手机号">{{ deviceGroupUser==undefined?"":deviceGroupUser.mobilePhone }}</el-descriptions-item>
+      <el-descriptions-item label="运营人员登录账号">{{ deviceGroupUser==undefined?"":deviceGroupUser.userName }}</el-descriptions-item>
     </el-descriptions>
   </el-card>
 </template>

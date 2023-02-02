@@ -5,10 +5,8 @@ import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TDeviceGroup;
-import com.newlandnpt.varyar.system.service.IDeviceGroupService;
-import com.newlandnpt.varyar.system.service.IDeviceService;
-import com.newlandnpt.varyar.system.service.IOrgService;
-import com.newlandnpt.varyar.system.service.IEventService;
+import com.newlandnpt.varyar.system.domain.TMember;
+import com.newlandnpt.varyar.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +35,8 @@ public class OrgAdminHomeController extends BaseController {
     private IDeviceService deviceService;
     @Autowired
     private IEventService eventService;
+    @Autowired
+    private IMemberService memberService;
 
     /**
      * 获取分支机构列表(包含本身)
@@ -96,8 +96,6 @@ public class OrgAdminHomeController extends BaseController {
         return success(deviceService.notArrangeDeviceCount(new TDevice()));
     }
 
-
-
     /**
      * 未分配设备组数量
      * @return
@@ -109,7 +107,15 @@ public class OrgAdminHomeController extends BaseController {
         return success(deviceGroupService.notArrangeCount(deviceGroup));
     }
 
-
-
+    /**
+     * 未分配会员总数
+     *
+     * @return
+     */
+    @GetMapping("/member/notarrange/count")
+    public AjaxResult notArrangeMemberCount() {
+        //会员数
+        return success(memberService.notArrangeMemberCount(new TMember()));
+    }
 
 }

@@ -8,7 +8,11 @@
 				<u-text prefixIcon="/static/images/order.png" iconStyle="font-size: 32rpx" text="选择优先级" color="#444"
 					size="28rpx"></u-text>
 				<view class="ui-input">
-					<uni-data-select v-model="form.orderNum" :clear="false" :localdata="range"></uni-data-select>
+					<u-input v-model="form.orderName" :disabled="true" disabledColor="" :border="'none'"
+						fontSize="28rpx" clearable>
+					</u-input>
+					<!-- <uni-data-select v-model="form.orderNum" :disabled="true" :clear="false" :localdata="range">
+					</uni-data-select> -->
 				</view>
 			</view>
 			<view class="ui-form-item">
@@ -24,7 +28,8 @@
 				<u-text prefixIcon="/static/images/tel.png" :iconStyle="{width: '30rpx',height:'40rpx'}" text="手机号码"
 					color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u-input v-model="form.phone" placeholder="输入紧急联系手机号码" :border="'none'" fontSize="28rpx" clearable>
+					<u-input v-model="form.phone" maxlength="11" type="number" placeholder="输入紧急联系手机号码" :border="'none'"
+						fontSize="28rpx" clearable>
 					</u-input>
 				</view>
 			</view>
@@ -39,6 +44,9 @@
 	import {
 		PostAddContacts,
 	} from '@/common/http/api.js';
+	import {
+		phoneValidator
+	} from '../../common/utils/util';
 	export default {
 		data() {
 			const range = [{
@@ -54,6 +62,7 @@
 			return {
 				form: {
 					orderNum: '',
+					orderName: '',
 					phone: '',
 					phoneName: '',
 				},
@@ -74,7 +83,7 @@
 				if (!phoneName) {
 					return uni.$u.toast('请填写联系人姓名')
 				}
-				if (!uni.$u.test.mobile(phone)) {
+				if (!phoneValidator(phone)) {
 					return uni.$u.toast('请填写正确的手机号码')
 				}
 				PostAddContacts({
@@ -86,6 +95,14 @@
 					}, 500)
 				})
 			},
+		},
+		onLoad(options) {
+			const {
+				id,
+				name
+			} = options
+			this.form.orderNum = id
+			this.form.orderName = name
 		}
 	}
 </script>
@@ -94,6 +111,10 @@
 	::v-deep {
 		.uni-select {
 			border: none;
+		}
+
+		.uni-select--disabled {
+			background-color: transparent !important;
 		}
 	}
 
