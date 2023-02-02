@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar.cloudBase.service.impl;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.cloudBase.constant.CacheConstants;
 import com.newlandnpt.varyar.cloudBase.constant.VayyarCloudConstants;
 import com.newlandnpt.varyar.cloudBase.domain.Presence;
+import com.newlandnpt.varyar.cloudBase.domain.vo.TrackerTargetVo;
 import com.newlandnpt.varyar.cloudBase.service.PresenceService;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.utils.spring.SpringUtils;
@@ -48,7 +50,20 @@ public class PresenceServiceImpl implements PresenceService {
 		if(device == null){
 			return ;
 		}
-		String diviceId = t.getDeviceId();
+		event(t);
+		//记录目标坐标
+		//如果redis开关开启，则记录
+		Boolean targetLocation = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.TARGET_LOCATION_SWITCH_KEY + deviceId);
+		if(targetLocation != null && targetLocation){
+			List<TrackerTargetVo> trackerTargets = t.getTrackerTargets();
+			//坐标信息存入redis一分钟过期
+			SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.TARGET_LOCATION_KEY + deviceId, trackerTargets, 1, TimeUnit.MINUTES);
+		}
+	}
+	
+	//事件处理
+	private void event(Presence t){
+		String deviceId = t.getDeviceId();
 		//当前进出事件
     	Boolean roomPresenceDetected = t.getRoomPresenceDetected();
     	Map<String, Integer> regionMap = t.getRegionMap();
@@ -58,27 +73,27 @@ public class PresenceServiceImpl implements PresenceService {
     	Integer regionDetected3 = regionMap.get("3");
     	
     	//旧的进出事件
-    	Boolean oldRoomPresenceDetected = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_ROOM_KEY + t.getDeviceId());
-    	Integer oldRegionDetected0 = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_REGION0_KEY + t.getDeviceId());
-    	Integer oldRegionDetected1 = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_REGION1_KEY + t.getDeviceId());
-    	Integer oldRegionDetected2 = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_REGION2_KEY + t.getDeviceId());
-    	Integer oldRegionDetected3 = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_REGION3_KEY + t.getDeviceId());
+    	Boolean oldRoomPresenceDetected = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_ROOM_KEY + deviceId);
+    	Integer oldRegionDetected0 = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_REGION0_KEY + deviceId);
+    	Integer oldRegionDetected1 = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_REGION1_KEY + deviceId);
+    	Integer oldRegionDetected2 = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_REGION2_KEY + deviceId);
+    	Integer oldRegionDetected3 = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_REGION3_KEY + deviceId);
     	
     	//新旧事件不同，则更新到缓存
     	if(roomPresenceDetected != oldRoomPresenceDetected){
-    		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_ROOM_KEY + t.getDeviceId(), roomPresenceDetected);
+    		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_ROOM_KEY + deviceId, roomPresenceDetected);
     	}
     	if(!regionDetected0.equals(oldRegionDetected0)){
-    		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_REGION0_KEY + t.getDeviceId(), regionDetected0);
+    		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_REGION0_KEY + deviceId, regionDetected0);
     	}
     	if(!regionDetected1.equals(oldRegionDetected1)){
-    		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_REGION1_KEY + t.getDeviceId(), regionDetected1);
+    		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_REGION1_KEY + deviceId, regionDetected1);
     	}
     	if(!regionDetected2.equals(oldRegionDetected2)){
-    		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_REGION2_KEY + t.getDeviceId(), regionDetected2);
+    		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_REGION2_KEY + deviceId, regionDetected2);
     	}
     	if(!regionDetected3.equals(oldRegionDetected3)){
-    		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_REGION3_KEY + t.getDeviceId(), regionDetected3);
+    		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_REGION3_KEY + deviceId, regionDetected3);
     	}
     	
     	//推送房间进出事件
