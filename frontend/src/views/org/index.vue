@@ -105,7 +105,7 @@
       />
     </el-row>
     <el-dialog :title="'分配运营'" :visible.sync="arrangeOpen" append-to-body>
-      <el-transfer v-model="arrangeValue" :data="arrangeData"></el-transfer>
+      <el-transfer class="el-transfer-450" v-model="arrangeValue" :data="arrangeData"></el-transfer>
     </el-dialog>
     <!-- 添加或修改机构对话框 -->
     <form-panel :title="title" :visible.sync="open" width="600px" append-to-body >

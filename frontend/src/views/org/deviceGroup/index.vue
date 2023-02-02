@@ -24,7 +24,8 @@
                   :value="deviceGroupList">
         <template slot-scope="{item}">
           <el-card shadow="hover" class="card-item" >
-            {{item.name}} | <el-tooltip :content="item.no" placement="top"><span>{{subString(item)}}</span></el-tooltip>
+            {{item.name}}
+<!--            | <el-tooltip :content="item.no" placement="top"><span>{{subString(item)}}</span></el-tooltip>-->
             <br>
            运营人员：{{item.user?item.user.name:""}}
             <br>
@@ -111,7 +112,7 @@
         <device-group-info-card :value="deviceGroupId"></device-group-info-card>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-transfer v-loading="notArrangeDeviceListLoading||arrangedDeviceListLoading" v-model="arrangedDeviceIds" :titles="['待分配设备','已分配设备']" :data="devicesData"></el-transfer>
+        <el-transfer class="el-transfer-450" v-loading="notArrangeDeviceListLoading||arrangedDeviceListLoading" v-model="arrangedDeviceIds" :titles="['待分配设备','已分配设备']" :data="devicesData"></el-transfer>
       </el-row>
       <el-row type="flex" justify="center">
         <el-button type="primary" @click="submitDeviceArrange">提 交</el-button>
@@ -377,6 +378,5 @@ export default {
 :last-child {
   margin-bottom: 0;
 }
-
 }
 </style>

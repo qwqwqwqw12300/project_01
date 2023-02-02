@@ -31,14 +31,21 @@
               {{ notActiveDeviceCount }}台
             </el-card>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="6" v-hasPermi="['device:groupArrange']">
             <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotArrangeDevice()">
               待分组设备
               <br>
               {{ notArrangeDeviceCount }}台
             </el-card>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="6" v-hasPermi="['member:arrange']">
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotArrangeMember()">
+              待分配运营人员的会员
+              <br>
+              {{ notArrangeMemberCount }}名
+            </el-card>
+          </el-col>
+          <el-col :span="6" v-hasPermi="['org:deviceGroup:arrangeUser']">
             <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotArrangeDeviceGroup()">
               待分配运营人员设备组
               <br>
@@ -66,10 +73,12 @@ import {
   notActiveDeviceCount,
   notAssociateDeviceCount,
   notArrangeDeviceCount,
-  notArrangeDeviceGroupCount
+  notArrangeDeviceGroupCount,
+  notArrangeMemberCount
 } from "@/api/home/orgAdminHome"
 import {getUserProfile, getUser, pageUser} from "@/api/system/user";
 import router from "@/router";
+import store from "@/store";
 
 export default {
 
@@ -77,16 +86,30 @@ export default {
   data() {
     return {
       orgList: [],
+      hasMemberArrangePermissions:false,
+      hasDeviceGroupArrangePermissions:false,
+      hasOrgDeviceGroupArrangeUserPermissions:false,
       currentOrgId: undefined,
       orgDeviceCountList: [],
       orgUnHandleEventCount: undefined,
       notActiveDeviceCount: undefined,
       notArrangeDeviceCount: undefined,
       notArrangeDeviceGroupCount: undefined,
+      notArrangeMemberCount: undefined,
       orgUnHandleEventCountMap: {}
     };
   },
   created() {
+    const permissions = store.getters && store.getters.permissions
+    this.hasMemberArrangePermissions = permissions.some(permission => {
+      return "member:arrange".includes(permission)
+    })
+    this.hasDeviceGroupArrangePermissions = permissions.some(permission => {
+      return "device:groupArrange".includes(permission)
+    })
+    this.hasOrgDeviceGroupArrangeUserPermissions = permissions.some(permission => {
+      return "org:deviceGroup:arrangeUser".includes(permission)
+    })
     this.init()
     setInterval(()=>{
       if (this.$route.name == "OrgAdminHome") {
@@ -130,8 +153,12 @@ export default {
         }
       });
       notActiveDeviceCount().then(response => this.notActiveDeviceCount = response.data);
-      notArrangeDeviceCount().then(response => this.notArrangeDeviceCount = response.data);
-      notArrangeDeviceGroupCount().then(response => this.notArrangeDeviceGroupCount = response.data);
+      if(this.hasDeviceGroupArrangePermissions)
+        notArrangeDeviceCount().then(response => this.notArrangeDeviceCount = response.data);
+      if(this.hasOrgDeviceGroupArrangeUserPermissions)
+        notArrangeDeviceGroupCount().then(response => this.notArrangeDeviceGroupCount = response.data);
+      if(this.hasMemberArrangePermissions)
+        notArrangeMemberCount().then(response => this.notArrangeMemberCount = response.data);
     },
     goDevice(orgId) {
       this.$router.push({path: '/devices/device', query: {orgId: orgId}})
@@ -151,6 +178,10 @@ export default {
     },
     goNotArrangeDeviceGroup() {
       this.$router.push({path: '/org/deviceGroupArrangeUser'})
+    },
+    //待分配运营的会员
+    goNotArrangeMember(){
+      this.$router.push({path:'/members/memberArrange'})
     },
     goOrgUnHandleEvent() {
       getUserProfile().then(user => {
@@ -178,5 +209,9 @@ export default {
     margin-bottom: 0;
   }
 }
+.el-col {
+   margin-bottom: 10px;
+ }
+
 </style>
 
