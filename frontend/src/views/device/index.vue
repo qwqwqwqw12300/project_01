@@ -263,7 +263,7 @@ export default {
           visible: true,
           formatter: (row, column, cellValue) => this.distributeFlagDict.find(x => cellValue == x.value)?.label
         },
-        {key: 5, label: `设备登记时间`, prop: `registerTime`, visible: true},
+        {key: 5, label: `设备配网时间`, prop: `registerTime`, visible: true},
         {
           key: 6,
           label: `设备类型`,

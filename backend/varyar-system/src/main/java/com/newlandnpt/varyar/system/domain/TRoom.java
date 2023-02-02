@@ -34,17 +34,6 @@ public class TRoom extends BaseEntity
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
-    /** 长度 */
-    private BigDecimal roomLength;
-
-    /** 左侧 */
-    private BigDecimal roomLeft;
-
-    /** 右侧 */
-    private BigDecimal roomRight;
-
-    /** 高度 */
-    private BigDecimal roomHeight;
     /** 创建者id*/
     private String createById;
 
@@ -103,49 +92,15 @@ public class TRoom extends BaseEntity
         return delFlag;
     }
 
-    public BigDecimal getRoomLength() {
-        return roomLength;
-    }
-
-    public void setRoomLength(BigDecimal roomLength) {
-        this.roomLength = roomLength;
-    }
-
-    public BigDecimal getRoomLeft() {
-        return roomLeft;
-    }
-
-    public void setRoomLeft(BigDecimal roomLeft) {
-        this.roomLeft = roomLeft;
-    }
-
-    public BigDecimal getRoomRight() {
-        return roomRight;
-    }
-
-    public void setRoomRight(BigDecimal roomRight) {
-        this.roomRight = roomRight;
-    }
-
-    public BigDecimal getRoomHeight() {
-        return roomHeight;
-    }
-
-    public void setRoomHeight(BigDecimal roomHeight) {
-        this.roomHeight = roomHeight;
-    }
-
     @Override
     public String toString() {
         return "TRoom{" +
                 "roomId=" + roomId +
                 ", name='" + name + '\'' +
                 ", familyId=" + familyId +
+                ", orgId=" + orgId +
                 ", delFlag='" + delFlag + '\'' +
-                ", roomLength=" + roomLength +
-                ", roomLeft=" + roomLeft +
-                ", roomRight=" + roomRight +
-                ", roomHeight=" + roomHeight +
+                ", createById='" + createById + '\'' +
                 '}';
     }
 }

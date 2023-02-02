@@ -72,19 +72,15 @@ public class RoomController extends BaseController {
             @RequestBody @Validated RoomRequest roomRequest){
         AjaxResult ajax = AjaxResult.success();
         if (roomRequest.getName().equals("")|| roomRequest.getName()==null){
-            ajax = ajax.error("房间名称不能为空！");
-            return ajax;
+            return error("房间名称不能为空！");
         }
         if (roomRequest.getFamilyId().equals("")|| roomRequest.getFamilyId()==null){
-            ajax = ajax.error("家庭Id不能为空！");
-            return ajax;
+            return error("家庭Id不能为空！");
         }
-        Long memberId = getLoginUser().getMemberId();
         //校验家庭信息是否存在
         TFamily tFamily = tFamilyService.selectTFamilyByFamilyId(Long.valueOf(roomRequest.getFamilyId()));
         if(tFamily == null ){
-            ajax = ajax.error("家庭信息不存在！");
-            return ajax;
+            return error("家庭信息不存在！");
         }
         if (!String.valueOf(tFamily.getCreateById()).equals(this.getLoginUser().getMemberId().toString())){
             return error("非创建者无权限创建！");
@@ -97,10 +93,6 @@ public class RoomController extends BaseController {
             tRoom.setDelFlag("0");
             tRoom.setCreateById(String.valueOf(this.getLoginUser().getMemberId()));
             tRoom.setName(roomRequest.getName());
-            tRoom.setRoomLength(roomRequest.getRoomLength());
-            tRoom.setRoomHeight(roomRequest.getRoomHeight());
-            tRoom.setRoomLeft(roomRequest.getRoomLeft());
-            tRoom.setRoomRight(roomRequest.getRoomRight());
             iRoomService.insertTRoom(tRoom);
             ajax = AjaxResult.success(tRoom);
         } catch (Exception e){
@@ -128,10 +120,6 @@ public class RoomController extends BaseController {
         }
         try {
             tRoom.setName(roomRequest.getName());
-            tRoom.setRoomLength(roomRequest.getRoomLength());
-            tRoom.setRoomHeight(roomRequest.getRoomHeight());
-            tRoom.setRoomLeft(roomRequest.getRoomLeft());
-            tRoom.setRoomRight(roomRequest.getRoomRight());
             iRoomService.updateTRoom(tRoom);
         } catch (Exception e){
             ajax = ajax.error("修改我的房间失败！");
