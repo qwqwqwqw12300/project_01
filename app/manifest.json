@@ -21,10 +21,11 @@
         },
         /* 模块配置 */
         "modules" : {
-            "Push" : {},
             "Geolocation" : {},
             "Maps" : {},
-            "Bluetooth" : {}
+            "Bluetooth" : {},
+            "Record" : {},
+            "Push" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -52,6 +53,7 @@
                     "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
                     "<uses-permission android:name=\"android.permission.BLUETOOTH\"/>",
                     "<uses-permission android:name=\"android.permission.BLUETOOTH_ADMIN\"/>"
@@ -81,7 +83,9 @@
                         "appkey_android" : "5286159940e05dde7757a3a894959348"
                     }
                 },
-                "push" : {},
+                "push" : {
+                    "unipush" : null
+                },
                 "ad" : {}
             },
             "splashscreen" : {
@@ -170,7 +174,7 @@
             "JG-JPush" : {
                 "JPUSH_ISPRODUCTION_IOS" : "",
                 "JPUSH_ADVERTISINGID_IOS" : "",
-                "JPUSH_DEFAULTINITJPUSH_IOS" : "true",
+                "JPUSH_DEFAULTINITJPUSH_IOS" : "",
                 "JPUSH_OPPO_APPKEY" : "",
                 "JPUSH_OPPO_APPID" : "",
                 "JPUSH_OPPO_APPSECRET" : "",
@@ -252,20 +256,6 @@
                             "value" : ""
                         }
                     }
-                }
-            },
-            "vpsdk-module" : {
-                "__plugin_info__" : {
-                    "name" : "vpsdk-module",
-                    "description" : "vpsdk测试用例",
-                    "platforms" : "Android,iOS",
-                    "url" : "",
-                    "android_package_name" : "",
-                    "ios_bundle_id" : "",
-                    "isCloud" : false,
-                    "bought" : -1,
-                    "pid" : "",
-                    "parameters" : {}
                 }
             }
         }

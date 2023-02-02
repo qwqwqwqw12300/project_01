@@ -14,7 +14,8 @@
 					<u-icon name="chat" @click="goPage('/pages/service/system-messages')" class="active" color="#fff"
 						size="50rpx"></u-icon>
 				</view>
-				<u-icon name="plus" @click="addDevice" :stop="true" class="active" color="#fff" size="45rpx"></u-icon>
+				<u-icon name="plus-circle" @click="addDevice" :stop="true" class="active" color="#fff" size="45rpx">
+				</u-icon>
 				<!-- 下拉框 -->
 				<view class="ui-select" v-if="isAddShow">
 					<view class="ui-select-item active" @click="goPage('/pages/equipment/radar')">
@@ -36,8 +37,8 @@
 					<view class="ui-title">
 						<view>
 							<text>{{familyItem.name}}</text>
-							<text>共{{(familyItem.devices && familyItem.devices.length) || 0}}个设备</text>
-							<text>在线{{ getOnlineData(familyItem) }}个设备</text>
+							<!-- <text>共{{(familyItem.devices && familyItem.devices.length) || 0}}个设备</text>
+							<text>在线{{ getOnlineData(familyItem) }}个设备</text> -->
 						</view>
 						<u-text @click="goPage('/pages/share/share?familyId='+ familyItem.familyId)"
 							prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff"
@@ -60,6 +61,22 @@
 								</u-badge>
 							</view>
 						</view>
+						<!-- 空房间 -->
+						<view class="ui-list">
+							<view class="ui-list-box active">
+								<u-icon name="info-circle" size="90rpx"></u-icon>
+								<text class="ui-link">点击绑定设备</text>
+								<text>空房间</text>
+							</view>
+						</view>
+						<!-- /空房间 -->
+						<!-- 新增房间 -->
+						<view class="ui-list">
+							<view class="ui-list-box active">
+								<u-icon name="plus" size="70rpx"></u-icon>
+							</view>
+						</view>
+						<!-- /新增房间 -->
 					</view>
 				</view>
 			</template>
@@ -247,7 +264,7 @@
 			overflow: hidden;
 			color: #fff;
 			background-color: rgba(0, 0, 0, 0.4);
-			font-size: 24rpx;
+			font-size: 30rpx;
 
 			text {
 				margin-right: 10rpx;
@@ -279,8 +296,8 @@
 					background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
 
 					image {
-						height: 78rpx;
-						width: 80rpx;
+						height: 90rpx;
+						width: 90rpx;
 					}
 
 					text {
@@ -321,7 +338,9 @@
 		bottom: {
 			margin-top: 73rpx;
 		}
+	}
 
-		;
+	.ui-link {
+		color: #0094ff;
 	}
 </style>

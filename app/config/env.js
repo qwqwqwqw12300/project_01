@@ -9,9 +9,9 @@ export const env = {
 	mode: 'dev',
 	/**服务器地址**/
 	// basePath: 'https://67c805463f.zicp.fun',
-	basePath: 'http://218.66.48.228:8003',
+	// basePath: 'http://218.66.48.228:8003',
 	//  basePath: 'http://192.168.1.109:8081',
-	// basePath: 'http://192.168.132.204:8060',
+	basePath: 'http://192.168.132.204:8060',
 	/**版本更新地址**/
 	appUpdateUrl: '',
 	/**协议地址**/
@@ -27,5 +27,7 @@ export const env = {
 		email: 'elinker@elinker.cc',
 		password: '1234567890',
 		url: 'https://api.walabot-home.cn/authenticate'
-	}
+	},
+	// 极光sdk
+	pushKey: '3c3f6b5746d37ea030455d83'
 }

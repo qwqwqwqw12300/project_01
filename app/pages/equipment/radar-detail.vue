@@ -1,7 +1,7 @@
 <template>
 	<app-body>
 		<view class="ui-detail">
-			<image class="ui-detail-icon" src="../../static/images/device.png" mode=""></image>
+			<image class="ui-detail-icon" src="../../static/images/leida-nm.png" mode=""></image>
 			<view class="ui-detail-device">
 				<text class="title">{{deviceInfo.name || '未命名设备'}}</text>
 				<view class="info">
@@ -122,7 +122,7 @@
 		display: flex;
 
 		.ui-icon {
-			width: 200rpx;
+			// width: 200rpx;
 			display: flex;
 			flex-direction: row;
 
@@ -140,7 +140,9 @@
 		}
 
 		.ui-detail-device {
-			margin-left: 90rpx;
+			margin-left: 40rpx;
+			display: inline-block;
+			vertical-align: top;
 
 			.title {
 				line-height: 44rpx;
