@@ -115,16 +115,16 @@
       <el-form ref="form" :model="form" :rules="rules" label-position="top" :disabled="forView">
 
         <el-row type="flex" justify="center" :gutter="20">
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item label="机构名称" prop="orgName">
               <el-input v-model="form.orgName" placeholder="请输入机构名称" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="机构编号" prop="orgNo" class="is-required">
-              <el-input v-model="form.orgNo" placeholder="机构编号自动生成" disabled/>
-            </el-form-item>
-          </el-col>
+<!--          <el-col :span="12">-->
+<!--            <el-form-item label="机构编号" prop="orgNo" class="is-required">-->
+<!--              <el-input v-model="form.orgNo" placeholder="机构编号自动生成" disabled/>-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
         </el-row>
         <el-row type="flex" justify="center" :gutter="20">
           <el-col :span="12">
@@ -258,6 +258,7 @@
 
 <script>
 import { listOrg,pageOrg, getOrg, delOrg, addOrg, updateOrg, listOrgExcludeChild } from "@/api/org/org";
+import { getUserProfile } from "@/api/system/user";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import {getToken} from "@/utils/auth";
@@ -268,6 +269,7 @@ export default {
   components: { Treeselect },
   data() {
     return {
+      orgType:undefined,
       // 遮罩层
       loading: true,
       // 显示搜索条件
@@ -381,7 +383,9 @@ export default {
       }
     };
   },
-  created() {
+  async created() {
+    const {data:userProfile} = await getUserProfile();
+    this.orgType = userProfile.org.type;
     this.reset();
     this.getList();
     const data = [];
@@ -428,7 +432,7 @@ export default {
         parentId: 0,
         orgName: undefined,
         orgNo: "",
-        type: "0",
+        type: this.orgType,
         orderNum: 0,
         leader: undefined,
         leaderPhone: undefined,
