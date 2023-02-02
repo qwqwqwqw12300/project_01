@@ -115,6 +115,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
             <if test="servedUser!=null and servedUser.name !=null"> and u.name like concat('%', #{servedUser.name}, '%')</if>
             <if test="servedUser!=null and servedUser.mobilePhone !=null"> and u.mobile_phone like concat('%', #{servedUser.mobilePhone}, '%')</if>
+            <if test="servedUser!=null and servedUser.orgId !=null"> and u.org_id =#{servedUser.orgId}</if>
 
             <if test="device!=null and device.type !=null"> and d.type = #{device.type}</if>
             <if test="device!=null and device.no !=null"> and d.no like concat(#{device.no}, '%')</if>

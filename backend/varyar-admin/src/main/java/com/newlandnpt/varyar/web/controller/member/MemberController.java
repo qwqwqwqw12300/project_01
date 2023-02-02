@@ -44,6 +44,9 @@ public class MemberController extends BaseController
     {
         startPage();
         List<TMember> list = memberService.selectMemberList(member);
+        for (TMember tmember :list){
+            tmember.setPassword(null);
+        }
         return getDataTable(list);
     }
 
@@ -53,7 +56,9 @@ public class MemberController extends BaseController
     @GetMapping(value = "/{memberId}")
     public AjaxResult getInfo(@PathVariable("memberId") Long memberId)
     {
-        return success(memberService.selectMemberByMemberId(memberId));
+        TMember member =memberService.selectMemberByMemberId(memberId);
+        member.setPassword(null);
+        return success(member);
     }
     /**
      * 获取会员家庭分页

@@ -2,30 +2,37 @@
 <template>
 	<app-body>
 		<u-list class="ui-body">
-			<u-list-item v-for="item in contactList" :key="item.memberContactsId">
+			<u-list-item v-for="item in contactList" :key="item.orderNum">
 				<view class="ui-list">
 					<view class="ui-list-card">
 						<view class="card-header">
 							<u-icon name="account-fill" size="33" color="#FDC135" />
-							<text class="text">{{ item.contactName }}</text>
-							<u-icon @tap="handleEidt(item)" name="edit-pen-fill" size="33" color="#FDC135" />
+							<text class="text">{{ item.orderName }}</text>
+							<u-icon v-if="item.phone" @tap="handleEidt(item)" name="edit-pen-fill" size="33"
+								color="#FDC135" />
 						</view>
 						<view class="card-content">
-							<view class="name">
-								<u-icon name="phone" size="28" color="#fff" />
-								<text>{{ item.name }}</text>
+							<template v-if="item.phone">
+								<view class="name">
+									<u-icon name="phone" size="28" color="#fff" />
+									<text>{{ item.name }}</text>
+								</view>
+								<text class="tel">{{ item.phone }}</text>
+								<u-icon @tap="handleDel(item.memberContactsId)" name="close-circle" size="26"
+									color="#000" />
+							</template>
+							<view v-else class="ui-add">
+								<u-button @click="handleAdd(item)" class="add-button" type="primary" icon="plus">
+								</u-button>
 							</view>
-							<text class="tel">{{ item.phone }}</text>
-							<u-icon @tap="handleDel(item.memberContactsId)" name="close-circle" size="26"
-								color="#000" />
 						</view>
 					</view>
 				</view>
 			</u-list-item>
 		</u-list>
-		<view class="ui-btn">
+		<!-- 	<view class="ui-btn">
 			<button @click="handleAdd">添加紧急联系人</button>
-		</view>
+		</view> -->
 		<u-popup :closeable="true" :overlay="false" zIndex="99" :round="10" :show="isEditShow" mode="center"
 			@close="handleClose">
 			<view class="wd-add">
@@ -34,8 +41,11 @@
 						<u-text prefixIcon="/static/images/order.png" iconStyle="font-size: 32rpx" text="选择优先级"
 							color="#444" size="28rpx"></u-text>
 						<view class="ui-input">
-							<uni-data-select v-model="form.orderNum" :clear="false" :localdata="orderNumDict">
-							</uni-data-select>
+							<u-input v-model="form.orderName" :disabled="true" disabledColor="" :border="'none'"
+								fontSize="28rpx" clearable>
+							</u-input>
+							<!-- 	<uni-data-select v-model="form.orderNum" :clear="false" :localdata="orderNumDict">
+							</uni-data-select> -->
 						</view>
 					</view>
 					<view class="ui-form-item">
@@ -52,8 +62,8 @@
 						<u-text prefixIcon="/static/images/tel.png" :iconStyle="{width: '30rpx',height:'40rpx'}"
 							text="手机号码" color="#444" size="28rpx"></u-text>
 						<view class="ui-input">
-							<u-input v-model="form.phone" placeholder="输入紧急联系手机号码" :border="'none'" fontSize="28rpx"
-								clearable>
+							<u-input v-model="form.phone" maxlength="11" type="number" placeholder="输入紧急联系手机号码"
+								:border="'none'" fontSize="28rpx" clearable>
 							</u-input>
 						</view>
 					</view>
@@ -73,34 +83,57 @@
 		PostDelContacts,
 		PostEditContacts,
 	} from '@/common/http/api.js';
+	import {
+		phoneValidator
+	} from '../../common/utils/util';
 	export default {
 		data() {
-			const orderNumDict = [{
-				value: '1',
-				text: '第一紧急联系人'
-			}, {
-				value: '2',
-				text: '第二紧急联系人'
-			}, {
-				value: '3',
-				text: '第三紧急联系人'
-			}]
+			const contactModel = [{
+					orderNum: 1,
+					orderName: '第一紧急联系人'
+				},
+				{
+					orderNum: 2,
+					orderName: '第二紧急联系人'
+				},
+				{
+					orderNum: 3,
+					orderName: '第三紧急联系人'
+				}
+			]
 			return {
-				contactList: [],
-				orderNumDict,
+				contactList: [{
+						orderNum: 1,
+						orderName: '第一紧急联系人'
+					},
+					{
+						orderNum: 2,
+						orderName: '第二紧急联系人'
+					},
+					{
+						orderNum: 3,
+						orderName: '第三紧急联系人'
+					}
+				],
 				isEditShow: false,
 				form: {
 					orderNum: '',
+					orderName: '',
 					name: '',
 					phone: '',
 					memberContactsId: '',
 				},
+				contactModel,
 			}
 		},
 		methods: {
-			handleAdd() {
+			handleAdd(obj) {
+				const {
+					orderName,
+					orderNum
+				} = obj
 				uni.navigateTo({
-					url: '/pages/myself/add-contact?type=add'
+					url: `/pages/myself/add-contact?id=${orderNum}&name=${orderName}`
 				})
 			},
 			handleDel(memberContactsId) {
@@ -136,12 +169,16 @@
 			},
 			handleInit() {
 				GetContactsList({}).then(res => {
-					this.contactList = res.rows.map(n => {
-						n.contactName = this.orderNumDict.find(item => {
-							return item.value == n.orderNum
-						})['text']
-						return n
+					this.contactList = (uni.$u.deepClone(this.contactModel)).map(item => {
+						const data = res.rows.find(n => {
+							return n.orderNum === item.orderNum
+						})
+						return data ? {
+							...data,
+							orderName: item.orderName
+						} : item
 					})
+					console.log(this.contactList, '00')
 				})
 			},
 			handleClose() {
@@ -161,7 +198,7 @@
 				if (!name) {
 					return uni.$u.toast('请填写联系人姓名')
 				}
-				if (!uni.$u.test.mobile(phone)) {
+				if (!phoneValidator(phone)) {
 					return uni.$u.toast('请填写正确的手机号码')
 				}
 				PostEditContacts({
@@ -188,6 +225,10 @@
 	::v-deep {
 		.uni-select {
 			border: none;
+		}
+
+		.u-icon__icon {
+			font-size: 44rpx !important;
 		}
 	}
 
@@ -225,6 +266,17 @@
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
+
+				.ui-add {
+					width: 100%;
+					padding: 0 14rpx;
+
+					.add-button {
+						background: #FEC92E !important;
+						border: none !important;
+						box-shadow: 0px 13px 16px -10px #fffde7 !important;
+					}
+				}
 
 				.name {
 					padding: 16rpx 26rpx 16rpx 16rpx;
