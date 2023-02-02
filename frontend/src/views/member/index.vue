@@ -49,7 +49,7 @@
     <el-table v-loading="loading" :data="memberList" @selection-change="handleSelectionChange">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="会员手机号" align="center" prop="phone" />
-      <el-table-column label="会员编号" align="center" prop="no" show-overflow-tooltip/>
+      <!-- <el-table-column label="会员编号" align="center" prop="no" show-overflow-tooltip/> -->
       <el-table-column label="分配标志" align="center" prop="distributeFlag">
         <template slot-scope="scope">
           {{ distributeFlagFormat(scope.row) }}
