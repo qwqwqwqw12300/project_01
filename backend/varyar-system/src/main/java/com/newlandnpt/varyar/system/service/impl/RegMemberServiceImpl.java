@@ -36,6 +36,7 @@ public class RegMemberServiceImpl implements IRegMemberService {
         MemberParameter parameter = new MemberParameter();
         parameter.setPushMessage("0");
         TMember tMember = new TMember();
+        tMember.setOrgId(Long.valueOf("101"));
         tMember.setParameter(parameter);
         tMember.setNo(IdUtils.fastSimpleUUID());
         tMember.setPhone(phone);

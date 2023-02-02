@@ -4,13 +4,9 @@ import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.entity.SysDictData;
 import com.newlandnpt.varyar.common.core.domain.entity.SysDictType;
-import com.newlandnpt.varyar.common.core.domain.model.RadarRequest;
-import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.utils.StringUtils;
-import com.newlandnpt.varyar.system.service.ISysDictDataService;
 import com.newlandnpt.varyar.system.service.ISysDictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -30,8 +26,6 @@ public class SysDictDataController  extends BaseController {
 
     @Autowired
     private ISysDictTypeService dictTypeService;
-    @Autowired
-    private ISysDictDataService dictDataService;
 
     /**
      * 根据字典类型查询字典数据信息
@@ -39,12 +33,8 @@ public class SysDictDataController  extends BaseController {
     @GetMapping(value = "/getDict")
     public AjaxResult dictInfo(){
         List<SysDictType> data = dictTypeService.selectDictTypeAll();
-        if (StringUtils.isNull(data))
-        {
+        if (StringUtils.isNull(data)){
             data = new ArrayList<SysDictType>();
-        }
-        for (SysDictType item : data){
-
         }
         return success(getDataInfo(data));
     }

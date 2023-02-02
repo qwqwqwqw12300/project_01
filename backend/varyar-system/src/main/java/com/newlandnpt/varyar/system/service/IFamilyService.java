@@ -72,5 +72,5 @@ public interface IFamilyService
      * @param familyId 家庭主键
      * @return 结果
      */
-    public int deleteTFamilyByFamilyId(Long familyId);
+    public int deleteTFamilyByFamilyId(Long familyId,Long memberId);
 }

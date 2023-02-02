@@ -7,6 +7,7 @@ import com.newlandnpt.varyar.common.core.domain.entity.DeviceLocation;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceRoomParameter;
 import com.newlandnpt.varyar.common.core.domain.model.DevicePhoneRequest;
 import com.newlandnpt.varyar.common.core.domain.model.DeviceRequest;
+import com.newlandnpt.varyar.common.core.domain.vo.TrackerTargetVo;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.ServiceException;
@@ -19,6 +20,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+
+import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_SWITCH_KEY;
 
 /**
  * 设备管理
@@ -147,6 +150,9 @@ public class DeviceController extends BaseController {
             return  error("非创建者无权限修改！");
         }
         device.setName(deviceRequest.getDeviceName());
+        if (deviceRequest.getLocation()!=null){
+            device.setLocation(deviceRequest.getLocation());
+        }
         try {
             iDeviceService.updateDevice(device);
         } catch (Exception e){
@@ -280,8 +286,8 @@ public class DeviceController extends BaseController {
             dr.setOutMonitorFlag(deviceRequest.getOutMonitorFlag());
             dr.setExistFlag(deviceRequest.getExistFlag());
             dr.setFallFlag(deviceRequest.getFallFlag());
-            dr.setEntryTime(deviceRequest.getEntryTime());
-            dr.setDepartureTime(deviceRequest.getDepartureTime());
+            dr.setEntryTime(deviceRequest.getEntryTime()/1000);
+            dr.setDepartureTime(deviceRequest.getDepartureTime()/1000);
             dr.setStartTime(deviceRequest.getStartTime());
             dr.setEndTime(deviceRequest.getEndTime());
             radarwave.setDeviceRoomParameter(dr);
@@ -489,8 +495,58 @@ public class DeviceController extends BaseController {
         }
         return AjaxResult.success(tDevice);
     }
-
-
+    /**
+     * 获取未绑定设备位置
+     * */
+    @GetMapping("/getUnDeviceInfo")
+    public AjaxResult getUnDeviceInfo(Long deviceId) {
+        TDevice cond = new TDevice();
+        cond.setMemberId(this.getLoginUser().getMemberId());
+        List<TDevice> TDevices = iDeviceService.selectDeviceList(cond);
+        return success(TDevices);
+    }
+    /**
+     * 开启获取设备位置(实时)
+     * */
+    @GetMapping("/startNowInfo")
+    public AjaxResult startNowInfo(String deviceId) {
+        TDevice tDevice = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceId));
+        if (!tDevice.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return error("非创建者无权获取设备信息！");
+        }
+        if(tDevice!=null){
+            redisCache.setCacheObject(TARGET_LOCATION_SWITCH_KEY+tDevice.getNo(), true);
+        }
+        return success();
+    }
+    /**
+     * 关闭获取设备位置(实时)
+     * */
+    @GetMapping("/endNowInfo")
+    public AjaxResult getUnDeviceInfo(String deviceId) {
+        TDevice tDevice = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceId));
+        if (!tDevice.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return error("非创建者无权获取设备信息！");
+        }
+        if(tDevice!=null){
+            redisCache.setCacheObject(TARGET_LOCATION_SWITCH_KEY+tDevice.getNo(), false);
+        }
+        return success();
+    }
+    /**
+     * 获取设备位置(实时)
+     * */
+    @GetMapping("/getNowInfo")
+    public AjaxResult getNowInfo(String deviceId) {
+        TDevice tDevice = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceId));
+        if (!tDevice.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return error("非创建者无权获取设备信息！");
+        }
+        List<TrackerTargetVo> vo = iDeviceService.getRealLocationMonitorByDeviceNo(tDevice.getNo());
+        if (vo == null)
+            vo = new ArrayList<TrackerTargetVo>();
+        return success(vo);
+    }
     private AjaxResult checkPhoneInfo(DevicePhone devicePhone ,AjaxResult ajax){
         if (devicePhone.getPhoneName().equals("")|| devicePhone.getPhoneName()==null){
             ajax = AjaxResult.error("联系人名称不能为空！");
@@ -516,4 +572,5 @@ public class DeviceController extends BaseController {
         }
         return null;
     }
+
 }
