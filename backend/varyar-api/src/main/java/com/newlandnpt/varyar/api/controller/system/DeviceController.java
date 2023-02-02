@@ -111,7 +111,6 @@ public class DeviceController extends BaseController {
         device.setName(deviceRequest.getDeviceName());
         device.setNo(deviceRequest.getDeviceNo());
         device.setType(deviceRequest.getDeviceType());
-        device.setRegisterTime(DateUtils.getNowDate());
         device.setLocation(deviceRequest.getLocation());
         device.setStatus("0");
         device.setDistributeFlag("1");
