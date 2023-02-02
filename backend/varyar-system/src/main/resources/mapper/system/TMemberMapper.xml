@@ -16,6 +16,7 @@
         <result property="userPhone" column="user_phone"/>
         <result property="registrationId" column="registration_id"/>
         <result property="registrationType" column="registration_type"/>
+        <result property="orgId" column="org_id"/>
         <result property="delFlag" column="del_flag"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
@@ -48,7 +49,7 @@
     <sql id="selectMemberVo">
         select member_id, no, phone, password, distribute_flag, user_id, user_name,
             (select mobile_phone from sys_user where user_id = m.user_id) user_phone,member_parameter,
-            del_flag,m.registration_id,m.registration_type, create_time, update_time
+            del_flag,m.registration_id,m.registration_type,m.org_id,create_time, update_time
         from t_member m
     </sql>
 
@@ -103,6 +104,7 @@
             <if test="distributeFlag != null">distribute_flag,</if>
             <if test="userId != null">user_id,</if>
             <if test="userName != null">user_name,</if>
+            <if test="orgId != null">org_id,</if>
             <if test="delFlag != null">del_flag,</if>
             create_time
         </trim>
@@ -114,6 +116,7 @@
             <if test="distributeFlag != null">#{distributeFlag},</if>
             <if test="userId != null">#{userId},</if>
             <if test="userName != null">#{userName},</if>
+            <if test="orgId != null">#{orgId},</if>
             <if test="delFlag != null">#{delFlag},</if>
             sysdate()
         </trim>
@@ -132,6 +135,7 @@
             <if test="delFlag != null">del_flag = #{delFlag},</if>
             <if test="registrationId != null">registration_id = #{registrationId},</if>
             <if test="registrationType != null">registration_type = #{registrationType},</if>
+            <if test="orgId != null">org_id = #{orgId},</if>
             update_time = sysdate()
         </trim>
         where member_id = #{memberId}

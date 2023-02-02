@@ -81,6 +81,7 @@ create table t_member (
   user_name         varchar(50)     default null               comment '运营者姓名',
   registration_id   varchar(100)    default null               comment '会员登录设备注册号',
   registration_type char(1)         default null               comment '登录设备注册类型（0:android 1:ios）',
+  org_id            bigint(20)      default null               comment '机构id',
   del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
   create_time       datetime                                   comment '创建时间',
   update_time       datetime                                   comment '更新时间',

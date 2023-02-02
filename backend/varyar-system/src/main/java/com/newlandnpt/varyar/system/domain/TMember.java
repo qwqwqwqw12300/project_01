@@ -60,6 +60,9 @@ public class TMember extends BaseEntity
     /** 登录设备注册类型（0:android 1:ios） */
     private String registrationType;
 
+    /** 机构id */
+    private Long orgId;
+
     public String getRegistrationId() {
         return registrationId;
     }
@@ -74,6 +77,14 @@ public class TMember extends BaseEntity
 
     public void setRegistrationType(String registrationType) {
         this.registrationType = registrationType;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
     }
 
     public MemberParameter getParameter() {
@@ -188,6 +199,7 @@ public class TMember extends BaseEntity
                 .append("delFlag", delFlag)
                 .append("registrationId", registrationId)
                 .append("registrationType", registrationType)
+                .append("orgId", orgId)
                 .toString();
     }
 }

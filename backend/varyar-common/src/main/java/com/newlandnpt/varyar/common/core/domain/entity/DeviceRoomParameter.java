@@ -8,11 +8,11 @@ import java.util.Date;
 public class DeviceRoomParameter implements Serializable{
     private static final long serialVersionUID = 1L;
     /**
-     *进入时间   data HH:mm:ss
+     *进入时间  s
      * */
     private Long entryTime;
     /**
-     *离开时间 data HH:mm:ss
+     *离开时间 s
      * */
     private Long departureTime;
     /**

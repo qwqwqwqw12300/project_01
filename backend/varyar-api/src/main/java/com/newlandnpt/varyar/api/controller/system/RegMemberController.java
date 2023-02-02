@@ -1,7 +1,7 @@
 package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.constant.CacheConstants;
-import com.newlandnpt.varyar.common.core.domain.entity.RsaUtils;
+import com.newlandnpt.varyar.common.utils.RSA.RsaUtils;
 import com.newlandnpt.varyar.common.core.domain.model.RegMemberRequest;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;

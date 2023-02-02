@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.common.core.domain.entity;
+package com.newlandnpt.varyar.common.utils.RSA;
 
 import io.lettuce.core.dynamic.annotation.Value;
 import org.apache.commons.codec.binary.Base64;
@@ -181,16 +181,22 @@ public class RsaUtils {
         public  String privateKey;*/
 
        //生成公钥和私钥
-        RsaUtils.RsaKeyPair rsaKeyPair = new RsaUtils.RsaKeyPair();
+       /* RsaUtils.RsaKeyPair rsaKeyPair = new RsaUtils.RsaKeyPair();
         rsaKeyPair.setPublicKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDF4xuwZNWhVaQZguqxLBKhc2S1jKiJOzJS0YczxLPTH9l2Fa+zxZ/AzYci95KG9kFbvZEVyuFhR5UTsORc+ONsqTg/zx2+vJ7kI8h2/qtWNV6vH9JmgMVHl5CEpikXhZjOPutNmzcRKfzDbYwp274f6iDUi9GttlYR68qPBij8AQIDAQAB");
         rsaKeyPair.setPrivateKey("MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAMXjG7Bk1aFVpBmC6rEsEqFzZLWMqIk7MlLRhzPEs9Mf2XYVr7PFn8DNhyL3kob2QVu9kRXK4WFHlROw5Fz442ypOD/PHb68nuQjyHb+q1Y1Xq8f0maAxUeXkISmKReFmM4+602bNxEp/MNtjCnbvh/qINSL0a22VhHryo8GKPwBAgMBAAECgYEArGQGKiwd45fdBpCDbmdrr5T8ZiCsbijQ1U9Njm7NDZ7QbkvELkN6wZcLJA4zazm6hHZnn2mH4Jxgpa/TsZ7tV6KocRq4W/Txxf8c/aLW7X/vm9MyWgXk90mcKM2+hJHj7hnon3KQwpLJMqCJBZXhPhXOoHAaulOPBPpamryxqBUCQQDrECPMzgos00/uL+BVHHmRN/H4X19UStNmcd+ZYVWQJ3OrONYncU++N7qovW3omVflCOSAqghBIBxu6HMR2rLfAkEA14NKc+HdR1vczxNwm66rUsJE2N0NumYQkNOpsz59gERXAQVIakdzvBhyVbBWUoWRFTEpvmcrADzGzLZSyWgNHwJBAIjgYxhVOhOUEM0vz79/z0JCg4IPdyFMWQEkegGEbiB8+JvRgtKA5uBq7yRm+eMht87EeNp7KEdT/XqPnMHeyZ0CQA3e21nd/ZnsJagGPkcm1Mv8yOWURJ/slcBcfx2UNgudWmQsbN66Po6qnCE7ujKReib9BQzGIxRe1QSz71wbIE0CQQDRU/TyLk21xJ59dDVudXEt5EtPBNAAeqWY+I0lnzxAqkeylpK8D2BxFxytLH1p/+XIg8e6CNgz/zKumu1VLvbe");
         //公钥加密
-        String enPassWord = RsaUtils.encryptByPublicKey(rsaKeyPair.getPublicKey(),"1234");
+        String enPassWord = RsaUtils.encryptByPublicKey(rsaKeyPair.getPublicKey(),"1111");
         System.out.println(enPassWord);
 
         //私钥解密
         String unenPassWord = RsaUtils.decryptByPrivateKey(rsaKeyPair.getPrivateKey(),enPassWord);
-        System.out.println(unenPassWord);
+        System.out.println(unenPassWord);*/
+
+       Long i = 46860000L;
+
+       long s = i/60;
+
+        System.out.println(s);
 
     }
 }

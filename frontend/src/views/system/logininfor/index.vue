@@ -235,9 +235,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('monitor/logininfor/export', {
+      this.download('system/logininfor/export', {
         ...this.queryParams
-      }, `logininfor_${new Date().getTime()}.xlsx`)
+      }, `登录日志清单_${new Date().getTime()}.xlsx`)
     }
   }
 };

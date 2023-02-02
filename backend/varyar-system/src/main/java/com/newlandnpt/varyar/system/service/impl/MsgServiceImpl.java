@@ -87,7 +87,20 @@ public class MsgServiceImpl implements IMsgService
     }
 
     /**
-     * 修改消息
+     * 修改推送消息状态
+     *
+     * @param tMsg 消息
+     * @return 结果
+     */
+    @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
+    public int updateTMsgSendStatus(TMsg tMsg)
+    {
+        return tMsgMapper.updateTMsg(tMsg);
+    }
+
+    /**
+     * app端设备消息已读状态修改
      * 
      * @param tMsg 消息
      * @return 结果
