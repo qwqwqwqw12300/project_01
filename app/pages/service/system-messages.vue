@@ -27,6 +27,15 @@
 				</view>
 			</view>
 		</view>
+		<!-- 		<u-popup :closeable="true" :overlay="false" zIndex="99" :round="10" :show="showVisible" mode="center"
+			@close="showVisible = false">
+			<view class="wd-content">
+				<scroll-view scroll-y class="uni-scroll">
+					<text>{{ readInfo }}</text>
+				</scroll-view>
+			</view>
+		</u-popup> -->
+		<u-modal @confirm="showVisible = false" :show="showVisible" title="消息详情" :content='readInfo'></u-modal>
 	</app-body>
 </template>
 
@@ -35,11 +44,20 @@
 		GetSysNotice,
 		postSetNoticeFlag,
 	} from '@/common/http/api.js';
+	import {
+		mapState
+	} from 'vuex';
 	export default {
 		data() {
 			return {
 				messageList: [],
+				showVisible: false,
 			}
+		},
+		computed: {
+			...mapState({
+				readInfo: state => state.service.readInfo
+			})
 		},
 		methods: {
 			details({
@@ -49,11 +67,11 @@
 				postSetNoticeFlag({
 					noticeId
 				}).then(res => {
-					console.log(this.$store, 'ccc')
 					this.$store.commit('setReadInfo', noticeContent);
-					uni.navigateTo({
-						url: `/pages/service/message-details`
-					})
+					this.showVisible = true
+					// uni.navigateTo({
+					// 	url: `/pages/service/message-details`
+					// })
 				});
 
 			},
@@ -141,6 +159,22 @@
 			}
 
 
+		}
+	}
+
+	.wd-content {
+		width: 582rpx;
+		min-height: 600rpx;
+		border-radius: 20rpx;
+		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
+		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
+		padding: 53rpx 31rpx;
+
+		.uni-scroll {
+			min-height: 200rpx;
+			word-wrap: break-word;
+			word-break: normal;
+			text-indent: 1em;
 		}
 	}
 </style>
