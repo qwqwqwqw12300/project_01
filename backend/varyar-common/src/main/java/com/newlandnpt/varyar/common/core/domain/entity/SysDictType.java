@@ -8,6 +8,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.annotation.Excel.ColumnType;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
+import org.springframework.data.annotation.Transient;
+
+import java.util.List;
 
 /**
  * 字典类型表 sys_dict_type
@@ -30,10 +33,12 @@ public class SysDictType extends BaseEntity
     @Excel(name = "字典类型")
     private String dictType;
 
+    @Transient
+    private List<SysDictData> dictDatas;
+
     /** 状态（0正常 1停用） */
     @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
     private String status;
-
     public Long getDictId()
     {
         return dictId;
@@ -78,7 +83,15 @@ public class SysDictType extends BaseEntity
     {
         this.status = status;
     }
-    
+
+    public List<SysDictData> getDictDatas() {
+        return dictDatas;
+    }
+
+    public void setDictDatas(List<SysDictData> dictDatas) {
+        this.dictDatas = dictDatas;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
