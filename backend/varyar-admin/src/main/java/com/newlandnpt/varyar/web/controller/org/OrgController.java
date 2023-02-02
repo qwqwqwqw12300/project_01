@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar.web.controller.org;
 
+import java.util.Date;
 import java.util.List;
 
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
@@ -8,6 +9,7 @@ import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -94,7 +96,7 @@ public class OrgController extends BaseController
     @PostMapping
     public AjaxResult add(@Validated @RequestBody TOrg org)
     {
-        org.setOrgNo(IdUtils.fastSimpleUUID());
+        org.setOrgNo(org.getParentId()+ DateFormatUtils.format(new Date(),"yyyyMMddHHmmssSSS"));
         if (UserConstants.NOT_UNIQUE.equals(orgService.checkOrgNameUnique(org)))
         {
             return error("新增机构'" + org.getOrgName() + "'失败，机构名称已存在");
