@@ -104,12 +104,12 @@ export default {
       return this.orgDeviceCountList.find(x=>x.orgId = orgId)?.count || 0;
     },
     init() {
-      this.orgList = [];
-      this.orgDeviceCountList = [];
-      this.orgUnHandleEventCount = undefined;
-      this.notAssociateDeviceCount = undefined;
-      this.notArrangeDeviceCount = undefined;
-      this.notArrangeDeviceGroupCount = undefined;
+      // this.orgList = [];
+      // this.orgDeviceCountList = [];
+      // this.orgUnHandleEventCount = undefined;
+      // this.notAssociateDeviceCount = undefined;
+      // this.notArrangeDeviceCount = undefined;
+      // this.notArrangeDeviceGroupCount = undefined;
       subOrgList().then(response => {
         this.orgList = response.data;
         this.orgList.forEach(org => {

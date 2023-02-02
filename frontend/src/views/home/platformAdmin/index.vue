@@ -111,12 +111,12 @@ export default {
   },
   methods: {
     init(){
-      this.deviceCount= undefined;
-      this.notAssociateDeviceCount= undefined;
-      this.memberCount= undefined;
-      this.notArrangeMemberCount= undefined;
-      this.orgCount= undefined;
-      this.unHandleEventCount= undefined;
+      // this.deviceCount= undefined;
+      // this.notAssociateDeviceCount= undefined;
+      // this.memberCount= undefined;
+      // this.notArrangeMemberCount= undefined;
+      // this.orgCount= undefined;
+      // this.unHandleEventCount= undefined;
       deviceCount().then(response => this.deviceCount = response.data);
       notAssociateDeviceCount().then(response => this.notAssociateDeviceCount = response.data);
       memberCount().then(response => this.memberCount = response.data);
