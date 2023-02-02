@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.cloudBase.domain.vo;
+package com.newlandnpt.varyar.common.core.domain.vo;
 
 import java.io.Serializable;
 

@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.newlandnpt.varyar.cloudBase.domain.Presence;
-import com.newlandnpt.varyar.cloudBase.domain.vo.TrackerTargetVo;
+import com.newlandnpt.varyar.common.core.domain.vo.TrackerTargetVo;
 import com.newlandnpt.varyar.cloudBase.utils.HttpClientUtil;
 import com.newlandnpt.varyar.common.utils.spring.SpringUtils;
 

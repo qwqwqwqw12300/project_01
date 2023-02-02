@@ -61,4 +61,8 @@ public class CacheConstants
      * 登录账户密码错误次数 redis key
      */
     public static final String PWD_ERR_CNT_KEY = "pwd_err_cnt:";
+
+    /** 是否开启记录目标坐标信息的开关，值为true or false **/
+    public static final String TARGET_LOCATION_SWITCH_KEY = "cloud:presence:targetLocationSwitch:";
+    public static final String TARGET_LOCATION_KEY = "cloud:presence:targetLocation:";
 }

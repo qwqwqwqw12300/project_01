@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.newlandnpt.varyar.cloudBase.domain.vo.TrackerTargetVo;
+import com.newlandnpt.varyar.common.core.domain.vo.TrackerTargetVo;
 
 public class Presence implements Serializable {
 	

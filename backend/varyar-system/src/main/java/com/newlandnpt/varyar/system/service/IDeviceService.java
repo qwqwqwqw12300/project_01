@@ -3,6 +3,7 @@ package com.newlandnpt.varyar.system.service;
 import java.util.List;
 import java.util.Map;
 
+import com.newlandnpt.varyar.common.core.domain.vo.TrackerTargetVo;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.dto.org.OrgDeviceCountDto;
 
@@ -194,5 +195,24 @@ public interface IDeviceService
      * @return
      */
     public TDevice loadingDeviceStauts(TDevice devices);
+
+    /**
+     * 激活设备实时位置监控
+     * @param deviceId
+     */
+    public void activeRealLocationMonitor(Long deviceId);
+
+    /**
+     * 取消设备实时位置监控
+     * @param deviceId
+     */
+    public void cancelRealLocationMonitor(Long deviceId);
+
+    /**
+     * 根据设备号获取设备位置实时监控信息
+     * @param deviceNo
+     * @return
+     */
+    public List<TrackerTargetVo> getRealLocationMonitorByDeviceNo(String deviceNo);
 
 }

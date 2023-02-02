@@ -3,8 +3,10 @@ package com.newlandnpt.varyar.system.service.impl;
 import com.newlandnpt.varyar.common.annotation.DataScope;
 import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
+import com.newlandnpt.varyar.common.core.domain.vo.TrackerTargetVo;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.ServiceException;
+import com.newlandnpt.varyar.common.exception.base.BaseException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.system.core.device.settings.RadarDeviceSettingsDisposer;
@@ -29,6 +31,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_KEY;
+import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_SWITCH_KEY;
 import static com.newlandnpt.varyar.common.constant.DeviceConstants.*;
 import static com.newlandnpt.varyar.common.utils.SecurityUtils.getLoginUserName;
 
@@ -457,6 +461,33 @@ public class DeviceServiceImpl implements IDeviceService {
                 device.setOnlineFlag("1");
             }
         return  device;
+    }
+
+    @Override
+    public void activeRealLocationMonitor(Long deviceId) {
+        TDevice device = deviceMapper.selectTDeviceByDeviceId(deviceId);
+        if(device == null){
+            throw new BaseException("设备不存在");
+        }
+        redisCache.setCacheObject(TARGET_LOCATION_SWITCH_KEY + device.getNo(),true);
+    }
+
+    @Override
+    public void cancelRealLocationMonitor(Long deviceId) {
+        TDevice device = deviceMapper.selectTDeviceByDeviceId(deviceId);
+        if(device == null){
+            throw new BaseException("设备不存在");
+        }
+        redisCache.setCacheObject(TARGET_LOCATION_SWITCH_KEY + device.getNo(),false);
+    }
+
+    @Override
+    public List<TrackerTargetVo> getRealLocationMonitorByDeviceNo(String deviceNo) {
+        List<TrackerTargetVo> result = redisCache.getCacheObject(TARGET_LOCATION_KEY+deviceNo);
+        if(result == null){
+            result = new ArrayList<>(0);
+        }
+        return result;
     }
 
     /**

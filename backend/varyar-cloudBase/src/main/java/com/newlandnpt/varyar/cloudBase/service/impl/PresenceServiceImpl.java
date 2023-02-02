@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.cloudBase.constant.CacheConstants;
 import com.newlandnpt.varyar.cloudBase.constant.VayyarCloudConstants;
 import com.newlandnpt.varyar.cloudBase.domain.Presence;
-import com.newlandnpt.varyar.cloudBase.domain.vo.TrackerTargetVo;
+import com.newlandnpt.varyar.common.core.domain.vo.TrackerTargetVo;
 import com.newlandnpt.varyar.cloudBase.service.PresenceService;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.utils.spring.SpringUtils;
@@ -53,11 +53,11 @@ public class PresenceServiceImpl implements PresenceService {
 		event(t);
 		//记录目标坐标
 		//如果redis开关开启，则记录
-		Boolean targetLocation = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.TARGET_LOCATION_SWITCH_KEY + deviceId);
+		Boolean targetLocation = SpringUtils.getBean(RedisCache.class).getCacheObject(com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_SWITCH_KEY + deviceId);
 		if(targetLocation != null && targetLocation){
 			List<TrackerTargetVo> trackerTargets = t.getTrackerTargets();
 			//坐标信息存入redis一分钟过期
-			SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.TARGET_LOCATION_KEY + deviceId, trackerTargets, 1, TimeUnit.MINUTES);
+			SpringUtils.getBean(RedisCache.class).setCacheObject(com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_KEY + deviceId, trackerTargets, 1, TimeUnit.MINUTES);
 		}
 	}
 	

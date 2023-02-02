@@ -83,7 +83,7 @@ public class TServeRecord extends BaseEntity
      */
     @NotEmpty(message = "服务事件列表不能为空")
     @Valid
-    @Excel(name = "关联消息编号", targetAttr = "no", type = Excel.Type.EXPORT,sort = 8,useSubClassAnn = false)
+    @Excel(name = "关联消息编号", targetAttr = "no",separator = "\n\r", type = Excel.Type.EXPORT,sort = 8,useSubClassAnn = false)
     private List<ServeEventSimple> serveEvents;
 
     public void setRecordId(Long recordId)
@@ -220,6 +220,9 @@ public class TServeRecord extends BaseEntity
 
         /** 事件编号 */
         private String no;
+
+        /** 事件内容 */
+        private String content;
 
         public Long getEventId() {
             return eventId;
