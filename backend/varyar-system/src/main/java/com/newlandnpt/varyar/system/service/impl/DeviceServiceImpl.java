@@ -261,8 +261,8 @@ public class DeviceServiceImpl implements IDeviceService {
                 device.setName(device.getNo());
                 //默认未激活
                 device.setStatus(STATUS_NOT_ACTIVE);
-                //默认未分配
-                device.setDistributeFlag(DISTRIBUTE_FLAG_NO);
+                //默认已分配
+                device.setDistributeFlag(DISTRIBUTE_FLAG_YES);
                 //获取当前登录用户名作为创建人
                 device.autoSetCreateByLoginUser();
                 this.insertDevice(device);
