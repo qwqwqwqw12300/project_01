@@ -99,7 +99,7 @@
                 icon="el-icon-edit"
                 @click="handleAssociate(scope.row)"
                 v-hasPermi="['device:associate']"
-              >设备配对
+              >设备分配
               </el-button>
               <el-button
                 size="mini"
@@ -149,7 +149,7 @@
       </el-col>
     </el-row>
     <!--    设备配对弹窗-->
-    <el-dialog title="设备配对" :visible.sync="associateOpen" center>
+    <el-dialog title="设备分配" :visible.sync="associateOpen" center>
       <el-form ref="associateForm" :model="associateForm" :rules="associateRules" label-width="80px">
         <el-row type="flex" justify="center">
           <el-col :span="24">
