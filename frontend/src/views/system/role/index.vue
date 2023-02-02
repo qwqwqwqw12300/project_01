@@ -281,7 +281,7 @@ export default {
       // 列信息
       columns: [
         { key: 0, label: `角色名称`, prop:`roleName`, visible: true },
-        { key: 1, label: `角色编号`, width:120, prop:`roleId`, visible: true },
+        { key: 1, label: `角色编号`, width:120, prop:`roleId`, visible: false },
         { key: 2, label: `权限字符`, width:150, prop:`roleKey`, visible: false },
         { key: 3, label: `显示顺序`, width:100, prop:`roleSort`, visible: false},
         { key: 4, label: `状态`, width:100, prop:`status`, visible: true, formatter:(row, column, cellValue) => this.dict.type.sys_normal_disable?.find(x=>x.value == cellValue)?.label},
