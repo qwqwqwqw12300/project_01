@@ -177,19 +177,16 @@ public class FamilyController extends BaseController {
         //查询我的家庭（需要修改的）
         TFamily tFamily =  tFamilyService.selectTFamilyByFamilyId(Long.valueOf(shareFamilyRequest.getFamilyId()));
         if( tFamily == null){
-            ajax = ajax.error("无法查到家庭的记录！");
-            return ajax;
+            return error("无法查到家庭的记录！");
         }
         if(!tFamily.getCreateById().equals(String.valueOf(this.getLoginUser().getMemberId()))){
-            ajax = ajax.error("非创建者无权分享！");
-            return ajax;
+            return error("非创建者无权分享！");
         }
         TMemberFamily item = new TMemberFamily();
         item.setPhone(shareFamilyRequest.getPhone());
         List<TMemberFamily> tMemberFamilys = iMemberFamilyService.selectTMemberFamilyList(item);
         if(tMemberFamilys.size()>0){
-            ajax = ajax.error("已分享给该用户！");
-            return ajax;
+            return error("已分享给该用户！");
         }
         //用手机号查询是否有此用户
         TMember member = iMemberService.selectMemberByPhone(shareFamilyRequest.getPhone());
@@ -208,10 +205,9 @@ public class FamilyController extends BaseController {
         try {
             iMemberFamilyService.insertTMemberFamily(tMemberFamily);
         } catch (Exception e){
-            ajax = ajax.error("分享我的家庭失败！");
-            return ajax;
+            return error("分享我的家庭失败！");
         }
-        return ajax;
+        return success(tMemberFamily);
     }
     /**
      * 删除家庭分享

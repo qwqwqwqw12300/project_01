@@ -44,6 +44,25 @@ public class TMemberFamily extends BaseEntity
     @Transient
     private String userName;
 
+    @Transient
+    private String regFlag;
+
+    public String getRegFlag() {
+        if(this.getPhone()==null||this.getPhone().equals("")){
+            return "0";
+        }else{
+            return "1";
+        }
+    }
+
+    public void setRegFlag(String regFlag) {
+        if(this.getPhone()==null||this.getPhone().equals("")){
+            this.regFlag = "0";
+        }else{
+            this.regFlag = "1";
+        }
+    }
+
     public String getUserName() {
         return userName;
     }

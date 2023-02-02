@@ -83,29 +83,20 @@ public class NoticeController extends BaseController {
         cond.setMemberId(this.getLoginUser().getMemberId());
         List<TNotice> tNotices = itNoticeService.selectTNoticeList(cond);
         TNotice tNotice = new TNotice();
+        tNotice.setMemberId(this.getLoginUser().getMemberId());;
+        tNotice.setSysNoticeId(Long.valueOf(noticeRequest.getNoticeId()));
         //同一个公告一个会员不能重复标记
         if (tNotices.size()>0 && tNotices.size()==1 ){
-            tNotices.get(0);
-            tNotice.setReadFlag("1");
-            tNotice.setSysNoticeId(Long.valueOf(noticeRequest.getNoticeId()));
-            tNotice.setMemberId(this.getLoginUser().getMemberId());
-            try {
-                itNoticeService.insertTNotice(tNotice);
-            }catch (Exception e){
-                ajax = ajax.error("标志系统标识失败！");
-                return ajax;
-            }
+            return error("系统消息已读！");
         }else if(tNotices.size()==0){
             tNotice.setReadFlag("1");
             try {
-                itNoticeService.updateTNotice(tNotice);
+                itNoticeService.insertTNotice(tNotice);
             }catch (Exception e){
-                ajax = ajax.error("标志系统标识失败！");
-                return ajax;
+                return  error("标志系统标识失败！");
             }
         }else {
-            ajax = ajax.error("标志系统标识失败！");
-            return ajax;
+            return error("标志系统标识失败！");
         }
         return ajax;
     }
