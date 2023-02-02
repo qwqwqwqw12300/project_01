@@ -30,7 +30,7 @@
       </el-card>
     </el-row>
     <el-row type="flex" justify="center">
-      <el-transfer v-loading="notArrangeMemberListLoading||arrangeMemberListLoading" v-model="arrangeMemberIds"
+      <el-transfer class="el-transfer-450" v-loading="notArrangeMemberListLoading||arrangeMemberListLoading" v-model="arrangeMemberIds"
                    :titles="['待分配会员','已分配会员']" :data="membersData"></el-transfer>
     </el-row>
     <el-row type="flex" justify="center">

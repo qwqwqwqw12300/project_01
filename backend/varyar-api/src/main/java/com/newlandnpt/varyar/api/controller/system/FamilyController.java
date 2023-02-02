@@ -73,8 +73,7 @@ public class FamilyController extends BaseController {
             @RequestBody @Validated FamilyRequest familyRequest){
         AjaxResult ajax = AjaxResult.success();
         if (familyRequest.getFamilyName().equals("")|| familyRequest.getFamilyName()==null){
-            ajax = ajax.error("家庭名称不能为空！");
-            return ajax;
+            return error("家庭名称不能为空！");
         }
         //获取但当前登录会员id
         Long memberId = getLoginUser().getMemberId();
@@ -92,8 +91,7 @@ public class FamilyController extends BaseController {
             tFamilyService.insertTFamily(tFamily,memberId);
             ajax = AjaxResult.success(tFamily);
         } catch (Exception e){
-            ajax = ajax.error("新增我的家庭失败！");
-            return ajax;
+            return error("新增我的家庭失败！");
         }
         return ajax;
     }
@@ -105,26 +103,22 @@ public class FamilyController extends BaseController {
             @RequestBody @Validated FamilyRequest familyRequest){
         AjaxResult ajax = AjaxResult.success();
         if (familyRequest.getFamilyId().equals("")|| familyRequest.getFamilyId()==null){
-            ajax = ajax.error("家庭Id不能为空！");
-            return ajax;
+            return error("家庭Id不能为空！");
         }
         //查询我的家庭（需要修改的）
         TFamily tFamily =  tFamilyService.selectTFamilyByFamilyId(Long.valueOf(familyRequest.getFamilyId()));
         if( tFamily == null){
-            ajax = ajax.error("无法查到需要修改的记录！");
-            return ajax;
+            return error("无法查到需要修改的记录！");
         }
         if(!tFamily.getCreateById().equals(String.valueOf(this.getLoginUser().getMemberId()))){
-            ajax = ajax.error("非创建者无权限修改！");
-            return ajax;
+            return error("非创建者无权限修改！");
         }
         try {
             tFamily.setName(familyRequest.getFamilyName());
             tFamily.setAddress(familyRequest.getAddress());
             tFamilyService.updateTFamily(tFamily);
         } catch (Exception e){
-            ajax = ajax.error("修改我的家庭失败！");
-            return ajax;
+            return error("修改我的家庭失败！");
         }
         return ajax;
     }
@@ -136,24 +130,20 @@ public class FamilyController extends BaseController {
             @RequestBody @Validated FamilyRequest familyRequest){
         AjaxResult ajax = AjaxResult.success();
         if (familyRequest.getFamilyId().equals("")|| familyRequest.getFamilyId()==null){
-            ajax = ajax.error("家庭Id不能为空！");
-            return ajax;
+            return error("家庭Id不能为空！");
         }
         //查询我的家庭（需要修改的）
         TFamily tFamily =  tFamilyService.selectTFamilyByFamilyId(Long.valueOf(familyRequest.getFamilyId()));
-        if( tFamily == null){
-            ajax = ajax.error("无法查到需要修改的记录！");
-            return ajax;
+        if( tFamily == null||tFamily.getDelFlag().equals("2")){
+            return error("无法查到需要修改的记录！");
         }
         if(!tFamily.getCreateById().equals(String.valueOf(this.getLoginUser().getMemberId()))){
-            ajax = ajax.error("非创建者无权限删除！");
-            return ajax;
+            return error("非创建者无权限删除！");
         }
         try {
-            tFamilyService.deleteTFamilyByFamilyId(tFamily.getFamilyId());
+            tFamilyService.deleteTFamilyByFamilyId(tFamily.getFamilyId(),this.getLoginUser().getMemberId());
         } catch (Exception e){
-            ajax = ajax.error("删除我的家庭失败！");
-            return ajax;
+            return error("删除我的家庭失败！");
         }
         return ajax;
     }
@@ -217,22 +207,18 @@ public class FamilyController extends BaseController {
             @RequestBody @Validated FamilyRequest familyRequest){
         AjaxResult ajax = AjaxResult.success();
         if (familyRequest.getShareFamilyId().equals("")|| familyRequest.getShareFamilyId()==null){
-            ajax = ajax.error("共享家庭Id不能为空！");
-            return ajax;
+            return error("共享家庭Id不能为空！");
         }
         if (familyRequest.getShareMemberId().equals("")|| familyRequest.getShareMemberId()==null){
-            ajax = ajax.error("共享会员Id不能为空！");
-            return ajax;
+            return error("共享会员Id不能为空！");
         }
         //查询我的家庭（需要修改的）
         TFamily tFamily =  tFamilyService.selectTFamilyByFamilyId(Long.valueOf(familyRequest.getShareFamilyId()));
         if( tFamily == null){
-            ajax = ajax.error("无法查到需要修改的记录！");
-            return ajax;
+            return error("无法查到需要修改的记录！");
         }
         if(!tFamily.getCreateById().equals(String.valueOf(this.getLoginUser().getMemberId()))){
-            ajax = ajax.error("非创建者无权删除！");
-            return ajax;
+            return error("非创建者无权删除！");
         }
         TMemberFamily tMemberFamily = new TMemberFamily();
         tMemberFamily.setMemberId(Long.valueOf(familyRequest.getShareMemberId()));
@@ -240,16 +226,14 @@ public class FamilyController extends BaseController {
         tMemberFamily.setCreateMemberId(Long.valueOf(this.getLoginUser().getMemberId()));
         List<TMemberFamily> tMemberFamilys = iMemberFamilyService.selectTMemberFamilyList(tMemberFamily);
         if (tMemberFamilys==null||tMemberFamilys.size()==0){
-            ajax = ajax.error("无分享记录！");
-            return ajax;
+            return error("无分享记录！");
         }
         for (TMemberFamily item:tMemberFamilys){
             if (!String.valueOf(item.getCreateMemberId()).equals(String.valueOf(item.getMemberId()))){
                 try {
                     iMemberFamilyService.deleteTMemberFamilyByMemberFamilyId(item.getMemberFamilyId());
                 } catch (Exception e){
-                    ajax = ajax.error("删除分享我的家庭失败！");
-                    return ajax;
+                    return error("删除分享我的家庭失败！");
                 }
             }
         }
@@ -263,8 +247,7 @@ public class FamilyController extends BaseController {
     public AjaxResult shareList(@RequestBody @Validated FamilyRequest familyRequest) {
         AjaxResult ajax = AjaxResult.success();
         if (familyRequest.getFamilyId().equals("")|| familyRequest.getFamilyId()==null){
-            ajax = ajax.error("家庭Id不能为空！");
-            return ajax;
+            return error("家庭Id不能为空！");
         }
         Long memberId = getLoginUser().getMemberId();
         TMemberFamily tMemberFamily = new TMemberFamily();

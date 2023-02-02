@@ -421,5 +421,10 @@ export default {
 };
 </script>
 
-<style land="css">.el-tooltip__popper{max-width:50%}
+<style land="css">
+  .el-tooltip__popper{max-width:50%}
+  .el-table__body,.el-table__header,.el-table__footer {
+    width: 100%;
+    table-layout: fixed !important;
+  }
 </style>

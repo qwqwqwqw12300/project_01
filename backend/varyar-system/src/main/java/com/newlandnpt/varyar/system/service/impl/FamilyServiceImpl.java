@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Set;
 
 import com.newlandnpt.varyar.common.utils.DateUtils;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TMemberFamily;
 import com.newlandnpt.varyar.system.domain.TRoom;
+import com.newlandnpt.varyar.system.service.IDeviceService;
 import com.newlandnpt.varyar.system.service.IMemberFamilyService;
 import com.newlandnpt.varyar.system.service.IRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,8 @@ public class FamilyServiceImpl implements IFamilyService
     private IMemberFamilyService iMemberFamilyService;
     @Autowired
     private IRoomService iRoomService;
+    @Autowired
+    private IDeviceService iDeviceService;
 
     /**
      * 查询家庭
@@ -130,9 +134,25 @@ public class FamilyServiceImpl implements IFamilyService
      */
     @Override
     @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
-    public int deleteTFamilyByFamilyId(Long familyId)
-    {   //删除对应的我的家庭信息
+    public int deleteTFamilyByFamilyId(Long familyId,Long memberId){
+        //删除对应的我的家庭信息
         familyMapper.deleteTFamilyByFamilyId(familyId);
+        TMemberFamily tfcond = new TMemberFamily();
+        tfcond.setCreateMemberId(memberId);
+        tfcond.setFamilyId(familyId);
+        List<TMemberFamily>  tMemberFamilies = iMemberFamilyService.selectTMemberFamilyList(tfcond);
+        for (TMemberFamily item : tMemberFamilies){
+            iMemberFamilyService.deleteTMemberFamilyByMemberFamilyId(item.getMemberFamilyId());
+        }
+        //查询对应家庭下的所有设备并解除绑定
+        TDevice deviceCond = new TDevice();
+        deviceCond.setFamilyId(familyId);
+        List<TDevice> TDevices = iDeviceService.selectDeviceList(deviceCond);
+        for (TDevice item : TDevices){
+            item.setFamilyId(0L);
+            item.setRoomId(0L);
+            iDeviceService.updateDevice(item);
+        }
         Set<Long> roomIdSet = new HashSet<>();
         TRoom tRoom = new TRoom();
         tRoom.setFamilyId(familyId);

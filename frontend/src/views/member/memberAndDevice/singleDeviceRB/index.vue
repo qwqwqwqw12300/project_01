@@ -138,7 +138,7 @@
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
   
-      <el-table v-loading="loading" :data="eventList" @selection-change="handleSelectionChange" @row-click="cardDetails">
+      <el-table v-loading="loading" :data="eventList" @selection-change="handleSelectionChange" @row-click="cardDetails" :cell-style="getCellStyle">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="重要级别" align="center" prop="level">
           <template slot-scope="scope">
@@ -146,16 +146,16 @@
           </template>
         </el-table-column>	
 
-        <el-table-column label="事件编号" align="center" prop="no" width="110" show-overflow-tooltip/>
-        <el-table-column label="事件内容" align="center" prop="content" width="110" show-overflow-tooltip/>
-        <el-table-column label="设备名称" align="center" prop="deviceName" width="110" show-overflow-tooltip/>
-        <el-table-column label="设备编号" align="center" prop="deviceNo" width="110" show-overflow-tooltip/>
-        <el-table-column label="报警时间" align="center" prop="createTime" width="170" color="#FF0000">
+        <el-table-column label="事件编号" align="center" prop="no" :show-overflow-tooltip="true"/>
+        <el-table-column label="事件内容" align="center" prop="content"  :show-overflow-tooltip="true"/>
+        <el-table-column label="设备名称" align="center" prop="deviceName"  :show-overflow-tooltip="true"/>
+        <el-table-column label="设备编号" align="center" prop="deviceNo"  :show-overflow-tooltip="true"/>
+        <el-table-column label="报警时间" align="center" prop="createTime"  color="#FF0000">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作时间" align="center" prop="operateTime" width="170" color="#FF0000">
+        <el-table-column label="操作时间" align="center" prop="operateTime"  color="#FF0000">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.operateTime) }}</span>
           </template>
@@ -230,7 +230,7 @@
             </template>
 
           </el-table-column>
-          <el-table-column label="消息内容" align="center" prop="content"  show-overflow-tooltip/>
+          <el-table-column label="消息内容" align="center" prop="content"  :show-overflow-tooltip="true"/>
           <el-table-column label="操作人员" align="center" prop="operator" />
           <el-table-column label="接收人员" align="center" prop="memberName" />
           <el-table-column label="发送时间" align="center" prop="sendTime" width="180">
@@ -543,6 +543,19 @@
       this.form.remark = item?.label || ""
     },
 
+    getCellStyle({column}){
+          // const tempWidth=column.realWidth || column.width
+          //  if(column.showOverflowTooltip)
+          //  {
+          //    return
+          //    {
+          //      minWidh:tempWidth + 'px',
+          //      maxWidh:tempWidth + 'px',
+          //    }
+          //  }
+
+    },
+
     /** 查看按钮操作 */
     handleView(row) {
         //this.reset();
@@ -719,4 +732,11 @@
     }
   };
   </script>
+  <style land="css">
+  .el-tooltip__popper{max-width:50%}
+  .el-table__body,.el-table__header,.el-table__footer {
+    width: 100%;
+    table-layout: fixed !important;
+  }
+</style>
   

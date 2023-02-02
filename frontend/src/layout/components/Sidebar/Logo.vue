@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: 'vayyar管理系统',
+      title: '艾吉通管理系统',
       logo: logoImg
     }
   }

@@ -137,10 +137,10 @@
         <el-table-column label="服务人员" align="center" prop="servedUser.name" />
         <el-table-column label="服务人员手机号" align="center" prop="servedUser.mobilePhone" />
         <el-table-column label="处理人归属机构" align="center" prop="servedUser.orgName" />
-        <el-table-column label="处理人服务备注" align="center" prop="remark" show-overflow-tooltip/>
-        <el-table-column label="设备名称" align="center" prop="device.name" width="170" />
-        <el-table-column label="设备编号" align="center" prop="device.no"  width="170"/>
-        <el-table-column label="关联消息编号" align="center" prop="operateFlag" show-overflow-tooltip>
+        <el-table-column label="处理人服务备注" align="center" prop="remark" :show-overflow-tooltip="true"/>
+        <el-table-column label="设备名称" align="center" prop="device.name" width="170" :show-overflow-tooltip="true"/>
+        <el-table-column label="设备编号" align="center" prop="device.no"  width="170" :show-overflow-tooltip="true"/>
+        <el-table-column label="关联消息编号" align="center" prop="operateFlag" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <span v-for="({no},index) in scope.row.serveEvents" :key="no">{{no}}
             <span v-if="index!==scope.row.serveEvents.length-1">,
@@ -149,7 +149,7 @@
         </el-table-column>
         <el-table-column label="设备分组＋位置" align="center"  prop="deviceGroupName,location">
           <template slot-scope="scope">
-                    {{scope.row.device.deviceGroupName}}  {{scope.row.device.location}}
+                    {{scope.row.device== null?"":scope.row.device.deviceGroupName}}  {{scope.row.device== null?"":scope.row.device.location}}
           </template>
         </el-table-column>
 
@@ -396,5 +396,10 @@ export default {
 };
 </script>
 
-<style land="css">.el-tooltip__popper{max-width:50%}
+<style land="css">
+  .el-tooltip__popper{max-width:50%}
+  .el-table__body,.el-table__header,.el-table__footer {
+    width: 100%;
+    table-layout: fixed !important;
+  }
 </style>

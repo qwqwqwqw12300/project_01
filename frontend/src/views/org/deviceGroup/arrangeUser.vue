@@ -30,8 +30,8 @@
       </el-card>
     </el-row>
     <el-row type="flex" justify="center">
-      <el-transfer v-loading="notArrangeDeviceGroupListLoading||arrangedDeviceGroupListLoading" v-model="arrangedDeviceGroupIds" :titles="['待分配设备组','已分配设备组']" :data="deviceGroupsData"></el-transfer>
-    </el-row>
+      <el-transfer class="el-transfer-450" v-loading="notArrangeDeviceGroupListLoading||arrangedDeviceGroupListLoading" v-model="arrangedDeviceGroupIds" :titles="['待分配设备组','已分配设备组']" :data="deviceGroupsData"></el-transfer>
+      </el-row>
     <el-row type="flex" justify="center">
       <el-button type="primary" @click="submitDeviceGroupArrange" :disabled="this.deviceGroupUserOrgId == undefined">提 交</el-button>
       <el-button @click="close">取 消</el-button>

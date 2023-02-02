@@ -57,6 +57,7 @@ public class MemberServiceImpl implements IMemberService
      * @return 会员
      */
     @Override
+    @DataScope(orgAlias = "m")
     public List<TMember> selectMemberList(TMember member)
     {
         return memberMapper.selectMemberList(member);

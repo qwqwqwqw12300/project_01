@@ -37,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="ancestors" column="ancestors"   />
         <result property="orderNum"  column="order_num"   />
         <result property="leader"    column="leader"      />
+        <result property="type"    column="type"      />
         <result property="status"    column="org_status" />
     </resultMap>
 	
@@ -60,7 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<sql id="selectUserVo">
         select u.user_id, u.org_id, u.user_name, u.nick_name,u.name, u.email, u.avatar, u.mobile_phone, u.telephone, u.extension_number, u.password, u.sex, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
-        d.org_id, d.parent_id, d.ancestors, d.org_name, d.order_num, d.leader, d.status as org_status
+        d.org_id, d.parent_id, d.ancestors, d.org_name, d.order_num, d.leader, d.type, d.status as org_status
         from sys_user u
 		    left join t_org d on u.org_id = d.org_id
     </sql>

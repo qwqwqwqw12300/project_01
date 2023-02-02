@@ -7,7 +7,7 @@
         </div>
         <water-fall :value="urgentDevices">
           <template slot-scope="{item}">
-            <el-card :style="{background: item.onlineFlag=='0'?'#ff9999':'none'}" shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId,item.orgId,item.memberId)">
+            <el-card :style="{background: item.onlineFlag=='0'?'#ff9999':'#e1f3fb'}" shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId,item.orgId,item.memberId)">
               <span :style="{color:item.urgent?'#ff0000':'none'}">{{ item.name }}</span> | {{getEventSum(item)}}条
               <br>
               {{ item.memberId==undefined?item.deviceGroupName:item.familyName }} | {{ item.memberId==undefined?item.location:item.roomName }} |
@@ -26,7 +26,7 @@
         </div>
         <water-fall :value="deviceList">
           <template slot-scope="{item}">
-            <el-card :style="{background: item.onlineFlag=='0'?'#ff9999':'none'}" shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId,item.orgId,item.memberId)">
+            <el-card :style="{background: item.onlineFlag=='0'?'#ff9999':'#e1f3fb'}" shadow="hover" class="card-item card-item-click" @click.native="goDeviceEvent(item.deviceId,item.orgId,item.memberId)">
               <span :style="{color:item.urgent?'#ff0000':'none'}">{{ item.name }}</span> | {{getEventSum(item)}}条
               <br>
               {{ item.memberId==undefined?item.deviceGroupName:item.familyName }} | {{ item.memberId==undefined?item.location:item.roomName }} |
