@@ -57,6 +57,21 @@
               />
             </el-select>
           </el-form-item>
+          <el-form-item label="设备状态" prop="status">
+            <el-select
+              v-model="queryParams.status"
+              placeholder="请选择设备状态"
+              clearable
+              style="width: 240px"
+            >
+              <el-option
+                v-for="dict in dict.type.sys_device_status"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -233,7 +248,8 @@ export default {
         name: undefined,
         type: undefined,
         orgId: undefined,
-        distributeFlag: undefined
+        distributeFlag: undefined,
+        status: undefined
       },
       columns: [
         {key: 0, label: `设备名称`, prop: `name`, visible: true},
@@ -291,6 +307,7 @@ export default {
       groupArrangeRules: {},
       groupArrangeGroupList: [],
       currentDistributeFlag: undefined,
+      currentStatus: undefined,
       currentOrgId: undefined,
       /** 设备配置相关 */
       //雷达波设置页面开启
@@ -305,6 +322,7 @@ export default {
   },
   created() {
     this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
+    this.currentStatus = this.$route.query.status==undefined?undefined:this.$route.query.status
     this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)
     this.getDeptTree();
     this.resetQuery();
@@ -322,6 +340,7 @@ export default {
         if (this.$route.name == "Device") {
           if (this.currentDistributeFlag != val) {
             this.currentDistributeFlag = val==undefined?undefined:Number(val);
+            this.currentStatus = this.$route.query.status==undefined?undefined:this.$route.query.status
             this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)
             this.resetQuery();
           }
@@ -334,6 +353,20 @@ export default {
         if (this.$route.name == "Device") {
           if (this.currentOrgId != val) {
             this.currentOrgId = val;
+            this.currentStatus = this.$route.query.status==undefined?undefined:this.$route.query.status
+            this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
+            this.resetQuery();
+          }
+        }
+      }
+    },
+    "$route.query.status": {
+      immediate: true,
+      handler: function (val) {
+        if (this.$route.name == "Device") {
+          if (this.currentOrgId != val) {
+            this.currentStatus = val
+            this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)
             this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
             this.resetQuery();
           }
@@ -372,7 +405,8 @@ export default {
         name: undefined,
         type: undefined,
         orgId: this.currentOrgId,
-        distributeFlag: this.currentDistributeFlag
+        distributeFlag: this.currentDistributeFlag,
+        status: this.currentStatus
       }
       // this.resetForm("queryForm");
       this.handleQuery();

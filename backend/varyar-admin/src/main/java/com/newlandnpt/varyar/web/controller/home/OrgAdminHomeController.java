@@ -71,6 +71,14 @@ public class OrgAdminHomeController extends BaseController {
     }
 
     /**
+     * 未激活设备数量
+     * @return
+     */
+    @GetMapping("device/notactive/count")
+    public AjaxResult notActiveDeviceCount(){
+        return success(deviceService.notActiveDeviceCount(new TDevice()));
+    }
+    /**
      * 未分配（配对）设备数量
      * @return
      */

@@ -24,6 +24,14 @@ export function orgUnHandleEventCount(orgId) {
   })
 }
 
+// 未激活设备数量
+export function notActiveDeviceCount() {
+  return request({
+    url: '/home/org/admin/device/notactive/count',
+    method: 'get'
+  })
+}
+
 // 未分配（配对）设备数量
 export function notAssociateDeviceCount() {
   return request({

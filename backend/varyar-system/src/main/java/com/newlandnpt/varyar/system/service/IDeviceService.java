@@ -129,6 +129,13 @@ public interface IDeviceService
     public long total(TDevice device);
 
     /**
+     * 统计未激活设备数量
+     * @return
+     * @param device
+     */
+    public long notActiveDeviceCount(TDevice device);
+
+    /**
      * 统计未分配(配对)设备数量
      * @return
      * @param device

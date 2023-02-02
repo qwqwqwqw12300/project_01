@@ -114,6 +114,14 @@ public interface TDeviceMapper
      * @return
      * @param device
      */
+    @Select("select count(*) from t_device d where status in ('0','1','2') and status = '0' ${params.dataScope} and del_flag = '0'")
+    public long notActiveDeviceCount(TDevice device);
+
+    /**
+     * 统计未分配激活设备数量
+     * @return
+     * @param device
+     */
     @Select("select count(*) from t_device d where status in ('0','1','2') and distribute_flag = '0' ${params.dataScope} and del_flag = '0'")
     public long notAssociateDeviceCount(TDevice device);
     /**

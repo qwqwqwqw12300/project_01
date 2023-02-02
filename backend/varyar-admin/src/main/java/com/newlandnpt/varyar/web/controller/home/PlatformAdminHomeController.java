@@ -41,8 +41,18 @@ public class PlatformAdminHomeController extends BaseController {
      */
     @GetMapping("/device/count")
     public AjaxResult deviceCount() {
-        //统计机构下已激活设备数量
+        //统计机构下设备数量
         return success(deviceService.total(new TDevice()));
+    }
+
+    /**
+     * 未激活设备数量
+     *
+     * @return
+     */
+    @GetMapping("/device/notactive/count")
+    public AjaxResult notActiveDeviceCount() {
+        return success(deviceService.notActiveDeviceCount(new TDevice()));
     }
 
     /**

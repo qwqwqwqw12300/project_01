@@ -46,10 +46,10 @@
         </div>
         <el-row>
           <el-col :span="6">
-            <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotAssosiateDevice()">
-              待分配设备
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotActiveDevice()">
+              未激活设备
               <br>
-              {{ notAssociateDeviceCount }}台
+              {{ notActiveDeviceCount }}台
             </el-card>
           </el-col>
           <el-col :span="6">
@@ -78,6 +78,7 @@
 <script>
 import {
   deviceCount,
+  notActiveDeviceCount,
   notAssociateDeviceCount,
   memberCount,
   notArrangeMemberCount,
@@ -91,7 +92,7 @@ export default {
   data() {
     return {
       deviceCount: undefined,
-      notAssociateDeviceCount: undefined,
+      notActiveDeviceCount: undefined,
       memberCount: undefined,
       notArrangeMemberCount: undefined,
       orgCount: undefined,
@@ -118,7 +119,7 @@ export default {
       // this.orgCount= undefined;
       // this.unHandleEventCount= undefined;
       deviceCount().then(response => this.deviceCount = response.data);
-      notAssociateDeviceCount().then(response => this.notAssociateDeviceCount = response.data);
+      notActiveDeviceCount().then(response => this.notActiveDeviceCount = response.data);
       memberCount().then(response => this.memberCount = response.data);
       notArrangeMemberCount().then(response => this.notArrangeMemberCount = response.data);
       orgCount().then(response => this.orgCount = response.data);
@@ -126,6 +127,9 @@ export default {
     },
     goDevice(){
       this.$router.push({path:'/devices/device'})
+    },
+    goNotActiveDevice(){
+      this.$router.push({path:'/devices/device',query: {status: '0'}})
     },
     goNotAssosiateDevice(){
       this.$router.push({path:'/devices/device',query: {distributeFlag: 0}})

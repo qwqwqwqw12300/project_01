@@ -25,10 +25,10 @@
         </div>
         <el-row>
           <el-col :span="6">
-            <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotAssosiateDevice()">
-              待分配设备
+            <el-card shadow="hover" class="card-item card-item-click" @click.native="goNotActiveDevice()">
+              未激活设备
               <br>
-              {{ notAssociateDeviceCount }}台
+              {{ notActiveDeviceCount }}台
             </el-card>
           </el-col>
           <el-col :span="6">
@@ -63,6 +63,7 @@ import {
   subOrgList,
   subOrgDeviceCount,
   orgUnHandleEventCount,
+  notActiveDeviceCount,
   notAssociateDeviceCount,
   notArrangeDeviceCount,
   notArrangeDeviceGroupCount
@@ -79,7 +80,7 @@ export default {
       currentOrgId: undefined,
       orgDeviceCountList: [],
       orgUnHandleEventCount: undefined,
-      notAssociateDeviceCount: undefined,
+      notActiveDeviceCount: undefined,
       notArrangeDeviceCount: undefined,
       notArrangeDeviceGroupCount: undefined,
       orgUnHandleEventCountMap: {}
@@ -128,12 +129,17 @@ export default {
           orgUnHandleEventCount(user.data.orgId).then(response => this.orgUnHandleEventCount = response.data)
         }
       });
-      notAssociateDeviceCount().then(response => this.notAssociateDeviceCount = response.data);
+      notActiveDeviceCount().then(response => this.notActiveDeviceCount = response.data);
       notArrangeDeviceCount().then(response => this.notArrangeDeviceCount = response.data);
       notArrangeDeviceGroupCount().then(response => this.notArrangeDeviceGroupCount = response.data);
     },
     goDevice(orgId) {
       this.$router.push({path: '/devices/device', query: {orgId: orgId}})
+    },
+    goNotActiveDevice(orgId) {
+      // this.$tab.closePage('Device');
+      this.$router.push({path: '/devices/device', query: {orgId: orgId, status: '0'}})
+        .then(x=>x.reload())
     },
     goNotAssosiateDevice(orgId) {
       // this.$tab.closePage('Device');

@@ -292,6 +292,12 @@ public class DeviceServiceImpl implements IDeviceService {
 
     @Override
     @DataScope(orgAlias = "d")
+    public long notActiveDeviceCount(TDevice device) {
+        return deviceMapper.notActiveDeviceCount(device);
+    }
+
+    @Override
+    @DataScope(orgAlias = "d")
     public long notAssociateDeviceCount(TDevice device) {
         return deviceMapper.notAssociateDeviceCount(device);
     }
