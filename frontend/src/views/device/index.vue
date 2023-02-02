@@ -107,7 +107,7 @@
                 icon="el-icon-circle-check"
                 @click="handleGroupArrange(scope.row)"
                 v-hasPermi="['device:groupArrange']"
-              >分配设备组
+              >设备分组
               </el-button>
               <el-button
                 v-if="scope.row.status == '2'"
