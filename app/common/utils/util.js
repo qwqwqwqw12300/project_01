@@ -221,3 +221,10 @@ export const versionCompare = (curV, reqV) => {
 export const getHoursTime = (date) => {
 	return date && new Date('1970-1-1 ' + date + ':00').getTime();
 }
+/**
+ * 手机号校验 1开头 11位
+ */
+export function phoneValidator(phone) {
+	const reg = /^1\d{10}$/
+	return reg.test(phone)
+}
