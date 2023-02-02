@@ -92,6 +92,7 @@
 	import {
 		isApp,
 		isIos,
+		phoneValidator
 	} from '../../common/utils/util';
 	import {
 		env
@@ -164,7 +165,7 @@
 					code,
 					uuid
 				} = this.$refs.codeRef.returnCodeData()
-				if (!uni.$u.test.mobile(phone)) {
+				if (!phoneValidator(phone)) {
 					return uni.$u.toast('请填写正确的手机号码')
 				}
 				if (!password) {
@@ -237,7 +238,7 @@
 						phone,
 						code
 					} = this.smsLoginForm
-					if (!uni.$u.test.mobile(phone)) {
+					if (!phoneValidator(phone)) {
 						return uni.$u.toast('请填写正确的手机号码')
 					}
 					if (code.length !== 4) {

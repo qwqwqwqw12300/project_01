@@ -14,8 +14,8 @@
 					<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="手机号码" color="#444" size="28rpx">
 					</u-text>
 					<view class="ui-input">
-						<u-input v-model="formParams.phone" placeholder="请输入手机号码" maxlength="11" :border="'none'"
-							fontSize="28rpx" clearable></u-input>
+						<u-input v-model="formParams.phone" placeholder="请输入手机号码" type="number" maxlength="11"
+							:border="'none'" fontSize="28rpx" clearable></u-input>
 					</view>
 				</view>
 				<view class="ui-form-item">
@@ -61,6 +61,9 @@
 	import {
 		resetMemberPwd
 	} from '../../common/http/api';
+	import {
+		phoneValidator
+	} from '../../common/utils/util';
 	import jsencrypt from '@/common/utils/jsencrypt.js'
 	import {
 		env
@@ -104,7 +107,7 @@
 					confirm,
 					code
 				} = this.formParams
-				if (!uni.$u.test.mobile(phone)) {
+				if (!phoneValidator(phone)) {
 					return uni.$u.toast('请填写正确的手机号码')
 				}
 				if (code.length !== 4) {

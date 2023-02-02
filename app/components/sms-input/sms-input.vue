@@ -25,6 +25,9 @@
 		sendSms,
 		checkSms
 	} from '@/common/http/api.js';
+	import {
+		phoneValidator
+	} from '../../common/utils/util';
 	export default {
 		props: {
 			/**请求与验证地址**/
@@ -70,8 +73,8 @@
 			async sendCode() {
 				if (this.status !== 'init') return;
 				const payload = typeof this.payload === 'function' ? await this.payload() : this.payload;
-				if (!uni.$u.test.mobile(payload.phone)) {
-					return uni.$u.toast('请填写正确的手机号码');
+				if (!phoneValidator(payload.phone)) {
+					return uni.$u.toast('请填写正确的手机号码')
 				}
 				if (this.verification(payload)) {
 					this.suffix = '发送中..';
