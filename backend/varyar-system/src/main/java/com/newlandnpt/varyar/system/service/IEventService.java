@@ -32,6 +32,14 @@ public interface IEventService
     public List<TEvent> selectTEventList(TEvent tEvent);
 
     /**
+     * 查询事件列表
+     *
+     * @param eventIds 事件
+     * @return 事件集合
+     */
+    public List<TEvent> selectTEventList(Long[] eventIds);
+
+    /**
      * 新增事件
      * 
      * @param tEvent 事件

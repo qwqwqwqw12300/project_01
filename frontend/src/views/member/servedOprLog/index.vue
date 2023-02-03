@@ -140,18 +140,36 @@
         <el-table-column label="处理人服务备注" align="center" prop="remark" :show-overflow-tooltip="true"/>
         <el-table-column label="设备名称" align="center" prop="device.name" width="170" :show-overflow-tooltip="true"/>
         <el-table-column label="设备编号" align="center" prop="device.no"  width="170" :show-overflow-tooltip="true"/>
-        <el-table-column label="关联消息编号" align="center" prop="operateFlag" :show-overflow-tooltip="true">
+        <!-- <el-table-column label="关联消息编号" align="center" prop="serveEventsNo" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            <span v-for="({no},index) in scope.row.serveEvents" :key="no">{{no}}
-            <span v-if="index!==scope.row.serveEvents.length-1">,
-            </span></span>
+            <el-link @click="handleView(scope.row)">
+              <span v-for="({no},index) in scope.row.serveEvents" :key="no">{{no}}
+                <span v-if="index!==scope.row.serveEvents.length-1">,
+                </span></span>
+            </el-link>    
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="设备分组＋位置" align="center"  prop="deviceGroupName,location">
           <template slot-scope="scope">
                     {{scope.row.device== null?"":scope.row.device.deviceGroupName}}  {{scope.row.device== null?"":scope.row.device.location}}
           </template>
         </el-table-column>
+
+        <el-table-column
+        label="操作"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-info"
+            @click="handleView(scope.row)"
+            >查看简要</el-button
+          >
+        </template>
+      </el-table-column>
 
       </el-table>
 
@@ -164,6 +182,69 @@
       />
 
 
+    <!-- 简单事件 -->
+    <el-dialog :title="title" :visible.sync="events" width="900px" append-to-body>
+     <el-table
+      v-loading="loading"
+      :data="eventList.slice((queryEventsParams.pageNum-1)*queryEventsParams.pageSize,queryEventsParams.pageNum*queryEventsParams.pageSize)"
+    >
+      <!-- <el-table-column type="selection" width="55" align="center" /> -->
+      <el-table-column label="序号" type="index" align="center">
+        <template slot-scope="scope">
+          <span>{{(queryEventsParams.pageNum - 1) * queryEventsParams.pageSize + scope.$index + 1}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="重要级别" align="center" prop="level">
+        <template slot-scope="scope">
+          {{ eventLevelFormat(scope.row) }}
+        </template>
+      </el-table-column>
+
+      <!-- <el-table-column label="事件编号" align="center" prop="no" width="120" show-overflow-tooltip/> -->
+      <el-table-column label="事件内容" align="center" prop="content"  show-overflow-tooltip/>
+      <el-table-column label="设备名称" align="center" prop="deviceName"  show-overflow-tooltip/>
+      <el-table-column label="设备编号" align="center" prop="deviceNo"  show-overflow-tooltip/>
+      <!-- <el-table-column
+        label="报警时间"
+        align="center"
+        prop="createTime"
+        width="180"
+        color="#FF0000"
+
+      >
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="操作时间"
+        align="center"
+        prop="operateTime"
+        width="180"
+        color="#FF0000"
+      >
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.operateTime) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="设备归属会员" align="center" prop="memberPhone" /> -->
+      <el-table-column label="处理标志" align="center" prop="operateFlag">
+        <template slot-scope="scope">
+          {{ operateFlagFormat(scope.row) }}
+        </template>
+      </el-table-column>
+    
+    </el-table>
+
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="queryEventsParams.pageNum"
+      :limit.sync="queryEventsParams.pageSize"
+      @pagination="getEventList"
+    />
+
+    </el-dialog>
 
 
 
@@ -178,10 +259,16 @@ import { listRecord, getRecord, delRecord, addRecord, updateRecord } from "@/api
 import { orgTreeSelect } from "@/api/system/user";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+//获取事件列表信息
+import { listEvent } from "@/api/eventAndMessage/event";
+
 
 export default {
   name: "Record",
-  dicts: ['sys_device_status','device_type','sys_served_type'],
+  dicts: ['sys_device_status','device_type','sys_served_type',
+  'sys_operate_flag','sys_operate_type','event_level'
+],
+  
   components: { Treeselect },
 
   data() {
@@ -207,8 +294,10 @@ export default {
       orgOptions: [],
       // 是否显示弹出层
       open: false,
+      events:false,
       // 日期范围
       dateRange: [],
+      eventList:[],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -241,10 +330,19 @@ export default {
         //处理时间截止
         createTimeEnd: null,
         },
+        
+       
         // //处理时间起始
         // createTimeBegin: null,
         // //处理时间截止
         // createTimeEnd: null,
+      },
+      queryEventsParams:{
+          pageNum: 1,
+          pageSize: 20,
+          params:{
+            eventIds: [],
+          },
       },
       // 表单参数
       form: {},
@@ -282,6 +380,24 @@ export default {
 
 
     },
+
+
+    /** 查询事件列表 */
+    getEventList() {
+      this.loading = true;
+      // this.queryEventsParams.params.eventIds = this.eventIds,
+      // console.log("开始====="+this.queryEventsParams.params.eventIds)
+      console.log("eventIds=============="+JSON.stringify(this.queryEventsParams))
+      // listEvent(this.queryParams).then(response => {
+      listEvent(this.queryEventsParams).then(
+        (response) => {
+          this.eventList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        }
+      );
+    },
+
     /** 查询机构下拉树结构 */
     getDeptTree() {
         orgTreeSelect().then(response => {
@@ -303,6 +419,41 @@ export default {
       return this.selectDictLabel(this.dict.type.sys_served_type, row.servedType)
     },
 
+    // 处理标志字典翻译
+    operateFlagFormat(row, column) {
+      return this.selectDictLabel(
+        this.dict.type.sys_operate_flag,
+        row.operateFlag
+      );
+    },
+
+    // 操作类型字典翻译
+    operateTypeFormat(row, column) {
+      return this.selectDictLabel(
+        this.dict.type.sys_operate_type,
+        row.operateType
+      );
+    },
+
+    //事件级别字段翻译
+    eventLevelFormat(row, column) {
+      return this.selectDictLabel(this.dict.type.event_level, row.level);
+    },
+
+    /** 查看按钮操作 */
+    handleView(row) {
+      //  console.log("eventId=============="+ this.eventId)
+      // this.eventIds=[],
+      this.queryEventsParams.params.eventIds = row.serveEvents.map((item) => item.eventId);
+
+      // const no = row.serveEvents.no;
+      //  console.log("eventIds=============="+JSON.stringify(this.eventIds))
+      this.getEventList();
+      this.title = "关联事件简要";
+      this.events = true;
+
+    },
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -313,7 +464,7 @@ export default {
       this.form = {
         recordId: null,
         servedUserId: null,
-        servedUserSnapshot: null,
+        // servedUserSnapshot: null,
         servedType: null,
         servedInfo: null,
         deviceId: null,

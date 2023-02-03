@@ -106,6 +106,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
                 AND date_format(eve.operate_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
+            <if test="params.eventIds != null ">
+                and         event_id in (#{eventIds})
+<!--                <foreach item="eventIds" collection="params.eventIds" open="(" separator="," close=")">-->
+<!--                    #{eventIds}-->
+<!--                </foreach>-->
+            </if>
+
             <!-- 数据范围过滤 -->
             ${params.dataScope}
         </where>
