@@ -59,17 +59,18 @@ public class NoticeController extends BaseController {
     public AjaxResult unReadNum()
     {
         List<SysNotice>  list = iSysNoticeService.selectNoticeList(new SysNotice());
+        List<SysNotice>  newList = new ArrayList<SysNotice>();
         for (SysNotice item:list){
             TNotice cond = new TNotice();
             cond.setSysNoticeId(Long.valueOf(item.getNoticeId()));
             cond.setMemberId(this.getLoginUser().getMemberId());
             List<TNotice> tNotices = itNoticeService.selectTNoticeList(cond);
-            if(tNotices.size()>0){
-                list.remove(item);
+            if(tNotices.size()==0){
+                newList.add(item);
             }
         }
 
-        return AjaxResult.success(list);
+        return AjaxResult.success(newList);
     }
 
     /**
