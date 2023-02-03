@@ -21,7 +21,12 @@
 					</u-text>
 					<view class="ui-input">
 						<u-input length="11" type="number" v-model="shareForm.phone" placeholder="请输入手机号码"
-							:border="'none'" fontSize="28rpx" clearable></u-input>
+							:border="'none'" fontSize="28rpx" clearable>
+							<template slot="suffix">
+								<u-button @tap="getContact" text="通讯录" size="mini" class="wd-sms ui-cont"
+									border="surround" style="width: 150rpx;height: 60rpx;;"></u-button>
+							</template>
+						</u-input>
 					</view>
 				</view>
 				<view class="ui-form-item">
@@ -37,6 +42,12 @@
 			<view class="ui-code"><canvas id="qrcode" canvas-id="qrcode"
 					:style="{ width: `${size}px`, height: `${size}px` }"></canvas></view>
 		</u-popup>
+		<u-popup :round="10" :show="contactShow" mode="bottom" @close="contactShow = false">
+			<view style="height: 1300rpx;">
+				<contact-select placeholder="请输入联系人姓名" @cityClick="phoneClick" formatName="name"
+					:obtainCitys="contactList" :isSearch="true"></contact-select>
+			</view>
+		</u-popup>
 	</app-body>
 </template>
 
@@ -47,6 +58,9 @@
 		PostShareFamily,
 		PostSharelist
 	} from '../../common/http/api';
+	import {
+		phoneValidator
+	} from '../../common/utils/util';
 	export default {
 		data() {
 			return {
@@ -62,7 +76,9 @@
 					familyId: '',
 					smsUuid: '',
 					familyPhone: ''
-				}
+				},
+				contactList: [],
+				contactShow: false,
 			}
 		},
 		onLoad({
@@ -73,10 +89,15 @@
 				familyId
 			});
 			this.getShareList();
-			this.getContact()
 		},
 		methods: {
 			async submit() {
+				if (!phoneValidator(this.shareForm.phone)) {
+					return uni.$u.toast('请填写正确的手机号码')
+				}
+				if (this.shareForm.code !== 4) {
+					return uni.$u.toast('请填写正确的验证码')
+				}
 				if (this.shareForm.smsUuid) {
 					const res = await this.shareFamilys();
 					this.getShareList();
@@ -190,18 +211,38 @@
 			/**
 			 * 获取手机联系人
 			 */
-
 			getContact() {
-				let type = plus.contacts.ADDRESSBOOK_PHONE //当前手机联系人
+				this.contactShow = true
+				let type = plus.contacts.ADDRESSBOOK_PHONE 
 				plus.contacts.getAddressBook(type, res => {
-					console.log(res, 'res')
-					uni.showToast({
-						title: '获取通讯录成功',
-						duration: 2000
+					res.find(['displayName', 'phoneNumbers'], data => {
+						this.contactList = data.map(n => {
+							const {
+								displayName: name,
+								phoneNumbers,
+							} = n
+							return {
+								name,
+								phone: phoneNumbers[0].value
+							}
+						})
+						this.contactShow = true
 					})
 				}, error => {
 					console.log(error)
+					uni.showToast({
+						title: '获取通讯录失败',
+						duration: 2000
+					})
 				})
+			},
+			/**
+			 * 选择手机联系人
+			 */
+			
+			phoneClick(item) {
+				this.shareForm.phone = item.phone
+				this.contactShow = false
 			}
 		}
 	};
@@ -271,5 +312,10 @@
 		.wd-btn-gloup {
 			margin: 120rpx 0;
 		}
+	}
+
+	.ui-cont {
+		width: 250rpx;
+		height: 100rpx;
 	}
 </style>

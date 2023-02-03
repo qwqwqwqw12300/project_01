@@ -62,17 +62,20 @@
 		methods: {
 			details({
 				noticeId,
-				noticeContent
+				noticeContent,
+				readFlag
 			}) {
-				postSetNoticeFlag({
-					noticeId
-				}).then(res => {
-					this.$store.commit('setReadInfo', noticeContent);
-					this.showVisible = true
-					// uni.navigateTo({
-					// 	url: `/pages/service/message-details`
-					// })
-				});
+				this.$store.commit('setReadInfo', noticeContent);
+				this.showVisible = true
+				if (readFlag !== '1') {
+					postSetNoticeFlag({
+						noticeId
+					}).then(res => {
+						this.messageList.find(n=>{
+							return n.noticeId = noticeId
+						}).readFlag = '1'
+					});
+				}
 
 			},
 			initData() {

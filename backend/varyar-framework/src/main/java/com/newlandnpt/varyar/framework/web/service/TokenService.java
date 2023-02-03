@@ -106,13 +106,11 @@ public class TokenService
      * @param loginUser 用户信息
      * @return 令牌
      */
-    public String createToken(LoginUser loginUser)
-    {
-        String token = IdUtils.fastUUID();
+    public String createToken(LoginUser loginUser){
+        String token = loginUser.getMemberId()+"_"+IdUtils.fastUUID();
         loginUser.setToken(token);
         setUserAgent(loginUser);
         refreshToken(loginUser);
-
         Map<String, Object> claims = new HashMap<>();
         claims.put(Constants.LOGIN_USER_KEY, token);
         return createToken(claims);

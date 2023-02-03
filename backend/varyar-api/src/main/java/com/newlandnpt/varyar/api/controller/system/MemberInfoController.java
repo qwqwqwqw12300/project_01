@@ -93,63 +93,47 @@ public class MemberInfoController extends BaseController
     @PostMapping("/updatePhone")
     public AjaxResult updatePhone(@RequestBody MemberInfoRequest memberInfoRequest)
     {
-        // 原手机短信验证
+        // 短信验证
         String verifyKey = CacheConstants.SMS_CODE_KEY + memberInfoRequest.getUuid();
         String code = redisCache.getCacheObject(verifyKey);
         redisCache.deleteObject(verifyKey);
         if (code == null) {
             throw new CaptchaExpireException();
         }
-        if (!code.equalsIgnoreCase(memberInfoRequest.getOldCode())) {
+        if (!code.equalsIgnoreCase(memberInfoRequest.getNewCode())) {
             throw new CaptchaException();
         }
-
-        // 新手机短信验证
-        String newVerifyKey = CacheConstants.SMS_CODE_KEY + memberInfoRequest.getNewuuid();
-        String newCode = redisCache.getCacheObject(newVerifyKey);
-        redisCache.deleteObject(newVerifyKey);
-        if (newCode == null) {
-            throw new CaptchaExpireException();
+        //解密
+        try {
+            memberInfoRequest.setPassword(RsaUtils.decryptByPrivateKey(privateKey,memberInfoRequest.getPassword()));
+        } catch (Exception e) {
+            return error("密钥解密失败！");
         }
-        if (!newCode.equalsIgnoreCase(memberInfoRequest.getNewCode())) {
-            throw new CaptchaException();
-        }
-
+        TMember member =iMemberService.selectMemberByPhone(memberInfoRequest.getNewPhone());
         try {
             //获取当前登录用户信息比对
             LoginUser loginUser = getLoginUser();
             String phone = loginUser.getMemberPhone();
             String password = loginUser.getMemberPassword();
-
             if(StringUtils.isEmpty(memberInfoRequest.getNewPhone())
                     && StringUtils.isEmpty(memberInfoRequest.getOldPhone())  ){
                 return error("修改用户'" + loginUser.getUsername() + "'失败，手机号码不能为空！");
-
             }
-            //校对旧手机号与登录会员手机号
-            if(phone.equals(memberInfoRequest.getOldPhone())){
-                return error("修改用户'" + loginUser.getUsername() + "'失败，原手机号码错误！");
-            }
-
             if (memberInfoRequest.getNewPhone().equals(phone)){
                 return error("修改用户'" + loginUser.getUsername() + "'失败，手机号码与旧号码相同");
             }
-
+            if (member != null){
+                return error("修改用户'" + loginUser.getUsername() + "'失败，新手机号码已注册！");
+            }
             if (!SecurityUtils.matchesPassword(memberInfoRequest.getPassword(), password)){
                 return error("用户密码不匹配");
             }
-
-             memberInfoService.updatePhone(memberInfoRequest);
-             // 更新缓存用户信息
-             loginUser.setMemberPhone(memberInfoRequest.getNewPhone());
-             tokenService.setLoginUser(loginUser);
-             return success();
-
-
+            memberInfoRequest.setOldPhone(this.getLoginUser().getMemberPhone());
+            memberInfoService.updatePhone(memberInfoRequest);
         } catch (Exception e){
             return error("修改手机号异常，请联系管理员");
         }
-
+        return success();
     }
     /**
      * 获取用户信息
