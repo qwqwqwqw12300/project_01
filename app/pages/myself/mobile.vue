@@ -12,7 +12,7 @@
 			<view class="ui-form-item">
 				<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="新手机号码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u--input v-model="form.newPhone" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable>
+					<u--input v-model="form.newPhone" maxlength="11" type="number" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable>
 					</u--input>
 				</view>
 			</view>
@@ -44,6 +44,9 @@
 	import {
 		PostUpdatePhone,
 	} from '@/common/http/api.js';
+	import {
+		phoneValidator
+	} from '../../common/utils/util';
 	export default {
 		data() {
 			return {
@@ -60,7 +63,16 @@
 			 * 提交
 			 */
 			handleSubmit() {
-				console.log(this.form, '99')
+				const { password,newCode,newPhone } = this.form
+				if (!phoneValidator(newPhone)) {
+					return uni.$u.toast('请填写正确的手机号码')
+				}
+				if (!password) {
+					return uni.$u.toast('请填写密码')
+				}
+				if (newCode.length !== 4) {
+					return uni.$u.toast('请填写正确的验证码')
+				}
 				PostUpdatePhone({
 					...this.form
 				}).then(res => {
