@@ -8,11 +8,11 @@
 <template>
 	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close" @open="open">
 		<view class="wd-add">
-			<u-text prefixIcon="plus-circle" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
-				size="30rpx" text="新建家庭"></u-text>
+			<u-text :prefixIcon="mode === 'add' ? 'plus-circle' : 'edit-pen'"
+				:iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f" size="30rpx"
+				:text="mode === 'add' ? '新建家庭': '修改家庭'"></u-text>
 			<view class="ui-input">
-				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
-					text="家庭名称"></u-text>
+				<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="家庭名称"></u-text>
 				<u--input v-model="form.familyName" placeholder="请输入家庭名称" border="bottom" clearable></u--input>
 			</view>
 			<view class="ui-input">
@@ -27,12 +27,19 @@
 <script>
 	import {
 		PostAddFamily,
+		PostEditFamily
 	} from '@/common/http/api.js';
 	export default {
 		props: {
 			btnName: {
 				type: String,
-				default: '下一步'
+				default: '确认'
+			},
+			/**修改模式**/
+			mode: {
+				type: String,
+				/**add 添加家庭 edit 修改家庭**/
+				default: 'add'
 			}
 		},
 		data() {
@@ -51,7 +58,11 @@
 				this.form = {}
 				this.show = false;
 			},
-			open() {
+			/**
+			 * 打开家庭
+			 */
+			open(data = {}) {
+				Object.assign(this.form, data);
 				this.show = true;
 			},
 			next() {
@@ -65,15 +76,20 @@
 				if (!address) {
 					return uni.$u.toast('请填写家庭地址')
 				}
-				PostAddFamily({
+				const handle = this.mode === 'add' ? PostAddFamily : PostEditFamily;
+				handle({
 					...this.form
 				}).then(res => {
 					uni.$u.toast(res.msg);
 					this.close();
 					setTimeout(() => {
-						this.$emit('update', res.data.familyId)
+						this.$emit('update', {
+							familyId: res.data && res.data.familyId,
+							name: familyName
+						});
 					}, 1000);
 				})
+
 			}
 		}
 	};

@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<add-family ref="addFamily" @update="familyNext" />
-		<add-room ref="addRoom" @update="roomNext" />
+		<family-pop ref="addFamily" mode="add" @update="familyNext" />
+		<room-pop ref="addRoom" @update="roomNext" />
 		<bind-device :payload="{familyId, roomId}" @next="deviceNext" ref="bindDev" />
 	</view>
 </template>
@@ -30,8 +30,9 @@
 			/**
 			 * 添加家庭下一步
 			 */
-			familyNext(familyId) {
-				console.log(familyId, 'familyId');
+			familyNext({
+				familyId
+			}) {
 				this.getAllFamily();
 				this.familyId = familyId;
 				this.$refs.addRoom.open({

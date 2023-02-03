@@ -18,7 +18,7 @@
 				</view>
 			</view>
 			<view class="ui-btn-group">
-				<button @click="next">确定{{deviceId}}</button>
+				<button @click="next">确定</button>
 				<button @click="close">取消</button>
 				<button @click="goManager">管理设备</button>
 			</view>
@@ -33,6 +33,27 @@
 	import {
 		setDevice
 	} from '../../common/http/api';
+	const INIT_BINDFORM = {
+		familyId: '',
+		roomId: '',
+		deviceId: '',
+		deviceName: '',
+		deviceType: '',
+		deviceNo: '',
+		deviceId: '',
+		roomLeft: 100,
+		roomHeight: 100,
+		roomRight: 100,
+		roomLength: 100,
+		existFlag: 0,
+		fallFlag: 0,
+		entryTime: 0,
+		departureTime: 0,
+		startTime: 0,
+		endTime: 0,
+		inMonitorFlag: 0,
+		outMonitorFlag: 0,
+	};
 	export default {
 		props: {
 			payload: {
@@ -48,9 +69,7 @@
 		computed: {
 			...mapState({
 				devices: state => {
-					const list = state.devicesList;
-					console.log(state.devicesList, 'state.devicesList');
-					return list.map(ele => ({
+					return state.devicesList.map(ele => ({
 						text: ele.name,
 						value: ele.deviceId
 					}));
@@ -69,6 +88,7 @@
 			},
 			next() {
 				setDevice({
+					...INIT_BINDFORM,
 					...this.payload,
 					deviceId: this.deviceId
 				}).then(res => {

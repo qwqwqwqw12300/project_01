@@ -15,6 +15,9 @@ Vue.use(Vuex);
 //Vuex.Store 构造器选项
 const store = {
 	state: {
+		/**临时缓存对象**/
+		cache: new Map(),
+		/**智能客服坐标**/
 		serviceAxisY: 300,
 		/**设备列表**/
 		devicesList: [],
@@ -28,6 +31,26 @@ const store = {
 		userInfo: {}
 	},
 	mutations: {
+
+		/**
+		 * 设置缓存
+		 */
+		setCache(state, {
+			key,
+			value
+		}) {
+			state.cache.set(key, value);
+		},
+
+		/**
+		 * 清除某个缓存
+		 * @param {Object} state
+		 * @param {Object} key
+		 */
+		removeCache(state, key) {
+			state.cache.delete(key);
+		},
+
 		/**
 		 * 人工客服Y轴
 		 * @param {Object} state
@@ -156,7 +179,7 @@ const store = {
 		 * 获取指定条件的设备j
 		 */
 		filterDevice: state => obj => {
-			let devices = state.devicesList;
+			let devices = state.devicesList || [];
 			for (let item in obj) {
 				devices = devices.filter(ele => ele[item] === obj[item]);
 			}
@@ -172,6 +195,11 @@ const store = {
 		 * 获取用户信息
 		 */
 		userInfo: state => state.userInfo,
+
+		/**
+		 * 读取缓存
+		 */
+		getCache: state => key => state.cache.get(key)
 	}
 }
 
