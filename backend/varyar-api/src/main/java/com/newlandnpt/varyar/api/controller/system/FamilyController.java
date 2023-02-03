@@ -30,6 +30,8 @@ public class FamilyController extends BaseController {
 
     @Autowired
     private IFamilyService tFamilyService;
+    @Autowired
+    private IRoomService roomService;
 
     @Autowired
     private IMemberFamilyService iMemberFamilyService;
@@ -62,6 +64,10 @@ public class FamilyController extends BaseController {
                     it =iDeviceService.loadingDeviceStauts(it);
                 }
             }
+            TRoom cond = new TRoom();
+            cond.setFamilyId(item.getFamilyId());
+            cond.setDelFlag("0");
+            item.setRooms(roomService.selectTRoomList(cond));
         }
         return getDataTable(list);
     }

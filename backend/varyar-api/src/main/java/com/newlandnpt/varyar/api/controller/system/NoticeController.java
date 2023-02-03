@@ -30,6 +30,13 @@ public class NoticeController extends BaseController {
     @GetMapping("/sysNotice")
     public TableDataInfo sysNotice(){
         List<SysNotice>  list = iSysNoticeService.selectNoticeList(new SysNotice());
+        for (SysNotice item:list){
+            TNotice cond = new TNotice();
+            cond.setSysNoticeId(Long.valueOf(item.getNoticeId()));
+            cond.setMemberId(this.getLoginUser().getMemberId());
+            List<TNotice> tNotices = itNoticeService.selectTNoticeList(cond);
+            item.setReadFlag(tNotices.size()==0?"0":"1");
+        }
         return getDataTable(list);
     }
 
@@ -47,6 +54,7 @@ public class NoticeController extends BaseController {
             cond.setMemberId(this.getLoginUser().getMemberId());
             List<TNotice> tNotices = itNoticeService.selectTNoticeList(cond);
             if (list.size()>0){
+                item.setReadFlag("1");
                 newList.add(item);
             }
         }
@@ -59,17 +67,18 @@ public class NoticeController extends BaseController {
     public AjaxResult unReadNum()
     {
         List<SysNotice>  list = iSysNoticeService.selectNoticeList(new SysNotice());
+        List<SysNotice>  newList = new ArrayList<SysNotice>();
         for (SysNotice item:list){
             TNotice cond = new TNotice();
             cond.setSysNoticeId(Long.valueOf(item.getNoticeId()));
             cond.setMemberId(this.getLoginUser().getMemberId());
             List<TNotice> tNotices = itNoticeService.selectTNoticeList(cond);
-            if(tNotices.size()>0){
-                list.remove(item);
+            if(tNotices.size()==0){
+                item.setReadFlag("0");
+                newList.add(item);
             }
         }
-
-        return AjaxResult.success(list);
+        return AjaxResult.success(newList);
     }
 
     /**

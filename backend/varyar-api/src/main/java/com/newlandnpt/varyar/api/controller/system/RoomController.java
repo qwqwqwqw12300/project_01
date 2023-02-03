@@ -5,10 +5,12 @@ import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.model.RoomRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.exception.ServiceException;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TFamily;
 import com.newlandnpt.varyar.system.domain.TMemberFamily;
 import com.newlandnpt.varyar.system.domain.TRoom;
 import com.newlandnpt.varyar.system.mapper.TMemberFamilyMapper;
+import com.newlandnpt.varyar.system.service.IDeviceService;
 import com.newlandnpt.varyar.system.service.IFamilyService;
 import com.newlandnpt.varyar.system.service.IMemberFamilyService;
 import com.newlandnpt.varyar.system.service.IRoomService;
@@ -32,7 +34,8 @@ public class RoomController extends BaseController {
 
     @Autowired
     private IRoomService iRoomService;
-
+    @Autowired
+    private IDeviceService iDeviceService;
     @Autowired
     private IFamilyService tFamilyService;
 
@@ -62,6 +65,12 @@ public class RoomController extends BaseController {
         }
         //获取家庭与房间信息
         List<TRoom> list = iRoomService.selectTRoomByFamilyId(Long.valueOf(roomRequest.getFamilyId()));
+        for (TRoom item:list){
+            TDevice cond = new TDevice();
+            cond.setRoomId(item.getRoomId());
+            cond.setDelFlag("0");
+            item.setDevices(iDeviceService.selectDeviceList(cond));
+        }
         return getDataTable(list);
     }
     /*

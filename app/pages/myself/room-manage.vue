@@ -8,73 +8,31 @@
 <template>
 	<view id="roomMagege">
 		<app-body>
-			<app-logo text="我的房间管理"></app-logo>
+			<app-logo :text="familyInfo.name">
+				<u-icon class="ui-logo-icon" name="edit-pen" size="60rpx" color="#fff" @click="openFamilyEdit"></u-icon>
+			</app-logo>
 			<view class="ui-menu">
 				<u-grid>
 					<u-grid-item v-for="(item, index) in list" :key="index">
-						<view class="ui-menu-item" :border="false">
+						<view class="ui-menu-item active" :border="false" @click="openRoomEdit(item)">
 							<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/myself/room.png"
 								size="60rpx"></u-icon>
 							<text class="grid-text">{{ item.name }}</text>
-							<view class="ui-edit" @click.stop="editFamliy(item)">
-								<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="edit-pen-fill" size="30rpx"
-									color="#ff9500"></u-icon>
-							</view>
 							<u-icon @click.native.stop="onDelete(item.roomId)" class="ui-close active"
 								name="close-circle-fill" size="40rpx">
 							</u-icon>
+						</view>
+						<view class="ui-menu-btn">
+							<button v-if="!item.devices.length" @click="binding(item)">绑定</button>
+							<button v-else class="wd-sms" @click="unbinding(item.devices)">解绑</button>
 						</view>
 					</u-grid-item>
 				</u-grid>
 			</view>
 			<view class="ui-btn"><button @click="add">创建房间</button></view>
-			<u-popup :closeable="true" :overlay="false" zIndex="99" :round="10" :show="isEditShow" mode="center"
-				@close="close">
-				<view class="wd-add">
-					<view>
-						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="房间名称"></u-text>
-						<u--input v-model="form.name" placeholder="请输入房间名称" border="bottom" clearable></u--input>
-					</view>
-					<!-- <view>
-						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间高度"></u-text>
-						<view class="ui-slider">
-							<u-slider v-model="form.roomHeight" activeColor="#eeaa3d" blockColor="#eeaa3d"
-								inactiveColor="#c0c4cc" />
-							<text>{{$u.priceFormat(form.roomHeight/10, 2)}}米</text>
-						</view>
-					</view>
-					<view>
-						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间长度"></u-text>
-						<view class="ui-slider">
-							<u-slider v-model="form.roomLength" activeColor="#eeaa3d" blockColor="#eeaa3d"
-								inactiveColor="#c0c4cc" />
-							<text>{{$u.priceFormat(form.roomLength/10, 2)}}米</text>
-						</view>
-					</view>
-					<view>
-						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间左长度"></u-text>
-						<view class="ui-slider">
-							<u-slider v-model="form.roomRight" activeColor="#eeaa3d" blockColor="#eeaa3d"
-								inactiveColor="#c0c4cc" />
-							<text>{{$u.priceFormat(form.roomRight/10, 2)}}米</text>
-						</view>
-					</view>
-					<view>
-						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="房间右长度"></u-text>
-						<view class="ui-slider">
-							<u-slider v-model="form.roomLeft" activeColor="#eeaa3d" blockColor="#eeaa3d"
-								inactiveColor="#c0c4cc" />
-							<text>{{$u.priceFormat(form.roomLeft/10, 2)}}米</text>
-						</view>
-					</view> -->
-					<view class="wd-btn-gloup">
-
-						<button class="gray" @click="close">取消</button>
-						<button class="blue" @click="onSubmit">提交</button>
-					</view>
-				</view>
-			</u-popup>
-			<add-room ref="addRoom" @update="handleInitList" />
+			<room-pop ref="addRoom" :mode="roomMode" @update="handleInitList" />
+			<family-pop ref="addFamily" mode="edit" @update="familyNext" />
+			<bind-device :payload="bindPayload" @next="handleInitList" ref="bindDev" />
 		</app-body>
 	</view>
 
@@ -85,89 +43,37 @@
 		PostDelRoom,
 		PostRoomList,
 		PostEditRoom,
+		relDevice
 	} from '@/common/http/api.js';
+	import {
+		assignDeep
+	} from '../../common/utils/util';
 	export default {
 		data() {
 			return {
-				isEditShow: false,
-				form: {
-					name: '',
-					// roomId: '',
-					// roomHeight: '',
-					// roomLength: '',
-					// roomLeft: '',
-					// roomRight: '',
-				},
-				list: []
+				roomMode: 'add',
+				list: [],
+				/**家庭信息**/
+				familyInfo: {},
+				bindPayload: {}
 			};
 		},
+		onLoad() {
+			this.familyInfo = this.$getCache('familyInfo');
+			this.handleInitList()
+		},
 		methods: {
-			/**
-			 * 菜单点击
-			 */
-			// gridClick(url) {
-			// 	console.log(12);
-			// },
 
 			/**
-			 * 修改家庭
+			 * 修改房间
 			 */
-			editFamliy(item) {
-				// const {
-				// 	roomHeight = 0,
-				// 		roomLength = 0,
-				// 		roomLeft = 0,
-				// 		roomRight = 0
-				// } = item;
-				this.form = {
-					...item,
-					// roomHeight: roomHeight * 10,
-					// roomLength: roomLength * 10,
-					// roomLeft: roomLeft * 10,
-					// roomRight: roomRight * 10
-				}
-				console.log(this.form, 'fff')
-				this.isEditShow = true;
+			openRoomEdit(item) {
+				this.roomMode = 'edit';
+				this.$refs.addRoom.open({
+					...item
+				});
 			},
 
-			/**
-			 * 关闭弹窗
-			 */
-			close() {
-				this.form = {}
-				this.isEditShow = false;
-			},
-			/**
-			 * 提交
-			 */
-			onSubmit() {
-				const {
-					name,
-					// roomHeight,
-					// roomLength,
-					// roomLeft,
-					// roomRight
-				} = this.form;
-				if (!name) {
-					return uni.$u.toast('请完善房间信息')
-				}
-				// if (!roomHeight || !roomLeft || !roomRight || !roomLength || !name) {
-				// 	return uni.$u.toast('请完善房间信息')
-				// }
-				PostEditRoom({
-					...this.form,
-					// roomHeight: uni.$u.priceFormat(roomHeight / 10, 2),
-					// roomLength: uni.$u.priceFormat(roomLength / 10, 2),
-					// roomLeft: uni.$u.priceFormat(roomLeft / 10, 2),
-					// roomRight: uni.$u.priceFormat(roomRight / 10, 2),
-				}).then(res => {
-					uni.$u.toast(res.msg)
-					setTimeout(() => {
-						this.close();
-						this.handleInitList()
-					}, 500)
-				})
-			},
 			/**
 			 * 删除
 			 */
@@ -192,39 +98,92 @@
 				});
 			},
 			/**
-			 * 添加家庭
+			 * 添加房间
 			 */
 			add() {
+				this.roomMode = 'add';
 				this.$refs.addRoom.open({
-					id: this.familyId,
-					subTitle: '提交'
+					familyId: this.familyInfo.familyId,
 				});
 			},
 
-			/**
-			 * 家庭添加完成
-			 */
-			roomNext() {},
 
 			/**
 			 * 初始化家庭列表
 			 */
 			handleInitList() {
+				this.$store.dispatch('getAllDevices');
 				PostRoomList({
-					familyId: this.familyId,
+					familyId: this.familyInfo.familyId,
 				}).then(res => {
 					this.list = res.rows
 				})
-			}
-		},
-		onLoad(options) {
-			this.familyId = options.familyId
-			this.handleInitList()
+			},
+
+			/**
+			 * 家庭信息修改完成
+			 */
+			familyNext({
+				name
+			}) {
+				this.familyInfo.name = name;
+			},
+			/**
+			 * 编辑家庭信息
+			 */
+			openFamilyEdit() {
+				this.$refs.addFamily.open(
+					assignDeep({}, {
+						...this.familyInfo,
+						familyName: this.familyInfo.name
+					}));
+			},
+
+			/**
+			 * 绑定设备
+			 */
+			binding({
+				familyId,
+				roomId
+			}) {
+				this.bindPayload = {
+					familyId,
+					roomId
+				};
+				this.$refs.bindDev.open();
+			},
+
+			/**
+			 * 解绑
+			 */
+			unbinding(devices) {
+				uni.showModal({
+					title: '提示',
+					content: '是否和房间解除绑定',
+					success: res => {
+						if (res.confirm) {
+							relDevice({
+								deviceId: devices[0].deviceId,
+							}).then(res => {
+								uni.$u.toast(res.msg);
+								setTimeout(() => {
+									this.handleInitList();
+								}, 500);
+							})
+						}
+					}
+				});
+			},
 		}
+
 	};
 </script>
 
 <style lang="scss">
+	.ui-logo-icon {
+		margin-top: 30rpx;
+	}
+
 	.ui-menu {
 		margin-top: 70rpx;
 		padding: 0 78rpx;
@@ -247,8 +206,10 @@
 			text-align: center;
 
 			.grid-text {
-				display: inline-block;
-				margin-top: 10rpx;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				margin: 15rpx 0 10rpx 0;
 				width: 70%;
 				height: 60rpx;
 			}
@@ -270,6 +231,7 @@
 
 	.ui-btn {
 		text-align: center;
+		margin-top: 50rpx;
 
 		button {
 			width: 276rpx;
@@ -277,6 +239,20 @@
 			font-size: 30rpx;
 			line-height: 74rpx;
 			border-radius: 60rpx;
+		}
+	}
+
+	.ui-menu-btn {
+		margin-top: 10rpx;
+		text-align: center;
+		width: 100%;
+
+		button {
+			height: 60rpx;
+			width: 180rpx;
+			line-height: 60rpx;
+			border-radius: 10px;
+			font-size: 30rpx;
 		}
 	}
 
@@ -305,38 +281,6 @@
 		&>* {
 			:nth-child(1) {
 				width: 320rpx;
-			}
-		}
-	}
-
-	.wd-add {
-		width: 582rpx;
-		max-height: 880rpx;
-		border-radius: 20rpx;
-		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
-		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
-		padding: 53rpx 31rpx;
-
-		&>view {
-			margin-top: 18rpx;
-			padding: 10rpx 20rpx;
-			border-bottom: 1px solid #e4e4e4;
-
-			&:nth-last-of-type(1) {
-				padding-left: 0rpx;
-				border-bottom: none;
-			}
-		}
-
-		.wd-btn-gloup {
-			text-align: center;
-			margin-top: 50rpx;
-
-			button {
-				width: 237rpx;
-				height: 71rpx;
-				font-size: 28rpx;
-				color: #ffffff;
 			}
 		}
 	}

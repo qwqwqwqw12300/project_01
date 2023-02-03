@@ -60,23 +60,6 @@
 			</u-popup>
 			<!-- /绑定房间 -->
 			<device-edit :editFrom="editSubmit" ref="editRef" @confirm="editSubmit"></device-edit>
-			<!-- 修改名称 -->
-			<!-- <u-popup :closeable="true" :round="10" :show="isEditShow" mode="center" @close="eidtClose">
-				<view class="wd-add ui-change">
-					<u-text prefixIcon="edit-pen" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
-						size="30rpx" text="修改名称"></u-text>
-					<view class="ui-add-box">
-						<view>
-							<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="设备名称"></u-text>
-							<u-input placeholder="请输入设备名称" :maxlength="6" v-model="editFrom.deviceName" border="bottom"
-								clearable>
-							</u-input>
-						</view>
-					</view>
-					<view class="wd-btn-gloup"><button @click="editSubmit">确定</button></view>
-				</view>
-			</u-popup> -->
-			<!-- /修改名称 -->
 			<u-action-sheet :actions="addHandle.list" :closeOnClickOverlay="true" :safeAreaInsetBottom="true"
 				:closeOnClickAction="true" @close="addHandle.show = false" :show="addHandle.show" @select="sheetSelect"
 				cancelText="取消">
@@ -134,10 +117,10 @@
 					deviceName: '',
 					deviceType: '',
 					deviceNo: '',
-					roomLeft: 10,
-					roomHeight: 10,
-					roomRight: 10,
-					roomLength: 10
+					roomLeft: 100,
+					roomHeight: 100,
+					roomRight: 100,
+					roomLength: 100
 				},
 				addHandle: {
 					show: false,
@@ -187,10 +170,12 @@
 			 * 关闭弹窗
 			 */
 			close() {
-				this.bindForm.familyId = '';
-				this.bindForm.roomId = '';
-				this.bindForm.deviceId = '';
-				this.bindRoomShow = false;
+				Object.assign(this.bindForm, {
+					familyId: '',
+					roomId: '',
+					deviceId: '',
+					bindRoomShow: false
+				});
 			},
 
 			/**
