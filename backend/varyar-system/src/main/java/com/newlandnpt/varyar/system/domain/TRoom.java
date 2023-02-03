@@ -4,8 +4,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
+import org.springframework.data.annotation.Transient;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 房间对象 t_room
@@ -36,6 +38,17 @@ public class TRoom extends BaseEntity
 
     /** 创建者id*/
     private String createById;
+    /** 设备列表 */
+    @Transient
+    private List<TDevice> devices;
+
+    public List<TDevice> getDevices() {
+        return devices;
+    }
+
+    public void setDevices(List<TDevice> devices) {
+        this.devices = devices;
+    }
 
     public String getCreateById() {
         return createById;
