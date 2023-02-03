@@ -10,20 +10,6 @@
 		<app-logo text="修改手机号"></app-logo>
 		<view class="ui-form">
 			<view class="ui-form-item">
-				<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="原手机号码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input">
-					<u--input v-model="form.oldPhone" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable>
-					</u--input>
-				</view>
-			</view>
-			<view class="ui-form-item">
-				<graphic-input ref="oldCodeRefbySms"></graphic-input>
-			</view>
-			<view class="ui-form-item">
-				<sms-input ref="oldSmsRef" @reset="oldReset" :payload="oldSmsPayload" @checked="oldCheckedBySms">
-				</sms-input>
-			</view>
-			<view class="ui-form-item">
 				<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="新手机号码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
 					<u--input v-model="form.newPhone" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable>
@@ -64,8 +50,6 @@
 				form: {
 					password: '',
 					newPhone: '',
-					oldPhone: '',
-					oldCode: '',
 					newCode: '',
 				}
 			};
@@ -90,11 +74,6 @@
 				})
 			},
 
-			oldReset() {
-				console.log(123);
-				this.$refs.oldCodeRefbySms.handleGetCaptcha();
-			},
-
 			newReset() {
 				this.$refs.newCodeRefbySms.handleGetCaptcha();
 			},
@@ -106,31 +85,10 @@
 				uni.navigateBack()
 			},
 			/**
-			 * 原手机短信认证通过
-			 */
-			oldCheckedBySms(smsInfo) {
-				this.form.oldCode = smsInfo.code
-
-			},
-			/**
 			 * 新手机短信认证通过
 			 */
 			newCheckedBySms(smsInfo) {
 				this.form.newCode = smsInfo.code
-			},
-			/**
-			 * 旧手机获取短信请求参数
-			 */
-			oldSmsPayload() {
-				const {
-					code,
-					uuid
-				} = this.$refs.oldCodeRefbySms.returnCodeData();
-				return {
-					uuid,
-					captcha: code,
-					phone: this.form.oldPhone
-				};
 			},
 			/**
 			 * 新手机获取短信请求参数

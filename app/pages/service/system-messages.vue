@@ -35,7 +35,7 @@
 				</scroll-view>
 			</view>
 		</u-popup> -->
-		<u-modal @confirm="showVisible = false" :show="showVisible" title="消息详情" :content='readInfo'></u-modal>
+		<u-modal @confirm="onConfirm" :show="showVisible" title="消息详情" :content='readInfo'></u-modal>
 	</app-body>
 </template>
 
@@ -79,6 +79,10 @@
 				GetSysNotice().then(res => {
 					this.messageList = res.rows
 				})
+			},
+			onConfirm() {
+				// this.initData()
+				this.showVisible = false
 			}
 		},
 		mounted() {
