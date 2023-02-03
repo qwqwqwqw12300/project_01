@@ -65,7 +65,7 @@
 				}
 			}
 		},
-		onLoad: function({
+		onLoad({
 			familyId,
 			phone
 		}) {
@@ -73,6 +73,7 @@
 				familyId
 			});
 			this.getShareList();
+			this.getContact()
 		},
 		methods: {
 			async submit() {
@@ -185,10 +186,26 @@
 			codeReset() {
 				this.$refs.graphicRef.handleGetCaptcha();
 			},
+
+			/**
+			 * 获取手机联系人
+			 */
+
+			getContact() {
+				let type = plus.contacts.ADDRESSBOOK_PHONE //当前手机联系人
+				plus.contacts.getAddressBook(type, res => {
+					console.log(res, 'res')
+					uni.showToast({
+						title: '获取通讯录成功',
+						duration: 2000
+					})
+				}, error => {
+					console.log(error)
+				})
+			}
 		}
 	};
 </script>
-r
 <style lang="scss">
 	#share {
 		text-align: center;
