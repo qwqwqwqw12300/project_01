@@ -36,7 +36,9 @@ public class TFamily extends BaseEntity
     /** 设备列表 */
     @Transient
     private List<TDevice> devices;
-
+    /** 房间列表 */
+    @Transient
+    private List<TRoom> rooms;
     /** 共享标志（0代表是 2代表非） */
     @Transient
     private String shareFlag;
@@ -48,6 +50,14 @@ public class TFamily extends BaseEntity
 
     /** 创建者姓名*/
     private String createMemberName;
+
+    public List<TRoom> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<TRoom> rooms) {
+        this.rooms = rooms;
+    }
 
     public String getCreateMemberName() {
         return createMemberName;
