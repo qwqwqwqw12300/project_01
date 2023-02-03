@@ -1,7 +1,11 @@
 <template>
-	<text class="wd-logo" :style="{marginTop: top}">
-		{{text}}
-	</text>
+	<view class="wd-logo" :style="{marginTop: top}">
+		<text>
+			{{text}}
+		</text>
+		<slot></slot>
+	</view>
+
 </template>
 
 <script>
@@ -29,7 +33,8 @@
 <style lang="scss">
 	.wd-logo {
 		margin: 64rpx 0 0 44rpx;
-		display: inline-block;
+		display: inline-flex;
+		flex-direction: row;
 		font-size: 72rpx;
 		font-weight: bold;
 		color: #ffffff;

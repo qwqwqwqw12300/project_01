@@ -285,14 +285,15 @@
 		width: 100%;
 		height: 100%;
 		background: #f6f5fa;
+		border-radius: 20rpx;
 		// overflow-y: auto;
 	}
-
+    
 	.city-select {
 		position: relative;
 		width: 100vw;
 		height: 100%;
-		background: #f6f5fa;
+		// background: #f6f5fa;
 
 		// 热门城市
 		.hot-title {

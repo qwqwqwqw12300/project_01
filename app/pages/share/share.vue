@@ -42,7 +42,7 @@
 			<view class="ui-code"><canvas id="qrcode" canvas-id="qrcode"
 					:style="{ width: `${size}px`, height: `${size}px` }"></canvas></view>
 		</u-popup>
-		<u-popup round="10" :show="contactShow" mode="bottom" @close="contactShow = false">
+		<u-popup :round="10" :show="contactShow" mode="bottom" @close="contactShow = false">
 			<view style="height: 1300rpx;">
 				<contact-select placeholder="请输入联系人姓名" @cityClick="phoneClick" formatName="name"
 					:obtainCitys="contactList" :isSearch="true"></contact-select>
@@ -58,6 +58,9 @@
 		PostShareFamily,
 		PostSharelist
 	} from '../../common/http/api';
+	import {
+		phoneValidator
+	} from '../../common/utils/util';
 	export default {
 		data() {
 			return {
@@ -74,10 +77,7 @@
 					smsUuid: '',
 					familyPhone: ''
 				},
-				contactList: [{
-					name: '344',
-					phone: '22334'
-				}],
+				contactList: [],
 				contactShow: false,
 			}
 		},
@@ -212,7 +212,8 @@
 			 * 获取手机联系人
 			 */
 			getContact() {
-				let type = plus.contacts.ADDRESSBOOK_PHONE //当前手机联系人
+				this.contactShow = true
+				let type = plus.contacts.ADDRESSBOOK_PHONE 
 				plus.contacts.getAddressBook(type, res => {
 					res.find(['displayName', 'phoneNumbers'], data => {
 						this.contactList = data.map(n => {
