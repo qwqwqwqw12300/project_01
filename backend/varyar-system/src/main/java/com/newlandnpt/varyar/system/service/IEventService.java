@@ -37,7 +37,7 @@ public interface IEventService
      * @param eventIds 事件
      * @return 事件集合
      */
-    public List<TEvent> selectTEventList(Long[] eventIds);
+    public List<TEvent> selectTEventListByIds(Long[] eventIds);
 
     /**
      * 新增事件

@@ -59,9 +59,9 @@ public class EventServiceImpl implements IEventService
      */
     @DataScope(orgAlias = "eve")
     @Override
-    public List<TEvent> selectTEventList(Long[] eventIds)
+    public List<TEvent> selectTEventListByIds(Long[] eventIds)
     {
-        return tEventMapper.selectTEventList(eventIds);
+        return tEventMapper.selectTEventListByIds(eventIds);
     }
 
     /**

@@ -9,6 +9,15 @@ export function listEvent(query) {
   })
 }
 
+// 根据事件id查询事件列表
+export function listEventByIds(query) {
+  return request({
+    url: '/event/'+query.eventIds+'/page',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询事件详细
 export function getEvent(eventId) {
   return request({
