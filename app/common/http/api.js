@@ -290,3 +290,8 @@ export const PostRemRadarDevice = (params) => http.post('/api/roomZone/remRadarD
  * 获取子区域列表
  */
 export const GetRoomZone = (params) => http.get('/api/roomZone/getRoomZoon', params);
+
+/**
+ * 获取字典信息
+ */
+export const GetDict = () => http.get('/api/dictData/getDict');

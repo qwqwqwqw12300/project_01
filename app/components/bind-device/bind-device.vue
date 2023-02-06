@@ -18,9 +18,9 @@
 				</view>
 			</view>
 			<view class="ui-btn-group">
-				<button @click="next">确定</button>
 				<button @click="close">取消</button>
 				<button @click="goManager">管理设备</button>
+				<button @click="next">确定</button>
 			</view>
 		</view>
 	</u-popup>
@@ -166,11 +166,11 @@
 				font-size: 28rpx;
 				color: #ffffff;
 
-				&:nth-child(1) {
+				&:nth-child(2) {
 					background-image: linear-gradient(96deg, #e8bf00 0%);
 				}
 
-				&:nth-child(2) {
+				&:nth-child(1) {
 					background-image: linear-gradient(96deg, #898989 0%, #b4b4b4 100%);
 				}
 

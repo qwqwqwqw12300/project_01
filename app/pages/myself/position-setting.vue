@@ -290,9 +290,9 @@
 					const {
 						roomLeft,
 						roomRight,
-						roomLength
+						roomLength,
+						roomHeight
 					} = parameter.deviceLocation;
-
 					// 盒子比例
 					const scale = {
 							x: width / (roomLeft + roomRight),
@@ -357,13 +357,12 @@
 						roomId: this.deviceInfo.roomId,
 						deviceId: this.deviceInfo.deviceId,
 						z1: 0,
-						z2: this.roomInfo.roomHeight,
+						z2: this.deviceInfo.parameter.deviceLocation.roomHeight,
 						name,
 						width: width * this.sizeInfo.scale.x,
 						height: height * this.sizeInfo.scale.y,
 					});
 					this.roomZones.push(obj);
-					console.log(this.roomZones, 'this.roomZones');
 				} else {
 					uni.showToast({
 						icon: 'none',

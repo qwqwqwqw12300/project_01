@@ -152,7 +152,7 @@
 
 			.info {
 				margin-top: 16rpx;
-				width: 220rpx;
+				// width: 220rpx;
 				display: flex;
 				justify-content: space-between;
 
