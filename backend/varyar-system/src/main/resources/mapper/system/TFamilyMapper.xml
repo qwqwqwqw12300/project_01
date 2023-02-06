@@ -29,7 +29,7 @@
             (select org_no from t_org where org_id = d.org_id) org_no,
             (select name from t_room where room_id = d.room_id) room_name
         from t_device d
-        where d.family_id = #{familyId}
+        where d.family_id = #{familyId}  and d.del_flag ='0'
     </select>
 
     <resultMap type="TDevice" id="DeviceResult">
