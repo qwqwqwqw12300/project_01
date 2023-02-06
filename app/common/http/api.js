@@ -290,3 +290,16 @@ export const PostRemRadarDevice = (params) => http.post('/api/roomZone/remRadarD
  * 获取子区域列表
  */
 export const GetRoomZone = (params) => http.get('/api/roomZone/getRoomZoon', params);
+
+/**
+ * 开启获取设备位置(实时)
+ */
+export const GetStartDevice = (params) => http.get('/api/device/startNowInfo', params);
+/**
+ * 关闭获取设备位置(实时)
+ */
+export const GetEndDevice = (params) => http.get('/api/device/endNowInfo', params);
+/**
+ * 获取设备位置(实时)
+ */
+export const GetNowInfo = (params) => http.get('/api/device/getNowInfo', params);
