@@ -42,7 +42,20 @@ public class EventController extends BaseController
     {
         startPage();
         List<TEvent> list = eventService.selectTEventList(tEvent);
-        return getDataTable(list);
+            return getDataTable(list);
+    }
+
+    /**
+     * 获取事件详细信息
+     */
+    @GetMapping("/{eventIds}/page")
+    public TableDataInfo eventList(@PathVariable("eventIds") Long[] eventIds)
+//    public AjaxResult eventList(@PathVariable("eventIds") Long[] eventIds)
+    {
+        startPage();
+        List<TEvent> eventList = eventService.selectTEventListByIds(eventIds);
+        return getDataTable(eventList);
+//        return success(eventList);
     }
 
     /**

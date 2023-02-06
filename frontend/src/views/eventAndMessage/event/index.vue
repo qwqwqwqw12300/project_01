@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="78px">
 
         <!-- <el-form-item label="操作时间" prop="operateTime">
           <el-date-picker clearable
@@ -128,7 +128,7 @@
           {{ eventLevelFormat(scope.row) }}
           </template>
         </el-table-column>
-        <el-table-column label="事件编号" align="center" prop="no"  :show-overflow-tooltip="true"/>
+        <!-- <el-table-column label="事件编号" align="center" prop="no"  :show-overflow-tooltip="true"/> -->
         <el-table-column label="事件内容" align="center" prop="content"  :show-overflow-tooltip="true" />
         <el-table-column label="报警时间" align="center" prop="createTime"  color="#FF0000">
           <template slot-scope="scope">

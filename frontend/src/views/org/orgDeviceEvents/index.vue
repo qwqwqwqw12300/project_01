@@ -140,7 +140,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="事件编号" align="center" prop="no" show-overflow-tooltip/>
+        <!-- <el-table-column label="事件编号" align="center" prop="no" show-overflow-tooltip/> -->
         <el-table-column label="设备名称" align="center" prop="deviceName" width="120" show-overflow-tooltip />
         <el-table-column label="设备编号" align="center" prop="deviceNo" width="120" show-overflow-tooltip/>
         <el-table-column label="事件内容" align="center" prop="content" width="120" show-overflow-tooltip/>

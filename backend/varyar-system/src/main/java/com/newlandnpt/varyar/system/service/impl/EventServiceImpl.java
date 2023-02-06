@@ -52,6 +52,19 @@ public class EventServiceImpl implements IEventService
     }
 
     /**
+     * 查询事件列表
+     *
+     * @param eventIds 事件
+     * @return 事件
+     */
+    @DataScope(orgAlias = "eve")
+    @Override
+    public List<TEvent> selectTEventListByIds(Long[] eventIds)
+    {
+        return tEventMapper.selectTEventListByIds(eventIds);
+    }
+
+    /**
      * 新增事件
      * 
      * @param tEvent 事件

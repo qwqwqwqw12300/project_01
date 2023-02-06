@@ -106,8 +106,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
                 AND date_format(eve.operate_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
             </if>
+
+
             <!-- 数据范围过滤 -->
             ${params.dataScope}
+        </where>
+        Order By eve.create_time desc
+    </select>
+
+    <select id="selectTEventListByIds"  resultMap="TEventResult">
+        <include refid="selectTEventVo"/>
+        <where>
+            eve.event_id in
+            <foreach item="eventId" collection="eventIds" open="(" separator="," close=")">
+                #{eventId}
+            </foreach>
         </where>
         Order By eve.create_time desc
     </select>

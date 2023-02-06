@@ -295,3 +295,16 @@ export const GetRoomZone = (params) => http.get('/api/roomZone/getRoomZoon', par
  * 获取字典信息
  */
 export const GetDict = () => http.get('/api/dictData/getDict');
+
+/**
+ * 开启获取设备位置(实时)
+ */
+export const GetStartDevice = (params) => http.get('/api/device/startNowInfo', params);
+/**
+ * 关闭获取设备位置(实时)
+ */
+export const GetEndDevice = (params) => http.get('/api/device/endNowInfo', params);
+/**
+ * 获取设备位置(实时)
+ */
+export const GetNowInfo = (params) => http.get('/api/device/getNowInfo', params);

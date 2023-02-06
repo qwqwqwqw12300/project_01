@@ -322,6 +322,15 @@
 				}
 			}
 
+		}, {
+			"path": "pages/equipment/radar-monitor",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		}
 	],
 	"globalStyle": {
