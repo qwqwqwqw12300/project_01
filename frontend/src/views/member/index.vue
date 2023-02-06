@@ -90,7 +90,7 @@
 
 
     <form-panel :title="title" :visible.sync="open" width="600px" append-to-body >
-      <h4 class="form-header h4">会员基本信息</h4>
+      <!-- <h4 class="form-header h4">会员基本信息</h4> -->
         `<el-row>
           <member-info-card :value="this.memberId"></member-info-card>
         </el-row>
@@ -172,7 +172,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         phone: null,
-        distributeFlag: "0",
+        distributeFlag: null,
         params:{
           userMobilePhone:null
         }
