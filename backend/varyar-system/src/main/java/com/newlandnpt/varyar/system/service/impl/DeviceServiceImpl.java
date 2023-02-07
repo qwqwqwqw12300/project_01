@@ -3,6 +3,7 @@ package com.newlandnpt.varyar.system.service.impl;
 import com.newlandnpt.varyar.common.annotation.DataScope;
 import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.core.domain.entity.TOrg;
+import com.newlandnpt.varyar.common.core.domain.vo.ExtraVo;
 import com.newlandnpt.varyar.common.core.domain.vo.TrackerTargetVo;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.ServiceException;
@@ -30,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_FALL_KEY;
 import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_PRESENCE_KEY;
 import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_SWITCH_KEY;
 import static com.newlandnpt.varyar.common.constant.DeviceConstants.*;
@@ -498,7 +499,14 @@ public class DeviceServiceImpl implements IDeviceService {
         }
         return result;
     }
-
+    @Override
+    public List<ExtraVo> getRealLocationExtraByDeviceNo(String deviceNo){
+        List<ExtraVo> result = redisCache.getCacheObject(TARGET_LOCATION_FALL_KEY+deviceNo);
+        if(result == null){
+            result = new ArrayList<>(0);
+        }
+        return result;
+    }
     /**
      * 重置单个设备缓存
      */
