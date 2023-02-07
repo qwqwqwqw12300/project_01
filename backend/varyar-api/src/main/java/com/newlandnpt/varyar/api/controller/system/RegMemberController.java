@@ -76,7 +76,7 @@ public class RegMemberController extends BaseController {
             for(TMemberFamily item:mFList){
                 item.setPhone("");
                 item.setMemberId(member.getMemberId());
-                iMemberFamilyService.insertTMemberFamily(item);
+                iMemberFamilyService.updateTMemberFamily(item);
             }
         }
 
