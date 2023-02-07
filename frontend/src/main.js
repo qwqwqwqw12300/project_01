@@ -43,6 +43,8 @@ import FormPanel from '@/components/FormPanel'
 import WaterFall from '@/components/WaterFall'
 // 穿梭框组件
 import Transfer from '@/components/Transfer'
+// 高德地图组件
+import GaoDeMap from '@/components/GaoDeMap'
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -66,6 +68,7 @@ Vue.component('ImagePreview', ImagePreview)
 Vue.component('FormPanel', FormPanel)
 Vue.component('Transfer', Transfer)
 Vue.component('WaterFall', WaterFall)
+Vue.component('GaoDeMap', GaoDeMap)
 
 Vue.use(directive)
 Vue.use(plugins)
