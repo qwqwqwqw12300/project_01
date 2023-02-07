@@ -246,8 +246,8 @@
       <el-table-column label="失败原因" align="center" prop="reason" />
       </el-table>
       <pagination
-        v-show="total>0"
-        :total="total"
+        v-show="msgTotal>0"
+        :total="msgTotal"
         :page.sync="queryMsgParams.pageNum"
         :limit.sync="queryMsgParams.pageSize"
         @pagination="getMsgList"
@@ -333,6 +333,7 @@ export default {
            eventId: 0,
 
         },
+        msgTotal:0,
       // 表单参数
       form: {},
       // 表单校验
@@ -375,7 +376,7 @@ export default {
 
           listMsg(this.queryMsgParams).then(response => {
             this.msgList = response.rows;
-            this.total = response.total;
+            this.msgTotal = response.total;
             // console.log(JSON.stringify(response) + ">>>>>" + ">>>>>>>" )
           });   },
 
