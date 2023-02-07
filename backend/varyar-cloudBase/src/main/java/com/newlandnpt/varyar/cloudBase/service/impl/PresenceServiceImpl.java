@@ -57,7 +57,7 @@ public class PresenceServiceImpl implements PresenceService {
 		if(targetLocation != null && targetLocation){
 			List<TrackerTargetVo> trackerTargets = t.getTrackerTargets();
 			//坐标信息存入redis一分钟过期
-			SpringUtils.getBean(RedisCache.class).setCacheObject(com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_KEY + deviceId, trackerTargets, 1, TimeUnit.MINUTES);
+			SpringUtils.getBean(RedisCache.class).setCacheObject(com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_PRESENCE_KEY + deviceId, trackerTargets, 1, TimeUnit.MINUTES);
 		}
 	}
 	

@@ -142,7 +142,7 @@ jpush:
 
 
   # rocketmq配置
-  rocketmq:
+rocketmq:
     name-server: 192.168.132.204:9876
     producer:
       group: group_msg

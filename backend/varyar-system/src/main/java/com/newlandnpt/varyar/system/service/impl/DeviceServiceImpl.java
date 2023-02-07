@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_KEY;
+import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_PRESENCE_KEY;
 import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_SWITCH_KEY;
 import static com.newlandnpt.varyar.common.constant.DeviceConstants.*;
 import static com.newlandnpt.varyar.common.utils.SecurityUtils.getLoginUserName;
@@ -492,7 +492,7 @@ public class DeviceServiceImpl implements IDeviceService {
 
     @Override
     public List<TrackerTargetVo> getRealLocationMonitorByDeviceNo(String deviceNo) {
-        List<TrackerTargetVo> result = redisCache.getCacheObject(TARGET_LOCATION_KEY+deviceNo);
+        List<TrackerTargetVo> result = redisCache.getCacheObject(TARGET_LOCATION_PRESENCE_KEY+deviceNo);
         if(result == null){
             result = new ArrayList<>(0);
         }
