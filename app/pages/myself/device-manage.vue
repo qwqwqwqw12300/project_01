@@ -84,27 +84,10 @@
 		mapState,
 		mapActions
 	} from 'vuex';
-	const INIT_BINDFORM = {
-		familyId: '',
-		roomId: '',
-		deviceId: '',
-		deviceName: '',
-		deviceType: '',
-		deviceNo: '',
-		deviceId: '',
-		roomLeft: 100,
-		roomHeight: 100,
-		roomRight: 100,
-		roomLength: 100,
-		existFlag: 0,
-		fallFlag: 0,
-		entryTime: 0,
-		departureTime: 0,
-		startTime: 0,
-		endTime: 0,
-		inMonitorFlag: 0,
-		outMonitorFlag: 0,
-	};
+	import {
+		INIT_DEIVCE_SET
+	} from '../../config/db';
+
 	export default {
 
 		data() {
@@ -113,17 +96,17 @@
 				bindRoomShow: false,
 				roomList: [],
 				bindForm: {
-					...INIT_BINDFORM
+					...INIT_DEIVCE_SET
 				},
 				editFrom: {
 					deviceId: '',
 					deviceName: '',
 					deviceType: '',
 					deviceNo: '',
-					roomLeft: 100,
-					roomHeight: 100,
-					roomRight: 100,
-					roomLength: 100
+					roomLeft: 6,
+					roomHeight: 6,
+					roomRight: 6,
+					roomLength: 6
 				},
 				addHandle: {
 					show: false,
@@ -196,8 +179,8 @@
 					familyId: '',
 					roomId: '',
 					deviceId: '',
-					bindRoomShow: false
 				});
+				this.bindRoomShow = false;
 			},
 
 			/**
@@ -272,7 +255,7 @@
 					deviceName: name,
 					deviceId,
 					deviceType: type,
-					deviceNo: no,
+					deviceNo: no
 				});
 				this.bindRoomShow = true;
 			},

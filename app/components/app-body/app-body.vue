@@ -22,12 +22,15 @@
 	import {
 		mapState
 	} from 'vuex';
+	import {
+		isApp
+	} from '../../common/utils/util';
 
 	export default {
 		props: {
 			/**是否展示客服**/
 			needService: {
-				default: true
+				default: isApp()
 			},
 			/**是否隐藏返回头**/
 			hideTitle: {

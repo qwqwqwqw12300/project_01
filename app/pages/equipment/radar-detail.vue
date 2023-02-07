@@ -1,3 +1,10 @@
+<!--
+* @Author: zhanch
+* @Date: 2023-02-07 10:03:49
+* @FilePath: /pages/equipment/radar-detail.vue
+* @Description: 雷达波详情
+-->
+
 <template>
 	<app-body>
 		<view class="ui-detail">
@@ -96,7 +103,7 @@
 
 			goSet() {
 				uni.navigateTo({
-					url: '/pages/myself/position-setting'
+					url: '/pages/equipment/position-setting'
 				})
 			},
 
@@ -128,7 +135,7 @@
 		display: flex;
 
 		.ui-icon {
-			width: 200rpx;
+			// width: 200rpx;
 			display: flex;
 			flex-direction: row;
 

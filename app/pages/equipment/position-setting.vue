@@ -9,12 +9,12 @@
 	<app-body leftText="返回">
 		<view id="setting">
 			<view class="ui-movable">
-				<!-- <u-divider text="100米"></u-divider>
-				<u-divider text="100米"></u-divider>
-				<u-divider text="100米"></u-divider>
-				<u-divider text="100米"></u-divider> -->
 				<view class="mova-box">
 					<movable-area :style="getStyle">
+						<view class="ui-cell" @touchstart="touchstart($event, index)"
+							@touchmove="touchstart($event, index)" :style="sizeInfo.cell"
+							v-for="(item, index) of sizeInfo.cell.area" :key="index">
+						</view>
 						<movable-view v-for="(item, index) of roomZones" :key="index" :x="item && item.x"
 							:y="item && item.y" :style="{ height: item.height + 'px', width: item.width + 'px' }"
 							direction="all" @change="
@@ -24,10 +24,8 @@
 							">
 							<template>
 								<text class="ui-zone-name">{{ item.name || '未命名' }}</text>
-								<!-- 	<text>x：{{ $u.priceFormat((item.old.x - sizeInfo.x)/sizeInfo.scale.x, 1) }}</text>
-								<text>y：{{ 0 - $u.priceFormat((item.old.y - sizeInfo.y)/sizeInfo.scale.y , 1) }}</text> -->
-								<text>x：{{ $u.priceFormat((item.old.x - sizeInfo.x) / sizeInfo.scale.x, 1) }}</text>
-								<text>y：{{ 0 - $u.priceFormat((item.old.y - sizeInfo.y) / sizeInfo.scale.y, 1)}}</text>
+								<text>x:{{ ($u.priceFormat((item.old.x - sizeInfo.x) / sizeInfo.scale.x), 1) }}</text>
+								<text>y:{{ (0 - $u.priceFormat((item.old.y - sizeInfo.y) / sizeInfo.scale.y), 1)}}</text>
 							</template>
 						</movable-view>
 						<movable-view :x="sizeInfo.x" :y="sizeInfo.y">
@@ -35,7 +33,6 @@
 								<text class="ui-zone-name">设备</text>
 							</view>
 						</movable-view>
-
 					</movable-area>
 				</view>
 			</view>
@@ -88,7 +85,7 @@
 				</template>
 			</view>
 			<!-- 区域设置 -->
-			<view class="ui-setting" :key="activeZone" v-if="roomZones.length">
+			<view class="ui-setting" :key="activeZone" v-if="roomZones && roomZones.length">
 				<view>
 					<u-checkbox-group @change="monitorChange($event, 'existFlag')" placement="column">
 						<u-checkbox activeColor="#1aa208" labelSize="28rpx"
@@ -241,17 +238,29 @@
 				sizeInfo: {
 					/**容器盒子大小**/
 					box: {
-						width: 200,
-						height: 250
+						width: 300,
+						height: 100
+					},
+					/**网格大小**/
+					cell: {
+						width: 10,
+						height: 10
 					},
 					/**雷达波所处的位置**/
 					x: 125,
 					y: 300,
 					/**因为图像大小限制，需要按照比例缩放**/
 					scale: {
-						x: 1,
-						y: 1
+						x: 10,
+						y: 10
 					}
+				},
+				/**拖拽信息保存**/
+				touchInfo: {
+					startX: 0,
+					startY: 0,
+					startIndex: 0,
+					isAdd: true
 				}
 			};
 		},
@@ -261,15 +270,23 @@
 			}),
 			getStyle() {
 				const minBox = 50;
-				let width = Math.max(this.roomZones.map(ele => ele.width));
-				let height = Math.max(this.roomZones.map(ele => ele.height));
-				width = width > minBox ? width : minBox;
-				height = height > minBox ? height : minBox;
-				console.log(width, height);
+				// let width = Math.max(this.roomZones.map(ele => ele.width));
+				// let height = Math.max(this.roomZones.map(ele => ele.height));
+				// width = width > minBox ? width : minBox;
+				// height = height > minBox ? height : minBox;
+				// // 划分格子，1格子等于1平方米
+				// console.log(width, height, '距离', this.sizeInfo.box.width / x, y);
 				return {
-					width: this.sizeInfo.box.width + width + 'px',
-					height: this.sizeInfo.box.height + height + 'px',
+					width: this.sizeInfo.box.width + 'px',
+					height: this.sizeInfo.box.height + 'px'
 				}
+			},
+			/**
+			 * 获取背景单元格样式
+			 */
+			getCellStyle() {
+				const obj = {}
+				return {}
 			}
 		},
 		onLoad() {
@@ -279,9 +296,9 @@
 			]).then(([roomInfo, rows]) => {
 				// 盒子容器信息
 				const {
-					height,
 					width
 				} = this.sizeInfo.box;
+				console.log(this.deviceInfo, '设备信息');
 				// 设备距离墙壁范围
 				const {
 					parameter
@@ -293,19 +310,44 @@
 						roomLength,
 						roomHeight
 					} = parameter.deviceLocation;
+					console.log(roomLeft,
+						roomRight,
+						roomLength,
+						roomHeight, '设备范围');
 					// 盒子比例
 					const scale = {
 							x: width / (roomLeft + roomRight),
-							y: height / roomLength
+							y: width / (roomLeft + roomRight) // 以横向距离作为基准
 						},
-						x = roomLeft * scale.x,
-						y = roomLength * scale.y;
+						/**设备位置**/
+						x = roomLeft * scale.x - 10,
+						y = roomLength * scale.y + 10,
+						/**父容器**/
+						box = {
+							width: 300,
+							height: roomLength * scale.y
+						},
+						/**网格**/
+						cell = {
+							/**网格个数**/
+							area: new Array((box.width / scale.x) * (box.height / scale.y)).fill({
+								status: 'none',
+								axis: {
+									x: 0,
+									y: 0
+								}
+							}),
+							width: 100 / (box.width / scale.x) + '%',
+							height: 100 / (box.height / scale.y) + '%',
+						}
 					Object.assign(this.sizeInfo, {
 						x,
 						y,
-						scale
+						scale,
+						box,
+						cell,
 					});
-					console.log(this.sizeInfo.scale, 'scale');
+					console.log(this.sizeInfo, 'this.sizeInfo');
 					rows.forEach((ele, idx) => {
 						const {
 							x1 = 0, x2 = 0, y1 = 0, y2 = 0
@@ -369,7 +411,6 @@
 						title: '请完善区域信息'
 					})
 				}
-
 			},
 			/**
 			 * 区域修改
@@ -526,7 +567,42 @@
 					this.activeZone = 0;
 				}
 
+			},
+
+			/**
+			 * 触摸事件
+			 */
+			touchstart(event, item, index) {
+				Object.assign(this.touchInfo, {
+					x: event.target.offsetLeft,
+					y: event.target.offsetTop,
+					isAdd: item.status === 'none',
+					index
+				});
+				console.log(event, 'event');
+			},
+
+			/**
+			 * 拖拽事件
+			 */
+			touchMove(event, item, index) {
+				const {
+					offsetLeft,
+					offsetTop
+				} = event.target;
+
+
+			},
+
+			/**
+			 * 获取格子个数
+			 */
+			getCellCount() {
+
 			}
+
+
+
 		}
 	};
 </script>
@@ -549,10 +625,20 @@
 
 		movable-area {
 			display: inline-block;
+			box-sizing: border-box;
 			// height: 300px;
 			// width: 250px;
-			background-color: #d8d8d8;
+			background-color: #fff;
+			border: 1rpx solid #4c65a4;
 			overflow: hidden;
+
+			.ui-cell {
+				box-sizing: border-box;
+				display: inline-block;
+				float: left;
+				border-top: 1rpx solid #4c65a4;
+				border-left: 1rpx solid #4c65a4;
+			}
 		}
 
 		movable-view {
@@ -571,8 +657,8 @@
 			}
 
 			.ui-device {
-				min-height: 25px;
-				min-width: 25px;
+				height: 20px;
+				width: 20px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
