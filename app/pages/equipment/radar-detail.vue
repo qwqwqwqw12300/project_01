@@ -23,7 +23,7 @@
 				</view>
 			</view>
 			<view class="ui-icon">
-				<u-icon name="scan" @click="goView" size="30" color="#FF7E00" class="ui-detail-map" />
+				<u-icon name="../../static/images/monitor.png" @click="goView" size="28" color="#FF7E00" class="ui-detail-map" />
 				<u-icon name="setting-fill" @click="goSet" size="30" color="#FF7E00" class="ui-detail-map" />
 			</view>
 

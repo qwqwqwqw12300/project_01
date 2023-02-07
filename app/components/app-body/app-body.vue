@@ -119,6 +119,11 @@
 </script>
 
 <style lang="scss">
+	::v-deep{
+		.u-navbar__content__left__text{
+			font-size: 34rpx;
+		}
+	}
 	.wd-body {
 		padding-top: var(--status-bar-height);
 		box-sizing: border-box;

@@ -9,7 +9,7 @@ vayyar:
   # 实例演示开关
   demoEnabled: true
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  profile: /Users/bean/Documents/ruoyi/uploadPath
+  profile: /home/app/varyar/cloud/uploadPath
   # 获取ip地址开关
   addressEnabled: false
   # 验证码类型 math 数组计算 char 字符验证
@@ -70,16 +70,13 @@ spring:
   # redis 配置
   redis:
     # 地址
-    #host: localhost
-    host: 192.168.132.204
+    host: 10.173.150.202
     # 端口，默认为6379
-    #port: 6379
-    port: 16379
+    port: 32383
     # 数据库索引
     database: 0
     # 密码
-    #password:
-    password: redis123 
+    password: $Redis123!
     # 连接超时时间
     timeout: 10s
     lettuce:
@@ -134,39 +131,35 @@ xss:
   urlPatterns: /system/*,/monitor/*,/tool/*
 
 
-# 极光推送配置
-jpush:
-  appKey:  3c3f6b5746d37ea030455d83  # 极光平台应用的唯一标识
-  masterSecret: c234f905d96ea4659e07aafd   # masterSecret密钥 与 appKey 配合使用达到鉴权的目的
-  apnsProduction: false   # 是否生产环境，该配置只对ios通知有效（true生产环境，false开发环境）
-
-
-  # rocketmq配置
+# rocketmq配置
 rocketmq:
-    name-server: 192.168.132.204:9876
-    producer:
-      group: group_msg
-    group:
-      net: group_net
-      fall: group_fall
-      presence: group_presence
-      deviceState: group_deviceState
-      access: group_access
-      location: group_location
-      deviceConfig: group_deviceConfig
-      deviceConfigErr: group_deviceConfigErr
-      deviceActive: group_deviceActive
-    topic:
-      net: netTopic
-      fall: fallTopic
-      presence: presenceTopic
-      deviceState: deviceStateTopic
-      access: accessTopic
-      location: locationTopic
-      deviceConfig: deviceConfigTopic
-      deviceConfigErr: deviceConfigErrTopic
-      deviceActive: deviceActiveTopic
-
+  name-server: rocketmq-ingress-huadong-4-internal.cmecloud.cn:9873
+  namespace: MQ_INST_1675403579920_yJyKHLuz
+  producer:
+    group: ${rocketmq.namespace}%GID_group_msg
+    access-key: a1184af46e8544a8af861cca2b711bdf
+    secret-key: 99f1cf73e4354f06ba88750fc6cce6a6
+  consumer:
+    access-key: a1184af46e8544a8af861cca2b711bdf
+    secret-key: 99f1cf73e4354f06ba88750fc6cce6a6
+  group:
+    fall: ${rocketmq.namespace}%GID_group_fall
+    presence: ${rocketmq.namespace}%GID_group_presence
+    deviceState: ${rocketmq.namespace}%GID_group_deviceState
+    access: ${rocketmq.namespace}%GID_group_access
+    location: ${rocketmq.namespace}%GID_group_location
+    deviceConfig: ${rocketmq.namespace}%GID_group_deviceConfig
+    deviceConfigErr: ${rocketmq.namespace}%GID_group_deviceConfigErr
+    deviceActive: ${rocketmq.namespace}%GID_group_deviceActive
+  topic:
+    fall: ${rocketmq.namespace}%fallTopic
+    presence: ${rocketmq.namespace}%presenceTopic
+    deviceState: ${rocketmq.namespace}%deviceStateTopic
+    access: ${rocketmq.namespace}%accessTopic
+    location: ${rocketmq.namespace}%locationTopic
+    deviceConfig: ${rocketmq.namespace}%deviceConfigTopic
+    deviceConfigErr: ${rocketmq.namespace}%deviceConfigErrTopic
+    deviceActive: ${rocketmq.namespace}%deviceActiveTopic
 
 location:
   gaode:
@@ -184,3 +177,10 @@ location:
     fenceList: https://tsapi.amap.com/v1/track/geofence/list
     fenceTerminalBind: https://tsapi.amap.com/v1/track/geofence/terminal/bind
     fenceTerminalStatus: https://tsapi.amap.com/v1/track/geofence/status/terminal
+
+
+# 极光推送配置
+jpush:
+  appKey: 3c3f6b5746d37ea030455d83  # 极光平台应用的唯一标识
+  masterSecret: c234f905d96ea4659e07aafd   # masterSecret密钥 与 appKey 配合使用达到鉴权的目的
+  apnsProduction: false   # 是否生产环境，该配置只对ios通知有效（true生产环境，false开发环境）

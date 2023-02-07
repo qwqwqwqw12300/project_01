@@ -3,13 +3,36 @@
 	<app-body>
 		<view class="ui-monitor">
 			<view class="ui-area" :style="getStyle">
-				<view class="ui-roomZone" v-for="(item,index) in roomZone" :key="index" :style="getZonePosition(item)">
+				<view class="ui-roomZone" v-for="(item,index) in roomZoneList" :key="index"
+					:style="getZonePosition(item)">
 
 				</view>
 				<view class="ui-device" :style="getPosition">
 					<text class="ui-zone-name">设备</text>
 				</view>
 			</view>
+		</view>
+		<view class="ui-tip">
+			<view class="ui-item">
+				<view class="span"></view>
+				<text>隐私区域</text>
+			</view>
+			<view class="ui-item">
+				<view class="span1"></view>
+				<text>监控区域</text>
+			</view>
+			<view class="ui-item">
+				<u-icon name="../../static/images/person.png" color="#fff" size="50rpx"></u-icon>
+				<text>人员</text>
+			</view>
+			<view class="ui-item">
+				<u-icon name="../../static/images/person-down.png" color="#fff" size="44rpx"></u-icon>
+				<text>人员</text>
+			</view>
+		</view>
+		<view class="ui-set">
+			<button @click="handleDetail">查看明细</button>
+			<button @click="handleSet">设置</button>
 		</view>
 	</app-body>
 </template>
@@ -18,18 +41,24 @@
 	import {
 		mapState
 	} from 'vuex';
+	import {
+		GetStartDevice,
+		GetEndDevice,
+		GetNowInfo,
+		GetRoomZone,
+	} from '../../common/http/api';
 	export default {
 		data() {
 			return {
-				baseLenght: '360',
+				baseLenght: '330',
 				boxScale: 1,
 				deviceScale: 1,
 				minBox: 50,
 				boxInfo: {
-					width: 0,
+					width: 350,
 					height: 0,
 				},
-				roomZone: [],
+				roomZoneList: [],
 			}
 		},
 		computed: {
@@ -45,7 +74,7 @@
 				}
 			},
 			getPosition() {
-				let left = this.deviceScale * this.baseLenght
+				let left = this.deviceScale * this.boxInfo.width
 				left = left > this.minBox ? left : this.minBox
 				return {
 					left: `${left}px`
@@ -62,9 +91,27 @@
 				}
 			}
 		},
-		onLoad() {
-			console.log(this.deviceInfo.parameter.deviceLocation, 'deviceIfo')
+		async onLoad() {
+			console.log(this.deviceInfo, 'deviceIfo')
+			const data = await GetRoomZone({
+				deviceId: this.deviceInfo.deviceId
+			})
+			this.roomZoneList = data.rows
 			this.handleInit()
+			this.handleStart()
+		},
+		onUnload() {
+			GetEndDevice({
+				deviceId: this.deviceInfo.deviceId
+			})
+		},
+		mounted() {
+			const timer = setInterval(() => {
+				this.handleQuery()           
+			}, 10000);
+			this.$once('hook:beforeDestroy', () => {
+				clearInterval(timer);
+			})
 		},
 		methods: {
 			handleInit() {
@@ -79,29 +126,57 @@
 					} = parameter.deviceLocation
 					this.boxScale = roomLength / (roomLeft + roomRight)
 					this.deviceScale = roomLeft / (roomLeft + roomRight)
-					this.boxInfo.height = this.boxScale > 1 ? this.baseLenght : this.boxScale * this.baseLenght
-					this.boxInfo.width = this.boxScale < 1 ? this.baseLenght : this.boxScale * this.baseLenght
-					this.roomZone = this.deviceInfo.parameter?.roomZones.map(n => {
+					this.boxInfo.height = this.boxScale * this.boxInfo.width
+					// this.boxInfo.width = this.boxScale < 1 ? this.baseLenght : this.boxScale * this.baseLenght
+					this.roomZoneList = this.roomZoneList.map(n => {
 						const {
 							x1,
 							x2,
 							y1,
 							y2
 						} = n
-						n.width = (x2 - x1) / (roomLeft + roomRight) * this.boxInfo.width
-						n.height = (y2 - y1) / roomLength * this.boxInfo.height
+						n.width = Math.abs((x2 - x1) / (roomLeft + roomRight) * this.boxInfo.width)
+						n.height = Math.abs((y2 - y1) / roomLength * this.boxInfo.height)
 						n.positionLeft = (roomLeft + x1) / (roomLeft + roomRight) * this.boxInfo.width
 						n.positionTop = (roomLength - y2) / roomLength * this.boxInfo.height
 						return n
 					})
-					console.log(this.roomZone, 'rrrr')
+					console.log(this.roomZoneList, 'roro')
 				}
+			},
+			handleStart() {
+				GetStartDevice({
+					deviceId: this.deviceInfo.deviceId
+				}).then(res => {
+					this.handleQuery()
+				})
+			},
+			handleQuery() {
+				GetNowInfo({
+					deviceId: this.deviceInfo.deviceId
+				}).then(res => {
+					console.log(res, 'now')
+				})
+			},
+
+			handleDetail() {
+
+			},
+
+			handleSet() {
+
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	// ::v-deep {
+	// 	uni-button{
+
+	// 	}
+	// }
+
 	.ui-monitor {
 		width: 100%;
 		padding: 30rpx 20rpx;
@@ -141,5 +216,49 @@
 	.ui-roomZone {
 		position: absolute;
 		background-color: gray;
+	}
+
+	.ui-tip {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		padding: 0rpx 70rpx;
+		margin-top: 20rpx;
+	}
+
+	.ui-item {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+
+		text {
+			font-size: 24rpx;
+		}
+
+		.span {
+			width: 50rpx;
+			height: 50rpx;
+			background-color: gray;
+			margin-right: 10rpx;
+		}
+
+		.span1 {
+			width: 50rpx;
+			height: 50rpx;
+			background-color: #fff;
+			margin-right: 14rpx;
+		}
+	}
+
+	.ui-set {
+		display: flex;
+		margin-top: 90rpx;
+
+		button {
+			padding-left: 100rpx;
+			padding-right: 100rpx;
+			font-size: 28rpx;
+			border-radius: 8px !important;
+		}
 	}
 </style>

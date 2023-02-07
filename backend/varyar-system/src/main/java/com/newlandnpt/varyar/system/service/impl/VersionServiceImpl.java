@@ -57,7 +57,6 @@ public class VersionServiceImpl implements IVersionService
     {
         //新增时校验版本号
         List<TVersion> tVersionQuery = tVersionMapper.selectTVersionList(tVersion);
-        System.out.println(tVersionQuery.toString());
         if (tVersionQuery.size()!=0)
         {
             throw new ServiceException("该版本号已存在！");

@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <!--用户数据-->
       <el-col :span="24" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
           <el-form-item label="输入查询" prop="params.nameOrMobilePhone">
             <el-input
               v-model="queryParams.params.nameOrMobilePhone"
@@ -125,29 +125,25 @@
       <h4 class="form-header h4">基本信息
         <span class="notice_require">为必填项</span>
       </h4>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-row type="flex" justify="center">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+        <el-row type="flex" justify="center" >
           <el-col :span="12">
             <el-form-item label="登录账号" prop="userName">
               <el-input :disabled="!(form.userId == undefined)" v-model="form.userName" placeholder="请输入登录账号" maxlength="30" />
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row type="flex" justify="center">
           <el-col :span="12">
             <el-form-item v-if="form.userId == undefined" label="登录密码" prop="password">
               <el-input v-model="form.password" placeholder="请输入登录密码" type="password" maxlength="20" show-password/>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex" justify="center">
+        <el-row type="flex" justify="center" >
           <el-col :span="12">
             <el-form-item label="姓名" prop="name">
               <el-input v-model="form.name" placeholder="请输入姓名" maxlength="30" />
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row type="flex" justify="center">
           <el-col :span="12">
             <el-form-item label="性别" prop="sex">
               <el-radio-group v-model="form.sex">
@@ -156,14 +152,12 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex" justify="center">
+        <el-row type="flex" justify="center" >
           <el-col :span="12">
             <el-form-item label="手机号码" prop="mobilePhone">
               <el-input v-model="form.mobilePhone" placeholder="请输入手机号码" maxlength="11" />
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row type="flex" justify="center">
           <el-col :span="12">
             <el-form-item label="座机/分机" prop="telPhone">
               <el-col :span="6">
@@ -186,8 +180,6 @@
               <treeselect v-model="form.orgId" :options="orgOptions" :show-count="true" placeholder="请选择归属机构" />
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row type="flex" justify="center">
           <el-col :span="12">
             <el-form-item label="状态" prop="status">
               <el-radio-group v-model="form.status">
@@ -200,7 +192,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex" justify="center">
+        <el-row type="flex" justify="center" >
           <el-col :span="12">
             <el-form-item v-hasPermi="['system:user:roleArrange']" label="角色" prop="roleIds">
               <el-select v-model="form.roleIds" multiple placeholder="请选择角色">
@@ -214,8 +206,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row  type="flex" justify="center">
           <el-col :span="12">
             <el-form-item label="备注">
               <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>

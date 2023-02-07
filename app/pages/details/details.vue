@@ -12,9 +12,10 @@
 			<view class="ui-screen">
 				<view class="ui-list">
 					<text>我的家庭:</text>
-					<view class="ui-select">
-						<uni-data-select v-model="eventInfo.familyId" :clear="false" :localdata="getFamilyList">
-						</uni-data-select>
+					<view class="ui-date active" @click="handleSelect('family')">
+						<text>{{ eventInfo.familyName }}</text>
+						<!-- 	<uni-data-select v-model="eventInfo.familyId" :clear="false" :localdata="getFamilyList">
+						</uni-data-select> -->
 						<!-- 	<view class="ui-icon"><u-icon name="arrow-down-fill" color="#414141" size="30rpx"></u-icon></view> -->
 					</view>
 				</view>
@@ -34,23 +35,26 @@
 				</view>
 				<view class="ui-list">
 					<text>设备类型:</text>
-					<view class="ui-select">
-						<uni-data-select v-model="eventInfo.deviceType" :clear="false" :localdata="typeRang">
-						</uni-data-select>
+					<view class="ui-date active" @click="handleSelect('device')">
+						<text>{{ eventInfo.deviceTypeName }}</text>
+						<!-- 		<uni-data-select v-model="eventInfo.deviceType" :clear="false" :localdata="typeRang">
+						</uni-data-select> -->
 					</view>
 				</view>
 				<view class="ui-list">
 					<text>事件类型:</text>
-					<view class="ui-select">
-						<uni-data-select v-model="eventInfo.eventlevel" :clear="false" :localdata="eventRang">
-						</uni-data-select>
+					<view class="ui-date active" @click="handleSelect('event')">
+						<text>{{ eventInfo.eventlevelName }}</text>
+						<!-- 	<uni-data-select v-model="eventInfo.eventlevel" :clear="false" :localdata="eventRang">
+						</uni-data-select> -->
 					</view>
 				</view>
 				<view class="ui-list">
 					<text>已读标识:</text>
-					<view class="ui-select">
-						<uni-data-select v-model="eventInfo.readFlag" :clear="false" :localdata="operateRang">
-						</uni-data-select>
+					<view class="ui-date active" @click="handleSelect('flag')">
+						<text>{{ eventInfo.readFlagName }}</text>
+						<!-- 	<uni-data-select v-model="eventInfo.readFlag" :clear="false" :localdata="operateRang">
+						</uni-data-select> -->
 					</view>
 				</view>
 			</view>
@@ -61,6 +65,8 @@
 			</view>
 			<u-calendar @close="dateClose" :monthNum="13" :maxDate="dateHandle.max" :minDate="dateHandle.min"
 				:show="dateHandle.show" @confirm="dateConfirm"></u-calendar>
+			<u-picker :key="index" @cancel="selectShow = false" @confirm="onConfirm" :show="selectShow"
+				:columns="selectObj[currentSelect]" keyName="text"></u-picker>
 		</view>
 	</app-body>
 </template>
@@ -81,12 +87,8 @@
 	const dateTime = new Date();
 	export default {
 		data() {
-			return {
-				familyRange: [{
-					value: '',
-					text: '全部'
-				}],
-				typeRang: [{
+			const typeRang = [
+				[{
 						value: '',
 						text: '全部'
 					},
@@ -98,8 +100,10 @@
 						value: 1,
 						text: '监控设备'
 					}
-				],
-				eventRang: [{
+				]
+			]
+			const eventRang = [
+				[{
 						value: '',
 						text: '全部'
 					},
@@ -111,8 +115,11 @@
 						value: 'normal',
 						text: '普通事件'
 					}
-				],
-				operateRang: [{
+				]
+			]
+
+			const operateRang = [
+				[{
 						value: '',
 						text: '全部'
 					},
@@ -124,7 +131,10 @@
 						value: 1,
 						text: '未读'
 					}
-				],
+				]
+			]
+			return {
+
 				/**日期控制**/
 				dateHandle: {
 					/**是否展示**/
@@ -138,19 +148,38 @@
 				eventInfo: {
 					/**家庭id**/
 					familyId: '',
+					/**家庭名称**/
+					familyName: '',
 					/**开始时间**/
 					startDate: '',
 					/**结束时间**/
 					endDate: '',
 					/**事件等级**/
 					eventlevel: '',
+					/**事件等级名称**/
+					eventlevelName: '',
 					/**是否已读**/
 					readFlag: '',
+					/**是否已读名称**/
+					readFlagName: '',
 					/**设备类型**/
-					deviceType: ''
+					deviceType: '',
+					/**设备类型名称**/
+					deviceTypeName: ''
 				},
 				/**消息列表**/
-				messageList: []
+				messageList: [],
+				/* 下拉框visible */
+				selectShow: false,
+				selectObj: {
+					family: [],
+					device: typeRang,
+					event: eventRang,
+					flag: operateRang,
+				},
+				currentSelect: '',
+				operateRang,
+				index: 0,
 			};
 		},
 		computed: {
@@ -179,6 +208,7 @@
 				startDate: uni.$u.timeFormat(date.setDate(date.getDate() - 3), 'yyyy-mm-dd'),
 				familyId: this.getFamilyList[0].value
 			});
+			this.selectObj.family = [this.getFamilyList]
 			this.selectEventInfo();
 		},
 		methods: {
@@ -232,6 +262,44 @@
 			async onRefresh(cb) {
 				await this.selectEventInfo();
 				cb();
+			},
+
+			/**
+			 * 开启下拉选择
+			 */
+			handleSelect(type) {
+				this.index += 1
+				this.currentSelect = type
+				this.selectShow = true
+			},
+
+			/**
+			 * 下拉框选择
+			 */
+			onConfirm(val) {
+				const {
+					value,
+					text
+				} = val.value[0]
+				switch (this.currentSelect) {
+					case 'family':
+						this.eventInfo.familyId = value
+						this.eventInfo.familyName = text
+						break
+					case 'device':
+						this.eventInfo.deviceType = value
+						this.eventInfo.deviceTypeName = text
+						break
+					case 'event':
+						this.eventInfo.eventlevel = value
+						this.eventInfo.eventlevelName = text
+						break
+					case 'flag':
+						this.eventInfo.readFlag = value
+						this.eventInfo.readFlagName = text
+						break
+				}
+				this.selectShow = false
 			}
 		}
 	};
