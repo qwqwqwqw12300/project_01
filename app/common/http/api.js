@@ -106,6 +106,11 @@ export const getDeviceList = (data) => http.post('/api/device/list', data);
 /**获取设备列表**/
 export const getDeviceListState = (data) => http.post('/api/device/listState', data);
 
+/* 
+ *删除设备*
+ */
+export const PostDeviceDel = (params) => http.post('/api/device/remDevice', params)
+
 /**设备事件查询**/
 export const selectEventInfo = (data) => http.post('/api/event/selectEventInfo', data);
 /**事件信息**/
