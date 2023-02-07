@@ -20,6 +20,11 @@
 								<!-- <text class="grid-text">{{ baseListItem.title }}</text> -->
 								<u-text class="grid-text" @click="edit(item)" suffixIcon="edit-pen-fill"
 									iconStyle="font-size: 36rpx" align="center" :text="item.name || '未命名'"></u-text>
+
+								<u-icon @click.native.stop="onDelete(item.deviceId)" class="ui-close active"
+									name="close-circle-fill" size="40rpx">
+								</u-icon>
+
 								<text
 									class="grid-text ui-text">{{ (item.roomName || '未绑定') + ' | ' + item.location}}</text>
 
@@ -76,6 +81,7 @@
 		getRoomList,
 		PostDeviceList,
 		PosteditDevice,
+		PostDeviceDel,
 		setDevice,
 		relDevice,
 		getDeviceListState
@@ -358,6 +364,28 @@
 					this.getList(),
 					this.getAllFamily()
 				])
+			},
+
+			/**
+			 * 删除设备
+			 */
+			onDelete(deviceId) {
+				uni.showModal({
+					title: '提示',
+					content: '是否确认删除该设备',
+					success: res => {
+						if (res.confirm) {
+							PostDeviceDel({
+								deviceId
+							}).then(res => {
+								uni.$u.toast('删除成功');
+								setTimeout(() => {
+									this.init();
+								}, 1000);
+							})
+						}
+					}
+				});
 			}
 		},
 		onShow() {
@@ -455,6 +483,7 @@
 				right: -10rpx;
 			}
 		}
+
 
 		.ui-btn {
 			margin-top: 10rpx;
