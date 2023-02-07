@@ -9,7 +9,8 @@
 	<app-body>
 		<view id="system">
 			<app-logo text="系统消息"></app-logo>
-			<view class="ui-list">
+			<scroll-view class="ui-list" @refresherrefresh="onRefresh" refresher-enabled scroll-y="true"
+				:refresher-triggered="triggered">
 				<view class="ui-item" v-for="item in messageList" :key="item.noticeId">
 					<view class="ui-date">
 						{{ item.createTime }}
@@ -25,7 +26,7 @@
 						</view>
 					</view>
 				</view>
-			</view>
+			</scroll-view>
 		</view>
 		<!-- 		<u-popup :closeable="true" :overlay="false" zIndex="99" :round="10" :show="showVisible" mode="center"
 			@close="showVisible = false">
@@ -52,6 +53,7 @@
 			return {
 				messageList: [],
 				showVisible: false,
+				triggered: false,
 			}
 		},
 		computed: {
@@ -71,7 +73,7 @@
 					postSetNoticeFlag({
 						noticeId
 					}).then(res => {
-						this.messageList.find(n=>{
+						this.messageList.find(n => {
 							return n.noticeId = noticeId
 						}).readFlag = '1'
 					});
@@ -81,11 +83,18 @@
 			initData() {
 				GetSysNotice().then(res => {
 					this.messageList = res.rows
+				}).finally(() => {
+					this.triggered = false
 				})
 			},
 			onConfirm() {
 				// this.initData()
 				this.showVisible = false
+			},
+			onRefresh() {
+				console.log('cccoooo')
+				this.triggered = true
+				this.initData()
 			}
 		},
 		mounted() {

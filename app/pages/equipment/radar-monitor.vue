@@ -108,7 +108,7 @@
 		mounted() {
 			const timer = setInterval(() => {
 				this.handleQuery()           
-			}, 5000);
+			}, 10000);
 			this.$once('hook:beforeDestroy', () => {
 				clearInterval(timer);
 			})

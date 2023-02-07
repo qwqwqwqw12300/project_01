@@ -88,7 +88,7 @@
 					uuid: '',
 					code: ''
 				},
-				radiovalue: []
+				radiovalue: ['ag']
 			};
 		},
 		methods: {
