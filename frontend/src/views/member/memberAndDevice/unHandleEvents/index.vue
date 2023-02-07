@@ -267,8 +267,8 @@
         <el-table-column label="失败原因" align="center" prop="reason" />
       </el-table>
       <pagination
-        v-show="total > 0"
-        :total="total"
+        v-show="msgTotal > 0"
+        :total="msgTotal"
         :page.sync="queryMsgParams.pageNum"
         :limit.sync="queryMsgParams.pageSize"
         @pagination="getMsgList"
@@ -462,6 +462,7 @@ export default {
         pageSize: 20,
         eventId: 0,
       },
+      msgTotal:0,
 
       //卡片传值使用
       memberId: null,
@@ -528,7 +529,7 @@ export default {
 
       listMsg(this.queryMsgParams).then((response) => {
         this.msgList = response.rows;
-        this.total = response.total;
+        this.msgTotal = response.total;
         // console.log(JSON.stringify(response) + ">>>>>" + ">>>>>>>" )
       });
     },
