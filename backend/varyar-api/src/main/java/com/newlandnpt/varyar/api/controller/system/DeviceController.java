@@ -553,12 +553,13 @@ public class DeviceController extends BaseController {
         List<TrackerTargetVo> tvo = iDeviceService.getRealLocationMonitorByDeviceNo(tDevice.getNo());
         List<ExtraVo> evo = iDeviceService.getRealLocationExtraByDeviceNo(tDevice.getNo());
         Map<String,Object> map = new HashMap<String,Object>();
-        if (tvo == null)
-            tvo = new ArrayList<TrackerTargetVo>();
-        if (evo == null)
-            evo = new ArrayList<ExtraVo>();
-        map.put("tvo",tvo);
-        map.put("evo",evo);
+        if(evo.size()>0){
+            map.put("tvo",evo);
+            map.put("extra","1");
+        }else {
+            map.put("tvo",tvo);
+            map.put("extra","0");
+        }
         return success(map);
     }
     private AjaxResult checkPhoneInfo(DevicePhone devicePhone ,AjaxResult ajax){
