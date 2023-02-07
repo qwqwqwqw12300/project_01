@@ -18,6 +18,7 @@
 
 <script>
 	import {
+		GetDict,
 		PostVersionInfo,
 	} from '@/common/http/api.js';
 	import {
@@ -116,6 +117,9 @@
 
 			},
 			initInfo() {
+				GetDict().then(res => {
+					console.log(res, '字典信息');
+				})
 				this.getUserInfo().then(res => {
 					if (!res) {
 						const animation = uni.createAnimation({

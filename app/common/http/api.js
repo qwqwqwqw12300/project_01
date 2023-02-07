@@ -292,6 +292,11 @@ export const PostRemRadarDevice = (params) => http.post('/api/roomZone/remRadarD
 export const GetRoomZone = (params) => http.get('/api/roomZone/getRoomZoon', params);
 
 /**
+ * 获取字典信息
+ */
+export const GetDict = () => http.get('/api/dictData/getDict');
+
+/**
  * 开启获取设备位置(实时)
  */
 export const GetStartDevice = (params) => http.get('/api/device/startNowInfo', params);

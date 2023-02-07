@@ -17,13 +17,13 @@
 					<u--input class="ui-room-name" v-model="form.name" placeholder="请输入房间名称" border="bottom" clearable>
 					</u--input>
 				</view>
-				<view v-if="mode === 'edit'">
+				<!-- <view v-if="mode === 'edit'">
 					<u-text size="28rpx" prefixIcon="plus-circle" iconStyle="font-size: 40rpx" text="绑定雷达波">
 					</u-text>
 					<view class="ui-select">
 						<uni-data-select v-model="deviceId" :clear="false" :localdata="devices"></uni-data-select>
 					</view>
-				</view>
+				</view> -->
 			</view>
 			<view class="ui-btn"><button @click="next" class="wd-sms">{{ subTitle }}</button></view>
 		</view>
@@ -36,27 +36,27 @@
 		PostEditRoom,
 		setDevice
 	} from '@/common/http/api.js';
-	const INIT_BINDFORM = {
-		familyId: '',
-		roomId: '',
-		deviceId: '',
-		deviceName: '',
-		deviceType: '',
-		deviceNo: '',
-		deviceId: '',
-		roomLeft: 100,
-		roomHeight: 100,
-		roomRight: 100,
-		roomLength: 100,
-		existFlag: 0,
-		fallFlag: 0,
-		entryTime: 0,
-		departureTime: 0,
-		startTime: 0,
-		endTime: 0,
-		inMonitorFlag: 0,
-		outMonitorFlag: 0,
-	};
+	// const INIT_BINDFORM = {
+	// 	familyId: '',
+	// 	roomId: '',
+	// 	deviceId: '',
+	// 	deviceName: '',
+	// 	deviceType: '',
+	// 	deviceNo: '',
+	// 	deviceId: '',
+	// 	roomLeft: 100,
+	// 	roomHeight: 100,
+	// 	roomRight: 100,
+	// 	roomLength: 100,
+	// 	existFlag: 0,
+	// 	fallFlag: 0,
+	// 	entryTime: 0,
+	// 	departureTime: 0,
+	// 	startTime: 0,
+	// 	endTime: 0,
+	// 	inMonitorFlag: 0,
+	// 	outMonitorFlag: 0,
+	// };
 	export default {
 		props: {
 			/**模式add-添加家庭 edit-修改家庭**/
@@ -121,8 +121,9 @@
 			},
 
 			editRoom(form) {
+				const list = [PostEditRoom(form)];
 				return Promise.all([
-					PostEditRoom(form),
+					// PostEditRoom(form),
 					setDevice({
 						...INIT_BINDFORM,
 						deviceId: this.deviceId,

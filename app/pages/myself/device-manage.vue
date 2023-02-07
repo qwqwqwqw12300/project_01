@@ -8,32 +8,35 @@
 <template>
 	<view id="deviceManage">
 		<app-body>
-			<!-- <view class="ui-logo">设备管理</view> -->
 			<app-logo text="设备管理"></app-logo>
 			<view class="ui-menu">
-				<u-grid col="2">
-					<u-grid-item v-for="(item, index) in list" :key="index">
-						<view class="ui-menu-item" :border="false">
-							<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/myself/device.png"
-								size="80rpx"></u-icon>
-							<!-- <text class="grid-text">{{ baseListItem.title }}</text> -->
-							<u-text class="grid-text" @click="edit(item)" suffixIcon="edit-pen-fill"
-								iconStyle="font-size: 36rpx" align="center" :text="item.name"></u-text>
-							<text class="grid-text ui-text">{{ item.location }}</text>
-							<view class="ui-wifi active">
+				<view v-for="(device, index) of devices" :key="'f' + index">
+					<view class="ui-title">{{device.name}}</view>
+					<u-grid col="2">
+						<u-grid-item v-for="(item, index) in device.list" :key="index">
+							<view class="ui-menu-item" :border="false">
 								<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }"
-									:name="item.onlineFlag === '1' ? 'wifi' : 'wifi-off'" size="40rpx"
-									:color="item.onlineFlag === '1' ? '#0dab1c' : '#ff4800'"></u-icon>
+									name="/static/images/myself/device.png" size="80rpx"></u-icon>
+								<!-- <text class="grid-text">{{ baseListItem.title }}</text> -->
+								<u-text class="grid-text" @click="edit(item)" suffixIcon="edit-pen-fill"
+									iconStyle="font-size: 36rpx" align="center" :text="item.name || '未命名'"></u-text>
+								<text
+									class="grid-text ui-text">{{ (item.roomName || '未绑定') + ' | ' + item.location}}</text>
+
+								<view class="ui-wifi active">
+									<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }"
+										:name="item.onlineFlag === '1' ? 'wifi' : 'wifi-off'" size="40rpx"
+										:color="item.onlineFlag === '1' ? '#0dab1c' : '#ff4800'"></u-icon>
+								</view>
 							</view>
-							<!-- 							<u-icon @click="onDelete" class="ui-close active" name="close-circle-fill" size="40rpx">
-							</u-icon> -->
-						</view>
-						<view class="ui-btn">
-							<button v-if="!item.roomId" @click="binding(item)">绑定</button>
-							<button v-else class="wd-sms" @click="unbinding(item)">解绑</button>
-						</view>
-					</u-grid-item>
-				</u-grid>
+							<view class="ui-btn">
+								<button v-if="!item.roomId" @click="binding(item)">绑定</button>
+								<button v-else class="wd-sms" @click="unbinding(item)">解绑</button>
+							</view>
+						</u-grid-item>
+					</u-grid>
+				</view>
+
 			</view>
 			<view class="ui-add-btn"><button @click="addHandle.show = true">创建设备</button></view>
 			<!-- 绑定房间 -->
@@ -147,7 +150,26 @@
 						text: ele.name,
 						value: ele.familyId
 					}));
+				},
+				devices: function(state) {
+					const list = this.list,
+						devices = [{
+							name: '未绑定设备',
+							list: list.filter(item => item && !item.familyId) || []
+						}];
+					state.familyList.forEach(ele => {
+						if (ele.shareFlag === '2') {
+							const items = list.filter(item => item.familyId === ele.familyId);
+							if (items.length)
+								devices.push({
+									name: ele.name,
+									list: items
+								});
+						}
+					});
+					return devices;
 				}
+
 			}),
 			/**房间列表**/
 			rangRoomList() {
@@ -350,10 +372,29 @@
 		padding: 0 78rpx;
 		min-height: 600rpx;
 
+		>view {
+			margin-bottom: 50rpx;
+		}
+
+		.ui-title {
+			box-sizing: border-box;
+			padding: 0 32rpx;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			height: 60rpx;
+			width: 100%;
+			border-radius: 40px;
+			overflow: hidden;
+			color: #fff;
+			background-color: rgba(0, 0, 0, 0.4);
+			font-size: 30rpx;
+		}
+
 		.ui-menu-item {
 			position: relative;
-			margin-top: 58rpx;
-			padding: 20rpx 0;
+			margin-top: 30rpx;
+			padding: 30rpx 0;
 			display: flex;
 			box-sizing: border-box;
 			align-items: center;
@@ -361,7 +402,7 @@
 			flex-direction: column;
 			font-size: 27rpx;
 			color: #414141;
-			height: 258rpx;
+			height: 278rpx;
 			width: 258rpx;
 			border-radius: 10rpx;
 			filter: drop-shadow(7.824rpx 10.382rpx 8rpx rgba(7, 5, 5, 0.08));
@@ -378,11 +419,21 @@
 
 			.ui-text {
 				display: inline-flex;
-				width: 70%;
+				// width: 70%;
 				height: 40rpx;
 				line-height: 60rpx;
 				align-items: center;
 				justify-content: center;
+			}
+
+			.ui-location {
+				display: inline;
+				width: unset;
+				position: absolute;
+				bottom: 10rpx;
+				left: 10rpx;
+				z-index: 10;
+				font-size: 20rpx;
 			}
 
 			.grid-text {

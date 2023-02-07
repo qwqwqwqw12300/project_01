@@ -48,31 +48,35 @@
 						}" text="分享" v-if="familyItem.shareFlag === '2'"></u-text>
 					</view>
 					<view class="ui-device">
-						<view class="ui-list" v-for="device of familyItem.devices" :key="device.deviceId">
-							<view class="ui-list-box active" @click="goDeciveDetails(device)">
-								<image src="../../static/images/device.png"></image>
-								<text>{{device.name || '未命名设备'}}</text>
-								<text>{{device.roomName || '--'}}</text>
-								<view class="ui-list-static">
-									<u-icon :name="device.onlineFlag === '1' ? 'wifi' : 'wifi-off'"
-										:color="device.onlineFlag === '1' ? '#0dab1c' : '#ff4800'" size="28"></u-icon>
+						<view class="ui-list" v-for="room of familyItem.rooms" :key="room.roomId">
+							<template v-if="getDeives(room.roomId).deviceId">
+								<view class="ui-list-box active" @click="goDeciveDetails(getDeives(room.roomId))">
+									<image src="../../static/images/device.png"></image>
+									<text>{{room.name || '未命名房间'}}</text>
+									<text>{{getDeives(room.roomId).name || '未命名设备'}}</text>
+									<view class="ui-list-static">
+										<u-icon :name="getDeives(room.roomId).onlineFlag === '1' ? 'wifi' : 'wifi-off'"
+											:color="getDeives(room.roomId).onlineFlag === '1' ? '#0dab1c' : '#ff4800'"
+											size="28"></u-icon>
+									</view>
+									<u-badge v-if="getDeives(room.roomId).msgNum" :offset="[-9, 0]"
+										:value="getDeives(room.roomId).msgNum" absolute>
+									</u-badge>
 								</view>
-								<u-badge v-if="device.msgNum" :offset="[-9, 0]" :value="device.msgNum" absolute>
-								</u-badge>
-							</view>
+							</template>
+							<!-- 空房间 -->
+							<template v-else>
+								<view class="ui-list-box active" @click="bindDevice(room)">
+									<u-icon name="info-circle" size="90rpx"></u-icon>
+									<text>{{room.name || '未命名房间'}}</text>
+									<text class="ui-link">点击绑定设备</text>
+								</view>
+							</template>
+							<!-- /空房间 -->
 						</view>
-						<!-- 空房间 -->
-						<view class="ui-list">
-							<view class="ui-list-box active">
-								<u-icon name="info-circle" size="90rpx"></u-icon>
-								<text class="ui-link">点击绑定设备</text>
-								<text>空房间</text>
-							</view>
-						</view>
-						<!-- /空房间 -->
 						<!-- 新增房间 -->
 						<view class="ui-list">
-							<view class="ui-list-box active">
+							<view class="ui-list-box active" @click="addRoom(familyItem.familyId)">
 								<u-icon name="plus" size="70rpx"></u-icon>
 							</view>
 						</view>
@@ -90,6 +94,8 @@
 			</template>
 			<!-- /空户 -->
 			<add-step ref="addStepRef"></add-step>
+			<bind-device :payload="bindPayload" @next="handleInitList" ref="indexBindDev" />
+			<room-pop ref="indexAddRoom" @update="handleInitList" />
 		</app-body>
 	</view>
 
@@ -112,7 +118,9 @@
 				/**是否展示添加弹窗**/
 				isAddShow: false,
 				/**公告状态**/
-				readInfo: []
+				readInfo: [],
+				/**绑定信息**/
+				bindPayload: {}
 			}
 		},
 		computed: {
@@ -121,25 +129,31 @@
 				familyList: state => state.familyList
 			}),
 			...mapGetters(['filterDevice']),
-			getOnlineData() {
-				return function(item) {
-					return item.devices.reduce((pre, cur) => {
-						return pre + (cur.onlineFlag === '1' ? 1 : 0)
-					}, 0)
+			// 获取设备信息
+			getDeives: function() {
+				return roomId => {
+					const devices = this.filterDevice({
+						roomId
+					});
+					return devices[0] || {};
 				}
 
 			}
 		},
 		onShow() {
-			Promise.all([
-				this.getAllFamily(),
-				this.getAllDevices(),
-				this.getReadInfo(),
-				this.getPushMsgState()
-			]);
+			this.handleInitList();
 		},
 		methods: {
 			...mapActions(['getAllFamily', 'getAllDevices', 'getPushMsgState', 'getAllRoom']),
+
+			handleInitList() {
+				Promise.all([
+					this.getAllFamily(),
+					this.getAllDevices(),
+					this.getReadInfo(),
+					this.getPushMsgState()
+				]);
+			},
 			/**
 			 * 打开添加按钮
 			 */
@@ -185,6 +199,15 @@
 			},
 
 			/**
+			 * 添加房间
+			 */
+			addRoom(familyId) {
+				this.$refs.indexAddRoom.open({
+					familyId
+				});
+			},
+
+			/**
 			 * 获取公告状态
 			 */
 			getReadInfo() {
@@ -194,7 +217,21 @@
 						resolve();
 					});
 				})
+			},
 
+
+			/**
+			 * 绑定设备
+			 */
+			bindDevice({
+				familyId,
+				roomId
+			}) {
+				this.bindPayload = {
+					familyId,
+					roomId
+				};
+				this.$refs.indexBindDev.open();
 			}
 		}
 	}
