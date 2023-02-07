@@ -87,7 +87,13 @@ public class TMsg extends BaseEntity
     //@Excel(name = "已读未读标志", readConverterExp = "0=未处理,1=已处理")
     private String operateFlag;
 
+    /** 家庭名称*/
+    @Transient
+    private String familyName;
 
+    /** 房间名称*/
+    @Transient
+    private String roomName;
 
     /** 设备名称*/
     @Transient
@@ -100,6 +106,22 @@ public class TMsg extends BaseEntity
     /** 结束时间 */
     @Transient
     private Date endDate;
+
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
 
     public Date getStartDate() {
         return startDate;
