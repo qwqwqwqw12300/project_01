@@ -186,8 +186,10 @@
     <el-dialog :title="title" :visible.sync="events" width="900px" append-to-body>
      <el-table
       v-loading="loading"
-      :data="eventList.slice((queryEventsParams.pageNum-1)*queryEventsParams.pageSize,queryEventsParams.pageNum*queryEventsParams.pageSize)"
+      :data="eventList"
     >
+    <!-- .slice((pageNum-1)*pageSize,pageNum*pageSize) -->
+    <!-- .slice((queryEventsParams.pageNum-1)*queryEventsParams.pageSize,queryEventsParams.pageNum*queryEventsParams.pageSize) -->
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="序号" type="index" align="center">
         <template slot-scope="scope">
@@ -202,15 +204,14 @@
 
       <!-- <el-table-column label="事件编号" align="center" prop="no" width="120" show-overflow-tooltip/> -->
       <el-table-column label="事件内容" align="center" prop="content"  show-overflow-tooltip/>
-      <el-table-column label="设备名称" align="center" prop="deviceName"  show-overflow-tooltip/>
-      <el-table-column label="设备编号" align="center" prop="deviceNo"  show-overflow-tooltip/>
-      <!-- <el-table-column
+      <!-- <el-table-column label="设备名称" align="center" prop="deviceName"  show-overflow-tooltip/>
+      <el-table-column label="设备编号" align="center" prop="deviceNo"  show-overflow-tooltip/> -->
+      <el-table-column
         label="报警时间"
         align="center"
         prop="createTime"
         width="180"
         color="#FF0000"
-
       >
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -227,7 +228,7 @@
           <span>{{ parseTime(scope.row.operateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="设备归属会员" align="center" prop="memberPhone" /> -->
+      <!-- <el-table-column label="设备归属会员" align="center" prop="memberPhone" /> -->
       <el-table-column label="处理标志" align="center" prop="operateFlag">
         <template slot-scope="scope">
           {{ operateFlagFormat(scope.row) }}
@@ -237,8 +238,8 @@
     </el-table>
 
     <pagination
-      v-show="total > 0"
-      :total="total"
+      v-show="eventsTotal > 0"
+      :total="eventsTotal"
       :page.sync="queryEventsParams.pageNum"
       :limit.sync="queryEventsParams.pageSize"
       @pagination="getEventList"
@@ -260,7 +261,7 @@ import { orgTreeSelect } from "@/api/system/user";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 //获取事件列表信息
-import { listEvent } from "@/api/eventAndMessage/event";
+import { listEventByIds } from "@/api/eventAndMessage/event";
 
 
 export default {
@@ -339,11 +340,12 @@ export default {
       },
       queryEventsParams:{
           pageNum: 1,
-          pageSize: 20,
-          params:{
-            eventIds: [],
-          },
+          pageSize: 10,
+          eventIds: [],
+
       },
+      // 总条数
+      eventsTotal: 0,
       // 表单参数
       form: {},
       // 表单校验
@@ -387,12 +389,12 @@ export default {
       this.loading = true;
       // this.queryEventsParams.params.eventIds = this.eventIds,
       // console.log("开始====="+this.queryEventsParams.params.eventIds)
-      console.log("eventIds=============="+JSON.stringify(this.queryEventsParams))
+      // console.log("eventIds=============="+JSON.stringify(this.queryEventsParams))
       // listEvent(this.queryParams).then(response => {
-      listEvent(this.queryEventsParams).then(
+        listEventByIds(this.queryEventsParams).then(
         (response) => {
           this.eventList = response.rows;
-          this.total = response.total;
+          this.eventsTotal = response.total;
           this.loading = false;
         }
       );
@@ -444,7 +446,7 @@ export default {
     handleView(row) {
       //  console.log("eventId=============="+ this.eventId)
       // this.eventIds=[],
-      this.queryEventsParams.params.eventIds = row.serveEvents.map((item) => item.eventId);
+      this.queryEventsParams.eventIds = row.serveEvents.map((item) => item.eventId);
 
       // const no = row.serveEvents.no;
       //  console.log("eventIds=============="+JSON.stringify(this.eventIds))

@@ -12,12 +12,19 @@
 				<u-icon class="ui-logo-icon" name="edit-pen" size="60rpx" color="#fff" @click="openFamilyEdit"></u-icon>
 			</app-logo>
 			<view class="ui-menu">
-				<u-grid>
+				<u-grid col="2">
 					<u-grid-item v-for="(item, index) in list" :key="index">
 						<view class="ui-menu-item active" :border="false" @click="openRoomEdit(item)">
 							<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/myself/room.png"
 								size="60rpx"></u-icon>
 							<text class="grid-text">{{ item.name }}</text>
+							<view class="device-info" v-if="item.devices.length">
+								<text class="grid-text-device">{{ (getDevices(item).name || '未命名设备')  + ' | '}}</text>
+								<text class="grid-text-device"
+									:style="{color: getDevices(item).onlineFlag == 1 ? 'rgb(13, 171, 28)' : 'rgb(255, 72, 0)'}">
+									{{(getDevices(item).onlineFlag == 1 ? '在线' : '离线')}}</text>
+							</view>
+							<text class="grid-text-device" v-else>未绑定设备</text>
 							<u-icon @click.native.stop="onDelete(item.roomId)" class="ui-close active"
 								name="close-circle-fill" size="40rpx">
 							</u-icon>
@@ -61,6 +68,17 @@
 		onLoad() {
 			this.familyInfo = this.$getCache('familyInfo');
 			this.handleInitList()
+		},
+		computed: {
+			getDevices: () => {
+				return (item) => {
+					if (item.devices[0]) {
+						return item.devices[0]
+					}
+					return {}
+
+				}
+			}
 		},
 		methods: {
 
@@ -198,8 +216,8 @@
 			flex-direction: column;
 			font-size: 27rpx;
 			color: #414141;
-			height: 168rpx;
-			width: 168rpx;
+			height: 258rpx;
+			width: 258rpx;
 			border-radius: 10rpx;
 			filter: drop-shadow(7.824rpx 10.382rpx 8rpx rgba(7, 5, 5, 0.08));
 			background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
@@ -209,9 +227,15 @@
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
-				margin: 15rpx 0 10rpx 0;
+				margin: 20rpx 0 10rpx 0;
 				width: 70%;
 				height: 60rpx;
+				font-size: 32rpx;
+				color: #414141;
+			}
+
+			.grid-text-device {
+				color: #999;
 			}
 
 			.ui-edit {
@@ -231,7 +255,7 @@
 
 	.ui-btn {
 		text-align: center;
-		margin-top: 50rpx;
+		margin: 50rpx 0;
 
 		button {
 			width: 276rpx;
@@ -249,7 +273,7 @@
 
 		button {
 			height: 60rpx;
-			width: 180rpx;
+			width: 258rpx;
 			line-height: 60rpx;
 			border-radius: 10px;
 			font-size: 30rpx;

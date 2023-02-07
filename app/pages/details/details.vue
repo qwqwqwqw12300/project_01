@@ -104,11 +104,11 @@
 						text: '全部'
 					},
 					{
-						value: 0,
+						value: 'urgent',
 						text: '重要事件'
 					},
 					{
-						value: 1,
+						value: 'normal',
 						text: '普通事件'
 					}
 				],

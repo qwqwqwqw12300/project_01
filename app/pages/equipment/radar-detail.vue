@@ -16,8 +16,8 @@
 				</view>
 			</view>
 			<view class="ui-icon">
-				<u-icon name="setting-fill" @click="goSet" size="30" color="#FF7E00" class="ui-detail-map">
-				</u-icon>
+				<u-icon name="scan" @click="goView" size="30" color="#FF7E00" class="ui-detail-map" />
+				<u-icon name="setting-fill" @click="goSet" size="30" color="#FF7E00" class="ui-detail-map" />
 			</view>
 
 		</view>
@@ -98,6 +98,12 @@
 				uni.navigateTo({
 					url: '/pages/myself/position-setting'
 				})
+			},
+
+			goView() {
+				uni.navigateTo({
+					url: '/pages/equipment/radar-monitor'
+				})
 			}
 		}
 	}
@@ -122,15 +128,15 @@
 		display: flex;
 
 		.ui-icon {
-			// width: 200rpx;
+			width: 200rpx;
 			display: flex;
 			flex-direction: row;
 
-			.ui-detail-map {
-				position: absolute;
-				right: 40rpx;
-				bottom: 30rpx;
-			}
+			// .ui-detail-map {
+			// 	position: absolute;
+			// 	right: 40rpx;
+			// 	bottom: 30rpx;
+			// }
 		}
 
 		// justify-content: space-between;
@@ -152,7 +158,7 @@
 
 			.info {
 				margin-top: 16rpx;
-				width: 220rpx;
+				// width: 220rpx;
 				display: flex;
 				justify-content: space-between;
 
@@ -181,10 +187,14 @@
 
 		.ui-detail-map {
 			position: absolute;
-			width: 50rpx;
-			height: 60rpx;
+			// width: 50rpx;
+			// height: 60rpx;
 			right: 20rpx;
 			bottom: 20rpx;
+
+			&:nth-child(1) {
+				right: 100rpx;
+			}
 		}
 	}
 </style>

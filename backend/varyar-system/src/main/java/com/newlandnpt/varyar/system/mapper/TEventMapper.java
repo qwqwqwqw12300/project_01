@@ -33,7 +33,7 @@ public interface TEventMapper
      */
     public List<TEvent> selectTEventList(TEvent tEvent);
 
-    public List<TEvent> selectTEventList(Long[] eventIds);
+    public List<TEvent> selectTEventListByIds(@Param("eventIds") Long[] eventIds);
 
     /**
      * 新增事件

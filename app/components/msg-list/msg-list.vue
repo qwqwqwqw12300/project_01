@@ -23,19 +23,23 @@
 			:style="{height: srollHeight}" class="ui-scroll">
 			<template v-if="list.length">
 				<template v-for="(item, index) of list">
-					<view class="ui-message active" @click="open(item.msgId)" v-if="item.eventLevel !==0"
+					<view class="ui-message active" @click="open(item.msgId)" v-if="item.eventLevel !== 'urgent'"
 						:key="index + 'list'">
-						<u-icon name="chat" color="#414141" size="40rpx"></u-icon>
-						<text>{{$u.timeFormat(item.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
-						<text class="ui-content-date">{{item.deviceName || '--'}}</text>
+						<view class="ui-content-time">
+							<u-icon name="chat" color="#414141" size="40rpx"></u-icon>
+							<text>{{$u.timeFormat(item.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
+							<text class="ui-content-name">{{item.deviceName || '未命名设备'}}</text>
+						</view>
 						<text class="ui-content">{{item.content || '--'}}</text>
 					</view>
 					<!-- /sos事件 -->
 					<view class="ui-sos active" v-else @click="open(item.msgId)" :key="index + 'listSos'">
 						<view>
-							<u-icon name="arrow-right" color="#414141" size="40rpx"></u-icon>
-							<text>{{$u.timeFormat(item.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
-							<text class="ui-content-date">{{item.deviceName || '--'}}</text>
+							<view class="ui-content-time">
+								<u-icon name="arrow-right" color="#414141" size="40rpx"></u-icon>
+								<text>{{$u.timeFormat(item.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
+								<text class="ui-content-name">{{item.deviceName || '未命名设备'}}</text>
+							</view>
 							<text class="ui-content">{{item.content || '--'}}</text>
 						</view>
 						<view class="ui-sos-btn active" v-if="contactsList[0]" @click="call(contactsList[0].phone)">
@@ -56,15 +60,15 @@
 				<view class="ui-pop-msg">
 					<view>
 						<text>设备名称</text>
-						<text>{{details.deviceName}}</text>
+						<text>{{details.deviceName || '未命名设备'}}</text>
 					</view>
 					<view>
 						<text>所属家庭</text>
-						<text>2022-01-01 00：00：00</text>
+						<text>{{details.familyName || '未命名家庭'}}</text>
 					</view>
 					<view>
 						<text>所属房间</text>
-						<text>房间名称</text>
+						<text>{{details.RoomName || '未命名房间'}}</text>
 					</view>
 					<view>
 						<text>时间</text>
@@ -76,8 +80,8 @@
 					</view>
 				</view>
 				<view class="ui-sos-list">
-					<u-button icon="phone" @click="call(item.phone)" :text="item.name" size="small" :key="index"
-						v-for="(item, index) of contactsList"></u-button>
+					<u-button icon="phone" @click="call(item.phone)" :text="'第' + item.orderNum + '联系人 ' + item.name"
+						size="small" :key="index" v-for="(item, index) of contactsList"></u-button>
 				</view>
 				<view class="ui-pop-btn">
 					<button @click="readMsg(details.msgId)">我知道了</button>
@@ -257,70 +261,43 @@
 		.ui-sos {
 			margin-top: 20rpx;
 			border-radius: 10rpx;
-			padding: 0 20rpx;
-			font-size: 24rpx;
+			font-size: 28rpx;
 			filter: drop-shadow(7.824rpx 10.382rpx 8rpx rgba(7, 5, 5, 0.08));
 			background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
+			color: #414141;
+			display: flex;
+			// align-items: center;
+			flex-direction: column;
+			min-height: 80rpx;
+			padding: 20rpx 32rpx;
+
+			.ui-content-time {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+			}
+
+			.ui-content-name {
+				margin-left: 20rpx;
+			}
+
+			.ui-content {
+				color: #777;
+				margin: 15rpx 15rpx 0 38rpx;
+				font-size: 30rpx;
+				// width: 100%;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
 		}
 
 		.ui-message {
 			color: #414141;
 			display: flex;
-			align-items: center;
-			min-height: 80rpx;
+			// align-items: center;
+			flex-direction: column;
 
-			&>* {
-				margin-left: 10rpx;
-				text-align: left;
-
-				// min-width: 100rpx;
-				&:nth-child(2) {
-					margin-left: 2rpx;
-				}
-
-				// &:nth-child(3) {
-				// 	width: 120rpx;
-				// }
-			}
-
-
-			.ui-content {
-				width: 280rpx;
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-			}
-
-			.ui-content-date {
-				width: 100rpx;
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-			}
-		}
-
-		.ui-sos {
-			padding: 20rpx;
-			min-height: 200rpx;
-
-			&>view {
-				display: flex;
-				align-items: center;
-
-				&>* {
-					margin-left: 15rpx;
-					text-align: left;
-
-					// min-width: 100rpx;
-					&:nth-child(2) {
-						margin-left: 2rpx;
-					}
-				}
-
-				&:nth-child(1) {
-					margin-bottom: 30rpx;
-				}
-			}
 		}
 	}
 
@@ -328,11 +305,13 @@
 		flex-direction: column;
 		justify-content: center;
 		margin: 0 auto;
+		margin-top: 20rpx;
 		padding: 20rpx;
-		width: 545rpx;
-		height: 120rpx;
+		width: 500rpx;
+		height: 60rpx;
 		border-radius: 10rpx;
 		background-image: linear-gradient(-43deg, #fdc92d 0%, #ffe383 100%);
+		text-align: center;
 
 		&>* {
 			flex: 1;
@@ -385,9 +364,11 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			flex-direction: column;
 
 			button {
-				width: 160rpx;
+				margin-top: 20rpx;
+				// width: 160rpx;
 				background-image: linear-gradient(-43deg, #fdc92d 0%, #ffe383 100%);
 				border: 1px solid #ffcb3d;
 				box-shadow: unset;

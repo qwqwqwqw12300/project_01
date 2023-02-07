@@ -10,11 +10,10 @@ import com.newlandnpt.varyar.common.core.domain.model.MessagePushRequest;
 import com.newlandnpt.varyar.common.core.domain.model.MessageQueryRequest;
 import com.newlandnpt.varyar.common.core.domain.model.MessageRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
+import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.domain.TMsg;
-import com.newlandnpt.varyar.system.service.IEventService;
-import com.newlandnpt.varyar.system.service.IMemberService;
-import com.newlandnpt.varyar.system.service.IMsgService;
+import com.newlandnpt.varyar.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
@@ -34,7 +33,12 @@ public class MessageController extends BaseController {
 
     @Autowired
     private IMsgService itMsgService;
-
+    @Autowired
+    private IDeviceService iDeviceService;
+    @Autowired
+    private IFamilyService iFamilyService;
+    @Autowired
+    private IRoomService iRoomService;
     @Autowired
     private IMemberService iMemberService;
 /**
@@ -76,6 +80,16 @@ public class MessageController extends BaseController {
     @PostMapping("/msgContent")
     public TableDataInfo content(@RequestBody @Validated MessageRequest messageRequest) {
         TMsg msg = itMsgService.selectTMsgByMsgId(Long.valueOf(messageRequest.getMsgId()));
+        TDevice device = new TDevice();
+        if(msg.getDeviceId()!=null||!msg.getDeviceId().equals("")){
+            device = iDeviceService.selectDeviceByDeviceId(msg.getDeviceId());
+        }
+        if(device.getFamilyId()!=null||!device.getFamilyId().equals("")){
+            msg.setFamilyName(iFamilyService.selectTFamilyByFamilyId(device.getFamilyId()).getName());
+        }
+        if(device.getRoomId()!=null||!device.getRoomId().equals("")){
+            msg.setRoomName(iRoomService.selectTRoomByRoomId(device.getRoomId()).getName());
+        }
         List<TMsg> list = new ArrayList<TMsg>();
         list.add(msg);
         return getDataTable(list);
