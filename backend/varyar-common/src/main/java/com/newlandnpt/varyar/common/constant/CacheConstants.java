@@ -64,5 +64,8 @@ public class CacheConstants
 
     /** 是否开启记录目标坐标信息的开关，值为true or false **/
     public static final String TARGET_LOCATION_SWITCH_KEY = "cloud:presence:targetLocationSwitch:";
-    public static final String TARGET_LOCATION_KEY = "cloud:presence:targetLocation:";
+    /** 进出区域坐标信息 **/
+    public static final String TARGET_LOCATION_PRESENCE_KEY = "cloud:presence:targetLocation:";
+    /** 跌倒坐标信息 **/
+    public static final String TARGET_LOCATION_FALL_KEY = "cloud:fall:targetLocation:";
 }

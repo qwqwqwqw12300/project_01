@@ -2,6 +2,11 @@ package com.newlandnpt.varyar.common.core.domain.vo;
 
 import java.io.Serializable;
 
+/**
+ * 进出报文目标信息VO
+ * @author Bean
+ * @date 2023-02-07
+ */
 public class TrackerTargetVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
