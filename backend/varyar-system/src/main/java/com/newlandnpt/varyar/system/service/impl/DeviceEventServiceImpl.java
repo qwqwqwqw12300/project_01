@@ -233,11 +233,15 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         if (device.getMemberId() != null) {
             // 会员设备查找会员的运营人员
             TMember member = memberMapper.selectMemberByMemberId(device.getMemberId());
-            if(member!=null){
+            event.setMemberId(device.getMemberId());
+            if(member==null){
                 log.info(">>>>> 设备{}所属会员id:{}查不到会员信息，事件忽略运营人员信息录入", device.getNo(), device.getMemberId());
             }else{
                 event.setUserId(member.getUserId());
                 event.setUserName(member.getUserName());
+                //目前会员没有名称，暂时会员名称使用手机号
+                event.setMemberName(member.getPhone());
+                event.setMemberPhone(member.getPhone());
             }
         } else if (device.getDevicegroupId() != null) {
             // 机构设备查找设备对应设备组

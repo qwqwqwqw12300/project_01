@@ -190,8 +190,6 @@ public class MsgServiceImpl implements IMsgService
     public int sendMsgByEvent(TEvent event) {
         // 目前会员事件会同步发送app消息给 设备创建会员以及被分享家庭的会员
         Long memberId = event.getMemberId();
-        Set<Long> memberIds = new HashSet<>();
-        memberIds.add(memberId);
 
         TMemberFamily tMemberFamily = new TMemberFamily();
         tMemberFamily.setCreateMemberId(memberId);
@@ -200,6 +198,30 @@ public class MsgServiceImpl implements IMsgService
         List<TMemberFamily> memberFamilies = memberFamilyService.selectTMemberFamilyList(tMemberFamily);
 
         int result = 0;
+
+        if(memberFamilies==null||memberFamilies.stream().noneMatch(p->p.getMemberId() == memberId)){
+            //会员设备未加入家庭组的情况 单独发消息
+            TMsg msg = new TMsg();
+            msg.setMsgType(MSG_TYPE_APP);
+            msg.setDeviceType(event.getDeviceType());
+            msg.setEventLevel(event.getLevel());
+            msg.setNo(IdUtils.fastSimpleUUID());
+            msg.setContent(event.getContent());
+            msg.setEventId(event.getEventId());
+            msg.setDeviceId(event.getDeviceId());
+            msg.setMemberId(memberId);
+            msg.setOrgId(event.getOrgId());
+            msg.setOperator("系统");
+            msg.setSendStatus(SEND_STATUS_NOT_SEND);
+            msg.setOperateFlag(OPERATE_FLAG_NOT_HANDLE);
+            result+=insertTMsg(msg);
+            try{
+                jiGuangSendService.jiGuangSend(Arrays.asList(msg));
+            }catch (Exception e){
+                log.error(">>>> 极光推送发送失败",e);
+            }
+        }
+
         for(TMemberFamily memberFamily:memberFamilies){
             TMsg msg = new TMsg();
             msg.setMsgType(MSG_TYPE_APP);
