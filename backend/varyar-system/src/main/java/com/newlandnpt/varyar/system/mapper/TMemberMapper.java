@@ -95,6 +95,7 @@ public interface TMemberMapper
     @Select(" <script> " +
             " select count(*) from t_member m where distribute_flag = '0' " +
             " and del_flag = '0' " +
+            " ${params.dataScope} " +
             " </script> ")
     public long notArrangeMemberCount(TMember member);
 }
