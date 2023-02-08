@@ -29,8 +29,8 @@ public class FallListener  implements RocketMQListener<Fall> {
     @Override
     public void onMessage(Fall fall) {
     	log.debug("监听到[{}], 报文对象：{} " ,"跌倒事件消息"  ,JSON.toJSONString(fall));
-    	if("fall_confirmed".equals(fall.getStatus())){
-            log.info("监听到[{}], 报文对象：{} " ,"status= fall_confirmed,跌倒事件消息,触发跌倒事件"  ,JSON.toJSONString(fall));
+    	if("calling".equals(fall.getStatus())){
+            log.info("监听到[{}], 报文对象：{} " ,"status= calling,跌倒事件消息,触发跌倒事件"  ,JSON.toJSONString(fall));
             deviceEventService.deviceFallIssue(fall.getDeviceNo());
         }
     }
