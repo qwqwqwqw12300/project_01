@@ -7,7 +7,7 @@
 
 <template>
 	<view>
-		<u-popup :closeable="true" :round="10" :show="mode === 'add'" mode="center" @close="cencel">
+		<u-popup :closeable="true" :round="10" :show="mode === 'add'" mode="center" @close="cancel">
 			<view class="wd-add ui-change">
 				<u-text prefixIcon="edit-pen" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
 					size="30rpx" text="新增区域"></u-text>
@@ -54,82 +54,14 @@
 							</view>
 						</view>
 						<view class="wd-btn-gloup">
-							<button @click="more">区域配置</button>
+							<button class="gray" @click="cancel">取消</button>
 							<button class="green" @click="submit">确定</button>
 						</view>
 					</view>
 				</view>
 			</view>
 		</u-popup>
-		<u-popup :closeable="true" :round="10" :show="mode === 'more'" mode="center" @close="cencel">
-			<!-- 区域设置 -->
-			<view class="wd-add ui-change">
-				<view class="ui-setting">
-					<view>
-						<u-checkbox-group @change="monitorChange($event, 'existFlag')" placement="column">
-							<u-checkbox activeColor="#1aa208" labelSize="28rpx" :checked="form.existFlag == 1"
-								:customStyle="{ marginBottom: '8px' }" label="进出监控" name="existFlag"></u-checkbox>
-						</u-checkbox-group>
-						<u-checkbox-group @change="monitorChange($event, 'fallFlag')" placement="column">
-							<u-checkbox activeColor="#1aa208" labelSize="28rpx" :checked="form.fallFlag == 1"
-								:cusmonitorChangetomStyle="{ marginBottom: '8px' }" label="跌倒监控" name="fallFlag">
-							</u-checkbox>
-						</u-checkbox-group>
-
-						<!-- <u-checkbox-group @change="monitorChange($event, 'isAccess')" placement="column">
-									<u-checkbox activeColor="#1aa208" :checked="list.isAccess"
-										:customStyle="{ marginBottom: '8px' }" label="进出监控" name="isAccess"></u-checkbox>
-								</u-checkbox-group> -->
-
-						<view class="ui-date-list">
-							<text>开始监控时间</text>
-							<view class="ui-date active" @click="openDate('startTime')">
-								<text>{{ form.startTime || '未设置' }}</text>
-								<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
-							</view>
-						</view>
-						<view class="ui-date-list ui-margin">
-							<text>结束监控时间</text>
-							<view class="ui-date active" @click="openDate('endTime')">
-								<text>{{ form.endTime || '未设置' }}</text>
-								<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
-							</view>
-						</view>
-						<view class="ui-timing">
-							<view class="ui-timing-pos">
-								<u-checkbox-group placement="column" @change="monitorChange($event, 'inMonitorFlag')">
-									<u-checkbox activeColor="#1aa208" :checked="form.inMonitorFlag == 1"
-										:customStyle="{ marginBottom: '40rpx' }" labelSize="28rpx" label="进入监控区域超时报警时间"
-										name="inMonitorFlag"></u-checkbox>
-								</u-checkbox-group>
-								<u-checkbox-group placement="column" @change="monitorChange($event, 'outMonitorFlag')">
-									<u-checkbox activeColor="#1aa208" labelSize="28rpx"
-										:checked="form.outMonitorFlag == 1" label="离开监控区域超时报警时间" name="outMonitorFlag">
-									</u-checkbox>
-								</u-checkbox-group>
-							</view>
-							<view class="ui-timing-pos">
-								<view class="ui-timing-active active" @click="openDate('entryTime')">
-									<text>{{ form.entryTime || '请选择' }}</text>
-									<u-icon name="arrow-down" size="28rpx"></u-icon>
-								</view>
-								<view class="ui-timing-active active" @click="openDate('departureTime')">
-									<text>{{ form.departureTime || '请选择' }}</text>
-									<u-icon name="arrow-down" size="28rpx"></u-icon>
-								</view>
-							</view>
-						</view>
-						<view class="wd-btn-gloup">
-							<button class="gray" @click="back">返回</button>
-							<button class="green" @click="submit">确定</button>
-						</view>
-					</view>
-				</view>
-			</view>
-			<!-- /区域设置 -->
-		</u-popup>
-		<u-datetime-picker v-if="dateHandle.show" :show="dateHandle.show" @confirm="dateConfirm"
-			@cancel="dateHandle.show = false" :mode="dateHandle.mode"></u-datetime-picker>
+		
 	</view>
 
 </template>
@@ -187,8 +119,8 @@
 			/**
 			 * 取消修改
 			 */
-			cencel() {
-				this.$emit('cencel');
+			cancel() {
+				this.$emit('cancel');
 				this.close();
 			},
 
@@ -204,16 +136,11 @@
 			},
 
 			/**
-			 * 区域配置
-			 */
-			monitorChange(event, type) {
-				this.form[type] = this.form[type] == 1 ? 0 : 1;
-			},
-
-			/**
 			 * 提交修改
 			 */
 			submit() {
+				if(!this.form.name) return uni.$u.toast('区域名称不能为空');
+				if(this.form.width < 0 || this.form.height < 0)  return uni.$u.toast('宽高不能小于0');
 				this.$emit('confirm', this.form);
 				this.close();
 			}
