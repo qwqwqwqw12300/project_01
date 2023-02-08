@@ -66,7 +66,7 @@
 							</template>
 							<!-- 空房间 -->
 							<template v-else>
-								<view class="ui-list-box active" @click="bindDevice(room)">
+								<view class="ui-list-box active" @click="bindDevice(room,familyItem.shareFlag)">
 									<u-icon name="info-circle" size="90rpx"></u-icon>
 									<text>{{room.name || '未命名房间'}}</text>
 									<text class="ui-link">点击绑定设备</text>
@@ -76,7 +76,7 @@
 						</view>
 						<!-- 新增房间 -->
 						<view class="ui-list">
-							<view class="ui-list-box active" @click="addRoom(familyItem.familyId)">
+							<view class="ui-list-box active" @click="addRoom(familyItem)">
 								<u-icon name="plus" size="70rpx"></u-icon>
 							</view>
 						</view>
@@ -201,7 +201,12 @@
 			/**
 			 * 添加房间
 			 */
-			addRoom(familyId) {
+			addRoom(item) {
+				const {
+					shareFlag,
+					familyId
+				} = item
+				if (shareFlag !== '2') return uni.$u.toast('该家庭不支持新增房间')
 				this.$refs.indexAddRoom.open({
 					familyId
 				});
@@ -226,7 +231,8 @@
 			bindDevice({
 				familyId,
 				roomId
-			}) {
+			}, shareFlag) {
+				if (shareFlag !== '2') return uni.$u.toast('该房间不支持绑定')
 				this.bindPayload = {
 					familyId,
 					roomId

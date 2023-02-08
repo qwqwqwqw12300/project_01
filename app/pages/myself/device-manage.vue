@@ -135,7 +135,7 @@
 				// list: state => state.devicesList,
 				/**家庭列表**/
 				famliyList: state => {
-					return state.familyList.map(ele => ({
+					return state.familyList.filter(n=> n.shareFlag === '2').map(ele => ({
 						text: ele.name,
 						value: ele.familyId
 					}));

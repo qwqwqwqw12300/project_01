@@ -43,7 +43,9 @@
 		computed: {
 			...mapState({
 				/**所有家庭列表**/
-				baseList: state => state.familyList
+				baseList: state => state.familyList.filter(item =>
+					item.shareFlag === '2'
+				)
 			}),
 		},
 		onShow() {
