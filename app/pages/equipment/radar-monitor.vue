@@ -5,8 +5,13 @@
 			<view class="ui-area" :style="getStyle">
 				<view class="ui-roomZone" v-for="(item,index) in roomZoneList" :key="index"
 					:style="getZonePosition(item)">
+				</view>
+
+				<view class="ui-person" v-for="(item,index) in personStateList" :key="index"
+					:style="getPeisonPosition(item)">
 
 				</view>
+
 				<view class="ui-device" :style="getPosition">
 					<text class="ui-zone-name">设备</text>
 				</view>
@@ -59,6 +64,7 @@
 					height: 0,
 				},
 				roomZoneList: [],
+				personStateList: []
 			}
 		},
 		computed: {
@@ -89,6 +95,15 @@
 						top: `${data.positionTop}px`
 					}
 				}
+			},
+			getPeisonPosition() {
+				return function(data) {
+					return {
+						left: `${data.positionLeft}px`,
+						top: `${data.positionTop}px`,
+						backgroundImage: `url(${data.url})`,
+					}
+				}
 			}
 		},
 		async onLoad() {
@@ -107,8 +122,8 @@
 		},
 		mounted() {
 			const timer = setInterval(() => {
-				this.handleQuery()           
-			}, 10000);
+				this.handleQuery()
+			}, 4000);
 			this.$once('hook:beforeDestroy', () => {
 				clearInterval(timer);
 			})
@@ -152,10 +167,29 @@
 				})
 			},
 			handleQuery() {
+				const {
+					roomLeft,
+					roomRight,
+					roomLength
+				} = this.deviceInfo.parameter.deviceLocation
 				GetNowInfo({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					console.log(res, 'now')
+					const urlObj = {
+						0: '../../static/images/person.png',
+						1: '../../static/images/person-down.png',
+					}
+					this.personStateList = res.data.map(n => {
+						n.positionLeft = (roomLeft + ((+n.xPosCm) / 100)) / (roomLeft + roomRight) * this
+							.boxInfo.width
+						n.positionTop = (roomLength - ((+n.yPosCm) / 100)) / roomLength * this.boxInfo
+							.height
+						n.url = urlObj[n.state]
+						return n
+					})
+
+					console.log(this.personStateList, 'sssppp')
 				})
 			},
 
@@ -187,7 +221,8 @@
 
 		.ui-area {
 			// height: 100rpx;
-			background-color: #fff;
+			background-color: #008fff;
+			// border: 2rpx solid gray;
 			position: relative;
 		}
 	}
@@ -206,6 +241,16 @@
 		bottom: -12px;
 		margin-left: -13px;
 		// left: 50%;
+	}
+
+	.ui-person {
+		position: absolute;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-color: #fff;
+		width: 40rpx;
+		height: 50rpx;
+		z-index: 1000;
 	}
 
 	.ui-zone-name {
@@ -245,7 +290,7 @@
 		.span1 {
 			width: 50rpx;
 			height: 50rpx;
-			background-color: #fff;
+			background-color: #008fff;
 			margin-right: 14rpx;
 		}
 	}

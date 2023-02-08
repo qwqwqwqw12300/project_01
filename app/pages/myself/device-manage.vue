@@ -226,7 +226,8 @@
 			editSubmit(editFrom) {
 				if (editFrom.deviceName) {
 					setDevice({
-						...editFrom
+						...editFrom,
+						flag: '2'
 					}).then(res => {
 						uni.$u.toast(res.msg);
 						this.eidtClose();
@@ -315,7 +316,8 @@
 			bindSubmit() {
 				if (this.bindForm.familyId && this.bindForm.roomId) {
 					setDevice({
-						...this.bindForm
+						...this.bindForm,
+						flag: '1'
 					}).then(res => {
 						uni.$u.toast(res.msg);
 						this.close();

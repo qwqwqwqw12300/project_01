@@ -95,7 +95,7 @@
 				if (!phoneValidator(this.shareForm.phone)) {
 					return uni.$u.toast('请填写正确的手机号码')
 				}
-				if (this.shareForm.code !== 4) {
+				if (this.shareForm.code.length !== 4) {
 					return uni.$u.toast('请填写正确的验证码')
 				}
 				if (this.shareForm.smsUuid) {
@@ -213,7 +213,7 @@
 			 */
 			getContact() {
 				this.contactShow = true
-				let type = plus.contacts.ADDRESSBOOK_PHONE 
+				let type = plus.contacts.ADDRESSBOOK_PHONE
 				plus.contacts.getAddressBook(type, res => {
 					res.find(['displayName', 'phoneNumbers'], data => {
 						this.contactList = data.map(n => {
@@ -239,7 +239,7 @@
 			/**
 			 * 选择手机联系人
 			 */
-			
+
 			phoneClick(item) {
 				this.shareForm.phone = item.phone
 				this.contactShow = false
