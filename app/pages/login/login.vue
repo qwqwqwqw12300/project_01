@@ -119,9 +119,9 @@
 				/**页面初始化标志**/
 				initFlag: true,
 				loginForm: {
-					phone: '13205907108',
+					phone: '',
 					code: '',
-					password: '1111',
+					password: '',
 					uuid: '',
 				},
 				/**短信登录参数**/

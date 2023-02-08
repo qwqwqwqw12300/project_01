@@ -1,0 +1,21 @@
+/**设备参数**/
+export const INIT_DEIVCE_SET = {
+	deviceId: '',
+	deviceName: '',
+	deviceType: '',
+	deviceNo: '',
+	familyId: '',
+	roomId: '',
+	roomLeft: 6,
+	roomHeight: 6,
+	roomRight: 6,
+	roomLength: 6,
+	existFlag: 0,
+	fallFlag: 0,
+	entryTime: 0,
+	departureTime: 0,
+	startTime: 0,
+	endTime: 0,
+	inMonitorFlag: 0,
+	outMonitorFlag: 0,
+};

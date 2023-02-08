@@ -21,7 +21,7 @@
             <template slot-scope="{item}">
               <el-card shadow="hover" class="card-item card-item-click" >
                 <br>
-                紧急联系电话{{item.orderNum}}：{{ item.phone }}
+                紧急联系电话{{item.orderNum}}：{{ item.phone }}<span v-if="item.name">  ({{ item.name }})</span>
               </el-card>
             </template>
           </water-fall>

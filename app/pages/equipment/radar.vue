@@ -44,10 +44,12 @@
 						clearable>
 					</u--input>
 				</view>
-				<view class="ui-input">
+				<view class="ui-input ui-radio">
 					<u-text size="28rpx" prefixIcon="map" iconStyle="font-size: 36rpx" text="设备位置"></u-text>
-					<u--input placeholder="请输入设备位置" :maxlength="6" v-model="addForm.location" border="bottom" clearable>
-					</u--input>
+					<u-radio-group v-model="addForm.location" placement="row">
+						<u-radio :customStyle="{margin: '20rpx'}" v-for="item of locationList" :key="item"
+							activeColor="#1aa208" :name="item" :label="item"></u-radio>
+					</u-radio-group>
 				</view>
 				<view class="wd-btn-gloup"><button @click="add">确定</button></view>
 			</view>
@@ -85,21 +87,10 @@
 				eventMsg: '启动中...',
 				/**设备连接状态 init connect success**/
 				connectStatic: 'init',
-				wifiList: [{
-						ssid: 'nisdfgdfdgddfdfdfg'
-					},
-					{
-						ssid: 'nisdfgdfdgdg2'
-					},
-					{
-						ssid: 'nisdfgdfdgdg3'
-					},
-					{
-						ssid: 'nisdfgdfdgdg4'
-					},
-					{
-						ssid: 'nisdfgdfdgdg5'
-					}
+				wifiList: [],
+				locationList: [
+					'壁挂',
+					'顶挂',
 				]
 			}
 		},
@@ -359,6 +350,10 @@
 		&>*:nth-child(1) {
 			margin-bottom: 50rpx;
 		}
+	}
+
+	.ui-radio {
+		padding-top: 15rpx;
 	}
 
 	.wd-add {

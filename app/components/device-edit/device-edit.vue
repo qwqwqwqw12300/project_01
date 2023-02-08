@@ -21,16 +21,16 @@
 					<view>
 						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="检测高度"></u-text>
 						<view class="ui-slider">
-							<u-slider v-model="editFrom.roomHeight" activeColor="#eeaa3d" blockColor="#eeaa3d"
-								inactiveColor="#c0c4cc" />
+							<u-slider min="10" max="60" v-model="editFrom.roomHeight" activeColor="#eeaa3d"
+								blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 							<text>{{$u.priceFormat(editFrom.roomHeight/10, 2)}}米</text>
 						</view>
 					</view>
 					<view>
 						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="检测长度"></u-text>
 						<view class="ui-slider">
-							<u-slider v-model="editFrom.roomLength" activeColor="#eeaa3d" blockColor="#eeaa3d"
-								inactiveColor="#c0c4cc" />
+							<u-slider min="10" max="60" v-model="editFrom.roomLength" activeColor="#eeaa3d"
+								blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 							<text>{{$u.priceFormat(editFrom.roomLength/10, 2)}}米</text>
 						</view>
 					</view>
@@ -38,8 +38,8 @@
 						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="检测左长度">
 						</u-text>
 						<view class="ui-slider">
-							<u-slider v-model="editFrom.roomRight" activeColor="#eeaa3d" blockColor="#eeaa3d"
-								inactiveColor="#c0c4cc" />
+							<u-slider min="10" max="60" v-model="editFrom.roomRight" activeColor="#eeaa3d"
+								blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 							<text>{{$u.priceFormat(editFrom.roomRight/10, 2)}}米</text>
 						</view>
 					</view>
@@ -47,8 +47,8 @@
 						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="检测右长度">
 						</u-text>
 						<view class="ui-slider">
-							<u-slider v-model="editFrom.roomLeft" activeColor="#eeaa3d" blockColor="#eeaa3d"
-								inactiveColor="#c0c4cc" />
+							<u-slider min="10" max="60" v-model="editFrom.roomLeft" activeColor="#eeaa3d"
+								blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 							<text>{{$u.priceFormat(editFrom.roomLeft/10, 2)}}米</text>
 						</view>
 					</view>
@@ -129,33 +129,16 @@
 	import {
 		getHoursTime
 	} from '../../common/utils/util';
-	const INIT_FORM = {
-		deviceId: '',
-		deviceName: '',
-		deviceType: '',
-		deviceNo: '',
-		familyId: '',
-		roomId: '',
-		roomLeft: 100,
-		roomHeight: 100,
-		roomRight: 100,
-		roomLength: 100,
-		existFlag: 0,
-		fallFlag: 0,
-		entryTime: 0,
-		departureTime: 0,
-		startTime: 0,
-		endTime: 0,
-		inMonitorFlag: 0,
-		outMonitorFlag: 0,
-	};
+	import {
+		INIT_DEIVCE_SET
+	} from '../../config/db';
 	export default {
 		data() {
 			return {
 				/**是否开启 none edit more**/
 				mode: 'none',
 				editFrom: {
-					...INIT_FORM
+					...INIT_DEIVCE_SET
 				},
 				dateHandle: {
 					type: '',
@@ -201,7 +184,11 @@
 					departureTime,
 					entryTime,
 					startTime,
-					endTime
+					endTime,
+					roomLeft,
+					roomHeight,
+					roomRight,
+					roomLength
 				} = form;
 				this.editFrom = {
 					...form,
@@ -211,6 +198,10 @@
 					startTime: uni.$u.timeFormat(startTime, 'hh:MM'),
 					/**结束监控时间**/
 					endTime: uni.$u.timeFormat(endTime, 'hh:MM'),
+					roomLeft: roomLeft * 10,
+					roomHeight: roomHeight * 10,
+					roomRight: roomRight * 10,
+					roomLength: roomLength * 10
 				};
 				this.mode = 'edit';
 			},
@@ -218,7 +209,7 @@
 			close() {
 				this.mode = 'none';
 				this.editFrom = {
-					...INIT_FORM
+					...INIT_DEIVCE_SET
 				};
 			},
 

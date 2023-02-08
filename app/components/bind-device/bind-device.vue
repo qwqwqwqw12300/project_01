@@ -33,27 +33,9 @@
 	import {
 		setDevice
 	} from '../../common/http/api';
-	const INIT_BINDFORM = {
-		familyId: '',
-		roomId: '',
-		deviceId: '',
-		deviceName: '',
-		deviceType: '',
-		deviceNo: '',
-		deviceId: '',
-		roomLeft: 100,
-		roomHeight: 100,
-		roomRight: 100,
-		roomLength: 100,
-		existFlag: 0,
-		fallFlag: 0,
-		entryTime: 0,
-		departureTime: 0,
-		startTime: 0,
-		endTime: 0,
-		inMonitorFlag: 0,
-		outMonitorFlag: 0,
-	};
+	import {
+		INIT_DEIVCE_SET
+	} from '../../config/db';
 	export default {
 		props: {
 			payload: {
@@ -88,7 +70,7 @@
 			},
 			next() {
 				setDevice({
-					...INIT_BINDFORM,
+					...INIT_DEIVCE_SET,
 					...this.payload,
 					deviceId: this.deviceId
 				}).then(res => {
