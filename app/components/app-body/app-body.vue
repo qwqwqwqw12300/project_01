@@ -22,12 +22,15 @@
 	import {
 		mapState
 	} from 'vuex';
+	import {
+		isApp
+	} from '../../common/utils/util';
 
 	export default {
 		props: {
 			/**是否展示客服**/
 			needService: {
-				default: true
+				default: isApp()
 			},
 			/**是否隐藏返回头**/
 			hideTitle: {
@@ -116,6 +119,11 @@
 </script>
 
 <style lang="scss">
+	::v-deep{
+		.u-navbar__content__left__text{
+			font-size: 34rpx;
+		}
+	}
 	.wd-body {
 		padding-top: var(--status-bar-height);
 		box-sizing: border-box;

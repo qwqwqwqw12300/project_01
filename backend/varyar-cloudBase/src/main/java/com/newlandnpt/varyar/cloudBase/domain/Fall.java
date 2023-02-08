@@ -2,12 +2,12 @@ package com.newlandnpt.varyar.cloudBase.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.newlandnpt.varyar.common.core.domain.vo.ExtraVo;
 
 
 /**
@@ -64,18 +64,8 @@ public class Fall implements Serializable {
 	/** 报文:事件时间戳 **/
 	private Long timestampMillis;
 	
-	/** 自定义：根据extra字段获取 目标id **/
-	private Integer targetId;
+	private ExtraVo extraVo;
 	
-	/** 自定义：根据extra字段获取 触发坠落事件的目标的X位置**/
-	private Integer xCm;
-	
-	/** 自定义：根据extra字段获取 触发坠落事件的目标的y位置**/
-	private Integer yCm;
-	
-	/** 自定义：根据extra字段获取 触发坠落事件的目标的z位置**/
-	private Integer zCm;
-
 	public Long getId() {
 		return id;
 	}
@@ -154,11 +144,13 @@ public class Fall implements Serializable {
 
 	public void setExtra(String extra) {
 		if(!StringUtils.isBlank(extra)) {
-			Map map =  JSONObject.parseObject(extra);
-			this.targetId = (Integer) map.get("targetId");
-			this.xCm = (Integer) map.get("x_cm");
-			this.yCm = (Integer) map.get("y_cm");
-			this.zCm = (Integer) map.get("z_cm");
+			ExtraVo extraVo = JSONObject.parseObject(extra, ExtraVo.class);
+			this.extraVo = extraVo;
+//			Map map =  JSONObject.parseObject(extra);
+//			this.targetId = (Integer) map.get("targetId");
+//			this.xCm = (Integer) map.get("x_cm");
+//			this.yCm = (Integer) map.get("y_cm");
+//			this.zCm = (Integer) map.get("z_cm");
 		}
 		this.extra = extra;
 	}
@@ -187,38 +179,14 @@ public class Fall implements Serializable {
 		this.timestampMillis = timestampMillis;
 	}
 
-	public Integer getTargetId() {
-		return targetId;
+	public ExtraVo getExtraVo() {
+		return extraVo;
 	}
 
-	public void setTargetId(Integer targetId) {
-		this.targetId = targetId;
+	public void setExtraVo(ExtraVo extraVo) {
+		this.extraVo = extraVo;
 	}
 
-	public Integer getxCm() {
-		return xCm;
-	}
-
-	public void setxCm(Integer xCm) {
-		this.xCm = xCm;
-	}
-
-	public Integer getyCm() {
-		return yCm;
-	}
-
-	public void setyCm(Integer yCm) {
-		this.yCm = yCm;
-	}
-
-	public Integer getzCm() {
-		return zCm;
-	}
-
-	public void setzCm(Integer zCm) {
-		this.zCm = zCm;
-	}
-	
 	/**
 	 * 获取设备no
 	 * @return

@@ -20,6 +20,11 @@
 								<!-- <text class="grid-text">{{ baseListItem.title }}</text> -->
 								<u-text class="grid-text" @click="edit(item)" suffixIcon="edit-pen-fill"
 									iconStyle="font-size: 36rpx" align="center" :text="item.name || '未命名'"></u-text>
+
+								<u-icon @click.native.stop="onDelete(item.deviceId)" class="ui-close active"
+									name="close-circle-fill" size="40rpx">
+								</u-icon>
+
 								<text
 									class="grid-text ui-text">{{ (item.roomName || '未绑定') + ' | ' + item.location}}</text>
 
@@ -76,6 +81,7 @@
 		getRoomList,
 		PostDeviceList,
 		PosteditDevice,
+		PostDeviceDel,
 		setDevice,
 		relDevice,
 		getDeviceListState
@@ -84,27 +90,10 @@
 		mapState,
 		mapActions
 	} from 'vuex';
-	const INIT_BINDFORM = {
-		familyId: '',
-		roomId: '',
-		deviceId: '',
-		deviceName: '',
-		deviceType: '',
-		deviceNo: '',
-		deviceId: '',
-		roomLeft: 100,
-		roomHeight: 100,
-		roomRight: 100,
-		roomLength: 100,
-		existFlag: 0,
-		fallFlag: 0,
-		entryTime: 0,
-		departureTime: 0,
-		startTime: 0,
-		endTime: 0,
-		inMonitorFlag: 0,
-		outMonitorFlag: 0,
-	};
+	import {
+		INIT_DEIVCE_SET
+	} from '../../config/db';
+
 	export default {
 
 		data() {
@@ -113,17 +102,17 @@
 				bindRoomShow: false,
 				roomList: [],
 				bindForm: {
-					...INIT_BINDFORM
+					...INIT_DEIVCE_SET
 				},
 				editFrom: {
 					deviceId: '',
 					deviceName: '',
 					deviceType: '',
 					deviceNo: '',
-					roomLeft: 100,
-					roomHeight: 100,
-					roomRight: 100,
-					roomLength: 100
+					roomLeft: 6,
+					roomHeight: 6,
+					roomRight: 6,
+					roomLength: 6
 				},
 				addHandle: {
 					show: false,
@@ -196,8 +185,8 @@
 					familyId: '',
 					roomId: '',
 					deviceId: '',
-					bindRoomShow: false
 				});
+				this.bindRoomShow = false;
 			},
 
 			/**
@@ -272,7 +261,7 @@
 					deviceName: name,
 					deviceId,
 					deviceType: type,
-					deviceNo: no,
+					deviceNo: no
 				});
 				this.bindRoomShow = true;
 			},
@@ -358,6 +347,28 @@
 					this.getList(),
 					this.getAllFamily()
 				])
+			},
+
+			/**
+			 * 删除设备
+			 */
+			onDelete(deviceId) {
+				uni.showModal({
+					title: '提示',
+					content: '是否确认删除该设备',
+					success: res => {
+						if (res.confirm) {
+							PostDeviceDel({
+								deviceId
+							}).then(res => {
+								uni.$u.toast('删除成功');
+								setTimeout(() => {
+									this.init();
+								}, 1000);
+							})
+						}
+					}
+				});
 			}
 		},
 		onShow() {
@@ -455,6 +466,7 @@
 				right: -10rpx;
 			}
 		}
+
 
 		.ui-btn {
 			margin-top: 10rpx;

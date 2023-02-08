@@ -7,6 +7,7 @@ import com.newlandnpt.varyar.common.core.domain.entity.DeviceLocation;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceRoomParameter;
 import com.newlandnpt.varyar.common.core.domain.model.DevicePhoneRequest;
 import com.newlandnpt.varyar.common.core.domain.model.DeviceRequest;
+import com.newlandnpt.varyar.common.core.domain.vo.ExtraVo;
 import com.newlandnpt.varyar.common.core.domain.vo.TrackerTargetVo;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
@@ -254,6 +255,7 @@ public class DeviceController extends BaseController {
         if (deviceRequest.getFamilyId()==null){
             return error("家庭id不能为空！");
         }
+
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
         if (device==null){
             return error("无法查找到设备信息！");
@@ -265,6 +267,12 @@ public class DeviceController extends BaseController {
         if (device.getType().equals("0")){
             if (deviceRequest.getRoomId()==null){
                 return error("房间id不能为空！");
+            }
+            TDevice cond = new TDevice();
+            cond.setFamilyId(Long.valueOf(deviceRequest.getRoomId()));
+            List<TDevice> devices = iDeviceService.selectDeviceList(cond);
+            if (devices.size()>0){
+                throw new ServiceException("此房间已绑定设备！");
             }
             //雷达波 判断设备位置信息
             AjaxResult item = checkDeviceLocation(deviceRequest);
@@ -542,10 +550,17 @@ public class DeviceController extends BaseController {
         if (!tDevice.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
             return error("非创建者无权获取设备信息！");
         }
-        List<TrackerTargetVo> vo = iDeviceService.getRealLocationMonitorByDeviceNo(tDevice.getNo());
-        if (vo == null)
-            vo = new ArrayList<TrackerTargetVo>();
-        return success(vo);
+        List<TrackerTargetVo> tvo = iDeviceService.getRealLocationMonitorByDeviceNo(tDevice.getNo());
+        List<ExtraVo> evo = iDeviceService.getRealLocationExtraByDeviceNo(tDevice.getNo());
+        Map<String,Object> map = new HashMap<String,Object>();
+        if(evo.size()>0){
+            map.put("tvo",evo);
+            map.put("extra","1");
+        }else {
+            map.put("tvo",tvo);
+            map.put("extra","0");
+        }
+        return success(map);
     }
     private AjaxResult checkPhoneInfo(DevicePhone devicePhone ,AjaxResult ajax){
         if (devicePhone.getPhoneName().equals("")|| devicePhone.getPhoneName()==null){

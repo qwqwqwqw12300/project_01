@@ -2,9 +2,12 @@ package com.newlandnpt.varyar.api.controller.system;
 
 
 import com.newlandnpt.varyar.common.constant.CacheConstants;
+import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.entity.MemberInfo;
+import com.newlandnpt.varyar.common.exception.user.UserPasswordRetryLimitExceedException;
+import com.newlandnpt.varyar.common.utils.MessageUtils;
 import com.newlandnpt.varyar.common.utils.RSA.RsaUtils;
 import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
 import com.newlandnpt.varyar.common.core.domain.model.MemberInfoRequest;
@@ -15,15 +18,20 @@ import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
+import com.newlandnpt.varyar.framework.manager.AsyncManager;
+import com.newlandnpt.varyar.framework.manager.factory.AsyncFactory;
+import com.newlandnpt.varyar.framework.web.service.SysPasswordService;
 import com.newlandnpt.varyar.framework.web.service.TokenService;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IMemberInfoService;
 import com.newlandnpt.varyar.system.service.IMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -48,6 +56,12 @@ public class MemberInfoController extends BaseController
     @Value("${location.privateKey}")
     private String privateKey;
 
+    @Value(value = "${user.password.maxRetryCount}")
+    private int maxRetryCount;
+
+    @Value(value = "${user.password.lockTime}")
+    private int lockTime;
+
     @Autowired
     private IMemberService iMemberService;
     /**
@@ -57,6 +71,16 @@ public class MemberInfoController extends BaseController
     public AjaxResult updatePwd(@RequestBody @Validated PasswordRequest passwordRequest)
     {
         LoginUser loginUser = getLoginUser();
+        //校验密码验证次数
+        Integer retryCount = redisCache.getCacheObject(CacheConstants.PWD_ERR_CNT_KEY+loginUser.getMemberPhone());
+        if (retryCount == null){
+            retryCount = 0;
+        }
+        if (retryCount >= Integer.valueOf(maxRetryCount).intValue()){
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(loginUser.getMemberPhone(), Constants.LOGIN_FAIL,
+                    MessageUtils.message("user.password.retry.limit.exceed", maxRetryCount, lockTime)));
+            throw new UserPasswordRetryLimitExceedException(maxRetryCount, lockTime);
+        }
         String oldPassword = passwordRequest.getOldPassword();
         String newPassword = passwordRequest.getNewPassword();
         //解密
@@ -64,21 +88,21 @@ public class MemberInfoController extends BaseController
             oldPassword = RsaUtils.decryptByPrivateKey(privateKey,oldPassword);
             newPassword = RsaUtils.decryptByPrivateKey(privateKey,newPassword);
         } catch (Exception e) {
-            error("密钥解密失败！");
+            return error("修改密码失败！");
         }
         //获取当前登录用户手机号及密码信息
         String Phone = loginUser.getMemberPhone();
         String password = loginUser.getMemberPassword();
-       if (!SecurityUtils.matchesPassword(oldPassword, password))
-        {
-            return error("修改密码失败，旧密码错误");
+       if (!SecurityUtils.matchesPassword(oldPassword, password)){
+            retryCount = retryCount + 1;
+            redisCache.setCacheObject(CacheConstants.PWD_ERR_CNT_KEY+loginUser.getMemberPhone(),
+                    retryCount, lockTime, TimeUnit.MINUTES);
+            return error(MessageUtils.message("user.password.retry.limit.count", retryCount));
         }
-        if (SecurityUtils.matchesPassword(newPassword, password))
-        {
+        if (SecurityUtils.matchesPassword(newPassword, password)){
             return error("新密码不能与旧密码相同");
         }
-        if (memberInfoService.resetUserPwd(Phone, SecurityUtils.encryptPassword(newPassword)) > 0)
-        {
+        if (memberInfoService.resetUserPwd(Phone, SecurityUtils.encryptPassword(newPassword)) > 0){
             // 更新缓存app用户密码
             loginUser.setMemberPassword(SecurityUtils.encryptPassword(newPassword));
             tokenService.setLoginUser(loginUser);
