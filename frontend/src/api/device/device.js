@@ -67,21 +67,3 @@ export function setSettings(deviceId,data) {
     data:data
   })
 }
-
-// 获取牵挂电子卡的电话列表
-export function getDevicePhone(data) {
-  return request({
-    url: '/device/getDevicePhone',
-    method: 'post',
-    params: data
-  })
-}
-
-// 设置牵挂电子卡的电话列表
-export function setSOSDevicePhone(data) {
-  return request({
-    url: '/device/setSOSDevicePhone',
-    method: 'post',
-    params:data
-  })
-}
