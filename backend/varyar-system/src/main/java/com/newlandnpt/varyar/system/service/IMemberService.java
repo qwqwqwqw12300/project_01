@@ -88,6 +88,7 @@ public interface IMemberService
      * @param member
      */
     public long total(TMember member);
+
     /**
      * 未分配会员数
      * @return

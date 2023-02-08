@@ -175,6 +175,22 @@ public class DeviceEventServiceImpl implements DeviceEventService {
     }
 
     @Override
+    public void deviceFallIssue(String deviceNo) {
+        TDevice param = new TDevice();
+        param.setNo(deviceNo);
+        param.setStatus(STATUS_ACTIVATED);
+        param.setDelFlag(DeviceConstants.DEL_FLAG_NOT_ACTIVE);
+        List<TDevice> devices = deviceMapper.selectTDeviceList(param);
+        if ((devices.size() == 0)) {
+            log.error("未找到设备 " + deviceNo);
+            return;
+        }
+        for (TDevice device : devices) {
+            triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getName() + "检测到有人跌倒，请及时处理！");
+        }
+    }
+
+    @Override
     public void deviceLeaveLocationIssue(String deviceNo) {
         TDevice param = new TDevice();
         param.setNo(deviceNo);

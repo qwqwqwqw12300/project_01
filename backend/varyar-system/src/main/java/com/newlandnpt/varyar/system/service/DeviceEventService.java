@@ -29,6 +29,12 @@ public interface DeviceEventService {
     void deviceAccessIssue(String deviceNo);
 
     /**
+     * 跌倒事件
+     * @param deviceNo
+     */
+    void deviceFallIssue(String deviceNo);
+
+    /**
      * 设备超出地理围栏事件
      */
     void deviceLeaveLocationIssue(String deviceNo);
