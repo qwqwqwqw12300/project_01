@@ -15,7 +15,7 @@ public interface IJiGuangSendService {
      * 设备状态事件
      */
     public void jiGuangSend(List<TMsg> tMsgList);
-//    public void jiGuangSend(TMsg tMsg);
+    public void jiGuangSend(TMsg msg);
 
 
 }

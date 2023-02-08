@@ -25,19 +25,24 @@ import java.util.List;
 @Component
 public class JGpushUtils {
 
-    @Value("${jpush.appKey}")
-    private String appKey;
-
-    @Value("${jpush.masterSecret}")
-    private String masterSecret;
-
-    @Value("${jpush.apnsProduction}")
-    private boolean apnsProduction;
+//    @Value("${jpush.appKey}")
+      private String appKey;
+//
+//    @Value("${jpush.masterSecret}")
+      private String masterSecret;
+//
+//    @Value("${jpush.apnsProduction}")
+      private boolean apnsProduction;
 
     private static JPushClient jPushClient = null;
     private static final int RESPONSE_OK = 200;
     private static final Logger logger = LoggerFactory.getLogger(JGpushUtils.class);
 
+    public void getValue(String appKey,String masterSecret,boolean apnsProduction){
+        this.appKey=appKey;
+        this.masterSecret=masterSecret;
+        this.apnsProduction=apnsProduction;
+    };
     /**
      * 获取极光推送客户端对象
      *
@@ -45,7 +50,7 @@ public class JGpushUtils {
      */
     public JPushClient getJPushClient() {
         if (jPushClient == null) {
-            jPushClient = new JPushClient(masterSecret, appKey);
+            jPushClient = new JPushClient(masterSecret,appKey);
         }
         return jPushClient;
     }

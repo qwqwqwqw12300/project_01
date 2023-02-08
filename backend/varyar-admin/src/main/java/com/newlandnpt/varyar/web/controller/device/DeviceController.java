@@ -1,12 +1,18 @@
 package com.newlandnpt.varyar.web.controller.device;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
+import com.newlandnpt.varyar.common.core.domain.model.DevicePhoneRequest;
+import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.system.service.IOrgService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -170,4 +176,65 @@ public class DeviceController extends BaseController
         return toAjax(tDeviceService.associate(device));
     }
 
+    /**
+     * 设置牵挂电子卡的电话列表
+     * */
+    @PostMapping("/setSOSDevicePhone")
+    public AjaxResult setSOSDevicephone(
+            @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
+        AjaxResult ajax = AjaxResult.success();
+        if (devicePhoneRequest.getList() == null){
+            return error("电话列表不能为空！");
+        }
+        if (devicePhoneRequest.getMapSet() == null){
+            devicePhoneRequest.setMapSet(new HashMap<>());
+        }
+        //查找设备信息
+        TDevice device = tDeviceService.selectDeviceByDeviceId(Long.valueOf(devicePhoneRequest.getDeviceId()));
+        if (device == null){
+            return error("设备信息不存在！");
+        }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限操作！");
+        }
+        if(!device.getType().equals("1")){
+            return error("该设备不是监控设备！");
+        }
+        TDevice.WatchSettings parameter = (TDevice.WatchSettings)device.getParameter();
+        if(parameter==null){
+            parameter = new TDevice.WatchSettings();
+        }
+        parameter.setList(devicePhoneRequest.getList());
+        parameter.setMapSet(devicePhoneRequest.getMapSet());
+        device.setParameter(parameter);
+        try {
+            tDeviceService.updateDevice(device);
+        } catch (Exception e){
+            error("设置电话失败！");
+        }
+        return ajax;
+    }
+
+    /**获取牵挂电子卡的电话列表*/
+    @PostMapping("/getDevicePhone")
+    public AjaxResult getDevicePhone(
+            @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
+        AjaxResult ajax = AjaxResult.success();
+        //查找设备信息
+        TDevice device = tDeviceService.selectDeviceByDeviceId(Long.valueOf(devicePhoneRequest.getDeviceId()));
+        if (device == null){
+            throw new ServiceException("设备信息不存在!");
+        }
+        if(!device.getType().equals("1")){
+            throw new ServiceException("该设备不是监控设备!");
+        }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            throw new ServiceException("无权限获取本设备通讯录!");
+        }
+        List<DevicePhone> list = new ArrayList<DevicePhone>();
+        if(device.getParameter()==null){
+            return AjaxResult.success(null);
+        }
+        return AjaxResult.success(device.getParameter());
+    }
 }
