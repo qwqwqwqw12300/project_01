@@ -12,7 +12,8 @@
 			<view class="ui-form-item">
 				<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="新手机号码" color="#444" size="28rpx"></u-text>
 				<view class="ui-input">
-					<u--input v-model="form.newPhone" maxlength="11" type="number" placeholder="请输入手机号码" :border="'none'" fontSize="28rpx" clearable>
+					<u--input v-model="form.newPhone" maxlength="11" type="number" placeholder="请输入手机号码"
+						:border="'none'" fontSize="28rpx" clearable>
 					</u--input>
 				</view>
 			</view>
@@ -42,6 +43,10 @@
 
 <script>
 	import {
+		env
+	} from "@/config/env.js";
+	import jsencrypt from '@/common/utils/jsencrypt.js';
+	import {
 		PostUpdatePhone,
 	} from '@/common/http/api.js';
 	import {
@@ -63,7 +68,11 @@
 			 * 提交
 			 */
 			handleSubmit() {
-				const { password,newCode,newPhone } = this.form
+				const {
+					password,
+					newCode,
+					newPhone
+				} = this.form
 				if (!phoneValidator(newPhone)) {
 					return uni.$u.toast('请填写正确的手机号码')
 				}
@@ -73,15 +82,16 @@
 				if (newCode.length !== 4) {
 					return uni.$u.toast('请填写正确的验证码')
 				}
+				console.log(this.form.password, 'ppp')
 				PostUpdatePhone({
-					...this.form
+					...this.form,
+					password: jsencrypt.setEncrypt(env.publicKey, this.form.password)
 				}).then(res => {
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
 						this.handleBack()
 					}, 500)
 				}, err => {
-					this.$refs.oldSmsRef.reset();
 					this.$refs.newSmsRef.reset();
 				})
 			},
@@ -100,6 +110,8 @@
 			 * 新手机短信认证通过
 			 */
 			newCheckedBySms(smsInfo) {
+				console.log(smsInfo, 'ss')
+				this.form.uuid = smsInfo.uuid
 				this.form.newCode = smsInfo.code
 			},
 			/**
@@ -156,6 +168,10 @@
 
 		.wd-btn-gloup {
 			margin: 80rpx 0;
+
+			button {
+				color: #ffffff;
+			}
 		}
 	}
 </style>
