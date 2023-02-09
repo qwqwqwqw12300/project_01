@@ -35,7 +35,7 @@
 				<view class="ui-form-item">
 					<sms-input ref="sms" @reset="codeReset" :payload="smsPayload" @checked="checkedBySms" />
 				</view>
-				<view class="wd-btn-gloup"><button @click="submit">提交</button></view>
+				<view class="wd-btn-group"><button @click="submit">提交</button></view>
 			</view>
 		</view>
 		<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
@@ -309,7 +309,7 @@
 			// height: 60rpx;
 		}
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			margin: 120rpx 0;
 		}
 	}

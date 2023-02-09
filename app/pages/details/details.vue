@@ -13,7 +13,8 @@
 				<view class="ui-list">
 					<text>我的家庭:</text>
 					<view class="ui-date active" @click="handleSelect('family')">
-						<text>{{ eventInfo.familyName }}</text>
+						<text>{{ eventInfo.familyName || '全部'}}</text>
+						<u-icon name="arrow-down" size="40rpx"></u-icon>
 						<!-- 	<uni-data-select v-model="eventInfo.familyId" :clear="false" :localdata="getFamilyList">
 						</uni-data-select> -->
 						<!-- 	<view class="ui-icon"><u-icon name="arrow-down-fill" color="#414141" size="30rpx"></u-icon></view> -->
@@ -36,7 +37,8 @@
 				<view class="ui-list">
 					<text>设备类型:</text>
 					<view class="ui-date active" @click="handleSelect('device')">
-						<text>{{ eventInfo.deviceTypeName }}</text>
+						<text>{{ eventInfo.deviceTypeName || '全部'}}</text>
+						<u-icon name="arrow-down" size="40rpx"></u-icon>
 						<!-- 		<uni-data-select v-model="eventInfo.deviceType" :clear="false" :localdata="typeRang">
 						</uni-data-select> -->
 					</view>
@@ -44,7 +46,8 @@
 				<view class="ui-list">
 					<text>事件类型:</text>
 					<view class="ui-date active" @click="handleSelect('event')">
-						<text>{{ eventInfo.eventlevelName }}</text>
+						<text>{{ eventInfo.eventlevelName || '全部'}}</text>
+						<u-icon name="arrow-down" size="40rpx"></u-icon>
 						<!-- 	<uni-data-select v-model="eventInfo.eventlevel" :clear="false" :localdata="eventRang">
 						</uni-data-select> -->
 					</view>
@@ -52,7 +55,8 @@
 				<view class="ui-list">
 					<text>已读标识:</text>
 					<view class="ui-date active" @click="handleSelect('flag')">
-						<text>{{ eventInfo.readFlagName }}</text>
+						<text>{{ eventInfo.readFlagName || '全部'}}</text>
+						<u-icon name="arrow-down" size="40rpx"></u-icon>
 						<!-- 	<uni-data-select v-model="eventInfo.readFlag" :clear="false" :localdata="operateRang">
 						</uni-data-select> -->
 					</view>
@@ -353,7 +357,7 @@
 			.ui-date {
 				align-items: center;
 				justify-content: space-between;
-				padding: 0 8rpx 0 20rpx;
+				padding: 0 20rpx 0 20rpx;
 			}
 
 			.ui-icon {

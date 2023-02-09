@@ -87,7 +87,7 @@
 							</view>
 						</view>
 					</view>
-					<view class="ui-setting-btn wd-btn-gloup">
+					<view class="ui-setting-btn wd-btn-group">
 						<button @click="deleteZone">删除</button>
 						<button @click="radarDevice(roomZones[activeZone])" class="green">保存</button>
 					</view>
@@ -1094,7 +1094,7 @@
 
 					>view {
 						display: inline-block;
-						width: calc(50% - 23rpx);
+						width: calc(50% - 28rpx);
 						height: 55rpx;
 						line-height: 55rpx;
 						float: left;

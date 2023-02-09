@@ -60,7 +60,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="wd-btn-gloup">
+				<view class="wd-btn-group">
 					<button @click="more">更多选项</button>
 					<button class="green" @click="editSubmit">确定</button>
 				</view>
@@ -75,7 +75,7 @@
 							activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
 						</u-switch>
 						<text>进出监控</text>
-					</view>
+					</view>	
 					<view class="ui-switch">
 						<u-switch space="2" v-model="editFrom.fallFlag" activeValue="1" inactiveValue="0"
 							activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
@@ -107,30 +107,38 @@
 								<u-switch space="2" v-model="editFrom.inMonitorFlag" activeValue="1" inactiveValue="0"
 									activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
 								</u-switch>
-								<text>进入监控区域超时报警时间</text>
+								<text>进入监控区域超时报警时间(分钟)</text>
 							</view>
 							<view class="ui-timing-switch">
 								<u-switch space="2" v-model="editFrom.outMonitorFlag" activeValue="1" inactiveValue="0"
 									activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
 								</u-switch>
-								<text>离开监控区域超时报警时间</text>
+								<text>离开监控区域超时报警时间(分钟)</text>
 							</view>
 
 						</view>
 						<view class="ui-timing-pos">
-							<view class="ui-timing-active active" @click="openDate('entryTime')">
-								<text>{{editFrom.entryTime || '请选择'}}</text>
-								<u-icon name="arrow-down" size="28rpx"></u-icon>
+							<view class="ui-timing-active active">
+								<!-- <text>{{editFrom.entryTime || '请选择'}}</text>
+								<u-icon name="arrow-down" size="28rpx"></u-icon> -->
+								<u-number-box v-model="editFrom.entryTime">
+								</u-number-box>
 							</view>
-							<view class="ui-timing-active active" @click="openDate('departureTime')">
-								<text>{{editFrom.departureTime || '请选择'}}</text>
-								<u-icon name="arrow-down" size="28rpx"></u-icon>
+							<view class="ui-timing-active active">
+								<!-- <text>{{editFrom.departureTime || '请选择'}}</text>
+								<u-icon name="arrow-down" size="28rpx"></u-icon> -->
+								<u-number-box v-model="editFrom.departureTime">
+								</u-number-box>
 							</view>
 						</view>
 					</view>
-					<view class="wd-btn-gloup">
+					<!-- <view class="ui-zone active">
+						<text>子区域设置</text>
+					</view> -->
+					<view class="wd-btn-group ui-btn-group">
 						<button class="gray" @click="back">返回</button>
-						<button class="green" @click="editSubmit">确定</button>
+						<button class="green" @click="setZone">子区域设置</button>
+						<button class="blue" @click="editSubmit">确定</button>
 					</view>
 					<u-datetime-picker v-if="dateHandle.show" :show="dateHandle.show" @confirm="dateConfirm"
 						@cancel="dateHandle.show = false" :mode="dateHandle.mode"></u-datetime-picker>
@@ -144,7 +152,7 @@
 
 <script>
 	import {
-		getHoursTime
+		getHoursTime, getMinute
 	} from '../../common/utils/util';
 	import {
 		INIT_DEIVCE_SET
@@ -165,7 +173,9 @@
 				locationList: [
 					'壁挂',
 					'顶挂',
-				]
+				],
+				// 设备源数据
+				source: {}
 			}
 		},
 		methods: {
@@ -191,8 +201,8 @@
 					roomLength: roomLength / 10,
 					startTime: getHoursTime(startTime) || 0,
 					endTime: getHoursTime(endTime) || 0,
-					entryTime: getHoursTime(entryTime) || 0,
-					departureTime: getHoursTime(departureTime) || 0
+					entryTime: getMinute(entryTime) || 0,
+					departureTime: getMinute(departureTime) || 0
 				});
 				this.close();
 			},
@@ -209,12 +219,14 @@
 					roomLeft,
 					roomHeight,
 					roomRight,
-					roomLength
+					roomLength,
+					source
 				} = form;
+				this.source = source;
 				this.editFrom = {
 					...form,
-					departureTime: uni.$u.timeFormat(departureTime, 'hh:MM'),
-					entryTime: uni.$u.timeFormat(entryTime, 'hh:MM'),
+					departureTime: getMinute(departureTime),
+					entryTime: getMinute(entryTime),
 					/**开始监控时间**/
 					startTime: uni.$u.timeFormat(startTime, 'hh:MM'),
 					/**结束监控时间**/
@@ -271,6 +283,16 @@
 			monitorChange([active], type) {
 				this.editFrom[type] = this.editFrom[type] == 1 ? 0 : 1;
 			},
+			
+			/**
+			 * 设置子区域
+			 */
+			setZone() {
+				this.$store.commit('setDeviceInfo', this.source);
+				uni.navigateTo({
+					url: '/pages/equipment/position-setting'
+				})
+			}
 		}
 	}
 </script>
@@ -323,7 +345,7 @@
 			}
 		}
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			text-align: center;
 			margin-top: 70rpx;
 
@@ -341,7 +363,7 @@
 		text-align: center;
 		padding: 60rpx 0;
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			margin-top: 50rpx;
 		}
 
@@ -398,7 +420,7 @@
 			justify-content: space-between;
 
 			.ui-timing-switch {
-				font-size: 26rpx;
+				font-size: 24rpx;
 				display: flex;
 				flex-direction: row;
 				align-items: center;
@@ -414,7 +436,7 @@
 			}
 
 			.ui-timing-pos {
-				width: 300rpx;
+				// width: 50%;
 
 				// &:nth-child(2) {
 				// 	width: 200rpx;
@@ -429,7 +451,7 @@
 					line-height: 50rpx;
 					height: 50rpx;
 					width: 230rpx;
-					border: 1rpx solid #e2e2e2;
+					// border: 1rpx solid #e2e2e2;
 					color: #606266;
 					padding: 0 10rpx;
 					box-sizing: border-box;
@@ -466,6 +488,29 @@
 			text {
 				margin-left: 20rpx;
 				color: #515151;
+			}
+		}
+		
+		.ui-zone {
+			margin-top: 15rpx;
+			text-align: left;
+			color: #2979FF;
+			text-decoration: underline;
+		}
+		
+		.ui-btn-group {
+			display: flex;
+		
+			button {
+				width: 135rpx;
+				height: 70rpx;
+				border-radius: 35rpx;
+				font-size: 28rpx;
+				&:nth-child(2) {
+					width: 206rpx;
+					height: 70rpx;
+					
+				}
 			}
 		}
 	}

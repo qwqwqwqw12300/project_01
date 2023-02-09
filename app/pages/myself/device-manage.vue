@@ -63,7 +63,7 @@
 							</uni-data-select>
 						</view>
 					</view>
-					<view class="wd-btn-gloup"><button @click="bindSubmit">确定</button></view>
+					<view class="wd-btn-group"><button @click="bindSubmit">确定</button></view>
 				</view>
 			</u-popup>
 			<!-- /绑定房间 -->
@@ -216,7 +216,8 @@
 					roomId,
 					location,
 					...deviceLocation,
-					...deviceRoomParameter
+					...deviceRoomParameter,
+					source: item
 				});
 				// this.$setCache('setDevice', this.editFrom);
 				// uni.navigateTo({
@@ -541,7 +542,7 @@
 			}
 		}
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			text-align: center;
 			margin-top: 70rpx;
 

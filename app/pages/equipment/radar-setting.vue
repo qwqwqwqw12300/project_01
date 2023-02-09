@@ -107,7 +107,7 @@
 					@cancel="dateHandle.show = false" :mode="dateHandle.mode"></u-datetime-picker>
 			</view>
 		</view>
-		<view class="wd-btn-gloup">
+		<view class="wd-btn-group">
 			<button @click="more">更多选项</button>
 			<button class="green" @click="editSubmit">确定</button>
 		</view>
@@ -288,7 +288,7 @@
 			}
 		}
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			text-align: center;
 			margin-top: 70rpx;
 
@@ -306,7 +306,7 @@
 		text-align: center;
 		padding: 20rpx 0;
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			margin-top: 50rpx;
 		}
 
