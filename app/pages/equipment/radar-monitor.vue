@@ -1,40 +1,8 @@
-<!-- 实时监控 -->
-<template>
-	<app-body>
-		<view class="ui-monitor">
-			<view class="ui-area" :style="getStyle">
-				<view class="ui-roomZone" v-for="(item,index) in roomZoneList" :key="index"
-					:style="getZonePosition(item)">
+<!-- <template>
+	<view class="content">
+		<view :prop="option" :change:prop="echarts.updateEcharts" id="echarts" class="echarts"></view>
+	</view>
 
-				</view>
-				<view class="ui-device" :style="getPosition">
-					<text class="ui-zone-name">设备</text>
-				</view>
-			</view>
-		</view>
-		<view class="ui-tip">
-			<view class="ui-item">
-				<view class="span"></view>
-				<text>隐私区域</text>
-			</view>
-			<view class="ui-item">
-				<view class="span1"></view>
-				<text>监控区域</text>
-			</view>
-			<view class="ui-item">
-				<u-icon name="../../static/images/person.png" color="#fff" size="50rpx"></u-icon>
-				<text>人员</text>
-			</view>
-			<view class="ui-item">
-				<u-icon name="../../static/images/person-down.png" color="#fff" size="44rpx"></u-icon>
-				<text>人员</text>
-			</view>
-		</view>
-		<view class="ui-set">
-			<button @click="handleDetail">查看明细</button>
-			<button @click="handleSet">设置</button>
-		</view>
-	</app-body>
 </template>
 
 <script>
@@ -50,100 +18,144 @@
 	export default {
 		data() {
 			return {
-				baseLenght: '330',
-				boxScale: 1,
-				deviceScale: 1,
-				minBox: 50,
-				boxInfo: {
-					width: 350,
-					height: 0,
-				},
 				roomZoneList: [],
+				option: {
+					title: {
+						text: '实时监控',
+						left: "center",
+					},
+					xAxis: {
+						type: 'value',
+						min: -3,
+						max: 3,
+						interval: 0.5,
+						scale: true,
+						axisLine: {
+							lineStyle: {
+								color: '#ddd',
+							},
+						},
+						axisLabel: {
+							color: '#666',
+						},
+						splitLine: {
+							lineStyle: {
+								color: '#eee',
+							},
+						},
+					},
+					yAxis: {
+						type: "value",
+						position: 'left',
+						min: 0,
+						max: 6,
+						interval: 0.5,
+						scale: true,
+						axisLine: {
+							lineStyle: {
+								color: '#ddd',
+							},
+						},
+						axisLabel: {
+							color: '#666',
+						},
+						splitLine: {
+							lineStyle: {
+								color: '#eee',
+							},
+						},
+
+					},
+					series: [{
+							type: 'scatter',
+							name: '销量',
+							symbol(params) {
+								const urlObj = {
+									0: '../../static/images/person.png',
+									1: '../../static/images/person-down.png',
+								}
+								return `image://${urlObj[params[2]]}`
+
+							},
+							symbolSize: [30, 30],
+							// markPoint: {
+							// 	label: {
+							// 		show: true,
+							// 	},
+							// 	data: [{name: '某个坐标',
+							// 		coord: [100, 120]
+							// 	}],
+							// },
+							data: [
+								[1, 1, '0'],
+								[1, 2, '1'],
+								[2, 2, '0']
+							],
+							markArea: {
+								silent: true,
+								label: {
+									position: ['50%', '50%'],
+									align: 'center',
+									color: 'rgba(0,0,0,0.3)',
+									fontSize: 30
+								},
+								itemStyle: {
+									color: 'rgba(0,0,0,0.1)'
+								},
+								data: [
+
+								],
+							},
+						},
+						{
+							symbolSize: 20,
+							data: [-10, 0],
+							type: 'scatter',
+							symbol: 'image://../../static/images/echart-device.png'
+						}
+					]
+				}
 			}
 		},
 		computed: {
 			...mapState({
 				deviceInfo: state => state.deviceInfo
-			}),
-			getStyle() {
-				const height = this.boxInfo.height > this.minBox ? this.boxInfo.height : this.minBox
-				const width = this.boxInfo.width > this.minBox ? this.boxInfo.width : this.minBox
-				return {
-					height: `${height}px`,
-					width: `${width}px`
-				}
-			},
-			getPosition() {
-				let left = this.deviceScale * this.boxInfo.width
-				left = left > this.minBox ? left : this.minBox
-				return {
-					left: `${left}px`
-				}
-			},
-			getZonePosition() {
-				return function(data) {
-					return {
-						width: `${data.width}px`,
-						height: `${data.height}px`,
-						left: `${data.positionLeft}px`,
-						top: `${data.positionTop}px`
-					}
-				}
-			}
+			})
 		},
 		async onLoad() {
-			console.log(this.deviceInfo, 'deviceIfo')
+			this.handleStart()
 			const data = await GetRoomZone({
 				deviceId: this.deviceInfo.deviceId
 			})
-			this.roomZoneList = data.rows
-			this.handleInit()
-			this.handleStart()
-		},
-		onUnload() {
-			GetEndDevice({
-				deviceId: this.deviceInfo.deviceId
+			console.log(data.rows, 'ii')
+			this.roomZoneList = data.rows.map(n => {
+				const {
+					x1,
+					x2,
+					y1,
+					y2
+				} = n
+				return [{
+					name: n.name,
+					coord: [x2, y1],
+					itemStyle: {
+						color: 'rgba(0,255,0,0.2)'
+					},
+				}, {
+					coord: [x1, y2],
+				}, ]
 			})
+			this.option.series[0].markArea.data = this.roomZoneList
 		},
 		mounted() {
 			const timer = setInterval(() => {
-				this.handleQuery()           
-			}, 10000);
+				this.handleQuery()
+			}, 4000);
 			this.$once('hook:beforeDestroy', () => {
 				clearInterval(timer);
 			})
 		},
 		methods: {
-			handleInit() {
-				const {
-					parameter
-				} = this.deviceInfo
-				if (parameter?.deviceLocation) {
-					const {
-						roomLeft,
-						roomRight,
-						roomLength
-					} = parameter.deviceLocation
-					this.boxScale = roomLength / (roomLeft + roomRight)
-					this.deviceScale = roomLeft / (roomLeft + roomRight)
-					this.boxInfo.height = this.boxScale * this.boxInfo.width
-					// this.boxInfo.width = this.boxScale < 1 ? this.baseLenght : this.boxScale * this.baseLenght
-					this.roomZoneList = this.roomZoneList.map(n => {
-						const {
-							x1,
-							x2,
-							y1,
-							y2
-						} = n
-						n.width = Math.abs((x2 - x1) / (roomLeft + roomRight) * this.boxInfo.width)
-						n.height = Math.abs((y2 - y1) / roomLength * this.boxInfo.height)
-						n.positionLeft = (roomLeft + x1) / (roomLeft + roomRight) * this.boxInfo.width
-						n.positionTop = (roomLength - y2) / roomLength * this.boxInfo.height
-						return n
-					})
-					console.log(this.roomZoneList, 'roro')
-				}
-			},
 			handleStart() {
 				GetStartDevice({
 					deviceId: this.deviceInfo.deviceId
@@ -155,67 +167,64 @@
 				GetNowInfo({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
-					console.log(res, 'now')
+					this.option.series[0].data = [
+						[1, 1, '1'],
+						[1, 2, '1'],
+						[2, 2, '0']
+					]
+					console.log(res, '999')
 				})
 			},
-
-			handleDetail() {
-
+		}
+	}
+</script>
+<script module="echarts" lang="renderjs">
+	let myChart
+	export default {
+		mounted() {
+			if (typeof window.echarts === 'function') {
+				this.initEcharts()
+			} else {
+				// 动态引入较大类库避免影响页面展示
+				const script = document.createElement('script')
+				// view 层的页面运行在 www 根目录，其相对路径相对于 www 计算
+				script.src = 'static/echarts.js'
+				script.onload = this.initEcharts.bind(this)
+				document.head.appendChild(script)
+			}
+		},
+		methods: {
+			initEcharts() {
+				myChart = echarts.init(document.getElementById('echarts'))
+				// 观测更新的数据在 view 层可以直接访问到
+				myChart.setOption(this.option)
 			},
-
-			handleSet() {
-
+			updateEcharts(newValue, oldValue, ownerInstance, instance) {
+				// 监听 service 层数据变更
+				myChart.setOption(newValue)
+			},
+			onClick(event, ownerInstance) {
+				// 调用 service 层的方法
+				ownerInstance.callMethod('onViewClick', {
+					test: 'test'
+				})
 			}
 		}
 	}
 </script>
 
-<style lang="scss" scoped>
-	// ::v-deep {
-	// 	uni-button{
-
-	// 	}
-	// }
-
-	.ui-monitor {
-		width: 100%;
-		padding: 30rpx 20rpx;
-		box-sizing: border-box;
+<style>
+	.content {
 		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		.ui-area {
-			// height: 100rpx;
-			background-color: #fff;
-			position: relative;
-		}
-	}
-
-	.ui-device {
-		height: 26px;
-		width: 26px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
 		flex-direction: column;
-		text-align: center;
-		background-color: #00eaff;
-		border-radius: 50% 50%;
-		position: absolute;
-		bottom: -12px;
-		margin-left: -13px;
-		// left: 50%;
+		align-items: center;
+		justify-content: center;
 	}
 
-	.ui-zone-name {
-		font-size: 20rpx;
-		color: #fff;
-	}
-
-	.ui-roomZone {
-		position: absolute;
-		background-color: gray;
+	.echarts {
+		margin-top: 30px;
+		width: 100%;
+		height: 400px;
 	}
 
 	.ui-tip {
@@ -245,20 +254,9 @@
 		.span1 {
 			width: 50rpx;
 			height: 50rpx;
-			background-color: #fff;
+			background-color: #008fff;
 			margin-right: 14rpx;
 		}
 	}
-
-	.ui-set {
-		display: flex;
-		margin-top: 90rpx;
-
-		button {
-			padding-left: 100rpx;
-			padding-right: 100rpx;
-			font-size: 28rpx;
-			border-radius: 8px !important;
-		}
-	}
 </style>
+ -->

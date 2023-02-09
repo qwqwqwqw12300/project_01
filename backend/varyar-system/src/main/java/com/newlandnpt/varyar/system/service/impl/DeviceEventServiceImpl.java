@@ -175,6 +175,22 @@ public class DeviceEventServiceImpl implements DeviceEventService {
     }
 
     @Override
+    public void deviceFallIssue(String deviceNo) {
+        TDevice param = new TDevice();
+        param.setNo(deviceNo);
+        param.setStatus(STATUS_ACTIVATED);
+        param.setDelFlag(DeviceConstants.DEL_FLAG_NOT_ACTIVE);
+        List<TDevice> devices = deviceMapper.selectTDeviceList(param);
+        if ((devices.size() == 0)) {
+            log.error("未找到设备 " + deviceNo);
+            return;
+        }
+        for (TDevice device : devices) {
+            triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getName() + "检测到有人跌倒，请及时处理！");
+        }
+    }
+
+    @Override
     public void deviceLeaveLocationIssue(String deviceNo) {
         TDevice param = new TDevice();
         param.setNo(deviceNo);
@@ -217,11 +233,15 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         if (device.getMemberId() != null) {
             // 会员设备查找会员的运营人员
             TMember member = memberMapper.selectMemberByMemberId(device.getMemberId());
-            if(member!=null){
+            event.setMemberId(device.getMemberId());
+            if(member==null){
                 log.info(">>>>> 设备{}所属会员id:{}查不到会员信息，事件忽略运营人员信息录入", device.getNo(), device.getMemberId());
             }else{
                 event.setUserId(member.getUserId());
                 event.setUserName(member.getUserName());
+                //目前会员没有名称，暂时会员名称使用手机号
+                event.setMemberName(member.getPhone());
+                event.setMemberPhone(member.getPhone());
             }
         } else if (device.getDevicegroupId() != null) {
             // 机构设备查找设备对应设备组

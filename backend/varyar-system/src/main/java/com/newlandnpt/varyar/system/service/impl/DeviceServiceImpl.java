@@ -358,6 +358,8 @@ public class DeviceServiceImpl implements IDeviceService {
             TDevice.WatchSettings watchSettings = (TDevice.WatchSettings) settings;
             if(device.getParameter()!=null){
                 watchSettings.setList(((TDevice.WatchSettings)device.getParameter()).getList());
+                //有设置实体键按钮的电话列表
+                watchSettings.setMapSet(((TDevice.WatchSettings)device.getParameter()).getMapSet());
             }
             List<TDeviceFence> fences = deviceFenceService.selectTDeviceFenceByDeviceId(deviceId);
             watchSettings.setFence(Optional.ofNullable(fences)

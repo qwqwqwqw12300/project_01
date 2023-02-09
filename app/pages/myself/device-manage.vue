@@ -90,27 +90,10 @@
 		mapState,
 		mapActions
 	} from 'vuex';
-	const INIT_BINDFORM = {
-		familyId: '',
-		roomId: '',
-		deviceId: '',
-		deviceName: '',
-		deviceType: '',
-		deviceNo: '',
-		deviceId: '',
-		roomLeft: 100,
-		roomHeight: 100,
-		roomRight: 100,
-		roomLength: 100,
-		existFlag: 0,
-		fallFlag: 0,
-		entryTime: 0,
-		departureTime: 0,
-		startTime: 0,
-		endTime: 0,
-		inMonitorFlag: 0,
-		outMonitorFlag: 0,
-	};
+	import {
+		INIT_DEIVCE_SET
+	} from '../../config/db';
+
 	export default {
 
 		data() {
@@ -119,17 +102,17 @@
 				bindRoomShow: false,
 				roomList: [],
 				bindForm: {
-					...INIT_BINDFORM
+					...INIT_DEIVCE_SET
 				},
 				editFrom: {
 					deviceId: '',
 					deviceName: '',
 					deviceType: '',
 					deviceNo: '',
-					roomLeft: 100,
-					roomHeight: 100,
-					roomRight: 100,
-					roomLength: 100
+					roomLeft: 6,
+					roomHeight: 6,
+					roomRight: 6,
+					roomLength: 6
 				},
 				addHandle: {
 					show: false,
@@ -152,7 +135,7 @@
 				// list: state => state.devicesList,
 				/**家庭列表**/
 				famliyList: state => {
-					return state.familyList.map(ele => ({
+					return state.familyList.filter(n=> n.shareFlag === '2').map(ele => ({
 						text: ele.name,
 						value: ele.familyId
 					}));
@@ -202,8 +185,8 @@
 					familyId: '',
 					roomId: '',
 					deviceId: '',
-					bindRoomShow: false
 				});
+				this.bindRoomShow = false;
 			},
 
 			/**
@@ -243,7 +226,8 @@
 			editSubmit(editFrom) {
 				if (editFrom.deviceName) {
 					setDevice({
-						...editFrom
+						...editFrom,
+						flag: '2'
 					}).then(res => {
 						uni.$u.toast(res.msg);
 						this.eidtClose();
@@ -278,7 +262,7 @@
 					deviceName: name,
 					deviceId,
 					deviceType: type,
-					deviceNo: no,
+					deviceNo: no
 				});
 				this.bindRoomShow = true;
 			},
@@ -332,7 +316,8 @@
 			bindSubmit() {
 				if (this.bindForm.familyId && this.bindForm.roomId) {
 					setDevice({
-						...this.bindForm
+						...this.bindForm,
+						flag: '1'
 					}).then(res => {
 						uni.$u.toast(res.msg);
 						this.close();

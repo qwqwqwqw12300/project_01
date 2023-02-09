@@ -125,12 +125,12 @@ public class MemberServiceImpl implements IMemberService
             if(user == null){
                 throw new ServiceException("运营不存在");
             }
-
+            //分配运营时默认将会员分给下属机构
+            member.setOrgId(user.getOrgId());
             member.setDistributeFlag("1");
             member.setUserId(user.getUserId());
             member.setUserName(user.getUserName());
         }else{
-
             member.setDistributeFlag("0");
             member.setUserId(null);
             member.setUserName(null);
@@ -158,6 +158,7 @@ public class MemberServiceImpl implements IMemberService
     }
 
     @Override
+    @DataScope(orgAlias = "m")
     public long notArrangeMemberCount(TMember member) {
         return memberMapper.notArrangeMemberCount(member);
     }

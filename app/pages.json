@@ -279,7 +279,7 @@
 				}
 			}
 		}, {
-			"path": "pages/myself/position-setting",
+			"path": "pages/equipment/position-setting",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -329,6 +329,13 @@
 				"app-plus": {
 					"titleNView": false
 				}
+			}
+
+		}, {
+			"path": "pages/equipment/radar-setting",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
 			}
 
 		}
