@@ -626,7 +626,10 @@ export default {
     roomWidthValidator(rule,value,callback){
       let roomWidth = this.settings?.deviceLocation?.roomLeft + this.settings?.deviceLocation?.roomRight;
       if(roomWidth<0||roomWidth>6){
-        callback(new Error("必须介于0 - 6之间"))
+        callback(new Error("左右侧之和必须介于0 - 6之间"))
+      }else if(this.settings?.deviceLocation?.roomLeft<0
+        ||this.settings?.deviceLocation?.roomRight<0){
+        callback(new Error("必须大于0"))
       }else{
         callback()
       }
@@ -641,9 +644,10 @@ export default {
     roomZoneXValidator(rule,value,callback){
       if(this.roomZone?.x1>=this.roomZone?.x2){
         callback(new Error("X1必须小于X"))
-      }else if((value<0&&-value>this.settings?.deviceLocation?.roomLeft)
-        ||(value>=0&&value>this.settings?.deviceLocation?.roomRight)){
-        callback(new Error("不包含在房间内"))
+      }else if(value<0&&-value>this.settings?.deviceLocation?.roomLeft){
+        callback(new Error("不包含在房间内,超过房间左侧距离"))
+      }else if(value>=0&&value>this.settings?.deviceLocation?.roomRight){
+        callback(new Error("不包含在房间内,超过房间右侧距离"))
       }else{
         callback()
       }
@@ -652,7 +656,11 @@ export default {
       if(this.roomZone?.y1>=this.roomZone?.y2){
         callback(new Error("Y1必须小于Y2"))
       }else if(value<0.3||value>this.settings?.deviceLocation?.roomLength){
-        callback(new Error("不包含在房间内"))
+        if(value>this.settings?.deviceLocation?.roomLength){
+          callback(new Error("不包含在房间内,超过房间长度"))
+        }else{
+          callback(new Error("最小值需大于等于0.3"))
+        }
       }else{
         callback()
       }
@@ -661,7 +669,7 @@ export default {
       if(this.roomZone?.z1>=this.roomZone?.z2){
         callback(new Error("Z1必须小于Z2"))
       }else if(value<0||value>1){
-        callback(new Error("不包含在房间内"))
+        callback(new Error("不包含在房间内,值必须在0到1之间"))
       }else{
         callback()
       }
