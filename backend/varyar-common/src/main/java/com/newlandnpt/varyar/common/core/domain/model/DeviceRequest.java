@@ -92,6 +92,19 @@ public class DeviceRequest {
      * */
     @Size(min = 0, max = 1, message = "迭代监测标志不能超过1个字符")
     private String fallFlag;
+    /**
+     *  1：绑定  2：修改  3：解绑
+     * */
+    @Size(min = 0, max = 1, message = "操作标识不能超过1个字符")
+    private String flag;
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
 
     public Long getEntryTime() {
         return entryTime;

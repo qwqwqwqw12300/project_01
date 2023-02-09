@@ -83,6 +83,16 @@ public class TRoomZone extends BaseEntity
     private Date endTime;
     /** 设备id*/
     private Long deviceId;
+    /** 0:普通区域  1：屏蔽区域  2：床  */
+    private String zoneType;
+
+    public String getZoneType() {
+        return zoneType;
+    }
+
+    public void setZoneType(String zoneType) {
+        this.zoneType = zoneType;
+    }
 
     public Long getDeviceId() {
         return deviceId;

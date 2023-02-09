@@ -26,10 +26,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_FALL_KEY;
 import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_PRESENCE_KEY;
@@ -502,10 +499,10 @@ public class DeviceServiceImpl implements IDeviceService {
         return result;
     }
     @Override
-    public List<ExtraVo> getRealLocationExtraByDeviceNo(String deviceNo){
-        List<ExtraVo> result = redisCache.getCacheObject(TARGET_LOCATION_FALL_KEY+deviceNo);
+    public  Map<Integer, ExtraVo> getRealLocationExtraByDeviceNo(String deviceNo){
+        Map<Integer, ExtraVo> result = redisCache.getCacheObject(TARGET_LOCATION_FALL_KEY+deviceNo);
         if(result == null){
-            result = new ArrayList<>(0);
+            result = new HashMap<Integer, ExtraVo>();
         }
         return result;
     }

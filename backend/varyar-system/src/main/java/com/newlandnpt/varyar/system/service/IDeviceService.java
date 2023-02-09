@@ -227,6 +227,6 @@ public interface IDeviceService
      * @param deviceNo
      * @return
      */
-    public List<ExtraVo> getRealLocationExtraByDeviceNo(String deviceNo);
+    public Map<Integer, ExtraVo>  getRealLocationExtraByDeviceNo(String deviceNo);
 
 }

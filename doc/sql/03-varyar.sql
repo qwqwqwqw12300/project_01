@@ -265,6 +265,7 @@ create table t_room_zone (
   z2                decimal(10,2)                         comment '最顶部的点',
   exist_flag        char(1)                               comment '存在监测标志（0是 1否）',
   fall_flag         char(1)                               comment '跌倒监测标志（0是 1否）',
+  zone_type         char(1)                               comment '区域类型',
   entry_time        int                                   comment '进入时间(s)',
   departure_time    int                                   comment '离开时间(s)',
   in_monitor_flag        char(1)                          comment '进入监控区域超时报警（0是 1否）',
