@@ -161,7 +161,18 @@ public class DeviceServiceImpl implements IDeviceService {
     public int deleteDeviceByDeviceId(Long deviceId) {
         return deviceMapper.deleteTDeviceByDeviceId(deviceId);
     }
-
+    @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
+    public int deleteAndSaveDevice(Long deviceId){
+        TDevice item =deviceMapper.selectTDeviceByDeviceId(deviceId);
+        item.setName(null);
+        item.setDeviceId(null);
+        item.setMemberId(null);
+        item.setFamilyId(null);
+        item.setRoomId(null);
+        deviceMapper.deleteTDeviceByDeviceId(deviceId);
+        return deviceMapper.insertTDevice(item);
+    }
     @Override
     public int associate(TDevice device) {
 

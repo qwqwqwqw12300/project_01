@@ -63,8 +63,8 @@ public class RoomZoneController extends BaseController {
         tRoomZone.setDeviceId(Long.valueOf(radarRequest.getDeviceId()));
         tRoomZone.setRoomId(Long.valueOf(radarRequest.getRoomId()));
         tRoomZone.setExistFlag(radarRequest.getExistFlag());
-        tRoomZone.setEntryTime(radarRequest.getEntryTime());
-        tRoomZone.setDepartureTime(radarRequest.getDepartureTime());
+        tRoomZone.setEntryTime(radarRequest.getEntryTime()/1000);
+        tRoomZone.setDepartureTime(radarRequest.getDepartureTime()/1000);
         tRoomZone.setFallFlag(radarRequest.getFallFlag());
         tRoomZone.setX1(radarRequest.getX1());
         tRoomZone.setX2(radarRequest.getX2());
@@ -88,7 +88,6 @@ public class RoomZoneController extends BaseController {
         }
         return ajax;
     }
-
     /**
      * 删除雷达波设备
      * */

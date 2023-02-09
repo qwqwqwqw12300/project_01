@@ -37,6 +37,8 @@ insert into sys_dict_data values(41, 2,  'APP消息',     '2',       'sys_msg_ty
 insert into sys_dict_type values(17, '消息类型', 'sys_send_status',   '0', 'admin', sysdate(), '', null, '消息类型');
 insert into sys_dict_data values(43, 1,  '未发送',     '0',      'sys_send_status',   '',   'info',  'N', '0', 'admin', sysdate(), '', null, '0:未发送');
 insert into sys_dict_data values(44, 2,  '已发送',     '1',       'sys_send_status',   '',   'success',  'N', '0', 'admin', sysdate(), '', null, '1:已发送');
+insert into sys_dict_data values(null, 2,  '不予发送',     '2',       'sys_send_status',   '',   'danger',  'N', '0', 'admin', sysdate(), '', null, '2:不予发送');
+insert into sys_dict_data values(null, 3,  '发送失败',     '3',       'sys_send_status',   '',   'danger',  'N', '0', 'admin', sysdate(), '', null, '3:发送失败');
 
 
 -- ----------------------------
