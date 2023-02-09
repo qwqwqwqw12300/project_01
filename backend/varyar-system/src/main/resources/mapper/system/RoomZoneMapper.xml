@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTRoomZoneVo">
-        select room_zone_id, room_id, name, x1, x2, y1, y2, z1, z2, exist_flag, fall_flag, entry_time, departure_time, create_time, update_time,in_monitor_flag,out_monitor_flag,start_time,end_time,device_id,zone_Type from t_room_zone
+        select room_zone_id, room_id, name, x1, x2, y1, y2, z1, z2, exist_flag, fall_flag, entry_time, departure_time, create_time, update_time,in_monitor_flag,out_monitor_flag,start_time,end_time,device_id,zone_type from t_room_zone
     </sql>
 
     <select id="selectTRoomZoneList" parameterType="TRoomZone" resultMap="TRoomZoneResult">

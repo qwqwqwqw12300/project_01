@@ -99,13 +99,7 @@ public class DeviceController extends BaseController {
             @RequestBody @Validated DeviceRequest deviceRequest){
         AjaxResult ajax = AjaxResult.success();
         ajax  = checkInfo(deviceRequest,ajax);
-        TDevice cond = new TDevice();
-        cond.setNo(deviceRequest.getDeviceNo());
-        cond.setDelFlag("0");
-        List<TDevice> devices = iDeviceService.selectDeviceList(cond);
-        if (devices.size()>0){
-            return error("此设备已存在！");
-        }
+
         if(ajax!= null){
            return ajax;
         }
@@ -126,7 +120,23 @@ public class DeviceController extends BaseController {
         device.setMemberId(getLoginUser().getMemberId());
         device.setCreateTime(DateUtils.getNowDate());
         try {
-            iDeviceService.insertDevice(device);
+            TDevice cond = new TDevice();
+            cond.setNo(deviceRequest.getDeviceNo());
+            cond.setDelFlag("0");
+            List<TDevice> devices = iDeviceService.selectDeviceList(cond);
+            if (devices.size()>0){
+                TDevice item = devices.get(0);
+                if (item.getMemberId()!=null && !item.getMemberId().toString().equals("")){
+                    return error("此设备已存在！");
+                }else{
+                    item.setMemberId(this.getLoginUser().getMemberId());
+                    item.setName(deviceRequest.getDeviceName());
+                    item.setLocation(deviceRequest.getLocation());
+                    iDeviceService.updateDevice(item);
+                }
+            }else{
+                iDeviceService.insertDevice(device);
+            }
         } catch (Exception e){
             return  error("新增我的设备失败！");
         }
@@ -182,7 +192,7 @@ public class DeviceController extends BaseController {
             return  error("非创建者无权限删除！");
         }
         try {
-            iDeviceService.deleteDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
+            iDeviceService.deleteAndSaveDevice(Long.valueOf(deviceRequest.getDeviceId()));
         } catch (Exception e){
             return  error("修改我的设备失败！");
         }
