@@ -61,7 +61,7 @@
 				</view>
 			</view>
 		</u-popup>
-		
+
 	</view>
 
 </template>
@@ -84,10 +84,11 @@
 					show: false,
 					mode: 'datetime'
 				},
-				zongTypeList: [{
-						name: '0',
-						label: '普通区域'
-					},
+				zongTypeList: [
+					// {
+					// 	name: '0',
+					// 	label: '普通区域'
+					// },
 					{
 						name: '1',
 						label: '屏蔽区域'
@@ -139,8 +140,21 @@
 			 * 提交修改
 			 */
 			submit() {
-				if(!this.form.name) return uni.$u.toast('区域名称不能为空');
-				if(this.form.width < 0 || this.form.height < 0)  return uni.$u.toast('宽高不能小于0');
+				if (!this.form.name) return uni.$u.toast('区域名称不能为空');
+				if (this.form.width < 0 || this.form.height < 0) return uni.$u.toast('宽高不能小于0');
+				let obj = assignDeep({}, this.form);
+				switch (obj.zoneType) {
+					case '1': // // 隐私
+						Object.assign(obj, {
+							existFlag: 1 // 私人区域不做监控
+						})
+						break;
+					case '2': // 床
+
+						break;
+					default:
+						break;
+				}
 				this.$emit('confirm', this.form);
 				this.close();
 			}
@@ -161,9 +175,9 @@
 		&.ui-change {
 			// min-height: 1000rpx;
 
-			.ui-add-box {
-				border-bottom: 1px solid #e4e4e4;
-			}
+			// .ui-add-box {
+			// 	border-bottom: 1px solid #e4e4e4;
+			// }
 		}
 
 		&>view {
@@ -206,109 +220,6 @@
 				height: 71rpx;
 				font-size: 28rpx;
 				color: #ffffff;
-			}
-		}
-	}
-
-	.ui-setting {
-		width: 100%;
-		text-align: center;
-		padding: 20rpx 0;
-
-		.wd-btn-gloup {
-			margin-top: 50rpx;
-		}
-
-		>view {
-			// padding: 35rpx;
-			box-sizing: border-box;
-			display: inline-block;
-			width: 100%;
-			border-radius: 10rpx;
-		}
-
-		.ui-date-list {
-			margin-top: 40rpx;
-			width: 100%;
-			display: inline-flex;
-			justify-content: space-between;
-			align-items: center;
-			font-size: 28rpx;
-			color: rgb(96, 98, 102);
-		}
-
-		.ui-margin {
-			margin-bottom: 40rpx;
-		}
-
-		.ui-date {
-			position: relative;
-			height: 60rpx;
-			width: 60%;
-			text-align: left;
-			border-radius: 10rpx;
-			background-color: #dcdcdc;
-			display: flex;
-		}
-
-		.ui-date {
-			align-items: center;
-			justify-content: space-between;
-			padding: 0 8rpx 0 20rpx;
-		}
-
-		.ui-icon {
-			position: absolute;
-			right: 10rpx;
-			top: 50%;
-			transform: translateY(-50%);
-			pointer-events: none;
-		}
-
-		.ui-timing {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-
-			.ui-timing-pos {
-				width: 250rpx;
-
-				// &:nth-child(2) {
-				// 	width: 200rpx;
-				// }
-
-				.ui-timing-active {
-					display: flex;
-					justify-content: space-evenly;
-					align-items: center;
-					font-size: 30rpx;
-					line-height: 50rpx;
-					height: 50rpx;
-					width: 250rpx;
-					border: 1rpx solid #e2e2e2;
-					color: #606266;
-					padding: 0 10rpx;
-					box-sizing: border-box;
-
-					text {
-						display: inline-block;
-						margin-right: 30rpx;
-						// width: 160rpx;
-					}
-
-					&:nth-child(2) {
-						margin-top: 44rpx;
-					}
-				}
-			}
-		}
-
-		.ui-setting-btn {
-			margin-top: 60rpx;
-
-			button {
-				font-size: 25rpx;
-				width: 200rpx;
 			}
 		}
 	}

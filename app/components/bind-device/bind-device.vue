@@ -51,16 +51,14 @@
 		computed: {
 			...mapState({
 				devices: state => {
-					return state.devicesList.map(ele => ({
+					return state.devicesList.filter(ele => !ele.roomId).map(ele => ({
 						text: ele.name,
 						value: ele.deviceId
 					}));
 				}
 			})
 		},
-		mounted(options) {
-
-		},
+		mounted(options) {},
 		methods: {
 			close() {
 				this.show = false;
@@ -69,18 +67,23 @@
 				this.show = true;
 			},
 			next() {
-				setDevice({
-					...INIT_DEIVCE_SET,
-					...this.payload,
-					deviceId: this.deviceId
-				}).then(res => {
-					uni.showToast({
-						title: '绑定成功',
-						icon: 'none'
+				if (this.deviceId) {
+					setDevice({
+						...INIT_DEIVCE_SET,
+						...this.payload,
+						deviceId: this.deviceId
+					}).then(res => {
+						uni.showToast({
+							title: '绑定成功',
+							icon: 'none'
+						});
+						this.close();
+						this.$emit('next')
 					});
-					this.close();
-					this.$emit('next')
-				});
+				} else {
+					uni.$u.toast('请选择设备');
+				}
+
 			},
 			/**
 			 * 跳转管理
@@ -149,10 +152,12 @@
 				color: #ffffff;
 
 				&:nth-child(2) {
+					width: 206rpx;
 					background-image: linear-gradient(96deg, #e8bf00 0%);
 				}
 
 				&:nth-child(1) {
+
 					background-image: linear-gradient(96deg, #898989 0%, #b4b4b4 100%);
 				}
 

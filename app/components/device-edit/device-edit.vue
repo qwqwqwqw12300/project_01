@@ -18,6 +18,13 @@
 							clearable>
 						</u-input>
 					</view>
+					<view class="ui-input ui-radio">
+						<u-text size="28rpx" prefixIcon="map" iconStyle="font-size: 36rpx" text="设备位置"></u-text>
+						<u-radio-group v-model="editFrom.location" placement="row">
+							<u-radio :customStyle="{margin: '20rpx'}" v-for="item of locationList" :key="item"
+								activeColor="#1aa208" :name="item" :label="item"></u-radio>
+						</u-radio-group>
+					</view>
 					<view>
 						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="检测高度"></u-text>
 						<view class="ui-slider">
@@ -63,24 +70,32 @@
 			<!-- 区域设置 -->
 			<view class="ui-setting">
 				<view>
-					<u-checkbox-group @change="monitorChange($event, 'existFlag')" placement="column">
-						<u-checkbox activeColor="#1aa208" labelSize="28rpx" :checked="editFrom.existFlag == 1"
-							:customStyle="{ marginBottom: '8px' }" label="进出监控" name="existFlag"></u-checkbox>
-					</u-checkbox-group>
-					<u-checkbox-group @change="monitorChange($event, 'fallFlag')" placement="column">
-						<u-checkbox activeColor="#1aa208" labelSize="28rpx" :checked="editFrom.fallFlag == 1"
-							:cusmonitorChangetomStyle="{ marginBottom: '8px' }" label="跌倒监控" name="fallFlag">
-						</u-checkbox>
-					</u-checkbox-group>
+					<view class="ui-switch">
+						<u-switch space="2" v-model="editFrom.existFlag" activeValue="1" inactiveValue="0"
+							activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
+						</u-switch>
+						<text>进出监控</text>
+					</view>
+					<view class="ui-switch">
+						<u-switch space="2" v-model="editFrom.fallFlag" activeValue="1" inactiveValue="0"
+							activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
+						</u-switch>
+						<text>跌倒监控</text>
+					</view>
 					<view class="ui-date-list">
-						<text>开始监控时间</text>
+						<u-text prefixIcon="play-circle" iconStyle="font-size: 38rpx" size="28rpx" text="开始监控时间">
+						</u-text>
+						<!-- <u-icon name="play-circle"></u-icon>
+						<text></text> -->
 						<view class="ui-date active" @click="openDate('startTime')">
 							<text>{{editFrom.startTime || '未设置'}}</text>
 							<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
 						</view>
 					</view>
 					<view class="ui-date-list ui-margin">
-						<text>结束监控时间</text>
+						<u-text prefixIcon="pause-circle" iconStyle="font-size: 38rpx" size="28rpx" text="结束监控时间">
+						</u-text>
+						<!-- 	<text></text> -->
 						<view class="ui-date active" @click="openDate('endTime')">
 							<text>{{editFrom.endTime || '未设置'}}</text>
 							<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
@@ -88,17 +103,19 @@
 					</view>
 					<view class="ui-timing">
 						<view class="ui-timing-pos">
-							<u-checkbox-group placement="column" @change="monitorChange($event, 'inMonitorFlag')">
-								<u-checkbox activeColor="#1aa208" :checked="editFrom.inMonitorFlag == 1"
-									:customStyle="{ marginBottom: '40rpx'}" labelSize="28rpx" label="进入监控区域超时报警时间"
-									name="inMonitorFlag">
-								</u-checkbox>
-							</u-checkbox-group>
-							<u-checkbox-group placement="column" @change="monitorChange($event, 'outMonitorFlag')">
-								<u-checkbox activeColor="#1aa208" labelSize="28rpx" :checked="
-									editFrom.outMonitorFlag==1" label="离开监控区域超时报警时间" name="outMonitorFlag">
-								</u-checkbox>
-							</u-checkbox-group>
+							<view class="ui-timing-switch">
+								<u-switch space="2" v-model="editFrom.inMonitorFlag" activeValue="1" inactiveValue="0"
+									activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
+								</u-switch>
+								<text>进入监控区域超时报警时间</text>
+							</view>
+							<view class="ui-timing-switch">
+								<u-switch space="2" v-model="editFrom.outMonitorFlag" activeValue="1" inactiveValue="0"
+									activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
+								</u-switch>
+								<text>离开监控区域超时报警时间</text>
+							</view>
+
 						</view>
 						<view class="ui-timing-pos">
 							<view class="ui-timing-active active" @click="openDate('entryTime')">
@@ -145,6 +162,10 @@
 					show: false,
 					mode: 'time'
 				},
+				locationList: [
+					'壁挂',
+					'顶挂',
+				]
 			}
 		},
 		methods: {
@@ -250,7 +271,6 @@
 			monitorChange([active], type) {
 				this.editFrom[type] = this.editFrom[type] == 1 ? 0 : 1;
 			},
-
 		}
 	}
 </script>
@@ -351,7 +371,7 @@
 		.ui-date {
 			position: relative;
 			height: 60rpx;
-			width: 60%;
+			width: 40%;
 			text-align: left;
 			border-radius: 10rpx;
 			background-color: #dcdcdc;
@@ -377,8 +397,24 @@
 			flex-direction: row;
 			justify-content: space-between;
 
+			.ui-timing-switch {
+				font-size: 26rpx;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+
+				text {
+					margin-left: 10rpx;
+				}
+
+				&:nth-child(1) {
+					margin-bottom: 15rpx;
+				}
+
+			}
+
 			.ui-timing-pos {
-				width: 250rpx;
+				width: 300rpx;
 
 				// &:nth-child(2) {
 				// 	width: 200rpx;
@@ -388,10 +424,11 @@
 					display: flex;
 					justify-content: space-evenly;
 					align-items: center;
+					margin-left: 30rpx;
 					font-size: 30rpx;
 					line-height: 50rpx;
 					height: 50rpx;
-					width: 250rpx;
+					width: 230rpx;
 					border: 1rpx solid #e2e2e2;
 					color: #606266;
 					padding: 0 10rpx;
@@ -416,6 +453,19 @@
 			button {
 				font-size: 25rpx;
 				width: 200rpx;
+			}
+		}
+
+		.ui-switch {
+			margin-top: 20rpx;
+			font-size: 28rpx;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			text {
+				margin-left: 20rpx;
+				color: #515151;
 			}
 		}
 	}
