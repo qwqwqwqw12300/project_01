@@ -44,6 +44,10 @@ public class JiGuangSendServiceImpl implements IJiGuangSendService {
 
     @Value("${jpush.apnsProduction}")
     private boolean apnsProduction;
+    //发送状态定义
+    private static final String SEND_SUCCESS="1";
+    private static final String SEND_NOT="2";
+    private static final String SEND_FAILURE="3";
 
     private static final Logger log = LoggerFactory.getLogger(JiGuangSendServiceImpl.class);
     public void sendValue(){
@@ -76,10 +80,19 @@ public class JiGuangSendServiceImpl implements IJiGuangSendService {
                     //发送时间更新
                     msg.setSendTime(DateUtils.getNowDate());
                     //发送更新
-                    msg.setSendStatus("1");
+                    msg.setSendStatus(SEND_SUCCESS);
                     msgService.updateTMsgSendStatus(msg);
+                    log.info("会员:"+MemberId+"消息已推送");
+
+                }else
+                {
+                    msg.setSendTime(DateUtils.getNowDate());
+                    //发送更新
+                    msg.setSendStatus(SEND_NOT);
+                    msg.setReason("会员用户未开启推送消息开关");
+                    msgService.updateTMsgSendStatus(msg);
+                    log.info("会员:"+MemberId+"消息推送开关未启用！");
                 }
-                log.info("会员:"+MemberId+"消息推送开关未启用！");
 
             } catch (Exception e) {
                 failureNum++;
@@ -87,7 +100,7 @@ public class JiGuangSendServiceImpl implements IJiGuangSendService {
                 failureMsg.append(msg + e.getMessage());
                 //失败原因
                 String reason = e.getMessage();
-                msg.setSendStatus("0");
+                msg.setSendStatus(SEND_FAILURE);
                 msg.setSendTime(null);
                 msg.setReason(reason);
                 msgService.updateTMsgSendStatus(msg);
@@ -122,17 +135,27 @@ public class JiGuangSendServiceImpl implements IJiGuangSendService {
                 //发送时间更新
                 msg.setSendTime(DateUtils.getNowDate());
                 //发送更新
-                msg.setSendStatus("1");
+                msg.setSendStatus(SEND_SUCCESS);
                 msgService.updateTMsgSendStatus(msg);
+                log.info("会员:"+MemberId+"消息已推送");
+
+            }else
+            {
+                msg.setSendTime(DateUtils.getNowDate());
+                //发送更新
+                msg.setSendStatus(SEND_NOT);
+                msg.setReason("会员用户未开启推送消息开关");
+                msgService.updateTMsgSendStatus(msg);
+                log.info("会员:"+MemberId+"消息推送开关未启用！");
+
             }
-            log.info("会员:"+MemberId+"消息推送开关未启用！");
         } catch (Exception e) {
             failureNum++;
             String msgResult = "<br/>" + failureNum + "推送消息编号" + msg.getNo() + "失败";
             failureMsg.append(msg + e.getMessage());
             //失败原因
             String reason = e.getMessage();
-            msg.setSendStatus("0");
+            msg.setSendStatus(SEND_FAILURE);
             msg.setSendTime(null);
             msg.setReason(reason);
             msgService.updateTMsgSendStatus(msg);

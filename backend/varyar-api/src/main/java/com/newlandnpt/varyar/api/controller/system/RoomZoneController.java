@@ -49,18 +49,22 @@ public class RoomZoneController extends BaseController {
         if (radarRequest.getName().equals("")||radarRequest.getName()==null){
             return error("房间名称不能为空！");
         }
+        if (radarRequest.getZoneType()==null||radarRequest.getZoneType().equals("")){
+            return error("区域类型不能为空！");
+        }
         AjaxResult ajax = AjaxResult.success();
         TRoomZone tRoomZone = new TRoomZone();
         if (radarRequest.getRoomZoneId()!=null && !radarRequest.getRoomZoneId().equals("")){
              tRoomZone = iRoomZoneService.selectTRoomZoneByRoomZoneId(Long.valueOf(radarRequest.getRoomZoneId()));
         }
+        tRoomZone.setZoneType(radarRequest.getZoneType());
         tRoomZone.setName(radarRequest.getName());
         tRoomZone.setFallFlag(radarRequest.getFallFlag());
         tRoomZone.setDeviceId(Long.valueOf(radarRequest.getDeviceId()));
         tRoomZone.setRoomId(Long.valueOf(radarRequest.getRoomId()));
         tRoomZone.setExistFlag(radarRequest.getExistFlag());
-        tRoomZone.setEntryTime(radarRequest.getEntryTime());
-        tRoomZone.setDepartureTime(radarRequest.getDepartureTime());
+        tRoomZone.setEntryTime(radarRequest.getEntryTime()/1000);
+        tRoomZone.setDepartureTime(radarRequest.getDepartureTime()/1000);
         tRoomZone.setFallFlag(radarRequest.getFallFlag());
         tRoomZone.setX1(radarRequest.getX1());
         tRoomZone.setX2(radarRequest.getX2());
@@ -84,7 +88,6 @@ public class RoomZoneController extends BaseController {
         }
         return ajax;
     }
-
     /**
      * 删除雷达波设备
      * */

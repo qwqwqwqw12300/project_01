@@ -76,7 +76,13 @@ public interface IDeviceService
      * @return 结果
      */
     public int deleteDeviceByDeviceId(Long deviceId);
-
+    /**
+     * 删除设备信息 -保留设备记录
+     *
+     * @param deviceId 设备主键
+     * @return 结果
+     */
+    public int deleteAndSaveDevice(Long deviceId);
     /**
      * 分配设备给设备组
      * @param deviceIds
@@ -227,6 +233,6 @@ public interface IDeviceService
      * @param deviceNo
      * @return
      */
-    public List<ExtraVo> getRealLocationExtraByDeviceNo(String deviceNo);
+    public Map<Integer, ExtraVo>  getRealLocationExtraByDeviceNo(String deviceNo);
 
 }

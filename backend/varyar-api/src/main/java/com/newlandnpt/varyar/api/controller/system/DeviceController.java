@@ -5,6 +5,7 @@ import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceLocation;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceRoomParameter;
+import com.newlandnpt.varyar.common.core.domain.entity.nowLocation;
 import com.newlandnpt.varyar.common.core.domain.model.DevicePhoneRequest;
 import com.newlandnpt.varyar.common.core.domain.model.DeviceRequest;
 import com.newlandnpt.varyar.common.core.domain.vo.ExtraVo;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sound.midi.Track;
 import java.util.*;
 
 import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_SWITCH_KEY;
@@ -97,13 +99,7 @@ public class DeviceController extends BaseController {
             @RequestBody @Validated DeviceRequest deviceRequest){
         AjaxResult ajax = AjaxResult.success();
         ajax  = checkInfo(deviceRequest,ajax);
-        TDevice cond = new TDevice();
-        cond.setNo(deviceRequest.getDeviceNo());
-        cond.setDelFlag("0");
-        List<TDevice> devices = iDeviceService.selectDeviceList(cond);
-        if (devices.size()>0){
-            return error("此设备已存在！");
-        }
+
         if(ajax!= null){
            return ajax;
         }
@@ -124,7 +120,23 @@ public class DeviceController extends BaseController {
         device.setMemberId(getLoginUser().getMemberId());
         device.setCreateTime(DateUtils.getNowDate());
         try {
-            iDeviceService.insertDevice(device);
+            TDevice cond = new TDevice();
+            cond.setNo(deviceRequest.getDeviceNo());
+            cond.setDelFlag("0");
+            List<TDevice> devices = iDeviceService.selectDeviceList(cond);
+            if (devices.size()>0){
+                TDevice item = devices.get(0);
+                if (item.getMemberId()!=null && !item.getMemberId().toString().equals("")){
+                    return error("此设备已存在！");
+                }else{
+                    item.setMemberId(this.getLoginUser().getMemberId());
+                    item.setName(deviceRequest.getDeviceName());
+                    item.setLocation(deviceRequest.getLocation());
+                    iDeviceService.updateDevice(item);
+                }
+            }else{
+                iDeviceService.insertDevice(device);
+            }
         } catch (Exception e){
             return  error("新增我的设备失败！");
         }
@@ -180,7 +192,7 @@ public class DeviceController extends BaseController {
             return  error("非创建者无权限删除！");
         }
         try {
-            iDeviceService.deleteDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
+            iDeviceService.deleteAndSaveDevice(Long.valueOf(deviceRequest.getDeviceId()));
         } catch (Exception e){
             return  error("修改我的设备失败！");
         }
@@ -255,7 +267,18 @@ public class DeviceController extends BaseController {
         if (deviceRequest.getFamilyId()==null){
             return error("家庭id不能为空！");
         }
-
+        if (deviceRequest.getFlag()==null||deviceRequest.getFlag().equals("")){
+            return error("操作标识不能为空！");
+        }
+        if (deviceRequest.getFlag().equals("1")){
+            //一个房间只能绑定一个设备
+            TDevice cond = new TDevice();
+            cond.setFamilyId(Long.valueOf(deviceRequest.getRoomId()));
+            List<TDevice> devices = iDeviceService.selectDeviceList(cond);
+            if (devices.size()>0){
+                throw new ServiceException("此房间已绑定设备！");
+            }
+        }
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
         if (device==null){
             return error("无法查找到设备信息！");
@@ -268,12 +291,7 @@ public class DeviceController extends BaseController {
             if (deviceRequest.getRoomId()==null){
                 return error("房间id不能为空！");
             }
-            TDevice cond = new TDevice();
-            cond.setFamilyId(Long.valueOf(deviceRequest.getRoomId()));
-            List<TDevice> devices = iDeviceService.selectDeviceList(cond);
-            if (devices.size()>0){
-                throw new ServiceException("此房间已绑定设备！");
-            }
+
             //雷达波 判断设备位置信息
             AjaxResult item = checkDeviceLocation(deviceRequest);
             if (item!=null){
@@ -283,6 +301,7 @@ public class DeviceController extends BaseController {
             if (radarwave == null){
                 radarwave = new TDevice.RadarWaveDeviceSettings();
             }
+            //设备位置信息
             DeviceLocation location = new DeviceLocation();
             location.setRoomHeight(deviceRequest.getRoomHeight());
             location.setRoomLength(deviceRequest.getRoomLength());
@@ -290,6 +309,7 @@ public class DeviceController extends BaseController {
             location.setRoomRight(deviceRequest.getRoomRight());
             DeviceRoomParameter dr = new DeviceRoomParameter();
             radarwave.setDeviceLocation(location);
+            //设备参数设置
             dr.setInMonitorFlag(deviceRequest.getInMonitorFlag());
             dr.setOutMonitorFlag(deviceRequest.getOutMonitorFlag());
             dr.setExistFlag(deviceRequest.getExistFlag());
@@ -312,12 +332,14 @@ public class DeviceController extends BaseController {
             device.setRoomId(Long.valueOf("0"));
         }
         try {
+            //绑定雷达波设备
             if (device.getType().equals("0")){
                 int i = iDeviceService.setDevice(device);
                 if (i==0){
                     return error("绑定我的设备失败！");
                 }
-            }else {
+            }else //绑定监护设备
+                {
                 int i = iDeviceService.updateDevice(device);
                 if (i==0){
                     return error("绑定我的设备失败！");
@@ -335,6 +357,12 @@ public class DeviceController extends BaseController {
     @PostMapping("/relDevice")
     public AjaxResult relieveDevice(
             @RequestBody @Validated DeviceRequest deviceRequest) {
+        if (deviceRequest.getFlag()==null||deviceRequest.getFlag().equals("")){
+            return error("操作标识不能为空！");
+        }
+        if (!deviceRequest.getFlag().equals("3")){
+            return error("操作标识错误解绑设备失败！");
+        }
         if (deviceRequest.getDeviceId().equals("")|| deviceRequest.getDeviceId()==null){
             return error("设备id不能为空！");
         }
@@ -551,16 +579,45 @@ public class DeviceController extends BaseController {
             return error("非创建者无权获取设备信息！");
         }
         List<TrackerTargetVo> tvo = iDeviceService.getRealLocationMonitorByDeviceNo(tDevice.getNo());
-        List<ExtraVo> evo = iDeviceService.getRealLocationExtraByDeviceNo(tDevice.getNo());
-        Map<String,Object> map = new HashMap<String,Object>();
-        if(evo.size()>0){
-            map.put("tvo",evo);
-            map.put("extra","1");
-        }else {
-            map.put("tvo",tvo);
-            map.put("extra","0");
+        Map<Integer, ExtraVo> evo = iDeviceService.getRealLocationExtraByDeviceNo(tDevice.getNo());
+        List<nowLocation> locations = new ArrayList<nowLocation>();
+        if (tvo!=null&&tvo.size()>0){
+            for (TrackerTargetVo item:tvo){
+                nowLocation i = new nowLocation();
+                i.setId(item.getId());
+                i.setxPosCm(item.getxPosCm());
+                i.setyPosCm(item.getyPosCm());
+                i.setzPosCm(item.getzPosCm());
+                i.setState("0");
+                if (evo!=null && evo.size()>0){
+                    Collection<ExtraVo>  extraVos = evo.values();
+                    for (ExtraVo it :extraVos){
+                        if (i.getxPosCm().equals(String.valueOf(it.getxCm()))&&
+                                i.getyPosCm().equals(String.valueOf(it.getyCm()))&&
+                                i.getzPosCm().equals(String.valueOf(it.getzCm()))){
+                            i.setId(String.valueOf(it.getTargetId()));
+                            i.setxPosCm(String.valueOf(it.getxCm()));
+                            i.setyPosCm(String.valueOf(it.getyCm()));
+                            i.setzPosCm(String.valueOf(it.getzCm()));
+                            i.setState("1");
+                            locations.add(i);
+                        }else{
+                            nowLocation iNew = new nowLocation();
+                            iNew.setId(String.valueOf(it.getTargetId()));
+                            iNew.setxPosCm(String.valueOf(it.getxCm()));
+                            iNew.setyPosCm(String.valueOf(it.getyCm()));
+                            iNew.setzPosCm(String.valueOf(it.getzCm()));
+                            iNew.setState("1");
+                            locations.add(iNew);
+                            locations.add(i);
+                        }
+                    }
+                }else{
+                    locations.add(i);
+                }
+            }
         }
-        return success(map);
+        return success(locations);
     }
     private AjaxResult checkPhoneInfo(DevicePhone devicePhone ,AjaxResult ajax){
         if (devicePhone.getPhoneName().equals("")|| devicePhone.getPhoneName()==null){

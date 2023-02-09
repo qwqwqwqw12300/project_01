@@ -1,7 +1,69 @@
-<!-- <template>
-	<view class="content">
-		<view :prop="option" :change:prop="echarts.updateEcharts" id="echarts" class="echarts"></view>
+<template>
+	<view>
+		<monitor-echarts ref="echartsRef"></monitor-echarts>
+		<view class="ui-tip">
+			<view class="ui-item">
+				<view class="span1"></view>
+				<text>隐私区域</text>
+			</view>
+			<view class="ui-item">
+				<view class="span2"></view>
+				<text>监控区域</text>
+			</view>
+			<view class="ui-item">
+				<u-icon name="../../static/images/person.png" color="#fff" size="50rpx"></u-icon>
+				<text>人员</text>
+			</view>
+			<view class="ui-item">
+				<u-icon name="../../static/images/person-down.png" color="#fff" size="44rpx"></u-icon>
+				<text>跌倒</text>
+			</view>
+		</view>
+		<view class="ui-set">
+			<button @click="handleDetail">查看明细</button>
+			<button @click="handleSet">设置</button>
+		</view>
+		<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="show=false">
+			<view class="ui-popup">
+				<scroll-view scroll-y="true" @refresherrefresh="onRefresh" :refresher-triggered="triggered"
+					refresher-enabled style="height: 580px" class="ui-scroll">
+					<template v-if="messageList.length">
+						<template v-for="(item, index) of messageList">
+							<view class="ui-message active" @click="open(item.msgId)"
+								v-if="item.eventLevel !== 'urgent'" :key="index + 'list'">
+								<view class="ui-content-time">
+									<u-icon name="chat" color="#414141" size="40rpx"></u-icon>
+									<text>{{$u.timeFormat(item.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
+									<text class="ui-content-name">{{item.deviceName || '未命名设备'}}</text>
+								</view>
+								<text class="ui-content">{{item.content || '--'}}</text>
+							</view>
+							<!-- /sos事件 -->
+							<view class="ui-sos active" v-else @click="open(item.msgId)" :key="index + 'listSos'">
+								<view>
+									<view class="ui-content-time">
+										<u-icon name="arrow-right" color="#414141" size="40rpx"></u-icon>
+										<text>{{$u.timeFormat(item.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
+										<text class="ui-content-name">{{item.deviceName || '未命名设备'}}</text>
+									</view>
+									<text class="ui-content">{{item.content || '--'}}</text>
+								</view>
+								<view class="ui-sos-btn active" v-if="contactsList[0]"
+									@click="call(contactsList[0].phone)">
+									<u-text prefixIcon="phone" align="center" :block="false"
+										iconStyle="font-size: 40rpx" size="24rpx" text="紧急电话"></u-text>
+									<text>{{contactsList[0].phone}}</text>
+								</view>
+							</view>
+						</template>
+						<!-- /sos事件 -->
+					</template>
+					<u-empty v-else mode="list" text="暂无数据" marginTop="80rpx"></u-empty>
+				</scroll-view>
+			</view>
+		</u-popup>
 	</view>
+
 
 </template>
 
@@ -12,109 +74,16 @@
 	import {
 		GetStartDevice,
 		GetEndDevice,
-		GetNowInfo,
-		GetRoomZone,
+		getMessage,
 	} from '../../common/http/api';
 	export default {
 		data() {
 			return {
-				roomZoneList: [],
-				option: {
-					title: {
-						text: '实时监控',
-						left: "center",
-					},
-					xAxis: {
-						type: 'value',
-						min: -3,
-						max: 3,
-						interval: 0.5,
-						scale: true,
-						axisLine: {
-							lineStyle: {
-								color: '#ddd',
-							},
-						},
-						axisLabel: {
-							color: '#666',
-						},
-						splitLine: {
-							lineStyle: {
-								color: '#eee',
-							},
-						},
-					},
-					yAxis: {
-						type: "value",
-						position: 'left',
-						min: 0,
-						max: 6,
-						interval: 0.5,
-						scale: true,
-						axisLine: {
-							lineStyle: {
-								color: '#ddd',
-							},
-						},
-						axisLabel: {
-							color: '#666',
-						},
-						splitLine: {
-							lineStyle: {
-								color: '#eee',
-							},
-						},
-
-					},
-					series: [{
-							type: 'scatter',
-							name: '销量',
-							symbol(params) {
-								const urlObj = {
-									0: '../../static/images/person.png',
-									1: '../../static/images/person-down.png',
-								}
-								return `image://${urlObj[params[2]]}`
-
-							},
-							symbolSize: [30, 30],
-							// markPoint: {
-							// 	label: {
-							// 		show: true,
-							// 	},
-							// 	data: [{name: '某个坐标',
-							// 		coord: [100, 120]
-							// 	}],
-							// },
-							data: [
-								[1, 1, '0'],
-								[1, 2, '1'],
-								[2, 2, '0']
-							],
-							markArea: {
-								silent: true,
-								label: {
-									position: ['50%', '50%'],
-									align: 'center',
-									color: 'rgba(0,0,0,0.3)',
-									fontSize: 30
-								},
-								itemStyle: {
-									color: 'rgba(0,0,0,0.1)'
-								},
-								data: [
-
-								],
-							},
-						},
-						{
-							symbolSize: 20,
-							data: [-10, 0],
-							type: 'scatter',
-							symbol: 'image://../../static/images/echart-device.png'
-						}
-					]
-				}
+				show: false,
+				triggered: false,
+				messageList: [],
+				/**紧急联系人**/
+				contactsList: []
 			}
 		},
 		computed: {
@@ -122,117 +91,72 @@
 				deviceInfo: state => state.deviceInfo
 			})
 		},
-		async onLoad() {
+		onUnload() {
+			this.handleEnd()
+		},
+		onLoad() {
 			this.handleStart()
-			const data = await GetRoomZone({
-				deviceId: this.deviceInfo.deviceId
-			})
-			console.log(data.rows, 'ii')
-			this.roomZoneList = data.rows.map(n => {
-				const {
-					x1,
-					x2,
-					y1,
-					y2
-				} = n
-				return [{
-					name: n.name,
-					coord: [x2, y1],
-					itemStyle: {
-						color: 'rgba(0,255,0,0.2)'
-					},
-				}, {
-					coord: [x1, y2],
-				}, ]
-			})
-			this.option.series[0].markArea.data = this.roomZoneList
 		},
 		mounted() {
-			const timer = setInterval(() => {
-				this.handleQuery()
-			}, 4000);
-			this.$once('hook:beforeDestroy', () => {
-				clearInterval(timer);
-			})
+
 		},
 		methods: {
+			onRefresh() {
+
+			},
+			close() {
+
+			},
 			handleStart() {
 				GetStartDevice({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
-					this.handleQuery()
+					// this.handleQuery()
 				})
 			},
-			handleQuery() {
-				GetNowInfo({
+			handleEnd() {
+				GetEndDevice({
 					deviceId: this.deviceInfo.deviceId
-				}).then(res => {
-					this.option.series[0].data = [
-						[1, 1, '1'],
-						[1, 2, '1'],
-						[2, 2, '0']
-					]
-					console.log(res, '999')
 				})
 			},
-		}
-	}
-</script>
-<script module="echarts" lang="renderjs">
-	let myChart
-	export default {
-		mounted() {
-			if (typeof window.echarts === 'function') {
-				this.initEcharts()
-			} else {
-				// 动态引入较大类库避免影响页面展示
-				const script = document.createElement('script')
-				// view 层的页面运行在 www 根目录，其相对路径相对于 www 计算
-				script.src = 'static/echarts.js'
-				script.onload = this.initEcharts.bind(this)
-				document.head.appendChild(script)
-			}
-		},
-		methods: {
-			initEcharts() {
-				myChart = echarts.init(document.getElementById('echarts'))
-				// 观测更新的数据在 view 层可以直接访问到
-				myChart.setOption(this.option)
+			getMessage() {
+				return new Promise(resolve => {
+					const {
+						type,
+						familyId,
+						deviceId
+					} = this.deviceInfo;
+					getMessage({
+						deviceType: type,
+						familyId,
+						deviceId,
+						readFlag: this.navActive,
+						eventlevel: ''
+					}).then(res => {
+						this.messageList = res.rows || [];
+						resolve(this.messageList);
+					})
+				});
 			},
-			updateEcharts(newValue, oldValue, ownerInstance, instance) {
-				// 监听 service 层数据变更
-				myChart.setOption(newValue)
+			handleDetail() {
+				console.log(943785778)
+				this.getMessage()
+				this.show = true
 			},
-			onClick(event, ownerInstance) {
-				// 调用 service 层的方法
-				ownerInstance.callMethod('onViewClick', {
-					test: 'test'
-				})
+			handleSet() {
+
 			}
 		}
 	}
 </script>
 
-<style>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.echarts {
-		margin-top: 30px;
-		width: 100%;
-		height: 400px;
-	}
-
+<style lang="scss">
 	.ui-tip {
 		display: flex;
 		align-items: center;
-		justify-content: space-around;
+		justify-content: space-between;
 		padding: 0rpx 70rpx;
-		margin-top: 20rpx;
+		margin-top: -30rpx;
 	}
 
 	.ui-item {
@@ -240,23 +164,96 @@
 		flex-direction: row;
 		align-items: center;
 
-		text {
-			font-size: 24rpx;
-		}
-
-		.span {
-			width: 50rpx;
-			height: 50rpx;
-			background-color: gray;
+		.span1 {
+			width: 60rpx;
+			height: 40rpx;
+			border-radius: 10rpx;
+			border: 1px solid gray;
+			background-color: #ffffff;
 			margin-right: 10rpx;
 		}
 
-		.span1 {
-			width: 50rpx;
-			height: 50rpx;
-			background-color: #008fff;
+		.span2 {
+			width: 60rpx;
+			height: 40rpx;
+			border-radius: 10rpx;
+			border: 1px solid gray;
+			background-color: #CCFFCC;
 			margin-right: 14rpx;
+		}
+
+		text {
+			font-size: 24rpx;
+		}
+	}
+
+
+	.ui-set {
+		display: flex;
+		margin-top: 50rpx;
+
+		button {
+			padding-left: 100rpx;
+			padding-right: 100rpx;
+			font-size: 28rpx;
+			border-radius: 8px !important;
+		}
+	}
+
+	.ui-popup {
+		box-sizing: border-box;
+		width: calc(100vw - 50rpx);
+		border-radius: 20rpx;
+		padding: 20rpx 20rpx;
+		padding-top: 40rpx;
+		height: 630px;
+	}
+
+	.ui-scroll {
+		margin-top: 20rpx;
+		//height: calc(100vh - (var(--window-bottom) + 610rpx + 120rpx + var(--status-bar-height)));
+
+		.ui-message,
+		.ui-sos {
+			margin-top: 20rpx;
+			border-radius: 10rpx;
+			font-size: 28rpx;
+			filter: drop-shadow(7.824rpx 10.382rpx 8rpx rgba(7, 5, 5, 0.08));
+			background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
+			color: #414141;
+			display: flex;
+			// align-items: center;
+			flex-direction: column;
+			min-height: 80rpx;
+			padding: 20rpx 32rpx;
+
+			.ui-content-time {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+			}
+
+			.ui-content-name {
+				margin-left: 20rpx;
+			}
+
+			.ui-content {
+				color: #777;
+				margin: 15rpx 15rpx 0 38rpx;
+				font-size: 30rpx;
+				// width: 100%;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+		}
+
+		.ui-message {
+			color: #414141;
+			display: flex;
+			// align-items: center;
+			flex-direction: column;
+
 		}
 	}
 </style>
- -->

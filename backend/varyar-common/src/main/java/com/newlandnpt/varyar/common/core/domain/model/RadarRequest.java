@@ -74,6 +74,20 @@ public class RadarRequest {
     @NotNull(message = "最顶部的点不能为空")
     private BigDecimal z2;
     /**
+     * 0:普通区域  1：屏蔽区域  2：床
+     * */
+    @Size(min = 0, max = 1, message = "子区域类型不能超过1个字符")
+    private String zoneType;
+
+    public String getZoneType() {
+        return zoneType;
+    }
+
+    public void setZoneType(String zoneType) {
+        this.zoneType = zoneType;
+    }
+
+    /**
      *进入时间   data HH:mm:ss
      * */
     private Long entryTime;
