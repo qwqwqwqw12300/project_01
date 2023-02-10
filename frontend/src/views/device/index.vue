@@ -219,7 +219,7 @@
 </template>
 
 <script>
-import {orgTreeSelect} from "@/api/system/user";
+import {getUserProfile, orgTreeSelect} from "@/api/system/user";
 import {pageDevice, associateDevice, groupArrange, active, offline, loadSettings, setSettings} from "@/api/device/device";
 import {pageDeviceGroup} from "@/api/org/deviceGroup"
 import Treeselect from "@riophae/vue-treeselect";
@@ -241,6 +241,7 @@ export default {
       orgOptions: [],
       total: 0,
       deviceList: [],
+      orgType:"1",
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -251,35 +252,6 @@ export default {
         distributeFlag: undefined,
         status: undefined
       },
-      columns: [
-        {key: 0, label: `设备名称`, prop: `name`, visible: true},
-        {key: 1, label: `设备编号`, prop: `no`, visible: true},
-        {key: 2, label: `位置`, prop: `location`, visible: true},
-        {key: 3, label: `设备分组`, prop: `deviceGroupName`, visible: true},
-        {
-          key: 4,
-          label: `是否已分配`,
-          prop: `distributeFlag`,
-          visible: true,
-          formatter: (row, column, cellValue) => this.distributeFlagDict.find(x => cellValue == x.value)?.label
-        },
-        {key: 5, label: `设备配网时间`, prop: `registerTime`, visible: true},
-        {
-          key: 6,
-          label: `设备类型`,
-          prop: `type`,
-          visible: true,
-          formatter: (row, column, cellValue) => this.dict.type.device_type.find(x => cellValue == x.value)?.label
-        },
-        {
-          key: 7,
-          label: `设备状态`,
-          prop: `status`,
-          visible: true,
-          formatter: (row, column, cellValue) => this.dict.type.sys_device_status.find(x => cellValue == x.value)?.label
-        },
-        {key: 8, label: `机构名称`, prop: `orgName`, visible: true},
-      ],
       /** 设备配对相关 */
       associateOpen: false,
       associateRules: {
@@ -320,7 +292,49 @@ export default {
       offlineDialogOpen:false
     }
   },
-  created() {
+  computed:{
+    columns(){
+      return [
+        {key: 0, label: `设备名称`, prop: `name`, visible: true},
+        {key: 1, label: `设备编号`, prop: `no`, visible: true},
+        {key: 2, label: `位置`, prop: `location`, visible: true},
+        {key: 3, label: `设备分组`, prop: `deviceGroupName`, visible: this.deviceGroupNameVisible},
+        {
+          key: 4,
+          label: `是否已分配`,
+          prop: `distributeFlag`,
+          visible: true,
+          formatter: (row, column, cellValue) => this.distributeFlagDict.find(x => cellValue == x.value)?.label
+        },
+        {key: 5, label: `设备配网时间`, prop: `registerTime`, visible: true},
+        {
+          key: 6,
+          label: `设备类型`,
+          prop: `type`,
+          visible: true,
+          formatter: (row, column, cellValue) => this.dict.type.device_type.find(x => cellValue == x.value)?.label
+        },
+        {
+          key: 7,
+          label: `设备状态`,
+          prop: `status`,
+          visible: true,
+          formatter: (row, column, cellValue) => this.dict.type.sys_device_status.find(x => cellValue == x.value)?.label
+        },
+        {key: 8, label: `机构名称`, prop: `orgName`, visible: true},
+        {key: 9, label: `所属会员`, prop: `memberPhone`, visible: this.memberPhoneVisible},
+      ]
+    },
+    memberPhoneVisible(){
+      return this.orgType == "1"
+    },
+    deviceGroupNameVisible(){
+      return this.orgType != "1"
+    }
+  },
+  async created() {
+    const {data:userProfile} = await getUserProfile();
+    this.orgType = userProfile.org.type;
     this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
     this.currentStatus = this.$route.query.status==undefined?undefined:this.$route.query.status
     this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)

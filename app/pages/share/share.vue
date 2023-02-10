@@ -21,10 +21,11 @@
 					</u-text>
 					<view class="ui-input">
 						<u-input length="11" type="number" v-model="shareForm.phone" placeholder="请输入手机号码"
-							:border="'none'" fontSize="28rpx" clearable>
+							:border="'none'" fontSize="28rpx"  clearable>
 							<template slot="suffix">
-								<u-button @tap="getContact" text="通讯录" size="mini" class="wd-sms ui-cont"
-									border="surround" style="width: 150rpx;height: 60rpx;;"></u-button>
+								<u-icon name="/static/images/phone-book.png" size="24"></u-icon>
+					<!-- 			<u-button @tap="getContact" text="通讯录" size="mini" class="wd-sms ui-cont"
+									border="surround" style="width: 150rpx;height: 60rpx;;"></u-button> -->
 							</template>
 						</u-input>
 					</view>

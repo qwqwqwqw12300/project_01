@@ -9,7 +9,7 @@
 			</view>
 			<view class="ui-item">
 				<view class="span2"></view>
-				<text>隐私区域</text>
+				<text>子区域</text>
 			</view>
 			<view class="ui-item">
 				<u-icon name="../../static/images/person.png" color="#fff" size="50rpx"></u-icon>
@@ -149,7 +149,7 @@
 
 			},
 			handleBack() {
-
+				uni.navigateBack()
 			}
 		}
 	}
@@ -183,7 +183,7 @@
 			height: 40rpx;
 			border-radius: 10rpx;
 			border: 1px solid gray;
-			background-color: rgba(215,215,215,0.7);
+			background-color: rgba(215, 215, 215, 0.7);
 			margin-right: 14rpx;
 		}
 
@@ -198,10 +198,10 @@
 		margin-top: 200rpx;
 
 		button {
-			padding-left: 200rpx;
-			padding-right: 200rpx;
-			font-size: 28rpx;
-			border-radius: 8px !important;
+			padding-left: 250rpx;
+			padding-right: 250rpx;
+			font-size: 32rpx;
+			border-radius: 35rpx !important;
 		}
 	}
 
