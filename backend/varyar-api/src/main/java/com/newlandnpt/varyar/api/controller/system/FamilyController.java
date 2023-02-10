@@ -77,17 +77,16 @@ public class FamilyController extends BaseController {
     @PostMapping("/creFamily")
     public AjaxResult createFamily(
             @RequestBody @Validated FamilyRequest familyRequest){
-        AjaxResult ajax = AjaxResult.success();
-        if (familyRequest.getFamilyName().equals("")|| familyRequest.getFamilyName()==null){
+        if (familyRequest.getFamilyName()==null||familyRequest.getFamilyName().equals("")){
             return error("家庭名称不能为空！");
         }
         //获取但当前登录会员id
         Long memberId = getLoginUser().getMemberId();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String familyNo = "F"+sdf.format(new Date());
+        TFamily tFamily = new TFamily();
         try {
             //添加 家庭信息
-            TFamily tFamily = new TFamily();
             tFamily.setNo(familyNo);
             tFamily.setName(familyRequest.getFamilyName());
             tFamily.setAddress(familyRequest.getAddress());
@@ -95,11 +94,10 @@ public class FamilyController extends BaseController {
             tFamily.setShareFlag("2");
             tFamily.setCreateById(String.valueOf(memberId));
             tFamilyService.insertTFamily(tFamily,memberId);
-            ajax = AjaxResult.success(tFamily);
         } catch (Exception e){
             return error("新增我的家庭失败！");
         }
-        return ajax;
+        return AjaxResult.success(tFamily);
     }
     /*
     * 修改我的家庭
@@ -108,7 +106,7 @@ public class FamilyController extends BaseController {
     public AjaxResult editFamily(
             @RequestBody @Validated FamilyRequest familyRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (familyRequest.getFamilyId().equals("")|| familyRequest.getFamilyId()==null){
+        if (familyRequest.getFamilyId()==null||familyRequest.getFamilyId().equals("")){
             return error("家庭Id不能为空！");
         }
         //查询我的家庭（需要修改的）
@@ -135,7 +133,7 @@ public class FamilyController extends BaseController {
     public AjaxResult removeFamily(
             @RequestBody @Validated FamilyRequest familyRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (familyRequest.getFamilyId().equals("")|| familyRequest.getFamilyId()==null){
+        if (familyRequest.getFamilyId()==null||familyRequest.getFamilyId().equals("")){
             return error("家庭Id不能为空！");
         }
         //查询我的家庭（需要修改的）
@@ -212,10 +210,10 @@ public class FamilyController extends BaseController {
     public AjaxResult removeshareFamily(
             @RequestBody @Validated FamilyRequest familyRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (familyRequest.getShareFamilyId().equals("")|| familyRequest.getShareFamilyId()==null){
+        if (familyRequest.getShareFamilyId()==null || familyRequest.getShareFamilyId().equals("")){
             return error("共享家庭Id不能为空！");
         }
-        if (familyRequest.getShareMemberId().equals("")|| familyRequest.getShareMemberId()==null){
+        if (familyRequest.getShareMemberId()==null || familyRequest.getShareMemberId().equals("")){
             return error("共享会员Id不能为空！");
         }
         //查询我的家庭（需要修改的）
@@ -252,7 +250,7 @@ public class FamilyController extends BaseController {
     @PostMapping("/sharelist")
     public AjaxResult shareList(@RequestBody @Validated FamilyRequest familyRequest) {
         AjaxResult ajax = AjaxResult.success();
-        if (familyRequest.getFamilyId().equals("")|| familyRequest.getFamilyId()==null){
+        if (familyRequest.getFamilyId()==null||familyRequest.getFamilyId().equals("")){
             return error("家庭Id不能为空！");
         }
         Long memberId = getLoginUser().getMemberId();

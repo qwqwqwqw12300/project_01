@@ -100,7 +100,7 @@ public class MessageController extends BaseController {
     @PostMapping("/setMsgInfo")
     public AjaxResult setMessageInfo(@RequestBody @Validated MessageRequest messageRequest) {
         AjaxResult ajax = AjaxResult.success();
-        if (messageRequest.getMsgFlag().equals("")||messageRequest.getMsgFlag()==null){
+        if (messageRequest.getMsgFlag()==null || messageRequest.getMsgFlag().equals("")){
             error("消息标识不能为空！");
         }
         TMsg msg = itMsgService.selectTMsgByMsgId(Long.valueOf(messageRequest.getMsgId()));

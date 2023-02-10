@@ -105,7 +105,7 @@ public class DeviceController extends BaseController {
         }
         ajax = AjaxResult.success();
         TDevice device = new TDevice();
-        if (deviceRequest.getDeviceName().equals("")|| deviceRequest.getDeviceName()==null){
+        if (deviceRequest.getDeviceName()==null||deviceRequest.getDeviceName().equals("")){
             deviceRequest.setDeviceId(this.getUsername()+"的设备");
         }
         device.setName(deviceRequest.getDeviceName());
@@ -149,10 +149,10 @@ public class DeviceController extends BaseController {
     public AjaxResult editDevice(
             @RequestBody @Validated DeviceRequest deviceRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (deviceRequest.getDeviceId().equals("")|| deviceRequest.getDeviceId()==null){
+        if (deviceRequest.getDeviceId()==null||deviceRequest.getDeviceId().equals("")){
             return  error("设备id不能为空！");
         }
-        if (deviceRequest.getDeviceName().equals("")|| deviceRequest.getDeviceName()==null){
+        if (deviceRequest.getDeviceName()==null||deviceRequest.getDeviceName().equals("")){
             return error("设备名称不能为空！");
         }
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
@@ -181,7 +181,7 @@ public class DeviceController extends BaseController {
     public AjaxResult removeDevice(
             @RequestBody @Validated DeviceRequest deviceRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (deviceRequest.getDeviceId().equals("")|| deviceRequest.getDeviceId()==null){
+        if (deviceRequest.getDeviceId()==null || deviceRequest.getDeviceId().equals("")){
             return  error("设备id不能为空！");
         }
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
@@ -200,15 +200,15 @@ public class DeviceController extends BaseController {
     }
 
     private AjaxResult checkInfo(DeviceRequest deviceRequest,AjaxResult ajax){
-        if (deviceRequest.getDeviceName().equals("")|| deviceRequest.getDeviceName()==null){
+        if (deviceRequest.getDeviceName()==null||deviceRequest.getDeviceName().equals("")){
             ajax = AjaxResult.error("设备名称不能为空！");
             return ajax;
         }
-        if (deviceRequest.getDeviceType().equals("")|| deviceRequest.getDeviceType()==null){
+        if (deviceRequest.getDeviceType()==null||deviceRequest.getDeviceType().equals("")){
             ajax = AjaxResult.error("设备类型不能为空！");
             return ajax;
         }
-        if (deviceRequest.getDeviceNo().equals("")|| deviceRequest.getDeviceNo()==null){
+        if (deviceRequest.getDeviceNo()==null||deviceRequest.getDeviceNo().equals("")){
             ajax = AjaxResult.error("设备编号不能为空！");
             return ajax;
         }
@@ -261,7 +261,7 @@ public class DeviceController extends BaseController {
     @PostMapping("/setDevice")
     public AjaxResult setDevice(
             @RequestBody @Validated DeviceRequest deviceRequest) {
-        if (deviceRequest.getDeviceId().equals("")|| deviceRequest.getDeviceId()==null){
+        if (deviceRequest.getDeviceId()==null||deviceRequest.getDeviceId().equals("")){
             return error("设备id不能为空！");
         }
         if (deviceRequest.getFamilyId()==null){
@@ -363,7 +363,7 @@ public class DeviceController extends BaseController {
         if (!deviceRequest.getFlag().equals("3")){
             return error("操作标识错误解绑设备失败！");
         }
-        if (deviceRequest.getDeviceId().equals("")|| deviceRequest.getDeviceId()==null){
+        if (deviceRequest.getDeviceId()==null||deviceRequest.getDeviceId().equals("")){
             return error("设备id不能为空！");
         }
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceRequest.getDeviceId()));
@@ -620,7 +620,7 @@ public class DeviceController extends BaseController {
         return success(locations);
     }
     private AjaxResult checkPhoneInfo(DevicePhone devicePhone ,AjaxResult ajax){
-        if (devicePhone.getPhoneName().equals("")|| devicePhone.getPhoneName()==null){
+        if (devicePhone.getPhoneName()==null||devicePhone.getPhoneName().equals("")){
             ajax = AjaxResult.error("联系人名称不能为空！");
             return ajax;
         }
@@ -629,7 +629,7 @@ public class DeviceController extends BaseController {
             return ajax;
 
         }
-        if (devicePhone.getPhone().equals("")|| devicePhone.getPhone()==null){
+        if (devicePhone.getPhone()==null||devicePhone.getPhone().equals("")){
             ajax = AjaxResult.error("联系人电话不能为空！");
             return ajax;
         }

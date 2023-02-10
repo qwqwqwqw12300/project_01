@@ -64,27 +64,27 @@ public class DeviceFenceController extends BaseController
     public AjaxResult add( @RequestBody @Validated TDeviceFence tDeviceFence)
     {
         AjaxResult ajax = AjaxResult.success();
-        if(tDeviceFence.getDeviceId().equals("")||tDeviceFence.getDeviceId()==null){
+        if(tDeviceFence.getDeviceId()==null||tDeviceFence.getDeviceId().equals("")){
             ajax = ajax.error("设备Id不能为空！");
             return ajax;
         }
-        if(tDeviceFence.getDeviceNo().equals("")||tDeviceFence.getDeviceNo()==null){
+        if(tDeviceFence.getDeviceNo()==null||tDeviceFence.getDeviceNo().equals("")){
             ajax = ajax.error("设备编号不能为空！");
             return ajax;
         }
-        if(tDeviceFence.getAddress().equals("")||tDeviceFence.getAddress()==null){
+        if(tDeviceFence.getAddress()==null||tDeviceFence.getAddress().equals("")){
             ajax = ajax.error("地址信息不能为空！");
             return ajax;
         }
-        if(tDeviceFence.getLatitude().equals("")||tDeviceFence.getLatitude()==null){
+        if(tDeviceFence.getLatitude()==null||tDeviceFence.getLatitude().equals("")){
             ajax = ajax.error("纬度信息不能为空！");
             return ajax;
         }
-        if(tDeviceFence.getLongitude().equals("")||tDeviceFence.getLongitude()==null){
+        if(tDeviceFence.getLongitude()==null||tDeviceFence.getLongitude().equals("")){
             ajax = ajax.error("经度信息不能为空！");
             return ajax;
         }
-        if(tDeviceFence.getRadius().equals("")||tDeviceFence.getRadius()==null){
+        if(tDeviceFence.getRadius()==null||tDeviceFence.getRadius().equals("")){
             ajax = ajax.error("半径不能为空！");
             return ajax;
         }
@@ -116,7 +116,7 @@ public class DeviceFenceController extends BaseController
      */
     public AjaxResult edit( @RequestBody @Validated TDeviceFence tDeviceFence){
         AjaxResult ajax = AjaxResult.success();
-        if(tDeviceFence.getDeviceId().equals("")||tDeviceFence.getDeviceId()==null){
+        if(tDeviceFence.getDeviceId()==null||tDeviceFence.getDeviceId().equals("")){
             ajax = ajax.error("设备Id不能为空！");
             return ajax;
         }
@@ -150,7 +150,7 @@ public class DeviceFenceController extends BaseController
     @DeleteMapping("/rem")
     public AjaxResult remove( @RequestBody @Validated TDeviceFence tDeviceFence){
         AjaxResult ajax = AjaxResult.success();
-        if(tDeviceFence.getDeviceId().equals("")||tDeviceFence.getDeviceId()==null){
+        if(tDeviceFence.getDeviceId()==null||tDeviceFence.getDeviceId().equals("")){
             ajax = ajax.error("设备Id不能为空！");
             return ajax;
         }
