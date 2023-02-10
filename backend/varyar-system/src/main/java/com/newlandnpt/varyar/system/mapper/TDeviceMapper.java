@@ -60,7 +60,13 @@ public interface TDeviceMapper
      * @return 结果
      */
     public int updateTDevice(TDevice device);
-
+    /**
+     * 解绑设备
+     *
+     * @param device 设备
+     * @return 结果
+     */
+    public int  relievTDevice(TDevice device);
     /**
      * 删除设备
      * 
