@@ -221,6 +221,20 @@ export const versionCompare = (curV, reqV) => {
 export const getHoursTime = (date) => {
 	return date && new Date('1970-1-1 ' + date + ':00').getTime();
 }
+
+/**
+ * hh:MM 获取分钟 eg： 01:00 => 60
+ */
+export const getMinute = (date) => {
+	return date && new Date('1970-1-1 ' + date + ':00').getHours();
+}
+
+
+/**
+ * 使用分钟计算时间戳 eg 1 -> 60000
+ */
+export const minuteToTime = (min) => min && min * 60 * 1000;
+
 /**
  * 手机号校验 1开头 11位
  */

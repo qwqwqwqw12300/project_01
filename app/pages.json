@@ -334,8 +334,10 @@
 		}, {
 			"path": "pages/equipment/radar-setting",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
 			}
 
 		}

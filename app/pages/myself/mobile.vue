@@ -33,7 +33,7 @@
 					</u-input>
 				</view>
 			</view>
-			<view class="wd-btn-gloup">
+			<view class="wd-btn-group">
 				<button type="default" @click="handleSubmit">重置</button>
 				<button type="default" @click="handleBack">取消</button>
 			</view>
@@ -166,7 +166,7 @@
 			// height: 60rpx;
 		}
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			margin: 80rpx 0;
 
 			button {

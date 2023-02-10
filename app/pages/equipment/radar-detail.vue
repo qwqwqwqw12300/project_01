@@ -24,7 +24,7 @@
 			</view>
 			<view class="ui-icon">
 				<u-icon name="../../static/images/monitor.png" @click="goView" size="28" color="#FF7E00" class="ui-detail-map" />
-				<u-icon name="setting-fill" @click="goSet" size="30" color="#FF7E00" class="ui-detail-map" />
+				<!-- <u-icon name="setting-fill" @click="goSet" size="30" color="#FF7E00" class="ui-detail-map" /> -->
 			</view>
 
 		</view>
@@ -138,7 +138,6 @@
 			// width: 200rpx;
 			display: flex;
 			flex-direction: row;
-
 			// .ui-detail-map {
 			// 	position: absolute;
 			// 	right: 40rpx;
@@ -200,7 +199,7 @@
 			bottom: 20rpx;
 
 			&:nth-child(1) {
-				right: 100rpx;
+				right: 50rpx;
 			}
 		}
 	}

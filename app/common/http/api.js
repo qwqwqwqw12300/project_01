@@ -312,4 +312,6 @@ export const GetEndDevice = (params) => http.get('/api/device/endNowInfo', param
 /**
  * 获取设备位置(实时)
  */
-export const GetNowInfo = (params) => http.get('/api/device/getNowInfo', params);
+export const GetNowInfo = (params) => http.get('/api/device/getNowInfo', params, {
+	showLoading: false
+});

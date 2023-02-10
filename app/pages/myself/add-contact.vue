@@ -152,7 +152,7 @@
 			// height: 60rpx;
 		}
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			margin: 120rpx 0;
 		}
 

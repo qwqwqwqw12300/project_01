@@ -68,7 +68,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="wd-btn-gloup">
+				<view class="wd-btn-group">
 					<button @click="handelSubmit">提交</button>
 					<button @click="handleClose">取消</button>
 				</view>
@@ -337,7 +337,7 @@
 				// height: 60rpx;
 			}
 
-			.wd-btn-gloup {
+			.wd-btn-group {
 				margin: 120rpx 0;
 			}
 
@@ -352,7 +352,7 @@
 			}
 		}
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			text-align: center;
 			// margin-top: 70rpx;
 

@@ -12,7 +12,7 @@
 			<view class="ui-form-item">
 				<graphic-input ref="codeRef"></graphic-input>
 			</view>
-			<view class="wd-btn-gloup"><button class="ui-button" @click="submit">提交</button></view>
+			<view class="wd-btn-group"><button class="ui-button" @click="submit">提交</button></view>
 		</view>
 	</app-body>
 </template>
@@ -74,7 +74,7 @@
 		}
 	}
 
-	.wd-btn-gloup {
+	.wd-btn-group {
 		margin: 120rpx 0;
 
 		.ui-button {

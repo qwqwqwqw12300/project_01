@@ -14,12 +14,12 @@
 					<view class="ui-title">{{device.name}}</view>
 					<u-grid col="2">
 						<u-grid-item v-for="(item, index) in device.list" :key="index">
-							<view class="ui-menu-item" :border="false">
+							<view class="ui-menu-item active" :border="false" @click="edit(item)">
 								<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }"
 									name="/static/images/myself/device.png" size="80rpx"></u-icon>
 								<!-- <text class="grid-text">{{ baseListItem.title }}</text> -->
-								<u-text class="grid-text" @click="edit(item)" suffixIcon="edit-pen-fill"
-									iconStyle="font-size: 36rpx" align="center" :text="item.name || '未命名'"></u-text>
+								<u-text class="grid-text" suffixIcon="edit-pen-fill" iconStyle="font-size: 36rpx"
+									align="center" :text="item.name || '未命名'"></u-text>
 
 								<u-icon @click.native.stop="onDelete(item.deviceId)" class="ui-close active"
 									name="close-circle-fill" size="40rpx">
@@ -63,7 +63,7 @@
 							</uni-data-select>
 						</view>
 					</view>
-					<view class="wd-btn-gloup"><button @click="bindSubmit">确定</button></view>
+					<view class="wd-btn-group"><button @click="bindSubmit">确定</button></view>
 				</view>
 			</u-popup>
 			<!-- /绑定房间 -->
@@ -135,7 +135,7 @@
 				// list: state => state.devicesList,
 				/**家庭列表**/
 				famliyList: state => {
-					return state.familyList.filter(n=> n.shareFlag === '2').map(ele => ({
+					return state.familyList.filter(n => n.shareFlag === '2').map(ele => ({
 						text: ele.name,
 						value: ele.familyId
 					}));
@@ -162,7 +162,7 @@
 			}),
 			/**房间列表**/
 			rangRoomList() {
-				return this.roomList.map((ele => ({
+				return this.roomList.filter(ele => !ele.devices || !ele.devices.length).map((ele => ({
 					text: ele.name,
 					value: ele.roomId
 				})))
@@ -200,6 +200,7 @@
 					no,
 					familyId,
 					roomId,
+					location,
 					parameter: {
 						deviceLocation = {},
 						deviceRoomParameter = {}
@@ -213,10 +214,15 @@
 					deviceNo: no,
 					familyId,
 					roomId,
+					location,
 					...deviceLocation,
-					...deviceRoomParameter
+					...deviceRoomParameter,
+					source: item
 				});
-				console.log(this.editFrom, 'this.editFrom');
+				// this.$setCache('setDevice', this.editFrom);
+				// uni.navigateTo({
+				// 	url: '/pages/equipment/radar-setting'
+				// })
 				this.$refs.editRef.open(this.editFrom);
 			},
 
@@ -536,7 +542,7 @@
 			}
 		}
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			text-align: center;
 			margin-top: 70rpx;
 

@@ -53,7 +53,7 @@
 						</u-radio>
 					</u-radio-group>
 				</view>
-				<view class="wd-btn-gloup">
+				<view class="wd-btn-group">
 					<button @click="onSubmit">提交</button>
 					<!-- 		<button @click="onDelete">删除</button> -->
 				</view>
@@ -323,7 +323,7 @@
 			margin-left: 25rpx;
 		}
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			text-align: center;
 			margin-top: 70rpx;
 
