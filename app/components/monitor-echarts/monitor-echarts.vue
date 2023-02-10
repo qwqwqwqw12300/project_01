@@ -19,10 +19,10 @@
 			return {
 				roomZoneList: [],
 				option: {
-					title: {
-						text: '实时监控',
-						left: "center",
-					},
+					// title: {
+					// 	text: '实时监控',
+					// 	left: "center",
+					// },
 					xAxis: {
 						type: 'value',
 						min: -3,
@@ -42,6 +42,7 @@
 								color: '#eee',
 							},
 						},
+
 					},
 					yAxis: {
 						type: "value",
@@ -126,7 +127,10 @@
 				const data = await GetRoomZone({
 					deviceId: this.deviceInfo.deviceId
 				})
-				const { roomLeft,roomRight } = this.deviceInfo.parameter.deviceLocation
+				const {
+					roomLeft,
+					roomRight
+				} = this.deviceInfo.parameter.deviceLocation
 				this.option.xAxis.min = -roomLeft || -3
 				this.option.xAxis.max = roomRight || 3
 				this.roomZoneList = data.rows.map(n => {
@@ -140,7 +144,7 @@
 						name: n.name,
 						coord: [x2, y1],
 						itemStyle: {
-							color: 'rgba(0,255,0,0.2)'
+							color: 'rgba(215,215,215,0.7)'
 						},
 					}, {
 						coord: [x1, y2],
@@ -235,11 +239,16 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		padding: 0 50rpx;
+		box-sizing: border-box;
+		margin-top: 30px;
+		// background-color: #fff;
 	}
 
 	.echarts {
-		margin-top: 30px;
+		// margin-top: 30px;
 		width: 100%;
-		height: 395px;
+		height: 365px;
+		background-color: #fff;
 	}
 </style>
