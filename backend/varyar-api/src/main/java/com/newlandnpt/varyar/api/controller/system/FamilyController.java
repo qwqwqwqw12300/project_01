@@ -4,6 +4,7 @@ import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.model.FamilyRequest;
+import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
 import com.newlandnpt.varyar.common.core.domain.model.ShareFamilyRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
@@ -181,12 +182,27 @@ public class FamilyController extends BaseController {
         if(!tFamily.getCreateById().equals(String.valueOf(this.getLoginUser().getMemberId()))){
             return error("非创建者无权分享！");
         }
-        TMemberFamily item = new TMemberFamily();
-        item.setPhone(shareFamilyRequest.getPhone());
-        List<TMemberFamily> tMemberFamilys = iMemberFamilyService.selectTMemberFamilyList(item);
-        if(tMemberFamilys.size()>0){
-            return error("已分享给该用户！");
+        //查询是否注册用户
+        LoginUser loginUser = this.getLoginUser();
+        TMember tMemberQuery = iMemberService.selectMemberByPhone(shareFamilyRequest.getPhone());
+        if (tMemberQuery!=null){
+            TMemberFamily item = new TMemberFamily();
+            item.setMemberId(loginUser.getMemberId());
+            item.setCreateMemberId(this.getLoginUser().getMemberId());
+            List<TMemberFamily> tMemberFamilys = iMemberFamilyService.selectTMemberFamilyList(item);
+            if(tMemberFamilys.size()>0){
+                return error("当前家庭"+loginUser.getMemberPhone()+"的家已分享给会员"+tMemberQuery.getPhone()+"！");
+            }
+        }else{
+            TMemberFamily item = new TMemberFamily();
+            item.setPhone(shareFamilyRequest.getPhone());
+            item.setCreateMemberId(loginUser.getMemberId());
+            List<TMemberFamily> tMemberFamilys = iMemberFamilyService.selectTMemberFamilyList(item);
+            if(tMemberFamilys.size()>0){
+                return error("当前家庭"+loginUser.getMemberPhone()+"的家已分享给会员"+shareFamilyRequest.getPhone()+"，请通知"+shareFamilyRequest.getPhone()+"尽快注册登录!");
+            }
         }
+
         //用手机号查询是否有此用户
         TMember member = iMemberService.selectMemberByPhone(shareFamilyRequest.getPhone());
         TMemberFamily tMemberFamily = new TMemberFamily();
