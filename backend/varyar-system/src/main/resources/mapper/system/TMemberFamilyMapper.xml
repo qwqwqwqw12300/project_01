@@ -66,6 +66,14 @@
     <include refid="selectTMemberFamilyVo"/>
     where member_id = #{memberId}
     </select>
+    <select id="selectTMemberFamilyByshare" parameterType="Long" resultMap="TMemberFamilyResult">
+        <include refid="selectTMemberFamilyVo"/>
+        where member_id = #{memberId} and del_flag='0' and share_flag='0'
+    </select>
+    <select id="selectTMemberFamilyByCreMember" parameterType="Long" resultMap="TMemberFamilyResult">
+        <include refid="selectTMemberFamilyVo"/>
+        where create_member_id = #{memberId}  and del_flag='0' and share_flag='2'
+    </select>
     <insert id="insertTMemberFamily" parameterType="TMemberFamily" useGeneratedKeys="true" keyProperty="memberFamilyId">
         insert into t_member_family
         <trim prefix="(" suffix=")" suffixOverrides=",">

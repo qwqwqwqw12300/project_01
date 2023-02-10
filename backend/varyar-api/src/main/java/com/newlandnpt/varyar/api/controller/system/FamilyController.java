@@ -35,10 +35,8 @@ public class FamilyController extends BaseController {
     private IFamilyService tFamilyService;
     @Autowired
     private IRoomService roomService;
-
     @Autowired
     private IMemberFamilyService iMemberFamilyService;
-
     @Autowired
     private IMemberService iMemberService;
     @Autowired
@@ -164,6 +162,10 @@ public class FamilyController extends BaseController {
     public AjaxResult shareFamily(
             @RequestBody @Validated ShareFamilyRequest shareFamilyRequest){
         AjaxResult ajax = AjaxResult.success();
+        LoginUser loginUser = this.getLoginUser();
+        if(loginUser.getMemberPhone().equals(shareFamilyRequest.getPhone())){
+            return error("不能分享给会员自己！");
+        }
         // check sms
         String verifyKey = CacheConstants.SMS_CODE_KEY + shareFamilyRequest.getSmsUuid();
         String code = redisCache.getCacheObject(verifyKey);
@@ -183,7 +185,7 @@ public class FamilyController extends BaseController {
             return error("非创建者无权分享！");
         }
         //查询是否注册用户
-        LoginUser loginUser = this.getLoginUser();
+
         TMember tMemberQuery = iMemberService.selectMemberByPhone(shareFamilyRequest.getPhone());
         if (tMemberQuery!=null){
             TMemberFamily item = new TMemberFamily();
@@ -282,11 +284,11 @@ public class FamilyController extends BaseController {
         tMemberFamily.setCreateMemberId(memberId);
         tMemberFamily.setShareFlag("0");
         List<TMemberFamily> list = iMemberFamilyService.selectTMemberFamilyList(tMemberFamily);
-        for (TMemberFamily item : list ){
+       /* for (TMemberFamily item : list ){
             if(item.getUserName()==null||item.getUserName().equals("")){
                 item.setUserName(item.getPhone());
             }
-        }
+        }*/
         return AjaxResult.success(list);
     }
 }

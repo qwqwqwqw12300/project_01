@@ -82,7 +82,7 @@
         <include refid="FamilyVo"/>,mf.share_flag,
          (select m.phone from t_member m where f.create_by_id =m.member_id) as create_member_name
         from t_family f
-        join t_member_family mf on f.family_id = mf.family_id and mf.del_flag = '0' and mf.member_id = #{memberId}
+        join t_member_family mf on f.family_id = mf.family_id and mf.del_flag = '0' and mf.create_member_id = #{memberId}
         where f.del_flag= '0'
     </select>
     <select id="selectTFamilyByFamilyId" parameterType="Long" resultMap="TFamilyResult">

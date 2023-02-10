@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,7 +64,22 @@ public class FamilyServiceImpl implements IFamilyService
 
     @Override
     public List<TFamily> selectMembersFamilyList(Long memberId) {
-        return familyMapper.selectMembersFamilyList(memberId);
+        List<TFamily> familyList = new ArrayList<TFamily>();
+        //查询创建的家庭
+        List<TMemberFamily> creates = iMemberFamilyService.selectTMemberFamilyByCreMember(memberId);
+        if (creates!=null && creates.size()>0){
+            for (TMemberFamily i : creates){
+                familyList.add(familyMapper.selectTFamilyByFamilyId(i.getFamilyId()));
+            }
+        }
+        //查询分享的家庭
+        List<TMemberFamily> shares = iMemberFamilyService.selectTMemberFamilyByshare(memberId);
+        if (shares!=null && shares.size()>0){
+            for (TMemberFamily i : shares){
+                familyList.add(familyMapper.selectTFamilyByFamilyId(i.getFamilyId()));
+            }
+        }
+        return familyList;
     }
     /**
      * 新增家庭
