@@ -1,14 +1,15 @@
 <template>
-	<view>
+	<app-body>
+		<app-logo text="实时监控"></app-logo>
 		<monitor-echarts ref="echartsRef"></monitor-echarts>
 		<view class="ui-tip">
 			<view class="ui-item">
 				<view class="span1"></view>
-				<text>隐私区域</text>
+				<text>监控区域</text>
 			</view>
 			<view class="ui-item">
 				<view class="span2"></view>
-				<text>监控区域</text>
+				<text>隐私区域</text>
 			</view>
 			<view class="ui-item">
 				<u-icon name="../../static/images/person.png" color="#fff" size="50rpx"></u-icon>
@@ -20,8 +21,9 @@
 			</view>
 		</view>
 		<view class="ui-set">
-			<button @click="handleDetail">查看明细</button>
-			<button @click="handleSet">设置</button>
+			<button @click="handleBack">返回</button>
+			<!-- 		<button @click="handleDetail">查看明细</button>
+			<button @click="handleSet">设置</button> -->
 		</view>
 		<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="show=false">
 			<view class="ui-popup">
@@ -62,7 +64,7 @@
 				</scroll-view>
 			</view>
 		</u-popup>
-	</view>
+	</app-body>
 
 
 </template>
@@ -145,6 +147,9 @@
 			},
 			handleSet() {
 
+			},
+			handleBack() {
+
 			}
 		}
 	}
@@ -178,7 +183,7 @@
 			height: 40rpx;
 			border-radius: 10rpx;
 			border: 1px solid gray;
-			background-color: #CCFFCC;
+			background-color: rgba(215,215,215,0.7);
 			margin-right: 14rpx;
 		}
 
@@ -190,11 +195,11 @@
 
 	.ui-set {
 		display: flex;
-		margin-top: 50rpx;
+		margin-top: 200rpx;
 
 		button {
-			padding-left: 100rpx;
-			padding-right: 100rpx;
+			padding-left: 200rpx;
+			padding-right: 200rpx;
 			font-size: 28rpx;
 			border-radius: 8px !important;
 		}
