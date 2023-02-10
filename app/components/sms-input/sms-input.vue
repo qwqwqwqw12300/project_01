@@ -160,11 +160,13 @@
 
 <style lang="scss">
 	.ui-input {
+		box-sizing: border-box;
 		margin: 34rpx 0 60rpx 0;
 		border-bottom: 1px solid #e2e2e2;
 	}
 
 	.ui-mini {
-		width: 250rpx;
+		width: unset !important;
+		min-width: 200rpx !important;
 	}
 </style>

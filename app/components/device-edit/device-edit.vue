@@ -8,7 +8,7 @@
 <template>
 	<view>
 		<u-popup :closeable="true" :round="10" :show="mode === 'edit'" mode="center" @close="close">
-			<view class="wd-add ui-change">
+			<view class="wd-add-edit ui-change">
 				<u-text prefixIcon="edit-pen" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
 					size="30rpx" text="修改设备"></u-text>
 				<view class="ui-add-box">
@@ -71,16 +71,16 @@
 			<view class="ui-setting">
 				<view>
 					<view class="ui-switch">
-						<u-switch space="2" v-model="editFrom.existFlag" activeValue="1" inactiveValue="0"
-							activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
-						</u-switch>
-						<text>进出监控</text>
-					</view>	
-					<view class="ui-switch">
 						<u-switch space="2" v-model="editFrom.fallFlag" activeValue="1" inactiveValue="0"
 							activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
 						</u-switch>
 						<text>跌倒监控</text>
+					</view>
+					<view class="ui-switch">
+						<u-switch space="2" v-model="editFrom.existFlag" activeValue="1" inactiveValue="0"
+							activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
+						</u-switch>
+						<text>进出监控</text>
 					</view>
 					<view class="ui-date-list">
 						<u-text prefixIcon="play-circle" iconStyle="font-size: 38rpx" size="28rpx" text="开始监控时间">
@@ -152,7 +152,8 @@
 
 <script>
 	import {
-		getHoursTime, getMinute
+		getHoursTime,
+		getMinute
 	} from '../../common/utils/util';
 	import {
 		INIT_DEIVCE_SET
@@ -283,7 +284,7 @@
 			monitorChange([active], type) {
 				this.editFrom[type] = this.editFrom[type] == 1 ? 0 : 1;
 			},
-			
+
 			/**
 			 * 设置子区域
 			 */
@@ -298,7 +299,8 @@
 </script>
 
 <style lang="scss">
-	.wd-add {
+	.wd-add-edit {
+		// box-sizing: ;
 		width: 582rpx;
 		min-height: 1006rpx;
 		border-radius: 20rpx;
@@ -490,26 +492,27 @@
 				color: #515151;
 			}
 		}
-		
+
 		.ui-zone {
 			margin-top: 15rpx;
 			text-align: left;
 			color: #2979FF;
 			text-decoration: underline;
 		}
-		
+
 		.ui-btn-group {
 			display: flex;
-		
+
 			button {
 				width: 135rpx;
 				height: 70rpx;
 				border-radius: 35rpx;
 				font-size: 28rpx;
+
 				&:nth-child(2) {
 					width: 206rpx;
 					height: 70rpx;
-					
+
 				}
 			}
 		}

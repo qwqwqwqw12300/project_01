@@ -71,7 +71,8 @@
 					setDevice({
 						...INIT_DEIVCE_SET,
 						...this.payload,
-						deviceId: this.deviceId
+						deviceId: this.deviceId,
+						flag: '1'
 					}).then(res => {
 						uni.showToast({
 							title: '绑定成功',

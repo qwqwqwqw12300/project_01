@@ -36,7 +36,7 @@
 				this.getAllFamily();
 				this.familyId = familyId;
 				this.$refs.addRoom.open({
-					id: familyId
+					familyId
 				});
 			},
 			/**

@@ -28,15 +28,17 @@
 				</view>
 			</scroll-view>
 		</view>
-		<!-- 		<u-popup :closeable="true" :overlay="false" zIndex="99" :round="10" :show="showVisible" mode="center"
+		<u-popup :closeable="true" zIndex="99" :round="10" :show="showVisible" mode="center"
 			@close="showVisible = false">
 			<view class="wd-content">
 				<scroll-view scroll-y class="uni-scroll">
 					<text>{{ readInfo }}</text>
 				</scroll-view>
+				<button @click="showVisible = false">我知道了</button>
+
 			</view>
-		</u-popup> -->
-		<u-modal @confirm="onConfirm" :show="showVisible" title="消息详情" :content='readInfo'></u-modal>
+		</u-popup>
+		<!-- <u-modal @confirm="onConfirm" :show="showVisible" title="消息详情" :content='readInfo'></u-modal> -->
 	</app-body>
 </template>
 
@@ -179,15 +181,15 @@
 	}
 
 	.wd-content {
-		width: 582rpx;
-		min-height: 600rpx;
+		width: 600rpx;
+		min-height: 900rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
-		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
-		padding: 53rpx 31rpx;
+		background-image: #fff;
+		padding: 100rpx 31rpx 53rpx 31rpx;
 
 		.uni-scroll {
-			min-height: 200rpx;
+			min-height: 800rpx;
 			word-wrap: break-word;
 			word-break: normal;
 			text-indent: 1em;

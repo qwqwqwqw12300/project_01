@@ -18,8 +18,8 @@
 								<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }"
 									name="/static/images/myself/device.png" size="80rpx"></u-icon>
 								<!-- <text class="grid-text">{{ baseListItem.title }}</text> -->
-								<u-text class="grid-text" suffixIcon="edit-pen-fill" iconStyle="font-size: 36rpx"
-									align="center" :text="item.name || '未命名'"></u-text>
+								<u-text class="grid-text" iconStyle="font-size: 36rpx" align="center"
+									:text="item.name || '未命名'"></u-text>
 
 								<u-icon @click.native.stop="onDelete(item.deviceId)" class="ui-close active"
 									name="close-circle-fill" size="40rpx">
@@ -55,8 +55,12 @@
 							<uni-data-select v-model="bindForm.familyId" @change="familyChange" :clear="false"
 								:localdata="famliyList"></uni-data-select>
 						</view>
+						<view class="ui-add-family active" @click="goAddFamily">
+							<text>添加家庭</text>
+						</view>
+
 					</view>
-					<view class="ui-add-box">
+					<view class="ui-add-box ui-add-box-room">
 						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 36rpx" text="选择房间"></u-text>
 						<view class="ui-select">
 							<uni-data-select v-model="bindForm.roomId" :clear="false" :localdata="rangRoomList">
@@ -72,6 +76,7 @@
 				:closeOnClickAction="true" @close="addHandle.show = false" :show="addHandle.show" @select="sheetSelect"
 				cancelText="取消">
 			</u-action-sheet>
+			<unbind-edit @confirm="init" ref="unbindEditRef"></unbind-edit>
 		</app-body>
 	</view>
 </template>
@@ -117,11 +122,11 @@
 				addHandle: {
 					show: false,
 					list: [{
-							name: '雷达波',
+							name: 'vayyar',
 							url: '/pages/equipment/radar'
 						},
 						{
-							name: '监护设备',
+							name: '电子牵挂卡',
 							url: '/pages/equipment/monitor'
 						},
 					]
@@ -193,37 +198,44 @@
 			 * 编辑浮层打开
 			 */
 			edit(item) {
-				const {
-					name,
-					deviceId,
-					type,
-					no,
-					familyId,
-					roomId,
-					location,
-					parameter: {
-						deviceLocation = {},
-						deviceRoomParameter = {}
-					} = {},
+				console.log(item, '设备信息');
+				if (item.roomId) {
+					const {
+						name,
+						deviceId,
+						type,
+						no,
+						familyId,
+						roomId,
+						location,
+						parameter: {
+							deviceLocation = {},
+							deviceRoomParameter = {}
+						} = {},
 
-				} = item;
-				Object.assign(this.editFrom, {
-					deviceName: name,
-					deviceId,
-					deviceType: type,
-					deviceNo: no,
-					familyId,
-					roomId,
-					location,
-					...deviceLocation,
-					...deviceRoomParameter,
-					source: item
-				});
+					} = item;
+					Object.assign(this.editFrom, {
+						deviceName: name,
+						deviceId,
+						deviceType: type,
+						deviceNo: no,
+						familyId,
+						roomId,
+						location,
+						...deviceLocation,
+						...deviceRoomParameter,
+						source: item
+					});
+					this.$refs.editRef.open(this.editFrom);
+				} else {
+					this.$refs.unbindEditRef.open(item);
+				}
+
 				// this.$setCache('setDevice', this.editFrom);
 				// uni.navigateTo({
 				// 	url: '/pages/equipment/radar-setting'
 				// })
-				this.$refs.editRef.open(this.editFrom);
+
 			},
 
 			/**
@@ -286,6 +298,7 @@
 						if (res.confirm) {
 							relDevice({
 								deviceId,
+								flag: '3'
 							}).then(res => {
 								uni.$u.toast(res.msg);
 								setTimeout(() => {
@@ -302,6 +315,16 @@
 			 */
 			bindRoom() {
 				this.bindRoomShow = true;
+			},
+
+			/**
+			 * 添加家庭
+			 * @param {Object} id
+			 */
+			goAddFamily() {
+				uni.navigateTo({
+					url: '/pages/myself/famliy-manage'
+				})
 			},
 
 			/**
@@ -475,7 +498,6 @@
 			}
 		}
 
-
 		.ui-btn {
 			margin-top: 10rpx;
 			text-align: center;
@@ -530,6 +552,15 @@
 			}
 		}
 
+		.ui-add-family {
+			width: 100%;
+			text-align: right;
+			margin-top: 20rpx;
+			color: rgb(41, 121, 255);
+			font-size: 24rpx;
+			text-decoration: underline;
+		}
+
 		&>view {
 			margin-top: 52rpx;
 
@@ -538,8 +569,13 @@
 
 				&>* {
 					margin-top: 30rpx;
+
 				}
 			}
+		}
+
+		.ui-add-box-room {
+			margin-top: 10rpx;
 		}
 
 		.wd-btn-group {
