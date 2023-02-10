@@ -14,6 +14,8 @@ import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.domain.TMsg;
 import com.newlandnpt.varyar.system.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +32,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/message")
 public class MessageController extends BaseController {
-
+    private static final Logger log = LoggerFactory.getLogger(MessageController.class);
     @Autowired
     private IMsgService itMsgService;
     @Autowired
@@ -108,7 +110,7 @@ public class MessageController extends BaseController {
         try {
             itMsgService.updateTMsg(msg);
         }  catch (Exception e){
-            error("设置推送消息开关异常！");
+            return error("设置推送消息开关异常！");
         }
         return ajax;
     }

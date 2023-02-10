@@ -13,6 +13,8 @@ import com.newlandnpt.varyar.system.service.IFamilyService;
 import com.newlandnpt.varyar.system.service.IMemberFamilyService;
 import com.newlandnpt.varyar.system.service.IRoomService;
 import com.newlandnpt.varyar.system.service.IRoomZoneService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/roomZone")
 public class RoomZoneController extends BaseController {
-
+    private static final Logger log = LoggerFactory.getLogger(RoomZoneController.class);
     @Autowired
     private IRoomZoneService iRoomZoneService;
 
@@ -83,6 +85,7 @@ public class RoomZoneController extends BaseController {
                 iRoomZoneService.updateTRoomZone(tRoomZone);
             }
         } catch (Exception e){
+            log.error(e.getMessage());
             ajax = AjaxResult.error("设置雷达波设备失败！");
             return ajax;
         }

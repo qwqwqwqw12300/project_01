@@ -15,6 +15,8 @@ import com.newlandnpt.varyar.system.service.IFamilyService;
 import com.newlandnpt.varyar.system.service.IMemberFamilyService;
 import com.newlandnpt.varyar.system.service.IRoomService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/room")
 public class RoomController extends BaseController {
-
+    private static final Logger log = LoggerFactory.getLogger(RoomController.class);
     @Autowired
     private IRoomService iRoomService;
     @Autowired
@@ -105,6 +107,7 @@ public class RoomController extends BaseController {
             iRoomService.insertTRoom(tRoom);
             ajax = AjaxResult.success(tRoom);
         } catch (Exception e){
+            log.error(e.getMessage());
             ajax = ajax.error("新增我的房间失败！");
             return ajax;
         }
@@ -131,6 +134,7 @@ public class RoomController extends BaseController {
             tRoom.setName(roomRequest.getName());
             iRoomService.updateTRoom(tRoom);
         } catch (Exception e){
+            log.error(e.getMessage());
             ajax = ajax.error("修改我的房间失败！");
             return ajax;
         }
@@ -156,6 +160,7 @@ public class RoomController extends BaseController {
         try {
             iRoomService.deleteTRoomByRoomId(tRoom.getRoomId());
         } catch (Exception e){
+            log.error(e.getMessage());
             ajax = AjaxResult.error("删除我的房间失败！");
             return ajax;
         }

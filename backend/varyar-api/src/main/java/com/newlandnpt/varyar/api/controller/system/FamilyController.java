@@ -11,6 +11,8 @@ import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.system.domain.*;
 import com.newlandnpt.varyar.system.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/family")
 public class FamilyController extends BaseController {
-
+    private static final Logger log = LoggerFactory.getLogger(FamilyController.class);
     @Autowired
     private IFamilyService tFamilyService;
     @Autowired
@@ -95,6 +97,7 @@ public class FamilyController extends BaseController {
             tFamily.setCreateById(String.valueOf(memberId));
             tFamilyService.insertTFamily(tFamily,memberId);
         } catch (Exception e){
+            log.error(e.getMessage());
             return error("新增我的家庭失败！");
         }
         return AjaxResult.success(tFamily);
@@ -122,6 +125,7 @@ public class FamilyController extends BaseController {
             tFamily.setAddress(familyRequest.getAddress());
             tFamilyService.updateTFamily(tFamily);
         } catch (Exception e){
+            log.error(e.getMessage());
             return error("修改我的家庭失败！");
         }
         return ajax;
@@ -147,6 +151,7 @@ public class FamilyController extends BaseController {
         try {
             tFamilyService.deleteTFamilyByFamilyId(tFamily.getFamilyId(),this.getLoginUser().getMemberId());
         } catch (Exception e){
+            log.error(e.getMessage());
             return error("删除我的家庭失败！");
         }
         return ajax;
@@ -199,6 +204,7 @@ public class FamilyController extends BaseController {
         try {
             iMemberFamilyService.insertTMemberFamily(tMemberFamily);
         } catch (Exception e){
+            log.error(e.getMessage());
             return error("分享我的家庭失败！");
         }
         return success(tMemberFamily);
@@ -237,6 +243,7 @@ public class FamilyController extends BaseController {
                 try {
                     iMemberFamilyService.deleteTMemberFamilyByMemberFamilyId(item.getMemberFamilyId());
                 } catch (Exception e){
+                    log.error(e.getMessage());
                     return error("删除分享我的家庭失败！");
                 }
             }

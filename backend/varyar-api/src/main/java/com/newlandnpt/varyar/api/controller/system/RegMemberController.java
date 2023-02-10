@@ -1,15 +1,15 @@
 package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.constant.CacheConstants;
+import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.RSA.RsaUtils;
 import com.newlandnpt.varyar.common.core.domain.model.RegMemberRequest;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
-import com.newlandnpt.varyar.system.domain.TMember;
-import com.newlandnpt.varyar.system.domain.TMemberFamily;
-import com.newlandnpt.varyar.system.service.IMemberFamilyService;
 import com.newlandnpt.varyar.system.service.IRegMemberService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 
-import java.util.List;
 
 /**
  * 注册验证
@@ -30,6 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class RegMemberController extends BaseController {
+    private static final Logger log = LoggerFactory.getLogger(RegMemberController.class);
     @Autowired
     private RedisCache redisCache;
 
@@ -39,8 +39,6 @@ public class RegMemberController extends BaseController {
     @Value("${location.privateKey}")
     private String privateKey;
 
-    @Autowired
-    private IMemberFamilyService iMemberFamilyService;
     @PostMapping("/regMember")
     public AjaxResult regMember(
             @RequestBody @Validated RegMemberRequest regMemberRequest) {
@@ -60,26 +58,18 @@ public class RegMemberController extends BaseController {
         try {
             regMemberRequest.setPassword(RsaUtils.decryptByPrivateKey(privateKey,regMemberRequest.getPassword()));
         } catch (Exception e) {
-            ajax = AjaxResult.error("密钥解密失败！");
-            return ajax;
+            log.error(e.getMessage());
+            return error("注册失败");
         }
-        TMember member = new TMember();
         try {
-            member = regMemberService.regMember(regMemberRequest);
+            regMemberService.regMember(regMemberRequest);
+        } catch (ServiceException e){
+            log.error(e.getMessage());
+            return error(e.getMessage());
         } catch (Exception e){
-            ajax = AjaxResult.error("注册失败");
-            return ajax;
+            log.error(e.getMessage());
+            return error("注册失败");
         }
-        //查询会员与家庭表 添加共享家庭家庭信息
-        List<TMemberFamily> mFList = iMemberFamilyService.selectTMemberFamilyByPhone(regMemberRequest.getPhone());
-        if (mFList.size()>0&&mFList !=null){
-            for(TMemberFamily item:mFList){
-                item.setPhone("");
-                item.setMemberId(member.getMemberId());
-                iMemberFamilyService.updateTMemberFamily(item);
-            }
-        }
-
         return ajax;
     }
 }

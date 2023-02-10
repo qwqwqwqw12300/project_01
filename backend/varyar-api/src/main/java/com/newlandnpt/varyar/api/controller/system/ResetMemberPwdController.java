@@ -8,6 +8,8 @@ import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.system.service.IResetMemberPwdService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class ResetMemberPwdController{
+    private static final Logger log = LoggerFactory.getLogger(ResetMemberPwdController.class);
     @Autowired
     private RedisCache redisCache;
 
@@ -52,12 +55,14 @@ public class ResetMemberPwdController{
         try {
             resetMemberPwdRequest.setPassword(RsaUtils.decryptByPrivateKey(privateKey,resetMemberPwdRequest.getPassword()));
         } catch (Exception e) {
+            log.error(e.getMessage());
             ajax = AjaxResult.error("密钥解密失败！");
             return ajax;
         }
         try {
             resetMemberPwdService.resetMemberPwd(resetMemberPwdRequest);
         } catch (Exception e){
+            log.error(e.getMessage());
             ajax = AjaxResult.error("重置失败");
             return ajax;
         }

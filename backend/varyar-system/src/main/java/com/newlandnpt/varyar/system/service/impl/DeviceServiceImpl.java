@@ -125,7 +125,20 @@ public class DeviceServiceImpl implements IDeviceService {
         resetDeviceCache(device);
         return effect;
     }
-
+    /**
+     * 解绑设备
+     *
+     * @param device 设备
+     * @return 结果
+     */
+    @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
+    public int  relievTDevice(TDevice device) {
+        device.setUpdateTime(DateUtils.getNowDate());
+        int effect = deviceMapper.relievTDevice(device);
+        resetDeviceCache(device);
+        return effect;
+    }
     @Override
     @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
     public int setDevice(TDevice device) {
@@ -510,10 +523,16 @@ public class DeviceServiceImpl implements IDeviceService {
         return result;
     }
     @Override
-    public  Map<Integer, ExtraVo> getRealLocationExtraByDeviceNo(String deviceNo){
-        Map<Integer, ExtraVo> result = redisCache.getCacheObject(TARGET_LOCATION_FALL_KEY+deviceNo);
-        if(result == null){
-            result = new HashMap<Integer, ExtraVo>();
+    public   List<ExtraVo>  getRealLocationExtraByDeviceNo(String deviceNo){
+        Collection<String> keys = redisCache.keys(CacheConstants.TARGET_LOCATION_FALL_KEY +deviceNo+ "*");
+        if(keys == null){
+            keys = new HashSet<>();
+        }
+        List<ExtraVo> result = new ArrayList<ExtraVo>();
+        for (String i:keys){
+            ExtraVo item = redisCache.getCacheObject(i);
+            if (item!=null)
+                result.add(redisCache.getCacheObject(i));
         }
         return result;
     }
