@@ -135,7 +135,7 @@ public class DeviceServiceImpl implements IDeviceService {
     @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
     public int  relievTDevice(TDevice device) {
         device.setUpdateTime(DateUtils.getNowDate());
-        int effect = deviceMapper.updateTDevice(device);
+        int effect = deviceMapper.relievTDevice(device);
         resetDeviceCache(device);
         return effect;
     }

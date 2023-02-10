@@ -8,6 +8,8 @@ import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.system.service.IRegMemberService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -27,6 +29,7 @@ import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 @RestController
 @RequestMapping("/api")
 public class RegMemberController extends BaseController {
+    private static final Logger log = LoggerFactory.getLogger(RegMemberController.class);
     @Autowired
     private RedisCache redisCache;
 
@@ -55,13 +58,16 @@ public class RegMemberController extends BaseController {
         try {
             regMemberRequest.setPassword(RsaUtils.decryptByPrivateKey(privateKey,regMemberRequest.getPassword()));
         } catch (Exception e) {
+            log.error(e.getMessage());
             return error("注册失败");
         }
         try {
             regMemberService.regMember(regMemberRequest);
         } catch (ServiceException e){
+            log.error(e.getMessage());
             return error(e.getMessage());
         } catch (Exception e){
+            log.error(e.getMessage());
             return error("注册失败");
         }
         return ajax;

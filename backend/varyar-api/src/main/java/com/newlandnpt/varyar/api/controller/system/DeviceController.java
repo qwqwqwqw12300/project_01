@@ -17,11 +17,12 @@ import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
 import com.newlandnpt.varyar.system.service.IDeviceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sound.midi.Track;
 import java.util.*;
 
 import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_SWITCH_KEY;
@@ -34,7 +35,7 @@ import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATI
 @RestController
 @RequestMapping("/api/device")
 public class DeviceController extends BaseController {
-
+    private static final Logger log = LoggerFactory.getLogger(DeviceController.class);
     @Autowired
     private IDeviceService iDeviceService;
 
@@ -61,6 +62,7 @@ public class DeviceController extends BaseController {
                 list = iDeviceService.loadingDeviceStauts(list);
             }
         } catch (Exception e){
+            log.error(e.getMessage());
             throw new ServiceException("查询我的设备失败！");
         }
         return getDataTable(list);
@@ -87,6 +89,7 @@ public class DeviceController extends BaseController {
                 list = iDeviceService.loadingDeviceStauts(list);
             }
         } catch (Exception e){
+            log.error(e.getMessage());
             throw new ServiceException("查询我的设备失败！");
         }
         return getDataTable(list);
@@ -138,6 +141,7 @@ public class DeviceController extends BaseController {
                 iDeviceService.insertDevice(device);
             }
         } catch (Exception e){
+            log.error(e.getMessage());
             return  error("新增我的设备失败！");
         }
         return ajax;
@@ -169,6 +173,7 @@ public class DeviceController extends BaseController {
         try {
             iDeviceService.updateDevice(device);
         } catch (Exception e){
+            log.error(e.getMessage());
             return  error("修改我的设备失败！");
         }
         return ajax;
@@ -194,6 +199,7 @@ public class DeviceController extends BaseController {
         try {
             iDeviceService.deleteAndSaveDevice(Long.valueOf(deviceRequest.getDeviceId()));
         } catch (Exception e){
+            log.error(e.getMessage());
             return  error("修改我的设备失败！");
         }
         return ajax;
@@ -350,6 +356,7 @@ public class DeviceController extends BaseController {
             }
 
         } catch (Exception e){
+            log.error(e.getMessage());
            return error("绑定我的设备失败！");
         }
         return success();
@@ -384,6 +391,7 @@ public class DeviceController extends BaseController {
                 return error("解绑我的设备失败！");
             }
         } catch (Exception e){
+            log.error(e.getMessage());
             return error("解绑我的设备失败！");
         }
         return success();
@@ -422,7 +430,8 @@ public class DeviceController extends BaseController {
         try {
             iDeviceService.updateDevice(device);
         } catch (Exception e){
-            error("设置电话失败！");
+           log.error(e.getMessage());
+           return error("设置电话失败！");
         }
         return ajax;
     }

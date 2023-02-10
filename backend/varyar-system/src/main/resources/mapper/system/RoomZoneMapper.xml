@@ -97,7 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="z2 != null">#{z2},</if>
             <if test="existFlag != null">#{existFlag},</if>
             <if test="fallFlag != null">#{fallFlag},</if>
-            <if test="zoneType != null">#{zone_type},</if>
+            <if test="zoneType != null">#{zoneType},</if>
             <if test="entryTime != null">#{entryTime},</if>
             <if test="departureTime != null">#{departureTime},</if>
             <if test="inMonitorFlag != null">#{inMonitorFlag},</if>

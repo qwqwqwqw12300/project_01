@@ -15,6 +15,8 @@ import com.newlandnpt.varyar.framework.web.service.TokenService;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IMemberLoginService;
 import com.newlandnpt.varyar.system.service.IMemberService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 public class MemberLoginController extends BaseController {
+    private static final Logger log = LoggerFactory.getLogger(MemberLoginController.class);
     @Autowired
     private RedisCache redisCache;
     @Autowired
@@ -114,6 +117,7 @@ public class MemberLoginController extends BaseController {
             tMember.setRegistrationType(memberLoginSmsRequest.getRegistrationType());
             iMemberService.updateMember(tMember);
         }catch(Exception e){
+            log.error(e.getMessage());
             return error("登录失败！");
         }
         return ajax;
