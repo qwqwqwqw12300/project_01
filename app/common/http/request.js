@@ -44,7 +44,7 @@ const request = (url, options, process, method = 'POST') => {
 	// } else {
 	// 	_url = url;
 	// }
-	_url = env.basePath + url;
+	_url = (uni.getStorageSync('appHost') || env.basePath) + url;
 	const showLoading = process.showLoading !== false,
 		errorHandle = process.error !== false;
 	console.info('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));

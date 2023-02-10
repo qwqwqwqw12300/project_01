@@ -4,7 +4,7 @@
 		<!-- <view class="ui-title">
 			<text>增加雷达波设备</text>
 		</view> -->
-		<app-logo text="增加雷达波设备"></app-logo>
+		<app-logo text="增加vayyar设备"></app-logo>
 		<view class="ui-step">
 			<view class="ui-step-icon step1_bg"></view>
 			<view class="ui-step-title">
@@ -125,8 +125,6 @@
 						title: '请完整填写信息'
 					})
 				}
-
-
 			},
 
 			/**
@@ -135,31 +133,39 @@
 			async next() {
 				this.connectStatic = 'connect';
 				if (await this.permissionCheck()) {
-					vpsdk.connect(res => {
-						console.log(res, '回弹结果');
-						const {
-							type,
-							data
-						} = res;
-						switch (type) {
-							case 'event': // 事件监听
-								this.eventMsg = data;
-								break;
-							case 'wifi': // 选择wifi
-								this.openWifi(data);
-								break;
-							case 'success': // 连接成功
-								this.addForm.deviceNo = data;
-								this.isEditShow = true;
-								break;
-							default:
-								uni.showModal({
-									title: '设备添加失败，请重试'
-								});
-								this.connectStatic = 'init';
-								break;
-						}
-					});
+					try {
+						vpsdk.connect(res => {
+							console.log(res, '回弹结果');
+							const {
+								type,
+								data
+							} = res;
+							switch (type) {
+								case 'event': // 事件监听
+									this.eventMsg = data;
+									break;
+								case 'wifi': // 选择wifi
+									this.openWifi(data);
+									break;
+								case 'success': // 连接成功
+									this.addForm.deviceNo = data;
+									this.isEditShow = true;
+									break;
+								default:
+									uni.showModal({
+										title: '设备添加失败，请重试'
+									});
+									this.connectStatic = 'init';
+									break;
+							}
+						});
+					} catch (e) {
+						uni.showModal({
+							title: '应用环境异常，请重试'
+						});
+						this.connectStatic = 'init';
+					}
+
 				} else {
 					this.connectStatic = 'init';
 				}

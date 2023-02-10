@@ -4,7 +4,7 @@
 		<!-- <view class="ui-title">
 			<text>增加监护设备</text>
 		</view> -->
-		<app-logo text="增加监护设备"></app-logo>
+		<app-logo text="增加电子牵挂卡"></app-logo>
 		<view class="ui-step">
 			<view class="ui-step-icon step1_bg"></view>
 			<view class="ui-step-title">

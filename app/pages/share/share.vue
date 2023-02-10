@@ -7,7 +7,7 @@
 					<view>
 						<view class="ui-user-item" v-for="(item, idx) of shareList" :key="idx">
 							<u--text prefixIcon="account-fill" :iconStyle="{ color: '#fff', fontSize: '36rpx' }"
-								color="#fff" :text="item.phone || '未注册用户'"></u--text>
+								color="#fff" :text="item.userName || '未注册用户'"></u--text>
 							<u-icon @click="remShare(item)" class="active" name="close-circle" color="#fff600"
 								size="36rpx">
 							</u-icon>
@@ -21,10 +21,10 @@
 					</u-text>
 					<view class="ui-input">
 						<u-input length="11" type="number" v-model="shareForm.phone" placeholder="请输入手机号码"
-							:border="'none'" fontSize="28rpx"  clearable>
+							:border="'none'" fontSize="28rpx" clearable>
 							<template slot="suffix">
 								<u-icon name="/static/images/phone-book.png" size="24"></u-icon>
-					<!-- 			<u-button @tap="getContact" text="通讯录" size="mini" class="wd-sms ui-cont"
+								<!-- 			<u-button @tap="getContact" text="通讯录" size="mini" class="wd-sms ui-cont"
 									border="surround" style="width: 150rpx;height: 60rpx;;"></u-button> -->
 							</template>
 						</u-input>
@@ -104,8 +104,9 @@
 					this.getShareList();
 					uni.showToast({
 						icon: 'none',
-						title: '分享成功'
+						title: res.msg
 					});
+					this.init();
 
 				} else {
 					uni.showToast({
@@ -136,7 +137,7 @@
 			remShare(info) {
 				uni.showModal({
 					title: '提示',
-					content: '是否确认删除设备',
+					content: '是否确认取消家庭分享',
 					success: res => {
 						if (res.confirm) {
 							const {
@@ -244,6 +245,20 @@
 			phoneClick(item) {
 				this.shareForm.phone = item.phone
 				this.contactShow = false
+			},
+
+			/**
+			 * 重置
+			 */
+			init() {
+				this.shareForm = {
+					phone: '',
+					code: '',
+					familyId: '',
+					smsUuid: '',
+					familyPhone: ''
+				};
+				this.$refs.sms.reset();
 			}
 		}
 	};

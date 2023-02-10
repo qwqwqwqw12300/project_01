@@ -20,12 +20,12 @@
 				<view class="ui-select" v-if="isAddShow">
 					<view class="ui-select-item active" @click="goPage('/pages/equipment/radar')">
 						<u-icon name="../../static/images/leida.png" class="active" color="#fff" size="40rpx"></u-icon>
-						<text>雷达波设备</text>
+						<text>vayyar</text>
 					</view>
 					<view class="ui-select-item active" @click="goPage('/pages/equipment/monitor')">
 						<u-icon name="../../static/images/shoubiao.png" class="active" color="#fff" size="40rpx">
 						</u-icon>
-						<text>监护手表</text>
+						<text>电子牵挂卡</text>
 					</view>
 				</view>
 				<!-- /下拉框 -->

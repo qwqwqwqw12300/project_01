@@ -11,7 +11,7 @@ export const INIT_DEIVCE_SET = {
 	roomRight: 3,
 	roomLength: 6,
 	existFlag: 0,
-	fallFlag: 0,
+	fallFlag: 1,
 	entryTime: 0,
 	departureTime: 0,
 	startTime: 0,
@@ -41,12 +41,6 @@ export const ZONE = {
 	y2: 0,
 	z1: 100,
 	z2: 100,
-	old: {
-		x: 0,
-		y: 0
-	},
-	x: 0,
-	y: 0,
 	width: '',
 	height: '',
 	// /**进入报警区域时间**/
@@ -62,9 +56,9 @@ export const ZONE = {
 	/**离开报警区域时间**/
 	departureTime: 1,
 	/**开始监控时间**/
-	startTime: 1,
+	startTime: 0,
 	/**结束监控时间**/
-	endTime: 1,
+	endTime: 0,
 	/**进入监控区域报警**/
 	inMonitorFlag: 0,
 	/**离开监控区域报警**/

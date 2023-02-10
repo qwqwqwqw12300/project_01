@@ -268,7 +268,10 @@ export const GetSysNotice = () => http.get('/api/notice/sysNotice');
 /**
  * 获取公告
  */
-export const postSetNoticeFlag = (params) => http.post('/api/notice/setNoticeFlag', params);
+export const postSetNoticeFlag = (params) => http.post('/api/notice/setNoticeFlag', params, {
+	error: false,
+	showLoading: false
+});
 
 /**
  * 设置电子围栏

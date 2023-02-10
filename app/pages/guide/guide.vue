@@ -1,11 +1,10 @@
 <template>
 	<view class="ui-container">
-		<view class="ui-img">
-			<!-- <image src="../../static/componentIndex.png" mode="aspectFit"></image> -->
+		<view class="ui-host">
+			<u--input placeholder="请输入服务器地址" v-model="host" border="surround" @change="change">
+			</u--input>
+			<button @click="saveHost">保存</button>
 		</view>
-		<!-- 	<u-cell-group>
-			<u-cell v-for="(item, index) in list" :key="item.id" :title="item.name" isLink :url="item.url"></u-cell>
-		</u-cell-group> -->
 		<button @click="localPush">本地推送</button>
 		<button @click="getRegistrationID">用户id</button>
 		<button @click="initSDK">初始化</button>
@@ -17,7 +16,8 @@
 		<button @click="postDemo">post请求测试</button>
 		<button @click="getToken">token获取</button>
 		<button @click="goExt">设备连接</button>
-		<text>RegistrationID: {{id}}</text>
+
+
 	</view>
 </template>
 <script>
@@ -32,6 +32,9 @@
 	import {
 		vpsdk
 	} from '../../common/sdk/vpsdk';
+	import {
+		env
+	} from '../../config/env';
 	export default {
 		data() {
 			return {
@@ -40,7 +43,8 @@
 					url: '/pages/guide/range',
 					name: '检测范围'
 				}, ],
-				id: ''
+				id: '',
+				host: uni.getStorageSync('appHost') || env.basePath
 			}
 		},
 		methods: {
@@ -100,6 +104,10 @@
 				uni.navigateTo({
 					url: '/pages/guide/ext'
 				})
+			},
+
+			saveHost() {
+				return uni.setStorageSync('appHost', this.host);
 			}
 		},
 	}
@@ -119,11 +127,22 @@
 		height: 100%;
 		width: 100%;
 		background: #fff;
+
+		button {
+			float: left;
+			width: 300rpx;
+			margin: 30rpx;
+		}
 	}
 
-	button {
-		float: left;
-		width: 300rpx;
-		margin: 30rpx;
+	.ui-host {
+		display: flex;
+		justify-content: space-between;
+
+		>button {
+
+			width: 200rpx;
+			margin: 30rpx;
+		}
 	}
 </style>

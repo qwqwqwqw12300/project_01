@@ -7,14 +7,14 @@
 
 <template>
 	<app-body leftText="返回">
+		<app-logo text="子区域设置"></app-logo>
 		<view id="setting">
 			<view class="ui-movable">
 				<view class="mova-box">
 					<movable-area :style="getStyle">
 						<view class="ui-cell" @touchstart="touchstart($event, item, index)"
-							@touchmove.native.prevent="touchMove($event, item, index)"
-							@touchend="touchend($event, item)"
-							:class="{active: item.active, hover: item.status === 'hover', edit: roomZones[activeZone].roomZoneId === item.roomZoneId}"
+							@touchmove.stop.prevent="touchMove($event, item, index)" @touchend="touchend($event, item)"
+							:class="{active: item.active, hover: item.status === 'hover', edit: roomZones.length&&roomZones[activeZone].roomZoneId === item.roomZoneId}"
 							:style="cell" v-for="(item, index) of area" :key="index + 'c'">
 						</view>
 						<movable-view :x="sizeInfo.x - 10" :y="sizeInfo.y + 10">
@@ -337,18 +337,6 @@
 						this.animation[type].doing = false;
 					}, 500);
 				}
-
-
-			},
-
-			/**
-			 * 区域修改
-			 * @param {Object} e
-			 * @param {string} 下标
-			 */
-			onChange: function(e, index) {
-				this.roomZones[index].old.x = e.detail.x;
-				this.roomZones[index].old.y = e.detail.y;
 			},
 			/**
 			 * 选择子区域
@@ -476,7 +464,9 @@
 					setTimeout(() => {
 						this.init();
 					}, 500)
-				})
+				}, err => {
+					this.init();
+				});
 			},
 
 			/**
@@ -549,7 +539,6 @@
 						if (ele.roomZoneId === roomZoneId) ele.status = 'hover';
 					});
 				}
-				console.log(event, '开始触摸');
 			},
 
 			/**
@@ -627,6 +616,7 @@
 			 * 获取格子参数
 			 */
 			getCellSize() {
+				console.log(this.sizeInfo, 'this.sizeInfo');
 				// 每个格子的宽度、高度
 				const width = this.sizeInfo.scale.x,
 					height = this.sizeInfo.scale.y; // 高度
@@ -636,6 +626,7 @@
 					column = Math.floor(this.sizeInfo.box.height / height),
 					// 一共几个格子
 					total = this.area.length;
+				console.log(width, height, line, column, total, 'height');
 				return {
 					width,
 					height,
