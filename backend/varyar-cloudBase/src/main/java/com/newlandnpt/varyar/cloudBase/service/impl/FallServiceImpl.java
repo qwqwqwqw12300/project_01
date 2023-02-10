@@ -1,9 +1,7 @@
 package com.newlandnpt.varyar.cloudBase.service.impl;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
@@ -59,18 +57,38 @@ public class FallServiceImpl implements FallService {
         if(extraVo == null){
         	return ;
         }
+        if(extraVo.getxCm() == null || extraVo.getyCm() == null || extraVo.getzCm() == null){
+        	return ;
+        }
+        String xCm = extraVo.getxCm().toString();
+        String yCm = extraVo.getyCm().toString();
+        String zCm = extraVo.getzCm().toString();
+        String extraVoCacheKey = CacheKey + deviceId + ":" + xCm+yCm+zCm;
+        ExtraVo extraVoCache = SpringUtils.getBean(RedisCache.class).getCacheObject(extraVoCacheKey);
+        if("finished".equalsIgnoreCase(t.getStatus()) || "fall_exit".equalsIgnoreCase(t.getStatus())){
+        	SpringUtils.getBean(RedisCache.class).deleteObject(extraVoCacheKey);
+        }else if("calling".equalsIgnoreCase(t.getStatus())){
+        	//确认跌倒才记录
+        	//如果redis开关开启，则记录,1分钟超时
+        	Boolean targetLocation = SpringUtils.getBean(RedisCache.class).getCacheObject(com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_SWITCH_KEY + deviceId);
+        	if(targetLocation != null && targetLocation){
+        		SpringUtils.getBean(RedisCache.class).setCacheObject(extraVoCacheKey, extraVoCache, 1, TimeUnit.MINUTES);
+        	}
+        }
+        
+        /*
         Map<Integer, ExtraVo> map = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheKey + deviceId);
         if(map == null || map.isEmpty()){
         	map = new LinkedHashMap<Integer, ExtraVo>();
         }
-        if("finished".equals(t.getStatus()) || "fall_exit".equals(t.getStatus())){
+        if("finished".equalsIgnoreCase(t.getStatus()) || "fall_exit".equalsIgnoreCase(t.getStatus())){
         	map.remove(extraVo.getTargetId());
         	if(map == null || map.isEmpty()){
         		SpringUtils.getBean(RedisCache.class).deleteObject(CacheKey + deviceId);
             }else {
             	SpringUtils.getBean(RedisCache.class).setCacheObject(CacheKey + deviceId, map);
             }
-        }else if("fall_confirmed".equals(t.getStatus())){
+        }else if("calling".equalsIgnoreCase(t.getStatus())){
         	//确认跌倒才记录
         	//如果redis开关开启，则记录
         	Boolean targetLocation = SpringUtils.getBean(RedisCache.class).getCacheObject(com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_SWITCH_KEY + deviceId);
@@ -80,6 +98,7 @@ public class FallServiceImpl implements FallService {
         		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheKey + deviceId, map);
         	}
         }
+        */
 	}
 
 }

@@ -46,7 +46,7 @@
 					<u--input placeholder="请输入设备位置" v-model="addForm.location" border="bottom" clearable>
 					</u--input>
 				</view>
-				<view class="wd-btn-gloup"><button @click="add">确定</button></view>
+				<view class="wd-btn-group"><button @click="add">确定</button></view>
 			</view>
 		</u-popup>
 		<!-- /修改名称 -->
@@ -309,7 +309,7 @@
 			}
 		}
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			text-align: center;
 			margin-top: 70rpx;
 

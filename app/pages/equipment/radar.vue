@@ -51,7 +51,7 @@
 							activeColor="#1aa208" :name="item" :label="item"></u-radio>
 					</u-radio-group>
 				</view>
-				<view class="wd-btn-gloup"><button @click="add">确定</button></view>
+				<view class="wd-btn-group"><button @click="add">确定</button></view>
 			</view>
 		</u-popup>
 		<!-- /修改名称 -->
@@ -388,7 +388,7 @@
 			}
 		}
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			text-align: center;
 			margin-top: 70rpx;
 

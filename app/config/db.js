@@ -22,7 +22,7 @@ export const INIT_DEIVCE_SET = {
 
 /**监控子区域**/
 export const ZONE = {
-	zoneType: '0',
+	zoneType: '1',
 	/**区域id**/
 	roomZoneId: '',
 	/**设备id**/
@@ -49,14 +49,22 @@ export const ZONE = {
 	y: 0,
 	width: '',
 	height: '',
+	// /**进入报警区域时间**/
+	// entryTime: null,
+	// /**离开报警区域时间**/
+	// departureTime: null,
+	// /**开始监控时间**/
+	// startTime: null,
+	// /**结束监控时间**/
+	// endTime: null,
 	/**进入报警区域时间**/
-	entryTime: null,
+	entryTime: 1,
 	/**离开报警区域时间**/
-	departureTime: null,
+	departureTime: 1,
 	/**开始监控时间**/
-	startTime: null,
+	startTime: 1,
 	/**结束监控时间**/
-	endTime: null,
+	endTime: 1,
 	/**进入监控区域报警**/
 	inMonitorFlag: 0,
 	/**离开监控区域报警**/

@@ -43,7 +43,7 @@
 					</u-input>
 				</view>
 			</view>
-			<view class="wd-btn-gloup">
+			<view class="wd-btn-group">
 				<button @click="handleReset">重置</button>
 				<button @click="handleCancel">取消</button>
 			</view>
@@ -156,7 +156,7 @@
 			// height: 60rpx;
 		}
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			margin: 120rpx 0;
 		}
 	}

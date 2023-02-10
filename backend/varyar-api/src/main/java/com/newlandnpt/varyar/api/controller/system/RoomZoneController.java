@@ -46,7 +46,7 @@ public class RoomZoneController extends BaseController {
     @PostMapping("/setRadarDevice")
     public AjaxResult setRadarDevice(
             @RequestBody @Validated RadarRequest radarRequest) {
-        if (radarRequest.getName().equals("")||radarRequest.getName()==null){
+        if (radarRequest.getName()==null || radarRequest.getName().equals("")){
             return error("房间名称不能为空！");
         }
         if (radarRequest.getZoneType()==null||radarRequest.getZoneType().equals("")){
@@ -93,7 +93,7 @@ public class RoomZoneController extends BaseController {
      * */
     @PostMapping("/remRadarDevice")
     public AjaxResult removeRadarDevice(@RequestBody @Validated TRoomZone radarRequest) {
-        if (radarRequest.getRoomZoneId().equals("")||radarRequest.getRoomZoneId()==null){
+        if (radarRequest.getRoomZoneId()==null || radarRequest.getRoomZoneId().equals("")){
             return error("房间子区域Id不能为空！");
         }
         TRoomZone tRoomZone = iRoomZoneService.selectTRoomZoneByRoomZoneId(Long.valueOf(radarRequest.getRoomZoneId()));
@@ -115,7 +115,7 @@ public class RoomZoneController extends BaseController {
      * */
     @GetMapping("/getRoomZoon")
     public TableDataInfo getRoomZoon(String deviceId ) {
-        if (deviceId.equals("")||deviceId==null){
+        if (deviceId==null || deviceId.equals("")){
             throw new ServiceException("设备Id不能为空！");
         }
         return getDataTable(iRoomZoneService.selectTRoomZoneByDeviceId(Long.valueOf(deviceId)));

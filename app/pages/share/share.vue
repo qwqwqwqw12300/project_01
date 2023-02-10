@@ -21,10 +21,11 @@
 					</u-text>
 					<view class="ui-input">
 						<u-input length="11" type="number" v-model="shareForm.phone" placeholder="请输入手机号码"
-							:border="'none'" fontSize="28rpx" clearable>
+							:border="'none'" fontSize="28rpx"  clearable>
 							<template slot="suffix">
-								<u-button @tap="getContact" text="通讯录" size="mini" class="wd-sms ui-cont"
-									border="surround" style="width: 150rpx;height: 60rpx;;"></u-button>
+								<u-icon name="phone" size="30"></u-icon>
+					<!-- 			<u-button @tap="getContact" text="通讯录" size="mini" class="wd-sms ui-cont"
+									border="surround" style="width: 150rpx;height: 60rpx;;"></u-button> -->
 							</template>
 						</u-input>
 					</view>
@@ -35,7 +36,7 @@
 				<view class="ui-form-item">
 					<sms-input ref="sms" @reset="codeReset" :payload="smsPayload" @checked="checkedBySms" />
 				</view>
-				<view class="wd-btn-gloup"><button @click="submit">提交</button></view>
+				<view class="wd-btn-group"><button @click="submit">提交</button></view>
 			</view>
 		</view>
 		<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
@@ -309,7 +310,7 @@
 			// height: 60rpx;
 		}
 
-		.wd-btn-gloup {
+		.wd-btn-group {
 			margin: 120rpx 0;
 		}
 	}

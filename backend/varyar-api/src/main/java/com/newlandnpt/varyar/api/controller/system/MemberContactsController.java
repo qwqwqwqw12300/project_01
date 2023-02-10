@@ -81,7 +81,7 @@ public class MemberContactsController extends BaseController {
     public AjaxResult editMemberContacts(
             @RequestBody @Validated MemberContactsRequest memberContactsRequest) {
         AjaxResult ajax = AjaxResult.success();
-        if (memberContactsRequest.getMemberContactsId().equals("")|| memberContactsRequest.getMemberContactsId()==null){
+        if (memberContactsRequest.getMemberContactsId()==null||memberContactsRequest.getMemberContactsId().equals("")){
             ajax = AjaxResult.error("会员联络人Id不能为空！");
             return ajax;
         }
@@ -105,7 +105,7 @@ public class MemberContactsController extends BaseController {
     public AjaxResult removeMemberContacts(
             @RequestBody @Validated MemberContactsRequest memberContactsRequest) {
         AjaxResult ajax = AjaxResult.success();
-        if (memberContactsRequest.getMemberContactsId().equals("")|| memberContactsRequest.getMemberContactsId()==null){
+        if (memberContactsRequest.getMemberContactsId()==null||memberContactsRequest.getMemberContactsId().equals("")){
             ajax = AjaxResult.error("会员联络人Id不能为空！");
             return ajax;
         }
@@ -119,15 +119,15 @@ public class MemberContactsController extends BaseController {
     }
 
     private AjaxResult checkInfo(MemberContactsRequest memberContactsRequest,AjaxResult ajax){
-        if (memberContactsRequest.getPhoneName().equals("")|| memberContactsRequest.getPhoneName()==null){
+        if (memberContactsRequest.getPhoneName()==null || memberContactsRequest.getPhoneName().equals("")){
             ajax = AjaxResult.error("联络人姓名不能为空！");
             return ajax;
         }
-        if (memberContactsRequest.getPhone().equals("")|| memberContactsRequest.getPhone()==null){
+        if (memberContactsRequest.getPhone()==null || memberContactsRequest.getPhone().equals("")){
             ajax = AjaxResult.error("联络人手机号不能为空！");
             return ajax;
         }
-        if (memberContactsRequest.getOrderNum().equals("")|| memberContactsRequest.getOrderNum()==null){
+        if (memberContactsRequest.getOrderNum()==null || memberContactsRequest.getOrderNum().equals("")){
             ajax = AjaxResult.error("显示顺序不能为空！");
             return ajax;
         }

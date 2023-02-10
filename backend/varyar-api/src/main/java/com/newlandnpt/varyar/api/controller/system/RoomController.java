@@ -46,7 +46,7 @@ public class RoomController extends BaseController {
 * */
     @PostMapping("/list")
     public TableDataInfo list(@RequestBody @Validated RoomRequest roomRequest) {
-        if (roomRequest.getFamilyId().equals("")|| roomRequest.getFamilyId()==null){
+        if (roomRequest.getFamilyId()==null||roomRequest.getFamilyId().equals("")){
             throw new ServiceException(String.format("家庭Id不能为空！"));
         }
         startPage();
@@ -80,10 +80,10 @@ public class RoomController extends BaseController {
     public AjaxResult createRoom(
             @RequestBody @Validated RoomRequest roomRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (roomRequest.getName().equals("")|| roomRequest.getName()==null){
+        if (roomRequest.getName()==null||roomRequest.getName().equals("") ){
             return error("房间名称不能为空！");
         }
-        if (roomRequest.getFamilyId().equals("")|| roomRequest.getFamilyId()==null){
+        if (roomRequest.getFamilyId()==null||roomRequest.getFamilyId().equals("")){
             return error("家庭Id不能为空！");
         }
         //校验家庭信息是否存在
@@ -117,7 +117,7 @@ public class RoomController extends BaseController {
     public AjaxResult editRoom(
             @RequestBody @Validated RoomRequest roomRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (roomRequest.getRoomId().equals("")|| roomRequest.getRoomId()==null){
+        if (roomRequest.getRoomId()==null||roomRequest.getRoomId().equals("") ){
             ajax = ajax.error("房间Id不能为空！");
             return ajax;
         }
@@ -143,7 +143,7 @@ public class RoomController extends BaseController {
     public AjaxResult removeRoom(
             @RequestBody @Validated RoomRequest roomRequest){
         AjaxResult ajax = AjaxResult.success();
-        if (roomRequest.getRoomId().equals("")|| roomRequest.getRoomId()==null){
+        if (roomRequest.getRoomId()==null||roomRequest.getRoomId().equals("")){
             ajax = AjaxResult.error("房间Id不能为空！");
             return ajax;
         }
