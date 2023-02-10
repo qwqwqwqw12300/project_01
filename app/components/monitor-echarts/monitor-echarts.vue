@@ -85,7 +85,7 @@
 									position: ['50%', '50%'],
 									align: 'center',
 									color: 'rgba(0,0,0,0.3)',
-									fontSize: 30
+									fontSize: 20
 								},
 								itemStyle: {
 									color: 'rgba(0,0,0,0.1)'
