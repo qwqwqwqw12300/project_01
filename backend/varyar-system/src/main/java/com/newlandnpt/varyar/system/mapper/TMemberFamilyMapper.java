@@ -28,6 +28,7 @@ public interface TMemberFamilyMapper
      */
     public List<TMemberFamily> selectTMemberFamilyByFamilyId(Map map);
     public List<TMemberFamily>  selectTMemberFamilyByShare(Map map);
+    public List<TMemberFamily>  selectTMemberFamilyByshare(Long map);
     /**
      * 查询会员和家庭关联
      *
@@ -42,6 +43,13 @@ public interface TMemberFamilyMapper
      * @return 会员和家庭关联
      */
     public List<TMemberFamily> selectTMemberFamilyByMember(Long memberId);
+    /**
+     * 用 会员id 查询
+     *
+     * @param memberId
+     * @return 会员和家庭关联
+     */
+    public List<TMemberFamily> selectTMemberFamilyByCreMember(Long memberId);
     /**
      * 查询会员和家庭关联列表
      * 

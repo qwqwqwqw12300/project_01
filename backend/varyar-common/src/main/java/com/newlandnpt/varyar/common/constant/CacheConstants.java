@@ -38,6 +38,11 @@ public class CacheConstants
     public static final String T_DEVICE_KEY = "t_device:";
 
     /**
+     * vayyar终端访问控制  cache key
+     */
+    public static final String T_DEVICE_VAYYAR_ACCESS_KEY = "t_device_vayyar_access:";
+
+    /**
      * 终端离线列表 cache key
      */
     public static final String DEVICE_DISCONNECTION = "device_disconnection";

@@ -3,6 +3,7 @@ package com.newlandnpt.varyar.system.service.impl;
 import com.newlandnpt.varyar.common.core.domain.model.MemberLoginPwdRequest;
 import com.newlandnpt.varyar.common.core.domain.model.MemberLoginSmsRequest;
 import com.newlandnpt.varyar.common.exception.ServiceException;
+import com.newlandnpt.varyar.common.exception.user.UserException;
 import com.newlandnpt.varyar.common.exception.user.UserPasswordNotMatchException;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
@@ -37,8 +38,7 @@ public class MemberLoginServiceImpl implements IMemberLoginService {
 
         TMember tMember = memberMapper.selectMemberByPhone(phone);
         if (StringUtils.isNull(tMember)) {
-            log.info("登录会员：{} 不存在.", phone);
-            throw new ServiceException("登录用户：" + phone + " 不存在");
+            throw new UserException("user.not.exists",null);
         }
 
         boolean match = SecurityUtils.matchesPassword(pwd, tMember.getPassword());
@@ -53,7 +53,9 @@ public class MemberLoginServiceImpl implements IMemberLoginService {
     public TMember loginBySms(MemberLoginSmsRequest memberLoginSmsRequest) {
         String phone = memberLoginSmsRequest.getPhone();
         TMember tMember = memberMapper.selectMemberByPhone(phone);
-
+        if (StringUtils.isNull(tMember)) {
+            throw new UserException("user.not.exists",null);
+        }
         return tMember;
     }
 }
