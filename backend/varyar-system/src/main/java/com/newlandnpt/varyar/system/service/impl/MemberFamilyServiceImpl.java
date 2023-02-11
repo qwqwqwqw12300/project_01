@@ -58,6 +58,20 @@ public class MemberFamilyServiceImpl implements IMemberFamilyService
     public List<TMemberFamily> selectTMemberFamilyByMember(Long memberId){
         return tMemberFamilyMapper.selectTMemberFamilyByMember(memberId);
     }
+    /**被共享的家庭关系*/
+    public List<TMemberFamily> selectTMemberFamilyByshare(Long memberId){
+        return tMemberFamilyMapper.selectTMemberFamilyByshare(memberId);
+    }
+
+    /**
+     * 用 会员id 查询  创建的家庭关系
+     *
+     * @param memberId
+     * @return 会员和家庭关联
+     */
+    public List<TMemberFamily> selectTMemberFamilyByCreMember(Long memberId){
+        return tMemberFamilyMapper.selectTMemberFamilyByCreMember(memberId);
+    }
     /**
      * 查询会员和家庭关联列表
      * 
