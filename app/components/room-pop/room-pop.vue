@@ -108,29 +108,19 @@
 				if (!name) {
 					return uni.$u.toast('请完善房间信息');
 				}
-				const handle = this.mode === 'add' ? PostAddRoom : this.editRoom;
-				handle({
+				const handle = this.mode === 'add' ? PostAddRoom({
 					...this.form
-				}).then(res => {
+				}) : setDevice({
+					deviceId: this.deviceId,
+					...this.form
+				});
+				handle.then(res => {
 					uni.$u.toast('修改成功')
 					this.close();
 					setTimeout(() => {
 						this.$emit('update', res.data && res.data.roomId)
 					}, 500);
 				})
-			},
-
-			editRoom(form) {
-				const list = [PostEditRoom(form)];
-				return Promise.all([
-					// PostEditRoom(form),
-					setDevice({
-						...INIT_BINDFORM,
-						deviceId: this.deviceId,
-						familyId: form.familyId, // 家庭id
-						roomId: form.roomId // 房间id
-					})
-				])
 			},
 		}
 	};

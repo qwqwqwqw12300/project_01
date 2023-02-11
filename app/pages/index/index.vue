@@ -40,7 +40,8 @@
 							<!-- <text>共{{(familyItem.devices && familyItem.devices.length) || 0}}个设备</text>
 							<text>在线{{ getOnlineData(familyItem) }}个设备</text> -->
 						</view>
-						<u-text @click="goPage('/pages/share/share?familyId='+ familyItem.familyId)"
+						<u-text
+							@click="goPage('/pages/share/share?familyId='+ familyItem.familyId + '&name='+ familyItem.name)"
 							prefixIcon="share-square" size="28rpx" :align="'right'" :block="false" color="#fff"
 							:iconStyle="{
 							fontSize: '44rpx',

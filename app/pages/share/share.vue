@@ -7,7 +7,8 @@
 					<view>
 						<view class="ui-user-item" v-for="(item, idx) of shareList" :key="idx">
 							<u--text prefixIcon="account-fill" :iconStyle="{ color: '#fff', fontSize: '36rpx' }"
-								color="#fff" :text="item.userName || '未注册用户'"></u--text>
+								color="#fff" :text="item.phone + (item.regFlag === '0' ? '(未注册)' : '') || '未注册用户'">
+							</u--text>
 							<u-icon @click="remShare(item)" class="active" name="close-circle" color="#fff600"
 								size="36rpx">
 							</u-icon>
@@ -20,10 +21,10 @@
 					<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="分享人手机号码" color="#444" size="28rpx">
 					</u-text>
 					<view class="ui-input">
-						<u-input length="11" type="number" v-model="shareForm.phone" placeholder="请输入手机号码"
+						<u-input maxlength="11" type="number" v-model="shareForm.phone" placeholder="请输入手机号码"
 							:border="'none'" fontSize="28rpx" clearable>
 							<template slot="suffix">
-								<u-icon name="/static/images/phone-book.png" size="24"></u-icon>
+								<u-icon @tap="getContact" name="/static/images/phone-book.png" size="24"></u-icon>
 								<!-- 			<u-button @tap="getContact" text="通讯录" size="mini" class="wd-sms ui-cont"
 									border="surround" style="width: 150rpx;height: 60rpx;;"></u-button> -->
 							</template>
@@ -80,12 +81,15 @@
 				},
 				contactList: [],
 				contactShow: false,
+				/**家庭名称**/
+				name: ''
 			}
 		},
 		onLoad({
 			familyId,
-			phone
+			name
 		}) {
+			this.name = name;
 			Object.assign(this.shareForm, {
 				familyId
 			});
@@ -137,7 +141,7 @@
 			remShare(info) {
 				uni.showModal({
 					title: '提示',
-					content: '是否确认取消家庭分享',
+					content: `是否禁止会员${info.phone}共享${this.name || '家庭'}的所有设备`,
 					success: res => {
 						if (res.confirm) {
 							const {
@@ -217,7 +221,7 @@
 				this.contactShow = true
 				let type = plus.contacts.ADDRESSBOOK_PHONE
 				plus.contacts.getAddressBook(type, res => {
-					res.find(['displayName', 'phoneNumbers'], data => {
+					res.find([], data => {
 						this.contactList = data.map(n => {
 							const {
 								displayName: name,

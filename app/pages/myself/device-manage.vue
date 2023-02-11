@@ -7,7 +7,7 @@
 
 <template>
 	<view id="deviceManage">
-		<app-body>
+		<app-body :back="back">
 			<app-logo text="设备管理"></app-logo>
 			<view class="ui-menu">
 				<view v-for="(device, index) of devices" :key="'f' + index">
@@ -131,7 +131,12 @@
 						},
 					]
 				},
-				list: []
+				list: [],
+				back: () => {
+					uni.switchTab({
+						url: '/pages/myself/myself'
+					})
+				}
 			};
 		},
 		computed: {
@@ -171,6 +176,11 @@
 					text: ele.name,
 					value: ele.roomId
 				})))
+			},
+			back: () => {
+				uni.switchTab({
+					url: '/pages/myself/myself'
+				})
 			}
 		},
 		methods: {

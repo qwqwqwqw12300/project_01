@@ -26,7 +26,7 @@
 						</u-radio-group>
 					</view>
 					<view>
-						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="检测高度"></u-text>
+						<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="设备高度"></u-text>
 						<view class="ui-slider">
 							<u-slider min="10" max="60" v-model="editFrom.roomHeight" activeColor="#eeaa3d"
 								blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
@@ -71,13 +71,13 @@
 			<view class="ui-setting">
 				<view>
 					<view class="ui-switch">
-						<u-switch space="2" v-model="editFrom.fallFlag" activeValue="1" inactiveValue="0"
+						<u-switch space="2" v-model="editFrom.fallFlag" activeValue="0" inactiveValue="1"
 							activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
 						</u-switch>
 						<text>跌倒监控</text>
 					</view>
 					<view class="ui-switch">
-						<u-switch space="2" v-model="editFrom.existFlag" activeValue="1" inactiveValue="0"
+						<u-switch space="2" v-model="editFrom.existFlag" activeValue="0" inactiveValue="1"
 							activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
 						</u-switch>
 						<text>进出监控</text>
@@ -104,13 +104,13 @@
 					<view class="ui-timing">
 						<view class="ui-timing-pos">
 							<view class="ui-timing-switch">
-								<u-switch space="2" v-model="editFrom.inMonitorFlag" activeValue="1" inactiveValue="0"
+								<u-switch space="2" v-model="editFrom.inMonitorFlag" activeValue="0" inactiveValue="1"
 									activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
 								</u-switch>
 								<text>进入监控区域超时报警时间(分钟)</text>
 							</view>
 							<view class="ui-timing-switch">
-								<u-switch space="2" v-model="editFrom.outMonitorFlag" activeValue="1" inactiveValue="0"
+								<u-switch space="2" v-model="editFrom.outMonitorFlag" activeValue="0" inactiveValue="1"
 									activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
 								</u-switch>
 								<text>离开监控区域超时报警时间(分钟)</text>
@@ -202,8 +202,8 @@
 					roomLength: roomLength / 10,
 					startTime: getHoursTime(startTime) || 0,
 					endTime: getHoursTime(endTime) || 0,
-					entryTime: getMinute(entryTime) || 0,
-					departureTime: getMinute(departureTime) || 0
+					entryTime: entryTime * 60 || 0,
+					departureTime: departureTime * 60 || 0
 				});
 				this.close();
 			},
@@ -226,8 +226,8 @@
 				this.source = source;
 				this.editFrom = {
 					...form,
-					departureTime: getMinute(departureTime),
-					entryTime: getMinute(entryTime),
+					departureTime: departureTime / 60 || 0,
+					entryTime: entryTime / 60 || 0,
 					/**开始监控时间**/
 					startTime: uni.$u.timeFormat(startTime, 'hh:MM'),
 					/**结束监控时间**/

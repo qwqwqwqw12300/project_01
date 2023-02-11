@@ -39,7 +39,8 @@ export const formatNumber = n => {
  * @param {Array} pages 路由栈
  * @returns {string}
  */
-export const getCurPage = pages => {
+export const getCurPage = () => {
+	const pages = getCurrentPages();
 	const curPage = pages[pages.length - 1];
 	return curPage.route;
 }
@@ -93,9 +94,6 @@ export const isApp = () => {
 };
 
 
-/**
- * 对象深拷贝
- */
 /**
  * 对象合并深拷贝
  */
@@ -233,7 +231,7 @@ export const getMinute = (date) => {
 /**
  * 使用分钟计算时间戳 eg 1 -> 60000
  */
-export const minuteToTime = (min) => min && min * 60 * 1000;
+export const minuteToTime = (min) => min && min * 60;
 
 /**
  * 手机号校验 1开头 11位
