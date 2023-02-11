@@ -77,7 +77,7 @@ public class MemberLoginController extends BaseController {
         ajax.put(Constants.TOKEN, token);
         //更新登录信息
         try {
-           // tMember.setRegistrationId(memberLoginPwdRequest.getRegistrationId());
+            tMember.setRegistrationId(memberLoginPwdRequest.getRegistrationId());
             tMember.setRegistrationType(memberLoginPwdRequest.getRegistrationType());
             iMemberService.updateMember(tMember);
         }catch(Exception e){
