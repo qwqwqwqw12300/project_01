@@ -72,8 +72,16 @@
 		env
 	} from '../../config/env';
 	import {
+		push
+	} from '@/common/sdk/push.js';
+	import {
+		isApp,
+		isIos,
 		phoneValidator
 	} from '../../common/utils/util';
+	import {
+		setToken
+	} from '@/common/utils/auth.js';
 	export default {
 		data() {
 			return {
@@ -88,8 +96,17 @@
 					uuid: '',
 					code: ''
 				},
-				radiovalue: ['ag']
+				radiovalue: ['ag'],
+				registrationId: '',
 			};
+		},
+		computed: {
+			registrationType() {
+				return isIos() ? '1' : '0'
+			}
+		},
+		mounted() {
+			this.getRegistrationID();
 		},
 		methods: {
 			/**
@@ -149,17 +166,18 @@
 						phone: this.formParams.phone,
 						password: jsencrypt.setEncrypt(env.publicKey, this.formParams.pwd),
 						code: this.formParams.code,
-						smsUuid: this.formParams.uuid
+						smsUuid: this.formParams.uuid,
+						registrationType: this.registrationType,
+						registrationId: this.registrationId
 					}).then(res => {
-						uni.showModal({
-							title: '',
-							content: '注册成功，是否立即前往登录？',
-							success: res => {
-								if (res.confirm) {
-									this.goLogin();
-								}
-							}
-						});
+						setToken(res.token);
+						this.$store.dispatch('getPushMsgState');
+						uni.$u.toast('注册成功')
+						setTimeout(() => {
+							uni.switchTab({
+								url: '/pages/index/index'
+							});
+						}, 500);
 					}, err => {
 						this.$refs.sms.reset();
 					});
@@ -212,6 +230,14 @@
 			codeReset() {
 				console.log(12121);
 				this.$refs.codeRef.handleGetCaptcha();
+			},
+			/**
+			 * 获取登录设备注册号
+			 */
+			getRegistrationID() {
+				isApp() && push.getRegistrationID().then(res => {
+					this.registrationId = res
+				});
 			},
 		}
 	};
