@@ -218,27 +218,46 @@
 			 * 获取手机联系人
 			 */
 			getContact() {
-				this.contactShow = true
-				let type = plus.contacts.ADDRESSBOOK_PHONE
-				plus.contacts.getAddressBook(type, res => {
-					res.find([], data => {
-						this.contactList = data.map(n => {
-							const {
-								displayName: name,
-								phoneNumbers,
-							} = n
-							return {
-								name,
-								phone: phoneNumbers[0].value
-							}
+				this.contactList = []
+				Promise.all([this.getTypeContact(plus.contacts.ADDRESSBOOK_PHONE), this.getTypeContact(plus.contacts
+					.ADDRESSBOOK_SIM)]).then(res => {
+					const data = [...res[0], ...res[1]]
+					const obj = {}
+					this.contactList = data.reduce(function(item, next) {
+						obj[next.phone] ? '' : obj[next.phone] = true && item.push(next);
+						return item;
+					}, [])
+					this.contactShow = true
+				})
+			},
+			/**
+			 * 获取手机联系人
+			 */
+			getTypeContact(type) {
+				return new Promise((resolve, reject) => {
+					plus.contacts.getAddressBook(type, res => {
+						res.find([], data => {
+							const list = data.map(n => {
+								const {
+									displayName: name,
+									phoneNumbers,
+								} = n
+								return {
+									name,
+									phone: phoneNumbers[0].value
+								}
+							})
+							resolve(list)
+							// this.contactList.contacts(res)
+							// this.contactShow = true
 						})
-						this.contactShow = true
-					})
-				}, error => {
-					console.log(error)
-					uni.showToast({
-						title: '获取通讯录失败',
-						duration: 2000
+					}, error => {
+						console.log(error)
+						reject()
+						uni.showToast({
+							title: '获取通讯录失败',
+							duration: 2000
+						})
 					})
 				})
 			},

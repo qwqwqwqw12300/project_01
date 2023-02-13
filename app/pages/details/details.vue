@@ -212,7 +212,12 @@
 				startDate: uni.$u.timeFormat(date.setDate(date.getDate() - 3), 'yyyy-mm-dd'),
 				familyId: this.getFamilyList[0].value
 			});
-			this.selectObj.family = [this.getFamilyList]
+			this.selectObj.family = [
+				[{
+					text: '全部',
+					value: ''
+				}, ...this.getFamilyList]
+			]
 			this.selectEventInfo();
 		},
 		methods: {
