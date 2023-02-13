@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.newlandnpt.varyar.cloudBase.constant.CacheConstants;
 import com.newlandnpt.varyar.cloudBase.constant.VayyarCloudConstants;
 import com.newlandnpt.varyar.cloudBase.domain.Presence;
@@ -102,6 +103,7 @@ public class PresenceServiceImpl implements PresenceService {
     		String enentType = roomPresenceDetected ? VayyarCloudConstants.EVENT_ROOM_IN : VayyarCloudConstants.EVENT_ROOM_OUT;
     		t.setEventType(enentType);
     		SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    		log.info("发送进出房间事件: {}", enentType);
     		if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
                 log.error("MQ推送失败：{}", "进出房间事件");
             }
@@ -109,6 +111,7 @@ public class PresenceServiceImpl implements PresenceService {
     		if(oldRoomPresenceDetected && !roomPresenceDetected){
     			t.setEventType(VayyarCloudConstants.EVENT_ROOM_OUT);
     			SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    			log.info("发送进出房间事件: {}", VayyarCloudConstants.EVENT_ROOM_OUT);
     			if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
     	            log.error("MQ推送失败：{}", "出房间事件");
     	        }
@@ -116,6 +119,7 @@ public class PresenceServiceImpl implements PresenceService {
     		if(!oldRoomPresenceDetected && roomPresenceDetected){
     			t.setEventType(VayyarCloudConstants.EVENT_ROOM_IN);
     			SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    			log.info("发送进出房间事件: {}", VayyarCloudConstants.EVENT_ROOM_IN);
     			if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
     	            log.error("MQ推送失败：{}", "进房间事件");
     	        }
@@ -127,6 +131,7 @@ public class PresenceServiceImpl implements PresenceService {
     		String enentType = regionDetected0 == 1 ? VayyarCloudConstants.EVENT_REGION0_IN : VayyarCloudConstants.EVENT_REGION0_OUT;
     		t.setEventType(enentType);
     		SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    		log.info("发送进出区域0事件: {}", enentType);
     		if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
                 log.error("MQ推送失败：{}", "进出区域0事件");
             }
@@ -134,6 +139,7 @@ public class PresenceServiceImpl implements PresenceService {
     		if(oldRegionDetected0 == 1 && regionDetected0 == 0){
     			t.setEventType(VayyarCloudConstants.EVENT_REGION0_OUT);
     			SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    			log.info("发送进出区域0事件: {}", VayyarCloudConstants.EVENT_REGION0_OUT);
     			if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
     	            log.error("MQ推送失败：{}", "出区域0事件");
     	        }
@@ -141,6 +147,7 @@ public class PresenceServiceImpl implements PresenceService {
     		if(oldRegionDetected0 == 0 && regionDetected0 == 1){
     			t.setEventType(VayyarCloudConstants.EVENT_REGION0_IN);
     			SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    			log.info("发送进出区域0事件: {}", VayyarCloudConstants.EVENT_REGION0_IN);
     			if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
     	            log.error("MQ推送失败：{}", "进区域0事件");
     	        }
@@ -151,6 +158,7 @@ public class PresenceServiceImpl implements PresenceService {
     		String enentType = regionDetected1 == 1 ? VayyarCloudConstants.EVENT_REGION1_IN : VayyarCloudConstants.EVENT_REGION1_OUT;
     		t.setEventType(enentType);
     		SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    		log.info("发送进出区域1事件: {}", enentType);
     		if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
                 log.error("MQ推送失败：{}", "进出区域1事件");
             }
@@ -158,6 +166,7 @@ public class PresenceServiceImpl implements PresenceService {
     		if(oldRegionDetected1 == 1 && regionDetected1 == 0){
     			t.setEventType(VayyarCloudConstants.EVENT_REGION1_OUT);
     			SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    			log.info("发送进出区域1事件: {}", VayyarCloudConstants.EVENT_REGION1_OUT);
     			if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
     	            log.error("MQ推送失败：{}", "出区域1事件");
     	        }
@@ -165,6 +174,7 @@ public class PresenceServiceImpl implements PresenceService {
     		if(oldRegionDetected1 == 0 && regionDetected1 == 1){
     			t.setEventType(VayyarCloudConstants.EVENT_REGION1_IN);
     			SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    			log.info("发送进出区域1事件: {}", VayyarCloudConstants.EVENT_REGION1_IN);
     			if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
     	            log.error("MQ推送失败：{}", "进区域1事件");
     	        }
@@ -175,6 +185,7 @@ public class PresenceServiceImpl implements PresenceService {
     		String enentType = regionDetected2 == 1 ? VayyarCloudConstants.EVENT_REGION2_IN : VayyarCloudConstants.EVENT_REGION2_OUT;
     		t.setEventType(enentType);
     		SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    		log.info("发送进出区域2事件: {}", enentType);
     		if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
                 log.error("MQ推送失败：{}", "进出区域2事件");
             }
@@ -182,6 +193,7 @@ public class PresenceServiceImpl implements PresenceService {
     		if(oldRegionDetected2 == 1 && regionDetected2 == 0){
     			t.setEventType(VayyarCloudConstants.EVENT_REGION2_OUT);
     			SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    			log.info("发送进出区域2事件: {}", VayyarCloudConstants.EVENT_REGION2_OUT);
     			if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
     	            log.error("MQ推送失败：{}", "出区域2事件");
     	        }
@@ -189,6 +201,7 @@ public class PresenceServiceImpl implements PresenceService {
     		if(oldRegionDetected2 == 0 && regionDetected2 == 1){
     			t.setEventType(VayyarCloudConstants.EVENT_REGION2_IN);
     			SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    			log.info("发送进出区域2事件: {}", VayyarCloudConstants.EVENT_REGION2_IN);
     			if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
     	            log.error("MQ推送失败：{}", "进区域2事件");
     	        }
@@ -199,6 +212,7 @@ public class PresenceServiceImpl implements PresenceService {
     		String enentType = regionDetected3 == 1 ? VayyarCloudConstants.EVENT_REGION3_IN : VayyarCloudConstants.EVENT_REGION3_OUT;
     		t.setEventType(enentType);
     		SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    		log.info("发送进出区域3事件: {}", enentType);
     		if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
                 log.error("MQ推送失败：{}", "进出区域3事件");
             }
@@ -206,6 +220,7 @@ public class PresenceServiceImpl implements PresenceService {
     		if(oldRegionDetected3 == 1 && regionDetected3 == 0){
     			t.setEventType(VayyarCloudConstants.EVENT_REGION3_OUT);
     			SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    			log.info("发送进出区域3事件: {}", VayyarCloudConstants.EVENT_REGION3_OUT);
     			if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
     	            log.error("MQ推送失败：{}", "出区域3事件");
     	        }
@@ -213,6 +228,7 @@ public class PresenceServiceImpl implements PresenceService {
     		if(oldRegionDetected3 == 0 && regionDetected3 == 1){
     			t.setEventType(VayyarCloudConstants.EVENT_REGION3_IN);
     			SendResult result = rocketMQTemplate.syncSend(presenceTopic, MessageBuilder.withPayload(t).build());
+    			log.info("发送进出区域3事件: {}", VayyarCloudConstants.EVENT_REGION3_IN);
     			if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
     	            log.error("MQ推送失败：{}", "进区域3事件");
     	        }
