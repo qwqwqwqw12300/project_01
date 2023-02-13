@@ -17,7 +17,6 @@ public class MessageQueryRequest {
     /**
      *  家庭id
      * */
-    @NotBlank(message = "家庭id不能为空")
     @Size(min = 0, max = 20, message = "家庭id不能超过20个字符")
     private String familyId;
 
