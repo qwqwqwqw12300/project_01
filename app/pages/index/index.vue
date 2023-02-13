@@ -50,18 +50,18 @@
 					</view>
 					<view class="ui-device">
 						<view class="ui-list" v-for="room of familyItem.rooms" :key="room.roomId">
-							<template v-if="getDeives(room.roomId).deviceId">
-								<view class="ui-list-box active" @click="goDeciveDetails(getDeives(room.roomId))">
+							<template v-if="getDeives(room).deviceId">
+								<view class="ui-list-box active" @click="goDeciveDetails(getDeives(room))">
 									<image src="../../static/images/device.png"></image>
 									<text>{{room.name || '未命名房间'}}</text>
-									<text>{{getDeives(room.roomId).name || '未命名设备'}}</text>
+									<text>{{getDeives(room).name || '未命名设备'}}</text>
 									<view class="ui-list-static">
-										<u-icon :name="getDeives(room.roomId).onlineFlag === '1' ? 'wifi' : 'wifi-off'"
-											:color="getDeives(room.roomId).onlineFlag === '1' ? '#0dab1c' : '#ff4800'"
+										<u-icon :name="getDeives(room).onlineFlag === '1' ? 'wifi' : 'wifi-off'"
+											:color="getDeives(room).onlineFlag === '1' ? '#0dab1c' : '#ff4800'"
 											size="28"></u-icon>
 									</view>
-									<u-badge v-if="getDeives(room.roomId).msgNum" :offset="[-9, 0]"
-										:value="getDeives(room.roomId).msgNum" absolute>
+									<u-badge v-if="getDeives(room).msgNum" :offset="[-9, 0]"
+										:value="getDeives(room).msgNum" absolute>
 									</u-badge>
 								</view>
 							</template>
@@ -70,13 +70,14 @@
 								<view class="ui-list-box active" @click="bindDevice(room,familyItem.shareFlag)">
 									<u-icon name="info-circle" size="90rpx"></u-icon>
 									<text>{{room.name || '未命名房间'}}</text>
-									<text class="ui-link">点击绑定设备</text>
+									<text v-if="familyItem.shareFlag == '2'" class="ui-link">点击绑定设备</text>
+									<text v-else>暂无设备</text>
 								</view>
 							</template>
 							<!-- /空房间 -->
 						</view>
 						<!-- 新增房间 -->
-						<view class="ui-list">
+						<view class="ui-list" v-if="familyItem.shareFlag == '2'">
 							<view class="ui-list-box active" @click="addRoom(familyItem)">
 								<u-icon name="plus" size="70rpx"></u-icon>
 							</view>
@@ -127,19 +128,24 @@
 		computed: {
 			...mapState({
 				/**所有家庭列表**/
-				familyList: state => state.familyList
-			}),
+				familyList: state => state.familyList,
+				getDeives: state => {
+					return room => {
+						let obj = {};
+						if (state.familyList.length) {
+							const devices = state.familyList.find(ele => ele.familyId === room.familyId)
+								.devices.filter(ele => ele.roomId === room.roomId);
+							obj = devices[0] || {};
+						}
+						return obj;
+
+					}
+
+				}
+			}, ),
 			...mapGetters(['filterDevice']),
 			// 获取设备信息
-			getDeives: function() {
-				return roomId => {
-					const devices = this.filterDevice({
-						roomId
-					});
-					return devices[0] || {};
-				}
 
-			}
 		},
 		onShow() {
 			this.handleInitList();
@@ -233,7 +239,7 @@
 				familyId,
 				roomId
 			}, shareFlag) {
-				if (shareFlag !== '2') return uni.$u.toast('该房间不支持绑定')
+				if (shareFlag !== '2') return;
 				this.bindPayload = {
 					familyId,
 					roomId
