@@ -7,17 +7,15 @@ import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
 import com.newlandnpt.varyar.common.utils.uuid.UUID;
 import com.newlandnpt.varyar.system.domain.TEvent;
+import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.domain.TMemberFamily;
-import com.newlandnpt.varyar.system.service.IEventService;
-import com.newlandnpt.varyar.system.service.IJiGuangSendService;
-import com.newlandnpt.varyar.system.service.IMemberFamilyService;
+import com.newlandnpt.varyar.system.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.newlandnpt.varyar.system.mapper.TMsgMapper;
 import com.newlandnpt.varyar.system.domain.TMsg;
-import com.newlandnpt.varyar.system.service.IMsgService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +42,8 @@ public class MsgServiceImpl implements IMsgService
     private IMemberFamilyService memberFamilyService;
     @Autowired
     private IJiGuangSendService jiGuangSendService;
+    @Autowired
+    private IMemberService memberService;
     /**
      * 查询消息
      * 
@@ -223,6 +223,21 @@ public class MsgServiceImpl implements IMsgService
         }
 
         for(TMemberFamily memberFamily:memberFamilies){
+
+            if(memberFamily.getMemberId() == null){
+                log.warn(">>>>> 家庭id:{}对应会员id为null，忽略发送消息",memberFamily.getMemberFamilyId());
+                continue;
+            }
+
+            TMember member = memberService.selectMemberByMemberId(memberFamily.getMemberId());
+
+            if(member == null){
+                log.warn(">>>>> 家庭id:{}对应会员id:{}获取不到会员信息，忽略发送消息",memberFamily.getMemberFamilyId(),
+                        memberFamily.getMemberId());
+                continue;
+            }
+
+
             TMsg msg = new TMsg();
             msg.setMsgType(MSG_TYPE_APP);
             msg.setDeviceType(event.getDeviceType());
