@@ -114,6 +114,7 @@ public class MsgServiceImpl implements IMsgService
         //标志事件已处理
         TEvent tEvent = iEventService.selectTEventByEventId(tMsg.getEventId());
         if (tEvent!=null){
+            tEvent.setOperateTime(new Date());
             tEvent.setOperateFlag("1");
         }
         return iEventService.updateTEvent(tEvent);
@@ -128,6 +129,7 @@ public class MsgServiceImpl implements IMsgService
                 //标志事件已处理
                 TEvent tEvent = iEventService.selectTEventByEventId(item.getEventId());
                 if (tEvent!=null){
+                    tEvent.setOperateTime(new Date());
                     tEvent.setOperateFlag("1");
                 }
                 iEventService.updateTEvent(tEvent);
