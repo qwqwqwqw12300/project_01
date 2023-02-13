@@ -64,7 +64,7 @@
 						<graphic-input ref="codeRefbySms"></graphic-input>
 					</view>
 					<view class="ui-form-item">
-						<sms-input ref="sms" @reset="smsReset" :payload="smsPayload" @checked="checkedBySms">
+						<sms-input ref="sms" @reset="smsReset" :payload="smsPayload" smsType="1" @checked="checkedBySms">
 						</sms-input>
 					</view>
 					<view class="ui-bot">
@@ -279,7 +279,6 @@
 			 */
 			getRegistrationID() {
 				isApp() && push.getRegistrationID().then(res => {
-					console.log(res, 'lllllllllllll')
 					this.registrationId = res
 				});
 			},
