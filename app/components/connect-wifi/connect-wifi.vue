@@ -51,9 +51,7 @@
 				step: 'list'
 			};
 		},
-		created() {
-			this.info.wifi = this.list[0];
-		},
+		created() {},
 		methods: {
 			close() {
 				this.show = false;
@@ -61,6 +59,8 @@
 
 			open() {
 				this.show = true;
+				this.info.wifi = this.list[0] || {};
+				console.log(this.info.wifi, 'this.info.wifi');
 			},
 
 			/**
@@ -69,12 +69,12 @@
 			handleSelect(item) {
 				this.info.wifi = item;
 			},
-			
+
 			next() {
-				if(this.step === 'list') {
+				if (this.step === 'list') {
 					this.step = 'pwd';
 				} else {
-					if(this.info.pwd) {
+					if (this.info.pwd) {
 						this.$emit('confirm', this.info);
 						this.close();
 					} else {
@@ -83,12 +83,12 @@
 							title: '请输入wifi密码'
 						})
 					}
-				
+
 				}
 			},
-			
+
 			back() {
-				if(this.step === 'pwd') {
+				if (this.step === 'pwd') {
 					this.step = 'list';
 				} else {
 					this.$emit('close');
@@ -125,7 +125,7 @@
 				// }
 			}
 		}
-		
+
 		.wd-btn-group {
 			button {
 				&:nth-child(2) {
@@ -133,7 +133,7 @@
 				}
 			}
 		}
-		
+
 
 		.ui-list {
 			padding: 20rpx 60rpx 20rpx 20rpx;
@@ -142,6 +142,7 @@
 			width: 100%;
 			height: 300rpx;
 			overflow-y: scroll;
+
 			.ui-list-item {
 				// margin-left: 80rpx;
 				padding: 18rpx 34rpx;
@@ -172,6 +173,6 @@
 	}
 
 	.ui-pwd {
-		margin:50rpx 0 130rpx 0;
+		margin: 50rpx 0 130rpx 0;
 	}
 </style>

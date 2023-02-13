@@ -75,14 +75,14 @@ class Push {
 	 */
 	addConnectEventListener() {
 		this.jpushModule.addConnectEventListener(result => {
-			const connectEnable = result.connectEnable;
-			if (!connectEnable) {
-				uni.showToast({
-					icon: 'none',
-					title: '当前网络异常，请检查网络后重启应用',
-					duration: 3000
-				});
-			}
+			// const connectEnable = result.connectEnable;
+			// if (!connectEnable) {
+			// 	uni.showToast({
+			// 		icon: 'none',
+			// 		title: '当前网络异常，请检查网络后重启应用',
+			// 		duration: 3000
+			// 	});
+			// }
 		});
 	}
 

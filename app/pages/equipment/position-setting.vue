@@ -35,22 +35,22 @@
 					<!-- /跌倒监控默认不开启 -->
 					<view class="ui-switch">
 						<u-switch space="2" @change="onSwitch($event, 'existFlag')"
-							v-model="roomZones[activeZone].existFlag" activeValue="1" inactiveValue="0"
+							v-model="roomZones[activeZone].existFlag" activeValue="0" inactiveValue="1"
 							activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
 						</u-switch>
 						<text>区域监控</text>
 					</view>
-					<view class="ui-inMonitor" v-if="roomZones[activeZone].existFlag == 1">
+					<view class="ui-inMonitor" v-if="roomZones[activeZone].existFlag == 0">
 						<view class="ui-switch">
 							<u-switch space="2" @change="onSwitch($event, 'inMonitorFlag')"
-								v-model="roomZones[activeZone].inMonitorFlag" activeValue="1" inactiveValue="0"
+								v-model="roomZones[activeZone].inMonitorFlag" activeValue="0" inactiveValue="1"
 								activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
 							</u-switch>
 							<text>有人员停留的超时报警间隔</text>
 						</view>
 						<view class="ui-inMonitor-date"
 							:class="animation.inMonitorFlag.doing && animation.inMonitorFlag.class"
-							:style="{height: roomZones[activeZone].inMonitorFlag == 1 ? '280rpx' : '0'}">
+							:style="{height: roomZones[activeZone].inMonitorFlag == 0 ? '280rpx' : '0'}">
 							<view class="ui-date-list">
 								<view :class="{active: roomZones[activeZone].entryTime === item}" :key="item + 'time'"
 									v-for="item of timeList" @click="onTimeBtn(item, 'entryTime')">
@@ -65,14 +65,14 @@
 						</view>
 						<view class="ui-switch">
 							<u-switch space="2" @change="onSwitch($event, 'outMonitorFlag')"
-								v-model="roomZones[activeZone].outMonitorFlag" activeValue="1" inactiveValue="0"
+								v-model="roomZones[activeZone].outMonitorFlag" activeValue="0" inactiveValue="1"
 								activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
 							</u-switch>
 							<text>区域无人报警</text>
 						</view>
 						<view class="ui-inMonitor-date"
 							:class="animation.outMonitorFlag.doing && animation.outMonitorFlag.class"
-							:style="{height: roomZones[activeZone].outMonitorFlag == 1 ? '280rpx' : '0'}">
+							:style="{height: roomZones[activeZone].outMonitorFlag == 0 ? '280rpx' : '0'}">
 							<view class="ui-date-list">
 								<view :class="{active: roomZones[activeZone].departureTime === item}"
 									:key="item + 'inMonitor'" v-for="item of timeList"
@@ -311,8 +311,8 @@
 							Object.assign(ele, {
 								height: Math.abs((y1 - y2) * scale.y),
 								width: Math.abs((x1 - x2) * scale.x),
-								departureTime: getMinute(ele.departureTime),
-								entryTime: getMinute(ele.entryTime),
+								departureTime: ele.departureTime / 60 || 0,
+								entryTime: ele.entryTime / 60 || 0,
 								/**开始监控时间**/
 								startTime: uni.$u.timeFormat(ele.startTime, 'hh:MM'),
 								/**结束监控时间**/
@@ -332,7 +332,7 @@
 			onSwitch(status, type) {
 				if (this.animation[type]) {
 					this.animation[type].doing = true;
-					this.animation[type].class = status === '1' ? 'up' : 'down';
+					this.animation[type].class = status === '0' ? 'up' : 'down';
 					setTimeout(() => {
 						this.animation[type].doing = false;
 					}, 500);
@@ -596,7 +596,7 @@
 							roomId: this.deviceInfo.roomId,
 							deviceId: this.deviceInfo.deviceId,
 							z1: 0,
-							z2: this.deviceInfo.parameter.deviceLocation.roomHeight,
+							z2: 1,
 							width,
 							height
 						},

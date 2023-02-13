@@ -17,7 +17,7 @@
 						<!-- 2022年10月11日 11：22 -->
 					</view>
 					<view class="ui-box active" @click="details(item)">
-						<u-badge :isDot="item.readFlag !== '1'" absolute :offset="[-3, -4]"></u-badge>
+						<u-badge :isDot="item.readFlag !== '1'" absolute :offset="[-3, 3]"></u-badge>
 						<text>{{item.noticeTitle}}</text>
 						<u-text size="25rpx" color="#666" :lines="3" :text="item.noticeContent"></u-text>
 						<view class="ui-detail">
@@ -76,7 +76,7 @@
 						noticeId
 					}).then(res => {
 						this.messageList.find(n => {
-							return n.noticeId = noticeId
+							return n.noticeId === noticeId
 						}).readFlag = '1'
 					});
 				}
@@ -193,6 +193,10 @@
 			word-wrap: break-word;
 			word-break: normal;
 			text-indent: 1em;
+		}
+
+		button {
+			width: 300rpx;
 		}
 	}
 </style>

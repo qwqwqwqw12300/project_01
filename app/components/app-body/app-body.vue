@@ -8,8 +8,8 @@
 <template>
 	<scroll-view :scroll-y="true" class="wd-body" :style="bodyStyle">
 		<view class="wd-bg">
-			<u-navbar v-if="!hideTitle" :leftText="leftText" :safeAreaInsetTop="false" :autoBack="true"
-				bgColor="transparent" leftIconColor="#fff" :fixed="false" />
+			<u-navbar v-if="!hideTitle" :leftText="leftText" :safeAreaInsetTop="false" :autoBack="!back"
+				bgColor="transparent" leftIconColor="#fff" :fixed="false" @leftClick="leftClick" />
 			<slot></slot>
 		</view>
 		<view class="wd-service" v-if="needService" @touchmove="onMove" @click="goService" @touchstart="onStart"
@@ -45,6 +45,10 @@
 				default: () => {
 					{}
 				}
+			},
+			/**自定义返回**/
+			back: {
+				default: undefined
 			}
 		},
 		data() {
@@ -71,6 +75,13 @@
 
 		},
 		methods: {
+			/**
+			 * 返回上一页
+			 * @param {Object}
+			 */
+			leftClick() {
+				this.back && this.back();
+			},
 			/**
 			 * 移动客服按钮
 			 */
@@ -114,16 +125,16 @@
 				})
 			}
 		}
-
 	}
 </script>
 
 <style lang="scss">
-	::v-deep{
-		.u-navbar__content__left__text{
+	::v-deep {
+		.u-navbar__content__left__text {
 			font-size: 34rpx;
 		}
 	}
+
 	.wd-body {
 		padding-top: var(--status-bar-height);
 		box-sizing: border-box;

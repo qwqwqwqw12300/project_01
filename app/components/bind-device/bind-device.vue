@@ -71,6 +71,7 @@
 					setDevice({
 						...INIT_DEIVCE_SET,
 						...this.payload,
+						deviceName: this.payload.name,
 						deviceId: this.deviceId,
 						flag: '1'
 					}).then(res => {

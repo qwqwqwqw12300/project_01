@@ -1,4 +1,10 @@
-<!-- 增加雷达设备 -->
+<!--
+* @Author: zhanch
+* @Date: 2023-02-11 11:31:28
+* @FilePath: /pages/equipment/radar.vue
+* @Description: 添加雷达波设备
+-->
+
 <template>
 	<app-body>
 		<!-- <view class="ui-title">
@@ -14,7 +20,7 @@
 
 			</view>
 		</view>
-		<view class="ui-satellite" @click="isEditShow = true">
+		<view class="ui-satellite" @click="addTest">
 			<image src="../../static/images/satellite.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-step">
@@ -40,13 +46,13 @@
 					size="30rpx" text="设备设置"></u-text>
 				<view class="ui-input">
 					<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="设备名称"></u-text>
-					<u--input placeholder="请输入设备名称" :maxlength="6" v-model="addForm.deviceName" border="bottom"
+					<u--input placeholder="请输入设备名称" :maxlength="6" v-model="editForm.deviceName" border="bottom"
 						clearable>
 					</u--input>
 				</view>
-				<view class="ui-input ui-radio">
+				<view class="ui-radio">
 					<u-text size="28rpx" prefixIcon="map" iconStyle="font-size: 36rpx" text="设备位置"></u-text>
-					<u-radio-group v-model="addForm.location" placement="row">
+					<u-radio-group v-model="editForm.location" placement="row">
 						<u-radio :customStyle="{margin: '20rpx'}" v-for="item of locationList" :key="item"
 							activeColor="#1aa208" :name="item" :label="item"></u-radio>
 					</u-radio-group>
@@ -61,13 +67,15 @@
 
 <script>
 	import {
-		PostcreDevice
+		PostcreDevice,
+		PosteditDevice
 	} from '../../common/http/api';
 
 	import {
 		vpsdk
 	} from '../../common/sdk/vpsdk.js';
 	import {
+		getCurPage,
 		isApp
 	} from '../../common/utils/util';
 
@@ -75,11 +83,16 @@
 		data() {
 			return {
 				/**创建设备信息**/
-				addForm: {
+				editForm: {
 					deviceName: '',
+					location: '',
+					deviceId: '壁挂'
+				},
+				addForm: {
+					deviceName: '未命名设备',
 					deviceNo: uni.$u.guid(),
 					deviceType: '0',
-					location: ''
+					location: '壁挂'
 				},
 				/**编辑展示**/
 				isEditShow: false,
@@ -91,10 +104,16 @@
 				locationList: [
 					'壁挂',
 					'顶挂',
-				]
+				],
+				isTest: false
 			}
 		},
 		methods: {
+			addTest() {
+				this.isTest = true;
+				this.isEditShow = true;
+			},
+
 			/**
 			 * 关闭编辑弹窗
 			 */
@@ -106,17 +125,36 @@
 			},
 
 			add() {
-				if (this.addForm.location && this.addForm.deviceName) {
-					PostcreDevice({
-						...this.addForm
+				if (this.isTest) {
+					PostcreDevice({ //  先添加设备
+						...this.addForm,
+						...this.editForm
 					}).then(res => {
 						uni.showToast({
 							icon: 'none',
 							title: '添加成功'
 						});
 						setTimeout(() => {
-							uni.navigateBack();
-						}, 2000)
+							uni.navigateTo({
+								url: '/pages/myself/device-manage'
+							})
+						}, 1000)
+					});
+					return;
+				}
+				if (this.editForm.location && this.editForm.deviceName) {
+					PosteditDevice({
+						...this.editForm
+					}).then(res => {
+						uni.showToast({
+							icon: 'none',
+							title: '添加成功'
+						});
+						setTimeout(() => {
+							uni.navigateTo({
+								url: '/pages/myself/device-manage'
+							});
+						}, 1000);
 
 					})
 				} else {
@@ -131,11 +169,13 @@
 			 * 添加设备
 			 */
 			async next() {
-				this.connectStatic = 'connect';
-				if (await this.permissionCheck()) {
-					try {
+				this.isTest = false;
+				try {
+					this.connectStatic = 'connect';
+					if (await this.permissionCheck()) {
 						vpsdk.connect(res => {
 							console.log(res, '回弹结果');
+							if (!getCurPage().includes('pages/equipment/radar')) return;
 							const {
 								type,
 								data
@@ -145,11 +185,19 @@
 									this.eventMsg = data;
 									break;
 								case 'wifi': // 选择wifi
+									console.log(data, 'wifi信息');
 									this.openWifi(data);
 									break;
 								case 'success': // 连接成功
-									this.addForm.deviceNo = data;
-									this.isEditShow = true;
+									PostcreDevice({ //  先添加设备
+										...this.addForm,
+										deviceNo: data
+									}).then(res => {
+										this.editForm.deviceId = res.data.deviceId;
+										this.isEditShow = true;
+									}, err => {
+										this.connectStatic = 'init'; // 异常重新配置
+									})
 									break;
 								default:
 									uni.showModal({
@@ -159,14 +207,14 @@
 									break;
 							}
 						});
-					} catch (e) {
-						uni.showModal({
-							title: '应用环境异常，请重试'
-						});
+
+					} else {
 						this.connectStatic = 'init';
 					}
-
-				} else {
+				} catch (e) {
+					uni.showModal({
+						title: '应用环境异常，请重试'
+					});
 					this.connectStatic = 'init';
 				}
 			},

@@ -68,7 +68,7 @@
 					</view>
 					<view>
 						<text>所属房间</text>
-						<text>{{details.RoomName || '未命名房间'}}</text>
+						<text>{{details.roomName || '未命名房间'}}</text>
 					</view>
 					<view>
 						<text>时间</text>

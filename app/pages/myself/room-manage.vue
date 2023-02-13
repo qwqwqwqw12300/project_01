@@ -182,6 +182,7 @@
 						if (res.confirm) {
 							relDevice({
 								deviceId: devices[0].deviceId,
+								flag: '3'
 							}).then(res => {
 								uni.$u.toast(res.msg);
 								setTimeout(() => {

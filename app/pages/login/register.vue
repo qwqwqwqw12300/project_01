@@ -6,7 +6,7 @@
 -->
 
 <template>
-	<app-body :needService="false" :hideTitle="true" :bodyStyle="{backgroundPositionY: '-200rpx'}">
+	<app-body :needService="false" :hideTitle="true" :bodyStyle="{backgroundPositionY: '-300rpx'}">
 		<view class="ui-body">
 			<text class="ui-logo">注册账号</text>
 			<u-form class="ui-form">
@@ -14,8 +14,8 @@
 					<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="手机号码" color="#444" size="28rpx">
 					</u-text>
 					<view class="ui-input" prop="formParams.phone">
-						<u-input placeholder="请输入手机号码" type="number" v-model="formParams.phone"  maxlength="11" :border="'none'" fontSize="28rpx"
-							clearable></u-input>
+						<u-input placeholder="请输入手机号码" type="number" v-model="formParams.phone" maxlength="11"
+							:border="'none'" fontSize="28rpx" clearable></u-input>
 					</view>
 				</view>
 				<view class="ui-form-item">
@@ -220,8 +220,6 @@
 <style lang="scss">
 	.ui-body {
 		text-align: center;
-		// background-position: 0 -100rpx;
-		background-position: 0 -230rpx;
 	}
 
 	.ui-logo {
@@ -229,7 +227,7 @@
 		width: 366rpx;
 		font-size: 69rpx;
 		color: #fff;
-		margin-top: 150rpx;
+		margin-top: 60rpx;
 		display: inline-block;
 		font-weight: bold;
 	}
