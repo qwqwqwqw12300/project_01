@@ -24,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="familyId != null "> and family_id = #{familyId}</if>
             <if test="orgId != null "> and org_id = #{orgId}</if>
+            <if test="delFlag != null "> and del_flag = #{delFlag}</if>
         </where>
     </select>
 

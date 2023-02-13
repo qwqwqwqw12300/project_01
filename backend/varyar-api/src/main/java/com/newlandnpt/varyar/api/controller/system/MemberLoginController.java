@@ -4,6 +4,7 @@ import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.common.exception.user.UserException;
 import com.newlandnpt.varyar.common.utils.RSA.RsaUtils;
 import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
 import com.newlandnpt.varyar.common.core.domain.model.MemberLoginPwdRequest;
@@ -104,9 +105,6 @@ public class MemberLoginController extends BaseController {
 
         // 生成令牌
         TMember tMember = memberLoginService.loginBySms(memberLoginSmsRequest);
-        if (tMember==null){
-            return error("会员不存在，请先注册！");
-        }
         LoginUser loginUser = new LoginUser();
         loginUser.setMemberPhone(tMember.getPhone());
         loginUser.setMemberId(tMember.getMemberId());

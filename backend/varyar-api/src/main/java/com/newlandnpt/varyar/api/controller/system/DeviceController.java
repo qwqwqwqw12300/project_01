@@ -106,10 +106,10 @@ public class DeviceController extends BaseController {
         if(ajax!= null){
            return ajax;
         }
-        ajax = AjaxResult.success();
         TDevice device = new TDevice();
+        ajax = AjaxResult.success(device);
         if (deviceRequest.getDeviceName()==null||deviceRequest.getDeviceName().equals("")){
-            deviceRequest.setDeviceId(this.getUsername()+"的设备");
+            deviceRequest.setDeviceName(this.getUsername()+"的设备");
         }
         device.setName(deviceRequest.getDeviceName());
         device.setNo(deviceRequest.getDeviceNo());
@@ -206,10 +206,6 @@ public class DeviceController extends BaseController {
     }
 
     private AjaxResult checkInfo(DeviceRequest deviceRequest,AjaxResult ajax){
-        if (deviceRequest.getDeviceName()==null||deviceRequest.getDeviceName().equals("")){
-            ajax = AjaxResult.error("设备名称不能为空！");
-            return ajax;
-        }
         if (deviceRequest.getDeviceType()==null||deviceRequest.getDeviceType().equals("")){
             ajax = AjaxResult.error("设备类型不能为空！");
             return ajax;
@@ -323,8 +319,8 @@ public class DeviceController extends BaseController {
             dr.setOutMonitorFlag(deviceRequest.getOutMonitorFlag());
             dr.setExistFlag(deviceRequest.getExistFlag());
             dr.setFallFlag(deviceRequest.getFallFlag());
-            dr.setEntryTime(deviceRequest.getEntryTime()/1000);
-            dr.setDepartureTime(deviceRequest.getDepartureTime()/1000);
+            dr.setEntryTime(deviceRequest.getEntryTime());
+            dr.setDepartureTime(deviceRequest.getDepartureTime());
             dr.setStartTime(deviceRequest.getStartTime());
             dr.setEndTime(deviceRequest.getEndTime());
             radarwave.setDeviceRoomParameter(dr);

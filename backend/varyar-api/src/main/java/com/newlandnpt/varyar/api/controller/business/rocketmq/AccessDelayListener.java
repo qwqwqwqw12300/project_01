@@ -24,7 +24,7 @@ import java.util.List;
 @RocketMQMessageListener(topic = "${rocketmq.topic.accessDelay}", consumerGroup = "${rocketmq.group.accessDelay}")
 public class AccessDelayListener implements RocketMQListener<String> {
 
-    private static final Logger log = LoggerFactory.getLogger(AccessListener.class);
+    private static final Logger log = LoggerFactory.getLogger(AccessDelayListener.class);
 
     @Autowired
     private RedisCache redisCache;
@@ -36,26 +36,22 @@ public class AccessDelayListener implements RocketMQListener<String> {
 
     @Override
     public void onMessage(String s) {
-        log.debug("----" + System.currentTimeMillis() + "----" + " 监听到离开房间超时事件消息： " + s);
-        JSONObject jsonObject = JSON.parseObject(s);
-        //消息s格式
-        String deviceNo = jsonObject.getString("deviceNo");
-        //取出触发事件时的 时间戳 作为Redis标志key
-        long redisKey = jsonObject.getLongValue("time");
+        log.debug("----" + System.currentTimeMillis() + "----" + " 监听到进/出房间/区域超时事件消息： " + s);
 
-        //todoL 定义Redis中 进出事件（区域监控）相关的数据结构与key
-        String key = CacheConstants.T_DEVICE_KEY + ACCESS_DELAY_TOPIC + deviceNo;
-        List<Long> valueList = redisCache.getCacheList(key);
-        boolean flag = valueList.contains(redisKey);
+        //定义Redis中 进出事件（区域监控）相关的数据结构与key
+        String key =s;
+        JSONObject jsonObject = redisCache.getCacheObject(key);
 
         //判断事件
-        if (flag) {
+        if(jsonObject!=null){
             log.debug("超时事件触发");
+            String deviceNo = jsonObject.getString("deviceNo");
             deviceEventService.deviceAccessIssue(deviceNo);
             log.info("设备[" + deviceNo + "]进出房间事件结束");
-        } else {
+        }else{
             log.debug("不触发");
         }
+
         log.debug("离开房间超时事件结束");
     }
 }

@@ -36,7 +36,7 @@ public class MemberFamilyServiceImpl implements IMemberFamilyService
     }
     public List<TMemberFamily> selectTMemberFamilyByMemberFamilyId(Long FamilyId,Long memberId){
         Map map = new HashMap();
-        map.put("memberId",memberId);
+        map.put("memberId",""+memberId);
         map.put("familyId",FamilyId);
         return tMemberFamilyMapper.selectTMemberFamilyByFamilyId(map);
     }

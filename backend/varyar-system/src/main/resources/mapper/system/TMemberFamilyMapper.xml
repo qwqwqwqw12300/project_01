@@ -28,7 +28,7 @@
                create_time,
                update_time,
                phone,
-               (select m.user_name from t_member m where mf.member_id = m.member_id) as userName
+               (select m.phone from t_member m where mf.member_id = m.member_id) as userName
         from t_member_family mf
     </sql>
 

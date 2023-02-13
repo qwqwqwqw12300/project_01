@@ -42,7 +42,9 @@ public class MsgInfoController extends BaseController
     @GetMapping("/list")
     public AjaxResult list(TMsg tMsg)
     {
-
+        LoginUser loginUser = getLoginUser();
+        Long memberId = loginUser.getMemberId();
+        tMsg.setMemberId(memberId);
         List<TMsg> list = msgService.selectTMsgList(tMsg);
 
         return success(list);

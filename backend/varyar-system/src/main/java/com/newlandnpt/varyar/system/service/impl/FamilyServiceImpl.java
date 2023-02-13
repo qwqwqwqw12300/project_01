@@ -76,7 +76,9 @@ public class FamilyServiceImpl implements IFamilyService
         List<TMemberFamily> shares = iMemberFamilyService.selectTMemberFamilyByshare(memberId);
         if (shares!=null && shares.size()>0){
             for (TMemberFamily i : shares){
-                familyList.add(familyMapper.selectTFamilyByFamilyId(i.getFamilyId()));
+                TFamily family = familyMapper.selectTFamilyByFamilyId(i.getFamilyId());
+                family.setShareFlag(i.getShareFlag());
+                familyList.add(family);
             }
         }
         return familyList;

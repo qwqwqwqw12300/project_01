@@ -73,6 +73,8 @@ public class MessageController extends BaseController {
         tMsg.setOperateFlag(messageRequest.getReadFlag());
         tMsg.setStartDate(messageRequest.getStartDate());
         tMsg.setEndDate(messageRequest.getEndDate());
+        Long memberId = getLoginUser().getMemberId();
+        tMsg.setMemberId(memberId);
         List<TMsg> list = itMsgService.selectTMsgList(tMsg);
         return getDataTable(list);
     }

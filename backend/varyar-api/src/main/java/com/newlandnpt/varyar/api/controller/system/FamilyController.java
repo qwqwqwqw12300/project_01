@@ -12,6 +12,7 @@ import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.system.domain.*;
 import com.newlandnpt.varyar.system.service.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,6 +164,9 @@ public class FamilyController extends BaseController {
             @RequestBody @Validated ShareFamilyRequest shareFamilyRequest){
         AjaxResult ajax = AjaxResult.success();
         LoginUser loginUser = this.getLoginUser();
+        if(StringUtils.isBlank(shareFamilyRequest.getPhone())){
+            return error("分享手机号不能为空！");
+        }
         if(loginUser.getMemberPhone().equals(shareFamilyRequest.getPhone())){
             return error("不能分享给会员自己！");
         }
@@ -189,11 +193,11 @@ public class FamilyController extends BaseController {
         TMember tMemberQuery = iMemberService.selectMemberByPhone(shareFamilyRequest.getPhone());
         if (tMemberQuery!=null){
             TMemberFamily item = new TMemberFamily();
-            item.setMemberId(loginUser.getMemberId());
+            item.setMemberId(tMemberQuery.getMemberId());
             item.setCreateMemberId(this.getLoginUser().getMemberId());
             List<TMemberFamily> tMemberFamilys = iMemberFamilyService.selectTMemberFamilyList(item);
             if(tMemberFamilys.size()>0){
-                return error("当前家庭"+loginUser.getMemberPhone()+"的家已分享给会员"+tMemberQuery.getPhone()+"！");
+                return error("已分享给会员"+tMemberQuery.getPhone()+"！");
             }
         }else{
             TMemberFamily item = new TMemberFamily();
@@ -201,15 +205,15 @@ public class FamilyController extends BaseController {
             item.setCreateMemberId(loginUser.getMemberId());
             List<TMemberFamily> tMemberFamilys = iMemberFamilyService.selectTMemberFamilyList(item);
             if(tMemberFamilys.size()>0){
-                return error("当前家庭"+loginUser.getMemberPhone()+"的家已分享给会员"+shareFamilyRequest.getPhone()+"，请通知"+shareFamilyRequest.getPhone()+"尽快注册登录!");
+                return error("已分享给会员"+shareFamilyRequest.getPhone());
             }
         }
 
         //用手机号查询是否有此用户
         TMember member = iMemberService.selectMemberByPhone(shareFamilyRequest.getPhone());
         TMemberFamily tMemberFamily = new TMemberFamily();
+        tMemberFamily.setPhone(shareFamilyRequest.getPhone());
         if(member == null){
-            tMemberFamily.setPhone(shareFamilyRequest.getPhone());
             tMemberFamily.setMemberId(Long.valueOf(shareFamilyRequest.getPhone()));
         }else{
             tMemberFamily.setMemberId(member.getMemberId());
@@ -224,6 +228,12 @@ public class FamilyController extends BaseController {
         } catch (Exception e){
             log.error(e.getMessage());
             return error("分享我的家庭失败！");
+        }
+        String message;
+        if (tMemberQuery!=null){
+            message = "当前会员"+loginUser.getMemberPhone()+"的家已分享给会员"+tMemberQuery.getPhone()+"！";
+        }else{
+            message = "当前会员"+loginUser.getMemberPhone()+"的家已分享给会员"+shareFamilyRequest.getPhone()+"，请通知"+shareFamilyRequest.getPhone()+"尽快注册登录!";
         }
         return success(tMemberFamily);
     }

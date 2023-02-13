@@ -48,7 +48,7 @@ public class TMemberFamily extends BaseEntity
     private String regFlag;
 
     public String getRegFlag() {
-        if(this.getPhone()==null||this.getPhone().equals("")){
+        if(this.getUserName()==null||this.getUserName().equals("")){
             return "0";
         }else{
             return "1";

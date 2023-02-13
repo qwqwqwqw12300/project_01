@@ -5,21 +5,18 @@ import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.model.RadarRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.exception.ServiceException;
-import com.newlandnpt.varyar.system.domain.TFamily;
-import com.newlandnpt.varyar.system.domain.TMemberFamily;
-import com.newlandnpt.varyar.system.domain.TRoom;
-import com.newlandnpt.varyar.system.domain.TRoomZone;
-import com.newlandnpt.varyar.system.service.IFamilyService;
-import com.newlandnpt.varyar.system.service.IMemberFamilyService;
-import com.newlandnpt.varyar.system.service.IRoomService;
-import com.newlandnpt.varyar.system.service.IRoomZoneService;
+import com.newlandnpt.varyar.system.domain.*;
+import com.newlandnpt.varyar.system.service.*;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -42,6 +39,8 @@ public class RoomZoneController extends BaseController {
 
     @Autowired
     private IMemberFamilyService iMemberFamilyService;
+    @Autowired
+    private IDeviceService iDeviceService;
     /**
      * 设置雷达波设备 (创建和修改)
      * */
@@ -55,18 +54,41 @@ public class RoomZoneController extends BaseController {
             return error("区域类型不能为空！");
         }
         AjaxResult ajax = AjaxResult.success();
-        TRoomZone tRoomZone = new TRoomZone();
-        if (radarRequest.getRoomZoneId()!=null && !radarRequest.getRoomZoneId().equals("")){
-             tRoomZone = iRoomZoneService.selectTRoomZoneByRoomZoneId(Long.valueOf(radarRequest.getRoomZoneId()));
+        TRoomZone tRoomZone= null;
+        Long deviceId = Long.valueOf(radarRequest.getDeviceId());
+        TDevice.DeviceParameter parameter = iDeviceService.loadSettings(deviceId);
+        if(!(parameter instanceof TDevice.RadarWaveDeviceSettings)){
+            return error("设备不是雷达波设备！");
         }
+
+        TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
+
+        if (radarRequest.getRoomZoneId()!=null && !radarRequest.getRoomZoneId().equals("")
+                && CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getRoomZones())){
+
+             tRoomZone = radarWaveDeviceSettings.getRoomZones().stream()
+                     .filter(p->radarRequest.getRoomZoneId().equals(p.getRoomZoneId()+"") )
+                     .findAny()
+                     .orElse(null);
+        }
+
+        if(radarWaveDeviceSettings.getRoomZones() == null){
+            radarWaveDeviceSettings.setRoomZones(new ArrayList<>());
+        }
+
+        if(tRoomZone == null){
+            tRoomZone = new TRoomZone();
+            radarWaveDeviceSettings.getRoomZones().add(tRoomZone);
+        }
+
         tRoomZone.setZoneType(radarRequest.getZoneType());
         tRoomZone.setName(radarRequest.getName());
         tRoomZone.setFallFlag(radarRequest.getFallFlag());
         tRoomZone.setDeviceId(Long.valueOf(radarRequest.getDeviceId()));
         tRoomZone.setRoomId(Long.valueOf(radarRequest.getRoomId()));
         tRoomZone.setExistFlag(radarRequest.getExistFlag());
-        tRoomZone.setEntryTime(radarRequest.getEntryTime()/1000);
-        tRoomZone.setDepartureTime(radarRequest.getDepartureTime()/1000);
+        tRoomZone.setEntryTime(radarRequest.getEntryTime());
+        tRoomZone.setDepartureTime(radarRequest.getDepartureTime());
         tRoomZone.setFallFlag(radarRequest.getFallFlag());
         tRoomZone.setX1(radarRequest.getX1());
         tRoomZone.setX2(radarRequest.getX2());
@@ -79,13 +101,9 @@ public class RoomZoneController extends BaseController {
         tRoomZone.setStartTime(radarRequest.getStartTime());
         tRoomZone.setEndTime(radarRequest.getEndTime());
         try {
-            if (tRoomZone.getRoomZoneId()==null||tRoomZone.getRoomZoneId().equals("")){
-                iRoomZoneService.insertTRoomZone(tRoomZone);
-            }else {
-                iRoomZoneService.updateTRoomZone(tRoomZone);
-            }
+            iDeviceService.setSettings(deviceId,radarWaveDeviceSettings);
         } catch (Exception e){
-            log.error(e.getMessage());
+            log.error(">>>>>>",e);
             ajax = AjaxResult.error("设置雷达波设备失败！");
             return ajax;
         }
@@ -107,7 +125,20 @@ public class RoomZoneController extends BaseController {
         TFamily tFamily = iFamilyService.selectTFamilyByFamilyId(tRoom.getFamilyId());
         List<TMemberFamily> tMemberFamilys = iMemberFamilyService.selectTMemberFamilyByMemberFamilyId(tFamily.getFamilyId(),this.getLoginUser().getMemberId());
         if(tMemberFamilys.size()>0){
-            iRoomZoneService.deleteTRoomZoneByRoomZoneId(Long.valueOf(radarRequest.getRoomZoneId()));
+            Long deviceId = tRoomZone.getDeviceId();
+
+            TDevice.DeviceParameter parameter = iDeviceService.loadSettings(deviceId);
+            if(!(parameter instanceof TDevice.RadarWaveDeviceSettings)){
+                return error("设备不是雷达波设备！");
+            }
+            TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
+
+            if(CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getRoomZones())){
+                radarWaveDeviceSettings.setRoomZones(radarWaveDeviceSettings.getRoomZones().stream()
+                        .filter(p->radarRequest.getRoomZoneId().longValue()!=p.getRoomZoneId())
+                        .collect(Collectors.toList()));
+            }
+            iDeviceService.setSettings(deviceId,radarWaveDeviceSettings);
         }else {
             return error("无权删除房间子区域！");
         }

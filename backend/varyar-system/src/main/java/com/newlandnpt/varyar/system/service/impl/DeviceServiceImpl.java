@@ -57,6 +57,8 @@ public class DeviceServiceImpl implements IDeviceService {
     private IRoomZoneService roomZoneService;
     @Autowired
     private IDeviceFenceService deviceFenceService;
+    @Autowired
+    private StateMapper stateMapper;
 
     /**
      * 项目启动时，初始化参数到缓存
@@ -164,27 +166,18 @@ public class DeviceServiceImpl implements IDeviceService {
         return deviceMapper.deleteTDeviceByDeviceIds(deviceIds);
     }
 
-    /**
-     * 删除设备信息
-     *
-     * @param deviceId 设备主键
-     * @return 结果
-     */
-    @Override
-    public int deleteDeviceByDeviceId(Long deviceId) {
-        return deviceMapper.deleteTDeviceByDeviceId(deviceId);
-    }
     @Override
     @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
     public int deleteAndSaveDevice(Long deviceId){
         TDevice item =deviceMapper.selectTDeviceByDeviceId(deviceId);
-        item.setName(null);
+        item.setName(item.getNo());
         item.setDeviceId(null);
         item.setMemberId(null);
         item.setFamilyId(null);
         item.setRoomId(null);
-        deviceMapper.deleteTDeviceByDeviceId(deviceId);
-        return deviceMapper.insertTDevice(item);
+        redisCache.deleteObject(getCacheKey(item.getNo()));
+        stateMapper.deleteByDeviceId(item.getNo());
+        return deviceMapper.deleteTDeviceByDeviceId(deviceId);
     }
     @Override
     public int associate(TDevice device) {
@@ -420,7 +413,7 @@ public class DeviceServiceImpl implements IDeviceService {
                         .collect(Collectors.toList()));
             }else{
                 removeZones.addAll(roomZones.stream()
-                        .filter(p->radarWaveDeviceSettings.getRoomZones().stream().noneMatch(q->q.getRoomZoneId()!=null&&p.getRoomZoneId()== q.getRoomZoneId()))
+                        .filter(p->radarWaveDeviceSettings.getRoomZones().stream().noneMatch(q->q.getRoomZoneId()!=null&&p.getRoomZoneId()== q.getRoomZoneId().longValue()))
                         .map(p->p.getRoomZoneId())
                         .collect(Collectors.toList()));
                 radarWaveDeviceSettings.getRoomZones().forEach(zone->{
