@@ -11,6 +11,11 @@ public class MemberInfo implements Serializable{
 
     private String phone;
 
+    private String nickname;
+
+    private String avatar;
+
+
     public String getPhone() {
         return phone;
     }
@@ -33,5 +38,21 @@ public class MemberInfo implements Serializable{
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

@@ -73,7 +73,9 @@ drop table if exists t_member;
 create table t_member (
   member_id         bigint(20)      not null auto_increment    comment '会员id',
   no                varchar(50)     default ''                 comment '会员编号',
-  phone             varchar(11)      default ''                comment '会员手机号',
+  phone             varchar(11)     default ''                 comment '会员手机号',
+  nickname          varchar(30)     default                    comment '会员昵称',
+  avatar            varchar(100)    default ''                 comment '头像地址',
   password          varchar(100)    default ''                 comment '密码',
   distribute_flag   char(1)         default '0'                comment '分配标志（0未分配 1已分配）',
   member_parameter  text  			default null               comment '会员参数',

@@ -78,6 +78,26 @@ public class LoginUser implements UserDetails
     private Long memberId;
     //app用户密码
     private String memberPassword;
+    //会员昵称
+    private String nickname;
+    //会员头像
+    private String avatar;
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getMemberPassword() {
         return memberPassword;

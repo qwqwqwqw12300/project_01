@@ -98,4 +98,15 @@ public interface TMemberMapper
             " ${params.dataScope} " +
             " </script> ")
     public long notArrangeMemberCount(TMember member);
+
+
+    /**
+     * 修改用户头像
+     *
+     * @param memberPhone 用户名
+     * @param avatar 头像地址
+     * @return 结果
+     */
+    public int updateMemberAvatar(@Param("memberPhone") String memberPhone, @Param("avatar") String avatar);
+
 }

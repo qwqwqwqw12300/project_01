@@ -35,6 +35,15 @@ public class RegMemberServiceImpl implements IRegMemberService {
     public TMember regMember(RegMemberRequest regMemberRequest) {
         String phone = regMemberRequest.getPhone();
         String pwd = regMemberRequest.getPassword();
+        String nickname="";
+        if (regMemberRequest.getNickname() != null) {
+            nickname = regMemberRequest.getNickname();
+        }else
+        {
+            nickname = "会员"+regMemberRequest.getPhone();
+        }
+
+        String avatar = "";
 
         TMember tMemberQuery = memberMapper.selectMemberByPhone(phone);
         if (tMemberQuery != null) {
@@ -50,6 +59,9 @@ public class RegMemberServiceImpl implements IRegMemberService {
         tMember.setPhone(phone);
         tMember.setPassword(SecurityUtils.encryptPassword(pwd));
         tMember.setCreateTime(new Date());
+        //会员昵称及头像
+        tMember.setNickname(nickname);
+        tMember.setAvatar(avatar);
         memberMapper.insertMember(tMember);
         //查询会员与家庭表 添加共享家庭家庭信息
         List<TMemberFamily> mFList = iMemberFamilyService.selectTMemberFamilyByPhone(regMemberRequest.getPhone());

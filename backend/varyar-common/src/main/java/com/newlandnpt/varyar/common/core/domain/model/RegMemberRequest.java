@@ -22,6 +22,14 @@ public class RegMemberRequest {
     @NotBlank(message = "密码不能为空")
     @Size(min = 0, max = 200, message = "密码不能超过200个字符")
     private String password;
+    /**
+     * 会员昵称
+     */
+    private String nickname;
+    /**
+     * 会员头像
+     */
+    private String avatar;
 
     /**
      * 验证码
@@ -36,6 +44,22 @@ public class RegMemberRequest {
     @NotBlank(message = "唯一标识不能为空")
     @Size(min = 0, max = 32, message = "唯一标识不能超过32个字符")
     private String smsUuid;
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getPhone() {
         return phone;
