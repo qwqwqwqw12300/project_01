@@ -22,14 +22,6 @@ public class RegMemberRequest {
     @NotBlank(message = "密码不能为空")
     @Size(min = 0, max = 200, message = "密码不能超过200个字符")
     private String password;
-    /**
-     * 会员昵称
-     */
-    private String nickname;
-    /**
-     * 会员头像
-     */
-    private String avatar;
 
     /**
      * 验证码
@@ -45,21 +37,17 @@ public class RegMemberRequest {
     @Size(min = 0, max = 32, message = "唯一标识不能超过32个字符")
     private String smsUuid;
 
-    public String getNickname() {
-        return nickname;
-    }
+    /**
+     * 登录设备注册类型（0:android 1:ios）
+     */
+    @Size(min = 0, max = 1, message = "登录设备注册类型不能超过1个字符")
+    private String registrationType;
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
+    /**
+     * 会员登录设备注册号
+     */
+    @Size(min = 0, max = 100, message = "会员登录设备注册号不能超过100个字符")
+    private String registrationId;
 
     public String getPhone() {
         return phone;
@@ -91,5 +79,21 @@ public class RegMemberRequest {
 
     public void setSmsUuid(String smsUuid) {
         this.smsUuid = smsUuid;
+    }
+
+    public String getRegistrationType() {
+        return registrationType;
+    }
+
+    public void setRegistrationType(String registrationType) {
+        this.registrationType = registrationType;
+    }
+
+    public String getRegistrationId() {
+        return registrationId;
+    }
+
+    public void setRegistrationId(String registrationId) {
+        this.registrationId = registrationId;
     }
 }

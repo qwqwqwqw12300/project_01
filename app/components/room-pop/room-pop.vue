@@ -14,7 +14,7 @@
 			<view class="ui-add-box">
 				<view class="ui-input">
 					<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 40rpx" text="房间名称"></u-text>
-					<u-input maxlength="6" class="ui-room-name" v-model="form.name" placeholder="请输入房间名称"
+					<u-input :maxlength="6" class="ui-room-name" v-model="form.name" placeholder="请输入房间名称"
 						border="bottom" clearable>
 					</u-input>
 				</view>

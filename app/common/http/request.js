@@ -12,6 +12,9 @@ import {
 import {
 	isApp
 } from '../utils/util';
+import {
+	log
+} from '../utils/log';
 
 import {
 	getToken
@@ -44,10 +47,10 @@ const request = (url, options, process, method = 'POST') => {
 	// } else {
 	// 	_url = url;
 	// }
-	_url = (uni.getStorageSync('appHost') || env.basePath) + url;
+	_url = env.basePath + url;
 	const showLoading = process.showLoading !== false,
 		errorHandle = process.error !== false;
-	console.info('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));
+	console.log('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));
 	return new Promise((resolve, reject) => {
 		if (showLoading) uni.showLoading();
 		uni.request({
@@ -88,6 +91,11 @@ const request = (url, options, process, method = 'POST') => {
 				if (showLoading) uni.hideLoading();
 			},
 			fail: error => {
+				log.apm({
+					url,
+					options,
+					error
+				})
 				if (errorHandle) uni.showModal({
 					title: '提示',
 					content: '网络请求错误' + error.errMsg

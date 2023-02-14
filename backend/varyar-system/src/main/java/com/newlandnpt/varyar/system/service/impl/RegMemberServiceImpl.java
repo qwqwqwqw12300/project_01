@@ -59,9 +59,6 @@ public class RegMemberServiceImpl implements IRegMemberService {
         tMember.setPhone(phone);
         tMember.setPassword(SecurityUtils.encryptPassword(pwd));
         tMember.setCreateTime(new Date());
-        //会员昵称及头像
-        tMember.setNickname(nickname);
-        tMember.setAvatar(avatar);
         memberMapper.insertMember(tMember);
         //查询会员与家庭表 添加共享家庭家庭信息
         List<TMemberFamily> mFList = iMemberFamilyService.selectTMemberFamilyByPhone(regMemberRequest.getPhone());

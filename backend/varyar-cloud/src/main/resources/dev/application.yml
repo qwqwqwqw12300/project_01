@@ -9,7 +9,7 @@ vayyar:
   # 实例演示开关
   demoEnabled: true
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  profile: /home/app/varyar/api/uploadPath
+  profile: /home/centos/app/varyar/cloud/uploadPath
   # 获取ip地址开关
   addressEnabled: false
   # 验证码类型 math 数组计算 char 字符验证
@@ -18,7 +18,7 @@ vayyar:
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
-  port: 8081
+  port: 8088
   servlet:
     # 应用的访问路径
     context-path: /
@@ -47,7 +47,7 @@ spring:
   messages:
     # 国际化资源文件路径
     basename: i18n/messages
-  profiles:
+  profiles: 
     active: druid
   # 文件上传
   servlet:
@@ -64,13 +64,16 @@ spring:
   # redis 配置
   redis:
     # 地址
-    host: 10.173.150.202
+    #host: localhost
+    host: 192.168.132.204
     # 端口，默认为6379
-    port: 32383
+    #port: 6379
+    port: 16379
     # 数据库索引
     database: 0
     # 密码
-    password: $Redis123!
+    #password:
+    password: redis123 
     # 连接超时时间
     timeout: 10s
     lettuce:
@@ -92,7 +95,7 @@ token:
     secret: abcdefghijklmnopqrstuvwxyz
     # 令牌有效期（默认30分钟）
     expireTime: 30
-
+  
 # MyBatis配置
 mybatis:
     # 搜索指定包别名
@@ -103,10 +106,10 @@ mybatis:
     configLocation: classpath:mybatis/mybatis-config.xml
 
 # PageHelper分页插件
-pagehelper:
+pagehelper: 
   helperDialect: mysql
   supportMethodsArguments: true
-  params: count=countSql
+  params: count=countSql 
 
 # Swagger配置
 swagger:
@@ -116,7 +119,7 @@ swagger:
   pathMapping: /dev-api
 
 # 防止XSS攻击
-xss:
+xss: 
   # 过滤开关
   enabled: true
   # 排除链接（多个用逗号分隔）
@@ -125,43 +128,31 @@ xss:
   urlPatterns: /system/*,/monitor/*,/tool/*
 
 
-# 极光推送配置
-jpush:
-  appKey:  3c3f6b5746d37ea030455d83  # 极光平台应用的唯一标识
-  masterSecret: c234f905d96ea4659e07aafd   # masterSecret密钥 与 appKey 配合使用达到鉴权的目的
-  apnsProduction: false   # 是否生产环境，该配置只对ios通知有效（true生产环境，false开发环境）
-
-
 # rocketmq配置
 rocketmq:
-  name-server: rocketmq-ingress-huadong-4-internal.cmecloud.cn:9873
-  namespace: MQ_INST_1675403579920_yJyKHLuz
+  name-server: 192.168.132.204:9876
   producer:
-    group: ${rocketmq.namespace}%GID_group_msg
-    access-key: a1184af46e8544a8af861cca2b711bdf
-    secret-key: 99f1cf73e4354f06ba88750fc6cce6a6
-  consumer:
-    access-key: a1184af46e8544a8af861cca2b711bdf
-    secret-key: 99f1cf73e4354f06ba88750fc6cce6a6
+    group: group_msg
   group:
-    fall: ${rocketmq.namespace}%GID_group_fall
-    presence: ${rocketmq.namespace}%GID_group_presence
-    deviceState: ${rocketmq.namespace}%GID_group_deviceState
-    access: ${rocketmq.namespace}%GID_group_access
-    accessDelay: ${rocketmq.namespace}%GID_group_access_delay
-    location: ${rocketmq.namespace}%GID_group_location
-    deviceConfig: ${rocketmq.namespace}%GID_group_deviceConfig
-    deviceActive: ${rocketmq.namespace}%GID_group_deviceActive
+    net: group_net
+    fall: group_fall
+    presence: group_presence
+    deviceState: group_deviceState
+    access: group_access
+    location: group_location
+    deviceConfig: group_deviceConfig
+    deviceConfigErr: group_deviceConfigErr
+    deviceActive: group_deviceActive
   topic:
-    fall: ${rocketmq.namespace}%fallTopic
-    presence: ${rocketmq.namespace}%presenceTopic
-    deviceState: ${rocketmq.namespace}%deviceStateTopic
-    access: ${rocketmq.namespace}%accessTopic
-    accessDelay: ${rocketmq.namespace}%accessDelayTopic
-    location: ${rocketmq.namespace}%locationTopic
-    deviceConfig: ${rocketmq.namespace}%deviceConfigTopic
-    deviceActive: ${rocketmq.namespace}%deviceActiveTopic
-
+    net: netTopic
+    fall: fallTopic
+    presence: presenceTopic
+    deviceState: deviceStateTopic
+    access: accessTopic
+    location: locationTopic
+    deviceConfig: deviceConfigTopic
+    deviceConfigErr: deviceConfigErrTopic
+    deviceActive: deviceActiveTopic
 
 location:
   gaode:
@@ -179,6 +170,10 @@ location:
     fenceList: https://tsapi.amap.com/v1/track/geofence/list
     fenceTerminalBind: https://tsapi.amap.com/v1/track/geofence/terminal/bind
     fenceTerminalStatus: https://tsapi.amap.com/v1/track/geofence/status/terminal
-  publicKey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDF4xuwZNWhVaQZguqxLBKhc2S1jKiJOzJS0YczxLPTH9l2Fa+zxZ/AzYci95KG9kFbvZEVyuFhR5UTsORc+ONsqTg/zx2+vJ7kI8h2/qtWNV6vH9JmgMVHl5CEpikXhZjOPutNmzcRKfzDbYwp274f6iDUi9GttlYR68qPBij8AQIDAQAB
-  privateKey: MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAMXjG7Bk1aFVpBmC6rEsEqFzZLWMqIk7MlLRhzPEs9Mf2XYVr7PFn8DNhyL3kob2QVu9kRXK4WFHlROw5Fz442ypOD/PHb68nuQjyHb+q1Y1Xq8f0maAxUeXkISmKReFmM4+602bNxEp/MNtjCnbvh/qINSL0a22VhHryo8GKPwBAgMBAAECgYEArGQGKiwd45fdBpCDbmdrr5T8ZiCsbijQ1U9Njm7NDZ7QbkvELkN6wZcLJA4zazm6hHZnn2mH4Jxgpa/TsZ7tV6KocRq4W/Txxf8c/aLW7X/vm9MyWgXk90mcKM2+hJHj7hnon3KQwpLJMqCJBZXhPhXOoHAaulOPBPpamryxqBUCQQDrECPMzgos00/uL+BVHHmRN/H4X19UStNmcd+ZYVWQJ3OrONYncU++N7qovW3omVflCOSAqghBIBxu6HMR2rLfAkEA14NKc+HdR1vczxNwm66rUsJE2N0NumYQkNOpsz59gERXAQVIakdzvBhyVbBWUoWRFTEpvmcrADzGzLZSyWgNHwJBAIjgYxhVOhOUEM0vz79/z0JCg4IPdyFMWQEkegGEbiB8+JvRgtKA5uBq7yRm+eMht87EeNp7KEdT/XqPnMHeyZ0CQA3e21nd/ZnsJagGPkcm1Mv8yOWURJ/slcBcfx2UNgudWmQsbN66Po6qnCE7ujKReib9BQzGIxRe1QSz71wbIE0CQQDRU/TyLk21xJ59dDVudXEt5EtPBNAAeqWY+I0lnzxAqkeylpK8D2BxFxytLH1p/+XIg8e6CNgz/zKumu1VLvbe
 
+
+# 极光推送配置
+jpush:
+  appKey: 3c3f6b5746d37ea030455d83  # 极光平台应用的唯一标识
+  masterSecret: c234f905d96ea4659e07aafd   # masterSecret密钥 与 appKey 配合使用达到鉴权的目的
+  apnsProduction: false   # 是否生产环境，该配置只对ios通知有效（true生产环境，false开发环境）

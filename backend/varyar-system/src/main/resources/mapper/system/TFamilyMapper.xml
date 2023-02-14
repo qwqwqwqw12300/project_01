@@ -23,10 +23,14 @@
                devicegroup_id,
                name, no, status, type,
             register_time,
-            location, family_id, member_id, room_id, distribute_flag, org_id, org_name, del_flag, create_by, create_time, update_by, update_time,
-            (select name from t_devicegroup where devicegroup_id = d.devicegroup_id) device_group_name,device_parameter,
+            location, family_id, member_id, room_id, distribute_flag, org_id, del_flag, create_by, create_time, update_by, update_time,device_parameter,
+            (select name from t_devicegroup where devicegroup_id = d.devicegroup_id) device_group_name,
             (select type from t_org where org_id = d.org_id) org_type,
             (select org_no from t_org where org_id = d.org_id) org_no,
+            (select org_name from t_org where org_id = d.org_id) org_name,
+            (select no from t_member where member_id = d.member_id) member_no,
+            (select phone from t_member where member_id = d.member_id) member_phone,
+            (select name from t_family where family_id = d.family_id) family_name,
             (select name from t_room where room_id = d.room_id) room_name
         from t_device d
         where d.family_id = #{familyId}  and d.del_flag ='0'
@@ -45,7 +49,10 @@
         <result property="registerTime" column="register_time"/>
         <result property="location" column="location"/>
         <result property="familyId" column="family_id"/>
+        <result property="familyName" column="family_name"/>
         <result property="memberId" column="member_id"/>
+        <result property="memberNo" column="member_no"/>
+        <result property="memberPhone" column="member_phone"/>
         <result property="roomId" column="room_id"/>
         <result property="roomName" column="room_name"/>
         <result property="distributeFlag" column="distribute_flag"/>
@@ -60,6 +67,19 @@
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
         <result property="msgNum" column="msgNum"/>
+        <collection property="deviceFences" ofType="TDeviceFence" select="selectFence" column="{deviceId = device_id}"/>
+    </resultMap>
+    <resultMap type="TDeviceFence" id="TDeviceFenceResult">
+        <result property="deviceFenceId"    column="device_fence_id"    />
+        <result property="geoFenceId"    column="geo_fence_id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="deviceNo"    column="device_no"    />
+        <result property="address"    column="address"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="radius"    column="radius"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
     </resultMap>
     <sql id="FamilyVo">
         select f.family_id, f.no, f.name, f.address, f.del_flag, f.create_time, f.update_time,f.create_by_id
@@ -68,6 +88,13 @@
         <include refid="FamilyVo"/>,(select 2 from dual) as share_flag
         from t_family f
     </sql>
+
+
+    <select id="selectFence" resultMap="TDeviceFenceResult">
+        select df.device_fence_id, df.geo_fence_id, df.device_id, df.device_no, df.address,
+               df.longitude, df.latitude, df.radius, df.create_time, df.update_time from t_device_fence df
+        where df.device_id = #{deviceId}
+    </select>
 
     <select id="selectTFamilyList" parameterType="TFamily" resultMap="TFamilyResult">
         <include refid="selectTFamilyVo"/>

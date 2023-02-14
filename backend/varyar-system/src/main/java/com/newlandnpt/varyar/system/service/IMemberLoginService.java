@@ -21,4 +21,6 @@ public interface IMemberLoginService {
      */
     TMember loginBySms(MemberLoginSmsRequest memberLoginSmsRequest);
 
+
+
 }

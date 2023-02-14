@@ -51,7 +51,6 @@ export const PostSetMsgInfo = (params) => http.post('/api/message/setMsgInfo', p
  */
 export const PostGetPushMsgState = (...params) => http.get.apply(this, ['/api/memberInfo/getMemInfo', ...params]);
 
-
 /* 
  *推送开关*
  */
@@ -86,7 +85,7 @@ export const PostEditContacts = (params) => http.post('/api/memberContacts/editM
 export const sendSms = (data) => http.post('/api/sendSms', data);
 
 /**验证码登录发送短信**/
-export const applyLoginBySms  = (data) => http.post('/api/applyLoginBySms ', data);
+export const applyLoginBySms = (data) => http.post('/api/applyLoginBySms ', data);
 
 /**短信登录**/
 export const loginBySms = (data) => http.post('/api/loginBySms', data);
@@ -305,7 +304,10 @@ export const GetRoomZone = (params) => http.get('/api/roomZone/getRoomZoon', par
 /**
  * 获取字典信息
  */
-export const GetDict = () => http.get('/api/dictData/getDict');
+export const GetDict = () => http.get('/api/dictData/getDict', {}, {
+	error: false,
+	showLoading: false
+});
 
 /**
  * 开启获取设备位置(实时)
@@ -315,6 +317,7 @@ export const GetStartDevice = (params) => http.get('/api/device/startNowInfo', p
  * 关闭获取设备位置(实时)
  */
 export const GetEndDevice = (params) => http.get('/api/device/endNowInfo', params);
+
 /**
  * 获取设备位置(实时)
  */
