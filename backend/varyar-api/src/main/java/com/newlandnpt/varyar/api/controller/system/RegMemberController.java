@@ -1,12 +1,16 @@
 package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.constant.CacheConstants;
+import com.newlandnpt.varyar.common.constant.Constants;
+import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.RSA.RsaUtils;
 import com.newlandnpt.varyar.common.core.domain.model.RegMemberRequest;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
+import com.newlandnpt.varyar.framework.web.service.TokenService;
+import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IRegMemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +42,8 @@ public class RegMemberController extends BaseController {
 
     @Value("${location.privateKey}")
     private String privateKey;
+    @Autowired
+    private TokenService tokenService;
 
     @PostMapping("/regMember")
     public AjaxResult regMember(
@@ -62,7 +68,14 @@ public class RegMemberController extends BaseController {
             return error("注册失败");
         }
         try {
-            regMemberService.regMember(regMemberRequest);
+
+            TMember tMember = regMemberService.regMember(regMemberRequest);
+            LoginUser loginUser = new LoginUser();
+            loginUser.setMemberPhone(tMember.getPhone());
+            loginUser.setMemberId(tMember.getMemberId());
+            loginUser.setMemberPassword(tMember.getPassword());
+            String token = tokenService.createToken(loginUser);
+            ajax.put(Constants.TOKEN, token);
         } catch (ServiceException e){
             log.error(e.getMessage());
             return error(e.getMessage());

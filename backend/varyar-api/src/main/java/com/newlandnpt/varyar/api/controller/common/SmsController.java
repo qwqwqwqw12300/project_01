@@ -8,6 +8,7 @@ import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
+import com.newlandnpt.varyar.system.service.IMemberService;
 import com.newlandnpt.varyar.system.service.ISmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

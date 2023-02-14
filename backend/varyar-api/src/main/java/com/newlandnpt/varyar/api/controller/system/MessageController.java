@@ -112,7 +112,7 @@ public class MessageController extends BaseController {
         try {
             itMsgService.updateTMsg(msg);
         }  catch (Exception e){
-            return error("设置推送消息开关异常！");
+            return error("标记消息状态异常！");
         }
         return ajax;
     }
