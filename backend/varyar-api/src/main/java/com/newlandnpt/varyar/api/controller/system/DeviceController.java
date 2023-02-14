@@ -139,6 +139,7 @@ public class DeviceController extends BaseController {
                 }
             }else{
                 iDeviceService.insertDevice(device);
+                log.debug(">>>>> 设备创建成功，返回报文：{}",JSON.toJSONString(ajax));
             }
         } catch (Exception e){
             log.error(e.getMessage());
