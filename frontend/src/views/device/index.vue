@@ -14,7 +14,7 @@
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
-          <el-form-item label="设备名称" prop="orgId">
+          <el-form-item label="设备名称" prop="name">
             <el-input
               v-model="queryParams.name"
               placeholder="设备名称"
@@ -23,7 +23,7 @@
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
-          <el-form-item label="设备类型" prop="status">
+          <el-form-item label="设备类型" prop="type">
             <el-select
               v-model="queryParams.type"
               placeholder="请选择设备类型"
