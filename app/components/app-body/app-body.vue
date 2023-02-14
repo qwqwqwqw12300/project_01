@@ -6,10 +6,11 @@
 -->
 
 <template>
-	<scroll-view :scroll-y="true" class="wd-body" :style="bodyStyle">
+	<scroll-view :scroll-y="true" :class="{'wd-body-bg': bg}" class="wd-body" :style="bodyStyle">
 		<view class="wd-bg">
 			<u-navbar v-if="!hideTitle" :leftText="leftText" :safeAreaInsetTop="false" :autoBack="!back"
-				bgColor="transparent" leftIconColor="#fff" :fixed="false" @leftClick="leftClick" />
+				:bgColor="bg ? 'transparent': '#fff'" :leftIconColor="bg ? '#fff' : '#000'" :fixed="false"
+				@leftClick="leftClick" />
 			<slot></slot>
 		</view>
 		<view class="wd-service" v-if="needService" @touchmove="onMove" @click="goService" @touchstart="onStart"
@@ -49,6 +50,10 @@
 			/**自定义返回**/
 			back: {
 				default: undefined
+			},
+			/**是否需要背景**/
+			bg: {
+				default: true
 			}
 		},
 		data() {
@@ -96,7 +101,6 @@
 					if (pageY > windowTop && pageY < windowHeight - 100) this.$store.commit('setServiceAxisY',
 						pageY);
 				}, 10);
-
 			},
 			/**
 			 * 选中客服按钮
@@ -141,10 +145,13 @@
 		height: calc(100vh - var(--window-bottom));
 		width: 100%;
 		overflow: scroll;
-		background-image: url('@/static/images/bg2.png');
 		background-repeat: no-repeat;
 		background-size: cover;
-		background-color: #fff;
+		background-color: #f2f2f2;
+	}
+
+	.wd-body-bg {
+		background-image: url('@/static/images/bg2.png');
 	}
 
 	.wd-bg {

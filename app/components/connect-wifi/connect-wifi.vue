@@ -59,7 +59,9 @@
 
 			open() {
 				this.show = true;
-				this.info.wifi = this.list[0] || {};
+				this.$nextTick(() => {
+					this.info.wifi = this.list[0] || {};
+				});
 				console.log(this.info.wifi, 'this.info.wifi');
 			},
 
@@ -75,6 +77,9 @@
 					this.step = 'pwd';
 				} else {
 					if (this.info.pwd) {
+						if (this.info.wifi.ssid) {
+							this.info.wifi = this.list[0];
+						}
 						this.$emit('confirm', this.info);
 						this.close();
 					} else {

@@ -217,14 +217,14 @@ export const versionCompare = (curV, reqV) => {
  * hh:MM 获取时间戳 eg： 01:00
  */
 export const getHoursTime = (date) => {
-	return date && new Date('1970-1-1 ' + date + ':00').getTime();
+	return date && new Date('1970/1/1 ' + date + ':00').getTime();
 }
 
 /**
  * hh:MM 获取分钟 eg： 01:00 => 60
  */
 export const getMinute = (date) => {
-	return date && new Date('1970-1-1 ' + date + ':00').getHours();
+	return date && new Date('1970/1/1 ' + date + ':00').getHours();
 }
 
 

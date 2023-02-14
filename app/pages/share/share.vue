@@ -54,7 +54,6 @@
 </template>
 
 <script>
-	import UQRCode from '@/uni_modules/Sansnn-uQRCode/js_sdk/uqrcode/uqrcode.js';
 	import {
 		PostRemShareFamily,
 		PostShareFamily,
@@ -67,7 +66,6 @@
 		data() {
 			return {
 				show: false,
-				text: 'uQRCode',
 				size: 200,
 				/**已分享家庭列表**/
 				shareList: [],
@@ -218,16 +216,16 @@
 			 * 获取手机联系人
 			 */
 			getContact() {
-				this.contactList = []
+				this.contactList = [];
 				Promise.all([this.getTypeContact(plus.contacts.ADDRESSBOOK_PHONE), this.getTypeContact(plus.contacts
 					.ADDRESSBOOK_SIM)]).then(res => {
-					const data = [...res[0], ...res[1]]
-					const obj = {}
+					const data = [...res[0], ...res[1]];
+					const obj = {};
 					this.contactList = data.reduce(function(item, next) {
 						obj[next.phone] ? '' : obj[next.phone] = true && item.push(next);
 						return item;
-					}, [])
-					this.contactShow = true
+					}, []);
+					this.contactShow = true;
 				})
 			},
 			/**
@@ -244,15 +242,15 @@
 								} = n
 								return {
 									name,
-									phone: phoneNumbers[0].value
+									phone: phoneNumbers[0] && phoneNumbers[0].value
 								}
-							})
+							});
 							resolve(list)
 							// this.contactList.contacts(res)
 							// this.contactShow = true
-						})
+						});
+
 					}, error => {
-						console.log(error)
 						reject()
 						uni.showToast({
 							title: '获取通讯录失败',

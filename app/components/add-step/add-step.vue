@@ -43,7 +43,7 @@
 			 * 添加房间下一步
 			 */
 			roomNext(roomId) {
-				console.log(roomId, 'roomId');
+				this.getAllFamily();
 				this.roomId = roomId;
 				this.$refs.bindDev.open();
 			},

@@ -85,6 +85,9 @@ export const PostEditContacts = (params) => http.post('/api/memberContacts/editM
 /**发送短信**/
 export const sendSms = (data) => http.post('/api/sendSms', data);
 
+/**验证码登录发送短信**/
+export const applyLoginBySms  = (data) => http.post('/api/applyLoginBySms ', data);
+
 /**短信登录**/
 export const loginBySms = (data) => http.post('/api/loginBySms', data);
 

@@ -13,7 +13,8 @@
 				:text="mode === 'add' ? '新建家庭': '修改家庭'"></u-text>
 			<view class="ui-input">
 				<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="家庭名称"></u-text>
-				<u--input v-model="form.familyName" placeholder="请输入家庭名称" border="bottom" clearable></u--input>
+				<u-input v-model="form.familyName" placeholder="请输入家庭名称" maxlength="6" border="bottom" clearable>
+				</u-input>
 			</view>
 			<view class="ui-input">
 				<u-text size="28rpx" prefixIcon="map-fill" iconStyle="font-size: 36rpx" text="家庭地址(必填)"></u-text>
