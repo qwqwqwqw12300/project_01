@@ -10,7 +10,7 @@
 		<view id="system">
 			<app-logo text="系统消息"></app-logo>
 			<scroll-view class="ui-list" @refresherrefresh="onRefresh" refresher-enabled scroll-y="true"
-				:refresher-triggered="triggered">
+				:refresher-triggered="triggered" refresher-background="transparent">
 				<view class="ui-item" v-for="item in messageList" :key="item.noticeId">
 					<view class="ui-date">
 						{{ item.createTime }}

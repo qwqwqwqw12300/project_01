@@ -23,7 +23,8 @@
 <script>
 	import {
 		sendSms,
-		checkSms
+		checkSms,
+		applyLoginBySms,
 	} from '@/common/http/api.js';
 	import {
 		phoneValidator
@@ -35,6 +36,7 @@
 				default: () => {
 					return {
 						sendSms,
+						applyLoginBySms,
 						checkSms
 					}
 				}
@@ -45,6 +47,12 @@
 					return {}
 				}
 			},
+			/**发送短信类型、区分验证码登录短信及其它*/
+			smsType: {
+				type: String,
+				default: '0', //0: 普通短信验证，1: 登录短信验证
+			}
+
 		},
 		emit: ['checked'],
 		data() {
@@ -76,10 +84,11 @@
 				if (!phoneValidator(payload.phone)) {
 					return uni.$u.toast('请填写正确的手机号码')
 				}
+				const Interface = this.smsType === '0' ? this.urls.sendSms : this.urls.applyLoginBySms
 				if (this.verification(payload)) {
 					this.suffix = '发送中..';
 					this.status = 'send';
-					this.urls.sendSms && this.urls.sendSms(payload).then(res => {
+					Interface && Interface(payload).then(res => {
 						Object.assign(this.checkPayLoad, {
 							uuid: res.smsUuid,
 							phone: payload.phone

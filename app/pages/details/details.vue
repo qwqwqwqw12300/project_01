@@ -210,8 +210,9 @@
 			Object.assign(this.eventInfo, {
 				endDate: uni.$u.timeFormat(date, 'yyyy-mm-dd'),
 				startDate: uni.$u.timeFormat(date.setDate(date.getDate() - 3), 'yyyy-mm-dd'),
-				familyId: this.getFamilyList[0].value
+				familyId: this.getFamilyList[0] && this.getFamilyList[0].value
 			});
+			console.log(this.eventInfo, 'this.eventInfo');
 			this.selectObj.family = [
 				[{
 					text: '全部',

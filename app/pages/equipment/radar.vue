@@ -46,9 +46,9 @@
 					size="30rpx" text="设备设置"></u-text>
 				<view class="ui-input">
 					<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="设备名称"></u-text>
-					<u--input placeholder="请输入设备名称" :maxlength="6" v-model="editForm.deviceName" border="bottom"
+					<u-input placeholder="请输入设备名称" :maxlength="6" v-model="editForm.deviceName" border="bottom"
 						clearable>
-					</u--input>
+					</u-input>
 				</view>
 				<view class="ui-radio">
 					<u-text size="28rpx" prefixIcon="map" iconStyle="font-size: 36rpx" text="设备位置"></u-text>
@@ -174,7 +174,6 @@
 					this.connectStatic = 'connect';
 					if (await this.permissionCheck()) {
 						vpsdk.connect(res => {
-							console.log(res, '回弹结果');
 							if (!getCurPage().includes('pages/equipment/radar')) return;
 							const {
 								type,
@@ -195,6 +194,7 @@
 									}).then(res => {
 										this.editForm.deviceId = res.data.deviceId;
 										this.isEditShow = true;
+										this.connectStatic = 'init';
 									}, err => {
 										this.connectStatic = 'init'; // 异常重新配置
 									})

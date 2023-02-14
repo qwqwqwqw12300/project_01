@@ -52,6 +52,9 @@
 	import {
 		phoneValidator
 	} from '../../common/utils/util';
+	import {
+		removeToken
+	} from '@/common/utils/auth.js';
 	export default {
 		data() {
 			return {
@@ -88,8 +91,11 @@
 					password: jsencrypt.setEncrypt(env.publicKey, this.form.password)
 				}).then(res => {
 					uni.$u.toast(res.msg)
+					removeToken()
 					setTimeout(() => {
-						this.handleBack()
+						uni.reLaunch({
+							url: '/pages/login/login'
+						})
 					}, 500)
 				}, err => {
 					this.$refs.newSmsRef.reset();

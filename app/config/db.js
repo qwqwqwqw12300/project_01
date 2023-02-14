@@ -39,8 +39,8 @@ export const ZONE = {
 	x2: 0,
 	y1: 0,
 	y2: 0,
-	z1: 100,
-	z2: 100,
+	z1: 0,
+	z2: 1,
 	width: '',
 	height: '',
 	// /**进入报警区域时间**/
@@ -56,9 +56,9 @@ export const ZONE = {
 	/**离开报警区域时间**/
 	departureTime: 0,
 	/**开始监控时间**/
-	startTime: 0,
+	startTime: '00:00',
 	/**结束监控时间**/
-	endTime: 0,
+	endTime: '23:59',
 	/**进入监控区域报警**/
 	inMonitorFlag: 1,
 	/**离开监控区域报警**/

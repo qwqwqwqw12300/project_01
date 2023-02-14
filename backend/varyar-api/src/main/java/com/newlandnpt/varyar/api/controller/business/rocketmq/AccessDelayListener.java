@@ -1,8 +1,6 @@
 package com.newlandnpt.varyar.api.controller.business.rocketmq;
 
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.system.service.DeviceEventService;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -11,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * 离开房间事件 延迟消息监听器
@@ -46,7 +42,10 @@ public class AccessDelayListener implements RocketMQListener<String> {
         if(jsonObject!=null){
             log.debug("超时事件触发");
             String deviceNo = jsonObject.getString("deviceNo");
-            deviceEventService.deviceAccessIssue(deviceNo);
+            String type = jsonObject.getString("type");
+            String areaName = jsonObject.getString("areaName");
+            int delayTime = jsonObject.getIntValue("delayTime");
+            deviceEventService.deviceAccessIssue(deviceNo,areaName , type, delayTime);
             log.info("设备[" + deviceNo + "]进出房间事件结束");
         }else{
             log.debug("不触发");

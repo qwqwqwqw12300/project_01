@@ -74,6 +74,8 @@ public class AccessListener implements RocketMQListener<String> {
         String type = jsonObject.getString("type");
         int peopleCount = jsonObject.getIntValue("peopleCount");
         String timeStr = jsonObject.getString("time");
+        String areaName = jsonObject.getString("areaName");
+        String deviceName = jsonObject.getString("deviceName");
         int delayTime = jsonObject.getIntValue("delayTime");
         //离开房间事件 Redis缓存key
         String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + deviceNo+":"+type+":"+peopleCount+":"+timeStr;
@@ -82,7 +84,10 @@ public class AccessListener implements RocketMQListener<String> {
         msgObject.put("deviceNo", deviceNo);
         msgObject.put("type", type);
         msgObject.put("time", timeStr);
+        msgObject.put("areaName", areaName);
+        msgObject.put("deviceName", deviceName);
         msgObject.put("peopleCount", peopleCount);
+        msgObject.put("delayTime", delayTime);
 
         MqDelayTime mqDelayTime = new MqDelayTime();
         int delayLevel = mqDelayTime.getDelayLevel(delayTime);

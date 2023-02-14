@@ -63,13 +63,14 @@ public class PresenceListener implements RocketMQListener<Presence> {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("devId",presence.getDeviceId());
 			jsonObject.put("type",ENTER_ROOM);
-			int peopleCount = presence.getTrackerTargets()==null?0:
-					presence.getTrackerTargets().size();
+			int peopleCount = presence.getRoomPresenceDetected()?1:0;
+//			int peopleCount = presence.getTrackerTargets()==null?0:
+//					presence.getTrackerTargets().size();
 			jsonObject.put("peopleCount",peopleCount);
 			jsonObject.put("time",presence.getTimestampMillis());
 			Calendar timeStampCalendar = Calendar.getInstance();
 			timeStampCalendar.setTime(presence.getTimestamp());
-			for(int i = peopleCount-1;i>=0;i++){
+			for(int i = peopleCount-1;i>=0;i--){
 				String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + presence.getDeviceNo()+":"+VayyarCloudConstants.EVENT_ROOM_OUT+":"+i+":*";
 				Collection<String> keys = redisCache.keys(redisKey);
 				redisCache.deleteObject(keys);
@@ -89,7 +90,8 @@ public class PresenceListener implements RocketMQListener<Presence> {
 				log.warn(">>>> 设备号：{},设备未开启进入监控，忽略进房间事件",presence.getDeviceNo());
 				return;
 			}
-
+			jsonObject.put("deviceName",device.getName());
+			jsonObject.put("areaName","房间");
 			if((radarWaveDeviceSettings.getDeviceRoomParameter().getStartTime()!=null)){
 				Calendar startTimeCalendar = Calendar.getInstance();
 				startTimeCalendar.setTime(radarWaveDeviceSettings.getDeviceRoomParameter().getStartTime());
@@ -98,9 +100,9 @@ public class PresenceListener implements RocketMQListener<Presence> {
 				startTimeCalendar.set(Calendar.MONTH,timeStampCalendar.get(Calendar.MONTH));
 				startTimeCalendar.set(Calendar.DAY_OF_MONTH,timeStampCalendar.get(Calendar.DAY_OF_MONTH));
 
-				if(startTimeCalendar.getTimeInMillis()<presence.getTimestampMillis()){
+				if(startTimeCalendar.getTimeInMillis()>presence.getTimestampMillis()){
 					log.info(">>>> 设备号：{},设备开启监控时间{},事件触发时间{}，未在监控时间范围内，忽略进房间事件",presence.getDeviceNo()
-							,radarWaveDeviceSettings.getDeviceRoomParameter().getStartTime(),presence.getTimestamp());
+							,startTimeCalendar.getTime(),presence.getTimestamp());
 					return;
 				}
 			}
@@ -112,9 +114,9 @@ public class PresenceListener implements RocketMQListener<Presence> {
 				endTimeCalendar.set(Calendar.MONTH,timeStampCalendar.get(Calendar.MONTH));
 				endTimeCalendar.set(Calendar.DAY_OF_MONTH,timeStampCalendar.get(Calendar.DAY_OF_MONTH));
 
-				if(endTimeCalendar.getTimeInMillis()>presence.getTimestampMillis()){
+				if(endTimeCalendar.getTimeInMillis()<presence.getTimestampMillis()){
 					log.info(">>>> 设备号：{},设备结束监控时间{},事件触发时间{}，未在监控时间范围内，忽略进房间事件",presence.getDeviceNo()
-							,radarWaveDeviceSettings.getDeviceRoomParameter().getEndTime(),presence.getTimestamp());
+							,endTimeCalendar.getTime(),presence.getTimestamp());
 					return;
 				}
 			}
@@ -128,14 +130,13 @@ public class PresenceListener implements RocketMQListener<Presence> {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("devId",presence.getDeviceId());
 			jsonObject.put("type",LEAVE_ROOM);
-			int peopleCount = presence.getTrackerTargets()==null?0:
-					presence.getTrackerTargets().size();
+			int peopleCount = presence.getRoomPresenceDetected()?1:0;
 			jsonObject.put("peopleCount",peopleCount);
 			jsonObject.put("time",presence.getTimestampMillis());
 			Calendar timeStampCalendar = Calendar.getInstance();
 			timeStampCalendar.setTime(presence.getTimestamp());
 
-			for(int i = peopleCount-1;i>=0;i++){
+			for(int i = peopleCount-1;i>=0;i--){
 				String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + presence.getDeviceNo()+":"+VayyarCloudConstants.EVENT_ROOM_IN+":"+i+":*";
 				Collection<String> keys = redisCache.keys(redisKey);
 				redisCache.deleteObject(keys);
@@ -156,7 +157,8 @@ public class PresenceListener implements RocketMQListener<Presence> {
 				return;
 			}
 
-
+			jsonObject.put("deviceName",device.getName());
+			jsonObject.put("areaName","房间");
 
 			if((radarWaveDeviceSettings.getDeviceRoomParameter().getStartTime()!=null)){
 				Calendar startTimeCalendar = Calendar.getInstance();
@@ -166,9 +168,9 @@ public class PresenceListener implements RocketMQListener<Presence> {
 				startTimeCalendar.set(Calendar.MONTH,timeStampCalendar.get(Calendar.MONTH));
 				startTimeCalendar.set(Calendar.DAY_OF_MONTH,timeStampCalendar.get(Calendar.DAY_OF_MONTH));
 
-				if(startTimeCalendar.getTimeInMillis()<presence.getTimestampMillis()){
+				if(startTimeCalendar.getTimeInMillis()>presence.getTimestampMillis()){
 					log.info(">>>> 设备号：{},设备开启监控时间{},事件触发时间{}，未在监控时间范围内，忽略离开房间事件",presence.getDeviceNo()
-							,radarWaveDeviceSettings.getDeviceRoomParameter().getStartTime(),presence.getTimestamp());
+							,startTimeCalendar.getTime(),presence.getTimestamp());
 					return;
 				}
 			}
@@ -180,9 +182,9 @@ public class PresenceListener implements RocketMQListener<Presence> {
 				endTimeCalendar.set(Calendar.MONTH,timeStampCalendar.get(Calendar.MONTH));
 				endTimeCalendar.set(Calendar.DAY_OF_MONTH,timeStampCalendar.get(Calendar.DAY_OF_MONTH));
 
-				if(endTimeCalendar.getTimeInMillis()>presence.getTimestampMillis()){
+				if(endTimeCalendar.getTimeInMillis()<presence.getTimestampMillis()){
 					log.info(">>>> 设备号：{},设备结束监控时间{},事件触发时间{}，未在监控时间范围内，忽略离开房间事件",presence.getDeviceNo()
-							,radarWaveDeviceSettings.getDeviceRoomParameter().getEndTime(),presence.getTimestamp());
+							,endTimeCalendar.getTime(),presence.getTimestamp());
 					return;
 				}
 			}
@@ -243,14 +245,14 @@ public class PresenceListener implements RocketMQListener<Presence> {
 		//清除缓存
 		switch (zoneInOut){
 			case in:
-				for(int i = peopleCount-1;i>=0;i++){
+				for(int i = peopleCount-1;i>=0;i--){
 					String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + presence.getDeviceNo()+":leave"+type.substring(5)+":"+i+":*";
 					Collection<String> keys = redisCache.keys(redisKey);
 					redisCache.deleteObject(keys);
 				}
 				break;
 			case out:
-				for(int i = peopleCount-1;i>=0;i++){
+				for(int i = peopleCount-1;i>=0;i--){
 					String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + presence.getDeviceNo()+":enter"+type.substring(5)+":"+i+":*";
 					Collection<String> keys = redisCache.keys(redisKey);
 					redisCache.deleteObject(keys);
@@ -298,33 +300,35 @@ public class PresenceListener implements RocketMQListener<Presence> {
 				throw new IllegalArgumentException("未适配的zoneInOut枚举类型："+zoneInOut);
 		}
 
+		jsonObject.put("deviceName",device.getName());
+		jsonObject.put("areaName","房间子区域["+radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName()+"]");
 
-		if((radarWaveDeviceSettings.getDeviceRoomParameter().getStartTime()!=null)){
+		if((radarWaveDeviceSettings.getRoomZones().get(zoneNo).getStartTime()!=null)){
 			Calendar startTimeCalendar = Calendar.getInstance();
-			startTimeCalendar.setTime(radarWaveDeviceSettings.getDeviceRoomParameter().getStartTime());
+			startTimeCalendar.setTime(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getStartTime());
 
 			startTimeCalendar.set(Calendar.YEAR,timeStampCalendar.get(Calendar.YEAR));
 			startTimeCalendar.set(Calendar.MONTH,timeStampCalendar.get(Calendar.MONTH));
 			startTimeCalendar.set(Calendar.DAY_OF_MONTH,timeStampCalendar.get(Calendar.DAY_OF_MONTH));
 
-			if(startTimeCalendar.getTimeInMillis()<presence.getTimestampMillis()){
+			if(startTimeCalendar.getTimeInMillis()>presence.getTimestampMillis()){
 				log.info(">>>> 设备号：{},设备开启监控时间{},事件触发时间{}，未在监控时间范围内，忽略{}{}号区域事件",presence.getDeviceNo()
-						,radarWaveDeviceSettings.getDeviceRoomParameter().getStartTime(),presence.getTimestamp()
+						,startTimeCalendar.getTime(),presence.getTimestamp()
 						,zoneInOut,zoneNo);
 				return null;
 			}
 		}
-		if((radarWaveDeviceSettings.getDeviceRoomParameter().getEndTime()!=null)){
+		if((radarWaveDeviceSettings.getRoomZones().get(zoneNo).getEndTime()!=null)){
 			Calendar endTimeCalendar = Calendar.getInstance();
-			endTimeCalendar.setTime(radarWaveDeviceSettings.getDeviceRoomParameter().getEndTime());
+			endTimeCalendar.setTime(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getEndTime());
 
 			endTimeCalendar.set(Calendar.YEAR,timeStampCalendar.get(Calendar.YEAR));
 			endTimeCalendar.set(Calendar.MONTH,timeStampCalendar.get(Calendar.MONTH));
 			endTimeCalendar.set(Calendar.DAY_OF_MONTH,timeStampCalendar.get(Calendar.DAY_OF_MONTH));
 
-			if(endTimeCalendar.getTimeInMillis()>presence.getTimestampMillis()){
+			if(endTimeCalendar.getTimeInMillis()<presence.getTimestampMillis()){
 				log.info(">>>> 设备号：{},设备结束监控时间{},事件触发时间{}，未在监控时间范围内，忽略{}{}号区域事件",presence.getDeviceNo()
-						,radarWaveDeviceSettings.getDeviceRoomParameter().getEndTime(),presence.getTimestamp()
+						,endTimeCalendar.getTime(),presence.getTimestamp()
 						,zoneInOut,zoneNo);
 				return null;
 			}

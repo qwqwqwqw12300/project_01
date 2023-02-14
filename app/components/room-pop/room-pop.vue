@@ -14,8 +14,9 @@
 			<view class="ui-add-box">
 				<view class="ui-input">
 					<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 40rpx" text="房间名称"></u-text>
-					<u--input class="ui-room-name" v-model="form.name" placeholder="请输入房间名称" border="bottom" clearable>
-					</u--input>
+					<u-input maxlength="6" class="ui-room-name" v-model="form.name" placeholder="请输入房间名称"
+						border="bottom" clearable>
+					</u-input>
 				</view>
 				<!-- <view v-if="mode === 'edit'">
 					<u-text size="28rpx" prefixIcon="plus-circle" iconStyle="font-size: 40rpx" text="绑定雷达波">
@@ -34,29 +35,7 @@
 	import {
 		PostAddRoom,
 		PostEditRoom,
-		setDevice
 	} from '@/common/http/api.js';
-	// const INIT_BINDFORM = {
-	// 	familyId: '',
-	// 	roomId: '',
-	// 	deviceId: '',
-	// 	deviceName: '',
-	// 	deviceType: '',
-	// 	deviceNo: '',
-	// 	deviceId: '',
-	// 	roomLeft: 100,
-	// 	roomHeight: 100,
-	// 	roomRight: 100,
-	// 	roomLength: 100,
-	// 	existFlag: 0,
-	// 	fallFlag: 0,
-	// 	entryTime: 0,
-	// 	departureTime: 0,
-	// 	startTime: 0,
-	// 	endTime: 0,
-	// 	inMonitorFlag: 0,
-	// 	outMonitorFlag: 0,
-	// };
 	export default {
 		props: {
 			/**模式add-添加家庭 edit-修改家庭**/
@@ -110,8 +89,7 @@
 				}
 				const handle = this.mode === 'add' ? PostAddRoom({
 					...this.form
-				}) : setDevice({
-					deviceId: this.deviceId,
+				}) : PostEditRoom({
 					...this.form
 				});
 				handle.then(res => {

@@ -1,7 +1,6 @@
 package com.newlandnpt.varyar.system.service.impl;
 
 import com.newlandnpt.varyar.common.constant.CacheConstants;
-import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.constant.DeviceConstants;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.system.domain.*;
@@ -67,6 +66,33 @@ public class DeviceEventServiceImpl implements DeviceEventService {
      * 事件操作标志默认值 0-未处理
      */
     private static final String AUTO_FLAG = "0";
+
+
+    /** 事件类型 离开房间 */
+    public static final String LEAVE_ROOM = "leave_room";
+
+    /** 事件类型 进入房间 */
+    public static final String ENTER_ROOM = "enter_room";
+
+    /** 事件类型 离开区域0 */
+    public static final String LEAVE_ZONE_0= "leave_zone_0";
+    /** 事件类型 进入区域0 */
+    public static final String ENTER_ZONE_0 = "enter_zone_0";
+
+    /** 事件类型 离开区域1 */
+    public static final String LEAVE_ZONE_1= "leave_zone_1";
+    /** 事件类型 进入区域1 */
+    public static final String ENTER_ZONE_1 = "enter_zone_1";
+
+    /** 事件类型 离开区域2 */
+    public static final String LEAVE_ZONE_2= "leave_zone_2";
+    /** 事件类型 进入区域2 */
+    public static final String ENTER_ZONE_2 = "enter_zone_2";
+
+    /** 事件类型 离开区域3 */
+    public static final String LEAVE_ZONE_3= "leave_zone_3";
+    /** 事件类型 进入区域3 */
+    public static final String ENTER_ZONE_3 = "enter_zone_3";
 
     @Override
     public void deviceStateIssue(String deviceNo) {
@@ -152,7 +178,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
     }
 
     @Override
-    public void deviceAccessIssue(String deviceNo) {
+    public void deviceAccessIssue(String deviceNo, String areaName, String type, long delayTime) {
         TDevice param = new TDevice();
         param.setNo(deviceNo);
         param.setStatus(STATUS_ACTIVATED);
@@ -168,9 +194,29 @@ public class DeviceEventServiceImpl implements DeviceEventService {
                 TDevice redisDev = redisCache.getCacheObject(cacheKey);
                 if (redisDev.getStatus().equals(STATUS_ACTIVATED)) {
                     //todoL Redis缓存设备结构
-                    triggerEvent(EVENT_LEVEL_HIGH, device, "设备 " + device.getName() + " 监控到房间内【有/无人】超过" + Constants.ACCESS_ISSUE_DELAY_THRITY + "分钟，请及时处理！");
+                    triggerEvent(EVENT_LEVEL_HIGH, device, "设备 " + device.getName() + " 监控到"+areaName+"内【"+typeFormat(type)+"】超过" + (delayTime/60) + "分钟，请及时处理！");
                 }
             }
+        }
+    }
+
+    private String typeFormat(String type) {
+        switch (type){
+            case ENTER_ROOM:
+            case ENTER_ZONE_0:
+            case ENTER_ZONE_1:
+            case ENTER_ZONE_2:
+            case ENTER_ZONE_3:
+                return "进入";
+            case LEAVE_ROOM:
+            case LEAVE_ZONE_0:
+            case LEAVE_ZONE_1:
+            case LEAVE_ZONE_2:
+            case LEAVE_ZONE_3:
+                return "离开";
+            default:
+                return "";
+
         }
     }
 

@@ -25,8 +25,11 @@ public interface DeviceEventService {
     /**
      * 进出房间事件
      * @param deviceNo
+     * @param areaName
+     * @param type
+     * @param delayTime
      */
-    void deviceAccessIssue(String deviceNo);
+    void deviceAccessIssue(String deviceNo, String areaName, String type, long delayTime);
 
     /**
      * 跌倒事件

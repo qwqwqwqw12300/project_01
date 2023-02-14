@@ -11,7 +11,7 @@
 			<app-logo text="设备管理"></app-logo>
 			<view class="ui-menu">
 				<view v-for="(device, index) of devices" :key="'f' + index">
-					<view class="ui-title">{{device.name}}</view>
+					<view class="ui-title" v-if="device.list.length">{{device.name}}</view>
 					<u-grid col="2">
 						<u-grid-item v-for="(item, index) in device.list" :key="index">
 							<view class="ui-menu-item active" :border="false" @click="edit(item)">
@@ -176,11 +176,6 @@
 					text: ele.name,
 					value: ele.roomId
 				})))
-			},
-			back: () => {
-				uni.switchTab({
-					url: '/pages/myself/myself'
-				})
 			}
 		},
 		methods: {
@@ -415,6 +410,11 @@
 		onShow() {
 			this.init();
 		},
+
+		onBackPress(event) {
+			if (event.from === 'backbutton') this.back();
+
+		}
 	};
 </script>
 
