@@ -74,6 +74,9 @@ public class RegMemberController extends BaseController {
             loginUser.setMemberPhone(tMember.getPhone());
             loginUser.setMemberId(tMember.getMemberId());
             loginUser.setMemberPassword(tMember.getPassword());
+            //会员昵称及头像地址
+            loginUser.setNickname(tMember.getNickname());
+            loginUser.setAvatar(tMember.getAvatar());
             String token = tokenService.createToken(loginUser);
             ajax.put(Constants.TOKEN, token);
         } catch (ServiceException e){
