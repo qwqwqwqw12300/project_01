@@ -412,6 +412,7 @@
 		},
 
 		onBackPress(event) {
+			console.log('物理返回', event);
 			if (event.from === 'backbutton') this.back();
 
 		}

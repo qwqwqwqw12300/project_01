@@ -6,99 +6,159 @@
 -->
 
 <template>
-	<app-body leftText="返回">
-		<app-logo text="子区域设置"></app-logo>
+	<app-body :bg="false" leftText="返回">
+		<!-- <app-logo text="子区域设置"></app-logo> -->
 		<view id="setting">
-			<view class="ui-movable">
-				<view class="mova-box">
-					<movable-area :style="getStyle">
-						<view class="ui-cell" @touchstart="touchstart($event, item, index)"
-							@touchmove.stop.prevent="touchMove($event, item, index)" @touchend="touchend($event, item)"
-							:class="{active: item.active, hover: item.status === 'hover', edit: roomZones.length&&roomZones[activeZone].roomZoneId === item.roomZoneId}"
-							:style="cell" v-for="(item, index) of area" :key="index + 'c'">
-						</view>
-						<movable-view :x="sizeInfo.x - 10" :y="sizeInfo.y + 10">
-							<view class="ui-device"><text class="ui-zone-name">设备</text></view>
-						</movable-view>
-					</movable-area>
+			<view class="ui-set-box">
+				<view class="ui-title">
+					子区域设置
+				</view>
+				<view class="ui-movable">
+					<view class="mova-box">
+						<movable-area :style="getStyle">
+							<view class="ui-cell" @touchstart="touchstart($event, item, index)"
+								@touchmove.stop.prevent="touchMove($event, item, index)"
+								@touchend="touchend($event, item)"
+								:class="{active: item.active, hover: item.status === 'hover', edit: roomZones.length&&roomZones[activeZone].roomZoneId === item.roomZoneId}"
+								:style="cell" v-for="(item, index) of area" :key="index + 'c'">
+							</view>
+							<movable-view :x="sizeInfo.x - 10" :y="sizeInfo.y + 10">
+								<view class="ui-device"><text class="ui-zone-name">设备</text></view>
+							</movable-view>
+						</movable-area>
+					</view>
 				</view>
 			</view>
-			<view class="ui-list">
-				<template v-for="(item, index) of roomZones">
-					<button :class="activeZone === index ? 'active' : ''" @click="acitve(index)"
-						:key="index">{{ item.name || '未命名' }}</button>
-				</template>
-			</view>
-			<!-- 区域设置 -->
-			<view class="ui-setting" :key="activeZone" v-if="roomZones && roomZones.length">
-				<view class="ui-setting-box" v-if="roomZones[activeZone].zoneType != 1">
-					<!-- /跌倒监控默认不开启 -->
-					<view class="ui-switch">
+			<view class="ui-set-box" v-if="roomZones[activeZone]">
+				<!-- 优化 -->
+				<view class="ui-list">
+					<u-tabs lineWidth="108rpx" :list="getTabList" @click="acitve">
+					</u-tabs>
+				</view>
+				<u-cell-group>
+					<u-cell title="区域监控">
 						<u-switch space="2" @change="onSwitch($event, 'existFlag')"
-							v-model="roomZones[activeZone].existFlag" activeValue="0" inactiveValue="1"
-							activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
+							v-model="roomZones[activeZone].existFlag" activeValue="0" inactiveValue="1" size="20"
+							slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
 						</u-switch>
-						<text>区域监控</text>
-					</view>
-					<view class="ui-inMonitor" v-if="roomZones[activeZone].existFlag == 0">
+					</u-cell>
+					<u-cell title="有人员停留的超时报警间隔">
+						<u-switch space="2" @change="onSwitch($event, 'inMonitorFlag')"
+							v-model="roomZones[activeZone].inMonitorFlag" activeValue="0" inactiveValue="1" size="20"
+							slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
+						</u-switch>
+					</u-cell>
+					<u-cell>
+						<view slot="title" class="ui-slot-title">
+							<view class="ui-date-list">
+								<u-button type="primary" :plain="true" size="mini" text="1分钟"></u-button>
+								<u-button type="primary" :plain="true" size="mini" text="五分钟"></u-button>
+								<u-button type="primary" :plain="true" size="mini" text="十分钟"></u-button>
+							</view>
+						</view>
+						<view slot="right-icon">
+							<u-radio-group placement="column">
+								<u-radio activeColor="#FEAE43" label="自定义时间" :name="1">
+								</u-radio>
+							</u-radio-group>
+						</view>
+					</u-cell>
+					<u-cell>
+						<view slot="title" class="ui-slot-title">
+							<text>选择自定义时间</text>
+						</view>
+						<view slot="right-icon">
+							<u-number-box></u-number-box>
+						</view>
+					</u-cell>
+				</u-cell-group>
+				<!-- /优化 -->
+				<view class="ui-list">
+					<template v-for="(item, index) of roomZones">
+						<button :class="activeZone === index ? 'active' : ''" @click="acitve(index)"
+							:key="index">{{ item.name || '未命名' }}</button>
+					</template>
+				</view>
+				<!-- 区域设置 -->
+				<view class="ui-setting" :key="activeZone" v-if="roomZones && roomZones.length">
+					<view class="ui-setting-box" v-if="roomZones[activeZone].zoneType != 1">
+						<!-- /跌倒监控默认不开启 -->
 						<view class="ui-switch">
-							<u-switch space="2" @change="onSwitch($event, 'inMonitorFlag')"
-								v-model="roomZones[activeZone].inMonitorFlag" activeValue="0" inactiveValue="1"
+							<u-switch space="2" @change="onSwitch($event, 'existFlag')"
+								v-model="roomZones[activeZone].existFlag" activeValue="0" inactiveValue="1"
 								activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
 							</u-switch>
-							<text>有人员停留的超时报警间隔</text>
+							<text>区域监控</text>
 						</view>
-						<view class="ui-inMonitor-date"
-							:class="animation.inMonitorFlag.doing && animation.inMonitorFlag.class"
-							:style="{height: roomZones[activeZone].inMonitorFlag == 0 ? '280rpx' : '0'}">
-							<view class="ui-date-list">
-								<view :class="{active: roomZones[activeZone].entryTime === item}" :key="item + 'time'"
-									v-for="item of timeList" @click="onTimeBtn(item, 'entryTime')">
-									{{item}}分钟
+						<view class="ui-inMonitor" v-if="roomZones[activeZone].existFlag == 0">
+							<view class="ui-switch">
+								<u-switch space="2" @change="onSwitch($event, 'inMonitorFlag')"
+									v-model="roomZones[activeZone].inMonitorFlag" activeValue="0" inactiveValue="1"
+									activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
+								</u-switch>
+								<text>有人员停留的超时报警间隔</text>
+							</view>
+							<view class="ui-inMonitor-date"
+								:class="animation.inMonitorFlag.doing && animation.inMonitorFlag.class"
+								:style="{height: roomZones[activeZone].inMonitorFlag == 0 ? '280rpx' : '0'}">
+								<view class="ui-date-list">
+									<view :class="{active: roomZones[activeZone].entryTime === item}"
+										:key="item + 'time'" v-for="item of timeList"
+										@click="onTimeBtn(item, 'entryTime')">
+										{{item}}分钟
+									</view>
+								</view>
+								<view class="ui-inMonitor-custom">
+									<text>自定义时间(分钟):</text>
+									<u-number-box v-model="roomZones[activeZone].entryTime">
+									</u-number-box>
 								</view>
 							</view>
-							<view class="ui-inMonitor-custom">
-								<text>自定义时间(分钟):</text>
-								<u-number-box v-model="roomZones[activeZone].entryTime">
-								</u-number-box>
+							<view class="ui-switch">
+								<u-switch space="2" @change="onSwitch($event, 'outMonitorFlag')"
+									v-model="roomZones[activeZone].outMonitorFlag" activeValue="0" inactiveValue="1"
+									activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
+								</u-switch>
+								<text>区域无人报警</text>
 							</view>
-						</view>
-						<view class="ui-switch">
-							<u-switch space="2" @change="onSwitch($event, 'outMonitorFlag')"
-								v-model="roomZones[activeZone].outMonitorFlag" activeValue="0" inactiveValue="1"
-								activeColor="#85B224" size="20" inactiveColor="rgb(230, 230, 230)">
-							</u-switch>
-							<text>区域无人报警</text>
-						</view>
-						<view class="ui-inMonitor-date"
-							:class="animation.outMonitorFlag.doing && animation.outMonitorFlag.class"
-							:style="{height: roomZones[activeZone].outMonitorFlag == 0 ? '280rpx' : '0'}">
-							<view class="ui-date-list">
-								<view :class="{active: roomZones[activeZone].departureTime === item}"
-									:key="item + 'inMonitor'" v-for="item of timeList"
-									@click="onTimeBtn(item, 'departureTime')">
-									{{item}}分钟
+							<view class="ui-inMonitor-date"
+								:class="animation.outMonitorFlag.doing && animation.outMonitorFlag.class"
+								:style="{height: roomZones[activeZone].outMonitorFlag == 0 ? '280rpx' : '0'}">
+								<view class="ui-date-list">
+									<view :class="{active: roomZones[activeZone].departureTime === item}"
+										:key="item + 'inMonitor'" v-for="item of timeList"
+										@click="onTimeBtn(item, 'departureTime')">
+										{{item}}分钟
+									</view>
+								</view>
+								<view class="ui-inMonitor-custom">
+									<text>自定义时间(分钟):</text>
+									<u-number-box :iconStyle="{
+										background: 'red'
+									}" v-model="roomZones[activeZone].departureTime">
+										<view class="" slot="minus">
+											<u-icon name="plus" size="12"></u-icon>
+										</view>
+										<view class="" slot="plus">
+											<u-icon name="plus" color="#FFFFFF" size="12"></u-icon>
+										</view>
+									</u-number-box>
 								</view>
 							</view>
-							<view class="ui-inMonitor-custom">
-								<text>自定义时间(分钟):</text>
-								<u-number-box v-model="roomZones[activeZone].departureTime">
-								</u-number-box>
-							</view>
+						</view>
+						<view class="ui-setting-btn wd-btn-group">
+							<button @click="deleteZone">删除</button>
+							<button @click="radarDevice(roomZones[activeZone])" class="green">保存</button>
 						</view>
 					</view>
-					<view class="ui-setting-btn wd-btn-group">
-						<button @click="deleteZone">删除</button>
-						<button @click="radarDevice(roomZones[activeZone])" class="green">保存</button>
+					<view class="ui-setting-box" v-else>
+						<view class="ui-setting-btn">
+							<button @click="deleteZone">删除</button>
+						</view>
 					</view>
 				</view>
-				<view class="ui-setting-box" v-else>
-					<view class="ui-setting-btn">
-						<button @click="deleteZone">删除</button>
-					</view>
-				</view>
+				<!-- /区域设置 -->
 			</view>
-			<!-- /区域设置 -->
 		</view>
 		<u-datetime-picker v-if="dateHandle.show" :show="dateHandle.show" @confirm="dateConfirm"
 			@cancel="dateHandle.show = false" :mode="dateHandle.mode"></u-datetime-picker>
@@ -235,12 +295,26 @@
 			getCellStyle() {
 				const obj = {};
 				return {};
+			},
+			/**获取子区域tab列表**/
+			getTabList() {
+				let list = [];
+				if (this.roomZones.length) {
+					list = this.roomZones.map((ele, index) => ({
+						name: ele.name,
+						index
+					}));
+				}
+				return list;
 			}
 		},
 		onLoad() {
 			this.init();
 		},
 		methods: {
+			tabClick(obj, index) {
+				console.log(obj, index, 'obj');
+			},
 			init() {
 				Promise.all([this.getRoomInfo(), this.getRoomZone()]).then(([roomInfo, rows]) => {
 					// 盒子容器信息
@@ -342,8 +416,8 @@
 			 * 选择子区域
 			 * @param {string} 下标
 			 */
-			acitve(idx) {
-				this.activeZone = idx;
+			acitve(item) {
+				this.activeZone = item.index;
 			},
 			del() {
 				this.roomZones.pop();
@@ -810,15 +884,25 @@
 	#setting {
 		padding-bottom: 30rpx;
 
+		.ui-title {
+			padding: 36rpx 32rpx;
+			font-size: 50rpx;
+			color: #353535;
+		}
+
 		.ui-movable {
 			// height: 300rpx;
 			width: 100%;
-			padding: 30rpx 50rpx;
+			padding: 50rpx 20rpx;
 			box-sizing: border-box;
 		}
 
 		.mova-box {
+			box-sizing: border-box;
 			width: 100%;
+			border: 30rpx solid #f2f2f2;
+			border-radius: 15rpx;
+			background: #fff;
 			text-align: center;
 		}
 
@@ -895,67 +979,25 @@
 			}
 		}
 
-		.ui-add-btn {
-			width: 100%;
-			display: flex;
-			align-items: center;
+		.ui-set-box {
+			background: #fff;
 
-			button {
-				width: 276rpx;
-				height: 82rpx;
-				border-radius: 35rpx;
-				font-size: 28rpx;
-				line-height: 82rpx;
-
-				&:nth-child(1) {
-					margin-right: 20rpx;
-				}
-			}
-		}
-
-		.ui-item {
-			display: flex;
-			height: 115rpx;
-			width: 640rpx;
-			margin: 0 calc((100% - 641rpx) / 2);
-			border-radius: 10px;
-			filter: drop-shadow(7.824px 10.382px 8px rgba(7, 5, 5, 0.08));
-			background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
-		}
-
-		.ui-add {
-			padding: 0 100rpx;
-		}
-
-		.ui-input {
-			margin: 34rpx 0 60rpx 0;
-			border-bottom: 1px solid #e2e2e2;
-		}
-
-		.ui-shape {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-			width: 100%;
-			margin: 34rpx 0 60rpx 0;
-			font-size: 28rpx;
-
-			>view {
-				width: 250rpx;
-				display: inline-flex;
-				flex-direction: row;
+			.ui-date-list {
+				width: 400rpx;
+				display: flex;
 				align-items: center;
-				vertical-align: middle;
 
-				.ui-input {
-					margin: 0 0 0 10rpx;
+				button {
+					width: 106rpx;
+					height: 50rpx;
+
 				}
 			}
 		}
 
 		.ui-list {
-			margin: 40rpx 0;
-			padding: 0 40rpx;
+			margin: 20rpx 0;
+			padding: 0 46rpx;
 			box-sizing: border-box;
 
 			.active {
