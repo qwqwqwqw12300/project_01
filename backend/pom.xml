@@ -32,6 +32,8 @@
         <jwt.version>0.9.1</jwt.version>
         <rocketmq.version>2.2.1</rocketmq.version>
         <httpclient.version>4.5.13</httpclient.version>
+
+        <maven.resources.overwrite>true</maven.resources.overwrite>
     </properties>
 
     <!-- 依赖声明 -->
