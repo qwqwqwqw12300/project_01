@@ -167,6 +167,8 @@ kaptcha:
   textproducer:
     font:
       size: 50
+  obscurificator:
+    open: false
 
 location:
   gaode:
