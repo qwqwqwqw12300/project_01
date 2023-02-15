@@ -33,7 +33,7 @@
         <rocketmq.version>2.2.1</rocketmq.version>
         <httpclient.version>4.5.13</httpclient.version>
 
-<!--        <maven.resources.overwrite>true</maven.resources.overwrite>-->
+        <maven.resources.overwrite>true</maven.resources.overwrite>
     </properties>
 
     <!-- 依赖声明 -->
@@ -261,11 +261,10 @@
             <!-- 复制指定环境配置文件到指定目录 -->
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
-                        <phase>validate</phase>
+                        <phase>process-resources</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
