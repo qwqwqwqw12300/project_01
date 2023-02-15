@@ -64,4 +64,28 @@ public class MemberInfoServiceImpl implements IMemberInfoService {
             }
         }
     }
+    /**
+     * 修改会员头像
+     *
+     * @param memberPhone 用户名
+     * @param avatar 头像地址
+     * @return 结果
+     */
+    @Override
+    public boolean updateMemberAvatar(String memberPhone, String avatar)
+    {
+        return memberMapper.updateMemberAvatar(memberPhone, avatar) > 0;
+    }
+
+    /**
+     * 修改会员信息
+     * @param member 会员实体类
+     * @return 结果
+     */
+    @Override
+    public int updateMemInfo (TMember member){
+
+        return memberMapper.updateMember(member);
+
+    }
 }

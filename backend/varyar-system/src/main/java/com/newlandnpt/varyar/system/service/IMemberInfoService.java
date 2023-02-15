@@ -1,6 +1,7 @@
 package com.newlandnpt.varyar.system.service;
 
 import com.newlandnpt.varyar.common.core.domain.model.MemberInfoRequest;
+import com.newlandnpt.varyar.system.domain.TMember;
 
 /**
  * 会员个人中心方法
@@ -23,4 +24,20 @@ public interface IMemberInfoService {
      */
     public void updatePhone(MemberInfoRequest memberInfoRequest);
 
+    /**
+     * 修改用户头像
+     *
+     * @param memberPhone 会员手机号
+     * @param avatar 头像地址
+     * @return 结果
+     */
+    public boolean updateMemberAvatar(String memberPhone, String avatar);
+
+    /**
+     * 修改会员信息
+     *
+     * @param member 会员实体类
+     * @return 结果
+     */
+    public int updateMemInfo (TMember member);
 }

@@ -49,6 +49,31 @@ public class RegMemberRequest {
     @Size(min = 0, max = 100, message = "会员登录设备注册号不能超过100个字符")
     private String registrationId;
 
+    /**
+     * 会员昵称
+     */
+    private String nickname;
+    /**
+     * 会员头像
+     */
+    private String avatar;
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public String getPhone() {
         return phone;
     }

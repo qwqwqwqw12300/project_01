@@ -50,6 +50,19 @@
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="会员手机号" align="center" prop="phone" />
       <!-- <el-table-column label="会员编号" align="center" prop="no" show-overflow-tooltip/> -->
+      <el-table-column label="会员昵称" align="center" prop="nickname">
+        <template slot-scope="scope">
+                    {{scope.row.nickname== null?"会员"+scope.row.phone : scope.row.nickname}}
+        </template>
+      </el-table-column>
+       <!-- 
+      <el-table-column label="会员头像" align="center" prop="avatar">
+        <template slot-scope="scope">
+         <el-avatar icon="el-icon-user-solid"></el-avatar>   
+          <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+        </template>
+      </el-table-column>
+            -->
       <el-table-column label="分配标志" align="center" prop="distributeFlag">
         <template slot-scope="scope">
           {{ distributeFlagFormat(scope.row) }}

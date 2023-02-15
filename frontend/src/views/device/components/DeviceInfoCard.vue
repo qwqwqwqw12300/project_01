@@ -40,9 +40,9 @@ watch: {
   "value": {
     immediate: true,
     handler: function (val) {
-      if (this.device?.deviceId != this.value) {
-        this.initDevice();
-      }
+      // if (this.device?.deviceId != this.value) {
+      //   this.initDevice();
+      // }
     }
   }
 },

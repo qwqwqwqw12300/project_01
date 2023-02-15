@@ -7,8 +7,9 @@
     <el-descriptions :column="3">
       <el-descriptions-item label="会员手机号">{{ member== undefined?"":member.phone}}</el-descriptions-item>
       <!-- <el-descriptions-item label="会员编号">{{ member== undefined?"":member.no }}</el-descriptions-item> -->
+      <el-descriptions-item label="会员昵称">{{ member== undefined?"":member.nickname==null?"会员"+member.phone:member.nickname}}</el-descriptions-item>
       <el-descriptions-item label="会员注册时间">{{ member== undefined?"":member.createTime }}</el-descriptions-item>
-      <el-descriptions-item label=""></el-descriptions-item>
+      <!-- <el-descriptions-item label=""></el-descriptions-item> -->
       <el-descriptions-item label="服务人员">{{ member== undefined?"":member.userName }}</el-descriptions-item>
       <el-descriptions-item label="服务人员手机号码">{{ member== undefined?"":member.userPhone }}</el-descriptions-item>
       <!-- <el-descriptions-item label="紧急联系电话1">{{ member.contacts == undefined || member.contacts.length == 0 ?"":member.contacts[0].phone }}</el-descriptions-item>
@@ -48,7 +49,8 @@ created() {
 data() {
   return {
     member: undefined,
-    phone : undefined,
+    // phone : undefined,
+    // nickname:undefined,
     contacts : [ 
      
     ],
@@ -58,9 +60,9 @@ watch: {
   "value": {
     immediate: true,
     handler: function (val) {
-      if (this.member?.memberId != this.value) {
-        this.initMember();
-      }
+      // if (this.member?.memberId != this.value) {
+      //   this.initMember();
+      // }
     }
   }
 },
