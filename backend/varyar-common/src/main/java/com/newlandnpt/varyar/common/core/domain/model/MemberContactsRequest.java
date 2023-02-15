@@ -1,6 +1,5 @@
 package com.newlandnpt.varyar.common.core.domain.model;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 public class MemberContactsRequest {
@@ -11,7 +10,7 @@ public class MemberContactsRequest {
      * 联络人姓名
      */
     @Size(min = 0, max = 50, message = "联络人姓名不能超过50个字符")
-    private String phoneName;
+    private String name;
     /**
      * 联络人手机号
      */
@@ -31,12 +30,12 @@ public class MemberContactsRequest {
         this.memberContactsId = memberContactsId;
     }
 
-    public String getPhoneName() {
-        return phoneName;
+    public String getName() {
+        return name;
     }
 
-    public void setPhoneName(String phoneName) {
-        this.phoneName = phoneName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhone() {

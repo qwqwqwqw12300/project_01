@@ -136,13 +136,13 @@ public class MemberContactsServiceImpl implements IMemberContactsService
                 memberContacts = new TMemberContacts();
                 memberContacts.setMemberId(memberId);
                 memberContacts.setCreateBy(SecurityUtils.getUsername());
-                memberContacts.setName(memberContactsRequest.getPhoneName());
+                memberContacts.setName(memberContactsRequest.getName());
                 memberContacts.setPhone(memberContactsRequest.getPhone());
                 memberContacts.setOrderNum(Long.valueOf(memberContactsRequest.getOrderNum()));
                 memberContacts.setDelFlag("0");
                 insertMemberContacts(memberContacts);
             }else{
-                memberContacts.setName(memberContactsRequest.getPhoneName());
+                memberContacts.setName(memberContactsRequest.getName());
                 memberContacts.setPhone(memberContactsRequest.getPhone());
                 memberContacts.setOrderNum(Long.valueOf(memberContactsRequest.getOrderNum()));
                 updateMemberContacts(memberContacts);

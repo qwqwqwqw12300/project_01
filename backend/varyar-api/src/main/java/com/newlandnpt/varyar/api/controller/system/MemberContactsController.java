@@ -61,7 +61,7 @@ public class MemberContactsController extends BaseController {
         TMemberContacts memberContacts = new TMemberContacts();
         memberContacts.setMemberId(this.getLoginUser().getMemberId());
         memberContacts.setCreateBy(this.getLoginUser().getUsername());
-        memberContacts.setName(memberContactsRequest.getPhoneName());
+        memberContacts.setName(memberContactsRequest.getName());
         memberContacts.setPhone(memberContactsRequest.getPhone());
         memberContacts.setOrderNum(Long.valueOf(memberContactsRequest.getOrderNum()));
         memberContacts.setDelFlag("0");
@@ -98,7 +98,7 @@ public class MemberContactsController extends BaseController {
             return ajax;
         }
         TMemberContacts memberContacts = iMemberContactsService.selectMemberContactsByMemberContactsId(Long.valueOf(memberContactsRequest.getMemberContactsId()));
-        memberContacts.setName(memberContactsRequest.getPhoneName());
+        memberContacts.setName(memberContactsRequest.getName());
         memberContacts.setPhone(memberContactsRequest.getPhone());
         memberContacts.setOrderNum(Long.valueOf(memberContactsRequest.getOrderNum()));
         try {
@@ -131,7 +131,7 @@ public class MemberContactsController extends BaseController {
     }
 
     private AjaxResult checkInfo(MemberContactsRequest memberContactsRequest,AjaxResult ajax){
-        if (memberContactsRequest.getPhoneName()==null || memberContactsRequest.getPhoneName().equals("")){
+        if (memberContactsRequest.getName()==null || memberContactsRequest.getName().equals("")){
             ajax = AjaxResult.error("联络人姓名不能为空！");
             return ajax;
         }
