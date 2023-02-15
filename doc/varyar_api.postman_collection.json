@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "388bcde8-1437-4b52-a0aa-955690efc31a",
+		"_postman_id": "edfddb1d-fc55-4894-8379-4ca25008be58",
 		"name": "varyar_api",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25135574"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -19,7 +18,6 @@
 									"var data = {response: pm.response.json()}\r",
 									"data.response.img=\"data:image/jpg;base64,\"+data.response.img;\r",
 									"var template = `<html>< img src=\"{{response.img}}\" /><p>uuid:<span>{{response.uuid}}</span></p ></html>`;\r",
-									"// 显示图片\r",
 									"pm.visualizer.set(template, data);"
 								],
 								"type": "text/javascript"
@@ -33,11 +31,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8081/api/captchaImage",
+							"raw": "{{智慧养老url}}/api/captchaImage",
 							"host": [
-								"localhost"
+								"{{智慧养老url}}"
 							],
-							"port": "8081",
 							"path": [
 								"api",
 								"captchaImage"
@@ -53,7 +50,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phone\":\"13900001111\",\r\n    \"uuid\": \"de72964f10c54247a1526bf6e72c3bee\",\r\n    \"captcha\":\"gma7\"\r\n}",
+							"raw": "{\r\n    \"phone\":\"15060665801\",\r\n    \"uuid\": \"a8942342d0a44fba9811976f3ca438e1\",\r\n    \"captcha\":\"xmbb\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -61,14 +58,10 @@
 							}
 						},
 						"url": {
-							"raw": "192.168.132.204:8060/api/sendSms",
+							"raw": "{{智慧养老url}}/api/sendSms",
 							"host": [
-								"192",
-								"168",
-								"132",
-								"204"
+								"{{智慧养老url}}"
 							],
-							"port": "8060",
 							"path": [
 								"api",
 								"sendSms"
@@ -84,7 +77,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phone\":\"13900001111\",\r\n    \"uuid\": \"af37b1aebbb041279023b67845528129\",\r\n    \"captcha\":\"72a5\"\r\n}",
+							"raw": "{\r\n    \"phone\":\"15060665801\",\r\n    \"uuid\": \"e0b5c34bd067412a9c859cf6ef8df4f2\",\r\n    \"captcha\":\"1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -92,11 +85,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/api/checkSms",
+							"raw": "{{智慧养老url}}/api/checkSms",
 							"host": [
-								"localhost"
+								"{{智慧养老url}}"
 							],
-							"port": "8081",
 							"path": [
 								"api",
 								"checkSms"
@@ -112,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{  \"phone\":\"13300001111\",\r\n    \"password\":\"IyQ8zh6FSRRVqt/VW7F5aaU8+TF1q1DHdIWshta9iWeKsfbfUq1K1NhCTarsBoskpgQLzGwo/EFZoM5KmfEXITM2a4QhmpWJ8AaotKW2a9ZAMFFwjgZnv/AzMh+Hhb7rMAouI7MKmEfZvJ/+eWC0xjTxC0KNo0nAx+4NeOEMaZg=\", \r\n    \"uuid\":\"15ce38c959d843fc8e5a0d833cd5ec0f\",\r\n    \"code\":\"gw78\",\r\n    \"registrationId\":\"sssssssswer234324\",\r\n    \"registrationType\":\"0\"\r\n}",
+							"raw": "{  \"phone\":\"15060665801\",\r\n    \"password\":\"IyQ8zh6FSRRVqt/VW7F5aaU8+TF1q1DHdIWshta9iWeKsfbfUq1K1NhCTarsBoskpgQLzGwo/EFZoM5KmfEXITM2a4QhmpWJ8AaotKW2a9ZAMFFwjgZnv/AzMh+Hhb7rMAouI7MKmEfZvJ/+eWC0xjTxC0KNo0nAx+4NeOEMaZg=\", \r\n    \"uuid\":\"010f73746d954ecd833adeca6994cf6c\",\r\n    \"code\":\"axce\",\r\n    \"registrationId\":\"sssssssswer234324\",\r\n    \"registrationType\":\"0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -120,11 +112,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/api/loginByPwd",
+							"raw": "{{智慧养老url}}/api/loginByPwd",
 							"host": [
-								"localhost"
+								"{{智慧养老url}}"
 							],
-							"port": "8081",
 							"path": [
 								"api",
 								"loginByPwd"
@@ -140,7 +131,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phone\":\"13900001111\",\r\n    \"code\":\"1234\",\r\n    \"uuid\":\"3397885bd9724d17a6d634b4f77b06f9\",\r\n    \"registrationId\":\"sssssssswer234324\",\r\n    \"registrationType\":\"0\"\r\n}",
+							"raw": "{\r\n    \"phone\":\"15060665801\",\r\n    \"code\":\"1234\",\r\n    \"uuid\":\"fc1e482e5a3a40459a6fc6b3f2127c6b\",\r\n    \"registrationId\":\"sssssssswer234324\",\r\n    \"registrationType\":\"0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -148,11 +139,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/api/loginBySms",
+							"raw": "{{智慧养老url}}/api/loginBySms",
 							"host": [
-								"localhost"
+								"{{智慧养老url}}"
 							],
-							"port": "8081",
 							"path": [
 								"api",
 								"loginBySms"
@@ -1367,28 +1357,45 @@
 				{
 					"name": "获取紧急联系人列表",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImFlMjNkODA4LTIxNTQtNGNjYi04YTY0LWIxNTQyYTVlMGVhNiJ9.LBhxEZCGOLSj53pnBLj59hXs4k4XGKPq5EdnhavjZ6pq6bgUmCyBSqBmloOzvspV56z--d2KxtEWmuRjQWHGtQ",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8081/api/memberContacts/list",
+							"raw": "{{智慧养老url}}/api/memberContacts/list",
 							"host": [
-								"localhost"
+								"{{智慧养老url}}"
 							],
-							"port": "8081",
 							"path": [
 								"api",
 								"memberContacts",
 								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "设置紧急联系人",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\r\n    \"phoneName\":\"name1\",\r\n    \"phone\":\"1300000001\",\r\n    \"orderNum\":\"1\"\r\n}]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{智慧养老url}}/api/memberContacts/setMemberCon",
+							"host": [
+								"{{智慧养老url}}"
+							],
+							"path": [
+								"api",
+								"memberContacts",
+								"setMemberCon"
 							]
 						}
 					},
@@ -1453,7 +1460,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\":\"100\",\r\n    \"phoneName\":\"101筏蹬\",\r\n    \"phone\":\"13223234141\",\r\n    \"orderNum\":\"1\"\r\n}\r\n",
+							"raw": "[\r\n    {\r\n        \"id\": \"100\",\r\n        \"phoneName\": \"101筏蹬\",\r\n        \"phone\": \"13223234141\",\r\n        \"orderNum\": \"1\"\r\n    }\r\n]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2185,7 +2192,10 @@
 					"name": "获取电子围栏设备定位",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				}
@@ -2391,7 +2401,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjA0ZmRjNTIyLTViMzAtNDliOC1iODRjLTkwMzQzZWM0NTI4YSJ9.-xCo-pcE40S4J_jkTvorah2lezweyS1xFcC9lTxuP17FWE4dHjA6Wz9HUcol-U346FDeOF6dlLWU01-SUHpsdQ",
+				"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjEyM181NDhiOWFhZi1hOTI0LTQ2MDctYTkzZC00ZjgwNzQ1ZTNkNWIifQ.O9JXiiSBp6TyspVGe42NJ8Y6Dmqw7eHoT19RjHqxXQG5cUd4kxuQnvRoeN6zz_VwpKsqctmEe7a4OyvinJAgOg",
 				"type": "string"
 			}
 		]

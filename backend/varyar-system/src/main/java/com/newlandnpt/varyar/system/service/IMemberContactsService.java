@@ -1,6 +1,8 @@
 package com.newlandnpt.varyar.system.service;
 
 import java.util.List;
+
+import com.newlandnpt.varyar.common.core.domain.model.MemberContactsRequest;
 import com.newlandnpt.varyar.system.domain.TMemberContacts;
 
 /**
@@ -58,4 +60,13 @@ public interface IMemberContactsService
      * @return 结果
      */
     public int deleteMemberContactsByMemberContactsId(Long memberContactsId);
+
+    /**
+     * 设置会员联络人
+     *
+     * @param memberId
+     * @param memberContacts
+     * @return
+     */
+    public int setMemberContacts(Long memberId, List<MemberContactsRequest> memberContacts);
 }

@@ -75,6 +75,18 @@ public class MemberContactsController extends BaseController {
     }
 
     /**
+     * 设置紧急电话
+     * @return
+     */
+    @PostMapping("/setMemberCon")
+    public AjaxResult batchCreateMemberContacts(@RequestBody @Validated List<MemberContactsRequest> memberContactsList){
+
+        iMemberContactsService.setMemberContacts(this.getLoginUser().getMemberId(),memberContactsList);
+        return AjaxResult.success();
+
+    }
+
+    /**
      * 修改紧急电话
      * */
     @PostMapping("/editMemberCon")
