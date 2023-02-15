@@ -1,5 +1,5 @@
 <template>
-	<view class="wd-logo" :style="{marginTop: top}">
+	<view class="wd-logo" :style="{marginTop: top,color: color}">
 		<text>
 			{{text}}
 		</text>
@@ -19,8 +19,12 @@
 			/**距离顶部高度**/
 			top: {
 				default: '64rpx'
-
 			},
+			/**是否需要背景**/
+			color: {
+				type: String,
+				default: '#ffffff',
+			}
 		},
 		data() {
 			return {
@@ -37,6 +41,6 @@
 		flex-direction: row;
 		font-size: 72rpx;
 		font-weight: bold;
-		color: #ffffff;
+		// color: #ffffff;
 	}
 </style>
