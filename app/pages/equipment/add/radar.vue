@@ -21,7 +21,7 @@
 			</view>
 		</view>
 		<view class="ui-satellite" @click="addTest">
-			<image src="../../static/images/satellite.png" mode="heightFix"></image>
+			<image src="../../../static/images/satellite.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-step">
 			<view class="ui-step-icon step2_bg"></view>
@@ -31,7 +31,7 @@
 			</view>
 		</view>
 		<view class="ui-bluetooth">
-			<image src="../../static/images/bluetooth.png" mode="heightFix"></image>
+			<image src="../../../static/images/bluetooth.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-btn" v-if="connectStatic === 'init'">
 			<button class="default" @click="next">下一步</button>
@@ -69,15 +69,15 @@
 	import {
 		PostcreDevice,
 		PosteditDevice
-	} from '../../common/http/api';
+	} from '../../../common/http/api';
 
 	import {
 		vpsdk
-	} from '../../common/sdk/vpsdk.js';
+	} from '../../../common/sdk/vpsdk.js';
 	import {
 		getCurPage,
 		isApp
-	} from '../../common/utils/util';
+	} from '../../../common/utils/util';
 
 	export default {
 		data() {
@@ -280,11 +280,11 @@
 
 <style lang="scss" scoped>
 	.step1_bg {
-		background-image: url('../../static/images/step1.png');
+		background-image: url('../../../static/images/step1.png');
 	}
 
 	.step2_bg {
-		background-image: url('../../static/images/step2.png');
+		background-image: url('../../../static/images/step2.png');
 	}
 
 	.ui-navbar {

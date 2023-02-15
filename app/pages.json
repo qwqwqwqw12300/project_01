@@ -19,14 +19,14 @@
 			}
 		},
 		{
-			"path": "pages/equipment/monitor",
+			"path": "pages/equipment/add/monitor",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "添加监护设备"
 			}
 		},
 		{
-			"path": "pages/equipment/radar",
+			"path": "pages/equipment/add/radar",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "添加雷达波设备"
@@ -279,7 +279,7 @@
 				}
 			}
 		}, {
-			"path": "pages/equipment/position-setting",
+			"path": "pages/equipment/setting/position-setting",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -332,7 +332,16 @@
 			}
 
 		}, {
-			"path": "pages/equipment/radar-setting",
+			"path": "pages/equipment/setting/radar-setting",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/equipment/add/add-steps",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {

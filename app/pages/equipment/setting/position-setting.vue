@@ -140,7 +140,7 @@
 		getHoursTime,
 		getMinute,
 		minuteToTime
-	} from '../../common/utils/util';
+	} from '../../../common/utils/util';
 	import {
 		mapState
 	} from 'vuex';
@@ -149,10 +149,10 @@
 		PostRoomList,
 		PostRadarDevice,
 		PostRemRadarDevice
-	} from '../../common/http/api';
+	} from '../../../common/http/api';
 	import {
 		ZONE
-	} from '../../config/db';
+	} from '../../../config/db';
 
 	const ANIMATION_INIT = {
 		existFlag: {

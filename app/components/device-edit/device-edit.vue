@@ -291,7 +291,7 @@
 			setZone() {
 				this.$store.commit('setDeviceInfo', this.source);
 				uni.navigateTo({
-					url: '/pages/equipment/position-setting'
+					url: '/pages/equipment/setting/position-setting'
 				})
 			}
 		}

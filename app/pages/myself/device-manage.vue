@@ -43,7 +43,7 @@
 				</view>
 
 			</view>
-			<view class="ui-add-btn"><button class="default" @click="addHandle.show = true">创建设备</button></view>
+			<view class="ui-add-btn"><button class="default" @click="addHandle.show = true">添加设备</button></view>
 			<!-- 绑定房间 -->
 			<u-popup :closeable="true" :round="10" :show="bindRoomShow" mode="center" @close="close">
 				<view class="wd-add">
@@ -123,11 +123,11 @@
 					show: false,
 					list: [{
 							name: 'vayyar',
-							url: '/pages/equipment/radar'
+							url: '/pages/equipment/add/radar'
 						},
 						{
 							name: '电子牵挂卡',
-							url: '/pages/equipment/monitor'
+							url: '/pages/equipment/add/monitor'
 						},
 					]
 				},
@@ -178,6 +178,9 @@
 				})))
 			}
 		},
+		onShow() {
+			this.init();
+		},
 		methods: {
 			...mapActions(['getAllFamily']),
 
@@ -203,42 +206,35 @@
 			 * 编辑浮层打开
 			 */
 			edit(item) {
-				console.log(item, '设备信息');
-				if (item.roomId) {
-					const {
-						name,
-						deviceId,
-						type,
-						no,
-						familyId,
-						roomId,
-						location,
-						parameter: {
-							deviceLocation = {},
-							deviceRoomParameter = {}
-						} = {},
+				const {
+					name,
+					deviceId,
+					type,
+					no,
+					familyId,
+					roomId,
+					location,
+					parameter: {
+						deviceLocation = {},
+						deviceRoomParameter = {}
+					} = {},
 
-					} = item;
-					Object.assign(this.editFrom, {
-						deviceName: name,
-						deviceId,
-						deviceType: type,
-						deviceNo: no,
-						familyId,
-						roomId,
-						location,
-						...deviceLocation,
-						...deviceRoomParameter,
-						source: item
-					});
-					// this.$refs.editRef.open(this.editFrom);
-				} else {
-					this.$refs.unbindEditRef.open(item);
-				}
-
+				} = item;
+				Object.assign(this.editFrom, {
+					deviceName: name,
+					deviceId,
+					deviceType: type,
+					deviceNo: no,
+					familyId,
+					roomId,
+					location,
+					...deviceLocation,
+					...deviceRoomParameter,
+					source: item
+				});
 				this.$setCache('setDevice', this.editFrom);
 				uni.navigateTo({
-					url: '/pages/equipment/radar-setting'
+					url: '/pages/equipment/setting/radar-setting'
 				})
 
 			},
@@ -407,10 +403,6 @@
 				});
 			}
 		},
-		onShow() {
-			this.init();
-		},
-
 		onBackPress(event) {
 			console.log('物理返回', event);
 			if (event.from === 'backbutton') this.back();

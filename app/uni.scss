@@ -189,6 +189,28 @@ button {
 	}
 }
 
+/**步骤条覆盖**/
+.u-steps-item {
+	padding-bottom: 60rpx;
+	.u-text__value {
+		font-size: 34rpx !important;
+	}
+	.u-text {
+		font-size: 24rpx !important; 
+	}
+	
+	.u-steps-item__wrapper {
+		height: 88rpx;
+		width: 88rpx;
+	}
+	
+	.u-steps-item__line--column {
+		left: 40rpx;
+		top: 66rpx;
+	}
+	
+}
+
 
 #deviceManage, #roomMagege {
 	.u-grid-item--hover-class {

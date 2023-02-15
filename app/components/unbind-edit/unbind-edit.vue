@@ -48,7 +48,7 @@
 				/**是否开启 none edit more**/
 				show: false,
 				editFrom: {
-					name: '',
+					deviceName: '',
 					location: ''
 				},
 				locationList: [
@@ -71,7 +71,6 @@
 					}, 1000);
 
 				})
-
 			},
 
 			/**
