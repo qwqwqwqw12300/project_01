@@ -47,8 +47,8 @@
 				</view>
 			</view>
 			<view class="wd-btn-group">
-				<button @click="handleReset">重置</button>
-				<button @click="handleCancel">取消</button>
+				<button @click="handleCancel" class="cancel">取消</button>
+				<button @click="handleReset" class="default">重置</button>
 			</view>
 		</view>
 	</app-body>

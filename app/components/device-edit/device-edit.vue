@@ -61,8 +61,8 @@
 					</view>
 				</view>
 				<view class="wd-btn-group">
-					<button @click="more">更多选项</button>
-					<button class="green" @click="editSubmit">确定</button>
+					<button @click="more" class="plain">更多选项</button>
+					<button class="default" @click="editSubmit">确定</button>
 				</view>
 			</view>
 		</u-popup>
@@ -136,9 +136,9 @@
 						<text>子区域设置</text>
 					</view> -->
 					<view class="wd-btn-group ui-btn-group">
-						<button class="gray" @click="back">返回</button>
-						<button class="green" @click="setZone">子区域设置</button>
-						<button class="blue" @click="editSubmit">确定</button>
+						<button class="cancel" @click="back">返回</button>
+						<button class="plain" @click="setZone">子区域设置</button>
+						<button class="default" @click="editSubmit">确定</button>
 					</view>
 					<u-datetime-picker v-if="dateHandle.show" :show="dateHandle.show" @confirm="dateConfirm"
 						@cancel="dateHandle.show = false" :mode="dateHandle.mode"></u-datetime-picker>
@@ -355,7 +355,6 @@
 				width: 237rpx;
 				height: 71rpx;
 				font-size: 28rpx;
-				color: #ffffff;
 			}
 		}
 	}

@@ -44,7 +44,7 @@
 						<text class="active" @click="register">免费注册</text>
 						<text class="active" @click="forgot">忘记密码？</text>
 					</view>
-					<view class="ui-btn"><button @click="login">立即登录</button></view>
+					<view class="ui-btn"><button @click="login" class="default">立即登录</button></view>
 				</view>
 			</u-transition>
 			<!-- /账号登录 -->
@@ -64,14 +64,15 @@
 						<graphic-input ref="codeRefbySms"></graphic-input>
 					</view>
 					<view class="ui-form-item">
-						<sms-input ref="sms" @reset="smsReset" :payload="smsPayload" smsType="1" @checked="checkedBySms">
+						<sms-input ref="sms" @reset="smsReset" :payload="smsPayload" smsType="1"
+							@checked="checkedBySms">
 						</sms-input>
 					</view>
 					<view class="ui-bot">
 						<text class="active" @click="register">免费注册</text>
 						<text class="active" @click="forgot">忘记密码？</text>
 					</view>
-					<view class="ui-btn"><button @click="loginBySms">立即登录</button></view>
+					<view class="ui-btn"><button class="default" @click="loginBySms">立即登录</button></view>
 				</view>
 			</u-transition>
 

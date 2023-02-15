@@ -18,9 +18,9 @@
 				</view>
 			</view>
 			<view class="ui-btn-group">
-				<button @click="close">取消</button>
-				<button @click="goManager">管理设备</button>
-				<button @click="next">确定</button>
+				<button class="cancel" @click="close">取消</button>
+				<button class="plain" @click="goManager">管理设备</button>
+				<button class="default" @click="next">确定</button>
 			</view>
 		</view>
 	</u-popup>
@@ -151,22 +151,15 @@
 				height: 70rpx;
 				border-radius: 35rpx;
 				font-size: 28rpx;
-				color: #ffffff;
 
 				&:nth-child(2) {
 					width: 206rpx;
-					background-image: linear-gradient(96deg, #e8bf00 0%);
 				}
 
-				&:nth-child(1) {
-
-					background-image: linear-gradient(96deg, #898989 0%, #b4b4b4 100%);
-				}
 
 				&:nth-child(3) {
 					width: 206rpx;
 					height: 70rpx;
-					background-image: linear-gradient(96deg, #e8bf00 0%, #00eaff 100%);
 				}
 			}
 		}

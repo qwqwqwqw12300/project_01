@@ -27,8 +27,8 @@
 				</view>
 			</view>
 			<view class="wd-btn-group">
-				<button @click="back" v-if="step !== 'list'">返回</button>
-				<button @click="next">确定</button>
+				<button @click="back" class="cancel" v-if="step !== 'list'">返回</button>
+				<button @click="next" class="default">确定</button>
 			</view>
 		</view>
 	</u-popup>

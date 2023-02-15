@@ -10,7 +10,7 @@
 			<image src="../../static/images/ad-text.png"></image>
 		</view>
 		<view class="ui-btn" :animation="animationData">
-			<button @click="goRegister">马上体验</button>
+			<button class="default" @click="goRegister">马上体验</button>
 			<text @click="goLogin">老朋友? &nbsp;点此登录</text>
 		</view>
 	</app-body>

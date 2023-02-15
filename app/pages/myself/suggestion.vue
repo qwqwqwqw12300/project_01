@@ -12,7 +12,7 @@
 			<view class="ui-form-item">
 				<graphic-input ref="codeRef"></graphic-input>
 			</view>
-			<view class="wd-btn-group"><button class="ui-button" @click="submit">提交</button></view>
+			<view class="wd-btn-group"><button class="ui-button default" @click="submit">提交</button></view>
 		</view>
 	</app-body>
 </template>

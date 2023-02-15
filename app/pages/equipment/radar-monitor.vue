@@ -21,7 +21,7 @@
 			</view>
 		</view>
 		<view class="ui-set">
-			<button @click="handleBack">返回</button>
+			<button class="default" @click="handleBack">返回</button>
 			<!-- 		<button @click="handleDetail">查看明细</button>
 			<button @click="handleSet">设置</button> -->
 		</view>

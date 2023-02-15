@@ -6,7 +6,7 @@
 			<text class="ui-main-version">当前版本：{{ appVersion }}</text>
 
 			<view class="ui-main-button">
-				<button class="ui-button" @click="handleUpdate">检查更新</button>
+				<button class="ui-button default" @click="handleUpdate">检查更新</button>
 			</view>
 		</view>
 	</app-body>

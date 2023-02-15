@@ -56,7 +56,7 @@
 					</u-checkbox-group>
 					<text @tap="userAgreement">同意《用户协议》</text>
 				</view>
-				<view class="ui-btn"><button @click="register">注册</button></view>
+				<view class="ui-btn"><button class="default" @click="register">注册</button></view>
 				<text class="ui-link active" @click="goLogin">老朋友？点此登录</text>
 			</u-form>
 		</view>

@@ -20,7 +20,7 @@
 				<u-text size="28rpx" prefixIcon="map-fill" iconStyle="font-size: 36rpx" text="家庭地址(必填)"></u-text>
 				<u--input v-model="form.address" placeholder="请输入家庭地址" border="bottom" clearable></u--input>
 			</view>
-			<view class="ui-btn"><button @click="next" class="wd-sms">{{ btnName }}</button></view>
+			<view class="ui-btn"><button @click="next" class="default">{{ btnName }}</button></view>
 		</view>
 	</u-popup>
 </template>

@@ -34,7 +34,7 @@
 			<image src="../../static/images/bluetooth.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-btn" v-if="connectStatic === 'init'">
-			<button @click="next">下一步</button>
+			<button class="default" @click="next">下一步</button>
 		</view>
 		<view class="ui-btn" v-if="connectStatic === 'connect'">
 			<u-loading-icon :text="eventMsg"></u-loading-icon>
@@ -57,7 +57,7 @@
 							activeColor="#1aa208" :name="item" :label="item"></u-radio>
 					</u-radio-group>
 				</view>
-				<view class="wd-btn-group"><button @click="add">确定</button></view>
+				<view class="wd-btn-group"><button @click="add" class="default">确定</button></view>
 			</view>
 		</u-popup>
 		<!-- /修改名称 -->
@@ -287,15 +287,6 @@
 		background-image: url('../../static/images/step2.png');
 	}
 
-	.bg {
-		background-color: rgb(227, 252, 255);
-	}
-
-	.active {
-		background-color: rgb(220, 251, 255);
-	}
-
-
 	.ui-navbar {
 		padding-top: calc(var(--status-bar-height) + 26rpx);
 		padding-left: 20rpx;
@@ -449,6 +440,7 @@
 			button {
 				width: 237rpx;
 				height: 71rpx;
+				line-height: 71rpx;
 				font-size: 28rpx;
 				color: #ffffff;
 			}

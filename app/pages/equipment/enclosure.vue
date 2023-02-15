@@ -32,7 +32,7 @@
 					inactiveColor="#c0c4cc" />
 			</view>
 			<view class="ui-btn">
-				<button @click="handleSubmit">提交</button>
+				<button class="default" @click="handleSubmit">提交</button>
 			</view>
 		</view>
 	</app-body>

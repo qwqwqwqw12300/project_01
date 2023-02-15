@@ -31,7 +31,7 @@
 			</view>
 		</view>
 		<view class="ui-btn">
-			<button @click="next">下一步</button>
+			<button @click="next" class="default">下一步</button>
 		</view>
 		<!-- 修改名称 -->
 		<u-popup :closeable="true" :round="10" :show="isEditShow" mode="center" @close="eidtClose">
@@ -46,7 +46,7 @@
 					<u--input placeholder="请输入设备位置" v-model="addForm.location" border="bottom" clearable>
 					</u--input>
 				</view>
-				<view class="wd-btn-group"><button @click="add">确定</button></view>
+				<view class="wd-btn-group"><button class="default" @click="add">确定</button></view>
 			</view>
 		</u-popup>
 		<!-- /修改名称 -->
@@ -316,8 +316,8 @@
 			button {
 				width: 237rpx;
 				height: 71rpx;
+				line-height: 71rpx;
 				font-size: 28rpx;
-				color: #ffffff;
 			}
 		}
 	}

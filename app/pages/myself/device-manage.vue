@@ -35,15 +35,15 @@
 								</view>
 							</view>
 							<view class="ui-btn">
-								<button v-if="!item.roomId" @click="binding(item)">绑定</button>
-								<button v-else class="wd-sms" @click="unbinding(item)">解绑</button>
+								<button v-if="!item.roomId" class="default" @click="binding(item)">绑定</button>
+								<button v-else class="plain" @click="unbinding(item)">解绑</button>
 							</view>
 						</u-grid-item>
 					</u-grid>
 				</view>
 
 			</view>
-			<view class="ui-add-btn"><button @click="addHandle.show = true">创建设备</button></view>
+			<view class="ui-add-btn"><button class="default" @click="addHandle.show = true">创建设备</button></view>
 			<!-- 绑定房间 -->
 			<u-popup :closeable="true" :round="10" :show="bindRoomShow" mode="center" @close="close">
 				<view class="wd-add">
@@ -67,7 +67,7 @@
 							</uni-data-select>
 						</view>
 					</view>
-					<view class="wd-btn-group"><button @click="bindSubmit">确定</button></view>
+					<view class="wd-btn-group"><button class="default" @click="bindSubmit">确定</button></view>
 				</view>
 			</u-popup>
 			<!-- /绑定房间 -->

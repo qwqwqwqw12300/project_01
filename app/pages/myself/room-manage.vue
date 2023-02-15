@@ -30,13 +30,13 @@
 							</u-icon>
 						</view>
 						<view class="ui-menu-btn">
-							<button v-if="!item.devices.length" @click="binding(item)">绑定</button>
-							<button v-else class="wd-sms" @click="unbinding(item.devices)">解绑</button>
+							<button v-if="!item.devices.length" class="default" @click="binding(item)">绑定</button>
+							<button v-else class="plain" @click="unbinding(item.devices)">解绑</button>
 						</view>
 					</u-grid-item>
 				</u-grid>
 			</view>
-			<view class="ui-btn"><button @click="add">创建房间</button></view>
+			<view class="ui-btn"><button class="default" @click="add">创建房间</button></view>
 			<room-pop ref="addRoom" :mode="roomMode" @update="handleInitList" />
 			<family-pop ref="addFamily" mode="edit" @update="familyNext" />
 			<bind-device :payload="bindPayload" @next="handleInitList" ref="bindDev" />

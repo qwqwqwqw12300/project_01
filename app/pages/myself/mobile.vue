@@ -34,8 +34,8 @@
 				</view>
 			</view>
 			<view class="wd-btn-group">
-				<button type="default" @click="handleSubmit">重置</button>
-				<button type="default" @click="handleBack">取消</button>
+				<button class="cancel" @click="handleBack">取消</button>
+				<button class="default" @click="handleSubmit">重置</button>
 			</view>
 		</view>
 	</app-body>

@@ -91,7 +91,7 @@
 			<template v-else>
 				<view class="ui-default">
 					<image src="../../static/images/tb.png" mode=""></image>
-					<button @click="addStep">创建家庭</button>
+					<button class="default" @click="addStep">创建家庭</button>
 				</view>
 			</template>
 			<!-- /空户 -->
