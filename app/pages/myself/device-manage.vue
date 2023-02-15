@@ -71,7 +71,7 @@
 				</view>
 			</u-popup>
 			<!-- /绑定房间 -->
-			<device-edit :editFrom="editSubmit" ref="editRef" @confirm="editSubmit"></device-edit>
+			<device-edit :editFrom="editFrom" ref="editRef" @confirm="editSubmit"></device-edit>
 			<u-action-sheet :actions="addHandle.list" :closeOnClickOverlay="true" :safeAreaInsetBottom="true"
 				:closeOnClickAction="true" @close="addHandle.show = false" :show="addHandle.show" @select="sheetSelect"
 				cancelText="取消">
@@ -231,15 +231,15 @@
 						...deviceRoomParameter,
 						source: item
 					});
-					this.$refs.editRef.open(this.editFrom);
+					// this.$refs.editRef.open(this.editFrom);
 				} else {
 					this.$refs.unbindEditRef.open(item);
 				}
 
-				// this.$setCache('setDevice', this.editFrom);
-				// uni.navigateTo({
-				// 	url: '/pages/equipment/radar-setting'
-				// })
+				this.$setCache('setDevice', this.editFrom);
+				uni.navigateTo({
+					url: '/pages/equipment/radar-setting'
+				})
 
 			},
 

@@ -6,112 +6,122 @@
 -->
 
 <template>
-	<app-body :bodyStyle="{backgroundPositionY: '-200rpx'}">
-		<app-logo text="设置雷达波设备"></app-logo>
-		<view class="wd-add ui-change">
-			<view class="ui-add-box">
-				<view class="ui-input">
-					<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="设备名称"></u-text>
-					<u-input placeholder="请输入设备名称" :maxlength="6" v-model="editFrom.deviceName" border="bottom"
-						clearable>
-					</u-input>
-				</view>
-				<view>
-					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="检测高度"></u-text>
-					<view class="ui-slider">
-						<u-slider min="10" max="60" v-model="editFrom.roomHeight" activeColor="#eeaa3d"
-							blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
-						<text>{{$u.priceFormat(editFrom.roomHeight/10, 2)}}米</text>
-					</view>
-				</view>
-				<view>
-					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="检测长度"></u-text>
-					<view class="ui-slider">
-						<u-slider min="10" max="60" v-model="editFrom.roomLength" activeColor="#eeaa3d"
-							blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
-						<text>{{$u.priceFormat(editFrom.roomLength/10, 2)}}米</text>
-					</view>
-				</view>
-				<view>
-					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="检测左长度">
-					</u-text>
-					<view class="ui-slider">
-						<u-slider min="10" max="60" v-model="editFrom.roomRight" activeColor="#eeaa3d"
-							blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
-						<text>{{$u.priceFormat(editFrom.roomRight/10, 2)}}米</text>
-					</view>
-				</view>
-				<view>
-					<u-text size="28rpx" prefixIcon="setting" iconStyle="font-size: 36rpx" text="检测右长度">
-					</u-text>
-					<view class="ui-slider">
-						<u-slider min="10" max="60" v-model="editFrom.roomLeft" activeColor="#eeaa3d"
-							blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
-						<text>{{$u.priceFormat(editFrom.roomLeft/10, 2)}}米</text>
-					</view>
-				</view>
+	<app-body :bg="false">
+		<view class="ui-form">
+			<app-logo text="设置雷达波设备" color="#353535"></app-logo>
+			<view class="ui-edit">
+				<u-cell-group>
+					<u-cell title="设备名称">
+						<u-input inputAlign="right" placeholder="请输入设备名称" slot="right-icon"
+							v-model="editFrom.deviceName"></u-input>
+					</u-cell>
+					<u-cell title="设备位置">
+						<u-radio-group v-model="editFrom.location" slot="right-icon" placement="row">
+							<u-radio :customStyle="{margin: '20rpx'}" v-for="item of locationList" :key="item"
+								activeColor="#FEAE43" :name="item" :label="item"></u-radio>
+						</u-radio-group>
+					</u-cell>
+					<u-cell isLink title="检测高度" :value="$u.priceFormat(editFrom.roomHeight/10, 2) + '米'"></u-cell>
+					<u-cell isLink title="检测长度" :value="$u.priceFormat(editFrom.roomLength/10, 2) + '米'"></u-cell>
+					<u-cell isLink title="检测左长度" :value="$u.priceFormat(editFrom.roomRight/10, 2) + '米'"></u-cell>
+					<u-cell isLink title="检测右长度" :value="$u.priceFormat(editFrom.roomLeft/10, 2) + '米'"></u-cell>
+				</u-cell-group>
 			</view>
 		</view>
-		<!-- 区域设置 -->
-		<view class="ui-setting">
-			<view>
-				<u-checkbox-group @change="monitorChange($event, 'existFlag')" placement="column">
-					<u-checkbox activeColor="#1aa208" labelSize="28rpx" :checked="editFrom.existFlag == 1"
-						:customStyle="{ marginBottom: '8px' }" label="进出监控" name="existFlag"></u-checkbox>
-				</u-checkbox-group>
-				<u-checkbox-group @change="monitorChange($event, 'fallFlag')" placement="column">
-					<u-checkbox activeColor="#1aa208" labelSize="28rpx" :checked="editFrom.fallFlag == 1"
-						:cusmonitorChangetomStyle="{ marginBottom: '8px' }" label="跌倒监控" name="fallFlag">
-					</u-checkbox>
-				</u-checkbox-group>
-				<view class="ui-date-list">
-					<text>开始监控时间</text>
-					<view class="ui-date active" @click="openDate('startTime')">
-						<text>{{editFrom.startTime || '未设置'}}</text>
-						<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
+		<view class="ui-form">
+			<u-cell-group>
+				<u-cell>
+					<view class="ui-subtit" slot="title">
+						监控设置
 					</view>
+				</u-cell>
+				<u-cell title="进出监控">
+					<u-switch space="2" v-model="editFrom.existFlag" activeValue="0" inactiveValue="1" size="20"
+						slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
+					</u-switch>
+				</u-cell>
+				<view class="ui-existFlag" v-if="editFrom.existFlag == 0">
+					<u-cell isLink title="监控开始时间" @click="openDate('startTime')" :value="editFrom.startTime || '未设置'">
+					</u-cell>
+					<u-cell isLink title="监控结束时间" @click="openDate('endTime')" :value="editFrom.endTime || '未设置'">
+					</u-cell>
+					<u-cell title="进入监控区域超时报警时间">
+						<u-switch space="2" v-model="editFrom.inMonitorFlag" activeValue="0" inactiveValue="1" size="20"
+							slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
+						</u-switch>
+					</u-cell>
+					<template v-if="editFrom.inMonitorFlag == 0">
+						<u-cell>
+							<view slot="title" class="ui-slot-title">
+								<view class="ui-date-list">
+									<u-button :key="item + 'time'" v-for="item of timeList"
+										@click="onTimeBtn(item, 'entryTime')" type="primary"
+										:plain="!(editFrom.entryTime === item)" size="mini" :text="item + '分钟'">
+									</u-button>
+								</view>
+							</view>
+							<view slot="right-icon">
+								<u-checkbox-group shape="circle" placement="column"
+									v-model="editFrom.isDepartureTimeCus">
+									<u-checkbox activeColor="#FEAE43" label="自定义时间" :name="true">
+									</u-checkbox>
+								</u-checkbox-group>
+							</view>
+						</u-cell>
+						<u-cell v-if="editFrom.isDepartureTimeCus[0]">
+							<view slot="title" class="ui-sub-title">
+								<text>选择自定义时间</text>
+							</view>
+							<view slot="right-icon">
+								<u-number-box v-model="editFrom.entryTime"></u-number-box>
+							</view>
+						</u-cell>
+					</template>
+
+					<u-cell title="离开监控区域超时报警时间">
+						<u-switch space="2" v-model="editFrom.outMonitorFlag" activeValue="0" inactiveValue="1"
+							size="20" slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
+						</u-switch>
+					</u-cell>
+					<template v-if="editFrom.outMonitorFlag == 0">
+						<u-cell>
+							<view slot="title" class="ui-slot-title">
+								<view class="ui-date-list">
+									<u-button :key="item + 'departureTime'" v-for="item of timeList"
+										@click="onTimeBtn(item, 'departureTime')" type="primary"
+										:plain="!(editFrom.departureTime === item)" size="mini" :text="item + '分钟'">
+									</u-button>
+								</view>
+							</view>
+							<view slot="right-icon">
+								<u-checkbox-group shape="circle" placement="column" v-model="editFrom.isEntryTimeCus">
+									<u-checkbox activeColor="#FEAE43" label="自定义时间" :name="true">
+									</u-checkbox>
+								</u-checkbox-group>
+							</view>
+						</u-cell>
+						<u-cell v-if="editFrom.isEntryTimeCus[0]">
+							<view slot="title" class="ui-sub-title">
+								<text>选择自定义时间</text>
+							</view>
+							<view slot="right-icon">
+								<u-number-box v-model="editFrom.departureTime"></u-number-box>
+							</view>
+						</u-cell>
+					</template>
 				</view>
-				<view class="ui-date-list ui-margin">
-					<text>结束监控时间</text>
-					<view class="ui-date active" @click="openDate('endTime')">
-						<text>{{editFrom.endTime || '未设置'}}</text>
-						<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
-					</view>
-				</view>
-				<view class="ui-timing">
-					<view class="ui-timing-pos">
-						<u-checkbox-group placement="column" @change="monitorChange($event, 'inMonitorFlag')">
-							<u-checkbox activeColor="#1aa208" :checked="editFrom.inMonitorFlag == 1"
-								:customStyle="{ marginBottom: '40rpx'}" labelSize="28rpx" label="进入监控区域超时报警时间"
-								name="inMonitorFlag">
-							</u-checkbox>
-						</u-checkbox-group>
-						<u-checkbox-group placement="column" @change="monitorChange($event, 'outMonitorFlag')">
-							<u-checkbox activeColor="#1aa208" labelSize="28rpx" :checked="
-								editFrom.outMonitorFlag==1" label="离开监控区域超时报警时间" name="outMonitorFlag">
-							</u-checkbox>
-						</u-checkbox-group>
-					</view>
-					<view class="ui-timing-pos">
-						<view class="ui-timing-active active" @click="openDate('entryTime')">
-							<text>{{editFrom.entryTime || '请选择'}}</text>
-							<u-icon name="arrow-down" size="28rpx"></u-icon>
-						</view>
-						<view class="ui-timing-active active" @click="openDate('departureTime')">
-							<text>{{editFrom.departureTime || '请选择'}}</text>
-							<u-icon name="arrow-down" size="28rpx"></u-icon>
-						</view>
-					</view>
-				</view>
-				<u-datetime-picker v-if="dateHandle.show" :show="dateHandle.show" @confirm="dateConfirm"
-					@cancel="dateHandle.show = false" :mode="dateHandle.mode"></u-datetime-picker>
-			</view>
+			</u-cell-group>
 		</view>
-		<view class="wd-btn-group">
-			<button class="plain" @click="more">更多选项</button>
-			<button class="default" @click="editSubmit">确定</button>
+		<view class="ui-form">
+			<u-cell-group>
+				<u-cell isLink @click="setZone" title="子区域设置"></u-cell>
+			</u-cell-group>
 		</view>
-		<!-- /区域设置 -->
+		<view class="ui-confirm">
+			<button class="default" @click="editSubmit">保存</button>
+		</view>
+		<u-datetime-picker v-if="dateHandle.show" :show="dateHandle.show" @confirm="dateConfirm"
+			@cancel="dateHandle.show = false" :mode="dateHandle.mode"></u-datetime-picker>
 	</app-body>
 </template>
 
@@ -125,16 +135,23 @@
 	export default {
 		data() {
 			return {
-				/**是否开启 none edit more**/
-				mode: 'none',
 				editFrom: {
-					...INIT_DEIVCE_SET
+					...INIT_DEIVCE_SET,
+
 				},
 				dateHandle: {
 					type: '',
 					show: false,
 					mode: 'time'
 				},
+				/**时间列表**/
+				timeList: [1, 5, 10],
+				locationList: [
+					'壁挂',
+					'顶挂',
+				],
+				// 设备源数据
+				source: {}
 			};
 		},
 		onLoad() {
@@ -147,12 +164,13 @@
 				roomLeft,
 				roomHeight,
 				roomRight,
-				roomLength
+				roomLength,
+				source
 			} = device;
 			this.editFrom = {
 				...device,
-				departureTime: uni.$u.timeFormat(departureTime, 'hh:MM'),
-				entryTime: uni.$u.timeFormat(entryTime, 'hh:MM'),
+				departureTime: departureTime / 60 || 0,
+				entryTime: entryTime / 60 || 0,
 				/**开始监控时间**/
 				startTime: uni.$u.timeFormat(startTime, 'hh:MM'),
 				/**结束监控时间**/
@@ -160,9 +178,12 @@
 				roomLeft: roomLeft * 10,
 				roomHeight: roomHeight * 10,
 				roomRight: roomRight * 10,
-				roomLength: roomLength * 10
+				roomLength: roomLength * 10,
+				isDepartureTimeCus: [this.timeList.includes(departureTime /
+					60)],
+				isEntryTimeCus: [this.timeList.includes(entryTime / 60)],
 			};
-			this.mode = 'edit';
+			this.source = source;
 		},
 		methods: {
 			/**
@@ -179,7 +200,9 @@
 					roomRight,
 					roomLength
 				} = this.editFrom;
-				this.$emit('confirm', {
+				if (!editFrom.deviceName) return uni.$u.toast('请填写新名称');
+				if (roomLeft + roomRight > 60) return uni.$u.toast('检测测左右总长不能超过6米');
+				setDevice({
 					...this.editFrom,
 					roomLeft: roomLeft / 10,
 					roomHeight: roomHeight / 10,
@@ -187,19 +210,15 @@
 					roomLength: roomLength / 10,
 					startTime: getHoursTime(startTime) || 0,
 					endTime: getHoursTime(endTime) || 0,
-					entryTime: getHoursTime(entryTime) || 0,
-					departureTime: getHoursTime(departureTime) || 0
+					entryTime: entryTime * 60 || 0,
+					departureTime: departureTime * 60 || 0,
+					flag: '2'
+				}).then(res => {
+					uni.$u.toast(res.msg);
 				});
-				this.close();
+				this.$emit('confirm', );
 			},
 
-			more() {
-				this.mode = 'more';
-			},
-
-			back() {
-				this.mode = 'edit';
-			},
 
 			/**
 			 * 开启选择时间
@@ -231,179 +250,84 @@
 				this.editFrom[type] = this.editFrom[type] == 1 ? 0 : 1;
 			},
 
+			/**
+			 * 选择时间
+			 */
+			onTimeBtn(time, type) {
+				this.editFrom[type] = time;
+			},
+
+			/**
+			 * 设置子区域
+			 */
+			setZone() {
+				this.$store.commit('setDeviceInfo', this.source);
+				uni.navigateTo({
+					url: '/pages/equipment/position-setting'
+				})
+			}
+
 		}
 	}
 </script>
 
 <style lang="scss">
-	.wd-add {
-		box-sizing: border-box;
-		width: 100%;
-		padding: 0 31rpx;
+	.ui-form {
+		background: #fff;
 
-		&>view {
-			margin-top: 52rpx;
-
-			&.ui-add-box {
-				padding: 10rpx 20rpx;
-
-				&>* {
-					margin-top: 30rpx;
-				}
-			}
-
-			.ui-input {
-				position: relative;
-
-				&::after {
-					bottom: 10rpx;
-					left: 40rpx;
-					content: '';
-					width: 500rpx;
-					height: 1rpx;
-					background: #e4e4e4;
-					position: absolute;
-				}
-			}
+		&:nth-child(3) {
+			margin-top: 20rpx;
 		}
 
+		&:nth-child(4) {
+			margin-top: 20rpx;
+		}
 
+		.ui-existFlag {
+			padding-left: 32rpx;
+		}
 
-		.ui-slider {
-			width: 100%;
+		.ui-edit {
+			margin-top: 110rpx;
+		}
+
+		.ui-subtit {
+			font-size: 36rpx;
+			color: $u-primary;
+			padding-left: 10rpx;
+			border-left: 8rpx solid $u-primary;
+		}
+
+		.ui-list {
+			padding: 0 32rpx;
+		}
+
+		.ui-date-list {
+			width: 400rpx;
 			display: flex;
-			flex-direction: row;
 			align-items: center;
-			justify-content: space-between;
-
-			text {
-				font-size: 26rpx;
-				color: #414141;
-			}
-
-			&>* {
-				:nth-child(1) {
-					width: 450rpx;
-				}
-			}
-		}
-
-		.wd-btn-group {
-			text-align: center;
-			margin-top: 70rpx;
 
 			button {
-				width: 237rpx;
-				height: 71rpx;
-				font-size: 28rpx;
-				color: #ffffff;
+				width: 106rpx;
+				height: 50rpx;
+			}
+		}
+
+		.ui-sub-title {
+			// padding-left: 32rpx;
+		}
+
+		.ui-setting-btn {
+			margin-top: 40rpx;
+
+			button {
+				width: 320rpx;
+				border-radius: 44rpx;
 			}
 		}
 	}
 
-	.ui-setting {
-		width: 100%;
-		text-align: center;
-		padding: 20rpx 0;
-
-		.wd-btn-group {
-			margin-top: 50rpx;
-		}
-
-		>view {
-			padding: 35rpx;
-			box-sizing: border-box;
-			display: inline-block;
-			width: 658rpx;
-			min-height: 645rpx;
-			border-radius: 10rpx;
-			background-image: linear-gradient(0deg, #eeeeee 0%, #ffffff 100%);
-			border: 1rpx solid #bfbfbf;
-		}
-
-		.ui-date-list {
-			margin-top: 40rpx;
-			width: 100%;
-			display: inline-flex;
-			justify-content: space-between;
-			align-items: center;
-			font-size: 28rpx;
-			color: rgb(96, 98, 102);
-		}
-
-		.ui-margin {
-			margin-bottom: 40rpx;
-		}
-
-		.ui-date {
-			position: relative;
-			height: 60rpx;
-			width: 60%;
-			text-align: left;
-			border-radius: 10rpx;
-			background-color: #dcdcdc;
-			display: flex;
-		}
-
-		.ui-date {
-			align-items: center;
-			justify-content: space-between;
-			padding: 0 8rpx 0 20rpx;
-		}
-
-		.ui-icon {
-			position: absolute;
-			right: 10rpx;
-			top: 50%;
-			transform: translateY(-50%);
-			pointer-events: none;
-		}
-
-		.ui-timing {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-
-			.ui-timing-pos {
-				width: 250rpx;
-
-				// &:nth-child(2) {
-				// 	width: 200rpx;
-				// }
-
-				.ui-timing-active {
-					display: flex;
-					justify-content: space-evenly;
-					align-items: center;
-					font-size: 30rpx;
-					line-height: 50rpx;
-					height: 50rpx;
-					width: 250rpx;
-					border: 1rpx solid #e2e2e2;
-					color: #606266;
-					padding: 0 10rpx;
-					box-sizing: border-box;
-
-					text {
-						display: inline-block;
-						margin-right: 30rpx;
-						// width: 160rpx;
-					}
-
-					&:nth-child(2) {
-						margin-top: 44rpx;
-					}
-				}
-			}
-		}
-
-		.ui-setting-btn {
-			margin-top: 60rpx;
-
-			button {
-				font-size: 25rpx;
-				width: 200rpx;
-			}
-		}
+	.ui-confirm {
+		padding: 54rpx 32rpx 80rpx 32rpx;
 	}
 </style>

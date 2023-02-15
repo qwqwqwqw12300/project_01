@@ -442,7 +442,6 @@
 				height: 71rpx;
 				line-height: 71rpx;
 				font-size: 28rpx;
-				color: #ffffff;
 			}
 		}
 	}
