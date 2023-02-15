@@ -106,7 +106,7 @@
 			 */
 			editMobile() {
 				uni.navigateTo({
-					url: '/pages/myself/mobile'
+					url: '/pages/myself/mobile/select-way'
 				})
 			},
 			/**

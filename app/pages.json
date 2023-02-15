@@ -339,7 +339,43 @@
 					"titleNView": false
 				}
 			}
+		}, {
+			"path": "pages/myself/mobile/select-way",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 
+		},
+		{
+			"path": "pages/myself/mobile/pre-mobile",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		},
+		{
+			"path": "pages/myself/mobile/pwd-verify",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/myself/mobile/new-mobile",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 	"globalStyle": {

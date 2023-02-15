@@ -120,9 +120,9 @@
 				/**页面初始化标志**/
 				initFlag: true,
 				loginForm: {
-					phone: '',
+					phone: '13205907108',
 					code: '',
-					password: '',
+					password: '1111',
 					uuid: '',
 				},
 				/**短信登录参数**/
