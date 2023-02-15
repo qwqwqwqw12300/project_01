@@ -1746,7 +1746,124 @@
 						}
 					},
 					"response": []
-				}
+				},
+				{
+					"name": "个人中心-修改手机号(使用短信验证)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjEwMl9hMTQzYzdiNi03MTk4LTQzZTYtOThlMS03Njc1ZDJhNTQ2NWMifQ.nvAknY92reThqzGlRdvXpJDwTTcjCDQypFu0ygz6R8RmvBWVMgCb-rPVAm8uEvx1uB9cNMP-rwoKB0UJ26kxJA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPhone\":\"13774522637\",\r\n    \"newPhone\":\"13774522537\",   \r\n    \"oldCode\":\"3801\",\r\n    \"newCode\":\"2884\",\r\n    \"password\":\"7777777\",\r\n    \"uuid\":\"96734ca738b542baaffe66d0562971f5\",\r\n    \"newuuid\":\"96734ca738b542baaffe66d0562971f5\",\r\n    \"token\":\"35bc1790df4e49dabe277de4929a1593\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/memberInfo/updatePhoneBySms",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"memberInfo",
+								"updatePhoneBySms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "个人中心-修改手机号(使用密码验证)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjEwMl9hMTQzYzdiNi03MTk4LTQzZTYtOThlMS03Njc1ZDJhNTQ2NWMifQ.nvAknY92reThqzGlRdvXpJDwTTcjCDQypFu0ygz6R8RmvBWVMgCb-rPVAm8uEvx1uB9cNMP-rwoKB0UJ26kxJA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPhone\":\"13300001111\",\r\n    \"password\":\"IyQ8zh6FSRRVqt/VW7F5aaU8+TF1q1DHdIWshta9iWeKsfbfUq1K1NhCTarsBoskpgQLzGwo/EFZoM5KmfEXITM2a4QhmpWJ8AaotKW2a9ZAMFFwjgZnv/AzMh+Hhb7rMAouI7MKmEfZvJ/+eWC0xjTxC0KNo0nAx+4NeOEMaZg=\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/memberInfo/updatePhoneByPwd",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"memberInfo",
+								"updatePhoneByPwd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "个人中心-修改手机号(认证token重置)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjEwMl9hMTQzYzdiNi03MTk4LTQzZTYtOThlMS03Njc1ZDJhNTQ2NWMifQ.nvAknY92reThqzGlRdvXpJDwTTcjCDQypFu0ygz6R8RmvBWVMgCb-rPVAm8uEvx1uB9cNMP-rwoKB0UJ26kxJA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"newPhone\":\"13666666666\", \r\n    \"token\":\"102_d18d81e9-ee18-4e13-a14c-1c5711ffb955\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/api/memberInfo/updatePhoneByToken",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"memberInfo",
+								"updatePhoneByToken"
+							]
+						}
+					},
+					"response": []
+				}			
 			]
 		},
 		{

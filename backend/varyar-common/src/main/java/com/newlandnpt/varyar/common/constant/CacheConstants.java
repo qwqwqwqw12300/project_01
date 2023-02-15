@@ -67,6 +67,11 @@ public class CacheConstants
      */
     public static final String PWD_ERR_CNT_KEY = "pwd_err_cnt:";
 
+    /**
+     * 手机号更改认证key
+     */
+    public static final String PHONE_TOKEN_KEY = "phone_token_key:";
+
     /** 是否开启记录目标坐标信息的开关，值为true or false **/
     public static final String TARGET_LOCATION_SWITCH_KEY = "cloud:presence:targetLocationSwitch:";
     /** 进出区域坐标信息 **/

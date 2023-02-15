@@ -77,6 +77,11 @@ export const PostAddContacts = (params) => http.post('/api/memberContacts/creMem
 export const PostDelContacts = (params) => http.post('/api/memberContacts/remMemberCon', params)
 
 /* 
+ *设置紧急联系人*
+ */
+export const PostSetContacts = (params) => http.post('/api/memberContacts/setMemberCon', params)
+
+/* 
  *编辑紧急联系人*
  */
 export const PostEditContacts = (params) => http.post('/api/memberContacts/editMemberCon', params)
@@ -324,3 +329,20 @@ export const GetEndDevice = (params) => http.get('/api/device/endNowInfo', param
 export const GetNowInfo = (params) => http.get('/api/device/getNowInfo', params, {
 	showLoading: false
 });
+
+/**
+ * 原手机短信验证
+ */
+export const PostUpdatePhoneBySms = (params) => http.post('/api/memberInfo/updatePhoneBySms', params)
+
+
+/**
+ * 密码验证
+ */
+export const PostUpdatePhoneByPwd = (params) => http.post('/api/memberInfo/updatePhoneByPwd', params)
+
+
+/**
+ * 新手机修改短信验证
+ */
+export const PostUpdatePhoneByToken = (params) => http.post('/api/memberInfo/updatePhoneByToken', params)

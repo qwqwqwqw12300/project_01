@@ -5,7 +5,6 @@ import com.newlandnpt.varyar.common.annotation.Log;
 import com.newlandnpt.varyar.common.config.VayyarConfig;
 import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.constant.Constants;
-import com.newlandnpt.varyar.common.constant.UserConstants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.entity.MemberInfo;
@@ -24,21 +23,22 @@ import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.common.utils.file.FileUploadUtils;
 import com.newlandnpt.varyar.common.utils.file.MimeTypeUtils;
+import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
 import com.newlandnpt.varyar.framework.manager.AsyncManager;
 import com.newlandnpt.varyar.framework.manager.factory.AsyncFactory;
-import com.newlandnpt.varyar.framework.web.service.SysPasswordService;
 import com.newlandnpt.varyar.framework.web.service.TokenService;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IMemberInfoService;
 import com.newlandnpt.varyar.system.service.IMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.concurrent.TimeUnit;
+
+import static com.newlandnpt.varyar.common.constant.CacheConstants.PHONE_TOKEN_KEY;
 
 
 /**
@@ -166,6 +166,168 @@ public class MemberInfoController extends BaseController
         }
         return success();
     }
+
+    /**
+     * 个人中心-更改手机号(短信验证接口)
+     */
+    @PostMapping("/updatePhoneBySms")
+    public AjaxResult updatePhoneBySms(@RequestBody MemberInfoRequest memberInfoRequest)
+    {
+         AjaxResult ajax = AjaxResult.success();
+        // 短信验证
+        String verifyKey = CacheConstants.SMS_CODE_KEY + memberInfoRequest.getUuid();
+        String code = redisCache.getCacheObject(verifyKey);
+        redisCache.deleteObject(verifyKey);
+        if (code == null) {
+            throw new CaptchaExpireException();
+        }
+        if (!code.equalsIgnoreCase(memberInfoRequest.getOldCode())) {
+            throw new CaptchaException();
+        }
+        try {
+            LoginUser loginUser = getLoginUser();
+            if(StringUtils.isEmpty(memberInfoRequest.getOldPhone())  ){
+                return error("修改用户'" + memberInfoRequest.getOldPhone() + "'失败，手机号码不能为空！");
+            }
+            String token = loginUser.getMemberId()+"_"+ IdUtils.fastUUID();
+            //缓存到redis中，失效时间为5分钟
+            String memberPhoneKey = PHONE_TOKEN_KEY + token;
+            redisCache.setCacheObject(memberPhoneKey, "SUCCESS", 5, TimeUnit.MINUTES);
+            //返回token
+            ajax.put(Constants.TOKEN, token);
+        } catch (Exception e){
+            return error("修改手机号异常，请联系管理员");
+        }
+        return ajax;
+    }
+
+    /**
+     * 个人中心-更改手机号(密码验证接口)
+     */
+    @PostMapping("/updatePhoneByPwd")
+    public AjaxResult updatePhoneByPwd(@RequestBody MemberInfoRequest memberInfoRequest)
+    {
+        AjaxResult ajax = AjaxResult.success();
+        //原密码解密
+        try {
+            memberInfoRequest.setPassword(RsaUtils.decryptByPrivateKey(privateKey,memberInfoRequest.getPassword()));
+        } catch (Exception e) {
+            return error("密钥解密失败！");
+        }
+        try {
+            //获取当前登录用户信息比对
+            LoginUser loginUser = getLoginUser();
+            String password = loginUser.getMemberPassword();
+            if (!SecurityUtils.matchesPassword(memberInfoRequest.getPassword(), password)){
+                return error("用户密码错误,校验失败！");
+            }
+            String token = loginUser.getMemberId()+"_"+ IdUtils.fastUUID();
+            //缓存到redis中，失效时间为5分钟
+            String memberPhoneKey = PHONE_TOKEN_KEY + token;
+            redisCache.setCacheObject(memberPhoneKey, "SUCCESS", 5, TimeUnit.MINUTES);
+            //返回token
+            ajax.put(Constants.TOKEN, token);
+        } catch (Exception e){
+            return error("修改手机号异常，请联系管理员");
+        }
+        return ajax;
+    }
+
+    /**
+     * 个人中心-更改手机号通过token
+     */
+    @PostMapping("/updatePhoneByToken")
+    public AjaxResult updatePhoneByToken(@RequestBody MemberInfoRequest memberInfoRequest)
+    {
+        String verifyTokenKey = PHONE_TOKEN_KEY + memberInfoRequest.getToken();
+
+        //验证修改手机号的认证token是否失效
+        if (redisCache.hasKey(verifyTokenKey)) {
+                AjaxResult ajax = AjaxResult.success();
+                // 新手机号短信验证
+                String verifyKey = CacheConstants.SMS_CODE_KEY + memberInfoRequest.getNewuuid();
+                String code = redisCache.getCacheObject(verifyKey);
+                redisCache.deleteObject(verifyKey);
+                if (code == null) {
+                    throw new CaptchaExpireException();
+                }
+                if (!code.equalsIgnoreCase(memberInfoRequest.getOldCode())) {
+                    throw new CaptchaException();
+                }
+            //验证手机号是否被其他用户使用
+            TMember member =iMemberService.selectMemberByPhone(memberInfoRequest.getNewPhone());
+            try {
+                LoginUser loginUser = getLoginUser();
+                String phone = loginUser.getMemberPhone();
+                if (member != null){
+                    return error("修改用户'" + member.getPhone() + "'失败，新手机号码已注册！");
+                }
+                if (memberInfoRequest.getNewPhone().equals(phone)){
+                    return error("修改用户'" + loginUser.getUsername() + "'失败，手机号码与旧号码相同");
+                }
+                memberInfoRequest.setOldPhone(this.getLoginUser().getMemberPhone());
+                memberInfoService.updatePhone(memberInfoRequest);
+//                清除redis的token认证缓存
+                redisCache.deleteObject(CacheConstants.PHONE_TOKEN_KEY + memberInfoRequest.getToken());
+            } catch (Exception e){
+                return error("修改手机号异常，请联系管理员");
+            }
+        }else{
+            return error("修改手机号超时，认证已失效！");
+        }
+        return success();
+    }
+
+    /**
+     * 个人中心-更改手机号新手机号校验
+     */
+    @PostMapping("/updatePhoneByNewToken")
+    public AjaxResult updatePhoneByNewToken(@RequestBody MemberInfoRequest memberInfoRequest)
+    {
+        String verifyTokenKey = PHONE_TOKEN_KEY + memberInfoRequest.getToken();
+        if (redisCache.hasKey(verifyTokenKey)) {
+            AjaxResult ajax = AjaxResult.success();
+            // 新手机号短信验证
+            String verifyKey = CacheConstants.SMS_CODE_KEY + memberInfoRequest.getNewuuid();
+            String code = redisCache.getCacheObject(verifyKey);
+            redisCache.deleteObject(verifyKey);
+            if (code == null) {
+                throw new CaptchaExpireException();
+            }
+            if (!code.equalsIgnoreCase(memberInfoRequest.getOldCode())) {
+                throw new CaptchaException();
+            }
+            try {
+                LoginUser loginUser = getLoginUser();
+                String phone = loginUser.getMemberPhone();
+                if(StringUtils.isEmpty(memberInfoRequest.getNewPhone())  ){
+                    return error("修改用户'" + memberInfoRequest.getNewPhone() + "'失败，手机号码不能为空！");
+                }
+                //验证新手机号是否被其他用户使用
+                TMember member =iMemberService.selectMemberByPhone(memberInfoRequest.getNewPhone());
+
+                if (member != null){
+                    return error("修改用户'" + member.getPhone() + "'失败，新手机号码已被注册！");
+                }
+                if (memberInfoRequest.getNewPhone().equals(phone)){
+                    return error("修改用户'" + loginUser.getUsername() + "'失败，手机号码与旧号码相同");
+                }
+
+                String NewToken = loginUser.getMemberId()+"_"+ IdUtils.fastUUID();
+                //缓存到redis中，失效时间为5分钟
+                String memberPhoneKey = PHONE_TOKEN_KEY + NewToken;
+                redisCache.setCacheObject(memberPhoneKey, "SUCCESS", 5, TimeUnit.MINUTES);
+                //返回token
+                ajax.put(Constants.TOKEN, NewToken);
+            } catch (Exception e){
+                return error("修改手机号异常，请联系管理员");
+            }
+            return ajax;
+        }else{
+            return error("修改手机号超时，认证已失效！");
+        }
+    }
+
     /**
      * 获取用户信息
      */

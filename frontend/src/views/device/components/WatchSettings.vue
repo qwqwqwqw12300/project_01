@@ -20,7 +20,7 @@
           </el-tab-pane>
           <el-tab-pane label="设置电子围栏" name="second">
             <el-row type="flex" justify="center">
-              <gao-de-map v-if="currentTab == 'second'" v-model="location" show-circle="true" :circle-radius="radius" style="height: 400px;width: 400px" ></gao-de-map>
+              <gao-de-map v-if="currentTab == 'second'" v-model="location" :show-circle="true" :circle-radius="radius" style="height: 400px;width: 400px" ></gao-de-map>
             </el-row>
             <el-row type="flex" justify="center">
               <el-card :body-style="{width:'400px'}">
@@ -198,7 +198,7 @@ export default {
 
   data(){
     return {
-      currentTab:'third',
+      currentTab:'first',
       reLocating:false,
       address:"",
       location:undefined,
@@ -277,6 +277,27 @@ export default {
             ],
             
         },
+        
+        //电子围栏参数表单
+        fenceForm:{
+          //设备电子围栏id
+          deviceFenceId:undefined,
+          //高德API服务-电子围栏id
+          geoFenceId:undefined,
+          //设备id
+          deviceId:undefined,
+          //设备编号
+          deviceNo:undefined,
+          //地址
+          address:undefined,
+          //经度
+          longitude:undefined,
+          //纬度
+          latitude:undefined,
+          //半径
+          radius:undefined,
+
+        }
 
     }  
   },

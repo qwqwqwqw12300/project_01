@@ -98,11 +98,11 @@
 					},
 					{
 						value: 0,
-						text: '雷达波'
+						text: 'vayyar'
 					},
 					{
 						value: 1,
-						text: '监控设备'
+						text: '电子牵挂卡'
 					}
 				]
 			]

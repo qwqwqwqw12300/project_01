@@ -20,6 +20,8 @@ public class CaptchaConfig
 
     @Value("${kaptcha.textproducer.font.size:38}")
     private String kaptcha_textproducer_font_size;
+    @Value("${kaptcha.obscurificator.open:true}")
+    private boolean kaptcha_obscurificator_open;
 
     @Bean(name = "captchaProducer")
     public DefaultKaptcha getKaptchaBean()
@@ -43,7 +45,9 @@ public class CaptchaConfig
         // 验证码文本字体样式 默认为new Font("Arial", 1, fontSize), new Font("Courier", 1, fontSize)
         properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_NAMES, "Arial,Courier");
         // 图片样式 水纹com.google.code.kaptcha.impl.WaterRipple 鱼眼com.google.code.kaptcha.impl.FishEyeGimpy 阴影com.google.code.kaptcha.impl.ShadowGimpy
-        properties.setProperty(KAPTCHA_OBSCURIFICATOR_IMPL, "com.google.code.kaptcha.impl.ShadowGimpy");
+        if(kaptcha_obscurificator_open){
+            properties.setProperty(KAPTCHA_OBSCURIFICATOR_IMPL, "com.google.code.kaptcha.impl.ShadowGimpy");
+        }
         Config config = new Config(properties);
         defaultKaptcha.setConfig(config);
         return defaultKaptcha;
