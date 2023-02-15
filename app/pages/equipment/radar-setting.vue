@@ -108,8 +108,8 @@
 			</view>
 		</view>
 		<view class="wd-btn-group">
-			<button @click="more">更多选项</button>
-			<button class="green" @click="editSubmit">确定</button>
+			<button class="plain" @click="more">更多选项</button>
+			<button class="default" @click="editSubmit">确定</button>
 		</view>
 		<!-- /区域设置 -->
 	</app-body>

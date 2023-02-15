@@ -26,7 +26,7 @@
 					</view>
 				</view> -->
 			</view>
-			<view class="ui-btn"><button @click="next" class="wd-sms">{{ subTitle }}</button></view>
+			<view class="ui-btn"><button @click="next" class="default">{{ subTitle }}</button></view>
 		</view>
 	</u-popup>
 </template>

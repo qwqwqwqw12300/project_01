@@ -69,8 +69,8 @@
 					</view>
 				</view>
 				<view class="wd-btn-group">
-					<button @click="handelSubmit">提交</button>
-					<button @click="handleClose">取消</button>
+					<button class="cancel" @click="handleClose">取消</button>
+					<button class="default" @click="handelSubmit">提交</button>
 				</view>
 			</view>
 		</u-popup>

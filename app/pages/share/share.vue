@@ -37,7 +37,7 @@
 				<view class="ui-form-item">
 					<sms-input ref="sms" @reset="codeReset" :payload="smsPayload" @checked="checkedBySms" />
 				</view>
-				<view class="wd-btn-group"><button @click="submit">提交</button></view>
+				<view class="wd-btn-group"><button @click="submit" class="default">提交</button></view>
 			</view>
 		</view>
 		<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">

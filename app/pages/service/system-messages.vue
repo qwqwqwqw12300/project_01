@@ -34,7 +34,7 @@
 				<scroll-view scroll-y class="uni-scroll">
 					<text>{{ readInfo }}</text>
 				</scroll-view>
-				<button @click="showVisible = false">我知道了</button>
+				<button @click="showVisible = false" class="default">我知道了</button>
 
 			</view>
 		</u-popup>

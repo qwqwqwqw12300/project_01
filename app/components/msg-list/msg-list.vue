@@ -84,7 +84,7 @@
 						size="small" :key="index" v-for="(item, index) of contactsList"></u-button>
 				</view>
 				<view class="ui-pop-btn">
-					<button @click="readMsg(details.msgId)">我知道了</button>
+					<button class="default" @click="readMsg(details.msgId)">我知道了</button>
 				</view>
 			</view>
 		</u-popup>

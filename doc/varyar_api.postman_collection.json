@@ -154,11 +154,21 @@
 				{
 					"name": "注册",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjEwMl9iMmJlNjRhYS05ZTg1LTRjY2EtYjk1Zi03Y2JhYWIwYTczMmEifQ.fB9nTlb082CUrMWf-sdUMgIPvctMb8hKHQmfkq9uUydYhdVAPFMsvncaadbye0r6OzkvSY5GDwbP8BCzJPm4zQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phone\":\"13300001111\",\r\n    \"password\":\"OvIzjg3WdI/bDFTnETejm2M5s2/OSEQKaZW0NLZbRiiR2Fsze2AxHGyWdQ/WcO23y8R1b9kMsz5wwcspff7w+txkZeFy6uRDNi5C0N4HLQtnU72q8dm3fPNSKRIFnrElTEEW08kolt8AfOgMr3VkGZQVafBuIEkzHvLRqPHBv/I=\",\r\n    \"code\":\"1234\",\r\n    \"smsUuid\":\"013557e2876147e4b43d81e159f36ae0\"\r\n}",
+							"raw": "{\r\n    \"phone\":\"13455555555\",\r\n    \"nickname\":\"\",\r\n    \"avatar\":\"\",\r\n    \"registrationType\":\"\",\r\n    \"registrationId\":\"\",\r\n    \"password\":\"OvIzjg3WdI/bDFTnETejm2M5s2/OSEQKaZW0NLZbRiiR2Fsze2AxHGyWdQ/WcO23y8R1b9kMsz5wwcspff7w+txkZeFy6uRDNi5C0N4HLQtnU72q8dm3fPNSKRIFnrElTEEW08kolt8AfOgMr3VkGZQVafBuIEkzHvLRqPHBv/I=\",\r\n    \"code\":\"1234\",\r\n    \"smsUuid\":\"013557e2876147e4b43d81e159f36ae0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -166,15 +176,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/api/fence/addFence",
+							"raw": "localhost:8081/api/regMember",
 							"host": [
 								"localhost"
 							],
 							"port": "8081",
 							"path": [
 								"api",
-								"fence",
-								"addFence"
+								"regMember"
 							]
 						}
 					},
@@ -1661,6 +1670,78 @@
 								"api",
 								"memberInfo",
 								"updatePhone"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "会员头像上传修改",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjEwMl8xNmYxNzAzOC02MzM0LTQwMWYtYTY1Mi03YTA3Mzg4NjdlZGMifQ.yRZSJbl5xbTNqxZPPv_taf_XID-n97dQliP_tq74uvf8TIqkaorA2bgvr9YjE07sarzI5I26mrk_3a5dwz9MEw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"type": "file",
+									"src": "/C:/Users/ChenXiangWei/Desktop/壁纸好图/sssffsffs11.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8081/api/memberInfo/avatar?avatarfile=sssffsffs11",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"memberInfo",
+								"avatar"
+							],
+							"query": [
+								{
+									"key": "avatarfile",
+									"value": "sssffsffs11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "修改会员昵称",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/api/memberInfo/updateMemInfo?nickname=爱国者1号",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"memberInfo",
+								"updateMemInfo"
+							],
+							"query": [
+								{
+									"key": "nickname",
+									"value": "爱国者1号"
+								}
 							]
 						}
 					},

@@ -15,8 +15,8 @@
 			<text>{{ address }}</text>
 		</view>
 		<view class="ui-btn-group">
-			<button class="wd-sms" @click="getListState">立即获取定位</button>
-			<button @click="goEnclosure">设置电子围栏</button>
+			<button class="plain" @click="getListState">立即获取定位</button>
+			<button class="default" @click="goEnclosure">设置电子围栏</button>
 		</view>
 	</app-body>
 </template>

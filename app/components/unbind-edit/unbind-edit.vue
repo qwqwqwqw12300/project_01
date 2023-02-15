@@ -28,8 +28,8 @@
 					</view>
 				</view>
 				<view class="wd-btn-group">
-					<button @click="close">取消</button>
-					<button class="green" @click="editSubmit">确定</button>
+					<button class="cancel" @click="close">取消</button>
+					<button class="default" @click="editSubmit">确定</button>
 				</view>
 			</view>
 		</u-popup>

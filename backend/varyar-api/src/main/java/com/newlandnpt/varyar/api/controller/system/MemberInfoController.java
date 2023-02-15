@@ -1,11 +1,15 @@
 package com.newlandnpt.varyar.api.controller.system;
 
 
+import com.newlandnpt.varyar.common.annotation.Log;
+import com.newlandnpt.varyar.common.config.VayyarConfig;
 import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.constant.Constants;
+import com.newlandnpt.varyar.common.constant.UserConstants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.entity.MemberInfo;
+import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.common.exception.user.UserPasswordRetryLimitExceedException;
 import com.newlandnpt.varyar.common.utils.MessageUtils;
 import com.newlandnpt.varyar.common.utils.RSA.RsaUtils;
@@ -18,6 +22,8 @@ import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
+import com.newlandnpt.varyar.common.utils.file.FileUploadUtils;
+import com.newlandnpt.varyar.common.utils.file.MimeTypeUtils;
 import com.newlandnpt.varyar.framework.manager.AsyncManager;
 import com.newlandnpt.varyar.framework.manager.factory.AsyncFactory;
 import com.newlandnpt.varyar.framework.web.service.SysPasswordService;
@@ -30,6 +36,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.concurrent.TimeUnit;
 
@@ -175,6 +182,9 @@ public class MemberInfoController extends BaseController
         MemberInfo memberInfo = new MemberInfo();
         memberInfo.setMemberId(member.getMemberId());
         memberInfo.setPhone(member.getPhone());
+        //增加会员昵称及会员头像
+        memberInfo.setNickname(member.getNickname());
+        memberInfo.setAvatar(member.getAvatar());
         if(member.getParameter() == null || member.getParameter().getPushMessage()==null){
             memberInfo.setState("0");
             return AjaxResult.success(memberInfo);
@@ -183,4 +193,61 @@ public class MemberInfoController extends BaseController
         return AjaxResult.success(memberInfo);
     }
 
+    /**
+     * 会员头像上传
+     */
+    @Log(title = "会员头像", businessType = BusinessType.UPDATE)
+    @PostMapping("/avatar")
+    public AjaxResult avatar(@RequestParam("avatarfile") MultipartFile file) throws Exception
+    {
+        if (!file.isEmpty())
+        {
+            LoginUser loginUser = getLoginUser();
+            String avatar = FileUploadUtils.upload(VayyarConfig.getAvatarPath(), file, MimeTypeUtils.IMAGE_EXTENSION);
+            if (memberInfoService.updateMemberAvatar(loginUser.getMemberPhone(), avatar))
+            {
+                AjaxResult ajax = AjaxResult.success();
+                ajax.put("imgUrl", avatar);
+                // 更新缓存会员头像
+                loginUser.setAvatar(avatar);
+                tokenService.setLoginUser(loginUser);
+                return ajax;
+            }
+        }
+        return error("上传图片异常，请联系管理员");
+    }
+
+
+    /**
+     * 会员昵称修改
+     */
+    @Log(title = "会员昵称", businessType = BusinessType.UPDATE)
+    @PostMapping("/updateMemInfo")
+    public AjaxResult updateMemInfo(@RequestParam("nickname") String nickname)
+    {
+
+            LoginUser loginUser = getLoginUser();
+            //获取会员id
+            Long memberId = loginUser.getMemberId();
+            String phone =  loginUser.getMemberPhone();
+            if (StringUtils.isEmpty(nickname))
+            {
+                return error("修改会员'" + phone + "'失败，用户昵称不能为空！");
+            }
+            TMember member =new TMember();
+            member.setMemberId(memberId);
+            member.setNickname(nickname);
+
+            if (memberInfoService.updateMemInfo(member) > 0)
+            {
+                AjaxResult ajax = AjaxResult.success();
+                ajax.put("nickname", nickname);
+                // 更新缓存用户信息
+                loginUser.setNickname(member.getNickname());
+
+                tokenService.setLoginUser(loginUser);
+                return ajax;
+            }
+         return error("修改昵称异常，请联系管理员");
+    }
 }

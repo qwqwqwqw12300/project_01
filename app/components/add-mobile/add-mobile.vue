@@ -16,7 +16,7 @@
 					</u-radio>
 				</u-radio-group>
 			</view> -->
-			<view class="ui-btn"><button @click="handleSubmit" class="wd-sms">提交</button></view>
+			<view class="ui-btn"><button @click="handleSubmit" class="default">提交</button></view>
 		</view>
 	</u-popup>
 </template>
@@ -135,7 +135,6 @@
 				width: 237rpx;
 				height: 71rpx;
 				font-size: 28rpx;
-				color: #ffffff;
 			}
 
 			;
