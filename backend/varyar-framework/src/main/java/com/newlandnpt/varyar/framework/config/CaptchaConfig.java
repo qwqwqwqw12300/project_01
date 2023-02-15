@@ -1,6 +1,8 @@
 package com.newlandnpt.varyar.framework.config;
 
 import java.util.Properties;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
@@ -15,6 +17,10 @@ import static com.google.code.kaptcha.Constants.*;
 @Configuration
 public class CaptchaConfig
 {
+
+    @Value("${kaptcha.textproducer.font.size:38}")
+    private String kaptcha_textproducer_font_size;
+
     @Bean(name = "captchaProducer")
     public DefaultKaptcha getKaptchaBean()
     {
@@ -29,7 +35,7 @@ public class CaptchaConfig
         // 验证码图片高度 默认为50
         properties.setProperty(KAPTCHA_IMAGE_HEIGHT, "60");
         // 验证码文本字符大小 默认为40
-        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_SIZE, "38");
+        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_SIZE, kaptcha_textproducer_font_size);
         // KAPTCHA_SESSION_KEY
         properties.setProperty(KAPTCHA_SESSION_CONFIG_KEY, "kaptchaCode");
         // 验证码文本字符长度 默认为5

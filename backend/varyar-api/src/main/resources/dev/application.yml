@@ -157,6 +157,11 @@ rocketmq:
     deviceConfig: deviceConfigTopic
     deviceActive: deviceActiveTopic
 
+# 验证码
+kaptcha:
+  textproducer:
+    font:
+      size: 50
 
 location:
   gaode:
