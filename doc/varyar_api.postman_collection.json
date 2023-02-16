@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "edfddb1d-fc55-4894-8379-4ca25008be58",
-		"name": "varyar_api",
+		"_postman_id": "14060896-9e0a-471b-b673-e1c4c436d22c",
+		"name": "varyar_api Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1764,7 +1764,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"oldPhone\":\"13774522637\",\r\n    \"newPhone\":\"13774522537\",   \r\n    \"oldCode\":\"3801\",\r\n    \"newCode\":\"2884\",\r\n    \"password\":\"7777777\",\r\n    \"uuid\":\"96734ca738b542baaffe66d0562971f5\",\r\n    \"newuuid\":\"96734ca738b542baaffe66d0562971f5\",\r\n    \"token\":\"35bc1790df4e49dabe277de4929a1593\"\r\n}",
+							"raw": "{\r\n    \"oldPhone\":\"13666666666\",\r\n    \"oldCode\":\"1234\",\r\n    \"uuid\":\"93244113865c4c4abce15214567fd442\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1863,7 +1863,7 @@
 						}
 					},
 					"response": []
-				}			
+				}
 			]
 		},
 		{

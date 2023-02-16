@@ -1,5 +1,5 @@
 <template>
-	<view class="wd-logo" :style="{marginTop: top,color: color}">
+	<view class="wd-logo" :style="{marginTop: top, color: color}">
 		<text>
 			{{text}}
 		</text>
