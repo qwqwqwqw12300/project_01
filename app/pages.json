@@ -135,6 +135,15 @@
 			}
 		},
 		{
+			"path": "pages/details/details2",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
 			"path": "pages/myself/myself",
 			"style": {
 				"navigationStyle": "custom",
@@ -385,6 +394,15 @@
 					"titleNView": false
 				}
 			}
+		}, {
+			"path": "pages/details/screen",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		}
 	],
 	"globalStyle": {

@@ -129,8 +129,8 @@ $u-info-light: #f4f4f5;
 }
 
 button {
-	border-radius: 60rpx;
 	@extend .active;
+	border-radius: 60rpx;
 	&.wd-sms {
 		color: #ffffff;
 		background: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);
