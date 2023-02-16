@@ -20,7 +20,7 @@
         <!-- 循环政策：基于时间创建日志文件 -->
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-			<fileNamePattern>${log.path}/admin.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${log.path}/backup/admin.%d{yyyy-MM-dd}.log</fileNamePattern>
 			<!-- 日志最大的历史 60天 -->
 			<maxHistory>60</maxHistory>
 		</rollingPolicy>
@@ -38,7 +38,7 @@
         <!-- 循环政策：基于时间创建日志文件 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-            <fileNamePattern>${log.path}/admin-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/backup/admin-error.%d{yyyy-MM-dd}.log</fileNamePattern>
 			<!-- 日志最大的历史 60天 -->
 			<maxHistory>60</maxHistory>
         </rollingPolicy>
@@ -60,7 +60,7 @@
 		<file>${log.path}/admin-user.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 按天回滚 daily -->
-            <fileNamePattern>${log.path}/admin-user.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/backup/admin-user.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 日志最大的历史 60天 -->
             <maxHistory>60</maxHistory>
         </rollingPolicy>
