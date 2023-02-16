@@ -36,15 +36,19 @@ public class RegMemberServiceImpl implements IRegMemberService {
         String phone = regMemberRequest.getPhone();
         String pwd = regMemberRequest.getPassword();
         String nickname="";
+        String avatar = "";
         if (regMemberRequest.getNickname() != null) {
             nickname = regMemberRequest.getNickname();
         }else
         {
             nickname = "会员"+regMemberRequest.getPhone();
         }
-
-        String avatar = "";
-
+        if (regMemberRequest.getAvatar() != null) {
+            avatar = regMemberRequest.getAvatar();
+        }else
+        {
+            avatar  = "";
+        }
         TMember tMemberQuery = memberMapper.selectMemberByPhone(phone);
         if (tMemberQuery != null) {
             log.error("异常信息:{}", "该用户已注册！");
@@ -57,6 +61,10 @@ public class RegMemberServiceImpl implements IRegMemberService {
         tMember.setParameter(parameter);
         tMember.setNo(IdUtils.fastSimpleUUID());
         tMember.setPhone(phone);
+        tMember.setNickname(nickname);
+        tMember.setAvatar(avatar);
+        tMember.setRegistrationId(regMemberRequest.getRegistrationId());
+        tMember.setRegistrationType(regMemberRequest.getRegistrationType());
         tMember.setPassword(SecurityUtils.encryptPassword(pwd));
         tMember.setCreateTime(new Date());
         memberMapper.insertMember(tMember);
