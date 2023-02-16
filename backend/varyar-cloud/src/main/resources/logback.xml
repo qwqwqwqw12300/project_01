@@ -21,7 +21,7 @@
         <!-- 循环政策：基于时间创建日志文件 -->
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-			<fileNamePattern>${log.path}/cloud.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${log.path}/backup/cloud.%d{yyyy-MM-dd}.log</fileNamePattern>
 			<!-- 日志最大的历史 60天 -->
 			<maxHistory>60</maxHistory>
 		</rollingPolicy>
@@ -39,7 +39,7 @@
         <!-- 循环政策：基于时间创建日志文件 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-            <fileNamePattern>${log.path}/cloud-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/backup/cloud-error.%d{yyyy-MM-dd}.log</fileNamePattern>
 			<!-- 日志最大的历史 60天 -->
 			<maxHistory>60</maxHistory>
         </rollingPolicy>
@@ -61,7 +61,7 @@
 		<file>${log.path}/cloud-user.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 按天回滚 daily -->
-            <fileNamePattern>${log.path}/cloud-user.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/backup/cloud-user.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 日志最大的历史 60天 -->
             <maxHistory>60</maxHistory>
         </rollingPolicy>
@@ -74,6 +74,8 @@
 	<logger name="com.newlandnpt.varyar" level="${log.level}" />
 	<!-- Spring日志级别控制  -->
 	<logger name="org.springframework" level="warn" />
+    <!-- RocketMq日志级别控制  -->
+    <logger name="org.apache.rocketmq" level="warn" />
 
 	<!--系统操作日志-->
     <root level="${log.level}">

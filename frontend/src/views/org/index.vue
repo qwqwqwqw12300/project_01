@@ -385,7 +385,7 @@ export default {
   },
   async created() {
     const {data:userProfile} = await getUserProfile();
-    this.orgType = userProfile.org.type;
+    this.orgType = userProfile?.org?.type || "0";
     this.reset();
     this.getList();
     const data = [];

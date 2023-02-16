@@ -1,5 +1,7 @@
 package com.newlandnpt.varyar.common.core.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
@@ -67,10 +69,12 @@ public class DeviceRequest {
     /**
      *开始时间 data HH:mm:ss
      * */
+    @JsonFormat(pattern = "HH:mm")
     private Date startTime;
     /**
      *结束时间 data HH:mm:ss
      * */
+    @JsonFormat(pattern = "HH:mm")
     private Date endTime;
     /**
      *进入标识 （0是 1否）

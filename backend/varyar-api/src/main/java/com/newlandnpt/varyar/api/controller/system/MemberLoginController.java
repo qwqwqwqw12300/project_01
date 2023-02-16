@@ -191,7 +191,7 @@ public class MemberLoginController extends BaseController {
     }
 
     @GetMapping("/logging")
-    public AjaxResult logging(@RequestParam(name = "message") String message){
+    public AjaxResult logging(@RequestParam(name = "message",required = false) String message){
         clientLog.debug(">>>>>> 用户[{}],日志:{}", Optional.ofNullable(SecurityUtils.getLoginUserWithoutException())
                 .map(p -> p.getUsername())
                 .orElse("匿名"),message);
