@@ -18,12 +18,12 @@
 				</u-icon>
 				<!-- 下拉框 -->
 				<view class="ui-select" v-if="isAddShow">
-					<view class="ui-select-item active" @click="goPage('/pages/equipment/add/radar')">
+					<view class="ui-select-item active" @click="goPage('/pages/equipment/radar')">
 						<u-icon name="../../static/images/leida-nm.png" class="active" color="#fff" size="40rpx">
 						</u-icon>
 						<text>vayyar</text>
 					</view>
-					<view class="ui-select-item active" @click="goPage('/pages/equipment/add/monitor')">
+					<view class="ui-select-item active" @click="goPage('/pages/equipment/monitor')">
 						<u-icon name="../../static/images/dzqgk.png" class="active" color="#fff" size="40rpx">
 						</u-icon>
 						<text>电子牵挂卡</text>
@@ -192,10 +192,11 @@
 				this.$store.commit('setDeviceInfo', info);
 				let url;
 				if (info.type === '0') { // 雷达波
-					url = '/pages/equipment/radar-detail';
+					url = '/pages/equipment/radar-detail/radar-detail';
 				} else { // 监控设备
 					url = '/pages/equipment/watch-detail';
 				}
+				this.$setCache('familyId', info.familyId);
 				this.goPage(url);
 
 			},

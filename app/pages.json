@@ -33,7 +33,7 @@
 			}
 		},
 		{
-			"path": "pages/equipment/radar-detail",
+			"path": "pages/equipment/radar-detail/radar-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
