@@ -13,7 +13,7 @@
 			</view>
 		</view>
 		<view class="ui-bluetooth">
-			<image src="../../static/images/bluetooth.png" mode="heightFix"></image>
+			<image src="../../../static/images/bluetooth.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-step">
 			<view class="ui-step-icon step2_bg"></view>
@@ -25,9 +25,9 @@
 		<view class="ui-list">
 			<view v-for="item in deviceList" :key="item.key" @tap="handleSelect(item)" class="ui-list-item"
 				:class="{'active': item.active}">
-				<image class="device" src="../../static/images/device.png" mode="" />
+				<image class="device" src="../../../static/images/device.png" mode="" />
 				<text class="text">设备1 device-01</text>
-				<image v-show="item.active" class="tick" src="../../static/images/tick.png" />
+				<image v-show="item.active" class="tick" src="../../../static/images/tick.png" />
 			</view>
 		</view>
 		<view class="ui-btn">
@@ -56,7 +56,7 @@
 <script>
 	import {
 		PostcreDevice
-	} from '../../common/http/api'
+	} from '../../../common/http/api'
 	export default {
 		data() {
 			const deviceList = [{
@@ -134,11 +134,11 @@
 
 <style lang="scss" scoped>
 	.step1_bg {
-		background-image: url('../../static/images/step1.png');
+		background-image: url('../../../static/images/step1.png');
 	}
 
 	.step2_bg {
-		background-image: url('../../static/images/step2.png');
+		background-image: url('../../../static/images/step2.png');
 	}
 
 	.bg {

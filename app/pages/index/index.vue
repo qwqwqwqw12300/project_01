@@ -18,11 +18,11 @@
 				</u-icon>
 				<!-- 下拉框 -->
 				<view class="ui-select" v-if="isAddShow">
-					<view class="ui-select-item active" @click="goPage('/pages/equipment/radar')">
+					<view class="ui-select-item active" @click="goPage('/pages/equipment/add/radar')">
 						<u-icon name="../../static/images/leida.png" class="active" color="#fff" size="40rpx"></u-icon>
 						<text>vayyar</text>
 					</view>
-					<view class="ui-select-item active" @click="goPage('/pages/equipment/monitor')">
+					<view class="ui-select-item active" @click="goPage('/pages/equipment/add/monitor')">
 						<u-icon name="../../static/images/shoubiao.png" class="active" color="#fff" size="40rpx">
 						</u-icon>
 						<text>电子牵挂卡</text>

@@ -103,7 +103,7 @@
 
 			goSet() {
 				uni.navigateTo({
-					url: '/pages/equipment/position-setting'
+					url: '/pages/equipment/setting/position-setting'
 				})
 			},
 

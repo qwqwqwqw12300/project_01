@@ -11,11 +11,14 @@ export const INIT_DEIVCE_SET = {
 	roomRight: 3,
 	roomLength: 6,
 	existFlag: 0,
-	fallFlag: 0,
+	fallFlag: 1,
 	entryTime: 1,
 	departureTime: 0,
-	startTime: 0,
-	endTime: 0,
+	/**开始监控时间**/
+	startTime: '00:00',
+	/**结束监控时间**/
+	endTime: '23:59',
+
 	inMonitorFlag: 1,
 	outMonitorFlag: 1,
 };
