@@ -73,6 +73,8 @@
 	<logger name="com.newlandnpt.varyar" level="${log.level}" />
 	<!-- Spring日志级别控制  -->
 	<logger name="org.springframework" level="warn" />
+	<!-- RocketMq日志级别控制  -->
+	<logger name="org.apache.rocketmq" level="warn" />
 	
 	<!--系统操作日志-->
     <root level="${log.level}">
