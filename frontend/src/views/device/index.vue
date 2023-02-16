@@ -334,7 +334,7 @@ export default {
   },
   async created() {
     const {data:userProfile} = await getUserProfile();
-    this.orgType = userProfile.org.type;
+    this.orgType = userProfile.org?.type || "0";
     this.currentDistributeFlag = this.$route.query.distributeFlag==undefined?undefined:Number(this.$route.query.distributeFlag)
     this.currentStatus = this.$route.query.status==undefined?undefined:this.$route.query.status
     this.currentOrgId = this.$route.query.orgId==undefined?undefined:Number(this.$route.query.orgId)
