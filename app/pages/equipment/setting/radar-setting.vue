@@ -258,11 +258,12 @@
 					roomHeight: roomHeight / 10,
 					roomRight: roomRight / 10,
 					roomLength: roomLength / 10,
-					startTime: getHoursTime(startTime) || 0,
-					endTime: getHoursTime(endTime) || 0,
+					startTime: startTime || '00：00',
+					endTime: endTime || '23：59',
 					entryTime: entryTime * 60 || 0,
 					departureTime: departureTime * 60 || 0,
-					flag: '2'
+					flag: '2',
+					source: null
 				}).then(res => {
 					uni.$u.toast(res.msg);
 				});

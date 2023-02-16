@@ -34,7 +34,7 @@
 			<image src="../../../static/images/bluetooth.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-btn" v-if="connectStatic === 'init'">
-			<button class="default" @click="next">下一步</button>
+			<button class="default" @click="addNext">下一步</button>
 		</view>
 		<view class="ui-btn" v-if="connectStatic === 'connect'">
 			<u-loading-icon :text="eventMsg"></u-loading-icon>
@@ -174,14 +174,14 @@
 					this.connectStatic = 'connect';
 					if (await this.permissionCheck()) {
 						vpsdk.connect(res => {
-							if (!getCurPage().includes('pages/equipment/radar')) return;
+							// if (!getCurPage().includes('pages/equipment/radar')) return;
 							const {
 								type,
 								data
 							} = res;
 							switch (type) {
 								case 'event': // 事件监听
-									this.eventMsg = data;
+									this.eventMsg = data.msg;
 									break;
 								case 'wifi': // 选择wifi
 									console.log(data, 'wifi信息');
@@ -195,8 +195,10 @@
 										this.editForm.deviceId = res.data.deviceId;
 										this.isEditShow = true;
 										this.connectStatic = 'init';
+										this.eventMsg = '启动中...';
 									}, err => {
 										this.connectStatic = 'init'; // 异常重新配置
+										this.eventMsg = '启动中...';
 									})
 									break;
 								default:
@@ -204,6 +206,7 @@
 										title: '设备添加失败，请重试'
 									});
 									this.connectStatic = 'init';
+									this.eventMsg = '启动中...';
 									break;
 							}
 						});
@@ -273,7 +276,20 @@
 			openWifi(data) {
 				this.wifiList = data;
 				this.$refs.wifiRef.open();
+			},
+
+			/**
+			 * 添加下一步
+			 */
+			async addNext() {
+				if (await this.permissionCheck()) {
+					uni.navigateTo({
+						url: '/pages/equipment/add/add-steps'
+					});
+				}
+
 			}
+
 		}
 	}
 </script>
@@ -397,9 +413,6 @@
 		}
 	}
 
-	.ui-radio {
-		padding-top: 15rpx;
-	}
 
 	.wd-add {
 		width: 582rpx;
@@ -408,6 +421,10 @@
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
 		padding: 53rpx 31rpx;
+
+		.ui-radio {
+			padding-top: 15rpx;
+		}
 
 		&>view {
 			margin-top: 52rpx;

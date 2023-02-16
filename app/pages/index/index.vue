@@ -19,11 +19,12 @@
 				<!-- 下拉框 -->
 				<view class="ui-select" v-if="isAddShow">
 					<view class="ui-select-item active" @click="goPage('/pages/equipment/add/radar')">
-						<u-icon name="../../static/images/leida.png" class="active" color="#fff" size="40rpx"></u-icon>
+						<u-icon name="../../static/images/leida-nm.png" class="active" color="#fff" size="40rpx">
+						</u-icon>
 						<text>vayyar</text>
 					</view>
 					<view class="ui-select-item active" @click="goPage('/pages/equipment/add/monitor')">
-						<u-icon name="../../static/images/shoubiao.png" class="active" color="#fff" size="40rpx">
+						<u-icon name="../../static/images/dzqgk.png" class="active" color="#fff" size="40rpx">
 						</u-icon>
 						<text>电子牵挂卡</text>
 					</view>
@@ -52,7 +53,7 @@
 						<view class="ui-list" v-for="room of familyItem.rooms" :key="room.roomId">
 							<template v-if="getDeives(room).deviceId">
 								<view class="ui-list-box active" @click="goDeciveDetails(getDeives(room))">
-									<image src="../../static/images/device.png"></image>
+									<image src="../../static/images/leida-nm.png"></image>
 									<text>{{room.name || '未命名房间'}}</text>
 									<text>{{getDeives(room).name || '未命名设备'}}</text>
 									<view class="ui-list-static">
@@ -179,6 +180,7 @@
 			 * 页面跳转
 			 */
 			goPage(url) {
+				if (url === '/pages/equipment/add/monitor') return uni.$u.toast('暂不支持添加该设备');
 				uni.navigateTo({
 					url
 				});
@@ -346,8 +348,8 @@
 					background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
 
 					image {
-						height: 90rpx;
-						width: 90rpx;
+						height: 110rpx;
+						width: 110rpx;
 					}
 
 					text {

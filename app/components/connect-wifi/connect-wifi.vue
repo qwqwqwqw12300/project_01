@@ -77,7 +77,7 @@
 					this.step = 'pwd';
 				} else {
 					if (this.info.pwd) {
-						if (this.info.wifi.ssid) {
+						if (!this.info.wifi.ssid) {
 							this.info.wifi = this.list[0];
 						}
 						this.$emit('confirm', this.info);
