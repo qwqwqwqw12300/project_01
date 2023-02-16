@@ -48,7 +48,7 @@
 				form: {
 					newPhone: '',
 					newCode: '',
-					uuid: '',
+					newuuid: '',
 				}
 			}
 		},
@@ -63,7 +63,7 @@
 			 * 新手机短信认证通过
 			 */
 			checkedBySms(smsInfo) {
-				this.form.uuid = smsInfo.uuid
+				this.form.newuuid = smsInfo.uuid
 				this.form.newCode = smsInfo.code
 			},
 			/**
