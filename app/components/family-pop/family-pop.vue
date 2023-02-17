@@ -17,8 +17,13 @@
 				</u-input>
 			</view>
 			<view class="ui-input">
-				<u-text size="28rpx" prefixIcon="map-fill" iconStyle="font-size: 36rpx" text="家庭地址(必填)"></u-text>
-				<u--input v-model="form.address" placeholder="请输入家庭地址" border="bottom" clearable></u--input>
+				<u-text size="28rpx" prefixIcon="info-circle-fill" iconStyle="font-size: 36rpx" text="家庭地址(必填)">
+				</u-text>
+				<u-input v-model="form.address" placeholder="请输入家庭地址" border="bottom" clearable>
+					<template slot="suffix">
+						<u-icon name="map-fill" class="active" @click="goMap" size="32rpx"></u-icon>
+					</template>
+				</u-input>
 			</view>
 			<view class="ui-btn"><button @click="next" class="default">{{ btnName }}</button></view>
 		</view>
@@ -90,7 +95,25 @@
 						});
 					}, 1000);
 				})
+			},
 
+			/**
+			 * 跳转选择地址
+			 */
+			goMap() {
+				uni.$once('searchData', res => {
+					const {
+						province,
+						city,
+						district,
+						address,
+						name
+					} = res
+					this.form.address = province + city + district + address + name;
+				});
+				uni.navigateTo({
+					url: '/pages/equipment/search'
+				});
 			}
 		}
 	};

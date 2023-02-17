@@ -70,7 +70,6 @@
 				</view>
 			</u-popup>
 			<!-- /绑定房间 -->
-			<device-edit :editFrom="editFrom" ref="editRef" @confirm="editSubmit"></device-edit>
 			<u-action-sheet :closeOnClickOverlay="true" :safeAreaInsetBottom="true" :closeOnClickAction="true"
 				@close="addHandle.show = false" :show="addHandle.show" cancelText="取消">
 				<view>
@@ -82,14 +81,7 @@
 						<text>{{item.name}}</text>
 					</view>
 				</view>
-				<!-- 
-				<view class="ui-sheet" v-for="(item, index) of addHandle.list" :key="'sheet' + index">
-					<u-icon name="../../static/images/dzqgk.png" class="active" color="#fff" size="40rpx">
-					</u-icon>
-					<text>电子牵挂卡</text>
-				</view> -->
 			</u-action-sheet>
-			<unbind-edit @confirm="init" ref="unbindEditRef"></unbind-edit>
 		</app-body>
 	</view>
 </template>
@@ -425,7 +417,12 @@
 		},
 		onBackPress(event) {
 			console.log('物理返回', event);
-			if (event.from === 'backbutton') this.back();
+			if (event.from === 'backbutton') {
+				uni.switchTab({
+					url: '/pages/myself/myself'
+				});
+				return true;
+			}
 
 		}
 	};

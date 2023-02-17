@@ -67,3 +67,15 @@ export const ZONE = {
 	/**离开监控区域报警**/
 	outMonitorFlag: 1
 };
+
+/**
+ * 查询条件
+ */
+const dateTime = new Date();
+export const INIT_SELECT = {
+	startDate: dateTime.setDate(dateTime.getDate() - 3), // 默认查近三天
+	endDate: new Date().getTime(),
+	deviceType: '',
+	eventlevel: '',
+	readFlag: ''
+};
