@@ -67,6 +67,7 @@
 				})
 			},
 			handleInit() {
+				this.msgList = []
 				const {
 					type,
 					familyId,
@@ -77,7 +78,8 @@
 					familyId,
 					deviceId,
 					readFlag: 0,
-					eventlevel: ''
+					eventlevel: '',
+					pageSize: 10000,
 				}).then(res => {
 					this.msgList = res.rows.map(n => {
 						n.content = uni.$u.trim(n.content)

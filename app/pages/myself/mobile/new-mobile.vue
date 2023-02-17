@@ -42,6 +42,9 @@
 	import {
 		phoneValidator
 	} from '@/common/utils/util';
+	import {
+		removeToken
+	} from '@/common/utils/auth.js';
 	export default {
 		data() {
 			return {
@@ -102,12 +105,15 @@
 							url: '/pages/login/login'
 						})
 					}, 1000)
-				}).catch(() => {
+				}, res => {
+					console.log(res, 'res')
+					// console.log('跳转页面，‘00000')
+					uni.$u.toast(res.msg)
 					setTimeout(() => {
-						uni.switchTab({
+						uni.reLaunch({
 							url: '/pages/myself/mobile/select-way'
 						})
-					}, 500)
+					}, 1000)
 				})
 			}
 		}

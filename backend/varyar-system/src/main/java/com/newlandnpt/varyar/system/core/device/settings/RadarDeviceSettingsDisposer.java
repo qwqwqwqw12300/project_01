@@ -97,7 +97,7 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
 
                         subRegion.setxMin(Optional.ofNullable(roomZone.getX1()).map(p->p.floatValue()).orElse(null));
                         subRegion.setxMax(Optional.ofNullable(roomZone.getX2()).map(p->p.floatValue()).orElse(null));
-                        subRegion.setyMin(Optional.ofNullable(roomZone.getY1()).map(p->p.floatValue()).orElse(null));
+                        subRegion.setyMin(Optional.ofNullable(roomZone.getY1()).map(p->p.floatValue()<0.3?0.3f:p.floatValue()).orElse(null));
                         subRegion.setyMax(Optional.ofNullable(roomZone.getY2()).map(p->p.floatValue()).orElse(null));
                         subRegion.setzMin(Optional.ofNullable(roomZone.getZ1()).map(p->p.floatValue()).orElse(null));
                         subRegion.setzMax(Optional.ofNullable(roomZone.getZ2()).map(p->p.floatValue()).orElse(null));

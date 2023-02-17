@@ -51,7 +51,7 @@ public class DeviceController extends BaseController {
     @ApiOperation("根据家庭id和房间id获取设备列表")
     @PostMapping("/list")
     public TableDataInfo list(@RequestBody @Validated DeviceRequest deviceRequest) {
-        startPage();
+        startPage(10000);
         TDevice cond = new TDevice();
         cond.setFamilyId(Long.valueOf(deviceRequest.getFamilyId()));
         cond.setRoomId(Long.valueOf(deviceRequest.getRoomId()));
@@ -76,7 +76,7 @@ public class DeviceController extends BaseController {
     @ApiOperation("根据家庭id和房间id获取当前会员的设备列表")
     @PostMapping("/listState")
     public TableDataInfo listState( @RequestBody @Validated DeviceRequest deviceRequest) {
-        startPage();
+        startPage(1000);
         Map map = new HashMap();
         map.put("memberId",this.getLoginUser().getMemberId());
         map.put("familyId",deviceRequest.getFamilyId());
@@ -569,7 +569,7 @@ public class DeviceController extends BaseController {
         }
         return success();
     }
-    
+
     @ApiOperation("获取设备位置(实时)")
     @ApiImplicitParam(name = "deviceId", value = "设备ID", required = true, dataType = "string", paramType = "query", dataTypeClass = String.class)
     @GetMapping("/getNowInfo")
