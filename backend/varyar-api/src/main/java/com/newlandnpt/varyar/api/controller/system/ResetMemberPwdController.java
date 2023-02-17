@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 
  * @author chenxw
  */
-@Api("重置密码相关服务")
+@Api(tags = "重置密码相关服务")
 @RestController
 @RequestMapping("/api")
 public class ResetMemberPwdController{

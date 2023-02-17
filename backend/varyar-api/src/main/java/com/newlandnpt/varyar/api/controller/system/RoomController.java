@@ -34,7 +34,7 @@ import java.util.List;
  * 
  * @author newlandnpt
  */
-@Api("家庭房间信息")
+@Api(tags = "家庭房间信息")
 @RestController
 @RequestMapping("/api/room")
 public class RoomController extends BaseController {

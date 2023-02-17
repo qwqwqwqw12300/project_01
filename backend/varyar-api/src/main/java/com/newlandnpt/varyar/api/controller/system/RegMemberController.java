@@ -34,7 +34,7 @@ import com.newlandnpt.varyar.common.core.domain.AjaxResult;
  * 
  * @author newlandnpt
  */
-@Api("会员用户注册")
+@Api(tags = "会员用户注册")
 @RestController
 @RequestMapping("/api")
 public class RegMemberController extends BaseController {

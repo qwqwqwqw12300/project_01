@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  *
  * @author newlandnpt
  */
-@Api("房间区域空间管理")
+@Api(tags = "房间区域空间管理")
 @RestController
 @RequestMapping("/api/roomZone")
 public class RoomZoneController extends BaseController {
