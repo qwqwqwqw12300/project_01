@@ -53,8 +53,8 @@
 			</view>
 			<!-- /处理标识 -->
 			<view class="ui-btn-list">
-				<view class="ui-btn active" @click="init">重置</view>
-				<view class="ui-btn active">确定</view>
+				<view class="ui-btn active" @click="reset">重置</view>
+				<view class="ui-btn active" @click="save">确定</view>
 			</view>
 		</view>
 		<u-calendar @close="dateClose" :monthNum="13" :maxDate="dateHandle.max" :minDate="dateHandle.min"
@@ -154,7 +154,14 @@
 					...INIT_SELECT
 				})
 			},
-
+			/**
+			 * 重置
+			 */
+			reset() {
+				this.screenInfo = {
+					...INIT_SELECT
+				};
+			},
 			/**
 			 * 保存
 			 */
@@ -163,9 +170,15 @@
 					startDate,
 					endDate
 				} = this.screenInfo;
-				if (startDate < endDate) return uni.$u.toast('开始时间不能早于结束时间');
+				if (startDate > endDate) return uni.$u.toast('开始时间不能早于结束时间');
 				this.$setCache('detailsScreenResult', this.screenInfo);
-				uni.navigateBack();
+				uni.navigateBack({
+					success: res => {
+						uni.$emit('detailsScreenResult', this.screenInfo);
+						// const eventChannel = this.getOpenerEventChannel();
+						// eventChannel.emit('detailsScreenResult', this.screenInfo);
+					}
+				});
 			},
 
 			/**

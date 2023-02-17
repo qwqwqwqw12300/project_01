@@ -41,15 +41,9 @@ const errText = {
  * @param {string} method 请求方法
  */
 const request = (url, options, process, method = 'POST') => {
-	let _url;
-	// if (isApp()) {
-	// 	_url = env.basePath + url;
-	// } else {
-	// 	_url = url;
-	// }
-	_url = env.basePath + url;
-	const showLoading = process.showLoading !== false,
-		errorHandle = process.error !== false;
+	const _url = env.basePath + url;
+	const showLoading = process.showLoading !== false, // 是否展示加载中
+		errorHandle = process.error !== false; // 是否使用统一报错
 	console.log('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));
 	return new Promise((resolve, reject) => {
 		if (showLoading) uni.showLoading();

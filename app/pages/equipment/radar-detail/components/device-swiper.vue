@@ -1,6 +1,6 @@
 <template>
 	<view class="swiper-item">
-		<image class="img" src="/static/images/radar-device.png"></image>
+		<image class="img" src="/static/images/leida-nm.png"></image>
 		<view class="device-info">
 			<view class="title">
 				{{record.name || '未命名设备'}}<text
@@ -56,9 +56,10 @@
 
 		.device-info {
 			flex: 1;
-			align-self: flex-start  !important;
+			align-self: flex-start !important;
 			padding-left: 10rpx;
 			padding-top: 30rpx;
+
 			.title {
 				color: #353535;
 				font-size: 34rpx;

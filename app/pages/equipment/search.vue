@@ -3,11 +3,14 @@
 		<view class="ui-u-search">
 			<u-search @change="searchChange" placeholder="请输入地址信息" :showAction="false" v-model="search"></u-search>
 		</view>
-		<view class="ui-site-gloup">
+		<view class="ui-site-gloup" v-if="poiList.length">
 			<view class="ui-item active" v-for="(item, index) of poiList" :key="index" @tap="handleSelect(item)">
 				<u-text prefixIcon="map" iconStyle="font-size: 19px" :text="item.name"></u-text>
 				<text>{{getAddress(item)}}</text>
 			</view>
+		</view>
+		<view class="ui-site-gloup empty" v-else>
+			<u-empty mode="search" />
 		</view>
 	</view>
 </template>
@@ -41,7 +44,7 @@
 		},
 		methods: {
 			handleSelect(val) {
-				uni.$emit('searchData', val)
+				uni.$emit('searchData', val);
 				uni.navigateBack()
 			},
 			searchChange($e) {
@@ -88,6 +91,10 @@
 
 	.ui-site-gloup {
 		margin-top: calc(40rpx + var(--status-bar-height));
+
+		&.empty {
+			padding-top: 200rpx;
+		}
 
 		.ui-item {
 			padding: 30rpx 0;
