@@ -201,7 +201,7 @@ public class MsgServiceImpl implements IMsgService
 
         int result = 0;
 
-        if(memberFamilies==null||memberFamilies.stream().noneMatch(p->p.getMemberId() == memberId)){
+        if(memberFamilies==null||memberFamilies.stream().noneMatch(p->p.getMemberId().longValue() == memberId.longValue())){
             //会员设备未加入家庭组的情况 单独发消息
             TMsg msg = new TMsg();
             msg.setMsgType(MSG_TYPE_APP);
