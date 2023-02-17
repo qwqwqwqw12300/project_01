@@ -21,6 +21,9 @@ import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IMemberLoginService;
 import com.newlandnpt.varyar.system.service.IMemberService;
 import com.newlandnpt.varyar.system.service.ISmsService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +41,7 @@ import java.util.concurrent.TimeUnit;
  * 
  * @author newlandnpt
  */
+@Api(tags = "会员登录")
 @RestController
 @RequestMapping("/api")
 public class MemberLoginController extends BaseController {
@@ -59,6 +63,7 @@ public class MemberLoginController extends BaseController {
     private ISmsService smsService;
 
 
+    @ApiOperation("账号密码登录")
     @PostMapping("/loginByPwd")
     public AjaxResult loginByPwd(
             @RequestBody @Validated MemberLoginPwdRequest memberLoginPwdRequest) {
@@ -99,6 +104,7 @@ public class MemberLoginController extends BaseController {
         return ajax;
     }
 
+    @ApiOperation("申请短信登录验证码")
     @PostMapping("/applyLoginBySms")
     public AjaxResult loginBySms(@RequestBody @Validated SmsRequest smsRequest) {
 
@@ -141,6 +147,7 @@ public class MemberLoginController extends BaseController {
         return ajax;
     }
 
+    @ApiOperation("短信验证码登录")
     @PostMapping("/loginBySms")
     public AjaxResult loginBySms(
             @RequestBody @Validated MemberLoginSmsRequest memberLoginSmsRequest) {
@@ -177,7 +184,7 @@ public class MemberLoginController extends BaseController {
         return ajax;
     }
 
-    //用户退出
+    @ApiOperation("用户登出")
     @PostMapping("/loginOut")
     public AjaxResult loginOut() {
         //获取当前登录用户信息
@@ -190,6 +197,7 @@ public class MemberLoginController extends BaseController {
         return ajax;
     }
 
+    @ApiOperation("客户端日志")
     @GetMapping("/logging")
     public AjaxResult logging(@RequestParam(name = "message",required = false) String message){
         clientLog.debug(">>>>>> 用户[{}],日志:{}", Optional.ofNullable(SecurityUtils.getLoginUserWithoutException())

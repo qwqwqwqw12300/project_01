@@ -1,63 +1,51 @@
 package com.newlandnpt.varyar.common.core.domain.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-/**
- * 重置密码
- *
- */
+@ApiModel("修改会员手机号请求")
 public class MemberInfoRequest {
 
-    /**
-     * 旧手机号
-     */
+
 //    @NotBlank(message = "手机号不能为空")
+    @ApiModelProperty("旧手机号")
     @Size(min = 0, max = 11, message = "手机号不能超过11个字符")
     private String oldPhone;
 
-    /**
-     * 旧短信验证码
-     */
 //    @NotBlank(message = "验证码不能为空")
+    @ApiModelProperty("旧手机号短信验证码")
     @Size(min = 0, max = 10, message = "验证码不能超过10个字符")
     private String oldCode;
 
-    /**
-     * 新手机号
-     */
 //    @NotBlank(message = "手机号不能为空")
+    @ApiModelProperty("新手机号")
     @Size(min = 0, max = 11, message = "手机号不能超过11个字符")
     private String newPhone;
 
-    /**
-     * 旧短信验证码
-     */
 //    @NotBlank(message = "验证码不能为空")
+    @ApiModelProperty("新手机号短信验证码")
     @Size(min = 0, max = 10, message = "验证码不能超过10个字符")
     private String newCode;
 
-    /**
-     * 密码
-     */
 //    @NotBlank(message = "密码不能为空")
+    @ApiModelProperty("密码")
     @Size(min = 0, max = 100, message = "密码不能超过100个字符")
     private String password;
 
-    /**
-     * 唯一标识
-     */
 //    @NotBlank(message = "唯一标识不能为空")
+    @ApiModelProperty("唯一标识")
     @Size(min = 0, max = 32, message = "唯一标识不能超过32个字符")
     private String uuid;
 
-    /**
-     * 唯一标识
-     */
 //    @NotBlank(message = "唯一标识不能为空")
+    @ApiModelProperty("唯一标识")
     @Size(min = 0, max = 32, message = "唯一标识不能超过32个字符")
     private String newuuid;
 
+    @ApiModelProperty("认证token")
     @NotBlank(message = "认证token不能为空")
     private String token;
 

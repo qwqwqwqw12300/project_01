@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @author newlandnpt
  */
-@Api("消息推送")
+@Api(tags = "消息推送")
 @RestController
 @RequestMapping("/api/message")
 public class MessageController extends BaseController {
@@ -181,9 +181,7 @@ public class MessageController extends BaseController {
 
     @ApiOperation("获取消息对应的联系人信息")
     @ApiImplicitParam(name = "msgId", value = "消息id", required = true, dataType = "long", paramType = "query", dataTypeClass = Long.class)
-//    @ApiResponses(
-//            {@ApiResponse(response =)}
-//    )
+    @ApiResponses(@ApiResponse(code = 200, message = "",response = TMemberContacts.class))
     @GetMapping("/getMessageContract")
     public AjaxResult getMessageContract(Long msgId){
         return AjaxResult.success(iMemberContactsService.selectMemberContactsListByMsgId(msgId));

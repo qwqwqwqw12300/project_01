@@ -30,6 +30,8 @@ import com.newlandnpt.varyar.framework.web.service.TokenService;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IMemberInfoService;
 import com.newlandnpt.varyar.system.service.IMemberService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -47,6 +49,7 @@ import static com.newlandnpt.varyar.common.constant.CacheConstants.PHONE_TOKEN_K
  * @author chenxiangwei
  * @date 2022-12-24
  */
+@Api(tags = "会员个人信息")
 @RestController
 @RequestMapping("/api/memberInfo")
 public class MemberInfoController extends BaseController
@@ -71,9 +74,8 @@ public class MemberInfoController extends BaseController
 
     @Autowired
     private IMemberService iMemberService;
-    /**
-     * 个人中心-重置密码
-     */
+
+    @ApiOperation("修改密码")
     @PostMapping("/updatePwd")
     public AjaxResult updatePwd(@RequestBody @Validated PasswordRequest passwordRequest)
     {
@@ -118,9 +120,8 @@ public class MemberInfoController extends BaseController
         return error("修改密码异常，请联系管理员");
 
     }
-    /**
-     * 个人中心-更改手机号
-     */
+
+    @ApiOperation("更改手机号")
     @PostMapping("/updatePhone")
     public AjaxResult updatePhone(@RequestBody MemberInfoRequest memberInfoRequest)
     {
@@ -167,9 +168,8 @@ public class MemberInfoController extends BaseController
         return success();
     }
 
-    /**
-     * 个人中心-更改手机号(短信验证接口)
-     */
+
+    @ApiOperation("更改手机号(短信验证接口)")
     @PostMapping("/updatePhoneBySms")
     public AjaxResult updatePhoneBySms(@RequestBody MemberInfoRequest memberInfoRequest)
     {
@@ -205,9 +205,7 @@ public class MemberInfoController extends BaseController
         return ajax;
     }
 
-    /**
-     * 个人中心-更改手机号(密码验证接口)
-     */
+    @ApiOperation("更改手机号(密码验证接口)")
     @PostMapping("/updatePhoneByPwd")
     public AjaxResult updatePhoneByPwd(@RequestBody MemberInfoRequest memberInfoRequest)
     {
@@ -242,9 +240,7 @@ public class MemberInfoController extends BaseController
         return ajax;
     }
 
-    /**
-     * 个人中心-更改手机号通过token验证
-     */
+    @ApiOperation("更改手机号通过token验证")
     @PostMapping("/updatePhoneByToken")
     public AjaxResult updatePhoneByToken(@RequestBody MemberInfoRequest memberInfoRequest)
     {
@@ -290,11 +286,7 @@ public class MemberInfoController extends BaseController
         return success();
     }
 
-
-
-    /**
-     * 获取用户信息
-     */
+    @ApiOperation("获取当前会员信息")
     @GetMapping("/getMemInfo")
     public AjaxResult  getMemberInfo(){
         AjaxResult ajax = AjaxResult.success();
@@ -319,10 +311,7 @@ public class MemberInfoController extends BaseController
         return AjaxResult.success(memberInfo);
     }
 
-    /**
-     * 会员头像上传
-     */
-    @Log(title = "会员头像", businessType = BusinessType.UPDATE)
+    @ApiOperation("会员头像上传")
     @PostMapping("/avatar")
     public AjaxResult avatar(@RequestParam("avatarfile") MultipartFile file) throws Exception
     {
@@ -344,10 +333,7 @@ public class MemberInfoController extends BaseController
     }
 
 
-    /**
-     * 会员昵称修改
-     */
-    @Log(title = "会员昵称", businessType = BusinessType.UPDATE)
+    @ApiOperation("会员昵称修改")
     @PostMapping("/updateMemInfo")
     public AjaxResult updateMemInfo(@RequestParam("nickname") String nickname)
     {

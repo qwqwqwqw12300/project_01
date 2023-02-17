@@ -1,5 +1,7 @@
 package com.newlandnpt.varyar.system.domain;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
@@ -11,26 +13,27 @@ import com.newlandnpt.varyar.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2022-12-24
  */
+@ApiModel(description = "协议")
 public class TAgreement extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 协议id */
+    @ApiModelProperty("协议id")
     private Long agreementId;
 
-    /** 协议内容 */
+    @ApiModelProperty("协议内容")
     @Excel(name = "协议内容")
     private String content;
 
-    /** 协议版本 */
+    @ApiModelProperty("协议版本")
     @Excel(name = "协议版本")
     private String ver;
 
-    /** 协议类型（0隐私协议 1app协议） */
+    @ApiModelProperty("协议类型（0隐私协议 1app协议）")
     @Excel(name = "协议类型", readConverterExp = "0=隐私协议,1=app协议")
     private String type;
 
-    /** 删除标志（0代表存在 2代表删除） */
+    @ApiModelProperty("删除标志（0代表存在 2代表删除）")
     private String delFlag;
 
     public void setAgreementId(Long agreementId) 
