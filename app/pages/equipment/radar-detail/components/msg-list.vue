@@ -6,7 +6,7 @@
 				全部标记已读
 			</text>
 		</view>
-		<scroll-view scroll-y="true" @refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled
+		<scroll-view scroll-y="true" refresher-background="transparent" @refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled
 			:style="{height: srollHeight}" class="ui-scroll">
 			<template v-if="msgList.length">
 				<msg-card v-for="(item,index) in msgList" :key="index" :msgInfo="item"></msg-card>
