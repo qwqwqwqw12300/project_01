@@ -116,7 +116,7 @@
 			 * 全部已读
 			 */
 			readMsgAll() {
-				const msgFlags = this.messageList.filter(ele => ele.operateFlag === '1').map(ele => ({
+				const msgFlags = this.messageList.filter(ele => ele.operateFlag === '0').map(ele => ({
 					msgId: ele.msgId,
 					msgFlag: '1'
 				}));
