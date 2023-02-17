@@ -76,7 +76,7 @@
 					type,
 					familyId,
 					deviceId,
-					readFlag: 1,
+					readFlag: 0,
 					eventlevel: ''
 				}).then(res => {
 					this.msgList = res.rows.map(n => {

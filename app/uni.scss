@@ -207,11 +207,23 @@ button {
 		left: 43rpx;
 		top: 66rpx;
 	}
-	
 }
+
 /**查看更多英文允许换行**/
 .u-read-more {
 	word-break: break-all
+}
+
+/**
+ * 单元格高度固定
+ */
+.u-cell__body {
+	height: 128rpx;
+}
+.u-cell {
+	.u-line {
+		margin:0 0 0 32rpx !important; // 下划线修改
+	}
 }
 
 

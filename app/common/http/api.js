@@ -64,7 +64,9 @@ export const PostAddAdvise = (params) => http.post('/api/advise/addAdvise', para
 /* 
  *获取紧急联系人列表*
  */
-export const GetContactsList = (params) => http.get('/api/memberContacts/list', params)
+export const GetContactsList = (params) => http.get('/api/memberContacts/list', params, {
+	error: false
+})
 
 /* 
  *添加紧急联系人*

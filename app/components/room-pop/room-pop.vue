@@ -94,10 +94,15 @@
 		},
 		methods: {
 			radioClick(name) {
-				this.form.name = name
-				this.tagsList.map((item) => {
-					item.checked = item.name === name ? true : false
-				})
+				// this.form.name = name
+				this.form = {
+					...this.form,
+					name,
+				}
+				console.log(this.form.name, 'fff')
+				// this.tagsList.map((item) => {
+				// 	item.checked = item.name === name ? true : false
+				// })
 			},
 			close() {
 				this.form = {}
@@ -136,7 +141,7 @@
 <style lang="scss">
 	.ui-add {
 		width: 582rpx;
-		min-height: 350rpx;
+		min-height: 300rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
@@ -169,13 +174,12 @@
 			}
 
 			.ui-tags {
-				margin-top: 40rpx !important;
-				display: flex;
-				flex-direction: row;
-				flex-wrap: wrap;
-
+				padding: 0 20rpx;
+				margin-top: 0 !important;
 				.ui-tags-item {
-					margin-right: 17rpx;
+					float: left;
+					margin-top: 14rpx;
+					margin-right: 30rpx;
 				}
 			}
 
