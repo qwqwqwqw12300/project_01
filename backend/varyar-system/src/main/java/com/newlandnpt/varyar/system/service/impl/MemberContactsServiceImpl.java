@@ -9,6 +9,10 @@ import com.newlandnpt.varyar.common.core.domain.model.MemberContactsRequest;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.common.utils.SecurityUtils;
+import com.newlandnpt.varyar.system.domain.TEvent;
+import com.newlandnpt.varyar.system.domain.TMsg;
+import com.newlandnpt.varyar.system.service.IEventService;
+import com.newlandnpt.varyar.system.service.IMsgService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,10 @@ public class MemberContactsServiceImpl implements IMemberContactsService
 {
     @Autowired
     private TMemberContactsMapper memberContactsMapper;
+    @Autowired
+    private IMsgService itMsgService;
+    @Autowired
+    private IEventService tEventService;
 
     /**
      * 查询会员联络人
@@ -53,6 +61,25 @@ public class MemberContactsServiceImpl implements IMemberContactsService
     public List<TMemberContacts> selectMemberContactsList(TMemberContacts memberContacts)
     {
         return memberContactsMapper.selectMemberContactsList(memberContacts);
+    }
+
+    @Override
+    public List<TMemberContacts> selectMemberContactsListByMsgId(Long msgId) {
+        // 限制无法获取非当前会员处理消息的紧急联系人信息。
+        Long memberId = SecurityUtils.getLoginUser().getMemberId();
+        List<TMemberContacts> results = new ArrayList<>();
+
+        TMsg msg = itMsgService.selectTMsgByMsgId(msgId);
+        if(msg!=null&&msg.getMemberId().longValue() == memberId.longValue()){
+            TEvent event = tEventService.selectTEventByEventId(msg.getEventId());
+            if(event!=null){
+                TMemberContacts memberContacts = new TMemberContacts();
+                memberContacts.setMemberId(event.getMemberId());
+                return selectMemberContactsList(memberContacts);
+            }
+        }
+
+        return results;
     }
 
     /**
