@@ -35,7 +35,6 @@
 
 <script>
 	import {
-		GetContactsList,
 		PostSetMsgInfo
 	} from '@/common/http/api';
 	export default {
@@ -48,32 +47,29 @@
 		data() {
 			return {
 				show: false,
-				contactsList: [],
 				msgDetail: this.msgInfo,
 			}
 		},
-		mounted() {
-			this.getContactsList();
-		},
-		methods: {
-			/**
-			 * 获取紧急联系人
-			 */
-			getContactsList() {
+		computed: {
+			contactsList() {
+				const list = uni.$u.deepClone(this.$store.getters.contactList)
 				const obj = {
 					1: '第一紧急联系人',
 					2: '第二紧急联系人',
 					3: '第三紧急联系人',
 				}
-				GetContactsList({}).then(res => {
-					this.contactsList = res.rows.filter(n => {
-						return n.phone !== ''
-					}).map(item => {
-						item.name = `${obj[item.orderNum]} ${item.name}`
-						return item
-					})
-				});
-			},
+				return list.filter(n => {
+					return n.phone !== ''
+				}).map(item => {
+					item.name = `${obj[item.orderNum]} ${item.name}`
+					return item
+				})
+			}
+		},
+		mounted() {
+
+		},
+		methods: {
 			/**
 			 * 单条用户信息已读
 			 */
@@ -82,6 +78,7 @@
 					msgId,
 					msgFlag: '1'
 				}).then(res => {
+					uni.$u.toast('标记成功')
 					this.msgDetail.msgFlag = '1'
 				})
 			},

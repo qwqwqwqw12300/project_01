@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author newlandnpt
  */
-@Api("字典表")
+@Api(tags = "字典表")
 @RestController
 @RequestMapping("/api/dictData")
 public class SysDictDataController  extends BaseController {

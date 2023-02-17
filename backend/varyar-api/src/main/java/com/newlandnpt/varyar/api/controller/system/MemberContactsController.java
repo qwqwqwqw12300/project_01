@@ -6,6 +6,8 @@ import com.newlandnpt.varyar.common.core.domain.model.MemberContactsRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.system.domain.TMemberContacts;
 import com.newlandnpt.varyar.system.service.IMemberContactsService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import java.util.List;
  *
  * @author newlandnpt
  */
+@Api(tags = "紧急联系人")
 @RestController
 @RequestMapping("/api/memberContacts")
 public class MemberContactsController extends BaseController {
@@ -24,9 +27,7 @@ public class MemberContactsController extends BaseController {
     @Autowired
     private IMemberContactsService iMemberContactsService;
 
-    /**
-     * 获取紧急电话列表
-     * */
+    @ApiOperation("获取紧急电话列表")
     @GetMapping("/list")
     public TableDataInfo list(TMemberContacts memberContacts) {
         startPage();
@@ -35,9 +36,8 @@ public class MemberContactsController extends BaseController {
         List<TMemberContacts> list = iMemberContactsService.selectMemberContactsList(memberContacts);
         return getDataTable(list);
     }
-    /**
-     * 创建紧急电话
-     * */
+
+    @ApiOperation("创建紧急电话")
     @PostMapping("/creMemberCon")
     public AjaxResult createMemberContacts(
             @RequestBody @Validated MemberContactsRequest memberContactsRequest) {
@@ -74,10 +74,8 @@ public class MemberContactsController extends BaseController {
         return ajax;
     }
 
-    /**
-     * 设置紧急电话
-     * @return
-     */
+
+    @ApiOperation("设置紧急电话")
     @PostMapping("/setMemberCon")
     public AjaxResult batchCreateMemberContacts(@RequestBody @Validated List<MemberContactsRequest> memberContactsList){
 
@@ -86,9 +84,8 @@ public class MemberContactsController extends BaseController {
 
     }
 
-    /**
-     * 修改紧急电话
-     * */
+
+    @ApiOperation("修改紧急电话")
     @PostMapping("/editMemberCon")
     public AjaxResult editMemberContacts(
             @RequestBody @Validated MemberContactsRequest memberContactsRequest) {
@@ -110,9 +107,8 @@ public class MemberContactsController extends BaseController {
         return ajax;
     }
 
-    /**
-     * 删除紧急电话
-     * */
+
+    @ApiOperation("删除紧急电话")
     @PostMapping("/remMemberCon")
     public AjaxResult removeMemberContacts(
             @RequestBody @Validated MemberContactsRequest memberContactsRequest) {

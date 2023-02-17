@@ -5,6 +5,8 @@ import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.system.domain.TAgreement;
 import com.newlandnpt.varyar.system.service.IAgreementService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * @author chenxw1
  * @date 2023-01-04
  */
+@Api(tags = "协议")
 @RestController
 @RequestMapping("/api/agreement")
 public class AgreementController extends BaseController
@@ -22,9 +25,7 @@ public class AgreementController extends BaseController
     @Autowired
     private IAgreementService agreementService;
 
-    /**
-     * 通过协议类型获取协议详细信息:0隐私协议 1app协议
-     */
+    @ApiOperation("通过协议类型获取协议详细信息:0隐私协议 1app协议")
     @PostMapping(value = "/getAgreementInfo")
     public AjaxResult getInfo(@RequestBody @Validated TAgreement tAgreement){
         if (tAgreement.getType() ==null || tAgreement.getType().equals("")){
@@ -37,9 +38,7 @@ public class AgreementController extends BaseController
         return success(tAgreement);
     }
 
-    /**
-     * 匿名访问获取用户协议:1app协议
-     */
+    @ApiOperation("匿名访问获取用户协议:1app协议")
     @PostMapping(value = "/selectAgreement")
     public AjaxResult selectAgreement()
     {

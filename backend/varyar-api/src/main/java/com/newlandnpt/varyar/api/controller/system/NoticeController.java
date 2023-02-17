@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-@Api("系统公告信息")
+@Api(tags = "系统公告信息")
 @RestController
 @RequestMapping("/api/notice")
 public class NoticeController extends BaseController {

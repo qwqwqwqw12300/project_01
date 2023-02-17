@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * @author chenxw
  * @date 2023-01-05
  */
-@Api("APP版本")
+@Api(tags = "APP版本")
 @RestController
 @RequestMapping("/api/version")
 public class VersionController extends BaseController

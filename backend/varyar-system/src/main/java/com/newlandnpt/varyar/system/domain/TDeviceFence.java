@@ -1,5 +1,7 @@
 package com.newlandnpt.varyar.system.domain;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
@@ -11,38 +13,39 @@ import com.newlandnpt.varyar.common.core.domain.BaseEntity;
  * @author chenxw
  * @date 2023-01-06
  */
+@ApiModel("设备电子围栏")
 public class TDeviceFence extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 设备电子围栏id */
+    @ApiModelProperty("设备电子围栏id")
     private Long deviceFenceId;
 
-    /** 高德API服务-电子围栏id */
+    @ApiModelProperty("高德API服务-电子围栏id")
     @Excel(name = "高德API服务-电子围栏id")
     private Long geoFenceId;
 
-    /** 设备id */
+    @ApiModelProperty("设备id")
     @Excel(name = "设备id")
     private Long deviceId;
 
-    /** 设备编号 */
+    @ApiModelProperty("设备编号")
     @Excel(name = "设备编号")
     private String deviceNo;
 
-    /** 地址 */
+    @ApiModelProperty("地址")
     @Excel(name = "地址")
     private String address;
 
-    /** 经度 */
+    @ApiModelProperty("经度")
     @Excel(name = "经度")
     private String longitude;
 
-    /** 纬度 */
+    @ApiModelProperty("纬度")
     @Excel(name = "纬度")
     private String latitude;
 
-    /** 半径 */
+    @ApiModelProperty("半径")
     @Excel(name = "半径")
     private String radius;
 

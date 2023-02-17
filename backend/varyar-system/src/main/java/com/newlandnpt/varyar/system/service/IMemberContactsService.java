@@ -30,6 +30,14 @@ public interface IMemberContactsService
     public List<TMemberContacts> selectMemberContactsList(TMemberContacts memberContacts);
 
     /**
+     * 根据消息id获取 消息对应事件的会员联系人
+     *
+     * @param msgId 会员联络人
+     * @return 会员联络人集合
+     */
+    public List<TMemberContacts> selectMemberContactsListByMsgId(Long msgId);
+
+    /**
      * 新增会员联络人
      * 
      * @param memberContacts 会员联络人
@@ -69,4 +77,6 @@ public interface IMemberContactsService
      * @return
      */
     public int setMemberContacts(Long memberId, List<MemberContactsRequest> memberContacts);
+
+
 }
