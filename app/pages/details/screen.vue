@@ -64,15 +64,9 @@
 </template>
 
 <script>
-	const dateTime = new Date();
-	const INIT_SELECT = {
-		startDate: dateTime.setDate(dateTime.getDate() - 3),
-		endDate: new Date().getTime(),
-		deviceType: '',
-		eventlevel: '',
-		readFlag: ''
-	};
-
+	import {
+		INIT_SELECT
+	} from '../../config/db';
 	export default {
 		data() {
 			return {

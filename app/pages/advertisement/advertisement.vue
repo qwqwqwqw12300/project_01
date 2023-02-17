@@ -1,5 +1,5 @@
 <template>
-	<app-body :hideTitle="true" :needService="false" :bg="false"
+	<app-body :hideTitle="true" :needService="false"
 		:bodyStyle="{backgroundImage: 'linear-gradient(180deg, #FFE7B5 0%, #FFFFFF 24%)' }">
 		<view class="ui-ad" @click="goGuide">
 			<image src="../../static/images/logo@2x.png"></image>
@@ -35,8 +35,8 @@
 			};
 		},
 		mounted() {
-			this.$store.dispatch('GetContactsList')
-			this.queryVersion()
+			this.$store.dispatch('GetContactsList');
+			this.queryVersion();
 		},
 		methods: {
 			/**

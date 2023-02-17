@@ -68,9 +68,9 @@ const request = (url, options, process, method = 'POST') => {
 				} else {
 					if (errorHandle) {
 						if (data.code === 401) { // 未登录
-							uni.redirectTo({
-								url: '/pages/login/login'
-							})
+							// uni.redirectTo({
+							// 	url: '/pages/login/login'
+							// });
 						} else {
 							uni.showModal({
 								title: '提示',

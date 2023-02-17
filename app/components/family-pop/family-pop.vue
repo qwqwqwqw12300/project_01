@@ -21,7 +21,7 @@
 				</u-text>
 				<u-input v-model="form.address" placeholder="请输入家庭地址" border="bottom" clearable>
 					<template slot="suffix">
-						<u-icon name="map-fill" class="active" @click="goMap" size="32rpx"></u-icon>
+						<u-icon name="map-fill" class="active" @click="goMap" size="38rpx"></u-icon>
 					</template>
 				</u-input>
 			</view>

@@ -134,6 +134,8 @@
 			}
 
 			.event-status {
+				display: flex;
+				align-items: center;
 
 				.common {
 					font-size: 22rpx;
