@@ -8,8 +8,8 @@
 			</swiper>
 		</view>
 		<view class="ui-tabs">
-			<view class="ui-tabs-item" v-for="item in tabList" :key="item.key" @tap="handleTab(item.key)">
-				<text :class="{'active': tabKey === item.key }">{{ item.name }}</text>
+			<view class="ui-tabs-item" v-for="item in tabList" :key="item.key">
+				<text @tap="handleTab(item.key)" :class="{'active': tabKey === item.key }">{{ item.name }}</text>
 			</view>
 		</view>
 		<view class="ui-content">
