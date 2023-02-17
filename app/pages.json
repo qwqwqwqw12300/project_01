@@ -33,7 +33,7 @@
 			}
 		},
 		{
-			"path": "pages/equipment/radar-detail",
+			"path": "pages/equipment/radar-detail/radar-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -127,6 +127,15 @@
 		},
 		{
 			"path": "pages/details/details",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/details/details2",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -385,6 +394,15 @@
 					"titleNView": false
 				}
 			}
+		}, {
+			"path": "pages/details/screen",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		}
 	],
 	"globalStyle": {

@@ -17,7 +17,8 @@ class Log {
 	constructor() {
 		if (env.mode === 'dev') {
 			console.info = (...options) => {
-				this.log(options);
+				if (options.length) this.log(options);
+
 			};
 		}
 	}

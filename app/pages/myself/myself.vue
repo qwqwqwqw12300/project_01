@@ -88,7 +88,7 @@
 			userInfoPhone() {
 				const phone = this.$store.getters.userInfo.phone,
 					pho = /(\d{3})\d*(\d{4})/;
-				return phone.replace(pho, '$1****$2');
+				return phone.replace(pho || '', '$1****$2');
 			}
 		},
 		methods: {

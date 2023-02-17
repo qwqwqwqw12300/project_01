@@ -477,8 +477,8 @@
 				} = form,
 				obj = assignDeep({}, {
 					...form,
-					startTime: getHoursTime(startTime),
-					endTime: getHoursTime(endTime),
+					startTime: startTime,
+					endTime: endTime,
 					entryTime: minuteToTime(entryTime),
 					departureTime: minuteToTime(departureTime)
 				});
