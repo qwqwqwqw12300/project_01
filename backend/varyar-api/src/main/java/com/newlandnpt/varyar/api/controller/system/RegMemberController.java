@@ -12,6 +12,10 @@ import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.framework.web.service.TokenService;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IRegMemberService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,7 @@ import com.newlandnpt.varyar.common.core.domain.AjaxResult;
  * 
  * @author newlandnpt
  */
+@Api("会员用户注册")
 @RestController
 @RequestMapping("/api")
 public class RegMemberController extends BaseController {
@@ -45,6 +50,17 @@ public class RegMemberController extends BaseController {
     @Autowired
     private TokenService tokenService;
 
+    @ApiOperation("注册用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "phone", value = "手机号",required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "password", value = "密码",required = true,  dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "code", value = "图形验证码",required = true,  dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "uuid", value = "唯一标识", required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "registrationType", value = "登录设备注册类型（0:android 1:ios）", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "registrationId", value = "会员登录设备注册号",  dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "nickname", value = "会员昵称",  dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "avatar", value = "会员头像", dataType = "String", dataTypeClass = String.class)
+    })
     @PostMapping("/regMember")
     public AjaxResult regMember(
             @RequestBody @Validated RegMemberRequest regMemberRequest) {

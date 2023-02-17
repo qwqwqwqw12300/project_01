@@ -3,28 +3,28 @@
 		<view style="padding: 20rpx 30rpx;">
 			<view class="box-title">
 				<text class="device-type">雷达波设备</text>
-				<text class="event-date">{{$u.timeFormat(msgInfo.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
+				<text class="event-date">{{$u.timeFormat(msgDetail.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
 				<view class="event-status">
-					<text class="urgent common" v-if="msgInfo.eventLevel === 'urgent'">紧急事件</text>
+					<text class="urgent common" v-if="msgDetail.eventLevel === 'urgent'">紧急事件</text>
 					<text class="nourgent common" v-else>一般事件</text>
-					<text class="nodeal common" v-if="msgInfo.operateFlag === '0'">未处理</text>
+					<text class="nodeal common" v-if="msgDetail.operateFlag === '0'">未处理</text>
 					<text class="deal common" v-else>已处理</text>
 				</view>
 			</view>
 			<text class="device-own">
-				{{msgInfo.deviceName || '未命名设备'}}
+				{{msgDetail.deviceName || '未命名设备'}}
 			</text>
 			<view class="content">
 				<!-- {{item.content || '--'}} -->
 				<u-read-more :showHeight="60" :toggle="true" closeText="展开" openText="关闭">
-					<rich-text :nodes="$u.trim(msgInfo.content, 'all') || '--'"></rich-text>
+					<rich-text :nodes="$u.trim(msgDetail.content, 'all') || '--'"></rich-text>
 				</u-read-more>
 				<!-- 设备张三的雷达监测到有人摔倒、请及时处理 -->
 			</view>
 		</view>
 		<view class="action">
-			<view class="detail" @click="handleRead(msgInfo.msgId)">我明白了</view>
-			<view class="phone" @click="handleCall(msgInfo.phone)">
+			<view class="detail" @click="handleRead(msgDetail.msgId)">我明白了</view>
+			<view class="phone" @click="handleCall(msgDetail.phone)">
 				<u-icon name="phone" color="white" size="22"></u-icon><text style="margin-left: 8rpx;">亲人处理</text>
 			</view>
 		</view>
@@ -49,6 +49,7 @@
 			return {
 				show: false,
 				contactsList: [],
+				msgDetail: this.msgInfo,
 			}
 		},
 		mounted() {
@@ -81,10 +82,7 @@
 					msgId,
 					msgFlag: '1'
 				}).then(res => {
-					// uni.$u.toast('您暂未设置联系人')
-					this.msgList.find(n => {
-						return n.msgId === msgId
-					}).msgFlag = '1'
+					this.msgDetail.msgFlag = '1'
 				})
 			},
 			/**
@@ -127,7 +125,7 @@
 			justify-content: space-between;
 
 			.device-type {
-				font-size: 28rpx;
+				font-size: 30rpx;
 				color: #888888;
 			}
 
@@ -141,7 +139,7 @@
 			.event-status {
 
 				.common {
-					font-size: 20rpx;
+					font-size: 22rpx;
 					color: #FFFFFF;
 					padding: 4rpx 12rpx;
 					border-radius: 4px;
@@ -169,6 +167,7 @@
 		}
 
 		.device-own {
+			margin-top: 10rpx;
 			font-size: 36rpx;
 			color: #353535;
 			font-weight: 550;
