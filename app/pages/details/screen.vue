@@ -109,11 +109,11 @@
 						text: '全部'
 					},
 					{
-						value: '0',
+						value: '1',
 						text: '已读'
 					},
 					{
-						value: '1',
+						value: '0',
 						text: '未读'
 					}
 				],
