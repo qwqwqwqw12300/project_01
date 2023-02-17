@@ -7,87 +7,17 @@
 
 <template>
 	<view>
-		<view class="ui-nav" v-if="needNav">
-			<u-tabs lineWidth="130rpx" lineColor="#fec92e"
-				:itemStyle="{width: '180rpx', height: '80rpx', fontSize: '30rpx'}" :list="navList" @click="navClick">
-			</u-tabs>
-		</view>
-		<!-- 已读按钮 -->
-		<view class="ui-read active" @click="readMsgAll">
-			<u-text prefixIcon="checkmark-circle" align="center" :iconStyle="{fontSize: '30rpx', color: '#fff'}"
-				color="#fff" size="24rpx" text="全部标记为已读"></u-text>
-		</view>
-		<!-- /已读按钮 -->
 		<!-- 未读事件列表 -->
 		<scroll-view scroll-y="true" @refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled
 			:style="{height: srollHeight}" class="ui-scroll">
 			<template v-if="list.length">
 				<template v-for="(item, index) of list">
-					<view class="ui-message active" @click="open(item.msgId)" v-if="item.eventLevel !== 'urgent'"
-						:key="index + 'list'">
-						<view class="ui-content-time">
-							<u-icon name="chat" color="#414141" size="40rpx"></u-icon>
-							<text>{{$u.timeFormat(item.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
-							<text class="ui-content-name">{{item.deviceName || '未命名设备'}}</text>
-						</view>
-						<text class="ui-content">{{item.content || '--'}}</text>
-					</view>
-					<!-- /sos事件 -->
-					<view class="ui-sos active" v-else @click="open(item.msgId)" :key="index + 'listSos'">
-						<view>
-							<view class="ui-content-time">
-								<u-icon name="arrow-right" color="#414141" size="40rpx"></u-icon>
-								<text>{{$u.timeFormat(item.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
-								<text class="ui-content-name">{{item.deviceName || '未命名设备'}}</text>
-							</view>
-							<text class="ui-content">{{item.content || '--'}}</text>
-						</view>
-						<view class="ui-sos-btn active" v-if="contactsList[0]" @click="call(contactsList[0].phone)">
-							<u-text prefixIcon="phone" align="center" :block="false" iconStyle="font-size: 40rpx"
-								size="24rpx" text="紧急电话"></u-text>
-							<text>{{contactsList[0].phone}}</text>
-						</view>
-
-					</view>
+					<msg-card :key="index" :msgInfo="item"></msg-card>
 				</template>
 				<!-- /sos事件 -->
 			</template>
 			<u-empty v-else mode="list" text="暂无数据" marginTop="80rpx"></u-empty>
 		</scroll-view>
-		<!-- /未读事件列表 -->
-		<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
-			<view class="ui-pop-box">
-				<view class="ui-pop-msg">
-					<view>
-						<text>设备名称</text>
-						<text>{{details.deviceName || '未命名设备'}}</text>
-					</view>
-					<view>
-						<text>所属家庭</text>
-						<text>{{details.familyName || '未命名家庭'}}</text>
-					</view>
-					<view>
-						<text>所属房间</text>
-						<text>{{details.roomName || '未命名房间'}}</text>
-					</view>
-					<view>
-						<text>时间</text>
-						<text>{{details.createTime || '--'}}</text>
-					</view>
-					<view>
-						<text>内容</text>
-						<text>{{details.content || '--'}}</text>
-					</view>
-				</view>
-				<view class="ui-sos-list">
-					<u-button icon="phone" @click="call(item.phone)" :text="'第' + item.orderNum + '联系人 ' + item.name"
-						size="small" :key="index" v-for="(item, index) of contactsList"></u-button>
-				</view>
-				<view class="ui-pop-btn">
-					<button class="default" @click="readMsg(details.msgId)">我知道了</button>
-				</view>
-			</view>
-		</u-popup>
 	</view>
 </template>
 
@@ -148,9 +78,6 @@
 					this.triggered = false;
 				}
 				this.triggered = true;
-				// setTimeout(() => {
-				// 	this.triggered = false;
-				// }, 3000);
 				this.$emit('onRefresh', close);
 				console.log($e);
 			},

@@ -48,7 +48,7 @@
 				form: {
 					newPhone: '',
 					newCode: '',
-					uuid: '',
+					newuuid: '',
 				}
 			}
 		},
@@ -63,7 +63,7 @@
 			 * 新手机短信认证通过
 			 */
 			checkedBySms(smsInfo) {
-				this.form.uuid = smsInfo.uuid
+				this.form.newuuid = smsInfo.uuid
 				this.form.newCode = smsInfo.code
 			},
 			/**
@@ -94,10 +94,18 @@
 				PostUpdatePhoneByToken({
 					...this.form,
 				}).then(res => {
-					uni.$u.toast(res.msg)
+					// uni.$u.toast(res.msg)
+					removeToken()
+					uni.$u.toast('修改成功，请重新登录')
+					setTimeout(() => {
+						uni.reLaunch({
+							url: '/pages/login/login'
+						})
+					}, 1000)
+				}).catch(() => {
 					setTimeout(() => {
 						uni.switchTab({
-							url: '/pages/myself/myself'
+							url: '/pages/myself/mobile/select-way'
 						})
 					}, 500)
 				})

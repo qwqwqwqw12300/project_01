@@ -140,7 +140,6 @@
 	}
 
 	.wd-body {
-		padding-top: var(--status-bar-height);
 		box-sizing: border-box;
 		height: calc(100vh - var(--window-bottom));
 		width: 100%;
@@ -151,6 +150,7 @@
 	}
 
 	.wd-body-bg {
+		padding-top: var(--status-bar-height);
 		background-image: url('@/static/images/bg2.png');
 	}
 

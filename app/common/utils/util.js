@@ -185,6 +185,25 @@ export function assignDeep(target, ...sources) {
 }
 
 /**
+ * 数组深拷贝
+ * @param {Object} obj
+ */
+export function arrayAssign(obj) {
+	// 只拷贝对象
+	if (typeof obj !== 'object') return;
+	// 根据obj的类型判断是新建一个数组还是一个对象
+	const newObj = obj instanceof Array ? [] : {};
+	for (let key in obj) {
+		// 遍历obj,并且判断是obj的属性才拷贝
+		if (obj.hasOwnProperty(key)) {
+			// 判断属性值的类型，如果是对象递归调用深拷贝
+			newObj[key] = typeof obj[key] === 'object' ? arrayAssign(obj[key]) : obj[key];
+		}
+	}
+	return newObj;
+}
+
+/**
  * versionCompare 比较版本大小如果curV 小于 reqV，则返回false，否则返回ture
  */
 export const versionCompare = (curV, reqV) => {

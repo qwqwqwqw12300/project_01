@@ -33,7 +33,7 @@
 			}
 		},
 		{
-			"path": "pages/equipment/radar-detail",
+			"path": "pages/equipment/radar-detail/radar-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -127,6 +127,15 @@
 		},
 		{
 			"path": "pages/details/details",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/details/details2",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -385,6 +394,15 @@
 					"titleNView": false
 				}
 			}
+		}, {
+			"path": "pages/details/screen",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		}
 	],
 	"globalStyle": {
@@ -413,6 +431,12 @@
 				"iconPath": "/static/images/tabbar/tabbar2.png",
 				"selectedIconPath": "/static/images/tabbar/tabbar2.png",
 				"text": "详情"
+			},
+			{
+				"pagePath": "pages/details/details2",
+				"iconPath": "/static/images/tabbar/tabbar2.png",
+				"selectedIconPath": "/static/images/tabbar/tabbar2.png",
+				"text": "详情2"
 			},
 			{
 				"pagePath": "pages/myself/myself",
