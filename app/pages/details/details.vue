@@ -9,7 +9,7 @@
 		<view class="ui-body">
 			<view class="ui-title">
 				<text>详情</text>
-				<text class="active" @click="readMsgAll">全部标记已读</text>
+				<text class="active" @click="readMsgAll">全部标记已处理</text>
 			</view>
 			<view class="ui-screen">
 				<view class="ui-screen-icon ui-screen-family active" @click="familyShow = true">
