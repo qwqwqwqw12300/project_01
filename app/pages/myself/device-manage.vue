@@ -213,66 +213,37 @@
 			 * 编辑浮层打开
 			 */
 			edit(item) {
-				const {
-					name,
-					deviceId,
-					type,
-					no,
-					familyId,
-					roomId,
-					location,
-					parameter: {
-						deviceLocation = {},
-						deviceRoomParameter = {}
-					} = {},
-
-				} = item;
-				Object.assign(this.editFrom, {
-					deviceName: name,
-					deviceId,
-					deviceType: type,
-					deviceNo: no,
-					familyId,
-					roomId,
-					location,
-					...deviceLocation,
-					...deviceRoomParameter,
-					source: item
-				});
-				this.$setCache('setDevice', this.editFrom);
+				// const {
+				// 	name,
+				// 	deviceId,
+				// 	type,
+				// 	no,
+				// 	familyId,
+				// 	roomId,
+				// 	location,
+				// 	parameter: {
+				// 		deviceLocation = {},
+				// 		deviceRoomParameter = {}
+				// 	} = {},
+				// } = item;
+				// Object.assign(this.editFrom, {
+				// 	deviceName: name,
+				// 	deviceId,
+				// 	deviceType: type,
+				// 	deviceNo: no,
+				// 	familyId,
+				// 	roomId,
+				// 	location,
+				// 	...deviceLocation,
+				// 	...deviceRoomParameter,
+				// 	source: item
+				// });
+				this.$setCache('setDevice', item);
 				uni.navigateTo({
 					url: '/pages/equipment/setting/radar-setting'
 				})
-
 			},
 
-			/**
-			 * 修改设备
-			 */
-			editSubmit(editFrom) {
-				if (editFrom.deviceName) {
-					setDevice({
-						...editFrom,
-						flag: '2'
-					}).then(res => {
-						uni.$u.toast(res.msg);
-						this.eidtClose();
-						setTimeout(() => {
-							this.init();
-						}, 1000);
-					});
-				} else {
-					uni.$u.toast('请填写新名称');
-				}
-
-			},
-
-			/**
-			 * 编辑浮层关闭
-			 */
-			eidtClose() {
-				this.isEditShow = false;
-			},
 
 			/**
 			 * 绑定

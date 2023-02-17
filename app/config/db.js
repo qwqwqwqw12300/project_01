@@ -7,7 +7,7 @@ export const INIT_DEIVCE_SET = {
 	familyId: '',
 	roomId: '',
 	roomLeft: 3,
-	roomHeight: 6,
+	roomHeight: 4,
 	roomRight: 3,
 	roomLength: 6,
 	existFlag: 0,

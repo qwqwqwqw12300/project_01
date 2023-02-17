@@ -10,7 +10,7 @@
 				{{ record.location || '--'}}
 			</view>
 		</view>
-		<view class="device-set">
+		<view class="device-set" @click="goSetting">
 			<u-icon name="/static/images/device-set.png" size="44rpx" style="margin-right: 4rpx;">
 			</u-icon>设备配置
 		</view>
@@ -31,7 +31,13 @@
 			}
 		},
 		methods: {
-
+			/**跳转设置页面**/
+			goSetting() {
+				this.$setCache('setDevice', this.record);
+				uni.navigateTo({
+					url: '/pages/equipment/setting/radar-setting'
+				})
+			}
 		},
 	}
 </script>

@@ -1,7 +1,8 @@
 <template>
 	<app-body leftIconColor="#000" :bodyStyle="{backgroundImage: 'linear-gradient(180deg, #FFEDC9 0%, #FFFFFF 100%)' }">
 		<view class="ui-banner">
-			<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange" :current="current">
+			<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange"
+				:current="current">
 				<swiper-item v-for="item in deviceList" :key="item.deviceId">
 					<device-swiper :record="item"></device-swiper>
 				</swiper-item>
@@ -54,7 +55,7 @@
 			}, ),
 
 		},
-		mounted() {
+		onShow() {
 			const familyId = this.deviceInfo.familyId
 			const deviceId = this.deviceInfo.deviceId
 			this.deviceList = this.familyList.find(n => {

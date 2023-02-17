@@ -114,7 +114,8 @@ const store = {
 		 */
 		setContactInfo(state, info) {
 			state.contactList = info;
-		}
+		},
+
 
 
 	},
@@ -193,7 +194,23 @@ const store = {
 					resolve(false)
 				});
 			});
+		},
+		/**更新设备数据**/
+		updateDevacesInfo(ctx) {
+			ctx.dispatch('getAllFamily').then(res => {
+				const {
+					deviceId,
+					familyId
+				} = this.state.deviceInfo;
+				const family = this.state.familyList.find(ele => ele.familyId === familyId);
+				const device = family.devices.find(ele => ele.deviceId === deviceId);
+				if (device) {
+					ctx.commit('setDeviceInfo', device);
+				}
+
+			});
 		}
+
 	},
 	getters: {
 		/**

@@ -68,17 +68,15 @@ const request = (url, options, process, method = 'POST') => {
 				} else {
 					if (errorHandle) {
 						if (data.code === 401) { // 未登录
-							// uni.redirectTo({
-							// 	url: '/pages/login/login'
-							// });
+							uni.redirectTo({
+								url: '/pages/login/login'
+							});
 						} else {
 							uni.showModal({
 								title: '提示',
 								content: data.msg || errText[statusCode] || '系统错误'
 							});
 						}
-
-
 					}
 					reject();
 				}
@@ -89,12 +87,11 @@ const request = (url, options, process, method = 'POST') => {
 					url,
 					options,
 					error
-				})
+				});
 				if (errorHandle) uni.showModal({
 					title: '提示',
 					content: '网络请求错误' + error.errMsg
 				});
-
 				if (showLoading) uni.hideLoading();
 				reject();
 			}

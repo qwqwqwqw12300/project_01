@@ -142,8 +142,8 @@
 		<u-modal title="区域调节" showCancelButton :show="rangeHandle.show" @cancel="rangeHandle.show = false"
 			@confirm="modalConfirm">
 			<view class="ui-slider">
-				<u-slider min="10" max="60" v-model="rangeHandle.num" activeColor="#eeaa3d" blockColor="#eeaa3d"
-					inactiveColor="#c0c4cc" />
+				<u-slider min="10" :max="rangeHandle.type === 'roomHeight' ? 40 : 60" v-model="rangeHandle.num"
+					activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 				<text>{{$u.priceFormat(rangeHandle.num/10, 2)}}米</text>
 			</view>
 		</u-modal>
@@ -184,14 +184,15 @@
 				timeList: [1, 5, 10],
 				locationList: [
 					'壁挂',
-					'顶挂',
+					'顶挂'
 				],
 				// 设备源数据
 				source: {}
 			};
 		},
 		onLoad() {
-			const device = this.$getCache('setDevice') || {};
+			const ceche = this.$getCache('setDevice') || {};
+			const device = this.dataInit(ceche);
 			const {
 				departureTime,
 				entryTime,
@@ -266,6 +267,9 @@
 					source: null
 				}).then(res => {
 					uni.$u.toast(res.msg);
+					setTimeout(() => {
+						this.$store.dispatch('updateDevacesInfo');
+					}, 2000)
 				});
 			},
 
@@ -280,6 +284,9 @@
 					deviceId: this.editFrom.deviceId
 				}).then(res => {
 					uni.$u.toast('修改成功');
+					setTimeout(() => {
+						this.$store.dispatch('updateDevacesInfo');
+					}, 2000);
 				})
 			},
 
@@ -354,6 +361,49 @@
 				this.rangeHandle.show = false;
 			},
 
+			/**
+			 * 数据处理
+			 */
+			dataInit(device) {
+				console.log(device, 'device');
+				const {
+					name,
+					deviceId,
+					type,
+					no,
+					familyId,
+					roomId,
+					location,
+					parameter: {
+						deviceLocation = {},
+						deviceRoomParameter = {}
+					} = {},
+				} = device,
+				initObj = {
+					deviceId: '',
+					deviceName: '',
+					deviceType: '',
+					deviceNo: '',
+					roomLeft: 6,
+					roomHeight: 4,
+					roomRight: 3,
+					roomLength: 3
+				};
+				Object.assign(initObj, {
+					deviceName: name,
+					deviceId,
+					deviceType: type,
+					deviceNo: no,
+					familyId,
+					roomId,
+					location,
+					...deviceLocation,
+					...deviceRoomParameter,
+					source: device
+				});
+				console.log(initObj, 'initObj');
+				return initObj;
+			}
 
 
 		}
