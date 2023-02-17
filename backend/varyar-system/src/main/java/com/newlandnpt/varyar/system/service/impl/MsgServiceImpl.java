@@ -195,10 +195,9 @@ public class MsgServiceImpl implements IMsgService
 
         TMemberFamily tMemberFamily = new TMemberFamily();
         tMemberFamily.setCreateMemberId(memberId);
-        tMemberFamily.setFamilyId(event.getFamilyId());
+        tMemberFamily.setFamilyId(event.getFamilyId()==null?-1:event.getFamilyId());
         tMemberFamily.setDelFlag(DEL_FLAG_NOT_ACTIVE);
         List<TMemberFamily> memberFamilies = memberFamilyService.selectTMemberFamilyList(tMemberFamily);
-
         int result = 0;
 
         if(memberFamilies==null||memberFamilies.stream().noneMatch(p->p.getMemberId().longValue() == memberId.longValue())){
