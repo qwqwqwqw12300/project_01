@@ -3,7 +3,7 @@
 		<view class="ui-action">
 			<u-icon name="list" size="18"></u-icon>
 			<text @click="readMsgAll">
-				全部标记已读
+				全部标记已处理
 			</text>
 		</view>
 		<scroll-view scroll-y="true" refresher-background="transparent" @refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled

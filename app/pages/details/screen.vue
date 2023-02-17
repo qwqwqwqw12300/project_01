@@ -96,7 +96,7 @@
 					},
 					{
 						value: 'urgent',
-						text: '重要事件'
+						text: '紧急事件'
 					},
 					{
 						value: 'normal',
@@ -110,11 +110,11 @@
 					},
 					{
 						value: '1',
-						text: '已读'
+						text: '已处理'
 					},
 					{
 						value: '0',
-						text: '未读'
+						text: '未处理'
 					}
 				],
 				/**日期控制**/
