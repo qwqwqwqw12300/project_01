@@ -75,7 +75,7 @@ public class MessageController extends BaseController {
     })
     @PostMapping("/familyList")
     public TableDataInfo familyList(@RequestBody @Validated MessageQueryRequest messageRequest) {
-        startPage();
+        startPage(10000);
         TMsg tMsg = new TMsg();
         if(messageRequest.getDeviceId()!=null&&!messageRequest.getDeviceId().equals("")){
             tMsg.setDeviceId(Long.valueOf(messageRequest.getDeviceId()));
