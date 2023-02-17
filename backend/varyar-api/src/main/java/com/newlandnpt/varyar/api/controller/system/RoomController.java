@@ -14,6 +14,10 @@ import com.newlandnpt.varyar.system.service.IDeviceService;
 import com.newlandnpt.varyar.system.service.IFamilyService;
 import com.newlandnpt.varyar.system.service.IMemberFamilyService;
 import com.newlandnpt.varyar.system.service.IRoomService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +34,7 @@ import java.util.List;
  * 
  * @author newlandnpt
  */
+@Api("家庭房间信息")
 @RestController
 @RequestMapping("/api/room")
 public class RoomController extends BaseController {
@@ -46,6 +51,7 @@ public class RoomController extends BaseController {
 /*
 * 获取房间列表
 * */
+    @ApiOperation("获取家庭房间列表")
     @PostMapping("/list")
     public TableDataInfo list(@RequestBody @Validated RoomRequest roomRequest) {
         if (roomRequest.getFamilyId()==null||roomRequest.getFamilyId().equals("")){
@@ -78,6 +84,12 @@ public class RoomController extends BaseController {
     /*
     * 创建我的房间
     * */
+    @ApiOperation("创建家庭我的房间")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "familyId", value = "家庭Id(唯一标识)", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "name", value = "房间名称",  dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "roomId", value = "房间Id(唯一标识)",  dataType = "String", dataTypeClass = String.class)
+    })
     @PostMapping("/creRoom")
     public AjaxResult createRoom(
             @RequestBody @Validated RoomRequest roomRequest){
@@ -116,6 +128,12 @@ public class RoomController extends BaseController {
     /*
     * 修改我的房间
     * */
+    @ApiOperation("编辑修改家庭我的房间")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "familyId", value = "家庭Id(唯一标识)", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "name", value = "房间名称",  dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "roomId", value = "房间Id(唯一标识)",  dataType = "String", dataTypeClass = String.class)
+    })
     @PostMapping("/editRoom")
     public AjaxResult editRoom(
             @RequestBody @Validated RoomRequest roomRequest){
@@ -143,6 +161,12 @@ public class RoomController extends BaseController {
     /*
      * 删除我的房间
      * */
+    @ApiOperation("删除家庭我的房间")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "familyId", value = "家庭Id(唯一标识)", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "name", value = "房间名称",  dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "roomId", value = "房间Id(唯一标识)",  dataType = "String", dataTypeClass = String.class)
+    })
     @PostMapping("/remRoom")
     public AjaxResult removeRoom(
             @RequestBody @Validated RoomRequest roomRequest){
