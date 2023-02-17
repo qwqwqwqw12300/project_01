@@ -18,6 +18,13 @@
 						border="bottom" clearable>
 					</u-input>
 				</view>
+				<view class="ui-tags">
+					<view class="ui-tags-item" v-for="(item, index) in tagsList" :key="index">
+						<u-tag :text="item.name" :plain="!item.checked" type="warning" :name="item.name"
+							@click="radioClick">
+						</u-tag>
+					</view>
+				</view>
 				<!-- <view v-if="mode === 'edit'">
 					<u-text size="28rpx" prefixIcon="plus-circle" iconStyle="font-size: 40rpx" text="绑定雷达波">
 					</u-text>
@@ -56,7 +63,23 @@
 					roomId: '' // 房间id
 				},
 				/**要绑定的雷达波设备**/
-				deviceId: ''
+				deviceId: '',
+				tagsList: [{
+					name: '客厅',
+					checked: false
+				}, {
+					name: '卧室',
+					checked: false
+				}, {
+					name: '浴室',
+					checked: false
+				}, {
+					name: '厨房',
+					checked: false
+				}, {
+					name: '餐厅',
+					checked: false
+				}],
 			}
 		},
 		computed: {
@@ -70,6 +93,12 @@
 			}
 		},
 		methods: {
+			radioClick(name) {
+				this.form.name = name
+				this.tagsList.map((item) => {
+					item.checked = item.name === name ? true : false
+				})
+			},
 			close() {
 				this.form = {}
 				this.show = false;
@@ -93,7 +122,7 @@
 					...this.form
 				});
 				handle.then(res => {
-					uni.$u.toast('修改成功')
+					uni.$u.toast('操作成功')
 					this.close();
 					setTimeout(() => {
 						this.$emit('update', res.data && res.data.roomId)
@@ -107,7 +136,7 @@
 <style lang="scss">
 	.ui-add {
 		width: 582rpx;
-		min-height: 300rpx;
+		min-height: 350rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
@@ -137,6 +166,17 @@
 					position: absolute;
 				}
 
+			}
+
+			.ui-tags {
+				margin-top: 40rpx !important;
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+
+				.ui-tags-item {
+					margin-right: 17rpx;
+				}
 			}
 
 			&.ui-add-box {
@@ -178,7 +218,7 @@
 
 		.ui-btn {
 			text-align: center;
-			margin-top: 70rpx;
+			margin-top: 170rpx;
 
 			button {
 				width: 237rpx;

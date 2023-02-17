@@ -33,6 +33,7 @@
 			};
 		},
 		mounted() {
+			this.$store.dispatch('GetContactsList')
 			this.queryVersion()
 		},
 		methods: {
