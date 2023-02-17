@@ -137,10 +137,12 @@
 			 */
 			getMsgList() {
 				return new Promise(resolve => {
+					this.messageList = [];
 					getMessage({
 						...this.eventInfo,
 					}).then(res => {
 						this.messageList = res.rows || [];
+						console.log(this.messageList, 'this.messageList');
 						resolve();
 					}, err => resolve());
 				});

@@ -77,5 +77,6 @@ export const INIT_SELECT = {
 	endDate: new Date().getTime(),
 	deviceType: '',
 	eventlevel: '',
-	readFlag: ''
+	readFlag: '',
+	pageSize: 10000
 };
