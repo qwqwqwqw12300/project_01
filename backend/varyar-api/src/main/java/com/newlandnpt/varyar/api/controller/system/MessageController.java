@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.common.core.domain.R;
 import com.newlandnpt.varyar.common.core.domain.entity.BatchMessage;
 import com.newlandnpt.varyar.common.core.domain.entity.MemberInfo;
 import com.newlandnpt.varyar.common.core.domain.entity.MemberParameter;
@@ -12,8 +13,11 @@ import com.newlandnpt.varyar.common.core.domain.model.MessageRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TMember;
+import com.newlandnpt.varyar.system.domain.TMemberContacts;
 import com.newlandnpt.varyar.system.domain.TMsg;
 import com.newlandnpt.varyar.system.service.*;
+import io.swagger.annotations.*;
+import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 系统消息
  *
  * @author newlandnpt
  */
+@Api("消息推送")
 @RestController
 @RequestMapping("/api/message")
 public class MessageController extends BaseController {
@@ -43,9 +47,11 @@ public class MessageController extends BaseController {
     private IRoomService iRoomService;
     @Autowired
     private IMemberService iMemberService;
-/**
- * 获取消息列表
- * */
+    @Autowired
+    private IMemberContactsService iMemberContactsService;
+    /**
+    * 获取消息列表
+    * */
     @GetMapping("/list")
     public TableDataInfo list() {
         startPage();
@@ -170,5 +176,16 @@ public class MessageController extends BaseController {
         tMsg.setOperateFlag("0");
         List<TMsg> list = itMsgService.selectTMsgList(tMsg);
         return String.valueOf(list.size());
+    }
+
+
+    @ApiOperation("获取消息对应的联系人信息")
+    @ApiImplicitParam(name = "msgId", value = "消息id", required = true, dataType = "long", paramType = "query", dataTypeClass = Long.class)
+//    @ApiResponses(
+//            {@ApiResponse(response =)}
+//    )
+    @GetMapping("/getMessageContract")
+    public AjaxResult getMessageContract(Long msgId){
+        return AjaxResult.success(iMemberContactsService.selectMemberContactsListByMsgId(msgId));
     }
 }
