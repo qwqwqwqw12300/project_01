@@ -1,5 +1,11 @@
 <template>
 	<view class="">
+		<view class="ui-action">
+			<u-icon name="list" size="18"></u-icon>
+			<text @click="readMsgAll">
+				全部标记已读
+			</text>
+		</view>
 		<scroll-view scroll-y="true" @refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled
 			:style="{height: srollHeight}" class="ui-scroll">
 			<template v-if="msgList.length">
@@ -12,9 +18,8 @@
 
 <script>
 	import {
-		GetContactsList,
 		getMessage,
-		PostSetMsgInfo
+		PostSetBatchMsgInfo,
 	} from '@/common/http/api';
 	export default {
 		props: {
@@ -45,6 +50,22 @@
 			}
 		},
 		methods: {
+			readMsgAll() {
+				const msgFlags = this.msgList.map(ele => {
+					return {
+						msgId: ele.msgId,
+						msgFlag: '1'
+					}
+				});
+				PostSetBatchMsgInfo({
+					msgFlags
+				}).then(res => {
+					uni.$u.toast('全部标记成功')
+					setTimeout(() => {
+						this.handleInit()
+					}, 500)
+				})
+			},
 			handleInit() {
 				const {
 					type,
@@ -77,5 +98,18 @@
 </script>
 
 <style lang="scss" scoped>
-	
+	.ui-action {
+		// width: 100%;
+		// text-align: center;
+		color: #333;
+		font-size: 28rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		// line-height: 30rpx;
+		margin-bottom: 16rpx;
+		text{
+			margin-left: 4rpx;
+		}
+	}
 </style>

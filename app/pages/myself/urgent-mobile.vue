@@ -14,8 +14,8 @@
 				<view class="title">
 					姓名
 				</view>
-				<u-input v-model="item.name"  placeholder="输入紧急联系人名字" :border="'none'" fontSize="28rpx" clearable inputAlign="right"
-					cursor="0" />
+				<u-input v-model="item.name" placeholder="输入紧急联系人名字" :border="'none'" fontSize="28rpx" clearable
+					inputAlign="right" cursor="0" />
 			</view>
 			<view class="ui-form-item">
 				<view class="title">
@@ -88,6 +88,7 @@
 				}
 				PostSetContacts(this.contactList).then(res => {
 					uni.$u.toast(res.msg)
+					this.$store.dispatch('GetContactsList')
 					setTimeout(() => {
 						this.handleInit()
 					}, 500)

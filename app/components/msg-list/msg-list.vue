@@ -23,7 +23,7 @@
 
 <script>
 	import {
-		GetContactsList,
+		// GetContactsList,
 		PostMessageDeatil,
 		PostSetMsgInfo,
 		PostGetMessage,
@@ -61,7 +61,6 @@
 			};
 		},
 		mounted() {
-			this.getContactsList();
 		},
 		methods: {
 			navClick({

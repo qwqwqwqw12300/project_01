@@ -7,6 +7,10 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.system.domain.*;
 import com.newlandnpt.varyar.system.service.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +29,7 @@ import java.util.stream.Collectors;
  *
  * @author newlandnpt
  */
+@Api(tags = "房间区域空间管理")
 @RestController
 @RequestMapping("/api/roomZone")
 public class RoomZoneController extends BaseController {
@@ -45,6 +50,7 @@ public class RoomZoneController extends BaseController {
     /**
      * 设置雷达波设备 (创建和修改)
      * */
+    @ApiOperation("设置雷达波设备子区域 (创建和修改)")
     @PostMapping("/setRadarDevice")
     public AjaxResult setRadarDevice(
             @RequestBody @Validated RadarRequest radarRequest) {
@@ -113,6 +119,7 @@ public class RoomZoneController extends BaseController {
     /**
      * 删除雷达波设备
      * */
+    @ApiOperation("删除雷达波设备子区域")
     @PostMapping("/remRadarDevice")
     public AjaxResult removeRadarDevice(@RequestBody @Validated TRoomZone radarRequest) {
         if (radarRequest.getRoomZoneId()==null || radarRequest.getRoomZoneId().equals("")){
@@ -148,6 +155,8 @@ public class RoomZoneController extends BaseController {
     /**
      * 获取雷达波设备子区域列表
      * */
+    @ApiOperation("获取雷达波设备子区域列表")
+    @ApiImplicitParam(name = "deviceId", value = "设备id",required = true, dataType = "String", dataTypeClass = String.class)
     @GetMapping("/getRoomZoon")
     public TableDataInfo getRoomZoon(String deviceId ) {
         if (deviceId==null || deviceId.equals("")){
