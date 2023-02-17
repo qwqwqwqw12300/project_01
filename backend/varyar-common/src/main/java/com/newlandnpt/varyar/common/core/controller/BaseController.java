@@ -60,7 +60,7 @@ public class BaseController
      */
     protected void startPage(int pageSize)
     {
-        PageUtils.startPage(0,pageSize);
+        PageUtils.startPage(1,pageSize);
     }
 
     /**
