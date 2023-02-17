@@ -1,7 +1,7 @@
 <template>
 	<app-body leftIconColor="#000" :bodyStyle="{backgroundImage: 'linear-gradient(180deg, #FFEDC9 0%, #FFFFFF 100%)' }">
 		<view class="ui-banner">
-			<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange">
+			<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange" :current="current">
 				<swiper-item v-for="item in deviceList" :key="item.deviceId">
 					<device-swiper :record="item"></device-swiper>
 				</swiper-item>
@@ -43,22 +43,25 @@
 					name: 'AI人体感知'
 				}],
 				tabKey: 'MsgList',
+				current: 0,
 			}
 		},
 		computed: {
 			...mapState({
 				/**所有家庭列表**/
 				familyList: state => state.familyList,
+				deviceInfo: state => state.deviceInfo
 			}, ),
 
 		},
 		mounted() {
-			const familyId = this.$getCache('familyId')
+			const familyId = this.deviceInfo.familyId
+			const deviceId = this.deviceInfo.deviceId
 			this.deviceList = this.familyList.find(n => {
 				return familyId === n.familyId
 			}).devices
-			this.swiperData = this.deviceList[0]
-			console.log(this.deviceList, '000')
+			this.current = this.deviceList.indexOf(this.deviceInfo)
+			this.swiperData = this.deviceList[this.current]
 
 		},
 		methods: {

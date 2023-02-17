@@ -79,7 +79,7 @@
 					msgFlag: '1'
 				}).then(res => {
 					uni.$u.toast('标记成功')
-					this.msgDetail.msgFlag = '1'
+					this.msgDetail.operateFlag = '1'
 				})
 			},
 			/**
