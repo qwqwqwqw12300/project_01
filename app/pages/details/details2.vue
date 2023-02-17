@@ -9,28 +9,35 @@
 		<view class="ui-body">
 			<view class="ui-title">
 				<text>详情</text>
-				<text>全部标记已读</text>
+				<text class="active">全部标记已读</text>
 			</view>
 			<view class="ui-screen">
-				<view class="ui-family">
-					<view class="">
-
-					</view>
-					<!-- 下拉框 -->
-					<view class="ui-select" v-if="isfamilyShow">
-						<view class="ui-select-item active">
-							<u-icon name="home" class="active" color="#fff" size="40rpx">
-							</u-icon>
-							<text>vayyar</text>
-						</view>
-					</view>
-					<!-- /下拉框 -->
+				<view class="ui-family active">
+					<u-text suffixIcon="arrow-down-fill" iconStyle="font-size: 35rpx" size="32rpx" :text="'我的家庭'">
+					</u-text>
 				</view>
-				<view class="ui-screen-icon">
+				<view class="ui-screen-icon active">
 					<u-icon size="32rpx" name="../../static/images/screen.png"></u-icon>
 					<text>筛选</text>
 				</view>
 			</view>
+			<!-- 消息列表 -->
+			<view class="ui-msg">
+				<scroll-view scroll-y="true" @refresherrefresh="onRefresh" :refresher-triggered="triggered"
+					refresher-enabled refresher-background="transparent">
+					<template v-if="messageList.length">
+						<view class="ui-scroll">
+							<msg-card v-for="(item, index) of messageList" :key="index" :msgInfo="item"></msg-card>
+						</view>
+
+					</template>
+					<view class="ui-empty" v-else>
+						<u-empty mode="list" text="暂无数据"></u-empty>
+					</view>
+
+				</scroll-view>
+			</view>
+			<!-- /消息列表 -->
 		</view>
 	</app-body>
 </template>
@@ -39,6 +46,9 @@
 	import {
 		mapState
 	} from 'vuex';
+	import {
+		getMessage
+	} from '../../common/http/api';
 	export default {
 		data() {
 			return {
@@ -57,6 +67,10 @@
 					/**设备类型**/
 					deviceType: '',
 				},
+				/**消息列表**/
+				messageList: [],
+				/**下拉状态**/
+				triggered: false
 			};
 		},
 		computed: {
@@ -70,6 +84,51 @@
 				}
 			})
 		},
+		methods: {
+			/**
+			 * 上拉刷新
+			 * @param {Object} $e
+			 */
+			onRefresh($e) {
+				this.triggered = true;
+				this.getMsgList().then(res => {
+					this.triggered = false;
+				})
+			},
+
+			/**
+			 * 全部已读
+			 */
+			readMsgAll() {
+				const msgFlags = this.list.map(ele => {
+					return {
+						msgId: ele.msgId,
+						msgFlag: '1'
+					}
+				});
+				PostSetBatchMsgInfo({
+					msgFlags
+				}).then(res => {
+					this.getMsgList();
+				})
+			},
+
+			/**
+			 * 查询设备消息
+			 */
+			getMsgList() {
+				return new Promise(resolve => {
+					getMessage({
+						...this.eventInfo,
+					}).then(res => {
+						this.messageList = res.rows || [];
+						resolve();
+					}, err => resolve());
+				});
+			},
+
+
+		}
 	}
 </script>
 
@@ -80,7 +139,7 @@
 		.ui-title {
 			padding: 34rpx 32rpx;
 			background: #fff;
-			padding-top: 50rpx;
+			padding-top: 100rpx;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
@@ -107,5 +166,34 @@
 				width: 180rpx;
 			}
 		}
+
+		.ui-screen-icon {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			>text {
+				margin-left: 10rpx;
+			}
+		}
+
+		.ui-msg {
+			overflow-y: scroll;
+			height: calc(100vh - 300rpx - var(--window-bottom) - var(--status-bar-height));
+		}
+
+		.ui-empty {
+			background: #fff;
+			height: 600rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.ui-scroll {
+			box-sizing: border-box;
+			padding: 0 32rpx;
+		}
+
 	}
 </style>

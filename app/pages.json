@@ -433,6 +433,12 @@
 				"text": "详情"
 			},
 			{
+				"pagePath": "pages/details/details2",
+				"iconPath": "/static/images/tabbar/tabbar2.png",
+				"selectedIconPath": "/static/images/tabbar/tabbar2.png",
+				"text": "详情2"
+			},
+			{
 				"pagePath": "pages/myself/myself",
 				"iconPath": "/static/images/tabbar/tabbar3.png",
 				"selectedIconPath": "/static/images/tabbar/tabbar3.png",
