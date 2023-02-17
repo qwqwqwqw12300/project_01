@@ -8,6 +8,10 @@ import com.newlandnpt.varyar.system.domain.SysNotice;
 import com.newlandnpt.varyar.system.domain.TNotice;
 import com.newlandnpt.varyar.system.service.ISysNoticeService;
 import com.newlandnpt.varyar.system.service.ITNoticeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Api("系统公告信息")
 @RestController
 @RequestMapping("/api/notice")
 public class NoticeController extends BaseController {
@@ -27,6 +31,7 @@ public class NoticeController extends BaseController {
     /**
      * 获取系统公告
      */
+    @ApiOperation("获取系统公告")
     @GetMapping("/sysNotice")
     public TableDataInfo sysNotice(){
         List<SysNotice>  list = iSysNoticeService.selectNoticeList(new SysNotice());
@@ -43,6 +48,7 @@ public class NoticeController extends BaseController {
     /**
      * 获取系统公告已读信息
      */
+    @ApiOperation("获取系统公告已读信息")
     @GetMapping("/readInfo")
     public AjaxResult readInfo()
     {
@@ -63,6 +69,7 @@ public class NoticeController extends BaseController {
     /**
      * 获取系统公告未读信息数量
      */
+    @ApiOperation("获取系统公告未读信息数量")
     @GetMapping("/unReadNum")
     public AjaxResult unReadNum()
     {
@@ -84,6 +91,11 @@ public class NoticeController extends BaseController {
     /**
      * 标志系统公告已读信息
      */
+    @ApiOperation("标志系统公告已读信息更新")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "readFlag", value = "已读未读标识 0:未读 1:已读", dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "noticeId", value = "公告id",required = true,  dataType = "String", dataTypeClass = String.class)
+    })
     @PostMapping("/setNoticeFlag")
     public AjaxResult setNoticeFlag(@RequestBody @Validated NoticeRequest noticeRequest)
     {   AjaxResult ajax =  AjaxResult.success();
