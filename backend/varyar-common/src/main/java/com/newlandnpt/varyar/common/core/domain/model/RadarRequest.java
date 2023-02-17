@@ -2,6 +2,8 @@ package com.newlandnpt.varyar.common.core.domain.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -9,22 +11,25 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
-
+@ApiModel(description = "雷达波请求")
 public class RadarRequest {
     /**
      *  房间子区域id 唯一标识
      * */
+    @ApiModelProperty("房间子区域id")
     @Size(min = 0, max = 20, message = "房间子区域id标识不能超过20个字符")
     private String roomZoneId;
     /**
      *  房间Id 唯一标识
      * */
+    @ApiModelProperty("房间Id")
     @NotBlank(message = "房间Id不能为空")
     @Size(min = 0, max = 20, message = "房间Id标识不能超过20个字符")
     private String roomId;
     /**
      *  子区域名称
      * */
+    @ApiModelProperty("子区域名称")
     @NotBlank(message = "子区域名称不能为空")
     @Size(min = 0, max = 50, message = "子区域名称不能超过20个字符")
     private String name;
@@ -32,12 +37,14 @@ public class RadarRequest {
     /**
      *  存在监测标志（0是 1否）
      * */
+    @ApiModelProperty("存在监测标志（0是 1否）")
     @NotBlank(message = "存在监测标志不能为空")
     @Size(min = 0, max = 1, message = "存在监测标志不能超过1个字符")
     private String existFlag;
     /**
      *  跌倒监测标志  0：是    1：否
      * */
+    @ApiModelProperty("跌倒监测标志  0：是 1：否")
     @NotBlank(message = "跌倒监测标志不能为空")
     @Size(min = 0, max = 1, message = "跌倒监测标志不能超过1个字符")
     private String fallFlag;
@@ -45,12 +52,14 @@ public class RadarRequest {
     /**
      * 最左侧的点
      * */
+    @ApiModelProperty("最左侧的点")
     @NotNull(message = "最左侧的点不能为空")
     private BigDecimal x1;
 
     /**
      * 最右侧的点
      * */
+    @ApiModelProperty("最右侧的点")
     @NotNull(message = "最右侧的点不能为空")
     private BigDecimal x2;
     /**
@@ -61,21 +70,25 @@ public class RadarRequest {
     /**
      * 最远的点
      * */
+    @ApiModelProperty("最远的点")
     @NotNull(message = "最远的点不能为空")
     private BigDecimal y2;
     /**
      * 最底部的点
      * */
+    @ApiModelProperty("最底部的点")
     @NotNull(message = "最底部的点不能为空")
     private BigDecimal z1;
     /**
      *最顶部的点
      * */
+    @ApiModelProperty("最顶部的点")
     @NotNull(message = "最顶部的点不能为空")
     private BigDecimal z2;
     /**
      * 0:普通区域  1：屏蔽区域  2：床
      * */
+    @ApiModelProperty("子区域类型：0:普通区域 1：屏蔽区域 2：床")
     @Size(min = 0, max = 1, message = "子区域类型不能超过1个字符")
     private String zoneType;
 

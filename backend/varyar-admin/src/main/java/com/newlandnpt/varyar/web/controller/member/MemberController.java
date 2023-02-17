@@ -69,10 +69,10 @@ public class MemberController extends BaseController
         startPage();
         List<TFamily> list = tFamilyService.selectMembersFamilyList(memberId);
         //List<TFamily> newlist = deviceService.loadingDeviceStauts(list);
-        for (TFamily family : list)
-        {
-            family.setDevices(deviceService.loadingDeviceStauts(family.getDevices()));
-        }
+//        for (TFamily family : list)
+//        {
+//            family.setDevices(deviceService.loadingDeviceStauts(family.getDevices()));
+//        }
 
         return getDataTable(list);
     }
