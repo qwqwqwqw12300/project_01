@@ -347,4 +347,6 @@ export const PostUpdatePhoneByPwd = (params) => http.post('/api/memberInfo/updat
 /**
  * 新手机修改短信验证
  */
-export const PostUpdatePhoneByToken = (params) => http.post('/api/memberInfo/updatePhoneByToken', params)
+export const PostUpdatePhoneByToken = (params) => http.post('/api/memberInfo/updatePhoneByToken', params, {
+	error: false,
+})

@@ -80,7 +80,7 @@ const request = (url, options, process, method = 'POST') => {
 
 
 					}
-					reject();
+					reject(data);
 				}
 				if (showLoading) uni.hideLoading();
 			},
