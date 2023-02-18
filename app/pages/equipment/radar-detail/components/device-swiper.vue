@@ -7,7 +7,7 @@
 					:class="[record.onlineFlag === '1' ? 'online' : 'offline']">{{record.onlineFlag === '1' ? '在线' : '离线'}}</text>
 			</view>
 			<view class="position">
-				{{ record.location || '--'}}
+				{{ record.roomName || '未命名房间'}} | {{ record.location || '--'}}
 			</view>
 		</view>
 		<view class="device-set" @click="goSetting">
@@ -70,6 +70,8 @@
 				color: #353535;
 				font-size: 34rpx;
 				font-weight: 500;
+				display: flex;
+				align-items: center;
 
 				text {
 					margin-left: 30rpx;

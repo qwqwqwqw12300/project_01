@@ -23,7 +23,8 @@
 			</view>
 		</view>
 		<view class="action">
-			<view class="detail" @click="handleRead(msgDetail.msgId)">我明白了</view>
+			<view class="detail" v-if="msgDetail.operateFlag == '0'" @click="handleRead(msgDetail.msgId)">我来处理</view>
+			<view class="detail disabled" v-else>我已处理</view>
 			<view class="phone" @click="handleCall(msgDetail.phone)">
 				<u-icon name="phone" color="white" size="22"></u-icon><text style="margin-left: 8rpx;">亲人处理</text>
 			</view>
@@ -78,7 +79,7 @@
 					msgId,
 					msgFlag: '1'
 				}).then(res => {
-					uni.$u.toast('标记成功')
+					uni.$u.toast('已处理登记成功')
 					this.msgDetail.operateFlag = '1'
 				})
 			},
@@ -200,6 +201,10 @@
 				color: #5E85F8;
 				text-align: center;
 				border-radius: 0 0 0 20rpx;
+
+				&.disabled {
+					color: #888888;
+				}
 			}
 
 			.phone {

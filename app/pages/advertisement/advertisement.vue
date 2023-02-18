@@ -28,6 +28,9 @@
 		isIos,
 		isApp
 	} from '../../common/utils/util';
+	import {
+		env
+	} from '../../config/env';
 	export default {
 		data() {
 			return {
@@ -64,9 +67,10 @@
 				});
 			},
 			goGuide() {
-				uni.navigateTo({
-					url: '/pages/guide/guide'
-				});
+				if (env.mode === 'dev')
+					uni.navigateTo({
+						url: '/pages/guide/guide'
+					});
 			},
 
 			/**

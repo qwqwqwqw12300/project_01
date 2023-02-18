@@ -123,7 +123,7 @@
 				if (msgFlags.length) PostSetBatchMsgInfo({
 					msgFlags
 				}).then(res => {
-					uni.$u.toast('操作成功');
+					uni.$u.toast('已处理登记成功');
 					setTimeout(() => {
 						this.getMsgList();
 					}, 1000);

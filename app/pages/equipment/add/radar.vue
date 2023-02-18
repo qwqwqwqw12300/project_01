@@ -78,6 +78,9 @@
 		getCurPage,
 		isApp
 	} from '../../../common/utils/util';
+	import {
+		env
+	} from '../../../config/env';
 
 	export default {
 		data() {
@@ -125,7 +128,7 @@
 			},
 
 			add() {
-				if (this.isTest) {
+				if (this.isTest && env.mode === 'dev') {
 					PostcreDevice({ //  先添加设备
 						...this.addForm,
 						...this.editForm

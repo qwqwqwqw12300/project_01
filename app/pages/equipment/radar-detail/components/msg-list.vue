@@ -6,8 +6,8 @@
 				全部标记已处理
 			</text>
 		</view>
-		<scroll-view scroll-y="true" refresher-background="transparent" @refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled
-			:style="{height: srollHeight}" class="ui-scroll">
+		<scroll-view scroll-y="true" refresher-background="transparent" @refresherrefresh="onRefresh"
+			:refresher-triggered="triggered" refresher-enabled :style="{height: srollHeight}" class="ui-scroll">
 			<template v-if="msgList.length">
 				<msg-card v-for="(item,index) in msgList" :key="index" :msgInfo="item"></msg-card>
 			</template>
@@ -60,7 +60,7 @@
 				PostSetBatchMsgInfo({
 					msgFlags
 				}).then(res => {
-					uni.$u.toast('全部标记成功')
+					uni.$u.toast('已处理登记成功')
 					setTimeout(() => {
 						this.handleInit()
 					}, 500)
@@ -110,7 +110,8 @@
 		justify-content: center;
 		// line-height: 30rpx;
 		margin-bottom: 16rpx;
-		text{
+
+		text {
 			margin-left: 4rpx;
 		}
 	}
