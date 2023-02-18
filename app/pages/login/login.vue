@@ -280,7 +280,7 @@
 			 */
 			getRegistrationID() {
 				isApp() && push.getRegistrationID().then(res => {
-					this.registrationId = res
+					if (res) this.registrationId = res;
 				});
 			},
 		}

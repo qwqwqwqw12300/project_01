@@ -9,6 +9,9 @@ import {
 	env
 } from '@/config/env.js';
 import {
+	log
+} from '../utils/log';
+import {
 	isApp
 } from '../utils/util';
 
@@ -64,6 +67,12 @@ class Push {
 	getRegistrationID() {
 		return new Promise(resolve => {
 			this.jpushModule.getRegistrationID(result => {
+				if (!result.registerID) {
+					log.apm({
+						name: '极光推送获取注册id失败',
+						result
+					})
+				}
 				resolve(result.registerID);
 			})
 		});

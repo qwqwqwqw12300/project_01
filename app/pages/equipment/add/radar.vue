@@ -287,7 +287,6 @@
 						url: '/pages/equipment/add/add-steps'
 					});
 				}
-
 			}
 
 		}
