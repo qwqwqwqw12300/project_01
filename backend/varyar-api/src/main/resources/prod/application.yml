@@ -140,6 +140,7 @@ rocketmq:
     group: ${rocketmq.namespace}%GID_group_msg
     access-key: a1184af46e8544a8af861cca2b711bdf
     secret-key: 99f1cf73e4354f06ba88750fc6cce6a6
+    send-message-timeout: 5000
   consumer:
     access-key: a1184af46e8544a8af861cca2b711bdf
     secret-key: 99f1cf73e4354f06ba88750fc6cce6a6
