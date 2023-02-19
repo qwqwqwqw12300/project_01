@@ -267,6 +267,7 @@
 
 			phoneClick(item) {
 				this.shareForm.phone = item.phone
+				this.shareForm = { ...this.shareForm }
 				this.contactShow = false
 			},
 
