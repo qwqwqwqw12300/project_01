@@ -26,10 +26,10 @@
 							:value="$u.priceFormat(editFrom.roomHeight/10, 2) + '米'"></u-cell>
 						<u-cell isLink title="检测长度" @click="sliderSet('roomLength')"
 							:value="$u.priceFormat(editFrom.roomLength/10, 2) + '米'"></u-cell>
-						<u-cell isLink title="检测左长度" @click="sliderSet('roomRight')"
-							:value="$u.priceFormat(editFrom.roomRight/10, 2) + '米'"></u-cell>
-						<u-cell isLink title="检测右长度" @click="sliderSet('roomLeft')"
+						<u-cell isLink title="检测左长度" @click="sliderSet('roomLeft')"
 							:value="$u.priceFormat(editFrom.roomLeft/10, 2) + '米'"></u-cell>
+						<u-cell isLink title="检测右长度" @click="sliderSet('roomRight')"
+							:value="$u.priceFormat(editFrom.roomRight/10, 2) + '米'"></u-cell>
 					</template>
 				</u-cell-group>
 			</view>
@@ -220,6 +220,7 @@
 					60)],
 				isEntryTimeCus: [this.timeList.includes(entryTime / 60)],
 			};
+			console.log(this.editFrom, 'editform')
 			this.source = source;
 		},
 		methods: {

@@ -244,6 +244,8 @@
 									name,
 									phone: phoneNumbers[0] && phoneNumbers[0].value
 								}
+							}).filter(item=>{
+								return item.phone !== ''  
 							});
 							resolve(list)
 							// this.contactList.contacts(res)
@@ -272,14 +274,18 @@
 			 * 重置
 			 */
 			init() {
-				this.shareForm = {
-					phone: '',
-					code: '',
-					familyId: '',
-					smsUuid: '',
-					familyPhone: ''
-				};
-				this.$refs.sms.reset();
+				// this.shareForm = {
+				// 	phone: '',
+				// 	code: '',
+				// 	// familyId: '',
+				// 	smsUuid: '',
+				// 	familyPhone: ''
+				// };
+				this.shareForm.phone = ''
+				this.shareForm.code = ''
+				this.shareForm.smsUuid = ''
+				this.familyPhone = ''
+				this.$refs.sms.reset('验证码');
 			}
 		}
 	};

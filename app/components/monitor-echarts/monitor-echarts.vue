@@ -124,7 +124,7 @@
 			// this.handleInit()
 		},
 		methods: {
-			handleOnload(data){
+			handleOnload(data) {
 				this.deviceInfo = data
 				this.handleInit(data)
 			},
@@ -136,6 +136,7 @@
 					roomLeft,
 					roomRight
 				} = this.deviceInfo.parameter.deviceLocation
+				console.log(this.deviceInfo, '333333')
 				this.option.xAxis.min = -roomLeft || -3
 				this.option.xAxis.max = roomRight || 3
 				this.roomZoneList = data.rows.map(n => {

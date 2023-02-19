@@ -111,9 +111,9 @@
 			/**
 			 * 重置
 			 */
-			reset() {
+			reset(text = '重新发送') {
 				this.count = 60;
-				this.suffix = '重新发送';
+				this.suffix = text;
 				this.status = 'init';
 				this.display = false;
 				this.timer && clearInterval(this.timer);
