@@ -351,7 +351,7 @@ public class DeviceController extends BaseController {
             }
 
         } catch (Exception e){
-            log.error(e.getMessage());
+            log.error("绑定我的设备失败！",e);
            return error("绑定我的设备失败！");
         }
         return success();
