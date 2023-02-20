@@ -29,6 +29,11 @@ public class TVersion extends BaseEntity
     @Excel(name = "类型", readConverterExp = "0=android,1=ios")
     private String type;
 
+    /** 强制更新（0否 1是） */
+    @Excel(name = "强制更新", readConverterExp = "0=否,1=是")
+    private String forceUpdate;
+
+
     /** 删除标志（0代表存在 2代表删除） */
     @Excel(name = "删除标志", readConverterExp = "0=存在,2=删除")
     private String delFlag;
@@ -42,6 +47,25 @@ public class TVersion extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+
+
+    private String downloadAddress;
+
+    public String getDownloadAddress() {
+        return downloadAddress;
+    }
+
+    public void setDownloadAddress(String downloadAddress) {
+        this.downloadAddress = downloadAddress;
+    }
+
+    public String getForceUpdate() {
+        return forceUpdate;
+    }
+
+    public void setForceUpdate(String forceUpdate) {
+        this.forceUpdate = forceUpdate;
+    }
 
     @Override
     public Date getCreateTime() {
@@ -105,9 +129,11 @@ public class TVersion extends BaseEntity
             .append("versionId", getVersionId())
             .append("content", getContent())
             .append("type", getType())
+            .append("forceUpdate", getForceUpdate())
             .append("delFlag", getDelFlag())
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
+            .append("downloadAddress", getDownloadAddress())
             .toString();
     }
 }
