@@ -55,12 +55,20 @@ public class BaseController
         PageUtils.startPage();
     }
 
+//    /**
+//     * 设置请求分页数据
+//     */
+//    protected void startPage(int pageSize)
+//    {
+//        PageUtils.startPage(1,pageSize);
+//    }
+
     /**
      * 设置请求分页数据
      */
-    protected void startPage(int pageSize)
+    protected void startPage(int pageNum,int pageSize)
     {
-        PageUtils.startPage(1,pageSize);
+        PageUtils.startPage(pageNum,pageSize);
     }
 
     /**

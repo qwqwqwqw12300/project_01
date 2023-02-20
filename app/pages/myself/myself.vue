@@ -1,200 +1,184 @@
-<!--
-* @Author: zhanch
-* @Date: 2022-12-28 18:25:27
-* @LastEditors: zhanch
-* @Description: 我的页面
--->
-
 <template>
-	<app-body :hideTitle="true">
-		<view class="ui-user">
-			<text>{{ userInfoPhone || '暂无手机号' }}</text>
-			<u-icon @click="editMobile" name="edit-pen" color="#fff" size="50rpx"></u-icon>
-			<button @click="loginOut">注销</button>
-		</view>
-		<view class="ui-menu">
-			<u-grid>
-				<u-grid-item v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
-					<view class="ui-menu-item" :border="false" @click="gridClick(baseListItem.url)">
-						<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }"
-							:name="'/static/images/myself/' + baseListItem.pic" size="53rpx"></u-icon>
-						<text class="grid-text">{{ baseListItem.title }}</text>
+	<app-body :bg="false" :hideTitle="true" :needService="false"
+		:bodyStyle="{backgroundImage: 'linear-gradient(179deg, #FFE7B5 0%, #F7F7F7 39%, #F7F7F7 39%)'}">
+		<view class="ui-body">
+			<view class="ui-header">
+				<u-avatar size="60" src="https://cdn.uviewui.com/uview/album/1.jpg"></u-avatar>
+				<view class="info">
+					<view class="name">张三</view>
+					<view class="phone">158****3343</view>
+				</view>
+				<view class="edit">
+					编辑个人资料
+					<u-icon style="margin-left: 8rpx;" name="arrow-right" size="18"></u-icon>
+				</view>
+			</view>
+
+			<view class="ui-manage">
+				<view class="mag-box">
+					<view class="item" v-for="(item,index) in magList" :key="index">
+						<u-icon :name="item.icon" size="36"></u-icon>
+						<text>{{ item.title }}</text>
 					</view>
-				</u-grid-item>
-			</u-grid>
+					<!-- 		<view class="item">
+						<u-icon :name="'/static/images/device-mg.png'" size="36"></u-icon>
+						<text>设备管理</text>
+					</view>
+					<view class="item">
+						<u-icon :name="'/static/images/urgent-phone.png'" size="36"></u-icon>
+						<text>设置紧急电话</text>
+					</view> -->
+				</view>
+			</view>
+
+			<view class="ui-cell">
+				<u-cell-group>
+					<u-cell v-for="(item,index) in cellList" :key="index" size="large" :title="item.title"
+						@tap="handleJump(item.url)" :isLink="true" titleStyle="font-size: 15px;color: #303133;">
+						<!-- <u-icon slot="icon" size="25" :color="item.icon.color" :name="item.icon.name"></u-icon> -->
+					</u-cell>
+				</u-cell-group>
+			</view>
+
+			<view class="ui-button">
+				<button>
+					注销
+				</button>
+			</view>
+
 		</view>
 	</app-body>
 </template>
 
 <script>
-	import {
-		PostLoginOut,
-	} from '@/common/http/api.js';
-	import {
-		removeToken
-	} from '@/common/utils/auth.js';
 	export default {
 		data() {
 			return {
-				baseList: [{
-						title: '家庭组管理',
-						pic: 'home.png',
-						url: '/pages/myself/famliy-manage'
-					},
-					{
-						title: '设备管理',
-						pic: 'device.png',
-						url: '/pages/myself/device-manage'
-					},
-					{
-						title: '设置紧急电话',
-						pic: 'phone.png',
-						url: '/pages/myself/urgent-mobile'
-					},
-					{
-						title: '消息设置',
-						pic: 'info.png',
-						url: '/pages/myself/push-set'
-					},
-					{
-						title: '密码修改',
-						pic: 'pwd.png',
-						url: '/pages/myself/pwd'
-					},
-					{
-						title: '协议信息',
-						pic: 'ag.png',
-						url: '/pages/myself/agreement-info'
-					},
-					// {
-					// 	title: '常见问题',
-					// 	pic: 'question.png',
-					// 	url: ''
-					// },
-					{
-						title: '问题与建议',
-						pic: 'complaint.png',
-						url: '/pages/myself/suggestion'
-					},
-					{
-						title: '版本管理',
-						pic: 'version-mg.png',
-						url: '/pages/myself/version-manage'
-					}
-				]
-			};
-		},
-		computed: {
-			userInfoPhone() {
-				const phone = this.$store.getters.userInfo.phone,
-					pho = /(\d{3})\d*(\d{4})/;
-				return phone.replace(pho || '', '$1****$2');
+				magList: [{
+					title: '家庭组管理',
+					icon: '/static/images/home.png',
+					url: '/pages/myself/famliy-manage',
+				}, {
+					title: '设备管理',
+					icon: '/static/images/device-mg.png',
+					url: '/pages/myself/device-manage'
+				}, {
+					title: '设置紧急电话',
+					icon: '/static/images/urgent-phone.png',
+					url: '/pages/myself/urgent-mobile'
+				}],
+				cellList: [{
+					title: '消息设置',
+					url: '/pages/myself/push-set',
+				}, {
+					title: '密码修改',
+					url: '/pages/myself/pwd'
+				}, {
+					title: '协议信息',
+					url: '/pages/myself/agreement-info'
+				}, {
+					title: '问题与建议',
+					url: '/pages/myself/suggestion'
+				}, {
+					title: '版本管理',
+					url: '/pages/myself/version-manage'
+				}]
 			}
 		},
 		methods: {
-			/**
-			 * 菜单点击
-			 */
-			gridClick(url) {
+			handleJump(url) {
 				uni.navigateTo({
 					url
 				})
-			},
-
-			/**
-			 * 修改手机号
-			 */
-			editMobile() {
-				uni.navigateTo({
-					url: '/pages/myself/mobile/select-way'
-				})
-			},
-			/**
-			 * 注销
-			 */
-			loginOut() {
-				uni.showModal({
-					title: '提示',
-					content: '是否确认注销',
-					success: res => {
-						if (res.confirm) {
-							PostLoginOut({}).then(() => {
-								removeToken()
-								uni.$u.toast('注销成功')
-								setTimeout(() => {
-									console.log('54565')
-									uni.reLaunch({
-										url: '/pages/login/login'
-									})
-								}, 1000)
-							})
-						} else if (res.cancel) {
-							console.log('用户点击取消');
-						}
-					}
-				});
 			}
-		},
-		onShow() {}
-	};
+		}
+	}
 </script>
 
-<style lang="scss">
-	.ui-user {
-		margin: 60rpx 0 0 40rpx;
-		display: inline-flex;
-		align-items: center;
-		justify-content: flex-start;
-		color: #ffffff;
-
-		&>* {
-			margin-left: 5rpx;
-		}
-
-		text {
-			font-size: 30rpx;
-		}
-
-		button {
-			margin-left: 23rpx;
-			display: inline-block;
-			background: #ffffff;
-			color: #f8b203;
-			height: 45rpx;
-			width: 105rpx;
-			font-size: 20rpx;
-			line-height: 45rpx;
+<style lang="scss" scoped>
+	::v-deep {
+		.u-cell .u-line {
+			margin: 0px !important;
 		}
 	}
 
-	.ui-menu {
-		margin-top: 214rpx;
-		padding: 0 78rpx;
+	.ui-body {
+		margin-top: 100rpx;
+		padding: 0 32rpx;
+	}
 
-		.ui-menu-item {
-			margin-top: 58rpx;
+	.ui-header {
+		height: 130rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.info {
+			flex: 1;
+			padding-left: 30rpx;
+
+			.name {
+				font-size: 42rpx;
+				color: #353535;
+				font-weight: 600;
+			}
+
+			.phone {
+				margin-top: 10rpx;
+				font-size: 28rpx;
+				color: #888888;
+				font-weight: 400;
+			}
+		}
+
+		.edit {
 			display: flex;
 			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-			font-size: 27rpx;
-			color: #414141;
-			height: 168rpx;
-			width: 168rpx;
-			border-radius: 10rpx;
-			filter: drop-shadow(7.824rpx 10.382rpx 8rpx rgba(7, 5, 5, 0.08));
-			background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
-			text-align: center;
-			box-sizing: border-box;
-			padding-bottom: 20rpx;
+			font-size: 32rpx;
+			color: #353535;
+		}
+	}
 
-			text {
-				display: inline-flex;
+	.ui-manage {
+		margin-top: 30rpx;
+		background: #FFFFFF;
+		border-radius: 18rpx;
+
+		.mag-box {
+			padding: 30rpx 50rpx;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			.item {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
 				align-items: center;
-				margin-top: 15rpx;
-				width: 70%;
-				height: 60rpx;
+				height: 154rpx;
+
+				text {
+					margin-top: 10rpx;
+					color: #353535;
+					font-size: 28rpx;
+				}
 			}
+		}
+	}
+
+	.ui-cell {
+		margin-top: 30rpx;
+		background: #fff;
+		border-radius: 18rpx;
+	}
+
+	.ui-button {
+		margin-top: 30rpx;
+
+		button {
+			border-radius: 18rpx;
+			color: #FF4645;
+			background: #FFFFFF;
 		}
 	}
 </style>

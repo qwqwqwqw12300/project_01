@@ -53,7 +53,8 @@ public class EventController extends BaseController
         eventRequest.setMemberPhone(memberPhone);
         eventRequest.setMemberName(memberUsername);
 
-        startPage(10000);
+//        startPage(10000);
+        startPage(eventRequest.getPageNum(),eventRequest.getPageSize());
         List<TEventList> list = tEventService.selectEventInfo(eventRequest);
         return getDataTable(list);
     }
