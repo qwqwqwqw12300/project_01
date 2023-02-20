@@ -57,7 +57,8 @@ public class RoomController extends BaseController {
         if (roomRequest.getFamilyId()==null||roomRequest.getFamilyId().equals("")){
             throw new ServiceException(String.format("家庭Id不能为空！"));
         }
-        startPage(10000);
+//        startPage(10000);
+        startPage(roomRequest.getPageNum(),roomRequest.getPageNum());
         Long memberId = getLoginUser().getMemberId();
         // 查询当前会员与家庭关系  登录会员创建
         List<TMemberFamily> tMemberFamilys =

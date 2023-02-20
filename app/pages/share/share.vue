@@ -272,6 +272,7 @@
 				this.shareForm.phone = item.phone;
 				console.log(item, '选择的手机号');
 				console.log(this.shareForm, '界面表单');
+				this.shareForm = { ...this.shareForm }
 				this.contactShow = false
 			},
 
