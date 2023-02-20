@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @ApiModel("设备请求")
-public class DeviceRequest {
+public class DeviceRequest extends PageRequest {
 
     @ApiModelProperty("设备id")
     @Size(min = 0, max = 20, message = "设备编号不能超过20个字符")

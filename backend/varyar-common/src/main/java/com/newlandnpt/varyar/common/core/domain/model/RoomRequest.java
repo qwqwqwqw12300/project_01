@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Size;
 @ApiModel(description = "家庭房间信息")
-public class RoomRequest {
+public class RoomRequest extends PageRequest {
 
     /**
      *  家庭Id 唯一标识

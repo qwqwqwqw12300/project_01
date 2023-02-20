@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 @ApiModel(description = "家庭设备消息详情查询请求")
-public class MessageQueryRequest {
+public class MessageQueryRequest extends PageRequest {
 
     /**
      *  未读标识 0:未读 1:已读
