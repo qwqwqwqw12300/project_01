@@ -152,15 +152,6 @@
 				}
 			}
 		}, {
-			"path": "pages/myself/mobile",
-			"style": {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-
-		}, {
 			"path": "pages/share/share",
 			"style": {
 				"navigationStyle": "custom",
@@ -394,6 +385,33 @@
 				}
 			}
 
+		},
+		{
+			"path": "pages/myself/info-edit",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/myself/edit-avatar",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/myself/edit-nick",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 	"globalStyle": {

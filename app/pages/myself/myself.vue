@@ -8,7 +8,7 @@
 					<view class="name">张三</view>
 					<view class="phone">158****3343</view>
 				</view>
-				<view class="edit">
+				<view class="edit" @tap="handleJump('/pages/myself/info-edit')">
 					编辑个人资料
 					<u-icon style="margin-left: 8rpx;" name="arrow-right" size="18"></u-icon>
 				</view>
