@@ -421,7 +421,7 @@
 				"pagePath": "pages/details/details",
 				"iconPath": "/static/images/tabbar/tabbar2.png",
 				"selectedIconPath": "/static/images/tabbar/tabbar2.png",
-				"text": "详情"
+				"text": "报告"
 			},
 			{
 				"pagePath": "pages/myself/myself",

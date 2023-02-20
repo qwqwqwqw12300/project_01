@@ -73,10 +73,11 @@ export const ZONE = {
  */
 const dateTime = new Date();
 export const INIT_SELECT = {
-	startDate: dateTime.setDate(dateTime.getDate() - 3), // 默认查近三天
+	startDate: dateTime.setDate(dateTime.getMonth() - 3), // 默认查近三个月
 	endDate: new Date().getTime(),
 	deviceType: '',
 	eventlevel: '',
 	readFlag: '',
-	pageSize: 10000
+	pageSize: 10,
+	pageNum: 1
 };

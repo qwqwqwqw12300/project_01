@@ -234,7 +234,9 @@
 			getTypeContact(type) {
 				return new Promise((resolve, reject) => {
 					plus.contacts.getAddressBook(type, res => {
+
 						res.find([], data => {
+
 							const list = data.map(n => {
 								const {
 									displayName: name,
@@ -244,9 +246,10 @@
 									name,
 									phone: phoneNumbers[0] && phoneNumbers[0].value
 								}
-							}).filter(item=>{
-								return item.phone !== ''  
+							}).filter(item => {
+								return item.phone !== ''
 							});
+							console.log(list, '手机电话');
 							resolve(list)
 							// this.contactList.contacts(res)
 							// this.contactShow = true
@@ -266,7 +269,9 @@
 			 */
 
 			phoneClick(item) {
-				this.shareForm.phone = item.phone
+				this.shareForm.phone = item.phone;
+				console.log(item, '选择的手机号');
+				console.log(this.shareForm, '界面表单');
 				this.contactShow = false
 			},
 

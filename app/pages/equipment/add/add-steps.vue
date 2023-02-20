@@ -115,8 +115,8 @@
 				/**创建设备信息**/
 				editForm: {
 					deviceName: '',
-					location: '',
-					deviceId: '壁挂'
+					location: '壁挂',
+					deviceId: ''
 				},
 				addForm: {
 					deviceName: '未命名设备',

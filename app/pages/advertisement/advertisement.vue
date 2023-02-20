@@ -38,6 +38,9 @@
 			};
 		},
 		mounted() {
+			// this.queryVersion().then(res => {
+
+			// })
 			this.$store.dispatch('GetContactsList');
 			this.queryVersion();
 		},
@@ -106,7 +109,6 @@
 				// 									plus.runtime.openURL(appurl)
 				// 								} else {
 				// 									this.initInfo();
-				// 									// plus.runtime.quit()
 				// 								}
 				// 							}
 				// 						});
@@ -121,7 +123,6 @@
 				// } else {
 				// 	this.initInfo();
 				// }
-
 			},
 			initInfo() {
 				GetDict().then(res => {

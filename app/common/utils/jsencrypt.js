@@ -1,4 +1,4 @@
-import JSEncrypt from './jsencrypt.min.js';
+import JSEncrypt from '../../static/js/jsencrypt.min.js';
 export default {
 	data() {
 		return {

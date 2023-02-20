@@ -165,14 +165,8 @@
 					endDate
 				} = this.screenInfo;
 				if (startDate > endDate) return uni.$u.toast('开始时间不能早于结束时间');
-				this.$setCache('detailsScreenResult', this.screenInfo);
-				uni.navigateBack({
-					success: res => {
-						uni.$emit('detailsScreenResult', this.screenInfo);
-						// const eventChannel = this.getOpenerEventChannel();
-						// eventChannel.emit('detailsScreenResult', this.screenInfo);
-					}
-				});
+				uni.$emit('detailsScreenResult', this.screenInfo);
+				uni.navigateBack();
 			},
 
 			/**
@@ -200,6 +194,11 @@
 			dateClose() {
 				this.dateHandle.show = false;
 			},
+
+		},
+
+		onBackPress(event) {
+			uni.$off('detailsScreenResult');
 		}
 	}
 </script>

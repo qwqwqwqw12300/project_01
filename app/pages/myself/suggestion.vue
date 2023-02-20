@@ -59,7 +59,7 @@
 	}
 
 	.ui-form {
-		margin-top: 256rpx;
+		margin-top: 100rpx;
 		padding: 0 80rpx;
 		padding-bottom: 120rpx;
 

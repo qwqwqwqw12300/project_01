@@ -8,12 +8,12 @@
 	<app-body :bg="false" :hideTitle="true">
 		<view class="ui-body">
 			<view class="ui-title">
-				<text>详情</text>
+				<text>报告</text>
 				<text class="active" @click="readMsgAll">全部标记已处理</text>
 			</view>
 			<view class="ui-screen">
 				<view class="ui-screen-icon ui-screen-family active" @click="familyShow = true">
-					<text>{{eventInfo.familyName || '全部'}}</text>
+					<text>{{eventInfo.familyName || '全部家庭'}}</text>
 					<u-icon size="35rpx" :name="familyShow ? 'arrow-down-fill' : 'arrow-up-fill'"></u-icon>
 				</view>
 				<view class="ui-screen-icon active" @click="goSreen">
@@ -22,20 +22,19 @@
 				</view>
 			</view>
 			<!-- 消息列表 -->
-			<view class="ui-msg">
-				<scroll-view scroll-y="true" @refresherrefresh="onRefresh" :refresher-triggered="triggered"
-					refresher-enabled refresher-background="transparent">
-					<template v-if="messageList.length">
-						<view class="ui-scroll">
-							<msg-card v-for="(item, index) of messageList" :key="index" :msgInfo="item"></msg-card>
-						</view>
-					</template>
-					<view class="ui-empty" v-else>
-						<u-empty mode="list" text="暂无数据"></u-empty>
+			<scroll-view class="ui-msg" scroll-y="true" @scrolltolower="pageNext" lower-threshold="10"
+				@refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled
+				refresher-background="transparent">
+				<template v-if="messageList.length">
+					<view class="ui-scroll">
+						<msg-card v-for="(item, index) of messageList" :key="index" :msgInfo="item"></msg-card>
+						<u-loadmore marginBottom="30" dashed :status="loadmore" />
 					</view>
-
-				</scroll-view>
-			</view>
+				</template>
+				<view class="ui-empty" v-else>
+					<u-empty mode="list" text="暂无数据"></u-empty>
+				</view>
+			</scroll-view>
 			<!-- /消息列表 -->
 		</view>
 		<u-action-sheet :closeOnClickOverlay="true" :safeAreaInsetBottom="true" :closeOnClickAction="true"
@@ -68,11 +67,11 @@
 			return {
 				/**事件信息**/
 				eventInfo: {
+					...INIT_SELECT,
 					/**家庭id**/
 					familyId: '',
 					/**家庭名称**/
-					familyName: '',
-					...INIT_SELECT
+					familyName: ''
 				},
 				/**消息列表**/
 				messageList: [],
@@ -80,6 +79,8 @@
 				triggered: false,
 				/**家庭列表是否展示**/
 				familyShow: false,
+				/**加载更多管理**/
+				loadmore: 'loadmore' // loadmore-加载更多 loading-加载中 nomore-没有更多
 			};
 		},
 		computed: {
@@ -91,7 +92,7 @@
 					}));
 					return [{
 						value: '',
-						text: '全部'
+						text: '全部家庭'
 					}, ...familyList]
 
 				}
@@ -132,17 +133,39 @@
 
 			},
 
+
 			/**
 			 * 查询设备消息
 			 */
 			getMsgList() {
 				return new Promise(resolve => {
 					this.messageList = [];
+					this.eventInfo.pageNum = 1;
+					this.loadmore = 'loadmore';
 					getMessage({
 						...this.eventInfo,
 					}).then(res => {
 						this.messageList = res.rows || [];
-						console.log(this.messageList, 'this.messageList');
+						this.loadmore = res.total <= this.messageList.length ? 'nomore' : 'loadmore';
+						resolve();
+					}, err => resolve());
+				});
+			},
+
+			/**
+			 * 下一页
+			 */
+			pageNext() {
+				console.log(this.loadmore, 'this.loadmore');
+				if (this.loadmore === 'nomore') return;
+				this.loadmore = 'loading';
+				return new Promise(resolve => {
+					this.eventInfo.pageNum++;
+					getMessage({
+						...this.eventInfo
+					}).then(res => {
+						this.messageList = [...this.messageList, ...res.rows];
+						this.loadmore = res.total <= this.messageList.length ? 'nomore' : 'loadmore';
 						resolve();
 					}, err => resolve());
 				});
@@ -170,8 +193,14 @@
 					familyId: item.value,
 					familyName: item.text
 				});
+				this.getMsgList();
 				this.familyShow = false;
-			}
+			},
+
+		},
+
+		onBackPress() {
+			console.log(1212);
 		}
 	}
 </script>
@@ -225,7 +254,7 @@
 		}
 
 		.ui-msg {
-			overflow-y: scroll;
+			// overflow-y: scroll;
 			height: calc(100vh - 300rpx - var(--window-bottom) - var(--status-bar-height));
 		}
 
