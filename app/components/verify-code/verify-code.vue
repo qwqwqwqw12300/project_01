@@ -7,8 +7,9 @@
 
 <template>
 	<view>
-		<u-input placeholder="请输入短信认证码" v-model="checkPayLoad.code" type="number" maxlength="4"
-			:readonly="status === 'checked'" @input="checkSms" :border="'none'" fontSize="28rpx" clearable>
+		<u-input :prefixIcon="prefixIcon" :prefixIconStyle="prefixIconStyle" :fontSize="fontSize" placeholder="请输入短信认证码"
+			v-model="checkPayLoad.code" type="number" maxlength="4" :readonly="status === 'checked'" @input="checkSms"
+			:border="'none'" clearable>
 			<template slot="suffix">
 				<button class="wd-sms ui-mini" @click="sendCode" size="mini">{{suffix}}</button>
 			</template>
@@ -47,6 +48,16 @@
 			smsType: {
 				type: String,
 				default: '0', //0: 普通短信验证，1: 登录短信验证
+			},
+			prefixIcon: {
+				default: ''
+			},
+			prefixIconStyle: {
+				type: String | Object,
+				default: ''
+			},
+			fontSize: {
+				default: '28rpx'
 			}
 
 		},

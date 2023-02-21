@@ -7,7 +7,8 @@
 
 <template>
 	<view>
-		<u-input v-model="code" maxlength="4" placeholder="请输入图形验证码" :border="'none'" fontSize="28rpx" clearable>
+		<u-input :prefixIcon="prefixIcon" :prefixIconStyle="prefixIconStyle" :fontSize="fontSize" v-model="code"
+			maxlength="4" placeholder="请输入图形验证码" :border="'none'" clearable>
 			<template slot="suffix">
 				<image @tap="handleGetCaptcha" class="img" :src="codeUrl"></image>
 			</template>
@@ -20,6 +21,18 @@
 		GetCaptchaImage,
 	} from '@/common/http/api.js';
 	export default {
+		props: {
+			prefixIcon: {
+				default: ''
+			},
+			prefixIconStyle: {
+				type: String | Object,
+				default: ''
+			},
+			fontSize: {
+				default: '28rpx'
+			}
+		},
 		data() {
 			return {
 				codeUrl: '',

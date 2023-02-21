@@ -4,10 +4,9 @@
 * @FilePath: /components/app-body/app-body.vue
 * @Description: 页面主体
 -->
-
 <template>
 	<scroll-view :scroll-y="true" :class="{'wd-body-bg': bg}" class="wd-body" :style="bodyStyle">
-		<view class="wd-bg">
+		<view class="wd-bg" :class="{ 'wd-fixed': !hideTitle && !bg, }">
 			<u-navbar v-if="!hideTitle" :leftText="leftText" :safeAreaInsetTop="false" :autoBack="!back"
 				:bgColor="bg ? 'transparent': '#fff'" :fixed="!bg" :leftIconColor="bg ? leftIconColor : '#000'"
 				@leftClick="leftClick" />
@@ -156,7 +155,13 @@
 	.wd-body-bg {
 		border-top: 0;
 		padding-top: var(--status-bar-height);
-		background-image: url('@/static/images/bg2.png');
+		// background-image: url('@/static/images/bg2.png');
+		background-image: linear-gradient(180deg, #FFE7B5 0%, #FFFFFF 24%);
+	}
+
+	.wd-fixed {
+		box-sizing: border-box;
+		padding-top: 88rpx;
 	}
 
 	.wd-bg {

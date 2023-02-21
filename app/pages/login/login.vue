@@ -8,37 +8,37 @@
 	<app-body :needService="false" :hideTitle="true">
 		<view class="ui-body">
 			<!-- <image class="ui-logo" src="../../static/images/logo.png"></image> -->
-			<text class="ui-logo">艾吉通</text>
-			<view class="ui-tip">艾吉通·守护您每一分钟!</view>
+			<view class="ui-logo">
+				<image src="../../static/images/login-logo.png"></image>
+				<text>艾吉通</text>
+			</view>
+			<!-- <view class="ui-tip">艾吉通·守护您每一分钟!</view> -->
 			<view class="ui-nav">
-				<u-tabs lineWidth="160rpx" lineColor="#fdbd2d" :itemStyle="{ width: '200rpx', height: '90rpx' }"
-					:activeStyle="{ color: '#fdbd2d', fontSize: '28rpx' }"
-					:inactiveStyle="{ color: '#bfbfbf', fontSize: '28rpx' }" lineHeight="4.5rpx" :list="navList"
+				<u-tabs lineWidth="160rpx" lineColor="#353535" :itemStyle="{ width: '250rpx', height: '90rpx' }"
+					:activeStyle="{ color: '#353535', fontSize: '36rpx' }"
+					:inactiveStyle="{ color: '#888888', fontSize: '36rpx' }" lineHeight="4.5rpx" :list="navList"
 					@click="navClick"></u-tabs>
 			</view>
 			<!-- 账号登录 -->
 			<u-transition :mode="initFlag ? '' : 'fade-left'" :show="navActive === 0 && delay === 0">
 				<view class="ui-form">
 					<view class="ui-form-item">
-						<u-text prefixIcon="phone-fill" iconStyle="font-size: 30rpx" text="手机号码" color="#444"
-							size="28rpx">
-						</u-text>
-						<view class="ui-input">
-							<u--input v-model="loginForm.phone" maxlength="11" type="number" placeholder="请输入手机号码"
-								:border="'none'" fontSize="28rpx" clearable></u--input>
-						</view>
+						<u--input prefixIcon="../../static/images/login/phone.png"
+							:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx"
+							v-model="loginForm.phone" maxlength="11" type="number" placeholder="请输入手机号码"
+							:border="'none'" clearable></u--input>
 					</view>
 					<view class="ui-form-item">
-						<graphic-input ref="codeRef"></graphic-input>
+						<figure-code prefixIcon="../../static/images/login/code.png"
+							:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" size="4"
+							ref="codeRef"></figure-code>
 					</view>
 					<view class="ui-form-item">
-						<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx">
-						</u-text>
-						<view class="ui-input">
-							<u-input v-model="loginForm.password" placeholder="请输入你的密码" :password="true"
-								:border="'none'" fontSize="28rpx" clearable>
-							</u-input>
-						</view>
+						<u-input prefixIcon="../../static/images/login/lock.png"
+							:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx"
+							v-model="loginForm.password" placeholder="请输入你的密码" :password="true" :border="'none'"
+							clearable>
+						</u-input>
 					</view>
 					<view class="ui-bot">
 						<text class="active" @click="register">免费注册</text>
@@ -52,21 +52,24 @@
 			<u-transition mode="fade-right" :show="navActive !== 0 && delay !== 0">
 				<view class="ui-form">
 					<view class="ui-form-item">
-						<u-text prefixIcon="phone-fill" iconStyle="font-size: 30rpx" text="手机号码" color="#444"
+						<!-- 	<u-text prefixIcon="phone-fill" iconStyle="font-size: 30rpx" text="手机号码" color="#444"
 							size="28rpx">
-						</u-text>
-						<view class="ui-input">
-							<u-input v-model="smsLoginForm.phone" type="number" placeholder="请输入手机号码" maxlength="11"
-								:border="'none'" fontSize="28rpx" clearable></u-input>
-						</view>
+						</u-text> -->
+						<u-input prefixIcon="../../static/images/login/phone.png"
+							:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx"
+							v-model="smsLoginForm.phone" type="number" placeholder="请输入手机号码" maxlength="11"
+							:border="'none'" clearable></u-input>
 					</view>
 					<view class="ui-form-item">
-						<graphic-input ref="codeRefbySms"></graphic-input>
+						<figure-code prefixIcon="../../static/images/login/code.png"
+							:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" size="4"
+							ref="codeRefbySms"></figure-code>
 					</view>
 					<view class="ui-form-item">
-						<sms-input ref="sms" @reset="smsReset" :payload="smsPayload" smsType="1"
-							@checked="checkedBySms">
-						</sms-input>
+						<verify-code prefixIcon="../../static/images/login/sms.png"
+							:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" ref="sms"
+							@reset="smsReset" :payload="smsPayload" smsType="1" @checked="checkedBySms">
+						</verify-code>
 					</view>
 					<view class="ui-bot">
 						<text class="active" @click="register">免费注册</text>
@@ -291,18 +294,27 @@
 	.ui-body {
 		// height: 100vh;
 		text-align: center;
-		padding-bottom: 50rpx;
+		padding-bottom: 20rpx;
 		// background-position: 0 -100rpx;
 	}
 
 	.ui-logo {
-		height: 69rpx;
-		width: 366rpx;
-		font-size: 69rpx;
-		color: #fff;
-		margin-top: 100rpx;
-		display: inline-block;
+		margin: 121rpx 0 60rpx 0;
+		display: flex;
 		font-weight: bold;
+		align-items: center;
+		flex-direction: column;
+
+		image {
+			height: 144rpx;
+			width: 144rpx;
+		}
+
+		text {
+			font-size: 40rpx;
+			color: #353535;
+		}
+
 	}
 
 	.ui-tip {
@@ -322,8 +334,13 @@
 	}
 
 	.ui-form {
-		margin-top: 136rpx;
+		margin-top: 50rpx;
 		padding: 0 80rpx;
+
+		.ui-form-item {
+			padding: 44rpx 0;
+			border-bottom: 1rpx solid #e2e2e2;
+		}
 
 		.ui-input {
 			margin: 34rpx 0 60rpx 0;
@@ -331,11 +348,12 @@
 		}
 
 		.ui-bot {
+			margin-top: 49rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			font-size: 26rpx;
-			color: #484848;
+			color: #599FFF;
 		}
 
 		.ui-btn {
