@@ -11,8 +11,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Arrays;
+import java.util.List;
 
 public class SMSUtils {
 
@@ -27,7 +30,7 @@ public class SMSUtils {
     /**拓展码（可以为空）*/
     private static String addSerial = "";
     /**url*/
-    private static String url = "http://112.35.1.155:1992/sms/tmpsubmit";
+    private static String url = "http://112.35.10.201:5992/sms/tmpsubmit";
 
     /**
      * 多用户发送短信信息
@@ -86,7 +89,7 @@ public class SMSUtils {
      */
     public static void main(String[] args) throws IOException {
         String msg = "这是发送短信的内容！";
-//        sendMsg("15060665801", msg);
+        sendMsg("15060665801", new Test("易连科"));
     }
 
     /**
@@ -135,5 +138,24 @@ public class SMSUtils {
             }
         }
         return result;
+    }
+
+    private static class Test implements SMSTemplate{
+
+        private String name;
+
+        public Test(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getTemplateId() {
+            return "aa2be779a4f34ff0a97ce0d1df6965f9";
+        }
+
+        @Override
+        public List<String> getParams() {
+            return Arrays.asList(name);
+        }
     }
 }
