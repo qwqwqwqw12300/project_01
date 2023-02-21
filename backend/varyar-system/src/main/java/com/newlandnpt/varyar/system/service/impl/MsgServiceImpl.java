@@ -140,6 +140,32 @@ public class MsgServiceImpl implements IMsgService
         return tMsgs.size();
     }
 
+    @Override
+    @Transactional(readOnly = false,propagation = Propagation.REQUIRED)
+    public int updateBatchTMsgs(TMsg tMsg) throws Exception {
+        int rownum =0;
+        try{
+             //查询获取消息事件id
+             List<TMsg> tMsgs= tMsgMapper.selectTMsgList(tMsg);
+             //更新消息表记录
+             rownum =tMsgMapper.updateTMsgs(tMsg);
+             if(rownum>0){
+                 for(TMsg  msg : tMsgs) {
+                     //标志事件已处理
+                     TEvent tEvent = iEventService.selectTEventByEventId(msg.getEventId());
+                     if (tEvent != null) {
+                         tEvent.setOperateTime(new Date());
+                         tEvent.setOperateFlag("1");
+                     }
+                     iEventService.updateTEvent(tEvent);
+                 }
+             }
+        }catch (Exception e){
+            throw new Exception("批量修改消息失败！");
+        }
+        return  rownum;
+    }
+
     /**
      * 批量删除消息
      * 

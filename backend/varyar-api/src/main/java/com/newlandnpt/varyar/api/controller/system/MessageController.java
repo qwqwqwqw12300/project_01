@@ -2,22 +2,17 @@ package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.R;
 import com.newlandnpt.varyar.common.core.domain.entity.BatchMessage;
-import com.newlandnpt.varyar.common.core.domain.entity.MemberInfo;
 import com.newlandnpt.varyar.common.core.domain.entity.MemberParameter;
-import com.newlandnpt.varyar.common.core.domain.model.BatchMessageRequest;
-import com.newlandnpt.varyar.common.core.domain.model.MessagePushRequest;
-import com.newlandnpt.varyar.common.core.domain.model.MessageQueryRequest;
-import com.newlandnpt.varyar.common.core.domain.model.MessageRequest;
+import com.newlandnpt.varyar.common.core.domain.model.*;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
+import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.domain.TMemberContacts;
 import com.newlandnpt.varyar.system.domain.TMsg;
 import com.newlandnpt.varyar.system.service.*;
 import io.swagger.annotations.*;
-import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,6 +162,41 @@ public class MessageController extends BaseController {
         }
         return ajax;
     }
+
+    /**
+     * 根据查询条件标记消息状态 (批量)
+     * */
+    @ApiOperation("根据查询条件标志所有消息状态")
+    @PostMapping("/setBatchMessageInfoByParams")
+    public AjaxResult setBatchMessageInfoByParams(@RequestBody @Validated BatchMessageByParamsRequest batchMessageByParamsRequest) {
+        AjaxResult ajax = AjaxResult.success();
+        TMsg tMsg = new TMsg();
+        if(batchMessageByParamsRequest.getDeviceId()!=null&&!batchMessageByParamsRequest.getDeviceId().equals("")){
+            tMsg.setDeviceId(Long.valueOf(batchMessageByParamsRequest.getDeviceId()));
+        }
+        if(batchMessageByParamsRequest.getFamilyId()!=null&&!batchMessageByParamsRequest.getFamilyId().equals("")){
+            tMsg.setFamilyId(Long.valueOf(batchMessageByParamsRequest.getFamilyId()));
+        }
+        if(batchMessageByParamsRequest.getDeviceType()!=null&&!batchMessageByParamsRequest.getDeviceType().equals("")){
+            tMsg.setDeviceType(batchMessageByParamsRequest.getDeviceType());
+        }
+        tMsg.setEventLevel(batchMessageByParamsRequest.getEventlevel());
+        tMsg.setOperateFlag(batchMessageByParamsRequest.getReadFlag());
+        tMsg.setStartDate(batchMessageByParamsRequest.getStartDate());
+        tMsg.setEndDate(batchMessageByParamsRequest.getEndDate());
+        //获取当前登录的会员号
+        Long memberId = getLoginUser().getMemberId();
+        tMsg.setMemberId(memberId);
+        try {
+            itMsgService.updateBatchTMsgs(tMsg);
+
+
+        }  catch (Exception e){
+            error("批量标记消息状态失败！");
+        }
+        return ajax;
+    }
+
     /**
      * 我的-消息设置	推送开关·
      */
