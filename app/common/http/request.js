@@ -53,7 +53,7 @@ const request = (url, options, process, method = 'POST') => {
 			method,
 			header: {
 				'Accept': 'application/json',
-				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Type': 'application/json',
 				'Authorization': getToken(),
 			},
 			withCredentials: true,
