@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.newlandnpt.varyar.common.core.domain.model.SMS.SMSSendReq;
 import com.newlandnpt.varyar.common.core.domain.model.SMS.SMSSendRes;
 import com.newlandnpt.varyar.common.utils.Md5.Md5Util;
+import com.newlandnpt.varyar.common.utils.SMS.templates.SMSTemplate;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.BufferedReader;
@@ -16,42 +17,44 @@ import java.net.URLConnection;
 public class SMSUtils {
 
     /**账号*/
-    private static String apId = "";
+    private static String apId = "Pdev";
     /**密码*/
-    private static String secretKey = "";
+    private static String secretKey = "$Admin123!";
     /**集团名称*/
-    private static String ecName = "";
+    private static String ecName = "福建易联智慧科技有限公司";
     /**网关签名编码*/
-    private static String sign = "";
+    private static String sign = "BeoPYV83W";
     /**拓展码（可以为空）*/
     private static String addSerial = "";
     /**url*/
-    private static String url = "http://112.35.1.155:1992/sms/norsubmit";
+    private static String url = "http://112.35.1.155:1992/sms/tmpsubmit";
 
     /**
      * 多用户发送短信信息
      *
      * @param mobiles 手机号码逗号分隔
-     * @param content 短信内容
+     * @param template 短信模板
      * @return 返回1表示成功，0表示失败
      * @throws IOException
      */
-    public static boolean sendMsg(String mobiles, String content) throws IOException {
+    public static boolean sendMsg(String mobiles, SMSTemplate template) throws IOException {
+        // todo 验证模板短信
         SMSSendReq sendReq = new SMSSendReq();
-        sendReq.setApId(apId);
         sendReq.setEcName(ecName);
-        sendReq.setSecretKey(secretKey);
-        sendReq.setContent(content);
+        sendReq.setApId(apId);
+        sendReq.setTemplateId(template.getTemplateId());
         sendReq.setMobiles(mobiles);
-        sendReq.setAddSerial(addSerial);
+        sendReq.setParams(template.getParams());
         sendReq.setSign(sign);
+        sendReq.setAddSerial(addSerial);
 
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(sendReq.getEcName());
         stringBuffer.append(sendReq.getApId());
-        stringBuffer.append(sendReq.getSecretKey());
+        stringBuffer.append(secretKey);
+        stringBuffer.append(sendReq.getTemplateId());
         stringBuffer.append(sendReq.getMobiles());
-        stringBuffer.append(sendReq.getContent());
+        stringBuffer.append(sendReq.getParams());
         stringBuffer.append(sendReq.getSign());
         stringBuffer.append(sendReq.getAddSerial());
 
@@ -83,7 +86,7 @@ public class SMSUtils {
      */
     public static void main(String[] args) throws IOException {
         String msg = "这是发送短信的内容！";
-        sendMsg("186****7603", msg);
+//        sendMsg("15060665801", msg);
     }
 
     /**
