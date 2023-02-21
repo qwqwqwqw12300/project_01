@@ -37,7 +37,7 @@
 				<view class="ui-form-item">
 					<sms-input ref="sms" @reset="codeReset" :payload="smsPayload" @checked="checkedBySms" />
 				</view>
-				<view class="wd-btn-group"><button @click="submit" class="default">提交</button></view>
+				<view class="ui-btn"><button @click="submit" class="default">提交</button></view>
 			</view>
 		</view>
 		<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
@@ -249,6 +249,7 @@
 							}).filter(item => {
 								return item.phone !== ''
 							});
+
 							console.log(list, '手机电话');
 							resolve(list)
 							// this.contactList.contacts(res)
@@ -272,7 +273,6 @@
 				this.shareForm.phone = item.phone;
 				console.log(item, '选择的手机号');
 				console.log(this.shareForm, '界面表单');
-				this.shareForm = { ...this.shareForm }
 				this.contactShow = false
 			},
 
@@ -338,7 +338,7 @@
 	.ui-form {
 		margin-top: 156rpx;
 		padding: 0 80rpx;
-		padding-bottom: 120rpx;
+		padding-bottom: 40rpx;
 
 		.ui-input {
 			margin: 34rpx 0 60rpx 0;
@@ -358,8 +358,8 @@
 			// height: 60rpx;
 		}
 
-		.wd-btn-group {
-			margin: 120rpx 0;
+		.ui-btn {
+			margin: 30rpx 0;
 		}
 	}
 

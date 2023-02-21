@@ -115,6 +115,7 @@
 	.ui-content {
 		padding: 0 20rpx;
 		margin-top: 20rpx;
+		overflow: hidden;
 		height: calc(100vh - 600rpx - var(--status-bar-height));
 	}
 </style>
