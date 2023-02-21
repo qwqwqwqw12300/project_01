@@ -167,4 +167,21 @@
         where 1=1
     </select>
 
+    <update id="updateTMsgs" parameterType="TMsg">
+        update  t_msg m  set m.operate_flag = '1' ,m.update_time = sysdate()
+        <where>
+            m.operate_flag= '0'
+            <if test="deviceId != null "> and m.device_id = #{deviceId}</if>
+            <if test="familyId != null "> and m.family_id = #{familyId}</if>
+            <if test="deviceType != null  and deviceType != ''"> and m.device_type = #{deviceType}</if>
+            <if test="eventLevel != null  and eventLevel != ''"> and m.event_level = #{eventLevel}</if>
+            <if test="operateFlag != null  and operateFlag != ''"> and m.operate_flag = #{operateFlag}</if>
+            <if test="startDate != null "> and m.create_time <![CDATA[>=]]> #{startDate}</if>
+            <if test="endDate != null "> and m.create_time  <![CDATA[<=]]> #{endDate}</if>
+            <if test="memberId != null "> and m.member_id = #{memberId}</if>
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
+        </where>
+    </update>
+
 </mapper>

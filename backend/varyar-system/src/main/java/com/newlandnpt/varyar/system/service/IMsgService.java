@@ -61,10 +61,17 @@ public interface IMsgService
     /**
      * 修改消息 批量
      *
-     * @param tMsg 消息
+     * @param tMsgs 消息
      * @return 结果
      */
     public int updateTMsgs(List<TMsg> tMsgs) throws Exception;
+    /**
+     * 修改消息 批量（新）
+     *
+     * @param tMsg 消息
+     * @return 结果
+     */
+    public int updateBatchTMsgs(TMsg tMsg) throws Exception;
 
 
     /**

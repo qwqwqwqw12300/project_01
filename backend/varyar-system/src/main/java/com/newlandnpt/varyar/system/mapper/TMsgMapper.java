@@ -46,6 +46,14 @@ public interface TMsgMapper
     public int updateTMsg(TMsg tMsg);
 
     /**
+     * 修改批量消息
+     *
+     * @param tMsg 消息
+     * @return 结果
+     */
+    public int updateTMsgs(TMsg tMsg);
+
+    /**
      * 删除消息
      *
      * @param msgId 消息主键
