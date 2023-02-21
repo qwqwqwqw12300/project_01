@@ -259,3 +259,11 @@ export function phoneValidator(phone) {
 	const reg = /^1\d{10}$/
 	return reg.test(phone)
 }
+
+/**
+ * 手机号脱敏
+ */
+export function phoneHide(phone) {
+	const pho = /(\d{3})\d*(\d{4})/;
+	return phone.replace(pho, '$1****$2');
+}

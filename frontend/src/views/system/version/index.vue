@@ -108,6 +108,11 @@
           <dict-tag :options="dict.type.sys_app_type" :value="scope.row.type"/>
         </template>
       </el-table-column>
+      <el-table-column label="是否强制更新" align="center" prop="forceUpdate">
+        <template slot-scope="scope">
+          {{ forceUpdateFormat(scope.row) }}
+        </template>
+      </el-table-column>
       <!-- <el-table-column label="删除标记" align="center" prop="delFlag" /> -->
       <!-- <el-table-column label="删除标记" align="center" prop="delFlag">
         <template slot-scope="scope">
@@ -153,18 +158,18 @@
     />
 
     <!-- 添加或修改版本对话框 -->
- <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-        <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+ <el-dialog :title="title" :visible.sync="open" width="580px" append-to-body >
+        <el-form ref="form" :model="form" :rules="rules" label-width="130px" >
         <!--  <el-form-item label="版本号">
           <editor v-model="form.content" :min-height="192"/>
         </el-form-item> -->
-        <el-form-item label="版本号" prop="content">
-          <el-input v-model="form.content" placeholder="请输入版本号" />
+        <el-form-item label="版本号" prop="content" >
+          <el-input v-model="form.content" placeholder="请输入版本号" style="width: 220px" />
         </el-form-item>
         <!-- <el-form-item label="类型" prop="type">
           <el-input v-model="form.type" placeholder="请输入类型" />
         </el-form-item> -->
-            <el-form-item label="类型">
+            <el-form-item label="类型"  prop="type" >
               <el-select v-model="form.type" placeholder="请选择类型">
                 <el-option
                   v-for="dict in dict.type.sys_app_type"
@@ -174,12 +179,22 @@
                 ></el-option>
               </el-select>
             </el-form-item>
+            <el-form-item label="是否强制更新" prop="forceUpdate">
+              <el-select v-model="form.forceUpdate" placeholder="请选择类型">
+                <el-option
+                  v-for="dict in dict.type.force_update"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>    
 
         <!-- <el-form-item label="删除标志" prop="delFlag">
           <el-input v-model="form.delFlag" placeholder="请输入删除标志" />
         </el-form-item> -->
         <el-col :span="12">
-            <el-form-item label="删除标志">
+            <el-form-item label="删除标志" prop="delFlag">
               <el-radio-group v-model="form.delFlag">
                 <el-radio
                   v-for="dict in dict.type.sys_del_flag"
@@ -204,7 +219,7 @@ import { listVersion, getVersion, delVersion, addVersion, updateVersion } from "
 
 export default {
   name: "Version",
-  dicts: ['sys_del_flag', 'sys_app_type'],
+  dicts: ['sys_del_flag', 'sys_app_type','force_update'],
 
   data() {
     return {
@@ -239,10 +254,20 @@ export default {
       // 表单校验
       rules: {
         content: [
-          { required: true, message: "版本号不能为空", trigger: "blur" },
+          { required: true,
+            // pattern: /^[1-9]\d?(\.([1-9]?\d)){2}$/,
+            // message: "版本号不能为空,格式为X.Y.Z(1-99.0-99.0-99)", trigger: "blur" },
+            message: "版本号不能为空", trigger: "blur" },
+
         ],
         type: [
           { required: true, message: "请选择类型", trigger: "blur" }
+        ],
+        delFlag: [
+          { required: true, message: "必须选择删除标志", trigger: "blur" }
+        ],
+        forceUpdate: [
+          { required: true, message: "请选择是否强制更新", trigger: "blur" }
         ]
 
       }
@@ -261,6 +286,12 @@ export default {
         this.loading = false;
       });
     },
+
+    // 是否强制更新字典翻译
+     forceUpdateFormat(row) {
+      return this.selectDictLabel(this.dict.type.force_update, row.forceUpdate)
+    },
+
     // 取消按钮
     cancel() {
       this.open = false;

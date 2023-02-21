@@ -3,10 +3,10 @@
 		:bodyStyle="{backgroundImage: 'linear-gradient(179deg, #FFE7B5 0%, #F7F7F7 39%, #F7F7F7 39%)'}">
 		<view class="ui-body">
 			<view class="ui-header">
-				<u-avatar size="60" src="https://cdn.uviewui.com/uview/album/1.jpg"></u-avatar>
+				<u-avatar size="60" :src="userInfo.avatar"></u-avatar>
 				<view class="info">
-					<view class="name">张三</view>
-					<view class="phone">158****3343</view>
+					<view class="name">{{ userInfo.nickname || '暂无昵称' }}</view>
+					<view class="phone">{{ userInfo.phone }}</view>
 				</view>
 				<view class="edit" @tap="handleJump('/pages/myself/info-edit')">
 					编辑个人资料
@@ -16,7 +16,7 @@
 
 			<view class="ui-manage">
 				<view class="mag-box">
-					<view class="item" v-for="(item,index) in magList" :key="index">
+					<view class="item" v-for="(item,index) in magList" :key="index" @tap="handleJump(item.url)">
 						<u-icon :name="item.icon" size="36"></u-icon>
 						<text>{{ item.title }}</text>
 					</view>
@@ -41,7 +41,7 @@
 			</view>
 
 			<view class="ui-button">
-				<button>
+				<button @click="loginOut">
 					注销
 				</button>
 			</view>
@@ -51,6 +51,18 @@
 </template>
 
 <script>
+	import {
+		env
+	} from '@/config/env';
+	import {
+		phoneHide
+	} from '../../common/utils/util';
+	import {
+		PostLoginOut,
+	} from '@/common/http/api.js';
+	import {
+		removeToken
+	} from '@/common/utils/auth.js';
 	export default {
 		data() {
 			return {
@@ -85,11 +97,46 @@
 				}]
 			}
 		},
+		computed: {
+			userInfo() {
+				const obj = uni.$u.deepClone(this.$store.getters.userInfo)
+				obj.avatar = `${env.basePath}${obj.avatar}`
+				obj.phone = phoneHide(obj.phone || '')
+				return obj
+			}
+		},
+		mounted() {
+			this.$store.dispatch('getPushMsgState')
+		},
 		methods: {
 			handleJump(url) {
 				uni.navigateTo({
 					url
 				})
+			},
+			/**
+			 * 注销
+			 */
+			loginOut() {
+				uni.showModal({
+					title: '提示',
+					content: '是否确认注销',
+					success: res => {
+						if (res.confirm) {
+							PostLoginOut({}).then(() => {
+								removeToken()
+								uni.$u.toast('注销成功')
+								setTimeout(() => {
+									uni.reLaunch({
+										url: '/pages/login/login'
+									})
+								}, 1000)
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
 			}
 		}
 	}

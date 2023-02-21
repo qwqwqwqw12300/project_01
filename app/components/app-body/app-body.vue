@@ -9,7 +9,7 @@
 	<scroll-view :scroll-y="true" :class="{'wd-body-bg': bg}" class="wd-body" :style="bodyStyle">
 		<view class="wd-bg">
 			<u-navbar v-if="!hideTitle" :leftText="leftText" :safeAreaInsetTop="false" :autoBack="!back"
-				:bgColor="bg ? 'transparent': '#fff'" :leftIconColor="bg ? leftIconColor : '#000'" :fixed="false"
+				:bgColor="bg ? 'transparent': '#fff'" :fixed="!bg" :leftIconColor="bg ? leftIconColor : '#000'"
 				@leftClick="leftClick" />
 			<slot></slot>
 		</view>

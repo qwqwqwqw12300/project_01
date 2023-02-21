@@ -197,10 +197,6 @@
 				this.familyShow = false;
 			},
 
-		},
-
-		onBackPress() {
-			console.log(1212);
 		}
 	}
 </script>
@@ -255,7 +251,7 @@
 
 		.ui-msg {
 			// overflow-y: scroll;
-			height: calc(100vh - 300rpx - var(--window-bottom) - var(--status-bar-height));
+			height: calc(100vh - 330rpx - var(--window-bottom) - var(--status-bar-height));
 		}
 
 		.ui-empty {

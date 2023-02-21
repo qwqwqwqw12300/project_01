@@ -8,6 +8,7 @@ import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.entity.MemberInfo;
+import com.newlandnpt.varyar.common.core.domain.model.MemberNameAvatarRequest;
 import com.newlandnpt.varyar.common.enums.BusinessType;
 import com.newlandnpt.varyar.common.exception.user.UserPasswordRetryLimitExceedException;
 import com.newlandnpt.varyar.common.utils.MessageUtils;
@@ -335,13 +336,15 @@ public class MemberInfoController extends BaseController
 
     @ApiOperation("会员昵称修改")
     @PostMapping("/updateMemInfo")
-    public AjaxResult updateMemInfo(@RequestParam("nickname") String nickname)
+//    public AjaxResult updateMemInfo(@RequestParam("nickname") String nickname)
+    public AjaxResult updateMemInfo(@RequestBody MemberNameAvatarRequest memberNameAvatarRequest)
     {
 
             LoginUser loginUser = getLoginUser();
             //获取会员id
             Long memberId = loginUser.getMemberId();
             String phone =  loginUser.getMemberPhone();
+            String nickname =memberNameAvatarRequest.getNickname();
             if (StringUtils.isEmpty(nickname))
             {
                 return error("修改会员'" + phone + "'失败，用户昵称不能为空！");

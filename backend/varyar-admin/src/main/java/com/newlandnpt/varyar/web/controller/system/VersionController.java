@@ -2,6 +2,8 @@ package com.newlandnpt.varyar.web.controller.system;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.newlandnpt.varyar.system.service.ISysConfigService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +35,10 @@ public class VersionController extends BaseController
 {
     @Autowired
     private IVersionService versionService;
+    @Autowired
+    private ISysConfigService configService;
+
+    private static final String IOS_TYPE="1";
 
     /**
      * 查询版本列表
@@ -42,7 +48,20 @@ public class VersionController extends BaseController
     public TableDataInfo list(TVersion tVersion)
     {
         startPage();
+        //版本下载地址获取
+        String iosAddress = configService.selectConfigByKey("app.ios.download.address");
+        String androidAddress = configService.selectConfigByKey("app.android.download.address");
+
         List<TVersion> list = versionService.selectTVersionList(tVersion);
+        for(TVersion version : list) {
+            //IOS
+            if (IOS_TYPE.equals(version.getType())) {
+                version.setDownloadAddress(iosAddress);
+            } else {
+                version.setDownloadAddress(androidAddress);
+            }
+        }
+
         return getDataTable(list);
     }
 
@@ -66,7 +85,17 @@ public class VersionController extends BaseController
     @GetMapping(value = "/{versionId}")
     public AjaxResult getInfo(@PathVariable("versionId") Long versionId)
     {
-        return success(versionService.selectTVersionByVersionId(versionId));
+        String iosAddress = configService.selectConfigByKey("app.ios.download.address");
+        String androidAddress = configService.selectConfigByKey("app.android.download.address");
+
+        TVersion tVersion=versionService.selectTVersionByVersionId(versionId);
+        //IOS
+        if (IOS_TYPE.equals(tVersion.getType())) {
+            tVersion.setDownloadAddress(iosAddress);
+        } else {
+            tVersion.setDownloadAddress(androidAddress);
+        }
+        return success(tVersion);
     }
 
     /**
