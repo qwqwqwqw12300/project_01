@@ -16,7 +16,7 @@
 
 			<view class="ui-manage">
 				<view class="mag-box">
-					<view class="item" v-for="(item,index) in magList" :key="index">
+					<view class="item" v-for="(item,index) in magList" :key="index" @tap="handleJump(item.url)">
 						<u-icon :name="item.icon" size="36"></u-icon>
 						<text>{{ item.title }}</text>
 					</view>

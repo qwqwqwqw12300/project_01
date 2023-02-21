@@ -352,3 +352,13 @@ export const PostUpdatePhoneByPwd = (params) => http.post('/api/memberInfo/updat
 export const PostUpdatePhoneByToken = (params) => http.post('/api/memberInfo/updatePhoneByToken', params, {
 	error: false,
 })
+
+/**
+ * 修改昵称
+ */
+export const PostUpdateNick = (params) => http.post('/api/memberInfo/updateMemInfo', params)
+
+/**
+ * 修改头像
+ */
+export const PostUpdateAvatar = (params) => http.upload('/api/memberInfo/avatar', params)
