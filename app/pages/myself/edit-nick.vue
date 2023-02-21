@@ -5,7 +5,7 @@
 		</view>
 		<view class="ui-form">
 			<u-form>
-				<u-form-item label="会员名称" borderBottom labelWidth="100">
+				<u-form-item label="会员昵称" borderBottom labelWidth="100">
 					<u-input v-model="nickname" border="none" placeholder="请输入" />
 				</u-form-item>
 				<u-form-item>
@@ -26,6 +26,9 @@
 				nickname: '',
 			}
 		},
+		mounted() {
+			this.nickname = this.$store.getters.userInfo.nickname
+		},
 		methods: {
 			handleSumbit() {
 				if (!this.nickname) return uni.$u.toast('请填写会员昵称');
@@ -33,6 +36,7 @@
 					nickname: this.nickname
 				}).then(res => {
 					uni.$u.toast(res.msg)
+					this.$store.dispatch('getPushMsgState')
 					setTimeout(() => {
 						uni.navigateBack()
 					}, 1000)
@@ -45,6 +49,7 @@
 <style lang="scss" scoped>
 	.ui-logo {
 		background: #ffffff;
+		margin-top: 60rpx;
 		padding-bottom: 120rpx;
 	}
 

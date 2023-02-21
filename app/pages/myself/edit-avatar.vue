@@ -27,6 +27,7 @@
 				fileList: [],
 			}
 		},
+		
 		methods: {
 			afterRead(info) {
 				let fileList = [...info.file]
@@ -46,6 +47,7 @@
 					name: 'avatarfile',
 				}).then(res => {
 					uni.$u.toast(res.msg)
+					this.$store.dispatch('getPushMsgState')
 					setTimeout(() => {
 						uni.navigateBack()
 					}, 1000)
@@ -58,6 +60,7 @@
 <style lang="scss" scoped>
 	.ui-logo {
 		background: #ffffff;
+		margin-top: 60rpx;
 		padding-bottom: 120rpx;
 	}
 

@@ -7,15 +7,15 @@
 			<u-cell-group>
 				<u-cell title="头像" size="large" :isLink="true" @tap="routerJump('/pages/myself/edit-avatar')">
 					<view slot="value" class="">
-						<u-avatar mode="aspectFill" src="https://cdn.uviewui.com/uview/album/2.jpg" size="32">
+						<u-avatar mode="aspectFill" :src="userInfo.avatar" size="32">
 						</u-avatar>
 					</view>
 				</u-cell>
-				<u-cell title="昵称" size="large" :isLink="true" value="木木鱼"
+				<u-cell title="昵称" size="large" :isLink="true" :value="userInfo.nickname || '暂无昵称'"
 					@tap="routerJump('/pages/myself/edit-nick')">
 				</u-cell>
-				<u-cell title="修改手机号" size="large" :isLink="true" value="13456374888"
-					@tap="routerJump('/pages/myself/mobile/new-mobile')">
+				<u-cell title="手机号" size="large" :isLink="true" :value="userInfo.phone"
+					@tap="routerJump('/pages/myself/mobile/select-way')">
 				</u-cell>
 			</u-cell-group>
 		</view>
@@ -23,10 +23,24 @@
 </template>
 
 <script>
+	import {
+		env
+	} from '@/config/env';
+	import {
+		phoneHide
+	} from '../../common/utils/util';
 	export default {
 		data() {
 			return {
 
+			}
+		},
+		computed: {
+			userInfo() {
+				const obj = uni.$u.deepClone(this.$store.getters.userInfo)
+				obj.avatar = `${env.basePath}${obj.avatar}`
+				obj.phone = phoneHide(obj.phone || '')
+				return obj
 			}
 		},
 		methods: {
@@ -42,6 +56,7 @@
 <style lang="scss" scoped>
 	.ui-logo {
 		background: #ffffff;
+		margin-top: 60rpx;
 		padding-bottom: 100rpx;
 	}
 
