@@ -7,6 +7,7 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.system.domain.TEvent;
 import com.newlandnpt.varyar.system.domain.TEventList;
 import com.newlandnpt.varyar.system.service.IEventService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author chenxw
  * @date 2023-01-05
  */
+//@Api(tags = "事件") 事件相关没用到
 @RestController
 @RequestMapping("/api/event")
 public class EventController extends BaseController
@@ -51,7 +53,8 @@ public class EventController extends BaseController
         eventRequest.setMemberPhone(memberPhone);
         eventRequest.setMemberName(memberUsername);
 
-        startPage();
+//        startPage(10000);
+        startPage(eventRequest.getPageNum(),eventRequest.getPageSize());
         List<TEventList> list = tEventService.selectEventInfo(eventRequest);
         return getDataTable(list);
     }

@@ -12,6 +12,7 @@ import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.system.domain.*;
 import com.newlandnpt.varyar.system.service.*;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import java.util.List;
  * 
  * @author newlandnpt
  */
+@Api(tags="家庭")
 @RestController
 @RequestMapping("/api/family")
 public class FamilyController extends BaseController {

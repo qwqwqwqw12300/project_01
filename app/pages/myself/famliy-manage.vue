@@ -22,7 +22,7 @@
 				</u-grid-item>
 			</u-grid>
 		</view>
-		<view class="ui-btn"><button @click="add">创建家庭</button></view>
+		<view class="ui-btn"><button class="default" @click="add">创建家庭</button></view>
 		<family-pop @update="getFamilyList" mode="add" :btnName="'提交'" ref="addFamily" />
 	</app-body>
 </template>

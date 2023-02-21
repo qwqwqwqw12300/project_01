@@ -33,11 +33,6 @@ server:
       # Tomcat启动初始化的线程数，默认值10
       min-spare: 100
 
-# 日志配置
-logging:
-  level:
-    com.newlandnpt.varyar: debug
-    org.springframework: warn
 
 # 用户配置
 user:
@@ -97,7 +92,7 @@ token:
     # 令牌密钥
     secret: abcdefghijklmnopqrstuvwxyz
     # 令牌有效期（默认30分钟）
-    expireTime: 30
+    expireTime: 10080
 
 # MyBatis配置
 mybatis:
@@ -119,7 +114,7 @@ swagger:
   # 是否开启swagger
   enabled: true
   # 请求前缀
-  pathMapping: /dev-api
+  pathMapping: /
 
 # 防止XSS攻击
 xss:
@@ -162,6 +157,13 @@ rocketmq:
     deviceConfig: deviceConfigTopic
     deviceActive: deviceActiveTopic
 
+# 验证码
+kaptcha:
+  textproducer:
+    font:
+      size: 50
+  obscurificator:
+    open: false
 
 location:
   gaode:

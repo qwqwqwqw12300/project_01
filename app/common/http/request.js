@@ -12,6 +12,9 @@ import {
 import {
 	isApp
 } from '../utils/util';
+import {
+	log
+} from '../utils/log';
 
 import {
 	getToken
@@ -38,16 +41,10 @@ const errText = {
  * @param {string} method 请求方法
  */
 const request = (url, options, process, method = 'POST') => {
-	let _url;
-	// if (isApp()) {
-	// 	_url = env.basePath + url;
-	// } else {
-	// 	_url = url;
-	// }
-	_url = (uni.getStorageSync('appHost') || env.basePath) + url;
-	const showLoading = process.showLoading !== false,
-		errorHandle = process.error !== false;
-	console.info('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));
+	const _url = env.basePath + url;
+	const showLoading = process.showLoading !== false, // 是否展示加载中
+		errorHandle = process.error !== false; // 是否使用统一报错
+	console.log('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));
 	return new Promise((resolve, reject) => {
 		if (showLoading) uni.showLoading();
 		uni.request({
@@ -73,26 +70,28 @@ const request = (url, options, process, method = 'POST') => {
 						if (data.code === 401) { // 未登录
 							uni.redirectTo({
 								url: '/pages/login/login'
-							})
+							});
 						} else {
 							uni.showModal({
 								title: '提示',
 								content: data.msg || errText[statusCode] || '系统错误'
 							});
 						}
-
-
 					}
-					reject();
+					reject(data);
 				}
 				if (showLoading) uni.hideLoading();
 			},
 			fail: error => {
+				log.apm({
+					url,
+					options,
+					error
+				});
 				if (errorHandle) uni.showModal({
 					title: '提示',
 					content: '网络请求错误' + error.errMsg
 				});
-
 				if (showLoading) uni.hideLoading();
 				reject();
 			}

@@ -8,6 +8,8 @@
         <result property="memberId" column="member_id"/>
         <result property="no" column="no"/>
         <result property="phone" column="phone"/>
+        <result property="nickname" column="nickname"/>
+        <result property="avatar" column="avatar"/>
         <result property="password" column="password"/>
         <result property="parameter" column="member_parameter" javaType="com.newlandnpt.varyar.common.core.domain.entity.MemberParameter" typeHandler="com.newlandnpt.varyar.common.core.mybatis.JSONTypeHandler"/>
         <result property="distributeFlag" column="distribute_flag"/>
@@ -47,7 +49,7 @@
     </resultMap>
 
     <sql id="selectMemberVo">
-        select member_id, no, phone, password, distribute_flag, user_id, user_name,
+        select member_id, no, phone,nickname,avatar, password, distribute_flag, user_id, user_name,
             (select mobile_phone from sys_user where user_id = m.user_id) user_phone,member_parameter,
             del_flag,m.registration_id,m.registration_type,m.org_id,create_time, update_time
         from t_member m
@@ -101,6 +103,8 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="no != null">no,</if>
             <if test="phone != null">phone,</if>
+            <if test="nickname != null">nickname,</if>
+            <if test="avatar != null">avatar,</if>
             <if test="password != null">password,</if>
             <if test="parameter != null">member_parameter,</if>
             <if test="distributeFlag != null">distribute_flag,</if>
@@ -113,6 +117,8 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="no != null">#{no},</if>
             <if test="phone != null">#{phone},</if>
+            <if test="nickname != null">#{nickname},</if>
+            <if test="avatar != null">#{avatar},</if>
             <if test="password != null">#{password},</if>
             <if test="parameter != null"><include refid="parameter"/>,</if>
             <if test="distributeFlag != null">#{distributeFlag},</if>
@@ -129,6 +135,8 @@
         <trim prefix="SET" suffixOverrides=",">
             <if test="no != null">no = #{no},</if>
             <if test="phone != null">phone = #{phone},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
             <if test="password != null">password = #{password},</if>
             <if test="parameter != null">member_parameter = <include refid="parameter"/>,</if>
             <if test="distributeFlag != null">distribute_flag = #{distributeFlag},</if>
@@ -166,4 +174,9 @@
             #{memberId}
         </foreach>
     </delete>
+
+    <update id="updateMemberAvatar" parameterType="TMember">
+        update t_member set avatar = #{avatar} where phone = #{memberPhone}
+    </update>
+
 </mapper>

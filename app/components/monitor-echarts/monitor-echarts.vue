@@ -17,6 +17,7 @@
 	export default {
 		data() {
 			return {
+				deviceInfo: {},
 				roomZoneList: [],
 				option: {
 					// title: {
@@ -105,11 +106,11 @@
 				}
 			}
 		},
-		computed: {
-			...mapState({
-				deviceInfo: state => state.deviceInfo
-			})
-		},
+		// computed: {
+		// 	...mapState({
+		// 		deviceInfo: state => state.deviceInfo
+		// 	})
+		// },
 		// async onLoad() {
 		// 	console.log('455485865')
 
@@ -120,9 +121,13 @@
 		// })
 		// },
 		mounted() {
-			this.handleInit()
+			// this.handleInit()
 		},
 		methods: {
+			handleOnload(data) {
+				this.deviceInfo = data
+				this.handleInit(data)
+			},
 			async handleInit() {
 				const data = await GetRoomZone({
 					deviceId: this.deviceInfo.deviceId
@@ -131,6 +136,7 @@
 					roomLeft,
 					roomRight
 				} = this.deviceInfo.parameter.deviceLocation
+				console.log(this.deviceInfo, '333333')
 				this.option.xAxis.min = -roomLeft || -3
 				this.option.xAxis.max = roomRight || 3
 				this.roomZoneList = data.rows.map(n => {

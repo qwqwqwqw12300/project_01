@@ -34,7 +34,7 @@
 				</view>
 			</view>
 			<view class="ui-btn">
-				<button @click="handleSubmit">提交</button>
+				<button @click="handleSubmit" class="default">提交</button>
 			</view>
 		</view>
 	</app-body>

@@ -19,21 +19,21 @@
 			}
 		},
 		{
-			"path": "pages/equipment/monitor",
+			"path": "pages/equipment/add/monitor",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "添加监护设备"
 			}
 		},
 		{
-			"path": "pages/equipment/radar",
+			"path": "pages/equipment/add/radar",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "添加雷达波设备"
 			}
 		},
 		{
-			"path": "pages/equipment/radar-detail",
+			"path": "pages/equipment/radar-detail/radar-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -151,15 +151,6 @@
 					"titleNView": false
 				}
 			}
-		}, {
-			"path": "pages/myself/mobile",
-			"style": {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-
 		}, {
 			"path": "pages/share/share",
 			"style": {
@@ -279,7 +270,7 @@
 				}
 			}
 		}, {
-			"path": "pages/equipment/position-setting",
+			"path": "pages/equipment/setting/position-setting",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -332,7 +323,7 @@
 			}
 
 		}, {
-			"path": "pages/equipment/radar-setting",
+			"path": "pages/equipment/setting/radar-setting",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -340,6 +331,87 @@
 				}
 			}
 
+		}, {
+			"path": "pages/equipment/add/add-steps",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/myself/mobile/select-way",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		},
+		{
+			"path": "pages/myself/mobile/pre-mobile",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		},
+		{
+			"path": "pages/myself/mobile/pwd-verify",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/myself/mobile/new-mobile",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/details/screen",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		},
+		{
+			"path": "pages/myself/info-edit",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/myself/edit-avatar",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/myself/edit-nick",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 	"globalStyle": {
@@ -367,7 +439,7 @@
 				"pagePath": "pages/details/details",
 				"iconPath": "/static/images/tabbar/tabbar2.png",
 				"selectedIconPath": "/static/images/tabbar/tabbar2.png",
-				"text": "详情"
+				"text": "报告"
 			},
 			{
 				"pagePath": "pages/myself/myself",

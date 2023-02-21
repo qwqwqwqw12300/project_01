@@ -4,6 +4,7 @@ import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.common.core.domain.model.SmsRequest;
 import com.newlandnpt.varyar.common.exception.user.UserException;
 import com.newlandnpt.varyar.common.utils.RSA.RsaUtils;
 import com.newlandnpt.varyar.common.core.domain.model.LoginUser;
@@ -12,10 +13,17 @@ import com.newlandnpt.varyar.common.core.domain.model.MemberLoginSmsRequest;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
+import com.newlandnpt.varyar.common.utils.SecurityUtils;
+import com.newlandnpt.varyar.common.utils.StringUtils;
+import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
 import com.newlandnpt.varyar.framework.web.service.TokenService;
 import com.newlandnpt.varyar.system.domain.TMember;
 import com.newlandnpt.varyar.system.service.IMemberLoginService;
 import com.newlandnpt.varyar.system.service.IMemberService;
+import com.newlandnpt.varyar.system.service.ISmsService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +31,22 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * 会员登录
  * 
  * @author newlandnpt
  */
+@Api(tags = "会员登录")
 @RestController
 @RequestMapping("/api")
 public class MemberLoginController extends BaseController {
     private static final Logger log = LoggerFactory.getLogger(MemberLoginController.class);
+    private static final Logger clientLog = LoggerFactory.getLogger("client");
     @Autowired
     private RedisCache redisCache;
     @Autowired
@@ -45,8 +59,11 @@ public class MemberLoginController extends BaseController {
 
     @Value("${location.privateKey}")
     private String privateKey;
+    @Autowired
+    private ISmsService smsService;
 
 
+    @ApiOperation("账号密码登录")
     @PostMapping("/loginByPwd")
     public AjaxResult loginByPwd(
             @RequestBody @Validated MemberLoginPwdRequest memberLoginPwdRequest) {
@@ -87,6 +104,50 @@ public class MemberLoginController extends BaseController {
         return ajax;
     }
 
+    @ApiOperation("申请短信登录验证码")
+    @PostMapping("/applyLoginBySms")
+    public AjaxResult loginBySms(@RequestBody @Validated SmsRequest smsRequest) {
+
+        AjaxResult ajax = AjaxResult.success();
+        if(org.apache.commons.lang3.StringUtils.isBlank(smsRequest.getPhone())){
+            return AjaxResult.error("手机号码不能为空");
+        }
+        TMember tMember = iMemberService.selectMemberByPhone(smsRequest.getPhone());
+        if (StringUtils.isNull(tMember)) {
+            return AjaxResult.error("用户未注册");
+        }
+
+        // check captcha
+        String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + smsRequest.getUuid();
+        String captcha = redisCache.getCacheObject(verifyKey);
+        redisCache.deleteObject(verifyKey);
+        if (captcha == null) {
+            throw new CaptchaExpireException();
+        }
+        if (!captcha.equalsIgnoreCase(smsRequest.getCaptcha())) {
+            throw new CaptchaException();
+        }
+
+        // 保存验证码信息
+        String smsUuid = IdUtils.simpleUUID();
+        String smsVerifyKey = CacheConstants.SMS_CODE_KEY + smsUuid;
+        // 生成验证码
+        Random random = new Random();
+        StringBuffer randomSb = new StringBuffer();
+        /*for(int i = 0; i < 4; ++i) {
+            randomSb.append(random.nextInt(10));
+        }
+        String code = randomSb.toString();*/
+        String code = "1234";
+        redisCache.setCacheObject(smsVerifyKey, code, Constants.SMS_CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
+
+        smsService.sendSms(code);
+
+        ajax.put("smsUuid", smsUuid);
+        return ajax;
+    }
+
+    @ApiOperation("短信验证码登录")
     @PostMapping("/loginBySms")
     public AjaxResult loginBySms(
             @RequestBody @Validated MemberLoginSmsRequest memberLoginSmsRequest) {
@@ -123,7 +184,7 @@ public class MemberLoginController extends BaseController {
         return ajax;
     }
 
-    //用户退出
+    @ApiOperation("用户登出")
     @PostMapping("/loginOut")
     public AjaxResult loginOut() {
         //获取当前登录用户信息
@@ -134,5 +195,14 @@ public class MemberLoginController extends BaseController {
         String tokenKey = CacheConstants.LOGIN_TOKEN_KEY + token;
         redisCache.deleteObject(tokenKey);
         return ajax;
+    }
+
+    @ApiOperation("客户端日志")
+    @GetMapping("/logging")
+    public AjaxResult logging(@RequestParam(name = "message",required = false) String message){
+        clientLog.debug(">>>>>> 用户[{}],日志:{}", Optional.ofNullable(SecurityUtils.getLoginUserWithoutException())
+                .map(p -> p.getUsername())
+                .orElse("匿名"),message);
+        return AjaxResult.success();
     }
 }

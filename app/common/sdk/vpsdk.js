@@ -15,6 +15,8 @@ import {
 class Vpsdk {
 	/**推送模块**/
 	vpModule;
+	/**业务回调**/
+	callBack = n => n;
 	/**连接事件字典**/
 	connentMap = {
 		1: '正在建立与设备的连接',
@@ -26,7 +28,14 @@ class Vpsdk {
 		998: '正在检查更新',
 		999: '正在更新设备',
 		7: '正在将设备重新启动到工厂',
-		8: '设备正在扫描Wifi网络'
+		8: '设备正在扫描Wifi网络',
+		// 自定义事件
+		100: '正在获取设备token',
+		101: '获取设备token成功',
+		102: '正在尝试连接设备',
+		103: '网络账号推送',
+		104: '选择wifi',
+		105: 'token获取异常'
 	}
 
 	constructor() {
@@ -34,13 +43,17 @@ class Vpsdk {
 	}
 
 	async connect(cb) {
+		this.callBack = n => cb(n); // 设置回调
+		// 获取token
+		this.pageEventCall(100);
 		const {
 			token: {
 				idToken
 			},
 			uid
 		} = await this.getToken();
-		// this.vpModule.initSDK();
+		// 获取token
+		this.pageEventCall(101);
 		console.log('开始设备配网');
 		console.log(this.vpModule, 'vpModule');
 		try {
@@ -56,31 +69,45 @@ class Vpsdk {
 			// 配网事件监听
 			plus.globalEvent.addEventListener('onPairEvent', e => {
 				console.log('配网事件' + e.eventType);
-				cb({
-					type: 'event',
-					data: this.connentMap[e.eventType] || '处理中...'
-				});
+				this.pageEventCall(e.eventType);
 			});
 
 			// 选择wifi监听
 			plus.globalEvent.addEventListener('onWifiShouldSelect', e => {
 				console.log(e.wifiList, 'wifi信息');
+				this.pageEventCall(104);
 				cb({
 					type: 'wifi',
 					data: e.wifiList
 				});
 			});
-			// 开始连接
+			// 注册事件
+			cb({
+				type: 'event',
+				data: {
+					msg: this.connentMap[102],
+					code: 102
+				}
+			});
 			this.vpModule.startPairing(uid, idToken); // 开始配对
 			console.log('等待设备配网');
 		} catch (e) {
 			console.log('配网失败', e);
 			//TODO handle the exception
 		}
+	}
 
-
-
-
+	/**
+	 * 执行页面回调
+	 */
+	pageEventCall(code) {
+		this.callBack({
+			type: 'event',
+			data: {
+				msg: this.connentMap[code] || '处理中...',
+				code: code
+			}
+		});
 	}
 
 	/**
@@ -88,6 +115,7 @@ class Vpsdk {
 	 */
 	connectWifi(ssid, bssid, rssi, password) {
 		console.log(ssid, bssid, rssi, password, 'connectWifi');
+		this.pageEventCall(103);
 		this.vpModule.connectWifi(ssid, bssid, rssi, password);
 	}
 
@@ -113,6 +141,7 @@ class Vpsdk {
 					console.log(result, 'getToken');
 				},
 				fail: err => {
+					this.pageEventCall(105);
 					console.log(err, 'getTokenErr');
 				}
 			});

@@ -4,388 +4,284 @@
 * @FilePath: /pages/details/details.vue
 * @Description: 信息详情
 -->
-
 <template>
-	<app-body :hideTitle="true">
-		<view id="details">
-			<!-- 筛选框 -->
+	<app-body :bg="false" :hideTitle="true">
+		<view class="ui-body">
+			<view class="ui-title">
+				<text>报告</text>
+				<text class="active" @click="readMsgAll">全部标记已处理</text>
+			</view>
 			<view class="ui-screen">
-				<view class="ui-list">
-					<text>我的家庭:</text>
-					<view class="ui-date active" @click="handleSelect('family')">
-						<text>{{ eventInfo.familyName || '全部'}}</text>
-						<u-icon name="arrow-down" size="40rpx"></u-icon>
-						<!-- 	<uni-data-select v-model="eventInfo.familyId" :clear="false" :localdata="getFamilyList">
-						</uni-data-select> -->
-						<!-- 	<view class="ui-icon"><u-icon name="arrow-down-fill" color="#414141" size="30rpx"></u-icon></view> -->
-					</view>
+				<view class="ui-screen-icon ui-screen-family active" @click="familyShow = true">
+					<text>{{eventInfo.familyName || '全部家庭'}}</text>
+					<u-icon size="35rpx" :name="familyShow ? 'arrow-down-fill' : 'arrow-up-fill'"></u-icon>
 				</view>
-				<view class="ui-list">
-					<text>开始时间:</text>
-					<view class="ui-date active" @click="openDate('start')">
-						<text>{{ eventInfo.startDate }}</text>
-						<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
-					</view>
-				</view>
-				<view class="ui-list">
-					<text>结束时间:</text>
-					<view class="ui-date active" @click="openDate('end')">
-						<text>{{ eventInfo.endDate }}</text>
-						<u-icon name="calendar" color="#414141" size="40rpx"></u-icon>
-					</view>
-				</view>
-				<view class="ui-list">
-					<text>设备类型:</text>
-					<view class="ui-date active" @click="handleSelect('device')">
-						<text>{{ eventInfo.deviceTypeName || '全部'}}</text>
-						<u-icon name="arrow-down" size="40rpx"></u-icon>
-						<!-- 		<uni-data-select v-model="eventInfo.deviceType" :clear="false" :localdata="typeRang">
-						</uni-data-select> -->
-					</view>
-				</view>
-				<view class="ui-list">
-					<text>事件类型:</text>
-					<view class="ui-date active" @click="handleSelect('event')">
-						<text>{{ eventInfo.eventlevelName || '全部'}}</text>
-						<u-icon name="arrow-down" size="40rpx"></u-icon>
-						<!-- 	<uni-data-select v-model="eventInfo.eventlevel" :clear="false" :localdata="eventRang">
-						</uni-data-select> -->
-					</view>
-				</view>
-				<view class="ui-list">
-					<text>已读标识:</text>
-					<view class="ui-date active" @click="handleSelect('flag')">
-						<text>{{ eventInfo.readFlagName || '全部'}}</text>
-						<u-icon name="arrow-down" size="40rpx"></u-icon>
-						<!-- 	<uni-data-select v-model="eventInfo.readFlag" :clear="false" :localdata="operateRang">
-						</uni-data-select> -->
-					</view>
+				<view class="ui-screen-icon active" @click="goSreen">
+					<u-icon size="32rpx" name="../../static/images/screen.png"></u-icon>
+					<text>筛选</text>
 				</view>
 			</view>
-			<!-- /筛选框 -->
-			<view class="ui-msg-list">
-				<msg-list @onRefresh="onRefresh" :needNav="false" :list="messageList"
-					srollHeight="calc(100vh - var(--window-bottom) - 730rpx - var(--status-bar-height))"></msg-list>
-			</view>
-			<u-calendar @close="dateClose" :monthNum="13" :maxDate="dateHandle.max" :minDate="dateHandle.min"
-				:show="dateHandle.show" @confirm="dateConfirm"></u-calendar>
-			<u-picker :key="index" @cancel="selectShow = false" @confirm="onConfirm" :show="selectShow"
-				:columns="selectObj[currentSelect]" keyName="text"></u-picker>
+			<!-- 消息列表 -->
+			<scroll-view class="ui-msg" scroll-y="true" @scrolltolower="pageNext" lower-threshold="10"
+				@refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled
+				refresher-background="transparent">
+				<template v-if="messageList.length">
+					<view class="ui-scroll">
+						<msg-card v-for="(item, index) of messageList" :key="index" :msgInfo="item"></msg-card>
+						<u-loadmore marginBottom="30" dashed :status="loadmore" />
+					</view>
+				</template>
+				<view class="ui-empty" v-else>
+					<u-empty mode="list" text="暂无数据"></u-empty>
+				</view>
+			</scroll-view>
+			<!-- /消息列表 -->
 		</view>
+		<u-action-sheet :closeOnClickOverlay="true" :safeAreaInsetBottom="true" :closeOnClickAction="true"
+			@close="familyShow = false" :show="familyShow" cancelText="取消">
+			<view>
+				<view @click="sheetSelect(item)" class="ui-sheet" v-for="(item, index) of getFamilyList"
+					:key="'sheet' + index">
+					<u-icon name="home" class="active" size="38rpx" v-if="item.value">
+					</u-icon>
+					<text>{{item.text}}</text>
+				</view>
+			</view>
+		</u-action-sheet>
 	</app-body>
 </template>
 
 <script>
 	import {
-		getEventList,
-		getFamilgetMessage,
-		getMessage,
-		selectEventInfo
-	} from '../../common/http/api';
-	import {
 		mapState
 	} from 'vuex';
 	import {
-		rejects
-	} from 'assert';
-	const dateTime = new Date();
+		getMessage,
+		PostSetBatchMsgInfo
+	} from '../../common/http/api';
+	import {
+		INIT_SELECT
+	} from '../../config/db';
 	export default {
 		data() {
-			const typeRang = [
-				[{
-						value: '',
-						text: '全部'
-					},
-					{
-						value: 0,
-						text: '雷达波'
-					},
-					{
-						value: 1,
-						text: '监控设备'
-					}
-				]
-			]
-			const eventRang = [
-				[{
-						value: '',
-						text: '全部'
-					},
-					{
-						value: 'urgent',
-						text: '重要事件'
-					},
-					{
-						value: 'normal',
-						text: '普通事件'
-					}
-				]
-			]
-
-			const operateRang = [
-				[{
-						value: '',
-						text: '全部'
-					},
-					{
-						value: 0,
-						text: '已读'
-					},
-					{
-						value: 1,
-						text: '未读'
-					}
-				]
-			]
 			return {
-
-				/**日期控制**/
-				dateHandle: {
-					/**是否展示**/
-					show: false,
-					/**日期类型**/
-					type: 'start',
-					max: dateTime.getTime(),
-					min: new Date(new Date().setFullYear(dateTime.getFullYear() - 1)).getTime()
-				},
 				/**事件信息**/
 				eventInfo: {
+					...INIT_SELECT,
 					/**家庭id**/
 					familyId: '',
 					/**家庭名称**/
-					familyName: '',
-					/**开始时间**/
-					startDate: '',
-					/**结束时间**/
-					endDate: '',
-					/**事件等级**/
-					eventlevel: '',
-					/**事件等级名称**/
-					eventlevelName: '',
-					/**是否已读**/
-					readFlag: '',
-					/**是否已读名称**/
-					readFlagName: '',
-					/**设备类型**/
-					deviceType: '',
-					/**设备类型名称**/
-					deviceTypeName: ''
+					familyName: ''
 				},
 				/**消息列表**/
 				messageList: [],
-				/* 下拉框visible */
-				selectShow: false,
-				selectObj: {
-					family: [],
-					device: typeRang,
-					event: eventRang,
-					flag: operateRang,
-				},
-				currentSelect: '',
-				operateRang,
-				index: 0,
+				/**下拉状态**/
+				triggered: false,
+				/**家庭列表是否展示**/
+				familyShow: false,
+				/**加载更多管理**/
+				loadmore: 'loadmore' // loadmore-加载更多 loading-加载中 nomore-没有更多
 			};
 		},
 		computed: {
 			...mapState({
 				getFamilyList: state => {
-					const list = state.familyList;
-					return list.map(ele => ({
+					const familyList = state.familyList.map(ele => ({
 						value: ele.familyId,
 						text: ele.name
 					}));
+					return [{
+						value: '',
+						text: '全部家庭'
+					}, ...familyList]
+
 				}
 			})
 		},
-		watch: {
-			eventInfo: {
-				handler: function(val) {
-					this.selectEventInfo();
-				},
-				deep: true
-			}
-		},
-		mounted() {
-			const date = new Date();
-			Object.assign(this.eventInfo, {
-				endDate: uni.$u.timeFormat(date, 'yyyy-mm-dd'),
-				startDate: uni.$u.timeFormat(date.setDate(date.getDate() - 3), 'yyyy-mm-dd'),
-				familyId: this.getFamilyList[0] && this.getFamilyList[0].value
-			});
-			console.log(this.eventInfo, 'this.eventInfo');
-			this.selectObj.family = [
-				[{
-					text: '全部',
-					value: ''
-				}, ...this.getFamilyList]
-			]
-			this.selectEventInfo();
+		onLoad() {
+			this.getMsgList();
 		},
 		methods: {
-			/**
-			 * 日期确认
-			 */
-			dateConfirm(date) {
-				this.dateClose();
-				if (this.dateHandle.type === 'start') {
-					this.eventInfo.startDate = date[0];
-				} else {
-					this.eventInfo.endDate = date[0];
-				}
-			},
-
-			dateClose() {
-				this.dateHandle.show = false;
-			},
-			/**
-			 * 开启日期
-			 **/
-			openDate(type) {
-				Object.assign(this.dateHandle, {
-					type,
-					show: true
-				});
-			},
-			/**
-			 * 查询设备消息
-			 */
-			selectEventInfo() {
-				return new Promise(resolve => {
-					const {
-						startDate,
-						endDate
-					} = this.eventInfo;
-					getMessage({
-						...this.eventInfo,
-						startDate: new Date(startDate + ' 00:00:00').getTime(),
-						endDate: new Date(endDate + ' 23:59:59').getTime(),
-					}).then(res => {
-						this.messageList = res.rows || [];
-						resolve(this.messageList);
-					}, err => resolve());
-				});
-			},
 			/**
 			 * 上拉刷新
 			 * @param {Object} $e
 			 */
-			async onRefresh(cb) {
-				await this.selectEventInfo();
-				cb();
+			onRefresh($e) {
+				this.triggered = true;
+				this.getMsgList().then(res => {
+					this.triggered = false;
+				})
 			},
 
 			/**
-			 * 开启下拉选择
+			 * 全部已读
 			 */
-			handleSelect(type) {
-				this.index += 1
-				this.currentSelect = type
-				this.selectShow = true
+			readMsgAll() {
+				const msgFlags = this.messageList.filter(ele => ele.operateFlag === '0').map(ele => ({
+					msgId: ele.msgId,
+					msgFlag: '1'
+				}));
+				if (msgFlags.length) PostSetBatchMsgInfo({
+					msgFlags
+				}).then(res => {
+					uni.$u.toast('已处理登记成功');
+					setTimeout(() => {
+						this.getMsgList();
+					}, 1000);
+
+				})
+
+			},
+
+
+			/**
+			 * 查询设备消息
+			 */
+			getMsgList() {
+				return new Promise(resolve => {
+					this.messageList = [];
+					this.eventInfo.pageNum = 1;
+					this.loadmore = 'loadmore';
+					getMessage({
+						...this.eventInfo,
+					}).then(res => {
+						this.messageList = res.rows || [];
+						this.loadmore = res.total <= this.messageList.length ? 'nomore' : 'loadmore';
+						resolve();
+					}, err => resolve());
+				});
 			},
 
 			/**
-			 * 下拉框选择
+			 * 下一页
 			 */
-			onConfirm(val) {
-				const {
-					value,
-					text
-				} = val.value[0]
-				switch (this.currentSelect) {
-					case 'family':
-						this.eventInfo.familyId = value
-						this.eventInfo.familyName = text
-						break
-					case 'device':
-						this.eventInfo.deviceType = value
-						this.eventInfo.deviceTypeName = text
-						break
-					case 'event':
-						this.eventInfo.eventlevel = value
-						this.eventInfo.eventlevelName = text
-						break
-					case 'flag':
-						this.eventInfo.readFlag = value
-						this.eventInfo.readFlagName = text
-						break
-				}
-				this.selectShow = false
-			}
+			pageNext() {
+				console.log(this.loadmore, 'this.loadmore');
+				if (this.loadmore === 'nomore') return;
+				this.loadmore = 'loading';
+				return new Promise(resolve => {
+					this.eventInfo.pageNum++;
+					getMessage({
+						...this.eventInfo
+					}).then(res => {
+						this.messageList = [...this.messageList, ...res.rows];
+						this.loadmore = res.total <= this.messageList.length ? 'nomore' : 'loadmore';
+						resolve();
+					}, err => resolve());
+				});
+			},
+
+			/**
+			 * 跳转筛选
+			 */
+			goSreen() {
+				uni.$once('detailsScreenResult', screenInfo => {
+					Object.assign(this.eventInfo, screenInfo);
+					this.getMsgList();
+				});
+				this.$setCache('detailsScreenInfo', this.eventInfo);
+				uni.navigateTo({
+					url: '/pages/details/screen'
+				});
+			},
+
+			/**
+			 *  选择家庭
+			 **/
+			sheetSelect(item) {
+				Object.assign(this.eventInfo, {
+					familyId: item.value,
+					familyName: item.text
+				});
+				this.getMsgList();
+				this.familyShow = false;
+			},
+
+		},
+
+		onBackPress() {
+			console.log(1212);
 		}
-	};
+	}
 </script>
 
 <style lang="scss">
-	view {
-		box-sizing: border-box;
-	}
+	.ui-body {
+		color: #353535;
 
-	#details {
-		display: inline-block;
-		overflow: hidden;
-		box-sizing: border-box;
-		// margin-top: 60rpx;
-		padding: 60rpx 57rpx 0 57rpx;
-		text-align: center;
-		width: 100%;
+		.ui-title {
+			padding: 34rpx 32rpx;
+			background: #fff;
+			padding-top: 100rpx;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
 
-		.ui-screen {
-			position: relative;
-			z-index: 5;
-			height: 550rpx;
-			width: 100%;
-			padding: 30rpx 40rpx;
-			border-radius: 10rpx;
-			filter: drop-shadow(7.824px 10.382px 8px rgba(7, 5, 5, 0.08));
-			background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
+			text {
+				&:nth-child(1) {
+					font-size: 50rpx;
+				}
 
-			.ui-list {
-				margin-top: 10rpx;
-				width: 100%;
-				display: inline-flex;
-				justify-content: space-between;
-				align-items: center;
-				font-size: 28rpx;
-				color: #414141;
-			}
-
-			.ui-select,
-			.ui-date {
-				position: relative;
-				height: 70rpx;
-				width: 68%;
-				text-align: left;
-				border-radius: 10px;
-				background-color: #dcdcdc;
-				display: flex;
-			}
-
-			.ui-date {
-				align-items: center;
-				justify-content: space-between;
-				padding: 0 20rpx 0 20rpx;
-			}
-
-			.ui-icon {
-				position: absolute;
-				right: 10rpx;
-				top: 50%;
-				transform: translateY(-50%);
-				pointer-events: none;
+				&:nth-child(2) {
+					font-size: 30rpx;
+				}
 			}
 		}
 
-		.ui-read {
-			background-color: rgba(0, 0, 0, 0.4);
-			width: 100%;
-			height: 60rpx;
-			line-height: 60rpx;
-			border-radius: 10rpx;
+		.ui-screen {
+			padding: 0 32rpx;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			height: 100rpx;
+			font-size: 28rpx;
+
+			.ui-screen-family {
+				text {
+					margin-right: 10rpx;
+				}
+			}
+		}
+
+		.ui-screen-icon {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			>text {
+				margin-left: 10rpx;
+			}
+		}
+
+		.ui-msg {
+			// overflow-y: scroll;
+			height: calc(100vh - 300rpx - var(--window-bottom) - var(--status-bar-height));
+		}
+
+		.ui-empty {
+			background: #fff;
+			height: 600rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 
 		.ui-scroll {
-			margin-top: 20rpx;
-			height: calc(100vh - (var(--window-bottom) + 610rpx + 100rpx + var(--status-bar-height)));
+			box-sizing: border-box;
+			padding: 0 32rpx;
+		}
+	}
+
+	.ui-sheet {
+		border-bottom: 1rpx solid #e2e2e2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 120rpx;
+		width: 100%;
+
+		text {
+			margin-left: 10rpx;
 		}
 	}
 </style>

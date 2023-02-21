@@ -14,9 +14,16 @@
 			<view class="ui-add-box">
 				<view class="ui-input">
 					<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 40rpx" text="房间名称"></u-text>
-					<u-input maxlength="6" class="ui-room-name" v-model="form.name" placeholder="请输入房间名称"
+					<u-input :maxlength="6" class="ui-room-name" v-model="form.name" placeholder="请输入房间名称"
 						border="bottom" clearable>
 					</u-input>
+				</view>
+				<view class="ui-tags">
+					<view class="ui-tags-item" v-for="(item, index) in tagsList" :key="index">
+						<u-tag :text="item.name" :plain="!item.checked" type="warning" :name="item.name"
+							@click="radioClick">
+						</u-tag>
+					</view>
 				</view>
 				<!-- <view v-if="mode === 'edit'">
 					<u-text size="28rpx" prefixIcon="plus-circle" iconStyle="font-size: 40rpx" text="绑定雷达波">
@@ -26,7 +33,7 @@
 					</view>
 				</view> -->
 			</view>
-			<view class="ui-btn"><button @click="next" class="wd-sms">{{ subTitle }}</button></view>
+			<view class="ui-btn"><button @click="next" class="default">{{ subTitle }}</button></view>
 		</view>
 	</u-popup>
 </template>
@@ -56,7 +63,23 @@
 					roomId: '' // 房间id
 				},
 				/**要绑定的雷达波设备**/
-				deviceId: ''
+				deviceId: '',
+				tagsList: [{
+					name: '客厅',
+					checked: false
+				}, {
+					name: '卧室',
+					checked: false
+				}, {
+					name: '浴室',
+					checked: false
+				}, {
+					name: '厨房',
+					checked: false
+				}, {
+					name: '餐厅',
+					checked: false
+				}],
 			}
 		},
 		computed: {
@@ -70,6 +93,17 @@
 			}
 		},
 		methods: {
+			radioClick(name) {
+				// this.form.name = name
+				this.form = {
+					...this.form,
+					name,
+				}
+				console.log(this.form.name, 'fff')
+				// this.tagsList.map((item) => {
+				// 	item.checked = item.name === name ? true : false
+				// })
+			},
 			close() {
 				this.form = {}
 				this.show = false;
@@ -93,7 +127,7 @@
 					...this.form
 				});
 				handle.then(res => {
-					uni.$u.toast('修改成功')
+					uni.$u.toast('操作成功')
 					this.close();
 					setTimeout(() => {
 						this.$emit('update', res.data && res.data.roomId)
@@ -139,6 +173,16 @@
 
 			}
 
+			.ui-tags {
+				padding: 0 20rpx;
+				margin-top: 0 !important;
+				.ui-tags-item {
+					float: left;
+					margin-top: 14rpx;
+					margin-right: 30rpx;
+				}
+			}
+
 			&.ui-add-box {
 				margin-top: 20rpx;
 				padding: 10rpx 20rpx;
@@ -178,7 +222,7 @@
 
 		.ui-btn {
 			text-align: center;
-			margin-top: 70rpx;
+			margin-top: 170rpx;
 
 			button {
 				width: 237rpx;

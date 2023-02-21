@@ -7,15 +7,18 @@ export const INIT_DEIVCE_SET = {
 	familyId: '',
 	roomId: '',
 	roomLeft: 3,
-	roomHeight: 6,
+	roomHeight: 4,
 	roomRight: 3,
 	roomLength: 6,
 	existFlag: 0,
-	fallFlag: 0,
+	fallFlag: 1,
 	entryTime: 1,
 	departureTime: 0,
-	startTime: 0,
-	endTime: 0,
+	/**开始监控时间**/
+	startTime: '00:00',
+	/**结束监控时间**/
+	endTime: '23:59',
+
 	inMonitorFlag: 1,
 	outMonitorFlag: 1,
 };
@@ -63,4 +66,18 @@ export const ZONE = {
 	inMonitorFlag: 1,
 	/**离开监控区域报警**/
 	outMonitorFlag: 1
+};
+
+/**
+ * 查询条件
+ */
+const dateTime = new Date();
+export const INIT_SELECT = {
+	startDate: dateTime.setDate(dateTime.getMonth() - 3), // 默认查近三个月
+	endDate: new Date().getTime(),
+	deviceType: '',
+	eventlevel: '',
+	readFlag: '',
+	pageSize: 10,
+	pageNum: 1
 };

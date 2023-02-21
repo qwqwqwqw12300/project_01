@@ -16,6 +16,8 @@
 		<button @click="postDemo">post请求测试</button>
 		<button @click="getToken">token获取</button>
 		<button @click="goExt">设备连接</button>
+		<button @click="log">日志测试</button>
+		<button @click="apm">埋点测试</button>
 
 
 	</view>
@@ -105,10 +107,22 @@
 					url: '/pages/guide/ext'
 				})
 			},
-
+			/**
+			 * 日志测试
+			 */
+			log() {
+				console.info('测试文字');
+			},
+			apm() {
+				console.log(this.$apm);
+				this.$apm({
+					name: '埋点测试'
+				});
+			},
 			saveHost() {
 				return uni.setStorageSync('appHost', this.host);
-			}
+			},
+
 		},
 	}
 </script>

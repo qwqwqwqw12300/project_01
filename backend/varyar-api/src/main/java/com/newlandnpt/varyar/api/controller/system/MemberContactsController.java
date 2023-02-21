@@ -6,6 +6,8 @@ import com.newlandnpt.varyar.common.core.domain.model.MemberContactsRequest;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.system.domain.TMemberContacts;
 import com.newlandnpt.varyar.system.service.IMemberContactsService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import java.util.List;
  *
  * @author newlandnpt
  */
+@Api(tags = "紧急联系人")
 @RestController
 @RequestMapping("/api/memberContacts")
 public class MemberContactsController extends BaseController {
@@ -24,9 +27,7 @@ public class MemberContactsController extends BaseController {
     @Autowired
     private IMemberContactsService iMemberContactsService;
 
-    /**
-     * 获取紧急电话列表
-     * */
+    @ApiOperation("获取紧急电话列表")
     @GetMapping("/list")
     public TableDataInfo list(TMemberContacts memberContacts) {
         startPage();
@@ -35,9 +36,8 @@ public class MemberContactsController extends BaseController {
         List<TMemberContacts> list = iMemberContactsService.selectMemberContactsList(memberContacts);
         return getDataTable(list);
     }
-    /**
-     * 创建紧急电话
-     * */
+
+    @ApiOperation("创建紧急电话")
     @PostMapping("/creMemberCon")
     public AjaxResult createMemberContacts(
             @RequestBody @Validated MemberContactsRequest memberContactsRequest) {
@@ -61,7 +61,7 @@ public class MemberContactsController extends BaseController {
         TMemberContacts memberContacts = new TMemberContacts();
         memberContacts.setMemberId(this.getLoginUser().getMemberId());
         memberContacts.setCreateBy(this.getLoginUser().getUsername());
-        memberContacts.setName(memberContactsRequest.getPhoneName());
+        memberContacts.setName(memberContactsRequest.getName());
         memberContacts.setPhone(memberContactsRequest.getPhone());
         memberContacts.setOrderNum(Long.valueOf(memberContactsRequest.getOrderNum()));
         memberContacts.setDelFlag("0");
@@ -74,9 +74,18 @@ public class MemberContactsController extends BaseController {
         return ajax;
     }
 
-    /**
-     * 修改紧急电话
-     * */
+
+    @ApiOperation("设置紧急电话")
+    @PostMapping("/setMemberCon")
+    public AjaxResult batchCreateMemberContacts(@RequestBody @Validated List<MemberContactsRequest> memberContactsList){
+
+        iMemberContactsService.setMemberContacts(this.getLoginUser().getMemberId(),memberContactsList);
+        return AjaxResult.success();
+
+    }
+
+
+    @ApiOperation("修改紧急电话")
     @PostMapping("/editMemberCon")
     public AjaxResult editMemberContacts(
             @RequestBody @Validated MemberContactsRequest memberContactsRequest) {
@@ -86,7 +95,7 @@ public class MemberContactsController extends BaseController {
             return ajax;
         }
         TMemberContacts memberContacts = iMemberContactsService.selectMemberContactsByMemberContactsId(Long.valueOf(memberContactsRequest.getMemberContactsId()));
-        memberContacts.setName(memberContactsRequest.getPhoneName());
+        memberContacts.setName(memberContactsRequest.getName());
         memberContacts.setPhone(memberContactsRequest.getPhone());
         memberContacts.setOrderNum(Long.valueOf(memberContactsRequest.getOrderNum()));
         try {
@@ -98,9 +107,8 @@ public class MemberContactsController extends BaseController {
         return ajax;
     }
 
-    /**
-     * 删除紧急电话
-     * */
+
+    @ApiOperation("删除紧急电话")
     @PostMapping("/remMemberCon")
     public AjaxResult removeMemberContacts(
             @RequestBody @Validated MemberContactsRequest memberContactsRequest) {
@@ -119,7 +127,7 @@ public class MemberContactsController extends BaseController {
     }
 
     private AjaxResult checkInfo(MemberContactsRequest memberContactsRequest,AjaxResult ajax){
-        if (memberContactsRequest.getPhoneName()==null || memberContactsRequest.getPhoneName().equals("")){
+        if (memberContactsRequest.getName()==null || memberContactsRequest.getName().equals("")){
             ajax = AjaxResult.error("联络人姓名不能为空！");
             return ajax;
         }

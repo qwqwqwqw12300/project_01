@@ -30,6 +30,13 @@ public class TMember extends BaseEntity
     /** 密码 */
     private String password;
 
+    /** 会员昵称 */
+    private String nickname;
+
+    /** 头像地址 */
+    private String avatar;
+
+
     /** 分配标志（0未分配 1已分配） */
     private String distributeFlag;
 
@@ -62,6 +69,22 @@ public class TMember extends BaseEntity
 
     /** 机构id */
     private Long orgId;
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getRegistrationId() {
         return registrationId;
@@ -191,6 +214,8 @@ public class TMember extends BaseEntity
                 .append("memberId", memberId)
                 .append("no", no)
                 .append("phone", phone)
+                .append("nickname", nickname)
+                .append("avatar", avatar)
                 .append("password", password)
                 .append("distributeFlag", distributeFlag)
                 .append("userId", userId)

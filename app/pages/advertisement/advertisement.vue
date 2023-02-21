@@ -1,16 +1,18 @@
 <template>
-	<app-body :hideTitle="true" :needService="false">
+	<app-body :hideTitle="true" :needService="false"
+		:bodyStyle="{backgroundImage: 'linear-gradient(180deg, #FFE7B5 0%, #FFFFFF 24%)' }">
 		<view class="ui-ad" @click="goGuide">
-			<image src="../../static/images/ad.png"></image>
+			<image src="../../static/images/logo@2x.png"></image>
 		</view>
 		<view class="ui-tip">
 			<text>艾吉通</text>
 		</view>
 		<view class="ui-title">
-			<image src="../../static/images/ad-text.png"></image>
+			<text>守护您每一分钟</text>
+			<!-- <image src="../../static/images/ad-text.png"></image> -->
 		</view>
 		<view class="ui-btn" :animation="animationData">
-			<button @click="goRegister">马上体验</button>
+			<button class="default" @click="goRegister">马上体验</button>
 			<text @click="goLogin">老朋友? &nbsp;点此登录</text>
 		</view>
 	</app-body>
@@ -26,6 +28,9 @@
 		isIos,
 		isApp
 	} from '../../common/utils/util';
+	import {
+		env
+	} from '../../config/env';
 	export default {
 		data() {
 			return {
@@ -33,7 +38,11 @@
 			};
 		},
 		mounted() {
-			this.queryVersion()
+			// this.queryVersion().then(res => {
+
+			// })
+			this.$store.dispatch('GetContactsList');
+			this.queryVersion();
 		},
 		methods: {
 			/**
@@ -61,9 +70,10 @@
 				});
 			},
 			goGuide() {
-				uni.navigateTo({
-					url: '/pages/guide/guide'
-				});
+				if (env.mode === 'dev')
+					uni.navigateTo({
+						url: '/pages/guide/guide'
+					});
 			},
 
 			/**
@@ -99,7 +109,6 @@
 				// 									plus.runtime.openURL(appurl)
 				// 								} else {
 				// 									this.initInfo();
-				// 									// plus.runtime.quit()
 				// 								}
 				// 							}
 				// 						});
@@ -114,7 +123,6 @@
 				// } else {
 				// 	this.initInfo();
 				// }
-
 			},
 			initInfo() {
 				GetDict().then(res => {
@@ -152,10 +160,10 @@
 	// }
 
 	.ui-ad {
-		height: 447rpx;
-		width: 628rpx;
+		height: 260rpx;
+		width: 260rpx;
 		margin: 0 auto;
-		padding: 160rpx 0 0 44rpx;
+		padding: 300rpx 0 0;
 		text-align: center;
 
 		image {
@@ -165,9 +173,10 @@
 	}
 
 	.ui-tip {
-		margin-top: 80rpx;
-		font-size: 48rpx;
-		color: #fdbc2b;
+		margin-top: 40rpx;
+		font-size: 54rpx;
+		color: #353535;
+		font-weight: 500;
 		text-align: center;
 
 		text {
@@ -180,15 +189,11 @@
 	}
 
 	.ui-title {
-		height: 48rpx;
-		width: 383rpx;
-		margin: 0 auto;
-		padding-top: 31rpx;
-
-		image {
-			max-width: 100%;
-			max-height: 100%;
-		}
+		margin-top: 20rpx;
+		font-size: 34rpx;
+		color: #353535;
+		font-weight: 400;
+		text-align: center;
 	}
 
 	.ui-btn {

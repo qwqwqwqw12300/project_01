@@ -37,7 +37,7 @@
 				<view class="ui-form-item">
 					<sms-input ref="sms" @reset="codeReset" :payload="smsPayload" @checked="checkedBySms" />
 				</view>
-				<view class="wd-btn-group"><button @click="submit">提交</button></view>
+				<view class="wd-btn-group"><button @click="submit" class="default">提交</button></view>
 			</view>
 		</view>
 		<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
@@ -234,7 +234,9 @@
 			getTypeContact(type) {
 				return new Promise((resolve, reject) => {
 					plus.contacts.getAddressBook(type, res => {
+
 						res.find([], data => {
+
 							const list = data.map(n => {
 								const {
 									displayName: name,
@@ -244,7 +246,10 @@
 									name,
 									phone: phoneNumbers[0] && phoneNumbers[0].value
 								}
+							}).filter(item => {
+								return item.phone !== ''
 							});
+							console.log(list, '手机电话');
 							resolve(list)
 							// this.contactList.contacts(res)
 							// this.contactShow = true
@@ -264,7 +269,10 @@
 			 */
 
 			phoneClick(item) {
-				this.shareForm.phone = item.phone
+				this.shareForm.phone = item.phone;
+				console.log(item, '选择的手机号');
+				console.log(this.shareForm, '界面表单');
+				this.shareForm = { ...this.shareForm }
 				this.contactShow = false
 			},
 
@@ -272,14 +280,18 @@
 			 * 重置
 			 */
 			init() {
-				this.shareForm = {
-					phone: '',
-					code: '',
-					familyId: '',
-					smsUuid: '',
-					familyPhone: ''
-				};
-				this.$refs.sms.reset();
+				// this.shareForm = {
+				// 	phone: '',
+				// 	code: '',
+				// 	// familyId: '',
+				// 	smsUuid: '',
+				// 	familyPhone: ''
+				// };
+				this.shareForm.phone = ''
+				this.shareForm.code = ''
+				this.shareForm.smsUuid = ''
+				this.familyPhone = ''
+				this.$refs.sms.reset('验证码');
 			}
 		}
 	};

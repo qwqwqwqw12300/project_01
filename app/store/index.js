@@ -6,7 +6,8 @@ import {
 	getFamilyList,
 	getRoomList,
 	PostGetPushMsgState,
-	getDeviceListState
+	getDeviceListState,
+	GetContactsList
 } from '@/common/http/api.js';
 
 
@@ -28,7 +29,9 @@ const store = {
 		/**设备信息**/
 		deviceInfo: {},
 		/**用户信息**/
-		userInfo: {}
+		userInfo: {},
+		/**紧急联系人列表**/
+		contactList: [],
 	},
 	mutations: {
 
@@ -104,7 +107,15 @@ const store = {
 		 */
 		setUserInfo(state, info) {
 			state.userInfo = info;
-		}
+		},
+
+		/**
+		 * 设置紧急联系人
+		 */
+		setContactInfo(state, info) {
+			state.contactList = info;
+		},
+
 
 
 	},
@@ -171,8 +182,35 @@ const store = {
 					resolve(false)
 				});
 			});
+		},
+		/**查询紧急联系人信息**/
+		GetContactsList(ctx) {
+			return new Promise(resolve => {
+				GetContactsList({}).then(res => {
+					ctx.commit('setContactInfo', res.rows);
+					resolve(true);
+				}, err => {
+					ctx.commit('setContactInfo', []);
+					resolve(false)
+				});
+			});
+		},
+		/**更新设备数据**/
+		updateDevacesInfo(ctx) {
+			ctx.dispatch('getAllFamily').then(res => {
+				const {
+					deviceId,
+					familyId
+				} = this.state.deviceInfo;
+				const family = this.state.familyList.find(ele => ele.familyId === familyId);
+				const device = family.devices.find(ele => ele.deviceId === deviceId);
+				if (device) {
+					ctx.commit('setDeviceInfo', device);
+				}
 
+			});
 		}
+
 	},
 	getters: {
 		/**
@@ -199,7 +237,12 @@ const store = {
 		/**
 		 * 读取缓存
 		 */
-		getCache: state => key => state.cache.get(key)
+		getCache: state => key => state.cache.get(key),
+
+		/**
+		 * 获取紧急联系人列表
+		 */
+		contactList: state => state.contactList,
 	}
 }
 

@@ -9,7 +9,7 @@ vayyar:
   # 实例演示开关
   demoEnabled: true
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  profile: /home/app/varyar/admin/uploadPath
+  profile: /mnt/files
   # 获取ip地址开关
   addressEnabled: false
   # 验证码类型 math 数组计算 char 字符验证
@@ -32,12 +32,6 @@ server:
       max: 800
       # Tomcat启动初始化的线程数，默认值10
       min-spare: 100
-
-# 日志配置
-logging:
-  level:
-    com.newlandnpt.varyar: debug
-    org.springframework: warn
 
 # 用户配置
 user:
@@ -117,7 +111,7 @@ pagehelper:
 # Swagger配置
 swagger:
   # 是否开启swagger
-  enabled: true
+  enabled: false
   # 请求前缀
   pathMapping: /dev-api
 
@@ -153,6 +147,10 @@ location:
     fenceList: https://tsapi.amap.com/v1/track/geofence/list
     fenceTerminalBind: https://tsapi.amap.com/v1/track/geofence/terminal/bind
     fenceTerminalStatus: https://tsapi.amap.com/v1/track/geofence/status/terminal
+
+encrypt:
+  publicKey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDF4xuwZNWhVaQZguqxLBKhc2S1jKiJOzJS0YczxLPTH9l2Fa+zxZ/AzYci95KG9kFbvZEVyuFhR5UTsORc+ONsqTg/zx2+vJ7kI8h2/qtWNV6vH9JmgMVHl5CEpikXhZjOPutNmzcRKfzDbYwp274f6iDUi9GttlYR68qPBij8AQIDAQAB
+  privateKey: MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAMXjG7Bk1aFVpBmC6rEsEqFzZLWMqIk7MlLRhzPEs9Mf2XYVr7PFn8DNhyL3kob2QVu9kRXK4WFHlROw5Fz442ypOD/PHb68nuQjyHb+q1Y1Xq8f0maAxUeXkISmKReFmM4+602bNxEp/MNtjCnbvh/qINSL0a22VhHryo8GKPwBAgMBAAECgYEArGQGKiwd45fdBpCDbmdrr5T8ZiCsbijQ1U9Njm7NDZ7QbkvELkN6wZcLJA4zazm6hHZnn2mH4Jxgpa/TsZ7tV6KocRq4W/Txxf8c/aLW7X/vm9MyWgXk90mcKM2+hJHj7hnon3KQwpLJMqCJBZXhPhXOoHAaulOPBPpamryxqBUCQQDrECPMzgos00/uL+BVHHmRN/H4X19UStNmcd+ZYVWQJ3OrONYncU++N7qovW3omVflCOSAqghBIBxu6HMR2rLfAkEA14NKc+HdR1vczxNwm66rUsJE2N0NumYQkNOpsz59gERXAQVIakdzvBhyVbBWUoWRFTEpvmcrADzGzLZSyWgNHwJBAIjgYxhVOhOUEM0vz79/z0JCg4IPdyFMWQEkegGEbiB8+JvRgtKA5uBq7yRm+eMht87EeNp7KEdT/XqPnMHeyZ0CQA3e21nd/ZnsJagGPkcm1Mv8yOWURJ/slcBcfx2UNgudWmQsbN66Po6qnCE7ujKReib9BQzGIxRe1QSz71wbIE0CQQDRU/TyLk21xJ59dDVudXEt5EtPBNAAeqWY+I0lnzxAqkeylpK8D2BxFxytLH1p/+XIg8e6CNgz/zKumu1VLvbe
 
 
 # rocketmq配置

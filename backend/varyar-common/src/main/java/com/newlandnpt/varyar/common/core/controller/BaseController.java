@@ -55,6 +55,22 @@ public class BaseController
         PageUtils.startPage();
     }
 
+//    /**
+//     * 设置请求分页数据
+//     */
+//    protected void startPage(int pageSize)
+//    {
+//        PageUtils.startPage(1,pageSize);
+//    }
+
+    /**
+     * 设置请求分页数据
+     */
+    protected void startPage(int pageNum,int pageSize)
+    {
+        PageUtils.startPage(pageNum,pageSize);
+    }
+
     /**
      * 设置请求排序数据
      */
@@ -80,7 +96,7 @@ public class BaseController
      * 响应请求分页数据
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected TableDataInfo getDataTable(List<?> list)
+    protected <T>TableDataInfo getDataTable(List<T> list)
     {
         TableDataInfo rspData = new TableDataInfo();
         rspData.setCode(HttpStatus.SUCCESS);

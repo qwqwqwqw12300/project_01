@@ -49,7 +49,7 @@
 						</u-input>
 					</view>
 				</view>
-				<view class="ui-btn"><button @click="reset">重置密码</button></view>
+				<view class="ui-btn"><button class="default" @click="reset">重置密码</button></view>
 				<text class="ui-link active" @click="goLogin">老朋友？点此登录</text>
 			</view>
 		</view>

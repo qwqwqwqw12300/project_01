@@ -10,6 +10,8 @@ import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.system.domain.TAdvise;
 import com.newlandnpt.varyar.system.service.IAdviseService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,11 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 
 /**
- * 建议Controller
+ * Controller
  * 
  * @author chenxw
  * @date 2023-01-05
  */
+@Api(tags="意见建议")
 @RestController
 @RequestMapping("/api/advise")
 public class AdviseController extends BaseController
@@ -31,9 +34,8 @@ public class AdviseController extends BaseController
     private IAdviseService adviseService;
     @Autowired
     private RedisCache redisCache;
-    /**
-     * 新增建议/问题内容
-     */
+
+    @ApiOperation("新增建议/问题")
     @PostMapping("/addAdvise")
     public AjaxResult addAdvise(@RequestBody AdviseRequest advise)
     {

@@ -51,7 +51,6 @@ export const PostSetMsgInfo = (params) => http.post('/api/message/setMsgInfo', p
  */
 export const PostGetPushMsgState = (...params) => http.get.apply(this, ['/api/memberInfo/getMemInfo', ...params]);
 
-
 /* 
  *推送开关*
  */
@@ -65,7 +64,9 @@ export const PostAddAdvise = (params) => http.post('/api/advise/addAdvise', para
 /* 
  *获取紧急联系人列表*
  */
-export const GetContactsList = (params) => http.get('/api/memberContacts/list', params)
+export const GetContactsList = (params) => http.get('/api/memberContacts/list', params, {
+	error: false
+})
 
 /* 
  *添加紧急联系人*
@@ -78,6 +79,11 @@ export const PostAddContacts = (params) => http.post('/api/memberContacts/creMem
 export const PostDelContacts = (params) => http.post('/api/memberContacts/remMemberCon', params)
 
 /* 
+ *设置紧急联系人*
+ */
+export const PostSetContacts = (params) => http.post('/api/memberContacts/setMemberCon', params)
+
+/* 
  *编辑紧急联系人*
  */
 export const PostEditContacts = (params) => http.post('/api/memberContacts/editMemberCon', params)
@@ -86,7 +92,7 @@ export const PostEditContacts = (params) => http.post('/api/memberContacts/editM
 export const sendSms = (data) => http.post('/api/sendSms', data);
 
 /**验证码登录发送短信**/
-export const applyLoginBySms  = (data) => http.post('/api/applyLoginBySms ', data);
+export const applyLoginBySms = (data) => http.post('/api/applyLoginBySms ', data);
 
 /**短信登录**/
 export const loginBySms = (data) => http.post('/api/loginBySms', data);
@@ -132,7 +138,9 @@ export const PostUserAgreement = (params) => http.post('/api/agreement/selectAgr
 /* 
  *查询版本*
  */
-export const PostVersionInfo = (params) => http.get('/api/version/selectVersionInfo', params)
+export const PostVersionInfo = (params) => http.get('/api/version/selectVersionInfo', params, {
+	error: false
+})
 
 /* 
  *修改密码
@@ -305,7 +313,10 @@ export const GetRoomZone = (params) => http.get('/api/roomZone/getRoomZoon', par
 /**
  * 获取字典信息
  */
-export const GetDict = () => http.get('/api/dictData/getDict');
+export const GetDict = () => http.get('/api/dictData/getDict', {}, {
+	error: false,
+	showLoading: false
+});
 
 /**
  * 开启获取设备位置(实时)
@@ -315,9 +326,29 @@ export const GetStartDevice = (params) => http.get('/api/device/startNowInfo', p
  * 关闭获取设备位置(实时)
  */
 export const GetEndDevice = (params) => http.get('/api/device/endNowInfo', params);
+
 /**
  * 获取设备位置(实时)
  */
 export const GetNowInfo = (params) => http.get('/api/device/getNowInfo', params, {
 	showLoading: false
 });
+
+/**
+ * 原手机短信验证
+ */
+export const PostUpdatePhoneBySms = (params) => http.post('/api/memberInfo/updatePhoneBySms', params)
+
+
+/**
+ * 密码验证
+ */
+export const PostUpdatePhoneByPwd = (params) => http.post('/api/memberInfo/updatePhoneByPwd', params)
+
+
+/**
+ * 新手机修改短信验证
+ */
+export const PostUpdatePhoneByToken = (params) => http.post('/api/memberInfo/updatePhoneByToken', params, {
+	error: false,
+})

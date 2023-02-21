@@ -17,6 +17,10 @@ import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
 import com.newlandnpt.varyar.system.service.IDeviceService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +36,7 @@ import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATI
  *
  * @author newlandnpt
  */
+@Api(tags = "设备")
 @RestController
 @RequestMapping("/api/device")
 public class DeviceController extends BaseController {
@@ -41,12 +46,13 @@ public class DeviceController extends BaseController {
 
     @Autowired
     private RedisCache redisCache;
-    /**
-     * 获取设备列表
-     * */
+
+
+    @ApiOperation("根据家庭id和房间id获取设备列表")
     @PostMapping("/list")
-    public TableDataInfo list( @RequestBody @Validated DeviceRequest deviceRequest) {
-        startPage();
+    public TableDataInfo list(@RequestBody @Validated DeviceRequest deviceRequest) {
+//        startPage(10000);
+        startPage(deviceRequest.getPageNum(),deviceRequest.getPageSize());
         TDevice cond = new TDevice();
         cond.setFamilyId(Long.valueOf(deviceRequest.getFamilyId()));
         cond.setRoomId(Long.valueOf(deviceRequest.getRoomId()));
@@ -67,12 +73,12 @@ public class DeviceController extends BaseController {
         }
         return getDataTable(list);
     }
-    /**
-     * 获取设备列表
-     * */
+
+    @ApiOperation("根据家庭id和房间id获取当前会员的设备列表")
     @PostMapping("/listState")
     public TableDataInfo listState( @RequestBody @Validated DeviceRequest deviceRequest) {
-        startPage();
+//        startPage(1000);
+        startPage(deviceRequest.getPageNum(),deviceRequest.getPageSize());
         Map map = new HashMap();
         map.put("memberId",this.getLoginUser().getMemberId());
         map.put("familyId",deviceRequest.getFamilyId());
@@ -94,9 +100,8 @@ public class DeviceController extends BaseController {
         }
         return getDataTable(list);
     }
-    /**
-     * 创建设备
-     * */
+
+    @ApiOperation("创建设备")
     @PostMapping("/creDevice")
     public AjaxResult createDevice(
             @RequestBody @Validated DeviceRequest deviceRequest){
@@ -139,6 +144,7 @@ public class DeviceController extends BaseController {
                 }
             }else{
                 iDeviceService.insertDevice(device);
+                log.debug(">>>>> 设备创建成功，返回报文：{}",JSON.toJSONString(ajax));
             }
         } catch (Exception e){
             log.error(e.getMessage());
@@ -146,9 +152,8 @@ public class DeviceController extends BaseController {
         }
         return ajax;
     }
-    /**
-     * 修改设备-修改设备基础信息
-     * */
+
+    @ApiOperation("修改设备-修改设备基础信息")
     @PostMapping("/editDevice")
     public AjaxResult editDevice(
             @RequestBody @Validated DeviceRequest deviceRequest){
@@ -179,9 +184,7 @@ public class DeviceController extends BaseController {
         return ajax;
     }
 
-    /**
-     * 删除设备
-     * */
+    @ApiOperation("删除设备")
     @PostMapping("/remDevice")
     public AjaxResult removeDevice(
             @RequestBody @Validated DeviceRequest deviceRequest){
@@ -257,9 +260,7 @@ public class DeviceController extends BaseController {
         return null;
     }
 
-    /**
-     * 绑定设备-设置子区域
-     * */
+    @ApiOperation("绑定设备-设置子区域")
     @PostMapping("/setDevice")
     public AjaxResult setDevice(
             @RequestBody @Validated DeviceRequest deviceRequest) {
@@ -352,14 +353,13 @@ public class DeviceController extends BaseController {
             }
 
         } catch (Exception e){
-            log.error(e.getMessage());
+            log.error("绑定我的设备失败！",e);
            return error("绑定我的设备失败！");
         }
         return success();
     }
-    /**
-     * 解绑设备
-     * */
+
+    @ApiOperation("解绑设备")
     @PostMapping("/relDevice")
     public AjaxResult relieveDevice(
             @RequestBody @Validated DeviceRequest deviceRequest) {
@@ -392,9 +392,8 @@ public class DeviceController extends BaseController {
         }
         return success();
     }
-    /**
-     * 设置SOS电话
-     * */
+
+    @ApiOperation("设置SOS电话")
     @PostMapping("/setSOSDevicePhone")
     public AjaxResult setSOSDevicephone(
             @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
@@ -432,33 +431,30 @@ public class DeviceController extends BaseController {
         return ajax;
     }
 
-    /**
-     * 设置普通电话  创建普通号码  删除普通号码
-     * */
+    @ApiOperation("设置普通电话")
     @PostMapping("/setDevicephone")
     public AjaxResult setDevicephone(
             @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
         return setSOSDevicephone(devicePhoneRequest);
     }
-    /**
-     * 创建普通号码
-     * */
+
+    @ApiOperation("创建普通号码")
     @PostMapping("/creDevicePhone")
     public AjaxResult createDevicePhone(
             @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
         return setSOSDevicephone(devicePhoneRequest);
 
     }
-    /**
-     * 删除普通号码
-     * */
+
+    @ApiOperation("删除普通号码")
     @PostMapping("/remDevicePhone")
     public AjaxResult removeDevicePhone(
             @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
         return setSOSDevicephone(devicePhoneRequest);
     }
 
-    /**获取手表设备的电话列表*/
+
+    @ApiOperation("获取设备的电话列表")
     @PostMapping("/getDevicePhone")
     public AjaxResult getDevicePhone(
             @RequestBody @Validated DevicePhoneRequest devicePhoneRequest) {
@@ -481,9 +477,8 @@ public class DeviceController extends BaseController {
         return AjaxResult.success(device.getParameter());
     }
 
-    /**
-     * 获取家庭设备数量
-     * */
+    @ApiOperation("获取家庭设备数量")
+    @ApiImplicitParam(name = "familyId", value = "家庭ID", required = true, dataType = "int", paramType = "query", dataTypeClass = Integer.class)
     @GetMapping("/getFamilyNum")
     public String getFamilyNum(Long familyId) {
         TDevice tDevice = new TDevice();
@@ -491,9 +486,9 @@ public class DeviceController extends BaseController {
         List<TDevice> list = iDeviceService.selectDeviceList(tDevice);
         return String.valueOf(list.size());
     }
-    /**
-     * 获取家庭设备数量(在线)
-     * */
+
+    @ApiOperation("获取家庭设备数量(在线)")
+    @ApiImplicitParam(name = "familyId", value = "家庭ID", required = true, dataType = "int", paramType = "query", dataTypeClass = Integer.class)
     @GetMapping("/getFNumOnline")
     public String getFamilyNumOnline(Long familyId) {
         TDevice tDevice = new TDevice();
@@ -509,9 +504,9 @@ public class DeviceController extends BaseController {
         }
         return String.valueOf(number);
     }
-    /**
-     * 获取设备位置
-     * */
+
+    @ApiOperation("获取设备位置")
+    @ApiImplicitParam(name = "deviceId", value = "设备ID", required = true, dataType = "int", paramType = "query", dataTypeClass = Integer.class)
     @GetMapping("/getDeviceNow")
     public AjaxResult getDeviceNow(Long deviceId) {
         TDevice tDevice = iDeviceService.selectDeviceByDeviceId(deviceId);
@@ -539,19 +534,18 @@ public class DeviceController extends BaseController {
         }
         return AjaxResult.success(tDevice);
     }
-    /**
-     * 获取未绑定设备位置
-     * */
+
+    @ApiOperation("获取当前用户未绑定设备信息")
     @GetMapping("/getUnDeviceInfo")
-    public AjaxResult getUnDeviceInfo(Long deviceId) {
+    public AjaxResult getUnDeviceInfo() {
         TDevice cond = new TDevice();
         cond.setMemberId(this.getLoginUser().getMemberId());
         List<TDevice> TDevices = iDeviceService.selectDeviceList(cond);
         return success(TDevices);
     }
-    /**
-     * 开启获取设备位置(实时)
-     * */
+
+    @ApiOperation("开启获取设备位置(实时)")
+    @ApiImplicitParam(name = "deviceId", value = "设备ID", required = true, dataType = "string", paramType = "query", dataTypeClass = String.class)
     @GetMapping("/startNowInfo")
     public AjaxResult startNowInfo(String deviceId) {
         TDevice tDevice = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceId));
@@ -563,9 +557,9 @@ public class DeviceController extends BaseController {
         }
         return success();
     }
-    /**
-     * 关闭获取设备位置(实时)
-     * */
+
+    @ApiOperation("关闭获取设备位置(实时)")
+    @ApiImplicitParam(name = "deviceId", value = "设备ID", required = true, dataType = "string", paramType = "query", dataTypeClass = String.class)
     @GetMapping("/endNowInfo")
     public AjaxResult getUnDeviceInfo(String deviceId) {
         TDevice tDevice = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceId));
@@ -577,9 +571,9 @@ public class DeviceController extends BaseController {
         }
         return success();
     }
-    /**
-     * 获取设备位置(实时)
-     * */
+
+    @ApiOperation("获取设备位置(实时)")
+    @ApiImplicitParam(name = "deviceId", value = "设备ID", required = true, dataType = "string", paramType = "query", dataTypeClass = String.class)
     @GetMapping("/getNowInfo")
     public AjaxResult getNowInfo(String deviceId) {
         TDevice tDevice = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceId));

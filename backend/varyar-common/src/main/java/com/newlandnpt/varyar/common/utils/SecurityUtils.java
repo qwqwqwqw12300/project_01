@@ -75,6 +75,24 @@ public class SecurityUtils
             throw new ServiceException("获取用户信息异常", HttpStatus.UNAUTHORIZED);
         }
     }
+    /**
+     * 获取用户
+     **/
+    public static LoginUser getLoginUserWithoutException()
+    {
+        try
+        {
+            Object object = getAuthentication().getPrincipal();
+            if(object instanceof LoginUser){
+                return (LoginUser) object;
+            }
+            return null;
+        }
+        catch (Exception e)
+        {
+            throw new ServiceException("获取用户信息异常", HttpStatus.UNAUTHORIZED);
+        }
+    }
 
     /**
      * 获取用户名

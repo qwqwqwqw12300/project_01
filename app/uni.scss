@@ -94,10 +94,10 @@ $uni-color-paragraph: #3f536e; // 文章段落颜色
 $uni-font-size-paragraph: 15px;
 
 /**全局样式覆盖**/
-$u-primary: #5E85F8;
-$u-primary-dark: #398ade;
-$u-primary-disabled: #9acafc;
-$u-primary-light: #ecf5ff;
+$u-primary: #FEAE43;
+$u-primary-dark: #FD913B;
+$u-primary-disabled: #f9d39b;
+$u-primary-light: #fdf6ec;
 
 $u-warning: #f9ae3d;
 $u-warning-dark: #f1a532;
@@ -129,13 +129,28 @@ $u-info-light: #f4f4f5;
 }
 
 button {
-	color: #ffffff;
-	background: linear-gradient(96deg, #008fff 0%, #00eaff 100%);
-	box-shadow:0px 13px 16px -10px #008fff;
-	border-radius: 60rpx;
 	@extend .active;
+	border-radius: 60rpx;
 	&.wd-sms {
-		background: linear-gradient(96deg, #e8bf00 0%, #00eaff 100%);
+		color: #ffffff;
+		background: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);
+	}
+	&.default {
+		color: #ffffff;
+		background: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);
+	}
+	&.minor {
+		color: #ffffff;
+		background: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);
+	}
+	&.cancel {
+		color: #ffffff;
+		background: #D4D4D4;
+	}
+	&.plain {
+		color: #FFB24D;
+		border: 1rpx solid #FFB24D;
+		background: #fff;
 	}
 }
 
@@ -147,24 +162,9 @@ button {
 	button {
 		@extend .active;
 		width: 236rpx;
-		height: 70rpx;
-		line-height: 70rpx;
+		height: 88rpx;
+		// line-height: 88rpx;
 		font-size: 35rpx;
-		border-radius: 35rpx;
-		&.green {
-			background: linear-gradient(96deg, #e8bf00 0%, #00eaff 100%) !important;
-		}
-		&.blue {
-			background: linear-gradient(96deg, #008fff 0%, #00eaff 100%) !important;
-		}
-		&.gray {
-			box-shadow:0px 13px 16px -10px #c9c9c9;
-			background: linear-gradient(96deg, #c9c9c9 0%, #b9b9b9 100%) !important;
-		}
-		&:nth-child(2) {
-			box-shadow:0px 13px 16px -10px #c9c9c9;
-			background: linear-gradient(96deg, #c9c9c9 0%, #b9b9b9 100%);
-		}
 	}
 }
 
@@ -187,6 +187,45 @@ button {
 		z-index: 100 !important;
 	}
 }
+
+/**步骤条覆盖**/
+.u-steps-item {
+	padding-bottom: 80rpx !important;
+	.u-text__value {
+		font-size: 34rpx !important;
+	}
+	.u-text__value--tips {
+		font-size: 28rpx !important; 
+	}
+	
+	.u-steps-item__wrapper {
+		height: 88rpx;
+		width: 88rpx;
+	}
+	
+	.u-steps-item__line--column {
+		left: 43rpx;
+		top: 66rpx;
+	}
+}
+
+/**查看更多英文允许换行**/
+.u-read-more {
+	word-break: break-all
+}
+
+/**
+ * 单元格高度固定
+ */
+.u-cell__body {
+	height: 128rpx;
+}
+.u-cell {
+	.u-line {
+		margin:0 0 0 32rpx !important; // 下划线修改
+	}
+}
+
 
 #deviceManage, #roomMagege {
 	.u-grid-item--hover-class {

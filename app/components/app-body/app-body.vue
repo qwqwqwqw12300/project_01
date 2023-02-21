@@ -9,7 +9,7 @@
 	<scroll-view :scroll-y="true" :class="{'wd-body-bg': bg}" class="wd-body" :style="bodyStyle">
 		<view class="wd-bg">
 			<u-navbar v-if="!hideTitle" :leftText="leftText" :safeAreaInsetTop="false" :autoBack="!back"
-				:bgColor="bg ? 'transparent': '#fff'" :leftIconColor="bg ? '#fff' : '#000'" :fixed="false"
+				:bgColor="bg ? 'transparent': '#fff'" :leftIconColor="bg ? leftIconColor : '#000'" :fixed="false"
 				@leftClick="leftClick" />
 			<slot></slot>
 		</view>
@@ -54,6 +54,9 @@
 			/**是否需要背景**/
 			bg: {
 				default: true
+			},
+			leftIconColor: {
+				default: '#fff'
 			}
 		},
 		data() {
@@ -140,7 +143,7 @@
 	}
 
 	.wd-body {
-		padding-top: var(--status-bar-height);
+		border-top: var(--status-bar-height) solid #fff;
 		box-sizing: border-box;
 		height: calc(100vh - var(--window-bottom));
 		width: 100%;
@@ -151,6 +154,8 @@
 	}
 
 	.wd-body-bg {
+		border-top: 0;
+		padding-top: var(--status-bar-height);
 		background-image: url('@/static/images/bg2.png');
 	}
 

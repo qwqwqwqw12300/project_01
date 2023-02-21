@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
-public class EventRequest {
+public class EventRequest extends PageRequest {
     /**
      *  我的家庭
      * */

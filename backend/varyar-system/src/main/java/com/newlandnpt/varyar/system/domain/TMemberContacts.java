@@ -1,5 +1,7 @@
 package com.newlandnpt.varyar.system.domain;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
@@ -11,30 +13,31 @@ import com.newlandnpt.varyar.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2022-12-24
  */
+@ApiModel("会员紧急联系人")
 public class TMemberContacts extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 会员联络人id */
+    @ApiModelProperty("会员联络人id")
     private Long memberContactsId;
 
-    /** 会员id */
+    @ApiModelProperty("会员id")
     @Excel(name = "会员id")
     private Long memberId;
 
-    /** 联络人姓名 */
+    @ApiModelProperty("联络人姓名")
     @Excel(name = "联络人姓名")
     private String name;
 
-    /** 联络人手机号 */
+    @ApiModelProperty("联络人手机号")
     @Excel(name = "联络人手机号")
     private String phone;
 
-    /** 显示顺序 */
+    @ApiModelProperty("显示顺序")
     @Excel(name = "显示顺序")
     private Long orderNum;
 
-    /** 删除标志（0代表存在 2代表删除） */
+    @ApiModelProperty("删除标志（0代表存在 2代表删除")
     private String delFlag;
 
     public void setMemberContactsId(Long memberContactsId)

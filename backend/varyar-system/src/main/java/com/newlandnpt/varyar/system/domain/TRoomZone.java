@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.newlandnpt.varyar.common.annotation.Excel;
@@ -15,6 +17,7 @@ import com.newlandnpt.varyar.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2023-01-05
  */
+@ApiModel(description = "子区域模块")
 public class TRoomZone extends BaseEntity
 {
     public static final String FLAG_YES = "0";
@@ -22,68 +25,89 @@ public class TRoomZone extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 子区域id */
+    @ApiModelProperty("子区域id")
     private Long roomZoneId;
 
     /** 房间id */
+    @ApiModelProperty("房间id")
     @Excel(name = "房间id")
     private Long roomId;
 
     /** 子区域名称 */
+    @ApiModelProperty("子区域名称")
     @Excel(name = "子区域名称")
     private String name;
 
     /** 最左侧的点 */
+    @ApiModelProperty("最左侧的点")
     @Excel(name = "最左侧的点")
     private BigDecimal x1;
 
     /** 最右侧的点 */
+    @ApiModelProperty("最右侧的点")
     @Excel(name = "最右侧的点")
     private BigDecimal x2;
 
+
     /** 最近的点 */
+    @ApiModelProperty("最近的点")
     @Excel(name = "最近的点")
     private BigDecimal y1;
 
     /** 最远的点 */
+    @ApiModelProperty("最远的点")
     @Excel(name = "最远的点")
     private BigDecimal y2;
 
     /** 最底部的点 */
+    @ApiModelProperty("最底部的点")
     @Excel(name = "最底部的点")
     private BigDecimal z1;
 
     /** 最顶部的点 */
+    @ApiModelProperty("最顶部的点")
     @Excel(name = "最顶部的点")
     private BigDecimal z2;
 
     /** 存在监测标志（0是 1否） */
+    @ApiModelProperty("存在监测标志（0是 1否）")
     @Excel(name = "存在监测标志", readConverterExp = "0=是,1=否")
     private String existFlag;
 
     /** 跌倒监测标志（0是 1否） */
+    @ApiModelProperty("跌倒监测标志（0是 1否）")
     @Excel(name = "跌倒监测标志", readConverterExp = "0=是,1=否")
     private String fallFlag;
 
     /** 进入时间(s) */
+    @ApiModelProperty("进入时间(s)")
     @Excel(name = "进入时间(s)")
     private Long entryTime;
 
     /** 离开时间(s) */
+    @ApiModelProperty("离开时间(s)")
     @Excel(name = "离开时间(s)")
     private Long departureTime;
     /** 进入监控区域超时报警（0是 1否） */
+    @ApiModelProperty("进入监控区域超时报警（0是 1否）")
+
     private String inMonitorFlag;
     /** 离开监控区域超时报警（0是 1否）*/
+    @ApiModelProperty("离开监控区域超时报警（0是 1否）")
     private String outMonitorFlag;
     /** 开始时间 */
+    @ApiModelProperty("开始时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
     /** 结束时间 */
+    @ApiModelProperty("结束时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
     /** 设备id*/
+    @ApiModelProperty("设备id")
     private Long deviceId;
     /** 0:普通区域  1：屏蔽区域  2：床  */
+    @ApiModelProperty("0:普通区域  1：屏蔽区域  2：床")
     private String zoneType;
 
     public String getZoneType() {

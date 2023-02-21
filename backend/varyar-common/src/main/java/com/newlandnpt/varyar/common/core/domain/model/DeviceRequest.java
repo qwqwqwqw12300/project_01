@@ -1,100 +1,88 @@
 package com.newlandnpt.varyar.common.core.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class DeviceRequest {
-    /**
-     * 设备id
-     * */
+@ApiModel("设备请求")
+public class DeviceRequest extends PageRequest {
+
+    @ApiModelProperty("设备id")
     @Size(min = 0, max = 20, message = "设备编号不能超过20个字符")
     private String deviceId;
-    /**
-     *  家庭Id 唯一标识
-     * */
+
+    @ApiModelProperty("家庭Id")
     @Size(min = 0, max = 20, message = "唯一标识不能超过20个字符")
     private String familyId;
 
-    /**
-     *  房间Id 唯一标识
-     * */
+    @ApiModelProperty("房间Id")
     @Size(min = 0, max = 20, message = "房间Id标识不能超过20个字符")
     private String roomId;
 
-    /**
-     *  设备名称
-     * */
+    @ApiModelProperty("设备名称")
     @Size(min = 0, max = 50, message = "设备名称不能超过50个字符")
     private String deviceName;
 
-    /**
-     *  设备类型
-     * */
+    @ApiModelProperty("设备类型")
     @Size(min = 0, max = 1, message = "设备类型不能超过1个字符")
     private String deviceType;
-    /**
-     * 设备编号
-     * */
+
+    @ApiModelProperty("设备编号")
     @Size(min = 0, max = 50, message = "设备编号不能超过50个字符")
     private String deviceNo;
-    /**
-     * 位置
-     * */
+
+    @ApiModelProperty("位置")
     @Size(min = 0, max = 100, message = "位置信息不能超过100个字符")
     private String location;
 
-    /** 长度 */
+    @ApiModelProperty("长度")
     private BigDecimal roomLength;
 
-    /** 左侧 */
+    @ApiModelProperty("左侧")
     private BigDecimal roomLeft;
 
-    /** 右侧 */
+    @ApiModelProperty("右侧")
     private BigDecimal roomRight;
 
-    /** 高度 */
+    @ApiModelProperty("高度")
     private BigDecimal roomHeight;
-    /**
-     *进入时间   data HH:mm:ss
-     * */
+
+    @ApiModelProperty("进入时间")
     private Long entryTime;
-    /**
-     *离开时间 data HH:mm:ss
-     * */
+
+    @ApiModelProperty("离开时间")
     private Long departureTime;
-    /**
-     *开始时间 data HH:mm:ss
-     * */
+
+    @ApiModelProperty("开始时间 HH:mm")
+    @JsonFormat(pattern = "HH:mm")
     private Date startTime;
-    /**
-     *结束时间 data HH:mm:ss
-     * */
+
+    @ApiModelProperty("结束时间")
+    @JsonFormat(pattern = "HH:mm")
     private Date endTime;
-    /**
-     *进入标识 （0是 1否）
-     * */
+
+    @ApiModelProperty("进入标识 （0是 1否）")
     @Size(min = 0, max = 1, message = "进入标识不能超过1个字符")
     private String inMonitorFlag;
-    /**
-     *离开标识 （0是 1否）
-     * */
+
+    @ApiModelProperty("离开标识 （0是 1否）")
     @Size(min = 0, max = 1, message = "区域类型不能超过1个字符")
     private String outMonitorFlag;
-    /**
-     *  区域类型  0：监控区域    1：私人区域
-     * */
+
+    @ApiModelProperty("区域类型  0：监控区域    1：私人区域")
     @Size(min = 0, max = 1, message = "区域类型不能超过1个字符")
     private String existFlag;
-    /**
-     *  迭代监测标志  0：是    1：否
-     * */
+
+    @ApiModelProperty("迭代监测标志  0：是    1：否")
     @Size(min = 0, max = 1, message = "迭代监测标志不能超过1个字符")
     private String fallFlag;
-    /**
-     *  1：绑定  2：修改  3：解绑
-     * */
+
+    @ApiModelProperty("操作标识  1：绑定  2：修改  3：解绑")
     @Size(min = 0, max = 1, message = "操作标识不能超过1个字符")
     private String flag;
 

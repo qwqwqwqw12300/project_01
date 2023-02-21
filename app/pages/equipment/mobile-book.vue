@@ -24,7 +24,7 @@
 						<text>{{ item.phoneName }}</text>
 						<text>{{item.phone}}</text>
 					</view>
-					<button @click="handleMapSet(item,key,'map')">设置</button>
+					<button class="default" @click="handleMapSet(item,key,'map')">设置</button>
 				</view>
 				<view class="ui-item" v-for="(item,index) in list" :key="index">
 					<view class="ui-icon">P</view>
@@ -32,7 +32,7 @@
 						<text>{{ item.phoneName }}</text>
 						<text>{{item.phone}}</text>
 					</view>
-					<button @click="handleListSet(item,index,'list')">设置</button>
+					<button class="default" @click="handleListSet(item,index,'list')">设置</button>
 				</view>
 			</view>
 		</view>
@@ -54,7 +54,7 @@
 					</u-radio-group>
 				</view>
 				<view class="wd-btn-group">
-					<button @click="onSubmit">提交</button>
+					<button class="default" @click="onSubmit">提交</button>
 					<!-- 		<button @click="onDelete">删除</button> -->
 				</view>
 			</view>

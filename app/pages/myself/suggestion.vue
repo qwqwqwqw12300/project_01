@@ -12,7 +12,7 @@
 			<view class="ui-form-item">
 				<graphic-input ref="codeRef"></graphic-input>
 			</view>
-			<view class="wd-btn-group"><button class="ui-button" @click="submit">提交</button></view>
+			<view class="wd-btn-group"><button class="ui-button default" @click="submit">提交</button></view>
 		</view>
 	</app-body>
 </template>
@@ -59,7 +59,7 @@
 	}
 
 	.ui-form {
-		margin-top: 256rpx;
+		margin-top: 100rpx;
 		padding: 0 80rpx;
 		padding-bottom: 120rpx;
 

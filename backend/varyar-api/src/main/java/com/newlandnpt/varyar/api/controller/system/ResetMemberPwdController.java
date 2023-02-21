@@ -8,6 +8,10 @@ import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
 import com.newlandnpt.varyar.system.service.IResetMemberPwdService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 
  * @author chenxw
  */
+@Api(tags = "重置密码相关服务")
 @RestController
 @RequestMapping("/api")
 public class ResetMemberPwdController{
@@ -36,6 +41,13 @@ public class ResetMemberPwdController{
     @Value("${location.privateKey}")
     private String privateKey;
 
+    @ApiOperation("找回密码(重置密码)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "phone", value = "手机号",required = true, dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "password", value = "密码",required = true,  dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "code", value = "图形验证码",required = true,  dataType = "String", dataTypeClass = String.class),
+            @ApiImplicitParam(name = "uuid", value = "唯一标识", required = true, dataType = "String", dataTypeClass = String.class)
+    })
     @PostMapping("/resetMemberPwd")
     public AjaxResult resetMemberPwd(
             @RequestBody @Validated ResetMemberPwdRequest resetMemberPwdRequest) {

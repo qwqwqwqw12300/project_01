@@ -15,19 +15,18 @@
 					<u-grid col="2">
 						<u-grid-item v-for="(item, index) in device.list" :key="index">
 							<view class="ui-menu-item active" :border="false" @click="edit(item)">
-								<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }"
-									name="/static/images/myself/device.png" size="80rpx"></u-icon>
+								<u-icon v-if="item.type == 0" :customStyle="{ paddingTop: 20 + 'rpx' }"
+									name="/static/images/leida-nm.png" size="120rpx"></u-icon>
+								<u-icon v-else :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/dzqgk.png"
+									size="120rpx"></u-icon>
 								<!-- <text class="grid-text">{{ baseListItem.title }}</text> -->
 								<u-text class="grid-text" iconStyle="font-size: 36rpx" align="center"
 									:text="item.name || '未命名'"></u-text>
-
 								<u-icon @click.native.stop="onDelete(item.deviceId)" class="ui-close active"
 									name="close-circle-fill" size="40rpx">
 								</u-icon>
-
-								<text
-									class="grid-text ui-text">{{ (item.roomName || '未绑定') + ' | ' + item.location}}</text>
-
+								<text class="grid-text ui-text">{{ (item.roomName || '未绑定') + ' | ' + item.location}}
+								</text>
 								<view class="ui-wifi active">
 									<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }"
 										:name="item.onlineFlag === '1' ? 'wifi' : 'wifi-off'" size="40rpx"
@@ -35,15 +34,15 @@
 								</view>
 							</view>
 							<view class="ui-btn">
-								<button v-if="!item.roomId" @click="binding(item)">绑定</button>
-								<button v-else class="wd-sms" @click="unbinding(item)">解绑</button>
+								<button v-if="!item.roomId" class="default" @click="binding(item)">绑定</button>
+								<button v-else class="plain" @click="unbinding(item)">解绑</button>
 							</view>
 						</u-grid-item>
 					</u-grid>
 				</view>
 
 			</view>
-			<view class="ui-add-btn"><button @click="addHandle.show = true">创建设备</button></view>
+			<view class="ui-add-btn"><button class="default" @click="addHandle.show = true">添加设备</button></view>
 			<!-- 绑定房间 -->
 			<u-popup :closeable="true" :round="10" :show="bindRoomShow" mode="center" @close="close">
 				<view class="wd-add">
@@ -67,16 +66,22 @@
 							</uni-data-select>
 						</view>
 					</view>
-					<view class="wd-btn-group"><button @click="bindSubmit">确定</button></view>
+					<view class="wd-btn-group"><button class="default" @click="bindSubmit">确定</button></view>
 				</view>
 			</u-popup>
 			<!-- /绑定房间 -->
-			<device-edit :editFrom="editSubmit" ref="editRef" @confirm="editSubmit"></device-edit>
-			<u-action-sheet :actions="addHandle.list" :closeOnClickOverlay="true" :safeAreaInsetBottom="true"
-				:closeOnClickAction="true" @close="addHandle.show = false" :show="addHandle.show" @select="sheetSelect"
-				cancelText="取消">
+			<u-action-sheet :closeOnClickOverlay="true" :safeAreaInsetBottom="true" :closeOnClickAction="true"
+				@close="addHandle.show = false" :show="addHandle.show" cancelText="取消">
+				<view>
+					<view @click="sheetSelect(item)" class="ui-sheet" v-for="(item, index) of addHandle.list"
+						:key="'sheet' + index">
+						<u-icon :name="'../../static/images/' + item.icon + '.png'" class="active" color="#fff"
+							size="40rpx">
+						</u-icon>
+						<text>{{item.name}}</text>
+					</view>
+				</view>
 			</u-action-sheet>
-			<unbind-edit @confirm="init" ref="unbindEditRef"></unbind-edit>
 		</app-body>
 	</view>
 </template>
@@ -123,11 +128,13 @@
 					show: false,
 					list: [{
 							name: 'vayyar',
-							url: '/pages/equipment/radar'
+							icon: 'leida-nm',
+							url: '/pages/equipment/add/radar'
 						},
 						{
 							name: '电子牵挂卡',
-							url: '/pages/equipment/monitor'
+							icon: 'dzqgk',
+							url: '/pages/equipment/add/monitor'
 						},
 					]
 				},
@@ -178,6 +185,9 @@
 				})))
 			}
 		},
+		onShow() {
+			this.init();
+		},
 		methods: {
 			...mapActions(['getAllFamily']),
 
@@ -203,73 +213,37 @@
 			 * 编辑浮层打开
 			 */
 			edit(item) {
-				console.log(item, '设备信息');
-				if (item.roomId) {
-					const {
-						name,
-						deviceId,
-						type,
-						no,
-						familyId,
-						roomId,
-						location,
-						parameter: {
-							deviceLocation = {},
-							deviceRoomParameter = {}
-						} = {},
-
-					} = item;
-					Object.assign(this.editFrom, {
-						deviceName: name,
-						deviceId,
-						deviceType: type,
-						deviceNo: no,
-						familyId,
-						roomId,
-						location,
-						...deviceLocation,
-						...deviceRoomParameter,
-						source: item
-					});
-					this.$refs.editRef.open(this.editFrom);
-				} else {
-					this.$refs.unbindEditRef.open(item);
-				}
-
-				// this.$setCache('setDevice', this.editFrom);
-				// uni.navigateTo({
-				// 	url: '/pages/equipment/radar-setting'
-				// })
-
+				// const {
+				// 	name,
+				// 	deviceId,
+				// 	type,
+				// 	no,
+				// 	familyId,
+				// 	roomId,
+				// 	location,
+				// 	parameter: {
+				// 		deviceLocation = {},
+				// 		deviceRoomParameter = {}
+				// 	} = {},
+				// } = item;
+				// Object.assign(this.editFrom, {
+				// 	deviceName: name,
+				// 	deviceId,
+				// 	deviceType: type,
+				// 	deviceNo: no,
+				// 	familyId,
+				// 	roomId,
+				// 	location,
+				// 	...deviceLocation,
+				// 	...deviceRoomParameter,
+				// 	source: item
+				// });
+				this.$setCache('setDevice', item);
+				uni.navigateTo({
+					url: '/pages/equipment/setting/radar-setting'
+				})
 			},
 
-			/**
-			 * 修改设备
-			 */
-			editSubmit(editFrom) {
-				if (editFrom.deviceName) {
-					setDevice({
-						...editFrom,
-						flag: '2'
-					}).then(res => {
-						uni.$u.toast(res.msg);
-						this.eidtClose();
-						setTimeout(() => {
-							this.init();
-						}, 1000);
-					});
-				} else {
-					uni.$u.toast('请填写新名称');
-				}
-
-			},
-
-			/**
-			 * 编辑浮层关闭
-			 */
-			eidtClose() {
-				this.isEditShow = false;
-			},
 
 			/**
 			 * 绑定
@@ -368,11 +342,16 @@
 			 * 创建设备
 			 */
 			sheetSelect({
-				url
+				url,
+				name
 			}) {
+				if (name === '电子牵挂卡') return uni.$u.toast('暂不支持添加该设备');
+
+				this.addHandle.show = false;
+
 				uni.navigateTo({
 					url
-				})
+				});
 			},
 
 			/**
@@ -407,12 +386,14 @@
 				});
 			}
 		},
-		onShow() {
-			this.init();
-		},
-
 		onBackPress(event) {
-			if (event.from === 'backbutton') this.back();
+			console.log('物理返回', event);
+			if (event.from === 'backbutton') {
+				uni.switchTab({
+					url: '/pages/myself/myself'
+				});
+				return true;
+			}
 
 		}
 	};
@@ -446,7 +427,7 @@
 		.ui-menu-item {
 			position: relative;
 			margin-top: 30rpx;
-			padding: 30rpx 0;
+			padding: 15rpx 0 20rpx 0;
 			display: flex;
 			box-sizing: border-box;
 			align-items: center;
@@ -598,6 +579,19 @@
 				font-size: 28rpx;
 				color: #ffffff;
 			}
+		}
+	}
+
+	.ui-sheet {
+		border-bottom: 1rpx solid #e2e2e2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 120rpx;
+		width: 100%;
+
+		text {
+			margin-left: 20rpx;
 		}
 	}
 </style>
