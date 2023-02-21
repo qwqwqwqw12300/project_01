@@ -100,6 +100,65 @@ const request = (url, options, process, method = 'POST') => {
 	});
 };
 
+
+const uploadFile = (url, params, process) => {
+	const _url = env.basePath + url;
+	const showLoading = process.showLoading !== false, // 是否展示加载中
+		errorHandle = process.error !== false; // 是否使用统一报错
+	return new Promise((resolve, reject) => {
+		uni.uploadFile({
+			url: _url,
+			filePath: params.path,
+			name: params.name,
+			header: {
+				'Accept': 'application/json',
+				// 'Content-Type': 'application/x-www-form-urlencoded',
+				'Authorization': getToken(),
+			},
+			withCredentials: true,
+			success: result => {
+				let {
+					statusCode,
+					data
+				} = result;
+				data = JSON.parse(data)
+				if (statusCode == 200 && data.code === 200) {
+					resolve(data);
+				} else {
+					if (errorHandle) {
+						if (data.code === 401) { // 未登录
+							uni.redirectTo({
+								url: '/pages/login/login'
+							});
+						} else {
+							uni.showModal({
+								title: '提示',
+								content: data.msg || errText[statusCode] || '系统错误'
+							});
+						}
+					}
+					reject(data);
+				}
+				if (showLoading) uni.hideLoading();
+			},
+			fail: error => {
+				log.apm({
+					url,
+					options,
+					error
+				});
+				if (errorHandle) uni.showModal({
+					title: '提示',
+					content: '网络请求错误' + error.errMsg
+				});
+				if (showLoading) uni.hideLoading();
+				reject();
+			}
+		})
+	})
+}
+
+
 /**
  * post请求
  */
@@ -110,7 +169,13 @@ const post = (url, options, process = {}) => request(url, options, process, 'POS
  */
 const get = (url, options, process = {}) => request(url, options, process, 'GET');
 
+/**
+ * uoload
+ */
+const upload = (url, options = {}) => uploadFile(url, options, process = {});
+
 module.exports = {
 	post,
-	get
+	get,
+	upload
 };

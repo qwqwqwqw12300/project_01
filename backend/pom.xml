@@ -215,6 +215,7 @@
         <module>varyar-common</module>
         <module>varyar-cloudBase</module>
         <module>varyar-cloud</module>
+        <module>varyar-tcp</module>
     </modules>
     <packaging>pom</packaging>
 
