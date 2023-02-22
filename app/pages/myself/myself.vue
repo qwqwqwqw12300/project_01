@@ -1,5 +1,5 @@
 <template>
-	<app-body :bg="false" :hideTitle="true" :needService="false">
+	<app-body :hideTitle="true" :needService="false">
 		<view class="ui-body">
 			<view class="ui-header">
 				<u-avatar size="60" :src="userInfo.avatar"></u-avatar>

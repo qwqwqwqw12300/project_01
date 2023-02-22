@@ -24,7 +24,7 @@
 				<view class="ui-form-item">
 					<verify-code prefixIcon="../../static/images/login/sms.png"
 						:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" ref="sms"
-						@reset="codeReset" :payload="smsPayload" smsType="1" @checked="smsChecked">
+						@reset="codeReset" :payload="smsPayload" @checked="smsChecked">
 					</verify-code>
 				</view>
 				<view class="ui-form-item">
@@ -258,7 +258,7 @@
 
 	.ui-form {
 		// margin-top: 316rpx;
-		margin-top: 120rpx;
+		margin-top: 100rpx;
 		padding: 0 80rpx;
 
 		.ui-form-item {
@@ -275,7 +275,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			font-size: 26rpx;
+			font-size: 36rpx;
 			color: #484848;
 		}
 
