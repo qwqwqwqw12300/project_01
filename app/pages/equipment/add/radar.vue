@@ -285,11 +285,14 @@
 			 * 添加下一步
 			 */
 			async addNext() {
-				if (await this.permissionCheck()) {
-					uni.navigateTo({
-						url: '/pages/equipment/add/add-steps'
-					});
-				}
+				uni.navigateTo({
+					url: '/pages/equipment/add/add-steps'
+				});
+				// if (await this.permissionCheck()) {
+				// 	uni.navigateTo({
+				// 		url: '/pages/equipment/add/add-steps'
+				// 	});
+				// }
 			}
 
 		}

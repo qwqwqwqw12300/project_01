@@ -1,5 +1,5 @@
 <template>
-	<app-body leftIconColor="#000" :bodyStyle="{backgroundImage: 'linear-gradient(180deg, #FFEDC9 0%, #FFFFFF 100%)' }">
+	<app-body>
 		<view class="ui-banner">
 			<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange"
 				:current="current">

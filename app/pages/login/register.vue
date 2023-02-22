@@ -6,48 +6,46 @@
 -->
 
 <template>
-	<app-body :needService="false" :hideTitle="true" :bodyStyle="{backgroundPositionY: '-300rpx'}">
+	<app-body :needService="false" :hideTitle="true">
 		<view class="ui-body">
 			<text class="ui-logo">注册账号</text>
 			<u-form class="ui-form">
 				<view class="ui-form-item">
-					<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="手机号码" color="#444" size="28rpx">
-					</u-text>
-					<view class="ui-input" prop="formParams.phone">
-						<u-input placeholder="请输入手机号码" type="number" v-model="formParams.phone" maxlength="11"
-							:border="'none'" fontSize="28rpx" clearable></u-input>
-					</view>
+					<u-input placeholder="请输入手机号码" type="number" v-model="formParams.phone" maxlength="11"
+						:border="'none'" prefixIcon="../../static/images/login/phone.png"
+						:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" clearable></u-input>
+				</view>
+
+				<view class="ui-form-item">
+					<figure-code prefixIcon="../../static/images/login/code.png"
+						:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" size="4" ref="codeRef">
+					</figure-code>
 				</view>
 				<view class="ui-form-item">
-					<graphic-input ref="codeRef"></graphic-input>
+					<verify-code prefixIcon="../../static/images/login/sms.png"
+						:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" ref="sms"
+						@reset="codeReset" :payload="smsPayload" smsType="1" @checked="smsChecked">
+					</verify-code>
 				</view>
 				<view class="ui-form-item">
-					<sms-input ref="sms" @checked="smsChecked" @reset="codeReset" :payload="smsPayload"></sms-input>
+					<u-input placeholder="请输入你的密码" v-model="formParams.pwd" :password="eyes.pwd" :border="'none'"
+						prefixIcon="../../static/images/login/lock.png"
+						:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" clearable>
+						<template slot="suffix">
+							<u-icon :name="eyes.pwd ? 'eye-off' : 'eye-fill'" color="rgb(144, 147, 153)" size="48rpx"
+								@click="eyesChange('pwd')"></u-icon>
+						</template>
+					</u-input>
 				</view>
 				<view class="ui-form-item">
-					<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="密码" color="#444" size="28rpx"></u-text>
-					<view class="ui-input" prop="formParams.pwd">
-						<u-input placeholder="请输入你的密码" v-model="formParams.pwd" :password="eyes.pwd" :border="'none'"
-							fontSize="28rpx" clearable>
-							<template slot="suffix">
-								<u-icon :name="eyes.pwd ? 'eye-off' : 'eye-fill'" color="rgb(144, 147, 153)"
-									size="36rpx" @click="eyesChange('pwd')"></u-icon>
-							</template>
-						</u-input>
-					</view>
-				</view>
-				<view class="ui-form-item">
-					<u-text prefixIcon="lock-fill" iconStyle="font-size: 32rpx" text="确认密码" color="#444" size="28rpx">
-					</u-text>
-					<view class="ui-input" prop="formParams.confirm">
-						<u-input placeholder="请再次输入您的密码" v-model="formParams.confirm" :password="eyes.confirm"
-							:border="'none'" fontSize="28rpx" clearable>
-							<template slot="suffix">
-								<u-icon :name="eyes.confirm ? 'eye-off' : 'eye-fill'" @click="eyesChange('confirm')"
-									color="rgb(144, 147, 153)" size="36rpx"></u-icon>
-							</template>
-						</u-input>
-					</view>
+					<u-input placeholder="请再次输入您的密码" v-model="formParams.confirm" :password="eyes.confirm"
+						:border="'none'" prefixIcon="lock" :prefixIconStyle="{fontSize: '48rpx', color: '#555'}"
+						fontSize="40rpx" clearable>
+						<template slot="suffix">
+							<u-icon :name="eyes.confirm ? 'eye-off' : 'eye-fill'" @click="eyesChange('confirm')"
+								color="rgb(144, 147, 153)" size="48rpx"></u-icon>
+						</template>
+					</u-input>
 				</view>
 				<view class="ui-agreement">
 					<u-checkbox-group v-model="radiovalue">
@@ -252,16 +250,21 @@
 		height: 69rpx;
 		width: 366rpx;
 		font-size: 69rpx;
-		color: #fff;
-		margin-top: 60rpx;
+		color: #353535;
+		margin-top: 130rpx;
 		display: inline-block;
 		font-weight: bold;
 	}
 
 	.ui-form {
 		// margin-top: 316rpx;
-		margin-top: 160rpx;
+		margin-top: 120rpx;
 		padding: 0 80rpx;
+
+		.ui-form-item {
+			padding: 44rpx 0;
+			border-bottom: 1rpx solid #e2e2e2;
+		}
 
 		.ui-input {
 			margin: 34rpx 0 60rpx 0;
@@ -282,24 +285,25 @@
 		}
 
 		.ui-agreement {
+			margin-top: 50rpx;
 			display: inline-flex;
 			align-items: center;
 			justify-content: center;
 
 			text {
-				font-size: 24rpx;
+				font-size: 30rpx;
 				color: #fdbc2b;
 			}
 		}
 
 		.ui-btn {
-			margin: 58rpx 0 0 0;
+			margin: 30rpx 0 0 0;
 		}
 
 		.ui-link {
 			display: inline-block;
-			margin: 52rpx 30rpx;
-			font-size: 24rpx;
+			margin: 30rpx 30rpx;
+			font-size: 30rpx;
 			color: #0094ff;
 		}
 	}
