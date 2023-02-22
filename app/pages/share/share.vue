@@ -60,7 +60,8 @@
 		PostSharelist
 	} from '../../common/http/api';
 	import {
-		phoneValidator
+		phoneValidator,
+		phoneRemove
 	} from '../../common/utils/util';
 	export default {
 		data() {
@@ -93,6 +94,7 @@
 			});
 			this.getShareList();
 		},
+		mounted() {},
 		methods: {
 			async submit() {
 				if (!phoneValidator(this.shareForm.phone)) {
@@ -244,7 +246,7 @@
 								} = n
 								return {
 									name,
-									phone: phoneNumbers[0] && phoneNumbers[0].value
+									phone: phoneRemove(phoneNumbers[0]?.value || '')
 								}
 							}).filter(item => {
 								return item.phone !== ''

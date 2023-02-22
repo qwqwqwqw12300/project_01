@@ -8,6 +8,7 @@
         <result property="msgId"    column="msg_id"    />
         <result property="msgType"    column="msg_type"    />
         <result property="eventLevel"    column="event_level"    />
+        <result property="eventType"    column="event_type"    />
         <result property="no"    column="no"    />
         <result property="content"    column="content"    />
         <result property="eventId"    column="event_id"    />
@@ -28,11 +29,11 @@
     </resultMap>
 
     <sql id="selectTMsgVo">
-        select m.msg_id, m.msg_type,m.device_type,m.event_level, m.no, m.content, m.event_id, m.device_id, m.family_id, m.member_id,me.phone as member_name, m.org_id,m.operator, m.send_status, m.reason, m.operate_flag, m.send_time, m.create_time, m.update_time,(select td.name from t_device td where td.device_id = m.device_id) as device_name from t_msg m
+        select m.msg_id, m.msg_type,m.device_type,m.event_level,m.event_type, m.no, m.content, m.event_id, m.device_id, m.family_id, m.member_id,me.phone as member_name, m.org_id,m.operator, m.send_status, m.reason, m.operate_flag, m.send_time, m.create_time, m.update_time,(select td.name from t_device td where td.device_id = m.device_id) as device_name from t_msg m
         left join t_member me on m.member_id=me.member_id
     </sql>
     <sql id="selectTMsgByMemberId">
-        select tm.msg_id, tm.msg_type, tm.device_type, tm.event_level, tm.no, tm.content, tm.event_id, tm.device_id, tm.family_id, tm.member_id, tm.operate_flag, tm.create_time,
+        select tm.msg_id, tm.msg_type, tm.device_type, tm.event_level,tm.event_type, tm.no, tm.content, tm.event_id, tm.device_id, tm.family_id, tm.member_id, tm.operate_flag, tm.create_time,
                tm.update_time  from  t_msg tm join t_member_family  tmf on tm.family_id = tmf.family_id
     </sql>
 
@@ -42,6 +43,7 @@
             <if test="msgType != null  and msgType != ''"> and m.msg_type = #{msgType}</if>
             <if test="deviceType != null  and deviceType != ''"> and m.device_type = #{deviceType}</if>
             <if test="eventLevel != null  and eventLevel != ''"> and m.event_level = #{eventLevel}</if>
+            <if test="eventType != null  and eventType != ''"> and m.event_type = #{eventType}</if>
             <if test="no != null  and no != ''"> and m.no = #{no}</if>
             <if test="content != null  and content != ''"> and m.content = #{content}</if>
             <if test="eventId != null "> and m.event_id = #{eventId}</if>
@@ -86,6 +88,7 @@
             <if test="msgType != null">msg_type,</if>
             <if test="deviceType != null">device_type,</if>
             <if test="eventLevel != null">event_level,</if>
+            <if test="eventType != null">event_type,</if>
             <if test="no != null">no,</if>
             <if test="content != null">content,</if>
             <if test="eventId != null">event_id,</if>
@@ -105,6 +108,7 @@
             <if test="msgType != null">#{msgType},</if>
             <if test="deviceType != null">#{deviceType},</if>
             <if test="eventLevel != null">#{eventLevel},</if>
+            <if test="eventType != null">#{eventType},</if>
             <if test="no != null">#{no},</if>
             <if test="content != null">#{content},</if>
             <if test="eventId != null">#{eventId},</if>
@@ -128,6 +132,7 @@
             <if test="msgType != null">msg_type = #{msgType},</if>
             <if test="deviceType != null">device_type = #{deviceType},</if>
             <if test="eventLevel != null">event_level = #{eventLevel},</if>
+            <if test="eventType != null">event_type = #{eventType},</if>
             <if test="no != null">no = #{no},</if>
             <if test="content != null">content = #{content},</if>
             <if test="eventId != null">event_id = #{eventId},</if>
