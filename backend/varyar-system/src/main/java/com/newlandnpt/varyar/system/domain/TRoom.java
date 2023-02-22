@@ -26,6 +26,10 @@ public class TRoom extends BaseEntity
     @Excel(name = "房间名称")
     private String name;
 
+    /** 房间类型 */
+    @Excel(name = "房间类型")
+    private String roomType;
+
     /** 家庭id */
     @Excel(name = "家庭id")
     private Long familyId;
@@ -105,11 +109,20 @@ public class TRoom extends BaseEntity
         return delFlag;
     }
 
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
+    }
+
     @Override
     public String toString() {
         return "TRoom{" +
                 "roomId=" + roomId +
                 ", name='" + name + '\'' +
+                ", roomType='" + roomType + '\'' +
                 ", familyId=" + familyId +
                 ", orgId=" + orgId +
                 ", delFlag='" + delFlag + '\'' +

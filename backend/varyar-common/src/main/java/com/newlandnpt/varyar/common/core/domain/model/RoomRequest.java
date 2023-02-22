@@ -27,6 +27,13 @@ public class RoomRequest extends PageRequest {
     @Size(min = 0, max = 20, message = "房间Id标识不能超过20个字符")
     private String roomId;
 
+    /**
+     * 房间类型
+     * */
+    @ApiModelProperty("房间类型")
+    @Size(min = 0, max = 2, message = "房间类型不能超过2个字符")
+    private String roomType;
+
     public String getFamilyId() {
         return familyId;
     }
@@ -49,5 +56,13 @@ public class RoomRequest extends PageRequest {
 
     public void setRoomId(String roomId) {
         this.roomId = roomId;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
     }
 }
