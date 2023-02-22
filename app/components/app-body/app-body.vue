@@ -4,12 +4,12 @@
 * @FilePath: /components/app-body/app-body.vue
 * @Description: 页面主体
 -->
+
 <template>
 	<scroll-view :scroll-y="true" :class="{'wd-body-bg': bg}" class="wd-body" :style="bodyStyle">
 		<view class="wd-bg" :class="{ 'wd-fixed': !hideTitle && !bg, }">
-			<u-navbar v-if="!hideTitle" :leftText="leftText" :safeAreaInsetTop="false" :autoBack="!back"
-				:bgColor="bg ? 'transparent': '#fff'" :fixed="!bg" :leftIconColor="bg ? leftIconColor : '#000'"
-				@leftClick="leftClick" />
+			<u-navbar v-if="!hideTitle" :leftText="leftText" :safeAreaInsetTop="!bg" :autoBack="!back"
+				:bgColor="bg ? 'transparent': '#fff'" :fixed="!bg" :leftIconColor="'#000'" @leftClick="leftClick" />
 			<slot></slot>
 		</view>
 		<view class="wd-service" v-if="needService" @touchmove="onMove" @click="goService" @touchstart="onStart"
@@ -54,6 +54,9 @@
 			bg: {
 				default: true
 			},
+			/**
+			 * 返回按钮颜色
+			 */
 			leftIconColor: {
 				default: '#fff'
 			}

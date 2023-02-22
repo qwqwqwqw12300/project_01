@@ -5,7 +5,6 @@
 * @Description: 雷达波绑定步骤
 -->
 
-
 <template>
 	<app-body :bg="false">
 		<view class="ui-add">

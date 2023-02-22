@@ -6,7 +6,7 @@
 -->
 
 <template>
-	<app-body :bg="false" leftText="返回">
+	<app-body :bg="false">
 		<!-- <app-logo text="子区域设置"></app-logo> -->
 		<view id="setting">
 			<view class="ui-set-box">
