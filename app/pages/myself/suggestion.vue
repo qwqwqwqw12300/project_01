@@ -9,7 +9,7 @@
 					<u--textarea v-model="content" height="100" placeholder="请输入您的问题或建议"></u--textarea>
 				</view>
 			</view>
-			<figure-code :leftText="text"></figure-code>
+			<figure-code ref="codeRef" :leftText="text"></figure-code>
 			<view class="wd-btn-group"><button class="ui-button default" @click="submit">提交</button></view>
 		</view>
 	</app-body>

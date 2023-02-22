@@ -22,7 +22,8 @@
 	} from '@/common/http/api.js';
 	import {
 		versionCompare,
-		isIos
+		isIos,
+		isApp
 	} from '../../common/utils/util';
 	export default {
 		data() {
