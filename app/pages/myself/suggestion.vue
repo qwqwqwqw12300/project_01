@@ -1,17 +1,15 @@
 <template>
 	<app-body>
-		<app-logo text="意见与建议"></app-logo>
+		<app-logo color="#353535" text="意见与建议"></app-logo>
 		<view class="ui-form">
 			<view class="ui-form-item">
-				<u-text prefixIcon="file-text" iconStyle="font-size: 32rpx" text="您的问题与建议" color="#444" size="28rpx">
+				<u-text  text="您的问题与建议" color="#444" size="28rpx">
 				</u-text>
 				<view class="ui-textarea">
 					<u--textarea v-model="content" height="100" placeholder="请输入您的问题或建议"></u--textarea>
 				</view>
 			</view>
-			<view class="ui-form-item">
-				<graphic-input ref="codeRef"></graphic-input>
-			</view>
+			<figure-code ref="codeRef" :leftText="text"></figure-code>
 			<view class="wd-btn-group"><button class="ui-button default" @click="submit">提交</button></view>
 		</view>
 	</app-body>
@@ -25,6 +23,7 @@
 		data() {
 			return {
 				content: '',
+				text:'图形验证码'
 			}
 		},
 		methods: {
@@ -60,7 +59,7 @@
 
 	.ui-form {
 		margin-top: 100rpx;
-		padding: 0 80rpx;
+		padding: 0 60rpx;
 		padding-bottom: 120rpx;
 
 		.ui-input {

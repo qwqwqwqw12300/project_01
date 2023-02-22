@@ -22,7 +22,13 @@ public class ChannelCache {
     }
 
     public static Channel getChannelByDeviceNo(String deviceNo){
-        return channelMap.get(deviceNo);
+        Channel channel = channelMap.get(deviceNo);
+
+        if(channel!=null && channel.isOpen()){
+            return channel;
+        }
+
+        return null;
     }
 
 }

@@ -36,13 +36,13 @@ public class JiGuangSendServiceImpl implements IJiGuangSendService {
 
     //极光参数获取
 
-    @Value("${jpush.appKey}")
+    @Value("${jpush.appKey:}")
     private String appKey;
 
-    @Value("${jpush.masterSecret}")
+    @Value("${jpush.masterSecret:}")
     private String masterSecret;
 
-    @Value("${jpush.apnsProduction}")
+    @Value("${jpush.apnsProduction:false}")
     private boolean apnsProduction;
     //发送状态定义
     private static final String SEND_SUCCESS="1";

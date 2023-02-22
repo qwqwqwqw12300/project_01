@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar.tcp.base;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,26 @@ public interface Response {
     String getMsgLen();
     void setMsgLen(String msgLen);
 
+    /**
+     * 根据字段设置报文头
+     * @param field1
+     * @param field2
+     * @param field3
+     * @param field4
+     * @param field5
+     * @param field6
+     * @param field7
+     */
+    default void setHead(String field1, String field2, String field3, String field4, String field5, String field6, String field7){
+        setDeviceNo(field1);
+        setIccid(field2);
+        setTranNo(field3);
+        setApiType(field4);
+        setMsgType(field5);
+        setMsgTime(field6);
+        setMsgLen(field7);
+    }
+
     default void setHeadByRequest(Req req){
         setDeviceNo(req.getDeviceNo());
         setIccid(req.getIccid());
@@ -37,7 +58,9 @@ public interface Response {
         setMsgLen(req.getMsgLen());
     }
 
-    List<String> getResponses();
+    default List<String> getResponses(){
+        return new ArrayList<>(0);
+    }
 
     default String generateMessage(){
         List<String> responses = getResponses();
@@ -47,4 +70,11 @@ public interface Response {
                 getMsgTime(),getMsgLen(),responseBody)
                 .stream().collect(Collectors.joining(",","[","]"));
     }
+
+
+    /**
+     * 处理报文体
+     * @param body
+     */
+    default void handleMessage(String body){}
 }
