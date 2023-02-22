@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="eventId"    column="event_id"    />
         <result property="no"    column="no"    />
         <result property="level"    column="level"    />
+        <result property="eventType"    column="event_type"    />
         <result property="content"    column="content"    />
         <result property="deviceId"    column="device_id"    />
         <result property="devicegroupId"    column="devicegroup_id"    />
@@ -45,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                              eve.event_id,
                              eve.no,
                              eve.level,
+                             eve.event_type,
                              eve.content,
                              eve.device_id,
                              eve.devicegroup_id,
@@ -79,6 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="no != null  and no != ''"> and eve.no = #{no}</if>
             <if test="level != null  and level != ''"> and eve.level = #{level}</if>
+            <if test="eventType != null  and eventType != ''"> and eve.event_type = #{eventType}</if>
             <if test="content != null  and content != ''"> and eve.content = #{content}</if>
             <if test="deviceId != null "> and eve.device_id = #{deviceId}</if>
             <if test="devicegroupId != null "> and eve.devicegroup_id = #{devicegroupId}</if>
@@ -135,6 +138,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="no != null">no,</if>
             <if test="level != null">level,</if>
+            <if test="eventType != null">event_type,</if>
             <if test="content != null">content,</if>
             <if test="deviceId != null">device_id,</if>
             <if test="devicegroupId != null">devicegroup_id,</if>
@@ -156,6 +160,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="no != null">#{no},</if>
             <if test="level != null">#{level},</if>
+            <if test="eventType != null">#{eventType},</if>
             <if test="content != null">#{content},</if>
             <if test="deviceId != null">#{deviceId},</if>
             <if test="devicegroupId != null">#{devicegroupId},</if>
@@ -181,6 +186,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="no != null">no = #{no},</if>
             <if test="level != null">level = #{level},</if>
+            <if test="eventType != null">event_type = #{eventType},</if>
             <if test="content != null">content = #{content},</if>
             <if test="deviceId != null">device_id = #{deviceId},</if>
             <if test="devicegroupId != null">devicegroup_id = #{devicegroupId},</if>

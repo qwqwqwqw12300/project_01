@@ -30,9 +30,11 @@ public class TMsg extends BaseEntity
     //@Excel(name = "设备类型:0雷达波 1监控设备", readConverterExp = "0=雷达波,1=监控设备")
     private String deviceType;
 
-    /** 事件等级:0:重要事件  1：普通事件 */
+    /** 级别（urgent:紧急事件  normal：普通事件） */
     //@Excel(name = "事件等级:0:重要事件 1：普通事件", readConverterExp = "0=重要事件,1=普通事件")
     private String eventLevel;
+    /** 事件消息类型：级别为紧急时细分(0:断网,1:人员跌倒,2:人员移动);普通事件(暂无) */
+    private String eventType;
 
     /** 消息编号 */
     //@Excel(name = "消息编号")
@@ -293,11 +295,20 @@ public class TMsg extends BaseEntity
         this.eventLevel = eventLevel;
     }
 
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
     @Override
     public String toString() {
         return "TMsg{" +
                 "msgId=" + msgId +
                 ", msgType='" + msgType + '\'' +
+                ", eventType='" + eventType + '\'' +
                 ", no='" + no + '\'' +
                 ", content='" + content + '\'' +
                 ", eventId=" + eventId +
