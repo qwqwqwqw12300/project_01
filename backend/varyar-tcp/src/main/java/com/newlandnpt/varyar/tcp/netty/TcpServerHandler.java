@@ -1,11 +1,13 @@
-package com.newlandnpt.varyar.netty;
+package com.newlandnpt.varyar.tcp.netty;
 
+import com.newlandnpt.varyar.tcp.base.ChannelMessageHandlers;
+import com.newlandnpt.varyar.tcp.base.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.newlandnpt.varyar.base.Req;
-import com.newlandnpt.varyar.base.login.DeviceLogin;
+import com.newlandnpt.varyar.tcp.base.Req;
+import com.newlandnpt.varyar.tcp.gateway.handler.login.DeviceLoginReq;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,20 +20,26 @@ import io.netty.util.ReferenceCountUtil;
 public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 
 	private static final Logger log = LoggerFactory.getLogger(TcpServerHandler.class);
-	
+
+	// todo 按文档需求 连续两个心跳时长（10 分钟）未接收到设备的心跳或者报文， 则平台认为设备断连，关闭该链接
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		try {
 			//String str = (String) msg;
 			Req req = (Req) msg;
-			if(req instanceof DeviceLogin){
+			// todo 设备登录后缓存设备信息及channel，用于后续平台下发请求
+			// todo 未登录的请求链接给予关闭避免占用资源
+			Response response = ChannelMessageHandlers.handleRequest(ctx, req);
+			response.setHeadByRequest(req);
+			if(req instanceof DeviceLoginReq){
 				System.out.println("设备登录");
-				DeviceLogin deviceLogin = (com.newlandnpt.varyar.base.login.DeviceLogin) req;
-				System.out.println(deviceLogin.getDeviceNo());
+				DeviceLoginReq deviceLoginReq = (DeviceLoginReq) req;
+				System.out.println(deviceLoginReq.getDeviceNo());
 			}
 			Channel channel = ctx.channel();
 			//System.out.println(str);
-			channel.writeAndFlush("服务端return一条数据\r\n");
+			// 响应消息
+			channel.writeAndFlush(response.generateMessage());
 		} catch (Exception e) {
 			log.error("报文解析异常", e);
 			log.error("异常报文内容:");

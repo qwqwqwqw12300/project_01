@@ -1,11 +1,11 @@
-package com.newlandnpt.varyar.base;
+package com.newlandnpt.varyar.tcp.base;
 
 /**
  * 报文头
  * @author Bean
  * @date 2023-02-20
  */
-public class MessageHead {
+public abstract class MessageHead{
 
 	/**
 	 * 设备号,设备唯一编号
@@ -87,9 +87,5 @@ public class MessageHead {
 	public void setMsgLen(String msgLen) {
 		this.msgLen = msgLen;
 	}
-	
-	public String getHeadResponseStr(){
-		
-		return null;
-	}
+
 }

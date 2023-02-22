@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.netty;
+package com.newlandnpt.varyar.tcp.netty;
 
 import java.util.List;
 import java.util.regex.Matcher;

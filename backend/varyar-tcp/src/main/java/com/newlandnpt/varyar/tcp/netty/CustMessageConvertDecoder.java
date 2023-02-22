@@ -1,13 +1,15 @@
-package com.newlandnpt.varyar.netty;
+package com.newlandnpt.varyar.tcp.netty;
 
 import java.util.List;
 
-import com.newlandnpt.varyar.base.Req;
-import com.newlandnpt.varyar.base.login.DeviceLogin;
+import com.newlandnpt.varyar.tcp.base.ChannelMessageHandlers;
+import com.newlandnpt.varyar.tcp.base.Req;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 自定义解码包，处理收到的每一帧报文
@@ -16,6 +18,7 @@ import io.netty.handler.codec.MessageToMessageDecoder;
  */
 public class CustMessageConvertDecoder extends MessageToMessageDecoder<Object> {
 
+	private static final Logger log = LoggerFactory.getLogger(CustMessageConvertDecoder.class);
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, Object msg, List out) throws Exception {
@@ -26,14 +29,13 @@ public class CustMessageConvertDecoder extends MessageToMessageDecoder<Object> {
 		if(StringUtils.isBlank(message)){
 			return ;
 		}
-		System.out.println(message);
-		String[] arr = message.split(",");
-		Req req = null;
-		if("DEVICE_LOGIN".equals(arr[3])){
-			req  = new DeviceLogin();
-			req.setHead(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]);
-			req.handelMessage(arr[7]);
+		Req req = ChannelMessageHandlers.constructFromMessage(message);
+		if(req == null){
+			log.error(">>>>>> 接受到无法处理的消息tcp链接将被平台关闭请排查，原因：【消息唯一标识不识别】，消息内容：{}",message);
+			ctx.channel().close();
 		}
 		out.add(req);
 	}
+
+
 }
