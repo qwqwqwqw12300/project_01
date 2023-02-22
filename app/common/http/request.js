@@ -158,7 +158,6 @@ const uploadFile = (url, params, process) => {
 	})
 }
 
-
 /**
  * post请求
  */

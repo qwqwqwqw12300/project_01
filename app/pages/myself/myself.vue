@@ -1,6 +1,5 @@
 <template>
-	<app-body :bg="false" :hideTitle="true" :needService="false"
-		:bodyStyle="{backgroundImage: 'linear-gradient(179deg, #FFE7B5 0%, #F7F7F7 39%, #F7F7F7 39%)'}">
+	<app-body :bg="false" :hideTitle="true" :needService="false">
 		<view class="ui-body">
 			<view class="ui-header">
 				<u-avatar size="60" :src="userInfo.avatar"></u-avatar>

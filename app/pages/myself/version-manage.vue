@@ -1,9 +1,13 @@
 <template>
 	<app-body>
+		<app-logo color="#353535" text="关于软件"></app-logo>
 		<view class="ui-main">
-			<image class="ui-main-img" src="../../static/images/logo.png"></image>
-			<text class="ui-main-name">艾吉通</text>
-			<text class="ui-main-version">当前版本：{{ appVersion }}</text>
+			<view>
+				<image class="ui-main-image" src="@/static/images/H&V@3x.png" mode=""></image>
+			</view>
+			<view>
+				<image class="ui-main-image" src="@/static/images/ELINKER@3x.png" mode=""></image>
+			</view>
 
 			<view class="ui-main-button">
 				<button class="ui-button default" @click="handleUpdate">检查更新</button>
@@ -18,7 +22,8 @@
 	} from '@/common/http/api.js';
 	import {
 		versionCompare,
-		isIos
+		isIos,
+		isApp
 	} from '../../common/utils/util';
 	export default {
 		data() {
@@ -76,27 +81,14 @@
 		flex-direction: column;
 		align-items: center;
 		padding-top: 150rpx;
-
 		// justify-content: center;
-		.ui-main-img {
-			width: 180rpx;
-			height: 180rpx;
-		}
-
-		.ui-main-name {
-			font-size: 36rpx;
-			color: #333333;
-			margin-top: 20rpx;
-		}
-
-		.ui-main-version {
-			font-size: 32rpx;
-			color: #000;
-			margin-top: 10rpx;
+		.ui-main-image{
+			width: 390rpx;
+			height: 388rpx;
 		}
 
 		.ui-main-button {
-			margin-top: 300px;
+			margin-top: 100px;
 			width: 600rpx;
 
 			.ui-button {
