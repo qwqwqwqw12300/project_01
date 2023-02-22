@@ -26,6 +26,10 @@ public class TEvent extends BaseEntity
     /** 重要级别 */
     @Excel(name = "重要级别",readConverterExp = "normal=普通,urgent=紧急")
     private String level;
+
+    /** 事件消息类型：级别为紧急时细分(0:断网,1:人员跌倒,2:人员移动);普通事件(暂无) */
+    private String eventType;
+
     /** 事件编号 */
     @Excel(name = "事件编号")
     private String no;
@@ -161,6 +165,15 @@ public class TEvent extends BaseEntity
     {
         return level;
     }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
     public void setContent(String content)
     {
         this.content = content;
@@ -339,6 +352,7 @@ public class TEvent extends BaseEntity
                 .append("eventId", getEventId())
                 .append("no", getNo())
                 .append("level", getLevel())
+                .append("event_type", getEventType())
                 .append("content", getContent())
                 .append("deviceId", getDeviceId())
                 .append("devicegroupId", getDevicegroupId())

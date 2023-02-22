@@ -6,9 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.newlandnpt.varyar.netty.CustMessageConvertDecoder;
-import com.newlandnpt.varyar.netty.CustStringDecoder;
-import com.newlandnpt.varyar.netty.TcpServerHandler;
+import com.newlandnpt.varyar.tcp.netty.CustMessageConvertDecoder;
+import com.newlandnpt.varyar.tcp.netty.CustStringDecoder;
+import com.newlandnpt.varyar.tcp.netty.TcpServerHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

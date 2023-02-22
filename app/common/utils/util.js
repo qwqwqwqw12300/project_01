@@ -267,3 +267,11 @@ export function phoneHide(phone) {
 	const pho = /(\d{3})\d*(\d{4})/;
 	return phone.replace(pho, '$1****$2');
 }
+
+/**
+ * 手机号去除非数字
+ */
+export function phoneRemove(phone) {
+	const reg = /[^\d]/g
+	return phone.replace(reg, '');
+}
