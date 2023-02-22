@@ -5,7 +5,7 @@ package com.newlandnpt.varyar.tcp.base;
  * @author Bean
  * @date 2023-02-20
  */
-public abstract class MessageHead{
+public class MessageHead{
 
 	/**
 	 * 设备号,设备唯一编号

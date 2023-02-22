@@ -85,7 +85,7 @@ public class GeoConstant {
         return GeoConstant.GEO_KEY;
     }
 
-    @Value("${location.gaode.key}")
+    @Value("${location.gaode.key:}")
     public void setGeoKey(String geoKey) {
         GeoConstant.GEO_KEY = geoKey;
     }
@@ -94,7 +94,7 @@ public class GeoConstant {
         return GeoConstant.GEO_SERVICE_ID;
     }
 
-    @Value("${location.gaode.sid}")
+    @Value("${location.gaode.sid:}")
     public void setGeoServiceId(String geoServiceId) {
         GeoConstant.GEO_SERVICE_ID = geoServiceId;
     }
@@ -103,7 +103,7 @@ public class GeoConstant {
         return GeoConstant.GEO_SERVICE_ADD;
     }
 
-    @Value("${location.gaode.trackServiceAdd}")
+    @Value("${location.gaode.trackServiceAdd:}")
     public void setGeoServiceAdd(String geoServiceAdd) {
         GeoConstant.GEO_SERVICE_ADD = geoServiceAdd;
     }
@@ -112,7 +112,7 @@ public class GeoConstant {
         return GeoConstant.GEO_TERMINAL_ADD;
     }
 
-    @Value("${location.gaode.trackTerminalAdd}")
+    @Value("${location.gaode.trackTerminalAdd:}")
     public void setGeoTerminalAdd(String geoTerminalAdd) {
         GeoConstant.GEO_TERMINAL_ADD = geoTerminalAdd;
     }
@@ -121,7 +121,7 @@ public class GeoConstant {
         return GeoConstant.GEO_TERMINAL_LIST;
     }
 
-    @Value("${location.gaode.trackTerminalList}")
+    @Value("${location.gaode.trackTerminalList:}")
     public void setGeoTerminalList(String geoTerminalList) {
         GeoConstant.GEO_TERMINAL_LIST = geoTerminalList;
     }
@@ -130,7 +130,7 @@ public class GeoConstant {
         return GeoConstant.GEO_TRACE_ADD;
     }
 
-    @Value("${location.gaode.trackTraceAdd}")
+    @Value("${location.gaode.trackTraceAdd:}")
     public void setGeoTraceAdd(String geoTraceAdd) {
         GeoConstant.GEO_TRACE_ADD = geoTraceAdd;
     }
@@ -139,7 +139,7 @@ public class GeoConstant {
         return GeoConstant.GEO_TRACE_POINT_UPLOAD;
     }
 
-    @Value("${location.gaode.trackPointUpload}")
+    @Value("${location.gaode.trackPointUpload:}")
     public void setGeoTracePointUpload(String geoTracePointUpload) {
         GeoConstant.GEO_TRACE_POINT_UPLOAD = geoTracePointUpload;
     }
@@ -148,7 +148,7 @@ public class GeoConstant {
         return GeoConstant.GEO_TRACE_SEARCH;
     }
 
-    @Value("${location.gaode.trackTerminalTrsearch}")
+    @Value("${location.gaode.trackTerminalTrsearch:}")
     public void setGeoTraceSearch(String geoTraceSearch) {
         GeoConstant.GEO_TRACE_SEARCH = geoTraceSearch;
     }
@@ -157,7 +157,7 @@ public class GeoConstant {
         return GeoConstant.GEO_FENCE_CIRCLE_ADD;
     }
 
-    @Value("${location.gaode.fenceCircleAdd}")
+    @Value("${location.gaode.fenceCircleAdd:}")
     public void setGeoFenceCircleAdd(String geoFenceCircleAdd) {
         GeoConstant.GEO_FENCE_CIRCLE_ADD = geoFenceCircleAdd;
     }
@@ -166,7 +166,7 @@ public class GeoConstant {
         return GeoConstant.GEO_FENCE_CIRCLE_UPDATE;
     }
 
-    @Value("${location.gaode.fenceCircleUpdate}")
+    @Value("${location.gaode.fenceCircleUpdate:}")
     public void setGeoFenceCircleUpdate(String geoFenceCircleUpdate) {
         GeoConstant.GEO_FENCE_CIRCLE_UPDATE = geoFenceCircleUpdate;
     }
@@ -175,7 +175,7 @@ public class GeoConstant {
         return GeoConstant.GEO_FENCE_LIST;
     }
 
-    @Value("${location.gaode.fenceList}")
+    @Value("${location.gaode.fenceList:}")
     public void setGeoFenceList(String geoFenceList) {
         GeoConstant.GEO_FENCE_LIST = geoFenceList;
     }
@@ -184,7 +184,7 @@ public class GeoConstant {
         return GeoConstant.GEO_FENCE_STATUS;
     }
 
-    @Value("${location.gaode.fenceLocation}")
+    @Value("${location.gaode.fenceLocation:}")
     public void setGeoFenceStatus(String geoFenceStatus) {
         GeoConstant.GEO_FENCE_STATUS = geoFenceStatus;
     }
@@ -193,7 +193,7 @@ public class GeoConstant {
         return GeoConstant.GEO_FENCE_TERMINAL_BIND;
     }
 
-    @Value("${location.gaode.fenceTerminalBind}")
+    @Value("${location.gaode.fenceTerminalBind:}")
     public void setGeoFenceTerminalBind(String geoFenceTerminalBind) {
         GeoConstant.GEO_FENCE_TERMINAL_BIND = geoFenceTerminalBind;
     }
@@ -202,7 +202,7 @@ public class GeoConstant {
         return GeoConstant.GEO_FENCE_TERMINAL_STATUS;
     }
 
-    @Value("${location.gaode.fenceTerminalStatus}")
+    @Value("${location.gaode.fenceTerminalStatus:}")
     public void setGeoFenceTerminalStatus(String geoFenceTerminalStatus) {
         GeoConstant.GEO_FENCE_TERMINAL_STATUS = geoFenceTerminalStatus;
     }

@@ -295,6 +295,7 @@
 		// height: 100vh;
 		text-align: center;
 		padding-bottom: 20rpx;
+		box-sizing: border-box;
 		// background-position: 0 -100rpx;
 	}
 
@@ -352,7 +353,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			font-size: 26rpx;
+			font-size: 30rpx;
 			color: #599FFF;
 		}
 
@@ -364,5 +365,9 @@
 			width: 160rpx;
 			// height: 60rpx;
 		}
+	}
+
+	.ui-nav {
+		background: unset !important;
 	}
 </style>

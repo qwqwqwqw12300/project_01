@@ -133,54 +133,19 @@ xss:
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
 
-
-# 极光推送配置
-jpush:
-  appKey:  3c3f6b5746d37ea030455d83  # 极光平台应用的唯一标识
-  masterSecret: c234f905d96ea4659e07aafd   # masterSecret密钥 与 appKey 配合使用达到鉴权的目的
-  apnsProduction: false   # 是否生产环境，该配置只对ios通知有效（true生产环境，false开发环境）
-
-
   # rocketmq配置
 rocketmq:
     name-server: 192.168.132.204:9876
     producer:
       group: group_msg
     group:
-      net: group_net
-      fall: group_fall
-      presence: group_presence
-      deviceState: group_deviceState
-      access: group_access
-      location: group_location
       deviceConfig: group_deviceConfig
       deviceConfigErr: group_deviceConfigErr
-      deviceActive: group_deviceActive
     topic:
-      net: netTopic
-      fall: fallTopic
-      presence: presenceTopic
-      deviceState: deviceStateTopic
-      access: accessTopic
-      location: locationTopic
       deviceConfig: deviceConfigTopic
       deviceConfigErr: deviceConfigErrTopic
-      deviceActive: deviceActiveTopic
 
 
-location:
-  gaode:
-    key: 92e29e7a06fa0d24124beac6efb5c154
-    sid: 856898
-    fenceCircleAdd: https://tsapi.amap.com/v1/track/geofence/add/circle
-    fenceCircleUpdate: https://tsapi.amap.com/v1/track/geofence/update/circle
-    fenceLocation: https://tsapi.amap.com/v1/track/geofence/status/location
-    trackServiceAdd: https://tsapi.amap.com/v1/track/service/add
-    trackTerminalAdd: https://tsapi.amap.com/v1/track/terminal/add
-    trackTerminalList: https://tsapi.amap.com/v1/track/terminal/list
-    trackTraceAdd: https://tsapi.amap.com/v1/track/trace/add
-    trackPointUpload: https://tsapi.amap.com/v1/track/point/upload
-    trackTerminalTrsearch: https://tsapi.amap.com/v1/track/terminal/trsearch
-    fenceList: https://tsapi.amap.com/v1/track/geofence/list
-    fenceTerminalBind: https://tsapi.amap.com/v1/track/geofence/terminal/bind
-    fenceTerminalStatus: https://tsapi.amap.com/v1/track/geofence/status/terminal
+
+
+
