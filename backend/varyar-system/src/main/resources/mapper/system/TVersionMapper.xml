@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             del_flag ='0'
             <if test="content != null  and content != ''"> and content = #{content}</if>
             <if test="type != null  and type != ''"> and type = #{type}</if>
-            <if test="forceUpdate != null  and type != ''"> and forceUpdate = #{force_update}</if>
+            <if test="forceUpdate != null  and type != ''"> and force_update = #{forceUpdate}</if>
 
             <!--            <if test="delFlag != null  and delFlag != ''"> and del_flag = #{delFlag}</if>-->
         </where>
@@ -49,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="content != null">#{content},</if>
             <if test="type != null">#{type},</if>
-            <if test="forceUpdate != null">#{force_update},</if>
+            <if test="forceUpdate != null">#{forceUpdate},</if>
             <if test="delFlag != null">#{delFlag},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
@@ -61,7 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="content != null">content = #{content},</if>
             <if test="type != null">type = #{type},</if>
-            <if test="forceUpdate != null">forceUpdate = #{force_update},</if>
+            <if test="forceUpdate != null">force_update = #{forceUpdate},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>

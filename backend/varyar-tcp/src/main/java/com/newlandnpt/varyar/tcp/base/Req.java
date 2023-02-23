@@ -1,5 +1,10 @@
 package com.newlandnpt.varyar.tcp.base;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public interface Req {
 
 
@@ -42,5 +47,19 @@ public interface Req {
 	 * 处理报文体
 	 * @param body
 	 */
-	public void handleMessage(String body);
+	default void handleMessage(String body){}
+
+
+	default List<String> getRequests(){
+		return new ArrayList<>(0);
+	}
+
+	default String generateMessage(){
+		List<String> requests = getRequests();
+		String requestBody = requests.stream().collect(Collectors.joining("@"));
+		setMsgLen(""+requestBody.length());
+		return Arrays.asList(getDeviceNo(),getIccid(),getTranNo(),getApiType(),getMsgType(),
+				getMsgTime(),getMsgLen(),requestBody)
+				.stream().collect(Collectors.joining(",","[","]"));
+	}
 }

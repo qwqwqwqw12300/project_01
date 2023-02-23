@@ -11,46 +11,42 @@
 		<app-logo text="修改密码"></app-logo>
 		<view class="ui-form">
 			<view class="ui-form-item">
-				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="原密码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input">
-					<u-input v-model="form.oldPassword" placeholder="请输入原密码" :password="eyes.old" :border="'none'"
-						fontSize="28rpx" clearable>
-						<template slot="suffix">
-							<u-icon :name="eyes.old ? 'eye-off' : 'eye-fill'" color="rgb(144, 147, 153)"
-								@click="eyesChange('old')" size="36rpx"></u-icon>
-						</template>
-					</u-input>
-				</view>
+				<u-input placeholder="请输入原密码" v-model="form.oldPassword" :password="eyes.old" :border="'none'"
+					prefixIcon="/static/images/login/lock.png" :prefixIconStyle="{height: '48rpx', width: '48rpx'}"
+					fontSize="40rpx" clearable>
+					<template slot="suffix">
+						<u-icon :name="eyes.old ? 'eye-off' : 'eye-fill'" color="rgb(144, 147, 153)" size="48rpx"
+							@click="eyesChange('old')"></u-icon>
+					</template>
+				</u-input>
 			</view>
 			<view class="ui-form-item">
-				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="新密码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input">
-					<u-input v-model="form.newPassword" placeholder="请输入新密码" :border="'none'" :password="eyes.new"
-						fontSize="28rpx" clearable>
-						<template slot="suffix">
-							<u-icon :name="eyes.new ? 'eye-off' : 'eye-fill'" color="rgb(144, 147, 153)"
-								@click="eyesChange('new')" size="36rpx"></u-icon>
-						</template>
-					</u-input>
-				</view>
+				<u-input placeholder="请输入新密码" v-model="form.newPassword" :password="eyes.new" :border="'none'"
+					prefixIcon="lock" :prefixIconStyle="{fontSize: '48rpx', color: '#555'}" fontSize="40rpx" clearable>
+					<template slot="suffix">
+						<u-icon :name="eyes.new ? 'eye-off' : 'eye-fill'" @click="eyesChange('new')"
+							color="rgb(144, 147, 153)" size="48rpx"></u-icon>
+					</template>
+				</u-input>
 			</view>
 			<view class="ui-form-item">
-				<u-text prefixIcon="lock" iconStyle="font-size: 32rpx" text="确认密码" color="#444" size="28rpx"></u-text>
-				<view class="ui-input">
-					<u-input v-model="form.reNewPassword" placeholder="再次输入新密码" :border="'none'" :password="eyes.reNew"
-						fontSize="28rpx" clearable>
-						<template slot="suffix">
-							<u-icon :name="eyes.reNew ? 'eye-off' : 'eye-fill'" color="rgb(144, 147, 153)"
-								@click="eyesChange('reNew')" size="36rpx"></u-icon>
-						</template>
-					</u-input>
-				</view>
+				<u-input placeholder="再次输入新密码" v-model="form.reNewPassword" :password="eyes.reNew" :border="'none'"
+					prefixIcon="lock" :prefixIconStyle="{fontSize: '48rpx', color: '#555'}" fontSize="40rpx" clearable>
+					<template slot="suffix">
+						<u-icon :name="eyes.reNew ? 'eye-off' : 'eye-fill'" @click="eyesChange('reNew')"
+							color="rgb(144, 147, 153)" size="48rpx"></u-icon>
+					</template>
+				</u-input>
 			</view>
 			<view class="wd-btn-group">
 				<button @click="handleCancel" class="cancel">取消</button>
 				<button @click="handleReset" class="default">重置</button>
 			</view>
 		</view>
+		<!-- <view class="wd-btn-group">
+			<button @click="handleCancel" class="cancel">取消</button>
+			<button @click="handleReset" class="default">重置</button>
+		</view> -->
 	</app-body>
 </template>
 
@@ -141,26 +137,13 @@
 		padding: 0 80rpx;
 		padding-bottom: 120rpx;
 
-		.ui-input {
-			margin: 34rpx 0 60rpx 0;
-			border-bottom: 1px solid #e2e2e2;
+		.ui-form-item {
+			padding: 44rpx 0;
+			border-bottom: 1rpx solid #e2e2e2;
 		}
+	}
 
-		.ui-bot {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			font-size: 26rpx;
-			color: #484848;
-		}
-
-		.ui-mini {
-			width: 160rpx;
-			// height: 60rpx;
-		}
-
-		.wd-btn-group {
-			margin: 120rpx 0;
-		}
+	.wd-btn-group {
+		margin-top: 100rpx;
 	}
 </style>

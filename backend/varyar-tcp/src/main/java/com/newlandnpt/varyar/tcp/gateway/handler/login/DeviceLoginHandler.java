@@ -1,9 +1,8 @@
 package com.newlandnpt.varyar.tcp.gateway.handler.login;
 
-import com.newlandnpt.varyar.tcp.base.ChannelCache;
+import com.newlandnpt.varyar.common.constant.tcp.ApiTypes;
+import com.newlandnpt.varyar.tcp.base.DeviceChannelCache;
 import com.newlandnpt.varyar.tcp.base.Response;
-import com.newlandnpt.varyar.tcp.gateway.handler.login.DeviceLoginReq;
-import com.newlandnpt.varyar.tcp.gateway.handler.login.DeviceLoginResponse;
 import com.newlandnpt.varyar.tcp.gateway.AbstractChannelMessageHandler;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Component;
@@ -16,10 +15,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class DeviceLoginHandler extends AbstractChannelMessageHandler<DeviceLoginReq, Response> {
 
-
     @Override
-    public String messageIdentify() {
-        return "DEVICE_LOGIN";
+    public ApiTypes apiType() {
+        return ApiTypes.DEVICE_LOGIN;
     }
 
     @Override
@@ -30,7 +28,8 @@ public class DeviceLoginHandler extends AbstractChannelMessageHandler<DeviceLogi
     @Override
     public Response handle(ChannelHandlerContext ctx, DeviceLoginReq req) {
         DeviceLoginResponse deviceLoginResponse = new DeviceLoginResponse();
-        ChannelCache.setCache(req.getDeviceNo(),ctx.channel());
+        DeviceChannelCache.setCache(req.getDeviceNo(),req.getIccid(),
+                req.getMsgTime(),ctx.channel());
         return deviceLoginResponse;
     }
 }

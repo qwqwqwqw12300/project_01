@@ -23,7 +23,7 @@
 			/**是否需要背景**/
 			color: {
 				type: String,
-				default: '#ffffff',
+				default: '#35353',
 			}
 		},
 		data() {

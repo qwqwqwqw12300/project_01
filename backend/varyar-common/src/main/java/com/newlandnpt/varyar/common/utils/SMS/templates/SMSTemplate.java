@@ -22,5 +22,9 @@ public interface SMSTemplate {
      */
     List<String> getParams();
 
-
+    /**
+     * 判断是否为正确的参数
+     * @return
+     */
+    Boolean isCorrectParams();
 }

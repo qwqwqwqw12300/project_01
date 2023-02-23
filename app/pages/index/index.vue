@@ -11,10 +11,10 @@
 			<view class="ui-scan">
 				<view class="ui-sys-message">
 					<u-badge :isDot="!!readInfo.length" absolute :offset="[0, 0]"></u-badge>
-					<u-icon name="chat" @click="goPage('/pages/service/system-messages')" class="active" color="#fff"
+					<u-icon name="chat" @click="goPage('/pages/service/system-messages')" class="active" color="#000"
 						size="50rpx"></u-icon>
 				</view>
-				<u-icon name="plus-circle" @click="addDevice" :stop="true" class="active" color="#fff" size="45rpx">
+				<u-icon name="plus-circle" @click="addDevice" :stop="true" class="active" color="#000" size="45rpx">
 				</u-icon>
 				<!-- 下拉框 -->
 				<view class="ui-select" v-if="isAddShow">
@@ -31,7 +31,17 @@
 				</view>
 				<!-- /下拉框 -->
 			</view>
-			<app-logo></app-logo>
+			<view class="ui-logo">
+				<image src="../../static/images/index/logo.png"></image>
+				<text>艾吉通</text>
+			</view>
+
+			<!-- 家庭tab -->
+			<view class="ui-tab">
+				<u-tabs :list="familyList" lineColor="unset" :activeStyle="{color: '#353535', fontSize: '40rpx'}"
+					:inactiveStyle="{color: '#888888', fontSize: '40rpx'}"></u-tabs>
+			</view>
+			<!-- /家庭tab -->
 			<!-- 家庭列表 -->
 			<template v-if="familyList.length">
 				<view class="ui-group" v-for="(familyItem, index) of familyList" :key="'family' + index">
@@ -258,7 +268,7 @@
 		display: flex;
 		position: absolute;
 		right: 24rpx;
-		top: calc(90rpx);
+		top: 15rpx;
 		z-index: 2;
 
 		.ui-sys-message {
@@ -296,6 +306,28 @@
 				}
 			}
 		}
+	}
+
+	.ui-logo {
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		margin: 100rpx 32rpx 50rpx 32rpx;
+		font-size: 56rpx;
+		color: #353535;
+		font-weight: bold;
+
+		image {
+			height: 80rpx;
+			width: 80rpx;
+		}
+
+	}
+
+	.ui-tab {
+		box-sizing: border-box;
+		width: 100%;
+		padding: 0 32rpx;
 	}
 
 	.ui-group {

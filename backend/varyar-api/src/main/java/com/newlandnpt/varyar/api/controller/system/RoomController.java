@@ -117,6 +117,7 @@ public class RoomController extends BaseController {
             tRoom.setDelFlag("0");
             tRoom.setCreateById(String.valueOf(this.getLoginUser().getMemberId()));
             tRoom.setName(roomRequest.getName());
+            tRoom.setRoomType(roomRequest.getRoomType());
             iRoomService.insertTRoom(tRoom);
             ajax = AjaxResult.success(tRoom);
         } catch (Exception e){
@@ -151,6 +152,7 @@ public class RoomController extends BaseController {
         }
         try {
             tRoom.setName(roomRequest.getName());
+            tRoom.setRoomType(roomRequest.getRoomType());
             iRoomService.updateTRoom(tRoom);
         } catch (Exception e){
             log.error(e.getMessage());

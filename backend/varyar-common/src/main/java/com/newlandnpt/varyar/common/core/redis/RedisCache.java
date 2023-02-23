@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar.common.core.redis;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
 
 /**
@@ -265,4 +267,37 @@ public class RedisCache
     {
         return redisTemplate.keys(pattern);
     }
+
+    /**
+     * 获取原子级自增数
+     * @param key
+     * @param liveTime
+     * @return
+     */
+    public long getAtomicIncrementLong(String key,long liveTime){
+        RedisAtomicLong entityIdCounter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
+        Long increment = entityIdCounter.getAndIncrement();
+        entityIdCounter.expire(liveTime, TimeUnit.SECONDS);
+        return increment;
+    }
+
+
+    /**
+     * 获取原子级自增数
+     * @param key
+     * @param liveTime
+     * @return
+     */
+    public String getAtomicIncrementLongWithDecimalFormat(String key,long liveTime,int bit){
+        StringBuffer stringBuffer = new StringBuffer();
+        for(int i=0;i<bit;i++){
+            stringBuffer.append("0");
+        }
+        long num = getAtomicIncrementLong(key,liveTime);
+
+        DecimalFormat df = new DecimalFormat(stringBuffer.toString());
+        return df.format(num);
+    }
+
+
 }

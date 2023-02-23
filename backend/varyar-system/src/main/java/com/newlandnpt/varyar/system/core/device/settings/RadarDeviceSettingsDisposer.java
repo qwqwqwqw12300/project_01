@@ -107,7 +107,9 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
             deviceConfig.getWalabotConfig().setTrackerSubRegions(new ArrayList<>(0));
         }
 
-        SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic, MessageBuilder.withPayload(deviceConfig).build());
+        SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic+":vayyar",
+                MessageBuilder.withPayload(deviceConfig)
+                        .setHeader("KEYS",deviceConfig.getDeviceId()).build());
         if (!result.getSendStatus().equals(SendStatus.SEND_OK)) {
             throw new BaseException("雷达波设备参数下发失败");
         }

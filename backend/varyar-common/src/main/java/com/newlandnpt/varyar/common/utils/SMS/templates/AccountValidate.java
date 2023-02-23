@@ -30,6 +30,11 @@ public class AccountValidate implements SMSTemplate{
         return Arrays.asList(companyName,code);
     }
 
+    @Override
+    public Boolean isCorrectParams() {
+        return true;
+    }
+
     public String getCompanyName() {
         return companyName;
     }
