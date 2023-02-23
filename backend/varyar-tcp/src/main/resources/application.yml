@@ -141,11 +141,33 @@ rocketmq:
     group:
       deviceConfig: group_deviceConfig
       deviceConfigErr: group_deviceConfigErr
+      deviceActive: group_deviceActive
+      sosWarn: group_sosWarn
+      locationInfo: group_locationInfo
     topic:
       deviceConfig: deviceConfigTopic
       deviceConfigErr: deviceConfigErrTopic
+      deviceActive: deviceActiveTopic
+      sosWarn: sosWarnTopic
+      locationInfo: locationInfoTopic
 
 
 
 
 
+location:
+  gaode:
+    key: 92e29e7a06fa0d24124beac6efb5c154
+    sid: 856898
+    fenceCircleAdd: https://tsapi.amap.com/v1/track/geofence/add/circle
+    fenceCircleUpdate: https://tsapi.amap.com/v1/track/geofence/update/circle
+    fenceLocation: https://tsapi.amap.com/v1/track/geofence/status/location
+    trackServiceAdd: https://tsapi.amap.com/v1/track/service/add
+    trackTerminalAdd: https://tsapi.amap.com/v1/track/terminal/add
+    trackTerminalList: https://tsapi.amap.com/v1/track/terminal/list
+    trackTraceAdd: https://tsapi.amap.com/v1/track/trace/add
+    trackPointUpload: https://tsapi.amap.com/v1/track/point/upload
+    trackTerminalTrsearch: https://tsapi.amap.com/v1/track/terminal/trsearch
+    fenceList: https://tsapi.amap.com/v1/track/geofence/list
+    fenceTerminalBind: https://tsapi.amap.com/v1/track/geofence/terminal/bind
+    fenceTerminalStatus: https://tsapi.amap.com/v1/track/geofence/status/terminal
