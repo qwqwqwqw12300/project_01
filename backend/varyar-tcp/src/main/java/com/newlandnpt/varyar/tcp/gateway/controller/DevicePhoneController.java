@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/tcp/device/phone")
-public class DeviceConfigController {
+public class DevicePhoneController {
 
     @Autowired
     private IDevicePhoneService devicePhoneService;
