@@ -134,11 +134,12 @@
 				})
 				const {
 					roomLeft,
-					roomRight
+					roomRight,
+					roomLength
 				} = this.deviceInfo.parameter.deviceLocation
-				console.log(this.deviceInfo, '333333')
 				this.option.xAxis.min = -roomLeft || -3
 				this.option.xAxis.max = roomRight || 3
+				this.option.yAxis.max = roomLength || 6
 				this.roomZoneList = data.rows.map(n => {
 					const {
 						x1,
@@ -247,7 +248,7 @@
 		justify-content: center;
 		padding: 0 50rpx;
 		box-sizing: border-box;
-		margin-top: 30px;
+		// margin-top: 30px;
 		// background-color: #fff;
 	}
 
