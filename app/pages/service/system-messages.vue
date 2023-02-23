@@ -6,9 +6,8 @@
 -->
 
 <template>
-	<app-body>
+	<app-body :bg="false">
 		<view id="system">
-			<app-logo text="系统消息"></app-logo>
 			<scroll-view class="ui-list" @refresherrefresh="onRefresh" refresher-enabled scroll-y="true"
 				:refresher-triggered="triggered" refresher-background="transparent">
 				<view class="ui-item" v-for="item in messageList" :key="item.noticeId">
@@ -124,6 +123,7 @@
 			box-sizing: border-box;
 			text-align: center;
 
+
 			&:nth-last-child(1) {
 				margin-bottom: 30rpx;
 			}
@@ -145,9 +145,9 @@
 				margin-top: 20rpx;
 				padding: 30rpx 20rpx 0 20rpx;
 				border-radius: 10px;
-				filter: drop-shadow(7.824px 10.382px 8px rgba(7, 5, 5, 0.08));
 				background: #fff;
 				text-align: left;
+				position: relative;
 
 				>text {
 					width: 100%;

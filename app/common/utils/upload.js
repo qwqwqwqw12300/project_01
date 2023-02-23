@@ -9,6 +9,7 @@ import {
 	PostVersionInfo
 } from "../http/api"
 import {
+	isApp,
 	isIos,
 	versionCompare
 } from "./util"
@@ -16,36 +17,56 @@ import {
 export default {
 
 	/**app类型**/
-	versionType: isIos() ? '0' : '1',
+	versionType: isIos() ? '1' : '0',
 
 	/**
 	 * 检测应用更新
 	 */
 	check() {
 		return new Promise(resolve => {
+			if (!isApp()) return resolve({
+				status: true
+			});
 			Promise.all([
 				this.getVersion(),
 				this.getCurrentVer()
 			]).then(([versionInfo, currentVer]) => {
+
+				console.log(versionInfo, 'versionInfo');
 				if (versionInfo && currentVer) {
-					if (!versionCompare(currentVer, versionInfo)) {
+					const {
+						forceUpdate,
+						downloadAddress,
+						content
+					} = versionInfo;
+					if (!versionCompare(content, versionInfo)) {
 						uni.showModal({
 							title: '',
-							content: '发现新版本、是否更新？',
+							content: '发现新版本、是否立即更新？',
+							showCancel: forceUpdate !== '1', // 1 - 强制更新 
 							success: res => {
 								if (res.confirm) {
-									let appurl = "https://sj.qq.com/"
-									plus.runtime.openURL(appurl)
+									resolve({
+										status: false,
+										content
+									});
+									plus.runtime.openURL(downloadAddress);
 								} else {
-									this.initInfo();
+									resolve({
+										status: true,
+										content
+									});
 								}
 							}
 						});
 					}
-
-
+				} else {
+					console.log('接口返回');
+					resolve({
+						status: true
+					});
 				}
-				resolve(true);
+
 			})
 		})
 
@@ -59,8 +80,9 @@ export default {
 			PostVersionInfo({
 				versionType: this.versionType
 			}).then(res => {
-				resolve(res.data.content);
+				resolve(res.data);
 			}, error => {
+				console.log('报错');
 				resolve(null);
 			});
 		})

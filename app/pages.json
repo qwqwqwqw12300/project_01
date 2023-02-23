@@ -424,27 +424,27 @@
 		}
 	},
 	"tabBar": {
-		"color": "#2d2d2d",
-		"selectedColor": "#008fff",
+		"color": "#888888",
+		"selectedColor": "#FEAE43",
 		"backgroundColor": "#fff",
 		"iconWidth": "18px",
 		"borderStyle": "black",
 		"list": [{
 				"pagePath": "pages/index/index",
-				"iconPath": "/static/images/tabbar/tabbar1.png",
-				"selectedIconPath": "/static/images/tabbar/tabbar1.png",
+				"iconPath": "/static/images/tabbar/shouye.png",
+				"selectedIconPath": "/static/images/tabbar//shouye-ac.png",
 				"text": "首页"
 			},
 			{
 				"pagePath": "pages/details/details",
-				"iconPath": "/static/images/tabbar/tabbar2.png",
-				"selectedIconPath": "/static/images/tabbar/tabbar2.png",
+				"iconPath": "/static/images/tabbar//baogao.png",
+				"selectedIconPath": "/static/images/tabbar/baogao-ac.png",
 				"text": "报告"
 			},
 			{
 				"pagePath": "pages/myself/myself",
-				"iconPath": "/static/images/tabbar/tabbar3.png",
-				"selectedIconPath": "/static/images/tabbar/tabbar3.png",
+				"iconPath": "/static/images/tabbar/wode.png",
+				"selectedIconPath": "/static/images/tabbar//wode-ac.png",
 				"text": "我的"
 			}
 		]

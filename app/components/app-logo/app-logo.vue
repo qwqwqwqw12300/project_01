@@ -36,10 +36,10 @@
 
 <style lang="scss">
 	.wd-logo {
-		margin: 64rpx 0 0 44rpx;
+		margin: 20rpx 0 0 32rpx;
 		display: inline-flex;
 		flex-direction: row;
-		font-size: 72rpx;
+		font-size: 50rpx;
 		font-weight: bold;
 		// color: #ffffff;
 	}

@@ -21,7 +21,7 @@ import {
 } from '@/common/utils/auth.js'
 
 /**错误处理文案**/
-const errText = {
+const ERROR_TEXT = {
 	401: '访问令牌无效或已过期',
 	403: '拒绝访问',
 	404: '资源不存在',
@@ -41,15 +41,84 @@ const errText = {
  * @param {string} method 请求方法
  */
 const request = (url, options, process, method = 'POST') => {
+	let http;
 	const _url = env.basePath + url;
 	const showLoading = process.showLoading !== false, // 是否展示加载中
 		errorHandle = process.error !== false; // 是否使用统一报错
 	console.log('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));
 	return new Promise((resolve, reject) => {
 		if (showLoading) uni.showLoading();
+		requestMethod(_url, options, method).then(result => {
+			const {
+				statusCode,
+				data
+			} = result;
+			console.log(result, '请求结果' + url);
+			if (statusCode == 200 && data.code === 200) {
+				resolve(data);
+			} else {
+				if (errorHandle) {
+					if (data.code === 401) { // 未登录
+						uni.redirectTo({
+							url: '/pages/login/login'
+						});
+					} else {
+						uni.showModal({
+							title: '提示',
+							content: data.msg || ERROR_TEXT[statusCode] || '系统错误'
+						});
+					}
+				}
+				reject(data);
+			}
+			if (showLoading) uni.hideLoading();
+		}, error => {
+			log.apm({
+				url,
+				options,
+				error
+			});
+			if (errorHandle) uni.showModal({
+				title: '提示',
+				content: '网络请求错误' + error.errMsg
+			});
+			if (showLoading) uni.hideLoading();
+			reject();
+		})
+	});
+};
+
+
+/**
+ * 请求方法
+ * @param {Object} url
+ * @param {Object} options
+ * @param {Object} method
+ */
+function requestMethod(url, options, method) {
+	let http;
+	switch (method) {
+		case 'UPLOAD':
+			http = httpUploadFile(url, options);
+			break;
+		default:
+			http = httpRequest(url, options, method);
+			break;
+	}
+	return http;
+}
+
+/**
+ * post、get方法
+ * @param {Object} url
+ * @param {Object} data
+ * @param {Object} method
+ */
+function httpRequest(url, data, method) {
+	return new Promise((resolve, reject) => {
 		uni.request({
-			url: _url,
-			data: options,
+			url,
+			data,
 			method,
 			header: {
 				'Accept': 'application/json',
@@ -57,104 +126,33 @@ const request = (url, options, process, method = 'POST') => {
 				'Authorization': getToken(),
 			},
 			withCredentials: true,
-			success: result => {
-				const {
-					statusCode,
-					data
-				} = result;
-				console.log(result, '请求结果' + url);
-				if (statusCode == 200 && data.code === 200) {
-					resolve(data);
-				} else {
-					if (errorHandle) {
-						if (data.code === 401) { // 未登录
-							uni.redirectTo({
-								url: '/pages/login/login'
-							});
-						} else {
-							uni.showModal({
-								title: '提示',
-								content: data.msg || errText[statusCode] || '系统错误'
-							});
-						}
-					}
-					reject(data);
-				}
-				if (showLoading) uni.hideLoading();
-			},
-			fail: error => {
-				log.apm({
-					url,
-					options,
-					error
-				});
-				if (errorHandle) uni.showModal({
-					title: '提示',
-					content: '网络请求错误' + error.errMsg
-				});
-				if (showLoading) uni.hideLoading();
-				reject();
-			}
+			success: res => resolve(res),
+			fail: error => reject(error)
+		})
+	})
+}
 
-		});
-	});
-};
-
-
-const uploadFile = (url, params, process) => {
-	const _url = env.basePath + url;
-	const showLoading = process.showLoading !== false, // 是否展示加载中
-		errorHandle = process.error !== false; // 是否使用统一报错
+function httpUploadFile(url, params) {
 	return new Promise((resolve, reject) => {
 		uni.uploadFile({
-			url: _url,
+			url,
 			filePath: params.path,
 			name: params.name,
 			header: {
 				'Accept': 'application/json',
+				'Content-Type': 'application/json',
 				// 'Content-Type': 'application/x-www-form-urlencoded',
 				'Authorization': getToken(),
 			},
 			withCredentials: true,
-			success: result => {
-				let {
-					statusCode,
-					data
-				} = result;
-				data = JSON.parse(data)
-				if (statusCode == 200 && data.code === 200) {
-					resolve(data);
-				} else {
-					if (errorHandle) {
-						if (data.code === 401) { // 未登录
-							uni.redirectTo({
-								url: '/pages/login/login'
-							});
-						} else {
-							uni.showModal({
-								title: '提示',
-								content: data.msg || errText[statusCode] || '系统错误'
-							});
-						}
-					}
-					reject(data);
-				}
-				if (showLoading) uni.hideLoading();
+			success: res => {
+				resolve({
+					...res,
+					data: JSON.parse(res.data)
+				})
 			},
-			fail: error => {
-				log.apm({
-					url,
-					options,
-					error
-				});
-				if (errorHandle) uni.showModal({
-					title: '提示',
-					content: '网络请求错误' + error.errMsg
-				});
-				if (showLoading) uni.hideLoading();
-				reject();
-			}
-		})
+			fail: error => reject(error)
+		});
 	})
 }
 
@@ -171,7 +169,7 @@ const get = (url, options, process = {}) => request(url, options, process, 'GET'
 /**
  * uoload
  */
-const upload = (url, options = {}) => uploadFile(url, options, process = {});
+const upload = (url, options = {}) => request(url, options, process = {}, 'UPLOAD');
 
 module.exports = {
 	post,
