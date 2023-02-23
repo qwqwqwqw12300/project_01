@@ -8,24 +8,25 @@
 <template>
 	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close" @open="open">
 		<view class="wd-add">
-			<u-text :prefixIcon="mode === 'add' ? 'plus-circle' : 'edit-pen'"
-				:iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f" size="30rpx"
-				:text="mode === 'add' ? '新建家庭': '修改家庭'"></u-text>
+			<view class="ui-title">
+				<text class="ui-title-font">{{mode === 'add' ? '新建家庭': '修改家庭'}}</text>
+			</view>
 			<view class="ui-input">
-				<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 40rpx" text="家庭名称"></u-text>
-				<u-input v-model="form.familyName" placeholder="请输入家庭名称" maxlength="6" border="bottom" clearable>
+				<text class="ui-input-font">家庭名称</text>
+				<u-input v-model="form.familyName" placeholder="请输入家庭名称" maxlength="6" border="surround" clearable>
 				</u-input>
 			</view>
 			<view class="ui-input">
-				<u-text size="28rpx" prefixIcon="info-circle-fill" iconStyle="font-size: 36rpx" text="家庭地址(必填)">
-				</u-text>
-				<u-input v-model="form.address" placeholder="请输入家庭地址" border="bottom" clearable>
+				<text class="ui-input-font">家庭地址(必填)</text>
+				<u-input v-model="form.address" placeholder="请输入家庭地址" border="surround" clearable>
 					<template slot="suffix">
-						<u-icon name="map-fill" class="active" @click="goMap" size="38rpx"></u-icon>
+						<!-- <u-icon name="map-fill" class="active" @click="goMap" size="38rpx"></u-icon> -->
+						<image class="ui-input-image" src="@/static/images/position@3x.png" @click="goMap"></image>
 					</template>
 				</u-input>
 			</view>
-			<view class="ui-btn"><button @click="next" class="default">{{ btnName }}</button></view>
+			<view class="ui-hr"></view>
+			<view class="ui-btn"><view @click="next" >{{ btnName }}</view></view>
 		</view>
 	</u-popup>
 </template>
@@ -127,16 +128,40 @@
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
 		border: 1px solid #ffcb3d;
-		padding: 53rpx 31rpx;
-
+		padding: 20rpx 31rpx;
+		.ui-title{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.ui-title-font{
+				font-family: PingFangSC-Medium;
+				font-size: 36rpx;
+				color: #333333;
+				letter-spacing: 0;
+				text-align: center;
+				line-height: 46rpx;
+				font-weight: 500;
+			}
+		}
+		.ui-input-image{
+			width: 48rpx;
+			height: 48rpx;
+		}
 		&>view {
-			margin-top: 52rpx;
-
+			margin-top: 10rpx;
 			&.ui-input {
 				margin-top: 40rpx;
 				position: relative;
-				padding: 10rpx 20rpx;
-
+				padding: 25rpx 20rpx;
+				.ui-input-font{
+					margin-left: 20rpx;
+					font-family: PingFangSC-Medium;
+					font-size: 30rpx;
+					color: #333333;
+					letter-spacing: 0;
+					line-height: 30rpx;
+					font-weight: 500;
+				}
 				&:nth-child(3) {
 					margin-top: 20rpx;
 				}
@@ -152,16 +177,30 @@
 				}
 			}
 		}
-
+		.ui-hr{
+			width: 100%;
+			position: absolute;
+			left: 0rpx;
+			bottom: 110rpx;
+			height: 1rpx;
+			opacity: 0.1;
+			background: #000000;
+		}
 		.ui-btn {
 			text-align: center;
-			margin-top: 70rpx;
-
-			button {
-				width: 237rpx;
-				height: 71rpx;
+			margin:100rpx 0rpx 25rpx 0rpx;
+			
+			view {
+				width: 100%;
+				height: 30rpx;
 				font-size: 28rpx;
-				color: #ffffff;
+				font-family: PingFangSC-Medium;
+				font-size: 36rpx;
+				color: #599FFF;
+				letter-spacing: 0;
+				text-align: center;
+				line-height: 36rpx;
+				font-weight: 500;
 			}
 
 			;
