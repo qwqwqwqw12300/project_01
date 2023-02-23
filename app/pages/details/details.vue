@@ -117,12 +117,20 @@
 			 * 全部已读
 			 */
 			readMsgAll() {
-				const msgFlags = this.messageList.filter(ele => ele.operateFlag === '0').map(ele => ({
-					msgId: ele.msgId,
-					msgFlag: '1'
-				}));
-				if (msgFlags.length) PostSetBatchMsgInfo({
-					msgFlags
+				const {
+					deviceType,
+					eventlevel,
+					familyId,
+					startDate,
+					endDate,
+				} = this.eventInfo
+				PostSetBatchMsgInfo({
+					deviceType,
+					eventlevel,
+					familyId,
+					readFlag: '1',
+					startDate,
+					endDate
 				}).then(res => {
 					uni.$u.toast('已处理登记成功');
 					setTimeout(() => {
@@ -130,10 +138,7 @@
 					}, 1000);
 
 				})
-
 			},
-
-
 			/**
 			 * 查询设备消息
 			 */
@@ -146,7 +151,8 @@
 						...this.eventInfo,
 					}).then(res => {
 						this.messageList = res.rows || [];
-						this.loadmore = res.total <= this.messageList.length ? 'nomore' : 'loadmore';
+						this.loadmore = res.total <= this.messageList.length ? 'nomore' :
+							'loadmore';
 						resolve();
 					}, err => resolve());
 				});
@@ -165,7 +171,8 @@
 						...this.eventInfo
 					}).then(res => {
 						this.messageList = [...this.messageList, ...res.rows];
-						this.loadmore = res.total <= this.messageList.length ? 'nomore' : 'loadmore';
+						this.loadmore = res.total <= this.messageList.length ? 'nomore' :
+							'loadmore';
 						resolve();
 					}, err => resolve());
 				});

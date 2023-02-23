@@ -4,7 +4,7 @@
 			<view class="ui-header">
 				<u-avatar size="60" :src="userInfo.avatar"></u-avatar>
 				<view class="info">
-					<view class="name">{{ userInfo.nickname || '暂8484788无昵称' }}</view>
+					<view class="name">{{ userInfo.nickname || '暂无昵称' }}</view>
 					<view class="phone">{{ userInfo.phone }}</view>
 				</view>
 				<view class="edit" @tap="handleJump('/pages/myself/info-edit')">
