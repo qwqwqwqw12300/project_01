@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar.tcp.gateway;
 
+import com.newlandnpt.varyar.common.constant.tcp.ApiTypes;
 import com.newlandnpt.varyar.tcp.base.Req;
 import com.newlandnpt.varyar.tcp.base.Response;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,7 +16,15 @@ public abstract class AbstractChannelMessageHandler<T extends Req,E extends Resp
      * 消息标识
      * @return
      */
-    public abstract String messageIdentify();
+    public String messageIdentify(){
+        return apiType().name();
+    }
+
+    /**
+     * api类型
+     * @return
+     */
+    public abstract ApiTypes apiType();
 
     /**
      * 构建消息实例

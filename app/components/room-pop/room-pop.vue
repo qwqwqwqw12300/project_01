@@ -8,16 +8,17 @@
 <template>
 	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
 		<view class="ui-add">
-			<u-text :prefixIcon="mode === 'add' ? 'plus-circle' : 'edit-pen-fill'"
-				:iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f" size="30rpx"
-				:text="mode === 'add' ? '新建房间' : '修改房间'"></u-text>
+			<view class="ui-title">
+				<text class="ui-title-font">{{mode === 'add' ? '新建家庭': '修改家庭'}}</text>
+			</view>
 			<view class="ui-add-box">
 				<view class="ui-input">
-					<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 40rpx" text="房间名称"></u-text>
-					<u-input :maxlength="6" class="ui-room-name" v-model="form.name" placeholder="请输入房间名称"
+					<text class="ui-input-font">房间名称</text>
+					<u-input :maxlength="6"  v-model="form.name" placeholder="请输入房间名称"
 						border="bottom" clearable>
 					</u-input>
 				</view>
+				<text class="ui-input-font">房间名称</text>
 				<view class="ui-tags">
 					<view class="ui-tags-item" v-for="(item, index) in tagsList" :key="index">
 						<u-tag :text="item.name" :plain="!item.checked" type="warning" :name="item.name"
@@ -33,7 +34,8 @@
 					</view>
 				</view> -->
 			</view>
-			<view class="ui-btn"><button @click="next" class="default">{{ subTitle }}</button></view>
+			<view class="ui-hr"></view>
+			<view class="ui-btn"><view @click="next" >{{ subTitle }}</view></view>
 		</view>
 	</u-popup>
 </template>
@@ -100,9 +102,9 @@
 					name,
 				}
 				console.log(this.form.name, 'fff')
-				// this.tagsList.map((item) => {
-				// 	item.checked = item.name === name ? true : false
-				// })
+				this.tagsList.map((item) => {
+					item.checked = item.name === name ? true : false
+				})
 			},
 			close() {
 				this.form = {}
@@ -146,8 +148,21 @@
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
 		border: 1px solid #ffcb3d;
-		padding: 53rpx 31rpx;
-
+		padding: 20rpx 31rpx;
+		.ui-title{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.ui-title-font{
+				font-family: PingFangSC-Medium;
+				font-size: 36rpx;
+				color: #333333;
+				letter-spacing: 0;
+				text-align: center;
+				line-height: 46rpx;
+				font-weight: 500;
+			}
+		}
 		.ui-select {
 			width: 500rpx;
 			margin: 20rpx 0 0 20rpx;
@@ -156,11 +171,11 @@
 		}
 
 		&>view {
-			margin-top: 52rpx;
+			margin-top: 10rpx;
 
 			.ui-input {
 				position: relative;
-
+				margin-bottom: 50rpx;
 				&::after {
 					bottom: 10rpx;
 					left: 40rpx;
@@ -170,11 +185,12 @@
 					background: #e4e4e4;
 					position: absolute;
 				}
+				
 
 			}
 
 			.ui-tags {
-				padding: 0 20rpx;
+				padding: 12rpx 20rpx;
 				margin-top: 0 !important;
 				.ui-tags-item {
 					float: left;
@@ -185,7 +201,7 @@
 
 			&.ui-add-box {
 				margin-top: 20rpx;
-				padding: 10rpx 20rpx;
+				padding: 10rpx 0rpx;
 
 
 				// border-bottom: 1px solid #e4e4e4;
@@ -196,7 +212,15 @@
 
 			}
 		}
-
+		.ui-input-font{
+			margin-left: 20rpx;
+			font-family: PingFangSC-Medium;
+			font-size: 30rpx;
+			color: #333333;
+			letter-spacing: 0;
+			line-height: 30rpx;
+			font-weight: 500;
+		}
 		.ui-slider {
 			width: 100%;
 			display: flex;
@@ -215,21 +239,41 @@
 				}
 			}
 		}
-
-		.ui-room-name {
-			margin-left: 20rpx;
+		.ui-hr{
+			width: 100%;
+			position: absolute;
+			left: 0rpx;
+			bottom: 110rpx;
+			height: 1rpx;
+			opacity: 0.1;
+			background: #000000;
 		}
-
+	
 		.ui-btn {
 			text-align: center;
-			margin-top: 170rpx;
-
-			button {
-				width: 237rpx;
-				height: 71rpx;
+			margin:230rpx 0rpx 30rpx 0rpx;
+			view {
+				width: 100%;
+				height: 30rpx;
 				font-size: 28rpx;
-				color: #ffffff;
+				font-family: PingFangSC-Medium;
+				font-size: 36rpx;
+				color: #599FFF;
+				letter-spacing: 0;
+				text-align: center;
+				line-height: 36rpx;
+				font-weight: 500;
 			}
+		}
+		::v-deep .u-tag--warning{
+			background-image: linear-gradient(#FFCF4D,#FD913B);
+		}
+		::v-deep .u-tag--medium{
+			width: 70rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			
 		}
 	}
 </style>

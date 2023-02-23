@@ -1,8 +1,8 @@
 package com.newlandnpt.varyar.tcp.gateway.controller;
 
-import com.newlandnpt.varyar.tcp.dispose.ChannelMessageDisposer;
-import com.newlandnpt.varyar.tcp.dispose.incoming.call.IncomingCallReq;
-import com.newlandnpt.varyar.tcp.dispose.incoming.call.IncomingCallResponse;
+import com.newlandnpt.varyar.tcp.dispose.incoming.call.SetIncomingCallReq;
+import com.newlandnpt.varyar.tcp.dispose.incoming.call.SetIncomingCallResponse;
+import com.newlandnpt.varyar.tcp.service.IDevicePhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date 2023/2/22
  */
 @Controller
-@RequestMapping("/tcp/device/config")
-public class DeviceConfigController {
+@RequestMapping("/tcp/device/phone")
+public class DevicePhoneController {
 
     @Autowired
-    private ChannelMessageDisposer disposer;
+    private IDevicePhoneService devicePhoneService;
 
     @PostMapping("/incoming/call")
     @ResponseBody
-    public IncomingCallResponse incomingCall(@RequestBody IncomingCallReq req) {
-        return disposer.dispose(req, IncomingCallResponse::new);
+    public SetIncomingCallResponse setIncomingCall(@RequestBody SetIncomingCallReq req) {
+        return devicePhoneService.setIncomingCall(req);
     }
 
 }

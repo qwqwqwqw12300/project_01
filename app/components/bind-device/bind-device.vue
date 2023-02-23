@@ -8,19 +8,19 @@
 <template>
 	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close" @open="open">
 		<view class="ui-add">
-			<u-text prefixIcon="plus-circle" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
-				size="30rpx" text="绑定设备"></u-text>
+			<view class="ui-title">
+				<text class="ui-title-font">绑定设备</text>
+			</view>
 			<view class="ui-add-box">
-				<u-text size="28rpx" prefixIcon="../../static/images/set-form.png" iconStyle="font-size: 25rpx"
-					text="选择设备"></u-text>
+				<text class="ui-input-font">选择设备</text>
 				<view class="ui-select">
 					<uni-data-select v-model="deviceId" :clear="false" :localdata="devices"></uni-data-select>
 				</view>
 			</view>
 			<view class="ui-btn-group">
-				<button class="cancel" @click="close">取消</button>
-				<button class="plain" @click="goManager">管理设备</button>
-				<button class="default" @click="next">确定</button>
+				<view class="plain" @click="goManager">管理设备</view>
+				<view class="ui-btn-hr"></view>
+				<view class="plain" @click="next">确定</view>
 			</view>
 		</view>
 	</u-popup>
@@ -103,15 +103,28 @@
 <style lang="scss">
 	.ui-add {
 		width: 582rpx;
-		height: 406rpx;
+		height: 352rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
 		border: 1px solid #ffcb3d;
-		padding: 53rpx 31rpx;
-
+		padding: 20rpx 31rpx;
+		.ui-title{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.ui-title-font{
+				font-family: PingFangSC-Medium;
+				font-size: 36rpx;
+				color: #333333;
+				letter-spacing: 0;
+				text-align: center;
+				line-height: 46rpx;
+				font-weight: 500;
+			}
+		}
 		&>view {
-			margin-top: 52rpx;
+			margin-top: 10rpx;
 
 			&.ui-add-box {
 				padding: 10rpx 20rpx;
@@ -121,7 +134,14 @@
 				}
 			}
 		}
-
+		.ui-input-font{
+			font-family: PingFangSC-Medium;
+			font-size: 30rpx;
+			color: #333333;
+			letter-spacing: 0;
+			line-height: 30rpx;
+			font-weight: 500;
+		}
 		.ui-btn {
 			text-align: center;
 			margin-top: 70rpx;
@@ -144,23 +164,28 @@
 		}
 
 		.ui-btn-group {
+			width: 100%;
+			position: absolute;
+			left: 0rpx;
+			bottom: 0rpx;
+			border-radius:0rpx 0rpx 20rpx 20rpx;
+			border-top: 1rpx solid black;
+			border-color: rgba(0,0,0,0.1);
 			display: flex;
-
-			button {
-				width: 135rpx;
-				height: 70rpx;
-				border-radius: 35rpx;
-				font-size: 28rpx;
-
-				&:nth-child(2) {
-					width: 206rpx;
-				}
-
-
-				&:nth-child(3) {
-					width: 206rpx;
-					height: 70rpx;
-				}
+			align-items: center;
+			justify-content: space-between;
+			.plain {
+				width: 49.5%;
+				height: 100rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.ui-btn-hr{
+				width: 1rpx;
+				height: 100rpx;
+				opacity: 0.1;
+				background-color: black;
 			}
 		}
 	}

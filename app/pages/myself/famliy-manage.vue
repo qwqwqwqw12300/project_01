@@ -6,21 +6,20 @@
 -->
 
 <template>
-	<app-body>
-		<app-logo text="我的家庭管理"></app-logo>
+	<app-body :bg="false">
+		<view class="ui-logo">
+			<app-logo text="我的家庭管理"></app-logo>
+		</view>
 		<view class="ui-menu">
-			<u-grid>
-				<u-grid-item v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
-					<view class="ui-menu-item" :border="false" @click="gridClick(baseListItem)">
-						<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/myself/home.png"
-							size="60rpx"></u-icon>
-						<text class="grid-text">{{ baseListItem.name }}</text>
-						<u-icon @click.native.stop="onDelete(baseListItem.familyId)" class="ui-close active"
-							name="close-circle-fill" size="40rpx">
-						</u-icon>
+			<view class="menu-item" v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
+				<view class="item-box" @click="gridClick(baseListItem)">
+					<view class="title">
+						<u-icon name="/static/images/home.png" size="28"></u-icon>
+						<text>{{ baseListItem.name }}</text>
 					</view>
-				</u-grid-item>
-			</u-grid>
+					<view class="action" @click.native.stop="onDelete(baseListItem.familyId)">删除家庭</view>
+				</view>
+			</view>
 		</view>
 		<view class="ui-btn"><button class="default" @click="add">创建家庭</button></view>
 		<family-pop @update="getFamilyList" mode="add" :btnName="'提交'" ref="addFamily" />
@@ -109,62 +108,63 @@
 </script>
 
 <style lang="scss">
+	.ui-logo {
+		background: #ffffff;
+		padding-bottom: 50rpx;
+	}
+
 	.ui-menu {
-		margin-top: 70rpx;
-		padding: 0 78rpx;
-		min-height: 600rpx;
+		padding: 30rpx 20rpx;
+		display: flex;
+		flex-wrap: wrap;
+		box-sizing: border-box;
 
-		.ui-menu-item {
-			position: relative;
-			margin-top: 58rpx;
-			padding-bottom: 20rpx;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-			font-size: 27rpx;
-			color: #414141;
-			height: 168rpx;
-			width: 168rpx;
-			border-radius: 10rpx;
-			filter: drop-shadow(7.824rpx 10.382rpx 8rpx rgba(7, 5, 5, 0.08));
-			background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
-			text-align: center;
+		.menu-item {
+			background: #FFFFFF;
+			border-radius: 16rpx;
+			// padding: 20rpx;
+			width: 46%;
+			margin: 0 2%;
+			margin-bottom: 20rpx;
 
-			.grid-text {
-				display: inline-flex;
-				align-content: center;
+			.item-box {
+				padding: 30rpx;
+				display: flex;
+				flex-direction: column;
 				justify-content: center;
-				margin-top: 15rpx;
-				width: 70%;
-				height: 60rpx;
-			}
+				align-items: center;
 
-			.ui-edit {
-				position: absolute;
-				bottom: 10rpx;
-				right: 10rpx;
-				z-index: 10;
-			}
+				.title {
+					line-height: 70rpx;
+					display: flex;
+					align-items: center;
+					justify-content: center;
 
-			.ui-close {
-				position: absolute;
-				right: -10rpx;
-				top: -10rpx;
+					text {
+						font-size: 36rpx;
+						color: #353535;
+						font-weight: 550;
+					}
+				}
+
+				.action {
+					margin-top: 20rpx;
+					font-size: 28rpx;
+					color: #E95656;
+				}
 			}
 		}
+
 	}
 
 	.ui-btn {
-		text-align: center;
-		margin-top: 100rpx;
+		width: 100%;
+		position: absolute;
+		bottom: 0;
+		left: 0;
 
 		button {
-			width: 276rpx;
-			height: 74rpx;
-			font-size: 30rpx;
-			line-height: 74rpx;
-			border-radius: 60rpx;
+			border-radius: 0rpx !important;
 		}
 	}
 </style>

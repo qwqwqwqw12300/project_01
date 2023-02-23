@@ -4,9 +4,11 @@ import com.alibaba.fastjson2.JSON;
 import com.newlandnpt.varyar.common.core.domain.model.SMS.SMSSendReq;
 import com.newlandnpt.varyar.common.core.domain.model.SMS.SMSSendRes;
 import com.newlandnpt.varyar.common.utils.Md5.Md5Util;
+import com.newlandnpt.varyar.common.utils.SMS.templates.DeviceOutLineWarn;
 import com.newlandnpt.varyar.common.utils.SMS.templates.SMSTemplate;
 import org.apache.commons.codec.binary.Base64;
 
+import javax.validation.Valid;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -89,7 +91,16 @@ public class SMSUtils {
      */
     public static void main(String[] args) throws IOException {
         String msg = "这是发送短信的内容！";
-        sendMsg("15060665801", new Test("易连科"));
+//        sendMsg("15060665801", new Test("易连科"));
+        try {
+            DeviceOutLineWarn warn = new DeviceOutLineWarn( "", "雷达波1号");
+            if(warn.isCorrectParams()){
+                System.out.println("aaaaaa");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -156,6 +167,11 @@ public class SMSUtils {
         @Override
         public List<String> getParams() {
             return Arrays.asList(name);
+        }
+
+        @Override
+        public Boolean isCorrectParams() {
+            return true;
         }
     }
 }

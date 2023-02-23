@@ -7,42 +7,49 @@
 
 <template>
 	<view id="deviceManage">
-		<app-body :back="back">
-			<app-logo text="设备管理"></app-logo>
+		<app-body :back="back" :bg="false">
+			<view class="ui-logo">
+				<app-logo text="设备管理"></app-logo>
+			</view>
+
 			<view class="ui-menu">
 				<view v-for="(device, index) of devices" :key="'f' + index">
-					<view class="ui-title" v-if="device.list.length">{{device.name}}</view>
-					<u-grid col="2">
-						<u-grid-item v-for="(item, index) in device.list" :key="index">
-							<view class="ui-menu-item active" :border="false" @click="edit(item)">
-								<u-icon v-if="item.type == 0" :customStyle="{ paddingTop: 20 + 'rpx' }"
-									name="/static/images/leida-nm.png" size="120rpx"></u-icon>
-								<u-icon v-else :customStyle="{ paddingTop: 20 + 'rpx' }" name="/static/images/dzqgk.png"
-									size="120rpx"></u-icon>
-								<!-- <text class="grid-text">{{ baseListItem.title }}</text> -->
-								<u-text class="grid-text" iconStyle="font-size: 36rpx" align="center"
-									:text="item.name || '未命名'"></u-text>
-								<u-icon @click.native.stop="onDelete(item.deviceId)" class="ui-close active"
-									name="close-circle-fill" size="40rpx">
-								</u-icon>
-								<text class="grid-text ui-text">{{ (item.roomName || '未绑定') + ' | ' + item.location}}
-								</text>
-								<view class="ui-wifi active">
-									<u-icon :customStyle="{ paddingTop: 20 + 'rpx' }"
-										:name="item.onlineFlag === '1' ? 'wifi' : 'wifi-off'" size="40rpx"
-										:color="item.onlineFlag === '1' ? '#0dab1c' : '#ff4800'"></u-icon>
+					<!-- 	<view class="ui-title" v-if="device.list.length">{{device.name}}</view> -->
+					<view class="ui-menu-title" v-if="device.list.length">
+						<u-icon name="/static/images/home.png" size="28"></u-icon>
+						<text>{{device.name}}</text>
+					</view>
+					<view class="ui-menu-content">
+						<view class="ui-menu-item" v-for="(item, index) in device.list" :key="index">
+							<view class="item-box" @click="edit(item)">
+								<view class="device-status">
+									<text class="online" v-if="item.onlineFlag == 1">在线</text>
+									<text class="offline" v-else>离线</text>
+								</view>
+								<view class="device-info">
+									<image src="/static/images/leida-nm.png"></image>
+									<view class="detail">
+										<text class="name">{{ item.name }}</text>
+										<text class="position">
+											{{ item.roomName + ' | ' + item.location}}
+										</text>
+										<!-- 										<text class="position" v-else>
+											未绑定设备
+										</text> -->
+									</view>
+								</view>
+								<view class="device-action">
+									<text class="danger" @click.native.stop="onDelete(item.deviceId)">删除</text>
+									<text class="warn" v-if="!item.roomId" @click="binding(item)">绑定</text>
+									<text class="orange" v-else @click="unbinding(item)">解绑</text>
 								</view>
 							</view>
-							<view class="ui-btn">
-								<button v-if="!item.roomId" class="default" @click="binding(item)">绑定</button>
-								<button v-else class="plain" @click="unbinding(item)">解绑</button>
-							</view>
-						</u-grid-item>
-					</u-grid>
+						</view>
+					</view>
 				</view>
 
 			</view>
-			<view class="ui-add-btn"><button class="default" @click="addHandle.show = true">添加设备</button></view>
+			<view class="ui-btn"><button class="default" @click="addHandle.show = true">添加设备</button></view>
 			<!-- 绑定房间 -->
 			<u-popup :closeable="true" :round="10" :show="bindRoomShow" mode="center" @close="close">
 				<view class="wd-add">
@@ -400,131 +407,150 @@
 </script>
 
 <style lang="scss">
-	.ui-menu {
-		margin: 70rpx 0;
-		padding: 0 78rpx;
-		min-height: 600rpx;
-
-		>view {
-			margin-bottom: 50rpx;
-		}
-
-		.ui-title {
-			box-sizing: border-box;
-			padding: 0 32rpx;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			height: 60rpx;
-			width: 100%;
-			border-radius: 40px;
-			overflow: hidden;
-			color: #fff;
-			background-color: rgba(0, 0, 0, 0.4);
-			font-size: 30rpx;
-		}
-
-		.ui-menu-item {
-			position: relative;
-			margin-top: 30rpx;
-			padding: 15rpx 0 20rpx 0;
-			display: flex;
-			box-sizing: border-box;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-			font-size: 27rpx;
-			color: #414141;
-			height: 278rpx;
-			width: 258rpx;
-			border-radius: 10rpx;
-			filter: drop-shadow(7.824rpx 10.382rpx 8rpx rgba(7, 5, 5, 0.08));
-			background-image: linear-gradient(96deg, #f5f5f5 0%, #e5e5e5 100%);
-			text-align: center;
-
-			&>* {
-				flex: 1;
-
-				&:nth-child(1) {
-					flex: 2;
-				}
-			}
-
-			.ui-text {
-				display: inline-flex;
-				// width: 70%;
-				height: 40rpx;
-				line-height: 60rpx;
-				align-items: center;
-				justify-content: center;
-			}
-
-			.ui-location {
-				display: inline;
-				width: unset;
-				position: absolute;
-				bottom: 10rpx;
-				left: 10rpx;
-				z-index: 10;
-				font-size: 20rpx;
-			}
-
-			.grid-text {
-				&:nth-child(3) {
-					font-size: 24rpx;
-				}
-			}
-
-			.ui-wifi {
-				position: absolute;
-				bottom: 10rpx;
-				right: 10rpx;
-				z-index: 10;
-			}
-
-			.ui-close {
-				position: absolute;
-				top: -10rpx;
-				right: -10rpx;
-			}
-		}
-
-		.ui-btn {
-			margin-top: 10rpx;
-			text-align: center;
-			width: 100%;
-
-			button {
-				height: 60rpx;
-				width: 258rpx;
-				line-height: 60rpx;
-				border-radius: 10px;
-				font-size: 30rpx;
-			}
-		}
+	.online {
+		background-image: linear-gradient(90deg, #1EC862 0%, #13B98F 100%);
 	}
 
-	.ui-add-btn {
-		text-align: center;
-		margin-bottom: 20rpx;
-
-		button {
-			width: 276rpx;
-			height: 74rpx;
-			font-size: 30rpx;
-			line-height: 74rpx;
-			border-radius: 60rpx;
-		}
+	.offline {
+		background: #D4D4D4;
 	}
 
 	.ui-logo {
-		height: 69rpx;
-		// width: 366rpx;
-		font-size: 69rpx;
-		color: #fff;
-		margin: 20rpx 72rpx;
-		display: inline-block;
-		font-weight: bold;
+		background: #ffffff;
+		padding-bottom: 50rpx;
+	}
+
+	.ui-menu {
+		// margin: 70rpx 0;
+		padding: 0 30rpx;
+		padding-top: 30rpx;
+		min-height: 600rpx;
+
+		.ui-menu-title {
+			display: flex;
+			align-items: center;
+			font-size: 34rpx;
+			color: #353535;
+			height: 40px;
+			font-weight: 550;
+			margin-bottom: 30rpx;
+
+			text {
+				margin-left: 10rpx;
+			}
+		}
+
+		.ui-menu-content {
+			padding-bottom: 30rpx;
+			display: flex;
+			flex-wrap: wrap;
+			box-sizing: border-box;
+
+			.ui-menu-item {
+				background: #FFFFFF;
+				border-radius: 16px;
+				width: 48%;
+				margin: 0 1%;
+				margin-bottom: 20rpx;
+				position: relative;
+
+				.item-box {
+					padding: 30rpx 20rpx;
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+
+					.device-status {
+						position: absolute;
+						top: 12rpx;
+						right: 12rpx;
+
+						text {
+							color: #FFFFFF;
+							font-size: 20rpx;
+							padding: 4rpx 8rpx;
+							border-radius: 4px;
+						}
+					}
+
+					.device-info {
+						margin-top: 10rpx;
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+
+						image {
+							height: 120rpx;
+							width: 120rpx;
+						}
+
+						.detail {
+							flex: 1;
+							margin-left: 10rpx;
+
+							text {
+								display: inline-block;
+							}
+
+							.name {
+								font-size: 32rpx;
+								color: #353535;
+								font-weight: 500;
+							}
+
+							.position {
+								margin-top: 10rpx;
+								font-size: 26rpx;
+								color: #888888;
+							}
+						}
+					}
+
+					.device-action {
+						width: 100%;
+						margin-top: 20rpx;
+						display: flex;
+						justify-content: space-around;
+
+						.danger {
+							color: #E95656;
+						}
+
+						.warn {
+							border: 1px solid rgba(254, 174, 67, 1);
+							border-radius: 24px;
+							color: #FEAE43;
+							padding: 6rpx 20rpx;
+							font-size: 24rpx;
+						}
+
+						.orange {
+							padding: 6rpx 20rpx;
+							font-size: 24rpx;
+							color: #fff;
+							background-image: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);
+							border-radius: 24px;
+						}
+
+						text {
+							font-size: 26rpx
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.ui-btn {
+		width: 100%;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+
+		button {
+			border-radius: 0rpx !important;
+		}
 	}
 
 	.wd-add {

@@ -7,7 +7,7 @@ import com.newlandnpt.varyar.tcp.base.Response;
  * @author lin.ju
  * @date 2023/2/22
  */
-public class IncomingCallResponse extends MessageHead implements Response {
+public class SetIncomingCallResponse extends MessageHead implements Response {
 
     /**
      * 应答状态(0=设置成功;1=设置异常;)

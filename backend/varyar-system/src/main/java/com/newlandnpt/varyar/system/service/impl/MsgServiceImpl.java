@@ -287,6 +287,35 @@ public class MsgServiceImpl implements IMsgService
             }
         }
 
+        //如果是紧急事件的话同时发送短信
+        if("urgent".equals(event.getLevel())){
+            TMsg msg = new TMsg();
+            //短信类型
+            msg.setMsgType(MSG_TYPE_SMS);
+            msg.setDeviceType(event.getDeviceType());
+            msg.setEventLevel(event.getLevel());
+            //事件类型
+            msg.setEventType(event.getEventType());
+            msg.setNo(IdUtils.fastSimpleUUID());
+            msg.setContent(event.getContent());
+            msg.setEventId(event.getEventId());
+            msg.setDeviceId(event.getDeviceId());
+//            msg.setFamilyId(memberFamily.getFamilyId());
+//            msg.setMemberId(memberFamily.getMemberId());
+            msg.setOrgId(event.getOrgId());
+            msg.setOperator("系统");
+            msg.setSendStatus(SEND_STATUS_NOT_SEND);
+            msg.setOperateFlag(OPERATE_FLAG_NOT_HANDLE);
+            result+=insertTMsg(msg);
+            try{
+                //发送短信接口处
+                System.out.println("发送短信");
+
+            }catch (Exception e){
+                log.error(">>>> 短信发送失败",e);
+            }
+        }
+
         return result;
     }
 }

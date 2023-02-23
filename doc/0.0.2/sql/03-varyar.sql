@@ -65,3 +65,19 @@ create table t_msg (
   update_time       datetime                               comment '更新时间',
   primary key (msg_id)
 ) engine=innodb auto_increment=100 comment = '消息表';
+
+
+
+drop table if exists t_room;
+create table t_room (
+  room_id        bigint(20)      not null auto_increment    comment '房间id',
+  name              varchar(50)     default ''                 comment '房间名称',
+  room_type         char(2)     default ''                 comment '房间类型:0:其他、1:书房、2:客厅、3:卧室、4:浴室、5:厨房、6:餐厅',
+  family_id        bigint(20)      default null                    comment '家庭id',
+  org_id        bigint(20)      default null                    comment '机构id',
+  create_by_id         varchar(20)     default ''                 comment '创建者id',
+  del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
+  create_time       datetime                                   comment '创建时间',
+  update_time       datetime                                   comment '更新时间',
+  primary key (room_id)
+) engine=innodb auto_increment=100 comment = '房间表';

@@ -164,6 +164,10 @@
 			padding-left: 30rpx;
 
 			.name {
+				width: 260rpx;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
 				font-size: 42rpx;
 				color: #353535;
 				font-weight: 600;

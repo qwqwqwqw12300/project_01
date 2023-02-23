@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 呼入号码
+ * 设置呼入号码
  * @author lin.ju
  * @date 2023/2/22
  */
-public class IncomingCallReq extends MessageHead implements Req {
+public class SetIncomingCallReq extends MessageHead implements Req {
 
     /**
      * 删除的号码
@@ -36,6 +36,10 @@ public class IncomingCallReq extends MessageHead implements Req {
      */
     private String period = "1+2+3+4+5+6+0";
 
+    public SetIncomingCallReq() {
+        setApiType("SET_INCOMING_CALL");
+        setMsgType("1");
+    }
 
     public List<String> getDeleteNumbers() {
         return deleteNumbers;

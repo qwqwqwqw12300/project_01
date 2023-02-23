@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="TRoom" id="TRoomResult">
         <result property="roomId"    column="room_id"    />
         <result property="name"    column="name"    />
+        <result property="roomType"    column="room_type"    />
         <result property="familyId"    column="family_id"    />
         <result property="orgId"    column="org_id"    />
         <result property="delFlag"    column="del_flag"    />
@@ -16,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTRoomVo">
-        select room_id, name, family_id, org_id, del_flag, create_time, update_time,create_by_id from t_room
+        select room_id, name, room_type, family_id, org_id, del_flag, create_time, update_time,create_by_id from t_room
     </sql>
     <select id="selectTRoomList" parameterType="TRoom" resultMap="TRoomResult">
         <include refid="selectTRoomVo"/>
@@ -40,6 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into t_room
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">name,</if>
+            <if test="roomType != null">room_type,</if>
             <if test="familyId != null">family_id,</if>
             <if test="orgId != null">org_id,</if>
             <if test="delFlag != null">del_flag,</if>
@@ -49,6 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="name != null">#{name},</if>
+            <if test="roomType != null">#{roomType},</if>
             <if test="familyId != null">#{familyId},</if>
             <if test="orgId != null">#{orgId},</if>
             <if test="delFlag != null">#{delFlag},</if>
@@ -62,6 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update t_room
         <trim prefix="SET" suffixOverrides=",">
             <if test="name != null">name = #{name},</if>
+            <if test="roomType != null">room_type = #{roomType},</if>
             <if test="familyId != null">family_id = #{familyId},</if>
             <if test="orgId != null">org_id = #{orgId},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>

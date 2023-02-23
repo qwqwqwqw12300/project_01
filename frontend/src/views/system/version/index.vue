@@ -255,9 +255,9 @@ export default {
       rules: {
         content: [
           { required: true,
-            // pattern: /^[1-9]\d?(\.([1-9]?\d)){2}$/,
-            // message: "版本号不能为空,格式为X.Y.Z(1-99.0-99.0-99)", trigger: "blur" },
-            message: "版本号不能为空", trigger: "blur" },
+            pattern: /^[1-9]\d?(\.([1-9]?\d)){2}$/,
+            message: "版本号不能为空,格式为X.Y.Z(1-99.0-99.0-99)", trigger: "blur" },
+            // message: "版本号不能为空", trigger: "blur" },
 
         ],
         type: [
