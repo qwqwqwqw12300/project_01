@@ -1,5 +1,7 @@
 package com.newlandnpt.varyar.tcp.base;
 
+import com.newlandnpt.varyar.common.constant.tcp.ApiTypes;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,7 +55,7 @@ public interface Response {
         setIccid(req.getIccid());
         setTranNo(req.getTranNo());
         setApiType(req.getApiType());
-        setMsgType(req.getMsgType());
+        setMsgType(ApiTypes.responseMsgType(req.getApiType()));
         setMsgTime(req.getMsgTime());
         setMsgLen(req.getMsgLen());
     }

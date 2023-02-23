@@ -1,14 +1,13 @@
 package com.newlandnpt.varyar.tcp.dispose;
 
+import com.newlandnpt.varyar.common.constant.tcp.ApiTypes;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.ServiceException;
-import com.newlandnpt.varyar.tcp.base.ChannelCache;
+import com.newlandnpt.varyar.tcp.base.DeviceChannelCache;
 import com.newlandnpt.varyar.tcp.base.Req;
 import com.newlandnpt.varyar.tcp.base.Response;
 import io.netty.channel.Channel;
-import io.netty.handler.timeout.TimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
@@ -31,16 +30,21 @@ public class ChannelMessageDisposer{
 
     /**
      * 分发消息
+     *
+     * @param apiType
      * @param req
      * @return
      */
-    public <T extends Response> T dispose(Req req, Supplier<T> responseSupplier){
-        Channel channel = ChannelCache.getChannelByDeviceNo(req.getDeviceNo());
+    public <T extends Response> T dispose(ApiTypes apiType, Req req, Supplier<T> responseSupplier){
+        Channel channel = DeviceChannelCache.getChannelByDeviceNo(req.getDeviceNo());
         if(channel == null){
             throw new NullPointerException("设备未连接");
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String time = sdf.format(new Date());
+        req.setIccid(DeviceChannelCache.getIccIdByDeviceNo(req.getDeviceNo()));
+        req.setApiType(apiType.name());
+        req.setMsgType(apiType.getReqMsgType());
         req.setTranNo(time+redisCache.getAtomicIncrementLongWithDecimalFormat(SECOND_4_CYCLE_NUMBER+time,1,4));
         req.setMsgTime(time);
         T response = responseSupplier.get();

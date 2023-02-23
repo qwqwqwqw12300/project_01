@@ -35,7 +35,8 @@ public class ChannelMessageHandlers {
     public static Response handleRequest(ChannelHandlerContext ctx, Req req){
        for(AbstractChannelMessageHandler handler:handlers.values()){
            if(req.getClass().equals(handler.newInstance().getClass())){
-               return handler.handle(ctx, req);
+               Response response = handler.handle(ctx, req);
+               return response;
            }
        }
        return null;
