@@ -15,6 +15,13 @@ public enum ApiTypes {
     DEVICE_LOGIN(REPORT_REQ,REPORT_RESPONSE),
     /** 设置呼入号码 */
     SET_INCOMING_CALL(DISPOSE_REQ,DISPOSE_RESPONSE),
+
+    /** 获取呼入号码 */
+    GET_INCOMING_CALL(REPORT_REQ,REPORT_RESPONSE),
+
+    /** 按键获取 */
+    GET_NORMAL_BUTTON(REPORT_REQ,REPORT_RESPONSE),
+
     /** 获取课堂模式 */
     GET_CLASS_MODEL(REPORT_REQ,REPORT_RESPONSE),
     /**获取端口**/
