@@ -8,7 +8,9 @@
 			<view>
 				<image class="ui-main-image" src="@/static/images/ELINKER@3x.png" mode=""></image>
 			</view>
-
+			<view class="ui-main-font">
+				Version {{appVersion}}
+			</view>
 			<view class="ui-main-button">
 				<button class="ui-button default" @click="handleUpdate">检查更新</button>
 			</view>
@@ -76,7 +78,6 @@
 
 <style lang="scss" scoped>
 	.ui-main {
-		height: 1000rpx;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -86,9 +87,17 @@
 			width: 390rpx;
 			height: 388rpx;
 		}
-
+		.ui-main-font{
+			margin-top: 40rpx;
+			font-family: PingFangSC-Regular;
+			font-size: 36rpx;
+			color: #353535;
+			letter-spacing: 0;
+			text-align: center;
+			font-weight: 400;
+		}
 		.ui-main-button {
-			margin-top: 100px;
+			margin-top: 50px;
 			width: 600rpx;
 
 			.ui-button {
