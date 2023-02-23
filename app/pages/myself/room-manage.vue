@@ -39,7 +39,7 @@
 						</view>
 						<view class="device-action">
 							<text class="danger" @click.native.stop="onDelete(item.roomId)">删除</text>
-							<text class="warn" v-if="!item.devices.length" @click="binding(item)">绑定</text>
+							<text class="warn" v-if="!item.devices.length" @click.native.stop="binding(item)" >绑定</text>
 							<text class="orange" v-else @click="unbinding(item.devices)">解绑</text>
 						</view>
 					</view>
