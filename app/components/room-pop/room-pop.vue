@@ -18,7 +18,7 @@
 					</u-input>
 				</view>
 				<view class="ui-tags">
-					<view class="ui-tags-item" v-for="(item, index) in tagsList" :key="index">
+					<view class="ui-tags-item active" v-for="(item, index) in tagsList" :key="index">
 						<u-tag :text="item.name" :plain="!item.checked" type="warning" :name="item.name"
 							@click="radioClick">
 						</u-tag>
@@ -162,7 +162,7 @@
 <style lang="scss">
 	.ui-add {
 		width: 582rpx;
-		min-height: 300rpx;
+		min-height: 500rpx;
 		border-radius: 20rpx;
 		background: #fff;
 		padding: 20rpx 31rpx;
@@ -199,7 +199,7 @@
 			}
 
 			.ui-tags {
-				padding: 12rpx 20rpx;
+				padding: 12rpx 0rpx;
 				margin-top: 0 !important;
 
 				.ui-tags-item {
@@ -225,7 +225,6 @@
 
 		.ui-input-font {
 			display: inline-block;
-			margin-left: 20rpx;
 			margin-bottom: 20rpx;
 			font-family: PingFangSC-Medium;
 			font-size: 30rpx;
@@ -258,7 +257,7 @@
 			width: 100%;
 			position: absolute;
 			left: 0rpx;
-			bottom: 110rpx;
+			bottom: 90rpx;
 			height: 1rpx;
 			opacity: 0.1;
 			background: #000000;
@@ -266,7 +265,7 @@
 
 		.ui-btn {
 			text-align: center;
-			margin: 230rpx 0rpx 30rpx 0rpx;
+			margin: 230rpx 0rpx 35rpx 0rpx;
 
 			view {
 				width: 100%;
@@ -282,9 +281,18 @@
 		}
 
 		::v-deep .u-tag--warning {
-			background-image: linear-gradient(#FFCF4D, #FD913B);
+			// background-image: linear-gradient(#FFCF4D, #FD913B);
+			background-color: #fff;
 		}
-
+		::v-deep .u-tag__text--warning {
+			// background-image: linear-gradient(#FFCF4D, #FD913B);
+			color: #f9ae3d;
+		}
+		
+		::v-deep .u-tag--warning :active{
+			// background-image: linear-gradient(#FFCF4D, #FD913B);
+		}
+		
 		::v-deep .u-tag--medium {
 			width: 70rpx;
 			display: flex;

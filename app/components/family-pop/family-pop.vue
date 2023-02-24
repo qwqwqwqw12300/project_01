@@ -125,7 +125,7 @@
 <style lang="scss">
 	.wd-add {
 		width: 582rpx;
-		min-height: 300rpx;
+		min-height: 500rpx;
 		border-radius: 20rpx;
 		padding: 20rpx 31rpx;
 
@@ -156,7 +156,7 @@
 			&.ui-input {
 				margin-top: 40rpx;
 				position: relative;
-				padding: 25rpx 20rpx;
+				padding: 10rpx 20rpx;
 
 				.ui-input-font {
 					margin: 0 0 20rpx 20rpx;
@@ -178,7 +178,7 @@
 			width: 100%;
 			position: absolute;
 			left: 0rpx;
-			bottom: 110rpx;
+			bottom: 90rpx;
 			height: 1rpx;
 			opacity: 0.1;
 			background: #000000;
@@ -186,7 +186,7 @@
 
 		.ui-btn {
 			text-align: center;
-			margin: 100rpx 0rpx 25rpx 0rpx;
+			margin: 0rpx 0rpx 35rpx 0rpx;
 
 			view {
 				width: 100%;
