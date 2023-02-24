@@ -9,7 +9,7 @@
 					<u-input v-model="nickname" maxlength="6" border="none" placeholder="请输入" />
 				</u-form-item>
 				<u-form-item>
-					<u-button class="ui-button" type="primary" text="提交" @click="handleSumbit"></u-button>
+					<u-button class="ui-button default" type="primary" text="提交" @click="handleSumbit"></u-button>
 				</u-form-item>
 			</u-form>
 		</view>
