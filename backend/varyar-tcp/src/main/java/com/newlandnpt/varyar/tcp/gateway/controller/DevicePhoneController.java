@@ -9,6 +9,11 @@ import com.newlandnpt.varyar.tcp.dispose.serverInfo.SetServerInfoResponse;
 import com.newlandnpt.varyar.tcp.dispose.terminal.SetOperateTerminalReq;
 import com.newlandnpt.varyar.tcp.dispose.terminal.SetOperateTerminalResponse;
 import com.newlandnpt.varyar.tcp.service.IDeviceButtonService;
+import com.newlandnpt.varyar.tcp.dispose.incoming.locationFrequency.SetLocationFrequencyReq;
+import com.newlandnpt.varyar.tcp.dispose.incoming.locationFrequency.SetLocationFrequencyResponse;
+import com.newlandnpt.varyar.tcp.dispose.incoming.locationMode.SetLocationModeReq;
+import com.newlandnpt.varyar.tcp.dispose.incoming.locationMode.SetLocationModeResponse;
+import com.newlandnpt.varyar.tcp.service.IDeviceLocationService;
 import com.newlandnpt.varyar.tcp.service.IDevicePhoneService;
 import com.newlandnpt.varyar.tcp.service.IDeviceServerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +40,9 @@ public class DevicePhoneController {
     private IDeviceServerService deviceServerService;
 
 
+
+    @Autowired
+    private IDeviceLocationService deviceLocationService;
 
     @PostMapping("/incoming/call")
     @ResponseBody
@@ -72,6 +80,18 @@ public class DevicePhoneController {
     @ResponseBody
     public SetOperateTerminalResponse setOperateTerminalResponse(@RequestBody SetOperateTerminalReq req) {
         return deviceServerService.setOperateTerminalResponse(req);
+    }
+
+    @PostMapping("/incoming/locationFrequency")
+    @ResponseBody
+    public SetLocationFrequencyResponse setLocationFrequency(@RequestBody SetLocationFrequencyReq req){
+        return deviceLocationService.setLocationFrequency(req);
+    }
+
+    @PostMapping("/incoming/locationMode")
+    @ResponseBody
+    public SetLocationModeResponse setLocationMode(@RequestBody SetLocationModeReq req){
+        return deviceLocationService.setLocationMode(req);
     }
 
 }

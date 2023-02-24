@@ -43,6 +43,9 @@ public class LocationInfoResponseMqMsgEntity {
      */
     private String wifiData;
 
+    public LocationInfoResponseMqMsgEntity() {
+    }
+
     public LocationInfoResponseMqMsgEntity(String deviceNo, String iccid, String tranNo, String msgTime, String gpsData, String lbsData, String wifiData) {
         this.deviceNo = deviceNo;
         this.iccid = iccid;

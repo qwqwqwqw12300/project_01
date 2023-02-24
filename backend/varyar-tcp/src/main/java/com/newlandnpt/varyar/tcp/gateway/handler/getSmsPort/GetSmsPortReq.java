@@ -14,7 +14,7 @@ public class GetSmsPortReq  extends MessageHead implements Req {
     /**
      * 默认信息
      */
-    private String defaultInfo = "1";
+    private String defaultInfo = "";
 
     public String getDefaultInfo() {
         return defaultInfo;
