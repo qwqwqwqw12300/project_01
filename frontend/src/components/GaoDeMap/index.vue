@@ -70,7 +70,9 @@ export default {
       const AMap = await AMapLoader.load({
         key: "1f82ee60ed8a674eb16ad537f748a752",             // 申请好的Web端开发者Key，首次调用 load 时必填
         version: "2.0",      // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-        plugins: ["AMap.Geocoder", "AMap.AutoComplete","AMap.Geolocation"],       // 需要使用的的插件列表，如比例尺'AMap.Scale'等
+        plugins: ["AMap.Geocoder", "AMap.AutoComplete","AMap.Geolocation","PlaceSearch","ToolBar"],       // 需要使用的的插件列表，如比例尺'AMap.Scale'等
+        // plugins: ['AMap.Geocoder','AMap.Geolocation','AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+
       })
       this.AMap = AMap
       this.map = new AMap.Map("container"+this.hash, {  //设置地图容器id
@@ -78,13 +80,19 @@ export default {
         zoom: 17,           //初始化地图级别
         zoomEnable: false     //地图是否可缩放
       });
+      // var markerPoint =new AMap.Marker({
+      //   position:[120,35],//经纬度
+      //   offset: new AMap.Pixel(-12,-32),//标记偏移量
+      //   icon: '//vdata.amap.com/icons/b18/1/2.png',
+      // })
+      // this.map.add(markerPoint),
       this.geolocation = new AMap.Geolocation({
         // 是否使用高精度定位，默认：true
         enableHighAccuracy: true,
         // 设置定位超时时间，默认：无穷大
         timeout: 10000,
         // 定位按钮的停靠位置的偏移量
-        // offset: [10, 20],
+        offset: [10, 20],
         //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
         zoomToAccuracy: true,
         //  定位按钮的排放位置,  RB表示右下
@@ -138,16 +146,26 @@ export default {
         this.map.add(this.circle)
       }
 
-
+      //逆向地理编码方法
       this.geocoder.getAddress(location, (status, result) => {
         if (status === 'complete' && result.regeocode) {
           this.$emit('update:address', result.regeocode.formattedAddress)
         } else {
           log.error('根据经纬度查询地址失败')
         }
+      }),
+      //正向地理编码方法
+      this.geocoder.getLocation("马尾新大陆", (status, result) =>  {
+        if (status === 'complete' && result.info === 'OK') {
+        // result中对应详细地理坐标信息
+        }else {
+            log.error('根据地址查询经纬度失败')
+        }
       })
     }
   },
+
+
 }
 </script>
 
