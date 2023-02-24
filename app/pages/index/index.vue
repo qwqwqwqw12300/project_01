@@ -85,7 +85,7 @@
 										</view>
 									</view>
 									<u-badge v-if="getDeives(room).msgNum > 1" color="#fff" :offset="[-1, 0]"
-										:value="getDeives(room).msgNum > 1" absolute>
+										:value="getDeives(room).msgNum" absolute>
 									</u-badge>
 								</view>
 							</template>
