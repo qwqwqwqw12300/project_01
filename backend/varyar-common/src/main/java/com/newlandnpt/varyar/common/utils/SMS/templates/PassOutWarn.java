@@ -35,9 +35,17 @@ public class PassOutWarn implements SMSTemplate {
      */
     private String time;
 
+    public PassOutWarn(String telPhone, String deviceName, String field, String action, String time) {
+        this.telPhone = telPhone;
+        this.deviceName = deviceName;
+        this.field = field;
+        this.action = action;
+        this.time = time;
+    }
+
     @Override
     public String getTemplateId() {
-        return null;
+        return "a5d929d026f44e0eab7d767b4a8bc185";
     }
 
     @Override

@@ -20,9 +20,14 @@ public class FamilyShare implements SMSTemplate {
      */
     private String downUrl;
 
+    public FamilyShare(String telNumber, String downUrl) {
+        this.telNumber = telNumber;
+        this.downUrl = downUrl;
+    }
+
     @Override
     public String getTemplateId() {
-        return null;
+        return "1a73f48045cc454a8c991fce5f914be7";
     }
 
     @Override
@@ -37,7 +42,7 @@ public class FamilyShare implements SMSTemplate {
                 ParamsVaildate.isRanger(getTelNumber(),10) &&
                 ParamsVaildate.isNotNull(getDownUrl()) &&
                 ParamsVaildate.isRanger(getDownUrl(),20) &&
-                ParamsVaildate.isPattern(getDownUrl(),ParamsVaildate.CHAR_NUMBER);
+                ParamsVaildate.isPattern(getTelNumber(),ParamsVaildate.CHAR_STAR);
     }
 
     public String getTelNumber() {

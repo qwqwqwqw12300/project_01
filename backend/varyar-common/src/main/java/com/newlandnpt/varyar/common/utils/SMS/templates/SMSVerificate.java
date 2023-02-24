@@ -20,9 +20,14 @@ public class SMSVerificate implements SMSTemplate {
      */
     private String codeTime;
 
+    public SMSVerificate(String verifyCode, String codeTime) {
+        this.verifyCode = verifyCode;
+        this.codeTime = codeTime;
+    }
+
     @Override
     public String getTemplateId() {
-        return null;
+        return "63d1277ee1514631a87ce7ed4d2bca0f";
     }
 
     @Override

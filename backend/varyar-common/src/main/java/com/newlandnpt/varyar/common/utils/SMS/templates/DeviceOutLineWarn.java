@@ -36,7 +36,7 @@ public class DeviceOutLineWarn implements SMSTemplate {
 
     @Override
     public String getTemplateId() {
-        return null;
+        return "367bb07c1a2f4bd5a1986ea265c11c5f";
     }
 
     @Override

@@ -20,9 +20,14 @@ public class FallWarn implements SMSTemplate {
      */
     private String deviceName;
 
+    public FallWarn(String telPhone, String deviceName) {
+        this.telPhone = telPhone;
+        this.deviceName = deviceName;
+    }
+
     @Override
     public String getTemplateId() {
-        return null;
+        return "e8cf6da94a9d40d0909f352bed3c80b7";
     }
 
     @Override
