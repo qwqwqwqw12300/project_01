@@ -54,7 +54,7 @@
 		},
 		data() {
 			return {
-				show: true,
+				show: false,
 				/**密码**/
 				info: {
 					pwd: '',
