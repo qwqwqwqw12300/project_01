@@ -4,8 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.newlandnpt.varyar.common.core.domain.model.SMS.SMSSendReq;
 import com.newlandnpt.varyar.common.core.domain.model.SMS.SMSSendRes;
 import com.newlandnpt.varyar.common.utils.Md5.Md5Util;
-import com.newlandnpt.varyar.common.utils.SMS.templates.DeviceOutLineWarn;
-import com.newlandnpt.varyar.common.utils.SMS.templates.SMSTemplate;
+import com.newlandnpt.varyar.common.utils.SMS.templates.*;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.validation.Valid;
@@ -93,10 +92,33 @@ public class SMSUtils {
         String msg = "这是发送短信的内容！";
 //        sendMsg("15060665801", new Test("易连科"));
         try {
-            DeviceOutLineWarn warn = new DeviceOutLineWarn( "", "雷达波1号");
-            if(warn.isCorrectParams()){
-                System.out.println("aaaaaa");
-            }
+//            DeviceOutLineWarn warn = new DeviceOutLineWarn( "", "雷达波1号");
+            SMSVerificate sms1 = new SMSVerificate("123456","60分钟");
+            FamilyShare sms2 = new FamilyShare("135*1234","http://r.aj.com");
+            DeviceOutLineWarn sms3 = new DeviceOutLineWarn("1234","雷达波一号");
+            FallWarn sms4 = new FallWarn("1234","雷达波1号");
+            PassOutWarn sms5 = new PassOutWarn("1234","雷达波1号","大卧室","离开","50");
+
+
+
+//            if(sms1.isCorrectParams()){
+//                sendMsg("15859819572",sms1);
+//            }
+//            if(sms2.isCorrectParams()){
+//                sendMsg("15859819572",sms2);
+//            }
+//            if(sms3.isCorrectParams()){
+//                sendMsg("15859819572",sms3);
+//            }
+//            if(sms4.isCorrectParams()){
+//                sendMsg("15859819572",sms4);
+//            }
+//            sendMsg("15859819572",sms5);
+//            if(sms5.isCorrectParams()){
+//                sendMsg("15859819572",sms5);
+//            }
+
+
         }catch (Exception e){
             e.printStackTrace();
             System.out.println(e.getMessage());

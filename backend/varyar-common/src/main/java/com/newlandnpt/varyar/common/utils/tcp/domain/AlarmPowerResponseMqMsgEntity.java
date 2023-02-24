@@ -1,5 +1,10 @@
 package com.newlandnpt.varyar.common.utils.tcp.domain;
 
+/**
+ * 剩余电量提示响应 - MQ消息实体
+ * @author ljx
+ * @date 2023/2/24
+ */
 public class AlarmPowerResponseMqMsgEntity {
 
     /**

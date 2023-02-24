@@ -1,5 +1,10 @@
 package com.newlandnpt.varyar.common.utils.tcp.domain;
 
+/**
+ * 上传心跳数据响应 - MQ消息实体
+ * @author ljx
+ * @date 2023/2/24
+ */
 public class ReportHeartBeatResponseMqMsgEntity {
     /**
      * 设备号,设备唯一编号
