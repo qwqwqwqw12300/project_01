@@ -140,7 +140,6 @@ function httpUploadFile(url, params) {
 			name: params.name,
 			header: {
 				'Accept': 'application/json',
-				'Content-Type': 'application/json',
 				// 'Content-Type': 'application/x-www-form-urlencoded',
 				'Authorization': getToken(),
 			},

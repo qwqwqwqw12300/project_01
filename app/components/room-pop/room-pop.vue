@@ -14,8 +14,7 @@
 			<view class="ui-add-box">
 				<view class="ui-input">
 					<text class="ui-input-font">房间名称</text>
-					<u-input :maxlength="6"  v-model="form.name" placeholder="请输入房间名称"
-						border="bottom" clearable>
+					<u-input :maxlength="6" v-model="form.name" placeholder="请输入房间名称" border="bottom" clearable>
 					</u-input>
 				</view>
 				<text class="ui-input-font">房间名称</text>
@@ -35,7 +34,9 @@
 				</view> -->
 			</view>
 			<view class="ui-hr"></view>
-			<view class="ui-btn"><view @click="next" >{{ subTitle }}</view></view>
+			<view class="ui-btn">
+				<view @click="next">{{ subTitle }}</view>
+			</view>
 		</view>
 	</u-popup>
 </template>
@@ -66,22 +67,34 @@
 				},
 				/**要绑定的雷达波设备**/
 				deviceId: '',
+				// 0:其他、1:书房、2:客厅、3:卧室、4:浴室、5:厨房、6:餐厅
 				tagsList: [{
-					name: '客厅',
-					checked: false
-				}, {
-					name: '卧室',
-					checked: false
-				}, {
-					name: '浴室',
-					checked: false
-				}, {
-					name: '厨房',
-					checked: false
-				}, {
-					name: '餐厅',
-					checked: false
-				}],
+						name: '书房',
+						value: 1,
+						checked: false
+					},
+					{
+						name: '客厅',
+						value: 2,
+						checked: false
+					}, {
+						name: '卧室',
+						value: 3,
+						checked: false
+					}, {
+						name: '浴室',
+						value: 4,
+						checked: false
+					}, {
+						name: '厨房',
+						value: 5,
+						checked: false
+					}, {
+						name: '餐厅',
+						value: 6,
+						checked: false
+					}
+				],
 			}
 		},
 		computed: {
@@ -123,10 +136,17 @@
 				if (!name) {
 					return uni.$u.toast('请完善房间信息');
 				}
+				let roomType = '0';
+				const roomInfo = this.tagsList.find(ele => ele.name === name);
+				if (roomInfo) {
+					roomType = roomInfo.value;
+				}
 				const handle = this.mode === 'add' ? PostAddRoom({
-					...this.form
+					...this.form,
+					roomType
 				}) : PostEditRoom({
-					...this.form
+					...this.form,
+					roomType
 				});
 				handle.then(res => {
 					uni.$u.toast('操作成功')
@@ -149,11 +169,13 @@
 		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
 		border: 1px solid #ffcb3d;
 		padding: 20rpx 31rpx;
-		.ui-title{
+
+		.ui-title {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			.ui-title-font{
+
+			.ui-title-font {
 				font-family: PingFangSC-Medium;
 				font-size: 36rpx;
 				color: #333333;
@@ -163,6 +185,7 @@
 				font-weight: 500;
 			}
 		}
+
 		.ui-select {
 			width: 500rpx;
 			margin: 20rpx 0 0 20rpx;
@@ -176,6 +199,7 @@
 			.ui-input {
 				position: relative;
 				margin-bottom: 50rpx;
+
 				&::after {
 					bottom: 10rpx;
 					left: 40rpx;
@@ -185,17 +209,18 @@
 					background: #e4e4e4;
 					position: absolute;
 				}
-				
+
 
 			}
 
 			.ui-tags {
 				padding: 12rpx 20rpx;
 				margin-top: 0 !important;
+
 				.ui-tags-item {
 					float: left;
 					margin-top: 14rpx;
-					margin-right: 30rpx;
+					margin-right: 20rpx;
 				}
 			}
 
@@ -212,7 +237,8 @@
 
 			}
 		}
-		.ui-input-font{
+
+		.ui-input-font {
 			margin-left: 20rpx;
 			font-family: PingFangSC-Medium;
 			font-size: 30rpx;
@@ -221,6 +247,7 @@
 			line-height: 30rpx;
 			font-weight: 500;
 		}
+
 		.ui-slider {
 			width: 100%;
 			display: flex;
@@ -239,7 +266,8 @@
 				}
 			}
 		}
-		.ui-hr{
+
+		.ui-hr {
 			width: 100%;
 			position: absolute;
 			left: 0rpx;
@@ -248,15 +276,15 @@
 			opacity: 0.1;
 			background: #000000;
 		}
-	
+
 		.ui-btn {
 			text-align: center;
-			margin:230rpx 0rpx 30rpx 0rpx;
+			margin: 230rpx 0rpx 30rpx 0rpx;
+
 			view {
 				width: 100%;
 				height: 30rpx;
 				font-size: 28rpx;
-				font-family: PingFangSC-Medium;
 				font-size: 36rpx;
 				color: #599FFF;
 				letter-spacing: 0;
@@ -265,15 +293,17 @@
 				font-weight: 500;
 			}
 		}
-		::v-deep .u-tag--warning{
-			background-image: linear-gradient(#FFCF4D,#FD913B);
+
+		::v-deep .u-tag--warning {
+			background-image: linear-gradient(#FFCF4D, #FD913B);
 		}
-		::v-deep .u-tag--medium{
+
+		::v-deep .u-tag--medium {
 			width: 70rpx;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			
+
 		}
 	}
 </style>
