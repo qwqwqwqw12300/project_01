@@ -112,7 +112,7 @@
 			 */
 			userAgreement() {
 				uni.navigateTo({
-					url: '/pages/myself/user-agreement'
+					url: '/pages/myself/agreement/agreement-detail'
 				});
 			},
 			/**

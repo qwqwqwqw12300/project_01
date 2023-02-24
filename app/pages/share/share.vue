@@ -1,5 +1,5 @@
 <template>
-	<app-body :bodyStyle="{ backgroundPositionY: '-100rpx' }">
+	<app-body>
 		<view id="share">
 			<view class="ui-user">
 				<template>
@@ -18,24 +18,24 @@
 			</view>
 			<view class="ui-form">
 				<view class="ui-form-item">
-					<u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="分享人手机号码" color="#444" size="28rpx">
-					</u-text>
-					<view class="ui-input">
-						<u-input maxlength="11" type="number" v-model="shareForm.phone" placeholder="请输入手机号码"
-							:border="'none'" fontSize="28rpx" clearable>
-							<template slot="suffix">
-								<u-icon @tap="getContact" name="/static/images/phone-book.png" size="24"></u-icon>
-								<!-- 			<u-button @tap="getContact" text="通讯录" size="mini" class="wd-sms ui-cont"
-									border="surround" style="width: 150rpx;height: 60rpx;;"></u-button> -->
-							</template>
-						</u-input>
-					</view>
+					<u-input maxlength="11" type="number" v-model="shareForm.phone" placeholder="请输入手机号码"
+						:border="'none'" prefixIcon="../../static/images/login/phone.png"
+						:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" clearable>
+						<template slot="suffix">
+							<u-icon @tap="getContact" name="/static/images/phone-book.png" size="24"></u-icon>
+						</template>
+					</u-input>
 				</view>
 				<view class="ui-form-item">
-					<graphic-input ref="graphicRef"></graphic-input>
+					<figure-code prefixIcon="../../static/images/login/code.png"
+						:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" size="4" ref="graphicRef">
+					</figure-code>
 				</view>
 				<view class="ui-form-item">
-					<sms-input ref="sms" @reset="codeReset" :payload="smsPayload" @checked="checkedBySms" />
+					<verify-code prefixIcon="../../static/images/login/sms.png"
+						:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" ref="sms"
+						@reset="codeReset" :payload="smsPayload" smsType="1" @checked="checkedBySms">
+					</verify-code>
 				</view>
 				<view class="ui-btn"><button @click="submit" class="default">提交</button></view>
 			</view>
@@ -341,6 +341,11 @@
 		margin-top: 156rpx;
 		padding: 0 80rpx;
 		padding-bottom: 40rpx;
+
+		.ui-form-item {
+			padding: 44rpx 0;
+			border-bottom: 1rpx solid #e2e2e2;
+		}
 
 		.ui-input {
 			margin: 34rpx 0 60rpx 0;

@@ -11,7 +11,6 @@
 			<view class="ui-logo">
 				<app-logo text="设备管理"></app-logo>
 			</view>
-
 			<view class="ui-menu">
 				<view v-for="(device, index) of devices" :key="'f' + index">
 					<!-- 	<view class="ui-title" v-if="device.list.length">{{device.name}}</view> -->
@@ -33,9 +32,6 @@
 										<text class="position">
 											{{ item.roomName + ' | ' + item.location}}
 										</text>
-										<!-- 										<text class="position" v-else>
-											未绑定设备
-										</text> -->
 									</view>
 								</view>
 								<view class="device-action">
@@ -134,7 +130,7 @@
 				addHandle: {
 					show: false,
 					list: [{
-							name: 'vayyar',
+							name: '跌倒检测器',
 							icon: 'leida-nm',
 							url: '/pages/equipment/add/radar'
 						},
@@ -143,6 +139,11 @@
 							icon: 'dzqgk',
 							url: '/pages/equipment/add/monitor'
 						},
+						{
+							name: '4G健康手表',
+							icon: 'watch',
+							url: '/pages/equipment/add/monitor'
+						}
 					]
 				},
 				list: [],
@@ -352,7 +353,7 @@
 				url,
 				name
 			}) {
-				if (name === '电子牵挂卡') return uni.$u.toast('暂不支持添加该设备');
+				if (name === '电子牵挂卡' || name === '4G健康手表') return uni.$u.toast('暂不支持添加该设备');
 
 				this.addHandle.show = false;
 
