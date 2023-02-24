@@ -26,17 +26,17 @@ public class LocationInfoReq extends MessageHead implements Req {
     /**
      * gps数据
      */
-    private String gpsData;
+    private String gpsData="";
 
     /**
      * LBS数据
      */
-    private String lbsData;
+    private String lbsData="";
 
     /**
      * Wi-Fi数据
      */
-    private String wifiData;
+    private String wifiData="";
 
     public String getGpsData() {
         return gpsData;
@@ -68,10 +68,8 @@ public class LocationInfoReq extends MessageHead implements Req {
             return ;
         }
         String[] str = body.split("@");
-
         setGpsData(str[0]);
         setLbsData(str[1]);
-        // TODO: 排除移动wifi
         setWifiData(str[2]);
     }
 }

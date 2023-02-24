@@ -199,7 +199,7 @@
 
 		},
 		{
-			"path": "pages/myself/agreement-info",
+			"path": "pages/myself/agreement/agreement-info",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -208,25 +208,7 @@
 			}
 		},
 		{
-			"path": "pages/myself/privacy-info",
-			"style": {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
-		{
-			"path": "pages/myself/app-agreement",
-			"style": {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
-		{
-			"path": "pages/myself/user-agreement",
+			"path": "pages/myself/agreement/agreement-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {

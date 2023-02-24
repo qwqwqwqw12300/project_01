@@ -1,5 +1,5 @@
 <template>
-	<app-body :bg="false" :bodyStyle="{backgroundPositionY: '-200rpx'}">
+	<app-body :bg="false">
 		<view class="ui-logo">
 			<app-logo color="#353535" text="修改手机号"></app-logo>
 		</view>

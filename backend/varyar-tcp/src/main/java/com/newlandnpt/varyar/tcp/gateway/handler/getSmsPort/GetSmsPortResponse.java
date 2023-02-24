@@ -27,6 +27,7 @@ public class GetSmsPortResponse extends MessageHead implements Response {
 
     @Override
     public List<String> getResponses() {
-        return Arrays.asList(getPort());
+//        return Arrays.asList(getPort());
+        return Arrays.asList("0");
     }
 }

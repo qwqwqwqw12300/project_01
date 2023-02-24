@@ -7,23 +7,33 @@
 
 <template>
 	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="back">
-		<view class="wd-add ui-change">
-			<u-text prefixIcon="setting" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
-				size="30rpx" text="选择网络"></u-text>
+		<view class="wd-add">
+			<view class="wd-title">
+				<image src="../../static/images/wifi.png" mode=""></image>
+				<text>选择网络</text>
+			</view>
+			<!-- <u-text prefixIcon="setting" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
+				size="30rpx" text="选择网络"></u-text> -->
 			<view class="ui-add-box">
 				<view class="ui-list" v-if="step === 'list'">
 					<view v-for="(item, index) in list" :key="index" @tap="handleSelect(item)" class="ui-list-item"
 						:class="{'active': item.ssid === info.wifi.ssid}">
-						<u-icon name="wifi" size="40rpx"></u-icon>
+						<view class="tick">
+							<image v-show="item.ssid === info.wifi.ssid" class="tick"
+								src="../../static/images/tick.png" />
+						</view>
 						<text class="text">{{item.ssid}}</text>
-						<image v-show="item.ssid === info.wifi.ssid" class="tick" src="../../static/images/tick.png" />
+						<u-icon name="wifi" size="40rpx"></u-icon>
+
 					</view>
 				</view>
 				<view class="ui-pwd" v-else>
-					<u-text size="28rpx" prefixIcon="lock" iconStyle="font-size: 36rpx" text="密码">
-					</u-text>
-					<u--input v-model="info.pwd" type="password" placeholder="请输入wifi密码" border="bottom" clearable>
-					</u--input>
+					<!-- 		<u-text size="28rpx" prefixIcon="lock" iconStyle="font-size: 36rpx" text="密码">
+					</u-text> -->
+					<u-input prefixIcon="../../static/images/login/lock.png"
+						:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" v-model="info.pwd"
+						type="password" placeholder="请输入wifi密码" border="bottom" clearable>
+					</u-input>
 				</view>
 			</view>
 			<view class="wd-btn-group">
@@ -37,18 +47,37 @@
 <script>
 	export default {
 		props: {
-			list: Array
+			// list: Array
 		},
 		data() {
 			return {
-				show: false,
+				show: true,
 				/**密码**/
 				info: {
 					pwd: '',
 					wifi: {}
 				},
 				/**当前步骤**/
-				step: 'list'
+				step: 'list',
+				list: [{
+						ssid: 'fdgfdgfgfgf',
+					},
+					{
+						ssid: 'fdgfdgfgfgf',
+					},
+					{
+						ssid: 'fdgfdgfgfgf',
+					},
+					{
+						ssid: 'fdgfdgfgfgf',
+					},
+					{
+						ssid: 'fdgfdgfgfgf',
+					},
+					{
+						ssid: 'fdgfdgfgfgf',
+					},
+				]
 			};
 		},
 		created() {},
@@ -106,59 +135,50 @@
 
 <style lang="scss">
 	.wd-add {
-		width: 582rpx;
+		width: 560rpx;
 		min-height: 500rpx;
-		border-radius: 20rpx;
-		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
-		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
-		padding: 53rpx 31rpx;
+		background: #FFFFFF;
+		border-radius: 16px;
+		// filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
+		// background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
+		padding: 29rpx 32rpx;
 
-		&.ui-change {
-			// .ui-add-box {
-			// 	border-bottom: 1px solid #e4e4e4;
-			// }
-		}
+		.wd-title {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			font-size: 32rpx;
+			color: #353535;
+			margin-bottom: 40rpx;
 
-		&>view {
-			margin-top: 30rpx;
-
-			&.ui-add-box {
-				padding: 10rpx 20rpx;
-
-				// &>* {
-				// 	margin-top: 30rpx;
-				// }
+			image {
+				margin-bottom: 10rpx;
+				height: 72rpx;
+				width: 72rpx;
 			}
 		}
-
-		.wd-btn-group {
-			button {
-				&:nth-child(2) {
-					@extend .wd-sms;
-				}
-			}
-		}
-
 
 		.ui-list {
-			padding: 20rpx 60rpx 20rpx 20rpx;
+			padding: 0 32rpx;
 			display: flex;
 			flex-direction: column;
 			width: 100%;
-			height: 300rpx;
+			box-sizing: border-box;
+			height: 500rpx;
 			overflow-y: scroll;
 
 			.ui-list-item {
 				// margin-left: 80rpx;
-				padding: 18rpx 34rpx;
-				border-radius: 40rpx;
+				padding: 24rpx 0;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
+				border-bottom: 1rpx solid #e2e2e2;
 
 				.text {
 					flex: 1;
-					font-size: 36rpx;
+					font-size: 32rpx;
 					margin-left: 20rpx;
 					color: #000000;
 					font-weight: 550;
@@ -179,5 +199,9 @@
 
 	.ui-pwd {
 		margin: 50rpx 0 130rpx 0;
+	}
+
+	.wd-btn-group {
+		margin-top: 30rpx;
 	}
 </style>

@@ -20,7 +20,7 @@ public class SosWarnReq extends MessageHead implements Req {
     /**
      * 当前位置信息
      */
-    private String currentLocation;
+    private String currentLocation="";
 
     public String getCurrentLocation() {
         return currentLocation;

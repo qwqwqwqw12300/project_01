@@ -86,7 +86,7 @@
 					url: '/pages/myself/pwd'
 				}, {
 					title: '协议信息',
-					url: '/pages/myself/agreement-info'
+					url: '/pages/myself/agreement/agreement-info'
 				}, {
 					title: '问题与建议',
 					url: '/pages/myself/suggestion'

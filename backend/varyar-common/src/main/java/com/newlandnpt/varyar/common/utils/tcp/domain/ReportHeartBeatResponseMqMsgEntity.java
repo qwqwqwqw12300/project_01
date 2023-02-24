@@ -1,10 +1,6 @@
 package com.newlandnpt.varyar.common.utils.tcp.domain;
-/**
- * sos警告上报响应MQ消息实体类
- * @author ljx
- * @date 2023/2/23
- */
-public class SosWarnResponseMqMsgEntity {
+
+public class ReportHeartBeatResponseMqMsgEntity {
     /**
      * 设备号,设备唯一编号
      */
@@ -27,14 +23,26 @@ public class SosWarnResponseMqMsgEntity {
      */
     private String msgTime;
 
-    public SosWarnResponseMqMsgEntity() {
+    /**
+     * 当前电量
+     */
+    private String currentPower;
+
+    /**
+     * 当前步数
+     */
+    private String currentSteps;
+
+    public ReportHeartBeatResponseMqMsgEntity() {
     }
 
-    public SosWarnResponseMqMsgEntity(String deviceNo, String iccid, String tranNo, String msgTime) {
+    public ReportHeartBeatResponseMqMsgEntity(String deviceNo, String iccid, String tranNo, String msgTime, String currentPower, String currentSteps) {
         this.deviceNo = deviceNo;
         this.iccid = iccid;
         this.tranNo = tranNo;
         this.msgTime = msgTime;
+        this.currentPower = currentPower;
+        this.currentSteps = currentSteps;
     }
 
     public String getDeviceNo() {
@@ -67,5 +75,21 @@ public class SosWarnResponseMqMsgEntity {
 
     public void setMsgTime(String msgTime) {
         this.msgTime = msgTime;
+    }
+
+    public String getCurrentPower() {
+        return currentPower;
+    }
+
+    public void setCurrentPower(String currentPower) {
+        this.currentPower = currentPower;
+    }
+
+    public String getCurrentSteps() {
+        return currentSteps;
+    }
+
+    public void setCurrentSteps(String currentSteps) {
+        this.currentSteps = currentSteps;
     }
 }

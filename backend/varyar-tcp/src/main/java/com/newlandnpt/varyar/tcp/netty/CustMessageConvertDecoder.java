@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.tcp.base.ChannelMessageHandlers;
+import com.newlandnpt.varyar.tcp.base.DeviceChannelCache;
 import com.newlandnpt.varyar.tcp.base.Req;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 
@@ -50,8 +51,15 @@ public class CustMessageConvertDecoder extends MessageToMessageDecoder<Object> {
 
 		Req req = ChannelMessageHandlers.constructFromMessage(message);
 		if(req == null){
-			log.error(">>>>>> 接受到无法处理的消息tcp链接将被平台关闭请排查，原因：【消息唯一标识不识别】，消息内容：{}",message);
-			ctx.channel().close();
+
+			if(arr.length>=1&&DeviceChannelCache.getChannelByDeviceNo(arr[0])!=null){
+				log.warn(">>>>>> 接受到无法处理的消息设备已登录，链接保持，请排查，原因：【消息唯一标识不识别】，消息内容：{}",message);
+				return;
+			}else{
+				log.error(">>>>>> 接受到无法处理的消息tcp链接将被平台关闭请排查，原因：【消息唯一标识不识别】，消息内容：{}",message);
+				ctx.channel().close();
+				return;
+			}
 		}
 		out.add(req);
 	}

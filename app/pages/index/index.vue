@@ -205,7 +205,6 @@
 						case '1':
 						case '2':
 							pic = `../../static/images/index/room${type}.png`;
-							console.log(pic);
 							break;
 						default:
 							pic = `../../static/images/index/room0.png`;

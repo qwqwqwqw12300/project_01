@@ -1,10 +1,7 @@
 package com.newlandnpt.varyar.common.utils.tcp.domain;
-/**
- * sos警告上报响应MQ消息实体类
- * @author ljx
- * @date 2023/2/23
- */
-public class SosWarnResponseMqMsgEntity {
+
+public class AlarmPowerResponseMqMsgEntity {
+
     /**
      * 设备号,设备唯一编号
      */
@@ -26,15 +23,26 @@ public class SosWarnResponseMqMsgEntity {
      * 设备或者服务器时间，时间格式为： yyyyMMddHHmmss
      */
     private String msgTime;
+    /**
+     * 上报类型
+     */
+    private String reportType;
 
-    public SosWarnResponseMqMsgEntity() {
+    /**
+     * 剩余电量
+     */
+    private String remainPower = "";
+
+    public AlarmPowerResponseMqMsgEntity() {
     }
 
-    public SosWarnResponseMqMsgEntity(String deviceNo, String iccid, String tranNo, String msgTime) {
+    public AlarmPowerResponseMqMsgEntity(String deviceNo, String iccid, String tranNo, String msgTime, String reportType, String remainPower) {
         this.deviceNo = deviceNo;
         this.iccid = iccid;
         this.tranNo = tranNo;
         this.msgTime = msgTime;
+        this.reportType = reportType;
+        this.remainPower = remainPower;
     }
 
     public String getDeviceNo() {
@@ -67,5 +75,21 @@ public class SosWarnResponseMqMsgEntity {
 
     public void setMsgTime(String msgTime) {
         this.msgTime = msgTime;
+    }
+
+    public String getReportType() {
+        return reportType;
+    }
+
+    public void setReportType(String reportType) {
+        this.reportType = reportType;
+    }
+
+    public String getRemainPower() {
+        return remainPower;
+    }
+
+    public void setRemainPower(String remainPower) {
+        this.remainPower = remainPower;
     }
 }
