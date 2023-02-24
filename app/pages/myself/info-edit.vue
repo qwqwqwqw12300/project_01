@@ -56,7 +56,6 @@
 <style lang="scss" scoped>
 	.ui-logo {
 		background: #ffffff;
-		margin-top: 60rpx;
 		padding-bottom: 100rpx;
 	}
 

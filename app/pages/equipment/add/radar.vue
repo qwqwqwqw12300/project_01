@@ -7,31 +7,19 @@
 
 <template>
 	<app-body>
-		<!-- <view class="ui-title">
-			<text>增加雷达波设备</text>
-		</view> -->
-		<app-logo text="增加vayyar设备"></app-logo>
+		<app-logo text="增加雷达波设备"></app-logo>
 		<view class="ui-step">
-			<view class="ui-step-icon step1_bg"></view>
-			<view class="ui-step-title">
-				<text>请确保手机蓝牙</text>
-				<text>定位权限</text>
-				<text>WIFI处于开启状态</text>
-
-			</view>
+			<text>1、请确保手机蓝牙、WIFI处于开启状态</text>
 		</view>
 		<view class="ui-satellite" @click="addTest">
-			<image src="../../../static/images/satellite.png" mode="heightFix"></image>
+			<image src="@/static/images/wifi@3x.png" mode="heightFix"></image>
+			<image src="@/static/images/蓝牙@3x.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-step">
-			<view class="ui-step-icon step2_bg"></view>
-			<view class="ui-step-title bg">
-				<text>长按智能设备开关,</text>
-				<text>等待蓝灯闪烁后点击下一步</text>
-			</view>
+			<text>2、正在扫描</text>
 		</view>
 		<view class="ui-bluetooth">
-			<image src="../../../static/images/bluetooth.png" mode="heightFix"></image>
+			<image src="@/static/images/扫描@3x.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-btn" v-if="connectStatic === 'init'">
 			<button class="default" @click="addNext">下一步</button>
@@ -300,75 +288,27 @@
 </script>
 
 <style lang="scss" scoped>
-	.step1_bg {
-		background-image: url('../../../static/images/step1.png');
-	}
-
-	.step2_bg {
-		background-image: url('../../../static/images/step2.png');
-	}
-
-	.ui-navbar {
-		padding-top: calc(var(--status-bar-height) + 26rpx);
-		padding-left: 20rpx;
-		display: flex;
-		align-items: center;
-
-		.ui-navbar-text {
-			font-size: 36rpx;
-			color: #fff;
-		}
-	}
-
-	.ui-title {
-		margin-top: 10rpx;
-		padding-left: 50rpx;
+	.ui-step {
+		height: 60rpx;
+		line-height: 60rpx;
+		margin-top: 50rpx;
+		padding: 0 30rpx;
 
 		text {
-			font-size: 72rpx;
-			font-weight: bold;
-			color: #ffffff;
-		}
-	}
-
-	.ui-step {
-		height: 110rpx;
-		display: flex;
-		align-items: center;
-		margin-top: 30rpx;
-		padding: 0 40rpx;
-
-		.ui-step-icon {
-			width: 110rpx;
-			height: 96rpx;
-			background-size: cover;
-			background-position: center;
-			background-repeat: no-repeat;
-		}
-
-		.ui-step-title {
-			display: flex;
-			flex-direction: column;
-			margin-left: 20rpx;
-			padding: 10rpx 20rpx;
-			border-radius: 10rpx;
-
-			text {
-				color: #0e6bc0;
-				font-size: 28rpx;
-				font-weight: bold;
-				text-shadow: 0 0 3px #fff, 0 0 3px #5acbff;
-			}
+			font-size: 34rpx;
+			color: #353535;
+			font-weight: 550;
 		}
 	}
 
 	.ui-satellite {
-		margin-top: 30rpx;
-		width: 100%;
+		margin-top: 40rpx;
+		padding: 0 70rpx;
+		// width: 100%;
 		height: 300rpx;
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		justify-content: space-around;
 
 		image {
 			// width: 400rpx;
@@ -377,7 +317,7 @@
 	}
 
 	.ui-bluetooth {
-		margin-top: 20rpx;
+		margin-top: 40rpx;
 		width: 100%;
 		height: 300rpx;
 		display: flex;
@@ -393,15 +333,8 @@
 
 
 	.ui-btn {
-		position: absolute;
-		width: 450rpx;
-		margin: 0 auto;
+		padding: 0 30rpx !important;
 		margin-top: 50rpx;
-		// bottom: 20rpx;
-		left: 50%;
-		transform: translateX(-50%);
-		text-align: center;
-
 		text {
 			font-size: 30rpx;
 			color: #0094ff;
