@@ -116,13 +116,13 @@
 		.ui-form-title {
 			display: flex;
 			align-items: center;
-			min-height: 100rpx;
+			min-height: 80rpx;
 			border-bottom: solid 2px #f9f9f9;
 
 			.title-text {
 				height: 100%;
 				color: #FEAE43;
-				font-size: 44rpx;
+				font-size: 36rpx;
 				font-weight: 550;
 
 				text {
@@ -137,11 +137,11 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			min-height: 110rpx;
+			min-height: 100rpx;
 			border-bottom: solid 2px #f9f9f9;
 
 			.title {
-				font-size: 34rpx;
+				font-size: 30rpx;
 				color: #353535;
 				font-weight: 400;
 				width: 180rpx;

@@ -28,7 +28,10 @@
 				<view class="ui-list">
 					<view @click="select(item.value, 'deviceType')"
 						:class="{select : screenInfo.deviceType == item.value}" v-for="(item, index) of typeRang"
-						:key="'type' + index">{{item.text}}</view>
+						:key="'type' + index">
+						<image v-if="item.icon" :src="'../../static/images/'+ item.icon +'.png'" mode=""></image>
+						{{item.text}}
+					</view>
 				</view>
 			</view>
 			<!-- /设备类型 -->
@@ -81,11 +84,18 @@
 					},
 					{
 						value: '0',
+						icon: 'leida-nm',
 						text: 'vayyar'
 					},
 					{
 						value: '1',
+						icon: 'dzqgk',
 						text: '电子牵挂卡'
+					},
+					{
+						value: '3',
+						icon: 'watch',
+						text: '4g智能手表'
 					}
 
 				],
@@ -239,10 +249,12 @@
 
 
 	.ui-list {
-		padding: 30rpx 32rpx;
-		height: 88rpx;
+		padding: 0 32rpx 30rpx 32rpx;
+		min-height: 88rpx;
+		zoom: 1;
 
 		>view {
+			margin-top: 20rpx;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -255,13 +267,25 @@
 			color: #353535;
 
 			&:nth-child(2) {
-				margin: 0 30rpx;
+				margin: 20rpx 30rpx 0 30rpx;
 			}
 
 			&.select {
 				color: #fff;
 				background-image: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);
 			}
+
+			image {
+				width: 48rpx;
+				height: 48rpx;
+			}
+		}
+
+		&::after {
+			content: '';
+			display: block;
+			height: 0;
+			clear: both;
 		}
 	}
 
