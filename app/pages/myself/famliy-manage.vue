@@ -17,7 +17,7 @@
 						<u-icon name="/static/images/home.png" size="28"></u-icon>
 						<text>{{ baseListItem.name }}</text>
 					</view>
-					<view class="action" @click.native.stop="onDelete(baseListItem.familyId)">删除家庭</view>
+					<view class="action" @click.stop="onDelete(baseListItem.familyId)">删除家庭</view>
 				</view>
 			</view>
 		</view>
@@ -125,7 +125,7 @@
 			// padding: 20rpx;
 			width: 46%;
 			margin: 0 2%;
-			margin-bottom: 20rpx;
+			margin-bottom: 30rpx;
 
 			.item-box {
 				padding: 30rpx;

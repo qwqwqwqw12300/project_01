@@ -39,9 +39,9 @@
 									</view>
 								</view>
 								<view class="device-action">
-									<text class="danger" @click.native.stop="onDelete(item.deviceId)">删除</text>
-									<text class="warn" v-if="!item.roomId" @click="binding(item)">绑定</text>
-									<text class="orange" v-else @click="unbinding(item)">解绑</text>
+									<text class="danger" @tap.stop="onDelete(item.deviceId)">删除</text>
+									<text class="warn" v-if="!item.roomId" @click.stop="binding(item)">绑定</text>
+									<text class="orange" v-else @click.stop="unbinding(item)">解绑</text>
 								</view>
 							</view>
 						</view>
@@ -422,8 +422,8 @@
 
 	.ui-menu {
 		// margin: 70rpx 0;
-		padding: 0 30rpx;
-		padding-top: 30rpx;
+		padding: 0 20rpx;
+		// padding-top: 30rpx;
 		min-height: 600rpx;
 
 		.ui-menu-title {
@@ -433,7 +433,7 @@
 			color: #353535;
 			height: 40px;
 			font-weight: 550;
-			margin-bottom: 30rpx;
+			margin-bottom: 10rpx;
 
 			text {
 				margin-left: 10rpx;
@@ -522,12 +522,12 @@
 							border-radius: 24px;
 							color: #FEAE43;
 							padding: 6rpx 20rpx;
-							font-size: 24rpx;
+							font-size: 26rpx;
 						}
 
 						.orange {
 							padding: 6rpx 20rpx;
-							font-size: 24rpx;
+							font-size: 26rpx;
 							color: #fff;
 							background-image: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);
 							border-radius: 24px;

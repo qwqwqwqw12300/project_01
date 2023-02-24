@@ -204,7 +204,7 @@ export const getMessage = (params) => http.post('/api/message/familyList', param
 /**
  * 标志所有消息状态
  */
-export const PostSetBatchMsgInfo = (params) => http.post('/api/message/setBatchMsgInfo', params);
+export const PostSetBatchMsgInfo = (params) => http.post('/api/message/setBatchMessageInfoByParams', params);
 /* 
  *获取房间列表
  */

@@ -38,9 +38,9 @@
 							</view>
 						</view>
 						<view class="device-action">
-							<text class="danger" @click.native.stop="onDelete(item.roomId)">删除</text>
-							<text class="warn" v-if="!item.devices.length" @click.native.stop="binding(item)" >绑定</text>
-							<text class="orange" v-else @click="unbinding(item.devices)">解绑</text>
+							<text class="danger" @click.stop="onDelete(item.roomId)">删除</text>
+							<text class="warn" v-if="!item.devices.length" @click.stop="binding(item)">绑定</text>
+							<text class="orange" v-else @click.stop="unbinding(item.devices)">解绑</text>
 						</view>
 					</view>
 				</view>
@@ -319,13 +319,13 @@
 						border: 1px solid rgba(254, 174, 67, 1);
 						border-radius: 24px;
 						color: #FEAE43;
-						padding: 4rpx 18rpx;
-						font-size: 24rpx;
+						padding: 6rpx 20rpx;
+						font-size: 26rpx;
 					}
 
 					.orange {
-						padding: 4rpx 18rpx;
-						font-size: 24rpx;
+						padding: 6rpx 20rpx;
+						font-size: 26rpx;
 						color: #fff;
 						background-image: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);
 						border-radius: 24px;
