@@ -60,6 +60,9 @@ class Vpsdk {
 			// 配网成功监听
 			plus.globalEvent.addEventListener('onPairFinish', e => {
 				console.log(e, 'onPairFinish');
+				if (e.isSuccess === 'fail') {
+					this.stopPairing(); // 失败强制结束sdk
+				}
 				cb({
 					type: e.isSuccess ? 'success' : 'fail',
 					data: e.deviceId
@@ -105,9 +108,16 @@ class Vpsdk {
 			type: 'event',
 			data: {
 				msg: this.connentMap[code] || '处理中...',
-				code: code
+				code
 			}
 		});
+	}
+
+	/**
+	 * 结束配网
+	 */
+	stopPairing() {
+		this.vpModule.startPairing && this.vpModule.startPairing();
 	}
 
 	/**
@@ -119,6 +129,9 @@ class Vpsdk {
 		this.vpModule.connectWifi(ssid, bssid, rssi, password);
 	}
 
+	/**
+	 * 获取token
+	 */
 	getToken() {
 		return new Promise(resolve => {
 			const {

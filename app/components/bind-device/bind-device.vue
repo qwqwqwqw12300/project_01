@@ -105,15 +105,15 @@
 		width: 582rpx;
 		height: 352rpx;
 		border-radius: 20rpx;
-		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
-		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
-		border: 1px solid #ffcb3d;
 		padding: 20rpx 31rpx;
-		.ui-title{
+		background: #fff;
+
+		.ui-title {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			.ui-title-font{
+
+			.ui-title-font {
 				font-family: PingFangSC-Medium;
 				font-size: 36rpx;
 				color: #333333;
@@ -123,6 +123,7 @@
 				font-weight: 500;
 			}
 		}
+
 		&>view {
 			margin-top: 10rpx;
 
@@ -134,7 +135,8 @@
 				}
 			}
 		}
-		.ui-input-font{
+
+		.ui-input-font {
 			font-family: PingFangSC-Medium;
 			font-size: 30rpx;
 			color: #333333;
@@ -142,6 +144,7 @@
 			line-height: 30rpx;
 			font-weight: 500;
 		}
+
 		.ui-btn {
 			text-align: center;
 			margin-top: 70rpx;
@@ -158,9 +161,9 @@
 		}
 
 		.ui-select {
-			width: 506rpx;
+			// width: 506rpx;
 			border-radius: 20rpx;
-			background-color: #bfbfbf;
+			background-color: #F8F8F8;
 		}
 
 		.ui-btn-group {
@@ -168,12 +171,13 @@
 			position: absolute;
 			left: 0rpx;
 			bottom: 0rpx;
-			border-radius:0rpx 0rpx 20rpx 20rpx;
+			border-radius: 0rpx 0rpx 20rpx 20rpx;
 			border-top: 1rpx solid black;
-			border-color: rgba(0,0,0,0.1);
+			border-color: rgba(0, 0, 0, 0.1);
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+
 			.plain {
 				width: 49.5%;
 				height: 100rpx;
@@ -181,7 +185,8 @@
 				align-items: center;
 				justify-content: center;
 			}
-			.ui-btn-hr{
+
+			.ui-btn-hr {
 				width: 1rpx;
 				height: 100rpx;
 				opacity: 0.1;

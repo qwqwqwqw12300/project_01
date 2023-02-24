@@ -34,13 +34,13 @@
 // 综上，这是uni-app的缺陷导致我们为了多端兼容，而必须要加上!important
 // 移动端兼容性较好，直接使用0.5px去实现细边框，不使用伪元素形式实现
 .u-border {
-	border-width: 0.5px!important;
+	border-width: 1rpx!important;
 	border-color: $u-border-color!important;
     border-style: solid;
 }
 
 .u-border-top {
-	border-top-width: 0.5px!important;
+	border-top-width: 1rpx!important;
 	border-color: $u-border-color!important;
     border-top-style: solid;
 }
@@ -58,7 +58,7 @@
 }
 
 .u-border-bottom {
-	border-bottom-width: 0.5px!important;
+	border-bottom-width: 1rpx!important;
 	border-color: $u-border-color!important;
     border-bottom-style: solid;
 }

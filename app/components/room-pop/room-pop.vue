@@ -14,10 +14,9 @@
 			<view class="ui-add-box">
 				<view class="ui-input">
 					<text class="ui-input-font">房间名称</text>
-					<u-input :maxlength="6" v-model="form.name" placeholder="请输入房间名称" border="bottom" clearable>
+					<u-input :maxlength="6" v-model="form.name" placeholder="请输入房间名称" border="surround" clearable>
 					</u-input>
 				</view>
-				<text class="ui-input-font">房间名称</text>
 				<view class="ui-tags">
 					<view class="ui-tags-item" v-for="(item, index) in tagsList" :key="index">
 						<u-tag :text="item.name" :plain="!item.checked" type="warning" :name="item.name"
@@ -165,9 +164,7 @@
 		width: 582rpx;
 		min-height: 300rpx;
 		border-radius: 20rpx;
-		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
-		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
-		border: 1px solid #ffcb3d;
+		background: #fff;
 		padding: 20rpx 31rpx;
 
 		.ui-title {
@@ -198,19 +195,7 @@
 
 			.ui-input {
 				position: relative;
-				margin-bottom: 50rpx;
-
-				&::after {
-					bottom: 10rpx;
-					left: 40rpx;
-					content: '';
-					width: 500rpx;
-					height: 1rpx;
-					background: #e4e4e4;
-					position: absolute;
-				}
-
-
+				margin-bottom: 20rpx;
 			}
 
 			.ui-tags {
@@ -239,7 +224,9 @@
 		}
 
 		.ui-input-font {
+			display: inline-block;
 			margin-left: 20rpx;
+			margin-bottom: 20rpx;
 			font-family: PingFangSC-Medium;
 			font-size: 30rpx;
 			color: #333333;

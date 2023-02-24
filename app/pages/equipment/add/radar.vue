@@ -273,14 +273,14 @@
 			 * 添加下一步
 			 */
 			async addNext() {
-				uni.navigateTo({
-					url: '/pages/equipment/add/add-steps'
-				});
-				// if (await this.permissionCheck()) {
-				// 	uni.navigateTo({
-				// 		url: '/pages/equipment/add/add-steps'
-				// 	});
-				// }
+				// uni.navigateTo({
+				// 	url: '/pages/equipment/add/add-steps'
+				// });
+				if (await this.permissionCheck()) {
+					uni.navigateTo({
+						url: '/pages/equipment/add/add-steps'
+					});
+				}
 			}
 
 		}
@@ -335,6 +335,7 @@
 	.ui-btn {
 		padding: 0 30rpx !important;
 		margin-top: 50rpx;
+
 		text {
 			font-size: 30rpx;
 			color: #0094ff;

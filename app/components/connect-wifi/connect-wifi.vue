@@ -30,9 +30,12 @@
 				<view class="ui-pwd" v-else>
 					<!-- 		<u-text size="28rpx" prefixIcon="lock" iconStyle="font-size: 36rpx" text="密码">
 					</u-text> -->
-					<u-input prefixIcon="../../static/images/login/lock.png"
-						:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" v-model="info.pwd"
-						type="password" placeholder="请输入wifi密码" border="bottom" clearable>
+					<u-input border="surround" prefixIcon="lock" :prefixIconStyle="{fontSize: '48rpx'}" fontSize="40rpx"
+						v-model="info.pwd" :type="eyes ? 'password': 'text'" placeholder="请输入wifi密码" clearable>
+						<template slot="suffix">
+							<u-icon :name="eyes ? 'eye-off' : 'eye-fill'" @click="eyesChange" color="rgb(144, 147, 153)"
+								size="48rpx"></u-icon>
+						</template>
 					</u-input>
 				</view>
 			</view>
@@ -47,7 +50,7 @@
 <script>
 	export default {
 		props: {
-			// list: Array
+			list: Array
 		},
 		data() {
 			return {
@@ -59,31 +62,22 @@
 				},
 				/**当前步骤**/
 				step: 'list',
-				list: [{
-						ssid: 'fdgfdgfgfgf',
-					},
-					{
-						ssid: 'fdgfdgfgfgf',
-					},
-					{
-						ssid: 'fdgfdgfgfgf',
-					},
-					{
-						ssid: 'fdgfdgfgfgf',
-					},
-					{
-						ssid: 'fdgfdgfgfgf',
-					},
-					{
-						ssid: 'fdgfdgfgfgf',
-					},
-				]
+				/**密码显隐**/
+				eyes: true
 			};
 		},
 		created() {},
 		methods: {
 			close() {
 				this.show = false;
+			},
+
+			/**
+			 * 点击密码眼睛
+			 * @param {Object} 
+			 */
+			eyesChange() {
+				this.eyes = !this.eyes;
 			},
 
 			open() {
@@ -199,6 +193,8 @@
 
 	.ui-pwd {
 		margin: 50rpx 0 130rpx 0;
+		border: 1rpx solid #e2e2e2;
+
 	}
 
 	.wd-btn-group {

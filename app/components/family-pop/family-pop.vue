@@ -13,7 +13,7 @@
 			</view>
 			<view class="ui-input">
 				<text class="ui-input-font">家庭名称</text>
-				<u-input v-model="form.familyName" placeholder="请输入家庭名称" maxlength="6" border="surround" clearable>
+				<u-input border="surround" v-model="form.familyName" placeholder="请输入家庭名称" maxlength="6" clearable>
 				</u-input>
 			</view>
 			<view class="ui-input">
@@ -26,7 +26,9 @@
 				</u-input>
 			</view>
 			<view class="ui-hr"></view>
-			<view class="ui-btn"><view @click="next" >{{ btnName }}</view></view>
+			<view class="ui-btn">
+				<view @click="next">{{ btnName }}</view>
+			</view>
 		</view>
 	</u-popup>
 </template>
@@ -125,15 +127,14 @@
 		width: 582rpx;
 		min-height: 300rpx;
 		border-radius: 20rpx;
-		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
-		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
-		border: 1px solid #ffcb3d;
 		padding: 20rpx 31rpx;
-		.ui-title{
+
+		.ui-title {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			.ui-title-font{
+
+			.ui-title-font {
 				font-family: PingFangSC-Medium;
 				font-size: 36rpx;
 				color: #333333;
@@ -143,41 +144,37 @@
 				font-weight: 500;
 			}
 		}
-		.ui-input-image{
+
+		.ui-input-image {
 			width: 48rpx;
 			height: 48rpx;
 		}
+
 		&>view {
 			margin-top: 10rpx;
+
 			&.ui-input {
 				margin-top: 40rpx;
 				position: relative;
 				padding: 25rpx 20rpx;
-				.ui-input-font{
-					margin-left: 20rpx;
-					font-family: PingFangSC-Medium;
+
+				.ui-input-font {
+					margin: 0 0 20rpx 20rpx;
+					display: inline-block;
 					font-size: 30rpx;
 					color: #333333;
 					letter-spacing: 0;
 					line-height: 30rpx;
 					font-weight: 500;
 				}
+
 				&:nth-child(3) {
 					margin-top: 20rpx;
 				}
-
-				&::after {
-					bottom: 10rpx;
-					left: 40rpx;
-					content: '';
-					width: 500rpx;
-					height: 1rpx;
-					background: #e4e4e4;
-					position: absolute;
-				}
 			}
 		}
-		.ui-hr{
+
+		.ui-hr {
 			width: 100%;
 			position: absolute;
 			left: 0rpx;
@@ -186,10 +183,11 @@
 			opacity: 0.1;
 			background: #000000;
 		}
+
 		.ui-btn {
 			text-align: center;
-			margin:100rpx 0rpx 25rpx 0rpx;
-			
+			margin: 100rpx 0rpx 25rpx 0rpx;
+
 			view {
 				width: 100%;
 				height: 30rpx;

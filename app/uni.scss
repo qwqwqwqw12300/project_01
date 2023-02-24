@@ -8,6 +8,7 @@
 
 // 全局引入uView UI样式
 @import '@/uni_modules/uview-ui/theme.scss';
+@import '@/uni_modules/uview-ui/libs/css/common.scss';
 
 @font-face {
     font-family: my-font;
@@ -232,3 +233,5 @@ button {
 		opacity: 1;
 	}
 }
+
+
