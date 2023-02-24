@@ -1,6 +1,6 @@
 <template>
-	<app-body>
-		<app-logo color="#353535" text="关于软件"></app-logo>
+	<app-body :bodyStyle="{backgroundImage: 'linear-gradient(179deg, #FFE7B5 0%, #FFF 20%)'}"> 
+		<app-logo color="#353535" text="关于软件" ></app-logo>
 		<view class="ui-main">
 			<view>
 				<image class="ui-main-image" src="@/static/images/H&V@3x.png" mode=""></image>
@@ -82,6 +82,7 @@
 		flex-direction: column;
 		align-items: center;
 		padding-top: 150rpx;
+		
 		// justify-content: center;
 		.ui-main-image{
 			width: 390rpx;
