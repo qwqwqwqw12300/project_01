@@ -1,15 +1,29 @@
 <template>
-	<app-body>
-		<app-logo text="消息推送设置"></app-logo>
-		<view class="ui-form">
-			<view class="ui-form-item">
-				<u-icon name="email" size="37"></u-icon>
-				<text class="text">消息推送</text>
-				<u-switch @change="handleSwitch" v-model="flag" activeValue="1" inactiveValue="0" activeColor="#5ac725" inactiveColor="rgb(138, 138, 138)"
-					size="24"> >
-				</u-switch>
+	<app-body :bg="false">
+		<view class="ui-body">
+			<app-logo text="消息推送设置"></app-logo>
+			<view class="ui-form">
+				<!-- 	<view class="ui-form-item">
+					<u-icon name="email" size="37"></u-icon>
+					<text class="text">消息推送</text>
+					<u-switch @change="handleSwitch" v-model="flag" activeValue="1" inactiveValue="0" activeColor="#5ac725" inactiveColor="rgb(138, 138, 138)"
+						size="24"> >
+					</u-switch>
+				</view> -->
+				<u-cell-group>
+					<u-cell icon="email" :iconStyle="{fontSize: '60rpx'}" :titleStyle="{fontSize: '36rpx'}"
+						title="消息推送">
+						<view slot="right-icon">
+							<u-switch @change="handleSwitch" v-model="flag" activeValue="1" inactiveValue="0"
+								activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20"> >
+							</u-switch>
+						</view>
+
+					</u-cell>
+				</u-cell-group>
 			</view>
 		</view>
+
 	</app-body>
 </template>
 
@@ -45,9 +59,15 @@
 </script>
 
 <style lang="scss" scoped>
+	.ui-body {
+		margin-top: 20rpx;
+		background: #fff;
+		// height: 600rpx;
+	}
+
 	.ui-form {
-		margin-top: 256rpx;
-		padding: 0 60rpx;
+		margin-top: 120rpx;
+		padding: 0 32rpx;
 
 		.ui-form-item {
 			padding: 30rpx;

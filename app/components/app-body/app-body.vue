@@ -159,7 +159,7 @@
 		border-top: 0;
 		padding-top: var(--status-bar-height);
 		// background-image: url('@/static/images/bg2.png');
-		background-image: linear-gradient(180deg, #FFE7B5 0%, #f7f7f7 24%);
+		background-image: linear-gradient(179deg, #FFE7B5 0%, #F7F7F7 39%);
 	}
 
 	.wd-fixed {

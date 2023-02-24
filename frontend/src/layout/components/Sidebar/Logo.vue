@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: '艾吉通管理系统',
+      title: '易联艾吉通后台管理系统',
       logo: logoImg
     }
   }

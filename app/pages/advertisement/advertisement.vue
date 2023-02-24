@@ -23,6 +23,7 @@
 		GetDict,
 		PostVersionInfo,
 	} from '@/common/http/api.js';
+	import upload from '../../common/utils/upload';
 	import {
 		versionCompare,
 		isIos,
@@ -38,11 +39,12 @@
 			};
 		},
 		mounted() {
-			// this.queryVersion().then(res => {
-
-			// })
-			this.$store.dispatch('GetContactsList');
-			this.queryVersion();
+			upload.check().then(res => { // 检查更新
+				if (res.status) {
+					this.$store.dispatch('GetContactsList');
+					this.initInfo();
+				}
+			});
 		},
 		methods: {
 			/**
@@ -85,44 +87,6 @@
 						resolve(res);
 					});
 				});
-			},
-			/**
-			 * 查询当前版本
-			 */
-			queryVersion() {
-				this.initInfo();
-				// if (isApp()) {
-				// 	PostVersionInfo({
-				// 		versionType: isIos ? '0' : '1',
-				// 	}).then(res => {
-				// 			const curVersion = res.data.content;
-				// 			plus.runtime.getProperty(plus.runtime.appid, (info) => {
-				// 					const appVersion = info.version
-				// 					const result = versionCompare(appVersion, curVersion)
-				// 					if (!result) {
-				// 						uni.showModal({
-				// 							title: '',
-				// 							content: '发现新版本、是否更新？',
-				// 							success: res => {
-				// 								if (res.confirm) {
-				// 									let appurl = "https://sj.qq.com/"
-				// 									plus.runtime.openURL(appurl)
-				// 								} else {
-				// 									this.initInfo();
-				// 								}
-				// 							}
-				// 						});
-				// 					}
-				// 				},
-
-				// 			)
-				// 		},
-				// 		err => {
-				// 			this.initInfo();
-				// 		})
-				// } else {
-				// 	this.initInfo();
-				// }
 			},
 			initInfo() {
 				GetDict().then(res => {
