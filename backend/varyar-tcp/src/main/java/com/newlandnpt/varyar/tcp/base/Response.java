@@ -1,5 +1,6 @@
 package com.newlandnpt.varyar.tcp.base;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.newlandnpt.varyar.common.constant.tcp.ApiTypes;
 
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ public interface Response {
         setMsgLen(req.getMsgLen());
     }
 
+    @JsonIgnore
     default List<String> getResponses(){
         return new ArrayList<>(0);
     }
