@@ -164,7 +164,7 @@
 
 	.wd-fixed {
 		box-sizing: border-box;
-		padding-top: 88rpx;
+		padding-top: 85rpx;
 	}
 
 	.wd-bg {

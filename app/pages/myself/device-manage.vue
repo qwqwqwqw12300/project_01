@@ -423,7 +423,7 @@
 
 	.ui-menu {
 		// margin: 70rpx 0;
-		padding: 0 20rpx;
+		padding: 0 20rpx 120rpx 20rpx;
 		// padding-top: 30rpx;
 		min-height: 600rpx;
 
@@ -513,6 +513,7 @@
 						margin-top: 20rpx;
 						display: flex;
 						justify-content: space-around;
+						align-items: center;
 
 						.danger {
 							color: #E95656;
@@ -545,7 +546,7 @@
 
 	.ui-btn {
 		width: 100%;
-		position: absolute;
+		position: fixed;
 		bottom: 0;
 		left: 0;
 

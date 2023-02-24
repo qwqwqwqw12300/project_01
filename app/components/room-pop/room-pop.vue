@@ -7,18 +7,18 @@
 
 <template>
 	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
-		<view class="ui-add">
-			<view class="ui-title">
-				<text class="ui-title-font">{{mode === 'add' ? '新建家庭': '修改家庭'}}</text>
+		<view class="wd-add">
+			<view class="wd-title">
+				<text class="wd-title-font">{{mode === 'add' ? '新建家庭': '修改家庭'}}</text>
 			</view>
-			<view class="ui-add-box">
-				<view class="ui-input">
-					<text class="ui-input-font">房间名称</text>
+			<view class="wd-add-box">
+				<view class="wd-input">
+					<text class="wd-input-font">房间名称</text>
 					<u-input :maxlength="6" v-model="form.name" placeholder="请输入房间名称" border="surround" clearable>
 					</u-input>
 				</view>
-				<view class="ui-tags">
-					<view class="ui-tags-item active" v-for="(item, index) in tagsList" :key="index">
+				<view class="wd-tags">
+					<view class="wd-tags-item active" v-for="(item, index) in tagsList" :key="index">
 						<u-tag :text="item.name" :plain="!item.checked" type="warning" :name="item.name"
 							@click="radioClick">
 						</u-tag>
@@ -27,14 +27,14 @@
 				<!-- <view v-if="mode === 'edit'">
 					<u-text size="28rpx" prefixIcon="plus-circle" iconStyle="font-size: 40rpx" text="绑定雷达波">
 					</u-text>
-					<view class="ui-select">
+					<view class="wd-select">
 						<uni-data-select v-model="deviceId" :clear="false" :localdata="devices"></uni-data-select>
 					</view>
 				</view> -->
 			</view>
-			<view class="ui-hr"></view>
-			<view class="ui-btn">
-				<view @click="next">{{ subTitle }}</view>
+			<view class="wd-hr"></view>
+			<view class="wd-btn" @click="next">
+				<view>{{ subTitle }}</view>
 			</view>
 		</view>
 	</u-popup>
@@ -160,19 +160,19 @@
 </script>
 
 <style lang="scss">
-	.ui-add {
+	.wd-add {
 		width: 582rpx;
 		min-height: 500rpx;
 		border-radius: 20rpx;
 		background: #fff;
-		padding: 20rpx 31rpx;
+		padding: 20rpx 31rpx 0 20rpx;
 
-		.ui-title {
+		.wd-title {
 			display: flex;
 			align-items: center;
 			justify-content: center;
 
-			.ui-title-font {
+			.wd-title-font {
 				font-family: PingFangSC-Medium;
 				font-size: 36rpx;
 				color: #333333;
@@ -183,7 +183,7 @@
 			}
 		}
 
-		.ui-select {
+		.wd-select {
 			width: 500rpx;
 			margin: 20rpx 0 0 20rpx;
 			border-radius: 20rpx;
@@ -193,23 +193,32 @@
 		&>view {
 			margin-top: 10rpx;
 
-			.ui-input {
+			.wd-input {
 				position: relative;
 				margin-bottom: 20rpx;
 			}
 
-			.ui-tags {
+			.wd-tags {
 				padding: 12rpx 0rpx;
 				margin-top: 0 !important;
+				zoom: 1;
+				min-height: 60rpx;
 
-				.ui-tags-item {
+				&:after {
+					content: '';
+					display: block;
+					height: 0;
+					clear: both;
+				}
+
+				.wd-tags-item {
 					float: left;
 					margin-top: 14rpx;
 					margin-right: 20rpx;
 				}
 			}
 
-			&.ui-add-box {
+			&.wd-add-box {
 				margin-top: 20rpx;
 				padding: 10rpx 0rpx;
 
@@ -223,7 +232,7 @@
 			}
 		}
 
-		.ui-input-font {
+		.wd-input-font {
 			display: inline-block;
 			margin-bottom: 20rpx;
 			font-family: PingFangSC-Medium;
@@ -234,7 +243,7 @@
 			font-weight: 500;
 		}
 
-		.ui-slider {
+		.wd-slider {
 			width: 100%;
 			display: flex;
 			flex-direction: row;
@@ -253,7 +262,7 @@
 			}
 		}
 
-		.ui-hr {
+		.wd-hr {
 			width: 100%;
 			position: absolute;
 			left: 0rpx;
@@ -263,19 +272,18 @@
 			background: #000000;
 		}
 
-		.ui-btn {
+		.wd-btn {
 			text-align: center;
-			margin: 230rpx 0rpx 35rpx 0rpx;
+			height: 90rpx;
+			line-height: 90rpx;
 
 			view {
+				display: inline;
 				width: 100%;
-				height: 30rpx;
-				font-size: 28rpx;
 				font-size: 36rpx;
 				color: #599FFF;
 				letter-spacing: 0;
 				text-align: center;
-				line-height: 36rpx;
 				font-weight: 500;
 			}
 		}
@@ -284,15 +292,16 @@
 			// background-image: linear-gradient(#FFCF4D, #FD913B);
 			background-color: #fff;
 		}
+
 		::v-deep .u-tag__text--warning {
 			// background-image: linear-gradient(#FFCF4D, #FD913B);
 			color: #f9ae3d;
 		}
-		
-		::v-deep .u-tag--warning :active{
+
+		::v-deep .u-tag--warning :active {
 			// background-image: linear-gradient(#FFCF4D, #FD913B);
 		}
-		
+
 		::v-deep .u-tag--medium {
 			width: 70rpx;
 			display: flex;

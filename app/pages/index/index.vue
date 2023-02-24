@@ -107,7 +107,7 @@
 						<!-- 新增房间 -->
 						<view class="ui-list ui-list-add" v-if="familyItem.shareFlag == '2'">
 							<view class="ui-list-box" @click="addRoom(familyItem)">
-								<u-icon name="plus" size="56rpx"></u-icon>
+								<u-icon name="../../static/images/index/add.png" size="56rpx"></u-icon>
 								<text>添加</text>
 							</view>
 						</view>
