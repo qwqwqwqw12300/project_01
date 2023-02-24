@@ -122,8 +122,6 @@
 
 <style lang="scss" scoped>
 	.ui-body {
-		// padding: 0 44rpx;
-		margin-top: 60rpx;
 		padding-bottom: 60rpx;
 		background-color: #ffffff;
 	}
