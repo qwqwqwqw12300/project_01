@@ -76,7 +76,7 @@
     <el-table v-loading="loading" :data="agreementList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="协议id" align="center" prop="agreementId" />
-      <el-table-column label="协议内容" align="center" prop="content" />
+      <el-table-column label="协议内容" align="center" prop="content"  show-overflow-tooltip/>
       <el-table-column label="协议版本" align="center" prop="ver" />
       <el-table-column label="协议类型" align="center" prop="type" >
         <template slot-scope="scope">
@@ -112,21 +112,10 @@
     />
 
     <!-- 添加或修改用户协议管理对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <!-- <el-form-item label="协议内容">
-          <editor v-model="form.content" :min-height="192"/>
-        </el-form-item> -->
-        <el-form-item label="协议内容" prop="content">
-          <el-input
-            v-model="form.content"
-            type="textarea"
-            :autosize="{ minRows: 3, maxRows: 8}"
-            placeholder="请输入协议内容"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="协议版本" prop="ver">
-          <el-input v-model="form.ver" placeholder="请输入协议版本" />
+        <el-form-item label="协议版本" prop="ver" style="width: 300px">
+          <el-input v-model="form.ver" placeholder="请输入协议版本"  />
         </el-form-item>
         <el-form-item label="协议类型" prop="type">
           <!-- <el-radio-group v-model="form.type">
@@ -142,7 +131,21 @@
                 ></el-option>
               </el-select>       
         </el-form-item>
+        <el-form-item label="协议内容">
+          <editor v-model="form.content" style="height:450px" :min-height="192" />
+        </el-form-item>
+        <!-- <el-form-item label="协议内容" prop="content">
+          <el-input
+            v-model="form.content"
+            type="textarea"
+            :autosize="{ minRows: 3, maxRows: 8}"
+            placeholder="请输入协议内容"
+          ></el-input>
+        </el-form-item> -->
+        
       </el-form>
+      <el-row></el-row>
+
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -311,3 +314,14 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+/* .el-tooltip__popper{max-width:50%}
+.el-table__body,.el-table__header,.el-table__footer {
+    width: 100%;
+    table-layout: fixed !important;
+  } */
+.dialog-footer {
+  margin-top: 10px;
+}
+</style>
