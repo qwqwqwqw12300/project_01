@@ -64,6 +64,7 @@ public class FamilyController extends BaseController {
                     tMsg.setDeviceId(it.getDeviceId());
                     tMsg.setOperateFlag("0");
                     tMsg.setFamilyId(item.getFamilyId());
+                    tMsg.setEventLevel("urgent");
                     it.setMsgNum(String.valueOf(iMsgService.selectTMsgList(tMsg).size()));
                     it =iDeviceService.loadingDeviceStauts(it);
                 }
