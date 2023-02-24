@@ -85,7 +85,7 @@
 										</view>
 									</view>
 									<u-badge v-if="getDeives(room).msgNum > 1" color="#fff" :offset="[-1, 0]"
-										:value="getDeives(room).msgNum > 1" absolute>
+										:value="getDeives(room).msgNum" absolute>
 									</u-badge>
 								</view>
 							</template>
@@ -198,16 +198,17 @@
 			}, ),
 			...mapGetters(['filterDevice']),
 			/**获取房间图标**/
-			getRoomIcon: (type) => {
-				return () => {
+			getRoomIcon: () => {
+				return (type) => {
 					let pic;
 					switch (type) { //  0:其他、1:书房、2:客厅、3:卧室、4:浴室、5:厨房、6:餐厅
 						case '1':
 						case '2':
-							pic = `../../static/images/index/room${type}.png`
+							pic = `../../static/images/index/room${type}.png`;
+							console.log(pic);
 							break;
 						default:
-							pic = `../../static/images/index/room0.png`
+							pic = `../../static/images/index/room0.png`;
 							break;
 					}
 					return pic;

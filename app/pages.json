@@ -432,7 +432,7 @@
 		"list": [{
 				"pagePath": "pages/index/index",
 				"iconPath": "/static/images/tabbar/shouye.png",
-				"selectedIconPath": "/static/images/tabbar//shouye-ac.png",
+				"selectedIconPath": "/static/images/tabbar/shouye-ac.png",
 				"text": "首页"
 			},
 			{

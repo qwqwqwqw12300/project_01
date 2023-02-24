@@ -59,7 +59,7 @@
 	.ui-logo {
 		background: #ffffff;
 		padding-bottom: 120rpx;
-		margin-top: 60rpx;
+		// margin-top: 60rpx;
 	}
 
 	.ui-form {

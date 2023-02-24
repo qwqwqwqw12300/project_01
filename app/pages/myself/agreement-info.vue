@@ -1,6 +1,6 @@
 <!-- 协议信息 -->
 <template>
-	<app-body>
+	<app-body :bg="false">
 		<view class="ui-menu">
 			<u-grid>
 				<u-grid-item v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
