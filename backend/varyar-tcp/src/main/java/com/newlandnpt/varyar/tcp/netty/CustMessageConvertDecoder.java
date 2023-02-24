@@ -58,6 +58,7 @@ public class CustMessageConvertDecoder extends MessageToMessageDecoder<Object> {
 			}else{
 				log.error(">>>>>> 接受到无法处理的消息tcp链接将被平台关闭请排查，原因：【消息唯一标识不识别】，消息内容：{}",message);
 				ctx.channel().close();
+				return;
 			}
 		}
 		out.add(req);
