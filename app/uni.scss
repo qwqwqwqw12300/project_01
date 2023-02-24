@@ -227,6 +227,9 @@ button {
 	}
 }
 
+button:after {
+	border: unset;
+}
 
 #deviceManage, #roomMagege {
 	.u-grid-item--hover-class {
