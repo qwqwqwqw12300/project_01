@@ -54,8 +54,7 @@ public class GetClassModelResponse extends MessageHead implements Response {
 
     @Override
     public List<String> getResponses() {
-        List<String> responses = Arrays.asList(getSosIncomingSign(),getSosOutgoingSign());
-        responses.addAll(getTimePeriodSetting());
+        List<String> responses = Arrays.asList("0");
         return responses;
     }
 }

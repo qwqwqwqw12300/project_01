@@ -1,0 +1,8 @@
+第一个内部上线版本，上线日期20230210
+提供 web管理端、ios和安卓客户端。
+后端包含varyar-admin、varyar-api和varyar-cloud。其中 admin模块负责对接后台管理系统，api负责对接ios和安卓客户端。
+cloud负责对接vayyar平台设备消息。
+前端包含 frontend和app两块，frontend是管理后台前端，app是ios和安卓客户端
+
+需求文档：https://mot9d7.axshare.com/#g=1&p=%E5%BA%B7%E5%85%BB%E9%A1%B9%E7%9B%AE
+密码: newland

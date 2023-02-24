@@ -144,13 +144,16 @@ rocketmq:
       deviceActive: group_deviceActive
       sosWarn: group_sosWarn
       locationInfo: group_locationInfo
+      alarmPower: group_alarmPower
+      reportHeartBeat: group_reportHeartBeat
     topic:
       deviceConfig: deviceConfigTopic
       deviceConfigErr: deviceConfigErrTopic
       deviceActive: deviceActiveTopic
       sosWarn: sosWarnTopic
       locationInfo: locationInfoTopic
-
+      alarmPower: alarmPowerTopic
+      reportHeartBeat: reportHeartBeatTopic
 
 
 
