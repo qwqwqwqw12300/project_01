@@ -332,7 +332,7 @@
 		display: flex;
 		position: absolute;
 		right: 24rpx;
-		top: 15rpx;
+		top: 120rpx;
 		z-index: 2;
 
 		.ui-sys-message {
@@ -373,7 +373,8 @@
 	}
 
 	.ui-logo {
-		display: flex;
+		display: inline-flex;
+		width: 100%;
 		align-items: center;
 		flex-direction: row;
 		margin: 100rpx 32rpx 50rpx 32rpx;
