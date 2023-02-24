@@ -76,7 +76,7 @@
     <el-table v-loading="loading" :data="agreementList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="协议id" align="center" prop="agreementId" />
-      <el-table-column label="协议内容" align="center" prop="content"  show-overflow-tooltip/>
+      <!-- <el-table-column label="协议内容" align="center" prop="content"  show-overflow-tooltip/> -->
       <el-table-column label="协议版本" align="center" prop="ver" />
       <el-table-column label="协议类型" align="center" prop="type" >
         <template slot-scope="scope">
@@ -186,7 +186,6 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        content: null,
         ver: null,
         type: null,
       },
@@ -234,7 +233,7 @@ export default {
     reset() {
       this.form = {
         agreementId: null,
-        content: null,
+        content: undefined,
         ver: null,
         type: null,
         delFlag: null,

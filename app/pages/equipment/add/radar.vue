@@ -13,13 +13,13 @@
 		</view>
 		<view class="ui-satellite" @click="addTest">
 			<image src="@/static/images/wifi@3x.png" mode="heightFix"></image>
-			<image src="@/static/images/蓝牙@3x.png" mode="heightFix"></image>
+			<image src="@/static/images/blueth@3x.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-step">
 			<text>2、正在扫描</text>
 		</view>
 		<view class="ui-bluetooth">
-			<image src="@/static/images/扫描@3x.png" mode="heightFix"></image>
+			<image src="@/static/images/scan.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-btn" v-if="connectStatic === 'init'">
 			<button class="default" @click="addNext">下一步</button>
