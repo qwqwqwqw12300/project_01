@@ -1,9 +1,8 @@
-package com.newlandnpt.varyar.tcp.dispose.incoming.locationFrequency;
+package com.newlandnpt.varyar.tcp.dispose.location.locationFrequency;
 
 import com.newlandnpt.varyar.tcp.base.MessageHead;
 import com.newlandnpt.varyar.tcp.base.Req;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

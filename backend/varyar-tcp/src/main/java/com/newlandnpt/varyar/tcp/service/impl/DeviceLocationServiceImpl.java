@@ -2,12 +2,11 @@ package com.newlandnpt.varyar.tcp.service.impl;
 
 import com.newlandnpt.varyar.common.constant.tcp.ApiTypes;
 import com.newlandnpt.varyar.tcp.dispose.ChannelMessageDisposer;
-import com.newlandnpt.varyar.tcp.dispose.incoming.locationFrequency.SetLocationFrequencyReq;
-import com.newlandnpt.varyar.tcp.dispose.incoming.locationFrequency.SetLocationFrequencyResponse;
-import com.newlandnpt.varyar.tcp.dispose.incoming.locationMode.SetLocationModeReq;
-import com.newlandnpt.varyar.tcp.dispose.incoming.locationMode.SetLocationModeResponse;
+import com.newlandnpt.varyar.tcp.dispose.location.locationFrequency.SetLocationFrequencyReq;
+import com.newlandnpt.varyar.tcp.dispose.location.locationFrequency.SetLocationFrequencyResponse;
+import com.newlandnpt.varyar.tcp.dispose.location.locationMode.SetLocationModeReq;
+import com.newlandnpt.varyar.tcp.dispose.location.locationMode.SetLocationModeResponse;
 import com.newlandnpt.varyar.tcp.service.IDeviceLocationService;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

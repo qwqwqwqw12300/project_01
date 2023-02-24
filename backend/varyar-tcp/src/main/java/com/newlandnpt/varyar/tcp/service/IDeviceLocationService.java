@@ -1,9 +1,9 @@
 package com.newlandnpt.varyar.tcp.service;
 
-import com.newlandnpt.varyar.tcp.dispose.incoming.locationFrequency.SetLocationFrequencyReq;
-import com.newlandnpt.varyar.tcp.dispose.incoming.locationFrequency.SetLocationFrequencyResponse;
-import com.newlandnpt.varyar.tcp.dispose.incoming.locationMode.SetLocationModeReq;
-import com.newlandnpt.varyar.tcp.dispose.incoming.locationMode.SetLocationModeResponse;
+import com.newlandnpt.varyar.tcp.dispose.location.locationFrequency.SetLocationFrequencyReq;
+import com.newlandnpt.varyar.tcp.dispose.location.locationFrequency.SetLocationFrequencyResponse;
+import com.newlandnpt.varyar.tcp.dispose.location.locationMode.SetLocationModeReq;
+import com.newlandnpt.varyar.tcp.dispose.location.locationMode.SetLocationModeResponse;
 
 /**
  * 设备位置服务

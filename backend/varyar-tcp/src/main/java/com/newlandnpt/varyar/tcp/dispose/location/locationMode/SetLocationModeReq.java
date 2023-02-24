@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.tcp.dispose.incoming.locationMode;
+package com.newlandnpt.varyar.tcp.dispose.location.locationMode;
 
 import com.newlandnpt.varyar.tcp.base.MessageHead;
 import com.newlandnpt.varyar.tcp.base.Req;

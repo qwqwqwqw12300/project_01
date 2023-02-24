@@ -1,14 +1,14 @@
-package com.newlandnpt.varyar.tcp.dispose.incoming.locationFrequency;
+package com.newlandnpt.varyar.tcp.dispose.location.locationMode;
 
 import com.newlandnpt.varyar.tcp.base.MessageHead;
 import com.newlandnpt.varyar.tcp.base.Response;
 
 /**
- * 设置位置上报响应
+ * 设置定位模式响应
  * @author ljx
- * @date 2023/2/23
+ * @date 2023/2/22
  */
-public class SetLocationFrequencyResponse extends MessageHead implements Response {
+public class SetLocationModeResponse extends MessageHead implements Response {
 
     /**
      * 应答状态(0=设置成功;1=设置异常;)

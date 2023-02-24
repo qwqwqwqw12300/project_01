@@ -9,10 +9,10 @@ import com.newlandnpt.varyar.tcp.dispose.serverInfo.SetServerInfoResponse;
 import com.newlandnpt.varyar.tcp.dispose.terminal.SetOperateTerminalReq;
 import com.newlandnpt.varyar.tcp.dispose.terminal.SetOperateTerminalResponse;
 import com.newlandnpt.varyar.tcp.service.IDeviceButtonService;
-import com.newlandnpt.varyar.tcp.dispose.incoming.locationFrequency.SetLocationFrequencyReq;
-import com.newlandnpt.varyar.tcp.dispose.incoming.locationFrequency.SetLocationFrequencyResponse;
-import com.newlandnpt.varyar.tcp.dispose.incoming.locationMode.SetLocationModeReq;
-import com.newlandnpt.varyar.tcp.dispose.incoming.locationMode.SetLocationModeResponse;
+import com.newlandnpt.varyar.tcp.dispose.location.locationFrequency.SetLocationFrequencyReq;
+import com.newlandnpt.varyar.tcp.dispose.location.locationFrequency.SetLocationFrequencyResponse;
+import com.newlandnpt.varyar.tcp.dispose.location.locationMode.SetLocationModeReq;
+import com.newlandnpt.varyar.tcp.dispose.location.locationMode.SetLocationModeResponse;
 import com.newlandnpt.varyar.tcp.service.IDeviceLocationService;
 import com.newlandnpt.varyar.tcp.service.IDevicePhoneService;
 import com.newlandnpt.varyar.tcp.service.IDeviceServerService;
@@ -82,13 +82,13 @@ public class DevicePhoneController {
         return deviceServerService.setOperateTerminalResponse(req);
     }
 
-    @PostMapping("/incoming/locationFrequency")
+    @PostMapping("/location/locationFrequency")
     @ResponseBody
     public SetLocationFrequencyResponse setLocationFrequency(@RequestBody SetLocationFrequencyReq req){
         return deviceLocationService.setLocationFrequency(req);
     }
 
-    @PostMapping("/incoming/locationMode")
+    @PostMapping("/location/locationMode")
     @ResponseBody
     public SetLocationModeResponse setLocationMode(@RequestBody SetLocationModeReq req){
         return deviceLocationService.setLocationMode(req);
