@@ -16,7 +16,7 @@
 					<!-- 	<view class="ui-title" v-if="device.list.length">{{device.name}}</view> -->
 					<view class="ui-menu-title" v-if="device.list.length">
 						<u-icon name="/static/images/home.png" size="28"></u-icon>
-						<text>{{device.name}}</text>
+						<text>{{device.name || '未命名家庭'}}</text>
 					</view>
 					<view class="ui-menu-content">
 						<view class="ui-menu-item" v-for="(item, index) in device.list" :key="index">
@@ -28,9 +28,9 @@
 								<view class="device-info">
 									<image src="/static/images/leida-nm.png"></image>
 									<view class="detail">
-										<text class="name">{{ item.name }}</text>
+										<text class="name">{{ item.name || '未命名设备' }}</text>
 										<text class="position">
-											{{ item.roomName + ' | ' + item.location}}
+											{{ (item.roomName || '--' )+ ' | ' + (item.location || '--')}}
 										</text>
 									</view>
 								</view>
@@ -46,33 +46,6 @@
 
 			</view>
 			<view class="ui-btn"><button class="default" @click="addHandle.show = true">添加设备</button></view>
-			<!-- 绑定房间 -->
-			<u-popup :closeable="true" :round="10" :show="bindRoomShow" mode="center" @close="close">
-				<view class="wd-add">
-					<u-text prefixIcon="plus-circle" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }"
-						color="#ea942f" size="30rpx" text="绑定设备"></u-text>
-					<view class="ui-add-box">
-						<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="选择家庭"></u-text>
-						<view class="ui-select">
-							<uni-data-select v-model="bindForm.familyId" @change="familyChange" :clear="false"
-								:localdata="famliyList"></uni-data-select>
-						</view>
-						<view class="ui-add-family active" @click="goAddFamily">
-							<text>添加家庭</text>
-						</view>
-
-					</view>
-					<view class="ui-add-box ui-add-box-room">
-						<u-text size="28rpx" prefixIcon="home-fill" iconStyle="font-size: 36rpx" text="选择房间"></u-text>
-						<view class="ui-select">
-							<uni-data-select v-model="bindForm.roomId" :clear="false" :localdata="rangRoomList">
-							</uni-data-select>
-						</view>
-					</view>
-					<view class="wd-btn-group"><button class="default" @click="bindSubmit">确定</button></view>
-				</view>
-			</u-popup>
-			<!-- /绑定房间 -->
 			<u-action-sheet :closeOnClickOverlay="true" :safeAreaInsetBottom="true" :closeOnClickAction="true"
 				@close="addHandle.show = false" :show="addHandle.show" cancelText="取消">
 				<view>
@@ -85,6 +58,7 @@
 					</view>
 				</view>
 			</u-action-sheet>
+			<select-room ref="selectRef" @comfirm="bindSubmit"></select-room>
 		</app-body>
 	</view>
 </template>
@@ -111,9 +85,6 @@
 
 		data() {
 			return {
-				/**绑定房间**/
-				bindRoomShow: false,
-				roomList: [],
 				bindForm: {
 					...INIT_DEIVCE_SET
 				},
@@ -158,13 +129,6 @@
 			...mapState({
 				/**所有设备列表**/
 				// list: state => state.devicesList,
-				/**家庭列表**/
-				famliyList: state => {
-					return state.familyList.filter(n => n.shareFlag === '2').map(ele => ({
-						text: ele.name,
-						value: ele.familyId
-					}));
-				},
 				devices: function(state) {
 					const list = this.list,
 						devices = [{
@@ -185,13 +149,6 @@
 				}
 
 			}),
-			/**房间列表**/
-			rangRoomList() {
-				return this.roomList.filter(ele => !ele.devices || !ele.devices.length).map((ele => ({
-					text: ele.name,
-					value: ele.roomId
-				})))
-			}
 		},
 		onShow() {
 			this.init();
@@ -206,46 +163,9 @@
 			},
 
 			/**
-			 * 关闭弹窗
-			 */
-			close() {
-				Object.assign(this.bindForm, {
-					familyId: '',
-					roomId: '',
-					deviceId: '',
-				});
-				this.bindRoomShow = false;
-			},
-
-			/**
 			 * 编辑浮层打开
 			 */
 			edit(item) {
-				// const {
-				// 	name,
-				// 	deviceId,
-				// 	type,
-				// 	no,
-				// 	familyId,
-				// 	roomId,
-				// 	location,
-				// 	parameter: {
-				// 		deviceLocation = {},
-				// 		deviceRoomParameter = {}
-				// 	} = {},
-				// } = item;
-				// Object.assign(this.editFrom, {
-				// 	deviceName: name,
-				// 	deviceId,
-				// 	deviceType: type,
-				// 	deviceNo: no,
-				// 	familyId,
-				// 	roomId,
-				// 	location,
-				// 	...deviceLocation,
-				// 	...deviceRoomParameter,
-				// 	source: item
-				// });
 				this.$setCache('setDevice', item);
 				uni.navigateTo({
 					url: '/pages/equipment/setting/radar-setting'
@@ -269,7 +189,8 @@
 					deviceType: type,
 					deviceNo: no
 				});
-				this.bindRoomShow = true;
+				this.$refs.selectRef.open();
+				// this.bindRoomShow = true;
 			},
 
 			/**
@@ -298,45 +219,16 @@
 			},
 
 			/**
-			 * 绑定房间
-			 */
-			bindRoom() {
-				this.bindRoomShow = true;
-			},
-
-			/**
-			 * 添加家庭
-			 * @param {Object} id
-			 */
-			goAddFamily() {
-				uni.navigateTo({
-					url: '/pages/myself/famliy-manage'
-				})
-			},
-
-			/**
-			 * 选择家庭
-			 */
-			familyChange(id) {
-				id && getRoomList({
-					familyId: id
-				}).then(res => {
-					console.log(res);
-					this.roomList = res.rows || [];
-					this.bindForm.roomId = '';
-				});
-			},
-			/**
 			 * 绑定提交
 			 */
-			bindSubmit() {
+			bindSubmit(form) {
+				Object.assign(this.bindForm, form);
 				if (this.bindForm.familyId && this.bindForm.roomId) {
 					setDevice({
 						...this.bindForm,
 						flag: '1'
 					}).then(res => {
 						uni.$u.toast(res.msg);
-						this.close();
 						setTimeout(() => {
 							this.init();
 						}, 1000);
@@ -476,6 +368,7 @@
 					}
 
 					.device-info {
+						// width: 100%;
 						margin-top: 10rpx;
 						display: flex;
 						align-items: center;
@@ -489,7 +382,8 @@
 						.detail {
 							flex: 1;
 							margin-left: 10rpx;
-
+							display: inline-flex;
+							flex-direction: column;
 							text {
 								display: inline-block;
 							}
@@ -555,60 +449,7 @@
 		}
 	}
 
-	.wd-add {
-		width: 582rpx;
-		min-height: 606rpx;
-		border-radius: 20rpx;
-		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
-		background-image: linear-gradient(-36deg, #e4e4e4 0%, #f8f8f8 100%);
-		padding: 53rpx 31rpx;
-
-		&.ui-change {
-			height: 400rpx;
-
-			.ui-add-box {
-				border-bottom: 1px solid #e4e4e4;
-			}
-		}
-
-		.ui-add-family {
-			width: 100%;
-			text-align: right;
-			margin-top: 20rpx;
-			color: rgb(41, 121, 255);
-			font-size: 24rpx;
-			text-decoration: underline;
-		}
-
-		&>view {
-			margin-top: 52rpx;
-
-			&.ui-add-box {
-				padding: 10rpx 20rpx;
-
-				&>* {
-					margin-top: 30rpx;
-
-				}
-			}
-		}
-
-		.ui-add-box-room {
-			margin-top: 10rpx;
-		}
-
-		.wd-btn-group {
-			text-align: center;
-			margin-top: 70rpx;
-
-			button {
-				width: 237rpx;
-				height: 71rpx;
-				font-size: 28rpx;
-				color: #ffffff;
-			}
-		}
-	}
+	
 
 	.ui-sheet {
 		border-bottom: 1rpx solid #e2e2e2;

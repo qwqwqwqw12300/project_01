@@ -9,7 +9,7 @@
 	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
 		<view class="wd-add">
 			<view class="wd-title">
-				<text class="wd-title-font">{{mode === 'add' ? '新建家庭': '修改家庭'}}</text>
+				<text class="wd-title-font">{{mode === 'add' ? '新建房间': '修改房间'}}</text>
 			</view>
 			<view class="wd-add-box">
 				<view class="wd-input">
@@ -196,14 +196,15 @@
 			.wd-input {
 				position: relative;
 				margin-bottom: 20rpx;
+				padding: 0 10rpx;
 			}
 
 			.wd-tags {
-				padding: 12rpx 0rpx;
+				padding: 12rpx 10rpx 12rpx 20rpx;
 				margin-top: 0 !important;
 				zoom: 1;
 				min-height: 60rpx;
-
+				
 				&:after {
 					content: '';
 					display: block;
@@ -215,6 +216,7 @@
 					float: left;
 					margin-top: 14rpx;
 					margin-right: 20rpx;
+					width: calc(25 - 20rpx);
 				}
 			}
 

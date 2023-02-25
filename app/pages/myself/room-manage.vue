@@ -314,7 +314,8 @@
 					.detail {
 						flex: 1;
 						margin-left: 10rpx;
-
+						display: inline-flex;
+						flex-direction: column;
 						text {
 							display: inline-block;
 						}
