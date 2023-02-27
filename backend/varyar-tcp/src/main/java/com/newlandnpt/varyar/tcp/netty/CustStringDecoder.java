@@ -10,6 +10,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.util.CharsetUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 自定义数据包格式，解决拆包粘包
@@ -47,7 +49,8 @@ import io.netty.util.CharsetUtil;
 public class CustStringDecoder extends StringDecoder {
 
 	private String tempMsg = "";
-	
+
+	private static final Logger log = LoggerFactory.getLogger(TcpServerHandler.class);
 	 @Override
 	 protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 
@@ -56,6 +59,7 @@ public class CustStringDecoder extends StringDecoder {
 		 int msgLen = in.readableBytes();
 		 //System.out.println("当前index:" + index + ",长度:" + msgLen);
 		 String msg = in.toString(CharsetUtil.UTF_8);
+		 log.debug(">>>>> 接收到字符：{}",msg);
 		 if(StringUtils.isBlank(msg)){
 			 return ;
 		 }

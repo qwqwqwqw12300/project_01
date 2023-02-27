@@ -64,7 +64,7 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		Channel chanel = ctx.channel();
-		//System.out.println("离线:" + chanel.id().asShortText());
+		System.out.println("离线:" + chanel.id().asShortText());
 		ctx.close();
 	}
 	
