@@ -116,6 +116,6 @@
 		padding: 0 20rpx;
 		margin-top: 20rpx;
 		overflow: hidden;
-		height: calc(100vh - 570rpx - var(--status-bar-height));
+		height: calc(100vh - 580rpx - var(--status-bar-height));
 	}
 </style>

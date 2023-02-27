@@ -1,7 +1,7 @@
 <template>
 	<view class="ui-pop-box">
 		<view class="ui-u-search">
-			<u-search @change="searchChange" placeholder="请输入地址信息" :showAction="false" v-model="search"></u-search>
+			<u-search @change="searchChange" placeholder="请输入地址信息" @custom="back" :showAction="true" actionText="取消" v-model="search"></u-search>
 		</view>
 		<view class="ui-site-gloup" v-if="poiList.length">
 			<view class="ui-item active" v-for="(item, index) of poiList" :key="index" @tap="handleSelect(item)">
@@ -47,6 +47,12 @@
 				uni.$emit('searchData', val);
 				uni.navigateBack()
 			},
+			
+			back() {
+				uni.$off('searchData');
+				uni.navigateBack();
+			},
+			
 			searchChange($e) {
 				uni.$u.debounce(() => {
 					mapSearch && mapSearch.poiKeywordsSearch({

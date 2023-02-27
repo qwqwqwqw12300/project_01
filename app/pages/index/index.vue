@@ -42,7 +42,7 @@
 			</view>
 
 			<!-- 家庭tab -->
-			<view class="ui-tab">
+			<view class="ui-tab" v-if="tabList.length">
 				<u-tabs @change="tabChange" :list="tabList" lineColor="unset"
 					:activeStyle="{color: '#353535', fontSize: '40rpx'}"
 					:inactiveStyle="{color: '#888888', fontSize: '40rpx'}"></u-tabs>
@@ -53,20 +53,20 @@
 				<view class="ui-group" v-for="(familyItem, index) of familyList" :key="'family' + index">
 					<view class="ui-title">
 						<view>
-							<u-text :text="familyItem.name" size="32rpx" :iconStyle="{fontSize: '32rpx'}"
+							<u-text :text="familyItem.name" size="32rpx" :iconStyle="{height: '40rpx', width: '40rpx'}"
 								prefixIcon="../../static/images/index/home.png"></u-text>
 						</view>
 						<view class="ui-share-box">
 							<u-text @click="goPage('/pages/myself/famliy-manage')"
 								prefixIcon="../../static/images/index/edit.png" size="32rpx" :align="'right'"
 								:block="false" :iconStyle="{
-								fontSize: '32rpx',
+								height: '40rpx', width: '40rpx'
 							}" text="编辑" v-if="familyItem.shareFlag === '2'"></u-text>
 							<u-text
 								@click="goPage('/pages/share/share?familyId='+ familyItem.familyId + '&name='+ familyItem.name)"
 								prefixIcon="../../static/images/index/share.png" size="32rpx" :align="'right'"
 								:block="false" :iconStyle="{
-								fontSize: '32rpx',
+								height: '40rpx', width: '40rpx'
 							}" text="分享" v-if="familyItem.shareFlag === '2'"></u-text>
 						</view>
 
@@ -107,7 +107,7 @@
 						<!-- 新增房间 -->
 						<view class="ui-list ui-list-add" v-if="familyItem.shareFlag == '2'">
 							<view class="ui-list-box" @click="addRoom(familyItem)">
-								<u-icon name="plus" size="56rpx"></u-icon>
+								<u-icon name="../../static/images/index/add.png" size="56rpx"></u-icon>
 								<text>添加</text>
 							</view>
 						</view>
@@ -332,7 +332,7 @@
 		display: flex;
 		position: absolute;
 		right: 24rpx;
-		top: 15rpx;
+		top: 120rpx;
 		z-index: 2;
 
 		.ui-sys-message {
@@ -373,7 +373,8 @@
 	}
 
 	.ui-logo {
-		display: flex;
+		display: inline-flex;
+		width: 100%;
 		align-items: center;
 		flex-direction: row;
 		margin: 100rpx 32rpx 50rpx 32rpx;

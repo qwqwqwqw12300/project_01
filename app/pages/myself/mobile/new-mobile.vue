@@ -1,7 +1,7 @@
 <template>
 	<app-body :bg="false">
 		<view class="ui-body">
-			<app-logo color="#353535" text="修改手机号"></app-logo>
+			<app-logo text="修改手机号"></app-logo>
 			<view class="ui-form">
 				<view class="ui-form-item">
 					<view class="title">
@@ -122,6 +122,7 @@
 
 <style lang="scss" scoped>
 	.ui-body {
+		margin-top: 20rpx;
 		padding-bottom: 60rpx;
 		background-color: #ffffff;
 	}

@@ -7,7 +7,7 @@
 		<view class="ui-form" v-for="item in contactList" :key="item.orderNum">
 			<view class="ui-form-title">
 				<view class="title-text">
-					<text />{{ item.orderName }}
+					{{ item.orderName }}
 				</view>
 			</view>
 			<view class="ui-form-item">
@@ -104,6 +104,7 @@
 
 <style lang="scss">
 	.ui-logo {
+		margin-top: 20rpx;
 		background: #ffffff;
 		padding-bottom: 50rpx;
 	}

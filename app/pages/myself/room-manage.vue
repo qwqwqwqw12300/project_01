@@ -266,7 +266,7 @@
 	}
 
 	.ui-menu {
-		padding: 30rpx 20rpx;
+		padding: 30rpx 20rpx 120rpx 20rpx;
 		display: flex;
 		flex-wrap: wrap;
 		box-sizing: border-box;
@@ -314,7 +314,8 @@
 					.detail {
 						flex: 1;
 						margin-left: 10rpx;
-
+						display: inline-flex;
+						flex-direction: column;
 						text {
 							display: inline-block;
 						}
@@ -479,7 +480,7 @@
 	// }
 	.ui-btn {
 		width: 100%;
-		position: absolute;
+		position: fixed;
 		bottom: 0;
 		left: 0;
 

@@ -300,8 +300,9 @@
 	}
 
 	.ui-logo {
+		width: 100%;
 		margin: 121rpx 0 60rpx 0;
-		display: flex;
+		display: inline-flex;
 		font-weight: bold;
 		align-items: center;
 		flex-direction: column;

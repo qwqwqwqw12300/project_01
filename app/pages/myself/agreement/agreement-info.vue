@@ -46,7 +46,7 @@
 
 <style lang="scss" scoped>
 	.ui-menu {
-		margin-top: 32rpx;
+		margin-top: 20rpx;
 		background: #fff;
 		padding: 0 32rpx;
 
