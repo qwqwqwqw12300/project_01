@@ -41,7 +41,7 @@ public class AESUtils {
             aes = new AES(mode, padding,
                     new SecretKeySpec(ENCODE_KEY.getBytes(), "AES"));
         }
-        return aes.encryptBase64(data, StandardCharsets.UTF_8)+"#morefun#170\\n";
+        return aes.encryptBase64(data, StandardCharsets.UTF_8)+"\\n";
     }
 
     public static String decryptFromString(String data, Mode mode, Padding padding) {
