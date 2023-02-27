@@ -149,6 +149,9 @@
 	}
 
 	.ui-body {
+		display: inline-block;
+		width: 100%;
+		box-sizing: border-box;
 		margin-top: 100rpx;
 		padding: 0 32rpx;
 	}

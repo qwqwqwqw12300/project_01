@@ -17,26 +17,35 @@
 					<text>编辑</text>
 				</view>
 			</view>
-
 			<view class="ui-menu">
 				<view class="ui-menu-item" v-for="(item, index) in list" :key="index">
 					<view class="item-box" @click="openRoomEdit(item)">
-						<view class="device-status">
-							<text class="online" v-if="getDevices(item).onlineFlag == 1">在线</text>
-							<text class="offline" v-else>离线</text>
-						</view>
-						<view class="device-info">
-							<image src="/static/images/leida-nm.png"></image>
-							<view class="detail">
-								<text class="name">{{ item.name }}</text>
-								<text class="position" v-if="item.devices.length">
-									{{ item.devices[0].roomName + ' | ' + item.devices[0].location}}
-								</text>
-								<text class="position" v-else>
-									未绑定设备
-								</text>
+						<template v-if="item.devices.length">
+							<view class="device-status">
+								<text class="online" v-if="getDevices(item).onlineFlag == 1">在线</text>
+								<text class="offline" v-else>离线</text>
 							</view>
-						</view>
+							<view class="device-info">
+								<image src="/static/images/leida-nm.png"></image>
+								<view class="detail">
+									<text class="name">{{ item.name }}</text>
+									<text class="position" v-if="item.devices.length">
+										{{ item.devices[0].roomName + ' | ' + item.devices[0].location}}
+									</text>
+									<text class="position" v-else>
+										未绑定设备
+									</text>
+								</view>
+							</view>
+						</template>
+						<template v-else>
+							<view class="device-info">
+								<u-text :block="false" :text="item.name || '未命名房间'"
+									:prefixIcon="getRoomIcon(item.roomType)" size="40rpx"
+									:iconStyle="{height: '70rpx', width: '70rpx'}"></u-text>
+							</view>
+						</template>
+
 						<view class="device-action">
 							<text class="danger" @click.stop="onDelete(item.roomId)">删除</text>
 							<text class="warn" v-if="!item.devices.length" @click.stop="binding(item)">绑定</text>
@@ -86,6 +95,22 @@
 					}
 					return {}
 
+				}
+			},
+			/**获取房间图标**/
+			getRoomIcon: () => {
+				return (type) => {
+					let pic;
+					switch (type) { //  0:其他、1:书房、2:客厅、3:卧室、4:浴室、5:厨房、6:餐厅
+						case '1':
+						case '2':
+							pic = `../../static/images/index/room${type}.png`;
+							break;
+						default:
+							pic = `../../static/images/index/room0.png`;
+							break;
+					}
+					return pic;
 				}
 			}
 		},
@@ -241,7 +266,7 @@
 	}
 
 	.ui-menu {
-		padding: 30rpx 20rpx;
+		padding: 30rpx 20rpx 120rpx 20rpx;
 		display: flex;
 		flex-wrap: wrap;
 		box-sizing: border-box;
@@ -255,7 +280,8 @@
 			position: relative;
 
 			.item-box {
-				padding: 30rpx 20rpx;
+				box-sizing: border-box;
+				padding: 40rpx 20rpx 28rpx 20rpx;
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
@@ -278,6 +304,7 @@
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
+					min-height: 120rpx;
 
 					image {
 						height: 120rpx;
@@ -287,6 +314,8 @@
 					.detail {
 						flex: 1;
 						margin-left: 10rpx;
+						display: inline-flex;
+						flex-direction: column;
 						text {
 							display: inline-block;
 						}
@@ -451,7 +480,7 @@
 	// }
 	.ui-btn {
 		width: 100%;
-		position: absolute;
+		position: fixed;
 		bottom: 0;
 		left: 0;
 

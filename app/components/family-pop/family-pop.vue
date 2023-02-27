@@ -8,25 +8,25 @@
 <template>
 	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close" @open="open">
 		<view class="wd-add">
-			<view class="ui-title">
-				<text class="ui-title-font">{{mode === 'add' ? '新建家庭': '修改家庭'}}</text>
+			<view class="wd-title">
+				<text class="wd-title-font">{{mode === 'add' ? '新建家庭': '修改家庭'}}</text>
 			</view>
-			<view class="ui-input">
-				<text class="ui-input-font">家庭名称</text>
+			<view class="wd-input">
+				<text class="wd-input-font">家庭名称</text>
 				<u-input border="surround" v-model="form.familyName" placeholder="请输入家庭名称" maxlength="6" clearable>
 				</u-input>
 			</view>
-			<view class="ui-input">
-				<text class="ui-input-font">家庭地址(必填)</text>
+			<view class="wd-input">
+				<text class="wd-input-font">家庭地址(必填)</text>
 				<u-input v-model="form.address" placeholder="请输入家庭地址" border="surround" clearable>
 					<template slot="suffix">
 						<!-- <u-icon name="map-fill" class="active" @click="goMap" size="38rpx"></u-icon> -->
-						<image class="ui-input-image" src="@/static/images/position@3x.png" @click="goMap"></image>
+						<image class="wd-input-image" src="@/static/images/position@3x.png" @click="goMap"></image>
 					</template>
 				</u-input>
 			</view>
-			<view class="ui-hr"></view>
-			<view class="ui-btn">
+			<view class="wd-hr"></view>
+			<view class="wd-btn">
 				<view @click="next">{{ btnName }}</view>
 			</view>
 		</view>
@@ -125,16 +125,16 @@
 <style lang="scss">
 	.wd-add {
 		width: 582rpx;
-		min-height: 300rpx;
+		min-height: 500rpx;
 		border-radius: 20rpx;
-		padding: 20rpx 31rpx;
+		padding: 20rpx 31rpx 0 20rpx;
 
-		.ui-title {
+		.wd-title {
 			display: flex;
 			align-items: center;
 			justify-content: center;
 
-			.ui-title-font {
+			.wd-title-font {
 				font-family: PingFangSC-Medium;
 				font-size: 36rpx;
 				color: #333333;
@@ -145,7 +145,7 @@
 			}
 		}
 
-		.ui-input-image {
+		.wd-input-image {
 			width: 48rpx;
 			height: 48rpx;
 		}
@@ -153,12 +153,12 @@
 		&>view {
 			margin-top: 10rpx;
 
-			&.ui-input {
+			&.wd-input {
 				margin-top: 40rpx;
 				position: relative;
-				padding: 25rpx 20rpx;
+				padding: 10rpx 20rpx;
 
-				.ui-input-font {
+				.wd-input-font {
 					margin: 0 0 20rpx 20rpx;
 					display: inline-block;
 					font-size: 30rpx;
@@ -174,34 +174,32 @@
 			}
 		}
 
-		.ui-hr {
+		.wd-hr {
 			width: 100%;
 			position: absolute;
 			left: 0rpx;
-			bottom: 110rpx;
+			bottom: 90rpx;
 			height: 1rpx;
 			opacity: 0.1;
 			background: #000000;
 		}
 
-		.ui-btn {
+		.wd-btn {
 			text-align: center;
-			margin: 100rpx 0rpx 25rpx 0rpx;
+			// margin: 0rpx 0rpx 40rpx 0rpx;
+			height: 90rpx;
+			line-height: 90rpx;
 
 			view {
+				display: inline;
 				width: 100%;
-				height: 30rpx;
-				font-size: 28rpx;
-				font-family: PingFangSC-Medium;
 				font-size: 36rpx;
 				color: #599FFF;
 				letter-spacing: 0;
 				text-align: center;
-				line-height: 36rpx;
 				font-weight: 500;
 			}
 
-			;
 
 		}
 	}

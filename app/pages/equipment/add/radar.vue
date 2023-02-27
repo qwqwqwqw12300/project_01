@@ -16,7 +16,7 @@
 			<image src="@/static/images/blueth@3x.png" mode="heightFix"></image>
 		</view>
 		<view class="ui-step">
-			<text>2、正在扫描</text>
+			<text>2、长按智能设备开关5秒,等待蓝灯闪烁后点击下一步</text>
 		</view>
 		<view class="ui-bluetooth">
 			<image src="@/static/images/scan.png" mode="heightFix"></image>
