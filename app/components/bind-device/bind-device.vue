@@ -64,6 +64,7 @@
 				this.show = false;
 			},
 			open() {
+				this.deviceId = '';
 				this.show = true;
 			},
 			next() {
