@@ -3,10 +3,10 @@
 		<app-logo color="#353535" text="关于软件" ></app-logo>
 		<view class="ui-main">
 			<view>
-				<image class="ui-main-image" src="@/static/images/ELINKER@3x.png" mode=""></image>
+				<image class="ui-main-imageFir" src="@/static/images/ELINKER@3x.png" mode=""></image>
 			</view>
 			<view>
-				<image class="ui-main-image" src="@/static/images/H&V@3x.png" mode=""></image>
+				<image class="ui-main-imageSec" src="@/static/images/H&V@3x.png" mode=""></image>
 			</view>
 			<view class="ui-main-font">
 				Version {{appVersion}}
@@ -84,9 +84,13 @@
 		padding-top: 110rpx;
 		
 		// justify-content: center;
-		.ui-main-image{
-			width: 390rpx;
-			height: 388rpx;
+		.ui-main-imageFir{
+			width: 300rpx;
+			height: 300rpx;
+		}
+		.ui-main-imageSec{
+			width: 200rpx;
+			height: 200rpx;
 		}
 		.ui-main-font{
 			margin-top: 132rpx;
