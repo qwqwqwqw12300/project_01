@@ -64,7 +64,7 @@ public class SmsController {
         String code = "1234";
         redisCache.setCacheObject(smsVerifyKey, code, Constants.SMS_CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
 
-        smsService.sendSms(code);
+        smsService.sendSms(code,smsRequest.getPhone());
 
         ajax.put("smsUuid", smsUuid);
         return ajax;
