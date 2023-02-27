@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.hutool.crypto.Mode;
+import cn.hutool.crypto.Padding;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 
+import com.newlandnpt.varyar.tcp.utils.AESUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.string.StringDecoder;
@@ -63,6 +66,9 @@ public class CustStringDecoder extends StringDecoder {
 		 if(StringUtils.isBlank(msg)){
 			 return ;
 		 }
+		 msg = AESUtils.decryptFromString(msg, Mode.CBC, Padding.PKCS5Padding);
+		 log.debug(">>>>> 解密后字符：{}",msg);
+		 msg = msg.replace("\n","");
 		 String first = StringUtils.substring(msg, 0, 1);
 		 String end = StringUtils.substring(msg, msg.length()-1, msg.length());
 		 if(!"[".equals(first) || !"]".equals(end)){

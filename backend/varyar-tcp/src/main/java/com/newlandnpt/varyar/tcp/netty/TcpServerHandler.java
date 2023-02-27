@@ -1,8 +1,11 @@
 package com.newlandnpt.varyar.tcp.netty;
 
+import cn.hutool.crypto.Mode;
+import cn.hutool.crypto.Padding;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.tcp.base.ChannelMessageHandlers;
 import com.newlandnpt.varyar.tcp.base.Response;
+import com.newlandnpt.varyar.tcp.utils.AESUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +47,7 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 			Channel channel = ctx.channel();
 			//System.out.println(str);
 			// 响应消息
-			channel.writeAndFlush(response.generateMessage());
+			channel.writeAndFlush(AESUtils.encryptFromString(response.generateMessage(), Mode.CBC, Padding.PKCS5Padding));
 		} catch (Exception e) {
 			log.error("报文解析异常", e);
 			log.error("异常报文内容:");
