@@ -30,6 +30,15 @@
 
 		methods: {
 			afterRead(info) {
+				const {
+					url,
+					size
+				} = info.file[0]
+				console.log(info.file, 'llllllllllll')
+				const fileType = url.substring(url.lastIndexOf("."))
+				if (!['.png', '.jpeg', '.jpg'].includes(fileType)) return uni.$u.toast('不支持改格式图片')
+				if (size / 1024 / 1024 > 5) return uni.$u.toast('图片大小不能超过5M')
+				console.log(fileType)
 				let fileList = [...info.file]
 				fileList = fileList.slice(-1)
 				this.fileList = fileList
@@ -38,7 +47,6 @@
 				this.fileList = []
 			},
 			handleSumbit() {
-				console.log(this.fileList, '000')
 				if (!this.fileList.length) return uni.$u.toast('请上传图片')
 				// let formData = new FormData()
 				// formData.append('avatarfile', this.fileList[0].url)
