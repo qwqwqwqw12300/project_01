@@ -37,6 +37,7 @@ public class CustMessageConvertDecoder extends MessageToMessageDecoder<Object> {
 			return ;
 		}
 		String message = msg.toString();
+		log.debug(">>>>> 接收到消息：{}",message);
 		if(StringUtils.isBlank(message)){
 			return ;
 		}
