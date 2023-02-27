@@ -45,7 +45,7 @@ public class PassOutWarn implements SMSTemplate {
 
     @Override
     public String getTemplateId() {
-        return "a5d929d026f44e0eab7d767b4a8bc185";
+        return "c190e96fefbb4db28982b707a27ee31d";
     }
 
     @Override
