@@ -106,6 +106,16 @@ public class RoomController extends BaseController {
         if(tFamily == null ){
             return error("家庭信息不存在！");
         }
+        //房间信息校验
+        List<TRoom> list = iRoomService.selectTRoomByFamilyId(Long.valueOf(roomRequest.getFamilyId()));
+        for (TRoom item:list){
+            if(roomRequest.getName().equals(item.getName()))
+            {
+                return error("房间名称不能重名！");
+            }
+        }
+
+
         if (!String.valueOf(tFamily.getCreateById()).equals(this.getLoginUser().getMemberId().toString())){
             return error("非创建者无权限创建！");
         }
