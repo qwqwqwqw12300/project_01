@@ -3,9 +3,6 @@ package com.newlandnpt.varyar.tcp.utils;
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
 import cn.hutool.crypto.symmetric.AES;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -54,10 +51,9 @@ public class AESUtils {
             aes = new AES(mode, padding,
                     new SecretKeySpec(ENCODE_KEY.getBytes(), "AES"));
         }
-        data = data.replace("\n","");
         data = data.split("#morefun")[0];
         byte[] decryptDataBase64 = aes.decrypt(data);
-        return new String(decryptDataBase64, StandardCharsets.UTF_8);
+        return new String(decryptDataBase64, StandardCharsets.UTF_8).replace("\n","");
     }
 
 }
