@@ -26,3 +26,8 @@ ALTER TABLE t_room ADD room_type CHAR(2)  COMMENT '房间类型:0:其他、1:书
 ALTER TABLE t_agreement MODIFY content TEXT;
 
 
+
+-- at 2023/02/27修复 调整会员表t_member  头像地址avatar长度
+ALTER TABLE t_member MODIFY avatar varchar(1024) default '' COMMENT '头像地址';
+
+
