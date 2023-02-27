@@ -250,7 +250,7 @@
 		justify-content: space-between;
 
 		.logo-text {
-			font-size: 37px;
+			font-size: 52rpx;
 			font-weight: bold;
 		}
 
