@@ -394,6 +394,15 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/health/index",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 	"globalStyle": {
@@ -416,6 +425,12 @@
 				"iconPath": "/static/images/tabbar/shouye.png",
 				"selectedIconPath": "/static/images/tabbar/shouye-ac.png",
 				"text": "首页"
+			},
+			{
+				"pagePath": "pages/health/index",
+				"iconPath": "/static/images/tabbar/jiankan.png",
+				"selectedIconPath": "/static/images/tabbar/jiankan-ac.png",
+				"text": "健康"
 			},
 			{
 				"pagePath": "pages/details/details",
