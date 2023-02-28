@@ -6,6 +6,10 @@ import com.newlandnpt.varyar.common.core.domain.model.SMS.SMSSendRes;
 import com.newlandnpt.varyar.common.utils.Md5.Md5Util;
 import com.newlandnpt.varyar.common.utils.SMS.templates.*;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
 import java.io.BufferedReader;
@@ -19,11 +23,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SMSUtils {
+    private static final Logger log = LoggerFactory.getLogger(SMSUtils.class);
 
     /**账号*/
-    private static String apId = "Pdev";
+    private static String apId = "Psuper";
     /**密码*/
-    private static String secretKey = "$Admin123!";
+    private static String secretKey = "Ylk1234=";
     /**集团名称*/
     private static String ecName = "福建易联智慧科技有限公司";
     /**网关签名编码*/
@@ -42,7 +47,6 @@ public class SMSUtils {
      * @throws IOException
      */
     public static boolean sendMsg(String mobiles, SMSTemplate template) throws IOException {
-        // todo 验证模板短信
         SMSSendReq sendReq = new SMSSendReq();
         sendReq.setEcName(ecName);
         sendReq.setApId(apId);
@@ -68,10 +72,9 @@ public class SMSUtils {
 
         // BASE64编码
         String encode = Base64.encodeBase64String(reqText.getBytes("UTF-8"));
-        System.out.println(encode);
-
+        log.debug("发送短信请求：{},BASE64编码后：",reqText,encode);
         String resStr = sendPost(url, encode);
-        System.out.println("发送短信结果：" + resStr);
+        log.debug("发送短信结果：{}",resStr);
 
         SMSSendRes sendRes = JSON.parseObject(resStr, SMSSendRes.class);
 
@@ -101,9 +104,9 @@ public class SMSUtils {
 
 
 
-//            if(sms1.isCorrectParams()){
-//                sendMsg("15859819572",sms1);
-//            }
+            if(sms1.isCorrectParams()){
+                sendMsg("15060665801",sms1);
+            }
 //            if(sms2.isCorrectParams()){
 //                sendMsg("15859819572",sms2);
 //            }
@@ -196,4 +199,20 @@ public class SMSUtils {
             return true;
         }
     }
+
+    @Component
+    public static class SMSUtilsInjector{
+
+        @Value("${sms.apId:-}")
+        public void setApId(String apId){
+            SMSUtils.apId = apId;
+        }
+
+        @Value("${sms.secretKey:-}")
+        public void setSecretKey(String secretKey){
+            SMSUtils.secretKey = secretKey;
+        }
+
+    }
+
 }

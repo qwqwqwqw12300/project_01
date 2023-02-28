@@ -86,6 +86,7 @@
 
     <!-- 系统模块日志级别控制  -->
     <logger name="com.newlandnpt.varyar" level="${log.level}" />
+    <logger name="com.newlandnpt.varyar.common.utils.SMS" level="debug" />
     <!-- Spring日志级别控制  -->
     <logger name="org.springframework" level="warn" />
     <!-- RocketMq日志级别控制  -->
