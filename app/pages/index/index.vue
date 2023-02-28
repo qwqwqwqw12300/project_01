@@ -17,23 +17,27 @@
 				<u-icon name="plus-circle" @click="addDevice" :stop="true" class="active" color="#000" size="45rpx">
 				</u-icon>
 				<!-- 下拉框 -->
-				<view class="ui-select" v-if="isAddShow">
+				<!-- <view class="ui-select" v-if="isAddShow">
 					<view class="ui-select-item active" @click="goPage('/pages/equipment/add/radar')">
-						<u-icon name="../../static/images/leida-nm.png" class="active" color="#fff" size="40rpx">
+						<u-icon name="../../static/images/leida-nm.png" class="active" color="#fff" size="48rpx">
 						</u-icon>
-						<text>跌倒检测器</text>
+						<text>雷达波设备</text>
 					</view>
 					<view class="ui-select-item active" @click="goPage('/pages/equipment/add/monitor')">
-						<u-icon name="../../static/images/dzqgk.png" class="active" color="#fff" size="40rpx">
+						<u-icon name="../../static/images/dzqgk.png" class="active" color="#fff" size="48rpx">
 						</u-icon>
 						<text>电子牵挂卡</text>
 					</view>
 					<view class="ui-select-item active" @click="goPage('/pages/equipment/add/monitor')">
-						<u-icon name="../../static/images/watch.png" class="active" color="#fff" size="40rpx">
+						<u-icon name="../../static/images/watch.png" class="active" color="#fff" size="48rpx">
 						</u-icon>
-						<text>4G健康手表</text>
+						<text>监测手表</text>
 					</view>
-				</view>
+					<view class="ui-select-item active" @click="isAddShow=false"> 
+						<text>取消</text>
+					</view>
+				</view> -->
+				<AppHandle :isShow="isAddShow" @cancle="isAddShow = false"></AppHandle>
 				<!-- /下拉框 -->
 			</view>
 			<view class="ui-logo">
@@ -81,7 +85,8 @@
 										<view class="ui-device-name">
 											<view class="ui-list-static"
 												:class="{online: getDeives(room).onlineFlag === '1'}"></view>
-											{{getDeives(room).name || '未命名设备'}}
+											{{getDeives(room).onlineFlag === '1' ? '在线': getDeives(room).onlineFlag === '0' ? '离线' : ''}}
+											有人
 										</view>
 									</view>
 									<u-badge v-if="getDeives(room).msgNum > 1" color="#fff" :offset="[-1, 0]"
@@ -149,7 +154,13 @@
 		mapActions,
 		mapGetters
 	} from 'vuex';
+	import
+		AppHandle
+	 from '@/components/add-handle/add-handle.vue';
 	export default {
+		components: {
+			AppHandle
+		},
 		data() {
 			return {
 				/**是否展示添加弹窗**/
@@ -345,21 +356,25 @@
 		}
 
 		.ui-select {
-			position: absolute;
-			top: 70rpx;
-			right: -12rpx;
-			width: 228rpx;
-			height: 258rpx;
-			border-radius: 20rpx;
+			position: fixed;
+			left: 50%;
+			bottom:var(--window-bottom,0);
+			transform: translate(-50%,0%);
+			margin:0 auto;
+			// transform: translate(-50%,-50%);
+			width: 686rpx;
+			height: 392rpx;
+			border-radius: 24rpx;
 			// filter: drop-shadow(0 0 5px rgba(7, 5, 5, 0.34));
 			background: #fff;
-			padding: 16rpx;
 			border: 1px solid #e2e2e2;
-
 			.ui-select-item {
 				// margin-top: 16rpx;
-				padding: 15rpx 0;
+				width: 686rpx;
+				height: 98rpx;
 				display: flex;
+				align-items: center;
+				justify-content: center;
 				font-size: 26rpx;
 				color: #000;
 				border-bottom: 1px solid #e2e2e2;
@@ -367,6 +382,11 @@
 				text {
 					display: inline-block;
 					margin-left: 20rpx;
+					font-size: 34rpx;
+					color: #000000;
+					text-align: center;
+					line-height: 34rpx;
+					font-weight: 400;
 				}
 			}
 		}

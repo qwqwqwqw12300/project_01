@@ -45,19 +45,8 @@
 				</view>
 
 			</view>
-			<view class="ui-btn"><button class="default" @click="addHandle.show = true">添加设备</button></view>
-			<u-action-sheet :closeOnClickOverlay="true" :safeAreaInsetBottom="true" :closeOnClickAction="true"
-				@close="addHandle.show = false" :show="addHandle.show" cancelText="取消">
-				<view>
-					<view @click="sheetSelect(item)" class="ui-sheet" v-for="(item, index) of addHandle.list"
-						:key="'sheet' + index">
-						<u-icon :name="'../../static/images/' + item.icon + '.png'" class="active" color="#fff"
-							size="40rpx">
-						</u-icon>
-						<text>{{item.name}}</text>
-					</view>
-				</view>
-			</u-action-sheet>
+			<view class="ui-btn"><button class="default" @click="show = true">添加设备</button></view>
+			<AppHandle :isShow="show" :safeShow="safeAreaShow = true" @cancle="show = false"></AppHandle>
 			<select-room ref="selectRef" @comfirm="bindSubmit"></select-room>
 		</app-body>
 	</view>
@@ -73,18 +62,24 @@
 		relDevice,
 		getDeviceListState
 	} from '@/common/http/api.js';
-	import {
+	import {	
 		mapState,
 		mapActions
 	} from 'vuex';
 	import {
 		INIT_DEIVCE_SET
 	} from '../../config/db';
-
+	import 
+		AppHandle
+	 from '@/components/add-handle/add-handle.vue';
 	export default {
-
+		components: {
+			AppHandle
+		},
 		data() {
 			return {
+				show:false,
+				safeAreaShow:false,
 				bindForm: {
 					...INIT_DEIVCE_SET
 				},
@@ -97,25 +92,6 @@
 					roomHeight: 6,
 					roomRight: 6,
 					roomLength: 6
-				},
-				addHandle: {
-					show: false,
-					list: [{
-							name: '跌倒检测器',
-							icon: 'leida-nm',
-							url: '/pages/equipment/add/radar'
-						},
-						{
-							name: '电子牵挂卡',
-							icon: 'dzqgk',
-							url: '/pages/equipment/add/monitor'
-						},
-						{
-							name: '4G健康手表',
-							icon: 'watch',
-							url: '/pages/equipment/add/monitor'
-						}
-					]
 				},
 				list: [],
 				back: () => {
@@ -236,22 +212,6 @@
 				} else {
 					uni.$u.toast('请选择要绑定的房间');
 				}
-			},
-
-			/**
-			 * 创建设备
-			 */
-			sheetSelect({
-				url,
-				name
-			}) {
-				if (name === '电子牵挂卡' || name === '4G健康手表') return uni.$u.toast('暂不支持添加该设备');
-
-				this.addHandle.show = false;
-
-				uni.navigateTo({
-					url
-				});
 			},
 
 			/**
@@ -451,16 +411,5 @@
 
 	
 
-	.ui-sheet {
-		border-bottom: 1rpx solid #e2e2e2;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 120rpx;
-		width: 100%;
-
-		text {
-			margin-left: 20rpx;
-		}
-	}
+	
 </style>
