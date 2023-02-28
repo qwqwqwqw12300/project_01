@@ -29,7 +29,7 @@
 			"path": "pages/equipment/add/radar",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "添加雷达波设备"
+				"navigationBarTitleText": "添加跌倒检测器"
 			}
 		},
 		{

@@ -8,7 +8,7 @@
 <template>
 	<app-body :bg="false">
 		<view class="ui-form">
-			<app-logo text="设置雷达波设备" color="#353535"></app-logo>
+			<app-logo text="设置跌倒检测器" color="#353535"></app-logo>
 			<view class="ui-edit">
 				<u-cell-group>
 					<u-cell title="设备名称">
@@ -16,7 +16,7 @@
 							v-model="editFrom.deviceName"></u-input>
 					</u-cell>
 					<u-cell>
-						<view slot="title" class="u-slot-title">
+						<view slot="title">
 							<u-text @click="tipShow = true" suffixIcon="question-circle"
 								:iconStyle="{fontSize: '36rpx', color: '#3c9cff', marginLeft: '5rpx'}" text="设备位置">
 							</u-text>
@@ -26,16 +26,49 @@
 								activeColor="#FEAE43" :name="item" :label="item"></u-radio>
 						</u-radio-group>
 					</u-cell>
-					<template v-if="editFrom.roomId">
-						<u-cell isLink title="检测高度" @click="sliderSet('roomHeight')"
+					<view class="ui-box" v-if="editFrom.roomId">
+						<view class="ui-slider-box">
+							<view class="ui-slider-tit">检测高度</view>
+							<view class="ui-slider">
+								<u-slider min="10" max="40" v-model="editFrom.roomHeight" activeColor="#eeaa3d"
+									blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+								<text>{{$u.priceFormat(editFrom.roomHeight/10, 2) + '米'}}</text>
+							</view>
+						</view>
+						<view class="ui-slider-box">
+							<view class="ui-slider-tit">检测前距离</view>
+							<view class="ui-slider">
+								<u-slider min="10" max="40" v-model="editFrom.roomLength" activeColor="#eeaa3d"
+									blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+								<text>{{$u.priceFormat(editFrom.roomLength/10, 2) + '米'}}</text>
+							</view>
+						</view>
+						<view class="ui-slider-box">
+							<view class="ui-slider-tit">检测左距离</view>
+							<view class="ui-slider">
+								<u-slider min="10" max="40" v-model="editFrom.roomLeft" activeColor="#eeaa3d"
+									blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+								<text>{{$u.priceFormat(editFrom.roomLeft/10, 2) + '米'}}</text>
+							</view>
+						</view>
+						<view class="ui-slider-box">
+							<view class="ui-slider-tit">检测右长度</view>
+							<view class="ui-slider">
+								<u-slider min="10" max="40" v-model="editFrom.roomRight" activeColor="#eeaa3d"
+									blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+								<text>{{$u.priceFormat(editFrom.roomRight/10, 2) + '米'}}</text>
+							</view>
+						</view>
+						<!-- <u-cell isLink title="检测高度" @click="sliderSet('roomHeight')"
 							:value="$u.priceFormat(editFrom.roomHeight/10, 2) + '米'"></u-cell>
 						<u-cell isLink title="检测长度" @click="sliderSet('roomLength')"
 							:value="$u.priceFormat(editFrom.roomLength/10, 2) + '米'"></u-cell>
 						<u-cell isLink title="检测左长度" @click="sliderSet('roomLeft')"
 							:value="$u.priceFormat(editFrom.roomLeft/10, 2) + '米'"></u-cell>
 						<u-cell isLink title="检测右长度" @click="sliderSet('roomRight')"
-							:value="$u.priceFormat(editFrom.roomRight/10, 2) + '米'"></u-cell>
-					</template>
+							:value="$u.priceFormat(editFrom.roomRight/10, 2) + '米'"></u-cell> -->
+					</view>
+					<u-cell isLink @click="setZone" title="隐私区域设置"></u-cell>
 				</u-cell-group>
 			</view>
 		</view>
@@ -45,9 +78,30 @@
 				<u-cell-group>
 					<u-cell>
 						<view class="ui-subtit" slot="title">
-							监控设置
+							预警设置
 						</view>
 					</u-cell>
+					<u-cell title="进出监控" value="已启用"></u-cell>
+					<u-cell title="离床预警" isLink></u-cell>
+					<u-cell title="无人预警">
+						<u-switch space="2" v-model="editFrom.existFlag" activeValue="0" inactiveValue="1" size="20"
+							slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
+						</u-switch>
+					</u-cell>
+					<view class="ui-existFlag" v-if="editFrom.existFlag == 0">
+						<u-cell title="连续24小时无人预警">
+							<u-switch space="2" v-model="editFrom.inMonitorFlag" activeValue="0" inactiveValue="1"
+								size="20" slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
+							</u-switch>
+						</u-cell>
+
+						<u-cell title="我的规则2" label="2023/02/21 至 2023/02/23  12:00 至 23:59">
+							<view slot="right-icon" class="ui-right-icon">
+								<u-icon name="arrow-right" color="#909193" size="28"></u-icon>
+							</view>
+						</u-cell>
+					</view>
+					<!-- 旧规则 -->
 					<u-cell title="进出监控">
 						<u-switch space="2" v-model="editFrom.existFlag" activeValue="0" inactiveValue="1" size="20"
 							slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
@@ -138,7 +192,6 @@
 				</u-cell-group>
 			</view>
 		</template>
-
 		<view class="ui-confirm">
 			<button class="default" @click="submit">保存</button>
 		</view>
@@ -489,21 +542,22 @@
 		padding: 54rpx 32rpx 80rpx 32rpx;
 	}
 
+	.ui-slider-tit {
+		padding: 20rpx 0;
+	}
+
 	.ui-slider {
 		width: 100%;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-
-		text {
-			font-size: 26rpx;
-			color: #999;
-		}
+		padding: 0 32rpx 0 0;
+		box-sizing: border-box;
 
 		&>* {
 			:nth-child(1) {
-				width: 380rpx;
+				width: 430rpx;
 			}
 		}
 	}
@@ -545,5 +599,20 @@
 				width: 443rpx;
 			}
 		}
+	}
+
+	.ui-box {
+		padding-left: 30rpx;
+	}
+
+	.ui-slider-box {
+		font-size: 15px;
+		padding: 27rpx 20rpx 43rpx 0;
+		border-bottom: 2px solid #f2f2f2;
+	}
+
+	.ui-right-icon {
+		width: 300rpx;
+		height: 100%;
 	}
 </style>

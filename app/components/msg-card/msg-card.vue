@@ -2,7 +2,7 @@
 	<view class="ui-box">
 		<view style="padding: 20rpx 30rpx;">
 			<view class="box-title">
-				<text class="device-type">雷达波设备{{msgDetail.operateFlag}}</text>
+				<text class="device-type">跌倒检测器{{msgDetail.operateFlag}}</text>
 				<text class="event-date">{{$u.timeFormat(msgDetail.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
 				<view class="event-status">
 					<text class="urgent common" v-if="msgDetail.eventLevel == 'urgent'">紧急事件</text>

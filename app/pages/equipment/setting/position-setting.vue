@@ -360,7 +360,7 @@
 					} else {
 						uni.showToast({
 							icon: 'none',
-							title: '请先设置雷达波区域'
+							title: '请先设置跌倒检测器区域'
 						});
 					}
 				});

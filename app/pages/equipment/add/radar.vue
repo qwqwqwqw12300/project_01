@@ -2,12 +2,12 @@
 * @Author: zhanch
 * @Date: 2023-02-11 11:31:28
 * @FilePath: /pages/equipment/radar.vue
-* @Description: 添加雷达波设备
+* @Description: 添加跌倒检测器
 -->
 
 <template>
 	<app-body>
-		<app-logo text="增加雷达波设备"></app-logo>
+		<app-logo text="增加跌倒检测器"></app-logo>
 		<view class="ui-step">
 			<text>1、请确保手机蓝牙、WIFI处于开启状态</text>
 		</view>
