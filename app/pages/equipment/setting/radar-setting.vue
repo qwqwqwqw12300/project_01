@@ -94,12 +94,19 @@
 								size="20" slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
 							</u-switch>
 						</u-cell>
-
-						<u-cell title="我的规则2" label="2023/02/21 至 2023/02/23  12:00 至 23:59">
-							<view slot="right-icon" class="ui-right-icon">
-								<u-icon name="arrow-right" color="#909193" size="28"></u-icon>
+						<view class="ui-cos-rule">
+							<view class="ui-rule ui-rule-top">
+								<text>我的规则2</text>
+								<u-icon name="arrow-right"></u-icon>
 							</view>
-						</u-cell>
+							<view class="ui-rule ui-rule-bot">
+								<text>2023/02/21 至 2023/02/23  12:00 至 23:59</text>
+								<u-switch space="2" v-model="editFrom.inMonitorFlag" activeValue="0" inactiveValue="1"
+									size="20" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
+								</u-switch>
+							</view>
+						</view>
+						<u-cell title="新增规则" isLink></u-cell>
 					</view>
 					<!-- 旧规则 -->
 					<u-cell title="进出监控">
@@ -614,5 +621,27 @@
 	.ui-right-icon {
 		width: 300rpx;
 		height: 100%;
+	}
+	
+	.ui-cos-rule {
+		padding: 43rpx 32rpx 43rpx 32rpx;
+		display: flex;
+		flex-direction: column;
+		.ui-rule-top {
+			margin-bottom: 36rpx;
+		}
+		 .ui-rule-bot {
+			>text {
+				display: flex;
+				width: 400rpx;
+				font-size: 26rpx;
+				color: #888888;
+			} 
+		 }
+		.ui-rule {
+			width: 100%;
+			display: flex;
+			justify-content: space-between;
+		}
 	}
 </style>
