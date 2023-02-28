@@ -12,12 +12,16 @@
 		</view>
 		<view class="ui-menu">
 			<view class="menu-item" v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
-				<view class="item-box" @click="gridClick(baseListItem)">
+				<view class="item-box">
 					<view class="title">
 						<u-icon name="/static/images/home.png" size="28"></u-icon>
 						<text>{{ baseListItem.name }}</text>
 					</view>
-					<view class="action" @click.stop="onDelete(baseListItem.familyId)">删除家庭</view>
+					<!-- 	<view class="action" >删除家庭</view> -->
+					<view class="action">
+						<text class="delete" @click.stop="onDelete(baseListItem.familyId)">删除</text>
+						<text class="edit" @click.stop="gridClick(baseListItem)">编辑</text>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -149,8 +153,25 @@
 
 				.action {
 					margin-top: 20rpx;
-					font-size: 28rpx;
-					color: #E95656;
+					display: flex;
+					width: 100%;
+					justify-content: space-around;
+					align-items: center;
+					font-size: 26rpx;
+
+					.delete {
+						color: #E95656;
+					}
+
+					.edit {
+						color: #fff;
+						padding: 7rpx 24rpx;
+						background-image: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);
+						border-radius: 24px;
+					}
+
+					// font-size: 28rpx;
+					// color: #E95656;
 				}
 			}
 		}
