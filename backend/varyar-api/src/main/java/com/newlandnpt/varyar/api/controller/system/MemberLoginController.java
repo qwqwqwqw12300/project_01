@@ -134,7 +134,7 @@ public class MemberLoginController extends BaseController {
         // 生成验证码
         Random random = new Random();
         StringBuffer randomSb = new StringBuffer();
-        for(int i = 0; i < 4; ++i) {
+        for(int i = 0; i < 6; ++i) {
             randomSb.append(random.nextInt(10));
         }
         String code = randomSb.toString();
