@@ -6,6 +6,8 @@ import com.newlandnpt.varyar.common.core.domain.model.SMS.SMSSendRes;
 import com.newlandnpt.varyar.common.utils.Md5.Md5Util;
 import com.newlandnpt.varyar.common.utils.SMS.templates.*;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
 import java.io.BufferedReader;
@@ -196,4 +198,20 @@ public class SMSUtils {
             return true;
         }
     }
+
+    @Component
+    public static class SMSUtilsInjector{
+
+        @Value("${sms.apId:-}")
+        public void setApId(String apId){
+            SMSUtils.apId = apId;
+        }
+
+        @Value("${sms.secretKey:-}")
+        public void setSecretKey(String secretKey){
+            SMSUtils.secretKey = secretKey;
+        }
+
+    }
+
 }
