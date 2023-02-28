@@ -31,7 +31,7 @@
 				<view class="cancel-btn" @click="handleCancel">
 					取消
 				</view>
-				<view class="save-btn" @click="handleSave">
+				<view class="save-btn" @tap="handleSave">
 					保存
 				</view>
 			</view>
@@ -96,7 +96,7 @@
 					console.log(this.contactList, 'llllllllll')
 				})
 			},
-			handleSubmit() {
+			handleSave() {
 				const list = uni.$u.deepClone(this.contactList)
 				for (let i = 0; i < list.length; i++) {
 					if (list[i].name || list[i].phone) {
@@ -115,9 +115,6 @@
 			},
 			handleCancel() {
 				uni.navigateBack()
-			},
-			handleSave() {
-
 			}
 		},
 		onShow() {
@@ -177,7 +174,7 @@
 
 				.input-left,
 				.input-right {
-					width: 200rpx;
+					width: 240rpx;
 				}
 
 			}
