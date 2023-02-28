@@ -1,7 +1,10 @@
 <template>
 	<view class="ui-pop-box">
+		<!-- mapSearch模块需要页面有地图组件才能正常初始化 -->
+		<map v-show="false"></map>
 		<view class="ui-u-search">
-			<u-search @change="searchChange" placeholder="请输入地址信息" @custom="back" :showAction="true" actionText="取消" v-model="search"></u-search>
+			<u-search @change="searchChange" placeholder="请输入地址信息" @custom="back" :showAction="true" actionText="取消"
+				v-model="search"></u-search>
 		</view>
 		<view class="ui-site-gloup" v-if="poiList.length">
 			<view class="ui-item active" v-for="(item, index) of poiList" :key="index" @tap="handleSelect(item)">
@@ -47,12 +50,12 @@
 				uni.$emit('searchData', val);
 				uni.navigateBack()
 			},
-			
+
 			back() {
 				uni.$off('searchData');
 				uni.navigateBack();
 			},
-			
+
 			searchChange($e) {
 				uni.$u.debounce(() => {
 					mapSearch && mapSearch.poiKeywordsSearch({
@@ -64,15 +67,44 @@
 					}, ({
 						poiList
 					}) => {
-						console.log(poiList);
 						if (poiList && poiList.length) {
-							console.log(poiList);
 							this.poiList = poiList;
 						}
 					})
 				}, 500)
+			},
+
+			/**
+			 * 获取定位
+			 */
+			getLocation() {
+				return new Promise(resolve => {
+					uni.getLocation({
+						type: 'wgs84',
+						success: resolve
+					});
+				});
 
 			}
+		},
+		created() {
+			this.getLocation().then(location => {
+				mapSearch && mapSearch.poiSearchNearBy({
+					point: location,
+					key: '小区'
+				}, res => {
+					const {
+						poiList
+					} = res;
+					if (poiList && poiList.length) {
+						this.poiList = poiList;
+					}
+				})
+			});
+		},
+
+		onBackPress(event) {
+			uni.$off('detailsScreenResult');
 		}
 	}
 </script>

@@ -6,7 +6,7 @@
  */
 export const env = {
 	/**开发模式**/
-	mode: 'dev',
+	mode: 'prod',
 	/**服务器地址**/
 	basePath: uni.getStorageSync('appHost') || 'http://www.agetech.cc:7766',
 	// 林橘

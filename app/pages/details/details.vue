@@ -5,10 +5,11 @@
 * @Description: 信息详情
 -->
 <template>
-	<app-body :bg="false" :hideTitle="true">
+	<app-body :hideTitle="true">
 		<view class="ui-body">
 			<view class="ui-title">
 				<text>报告</text>
+				<!-- <u-icon size="40" name="https://cdn.uviewui.com/uview/example/button.png"></u-icon> -->
 				<text class="active" @click="readMsgAll">全部标记已处理</text>
 			</view>
 			<view class="ui-screen">
@@ -214,7 +215,7 @@
 
 		.ui-title {
 			padding: 34rpx 32rpx;
-			background: #fff;
+			// background: #fff;
 			padding-top: 100rpx;
 			display: flex;
 			justify-content: space-between;
@@ -262,7 +263,7 @@
 		}
 
 		.ui-empty {
-			background: #fff;
+			// background: #fff;
 			height: 600rpx;
 			display: flex;
 			justify-content: center;

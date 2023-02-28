@@ -4,31 +4,39 @@
 		<view class="ui-logo">
 			<app-logo color="#353535" text="紧急联系人设置"></app-logo>
 		</view>
-		<view class="ui-form" v-for="item in contactList" :key="item.orderNum">
-			<view class="ui-form-title">
-				<view class="title-text">
-					{{ item.orderName }}
+		<view class="ui-form">
+			<view class="ui-form-item" v-for="(item,index) in contactList" :key="item.orderNum">
+				<view class="item-title">
+					<view class="title-left">
+						<text></text>
+						{{ item.orderName }}
+					</view>
+					<view class="title-right" @tap="getContact(index)">
+						<u-icon name="/static/images/tel-book.png" size="44rpx"></u-icon>
+					</view>
 				</view>
-			</view>
-			<view class="ui-form-item">
-				<view class="title">
-					姓名
+				<view class="item-input">
+					<view class="input-left">
+						<u--input v-model="item.name" placeholder="请输入姓名" border="none" clearable></u--input>
+					</view>
+					<view class="input-right">
+						<u--input v-model="item.phone" maxlength="11" type="number" placeholder="请输入手机号" border="none"
+							placeholderStyle="text-align:right;color: rgb(192, 196, 204);" clearable></u--input>
+					</view>
 				</view>
-				<u-input v-model="item.name" placeholder="输入紧急联系人名字" :border="'none'" fontSize="28rpx" clearable
-					inputAlign="right" cursor="0" />
-			</view>
-			<view class="ui-form-item">
-				<view class="title">
-					电话号码
-				</view>
-				<u-input v-model="item.phone" maxlength="11" type="number" placeholder="输入紧急联系手机号码" :border="'none'"
-					fontSize="28rpx" clearable inputAlign="right" />
 			</view>
 		</view>
 		<view class="ui-btn">
-			<button @click="handleSubmit" class="default">确定</button>
+			<view class="btn-box">
+				<view class="cancel-btn" @click="handleCancel">
+					取消
+				</view>
+				<view class="save-btn" @click="handleSave">
+					保存
+				</view>
+			</view>
 		</view>
-
+		<tel-books ref="telBookRef" @select="phoneSelect"></tel-books>
 	</app-body>
 </template>
 
@@ -47,6 +55,7 @@
 		data() {
 
 			return {
+				index: 0,
 				contactList: [{
 						orderNum: 1,
 						orderName: '第一紧急联系人'
@@ -63,6 +72,15 @@
 			}
 		},
 		methods: {
+			getContact(index) {
+				this.index = index
+				this.$refs.telBookRef.show()
+			},
+			phoneSelect(phone) {
+				this.contactList[this.index].phone = phone
+				this.contactList = [...this.contactList]
+				console.log(this.contactList, 'cccccccllllll')
+			},
 			handleInit() {
 				GetContactsList({}).then(res => {
 					console.log(res, 'res')
@@ -94,63 +112,103 @@
 					}, 500)
 				})
 				console.log(this.contactList, '9999')
+			},
+			handleCancel() {
+				uni.navigateBack()
+			},
+			handleSave() {
+
 			}
 		},
 		onShow() {
-			this.handleInit()
+			// this.handleInit()
 		}
 	}
 </script>
 
 <style lang="scss">
 	.ui-logo {
-		margin-top: 20rpx;
 		background: #ffffff;
 		padding-bottom: 50rpx;
 	}
 
 	.ui-form {
-		padding: 0 44rpx;
-		margin-bottom: 20rpx;
-		background-color: #ffffff;
-
-		.ui-form-title {
-			display: flex;
-			align-items: center;
-			min-height: 80rpx;
-			border-bottom: solid 2px #f9f9f9;
-
-			.title-text {
-				height: 100%;
-				color: #FEAE43;
-				font-size: 36rpx;
-				font-weight: 550;
-
-				text {
-					border-left: solid 14rpx #FEAE43;
-					border-radius: 3rpx;
-					margin-right: 16rpx;
-				}
-			}
-		}
+		// padding: 0 44rpx;
+		margin-top: 40rpx;
 
 		.ui-form-item {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			min-height: 100rpx;
-			border-bottom: solid 2px #f9f9f9;
+			background-color: #ffffff;
+			margin-bottom: 40rpx;
+			padding: 4rpx 30rpx;
 
-			.title {
-				font-size: 30rpx;
-				color: #353535;
-				font-weight: 400;
-				width: 180rpx;
+			.item-title {
+				display: flex;
+				align-items: center;
+				min-height: 100rpx;
+				justify-content: space-between;
+				border-bottom: solid 2px #f7f7f7;
+				padding: 0 5rpx;
+
+				.title-left {
+					display: flex;
+					align-items: center;
+					height: 100%;
+					justify-content: center;
+					font-size: 36rpx;
+					color: #FEAE43;
+					font-weight: 600;
+
+					text {
+						height: 50rpx;
+						border-left: solid 14rpx #FEAE43;
+						border-radius: 4rpx;
+						margin-right: 20rpx;
+					}
+				}
+			}
+
+			.item-input {
+				min-height: 128rpx;
+				padding: 0 10rpx;
+				border-bottom: solid 2px #f7f7f7;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+
+				.input-left,
+				.input-right {
+					width: 200rpx;
+				}
+
 			}
 		}
 	}
 
 	.ui-btn {
-		padding: 44rpx;
+		width: 100%;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+
+		.btn-box {
+			height: 100rpx;
+			line-height: 100rpx;
+			display: flex;
+			font-size: 36rpx;
+
+			.cancel-btn {
+				flex: 1;
+				background-color: #fff;
+				color: #E95656;
+				text-align: center;
+			}
+
+			.save-btn {
+				flex: 1;
+				background-image: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);
+				color: #fff;
+				text-align: center;
+			}
+		}
 	}
 </style>

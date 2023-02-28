@@ -10,6 +10,8 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.user.CaptchaException;
 import com.newlandnpt.varyar.common.exception.user.CaptchaExpireException;
+import com.newlandnpt.varyar.common.utils.SMS.SMSUtils;
+import com.newlandnpt.varyar.common.utils.SMS.templates.FamilyShare;
 import com.newlandnpt.varyar.system.domain.*;
 import com.newlandnpt.varyar.system.service.*;
 import io.swagger.annotations.Api;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -238,6 +241,21 @@ public class FamilyController extends BaseController {
         }else{
             message = "当前会员"+loginUser.getMemberPhone()+"的家已分享给会员"+shareFamilyRequest.getPhone()+"，请通知"+shareFamilyRequest.getPhone()+"尽快注册登录!";
         }
+
+        //脱敏处理，中间4位替换成*
+        String telNumber = loginUser.getMemberPhone().replaceAll("(\\d{3})\\d*(\\d{4})","$1*$2");
+        //发送分享家庭短信通知模板(如果下载地址ios和安卓不一样的话需区分)
+        FamilyShare familyShare = new FamilyShare(telNumber,"http://r.aj.com");
+        if(familyShare.isCorrectParams()){
+            try {
+                SMSUtils.sendMsg(shareFamilyRequest.getPhone(),familyShare);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }else {
+            return AjaxResult.error("分享家庭短信内容参数校验失败！");
+        }
+
         return success(tMemberFamily);
     }
     /**
