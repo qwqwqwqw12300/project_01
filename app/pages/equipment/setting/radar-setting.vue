@@ -15,7 +15,12 @@
 						<u-input inputAlign="right" placeholder="请输入设备名称" border="none" slot="right-icon"
 							v-model="editFrom.deviceName"></u-input>
 					</u-cell>
-					<u-cell title="设备位置">
+					<u-cell>
+						<view slot="title" class="u-slot-title">
+							<u-text @click="tipShow = true" suffixIcon="question-circle"
+								:iconStyle="{fontSize: '36rpx', color: '#3c9cff', marginLeft: '5rpx'}" text="设备位置">
+							</u-text>
+						</view>
 						<u-radio-group v-model="editFrom.location" slot="right-icon" placement="row">
 							<u-radio :customStyle="{margin: '20rpx'}" v-for="item of locationList" :key="item"
 								activeColor="#FEAE43" :name="item" :label="item"></u-radio>
@@ -147,6 +152,20 @@
 				<text>{{$u.priceFormat(rangeHandle.num/10, 2)}}米</text>
 			</view>
 		</u-modal>
+		<u-popup :show="tipShow" @close="tipShow = false" mode="center" round="16rpx" closeable>
+			<view class="ui-tip-box">
+				<view class="ui-tip-title">设备安装帮助</view>
+				<view class="ui-tip-img">
+					<text>顶挂</text>
+					<image src="@/static/images/setting/device-tip1.png" mode=""></image>
+				</view>
+				<view class="ui-tip-img">
+					<text>壁挂</text>
+					<image src="@/static/images/setting/device-tip2.png" mode=""></image>
+				</view>
+
+			</view>
+		</u-popup>
 	</app-body>
 </template>
 
@@ -180,6 +199,7 @@
 					show: false,
 					num: 0
 				},
+				tipShow: false,
 				/**时间列表**/
 				timeList: [1, 5, 10],
 				locationList: [
@@ -220,7 +240,6 @@
 					60)],
 				isEntryTimeCus: [this.timeList.includes(entryTime / 60)],
 			};
-			console.log(this.editFrom, 'editform')
 			this.source = source;
 		},
 		methods: {
@@ -229,7 +248,6 @@
 			 * 提交 
 			 **/
 			submit() {
-				console.log(this.editFrom, 'this.editFrom');
 				if (this.editFrom.roomId) {
 					this.editSubmit();
 				} else {
@@ -486,6 +504,45 @@
 		&>* {
 			:nth-child(1) {
 				width: 380rpx;
+			}
+		}
+	}
+
+	.ui-tip-box {
+		font-size: 32rpx;
+		width: 660rpx;
+		box-sizing: border-box;
+		padding: 30rpx;
+		text-align: center;
+
+		.ui-tip-title {
+			width: 100%;
+			color: #353535;
+			font-weight: bold;
+			margin-bottom: 57rpx;
+			box-sizing: border-box;
+		}
+
+		.ui-tip-img {
+			margin: 16rpx;
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+
+			&:nth-child(3) {
+				margin-top: 30rpx;
+			}
+
+			text {
+				margin: 16rpx 0;
+				display: inline-block;
+			}
+
+			image {
+				height: 443rpx;
+				width: 443rpx;
 			}
 		}
 	}

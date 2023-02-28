@@ -101,6 +101,10 @@
 					}
 				})
 			});
+		},
+
+		onBackPress(event) {
+			uni.$off('detailsScreenResult');
 		}
 	}
 </script>
