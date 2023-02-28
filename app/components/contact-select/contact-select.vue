@@ -2,8 +2,9 @@
 	<!-- 城市选择-->
 	<view class="city-select">
 		<!-- 预留搜索-->
-		<view class="city-serach" v-if="isSearch"><input @input="keyInput" :placeholder="placeholder"
-				class="city-serach-input" /></view>
+		<view class="city-serach" v-if="isSearch">
+			<input @input="keyInput" :placeholder="placeholder" class="city-serach-input" />
+		</view>
 		<scroll-view :scroll-top="scrollTop" scroll-y="true" class="city-select-main" id="city-select-main"
 			:scroll-into-view="toView">
 			<!-- 当前定位城市 -->
@@ -262,25 +263,16 @@
 		box-sizing: border-box;
 	}
 
-	.city-serach-input {
-		background-color: #fff;
-	}
-
 	.city-serach {
 		width: 100%;
 		background-color: #fff;
 		color: #4a4a4a;
-		padding: 0 vww(10);
-
-		&-input {
-			margin: vww(10) 0;
-			height: vww(40);
-			line-height: vww(40);
-			font-size: vww(14);
-			padding: 0 vww(5);
-			border: 1px solid #4d8cfd;
-			border-radius: 3px;
+		padding: 70rpx 32rpx 32rpx 32rpx;
+		
+		.city-serach-input {
+			background-color: #fff;
 		}
+	
 	}
 
 	.city-select-main {

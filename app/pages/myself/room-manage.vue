@@ -244,7 +244,7 @@
 	.ui-logo {
 		background: #ffffff;
 		padding: 50rpx 40rpx;
-		padding-bottom: 50rpx;
+		padding-top: 50rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
