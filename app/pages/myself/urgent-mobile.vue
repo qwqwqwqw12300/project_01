@@ -31,7 +31,7 @@
 				<view class="cancel-btn" @click="handleCancel">
 					取消
 				</view>
-				<view class="save-btn" @click="handleSave">
+				<view class="save-btn" @tap="handleSave">
 					保存
 				</view>
 			</view>
@@ -83,7 +83,7 @@
 			},
 			handleInit() {
 				GetContactsList({}).then(res => {
-					console.log(res, 'res')
+
 					this.contactList = this.contactList.map(item => {
 						const data = res.rows.find(n => {
 							return n.orderNum === item.orderNum
@@ -96,7 +96,7 @@
 					console.log(this.contactList, 'llllllllll')
 				})
 			},
-			handleSubmit() {
+			handleSave() {
 				const list = uni.$u.deepClone(this.contactList)
 				for (let i = 0; i < list.length; i++) {
 					if (list[i].name || list[i].phone) {
@@ -105,23 +105,19 @@
 					}
 				}
 				PostSetContacts(this.contactList).then(res => {
-					uni.$u.toast(res.msg)
-					this.$store.dispatch('GetContactsList')
+					uni.$u.toast('保存成功')
 					setTimeout(() => {
-						this.handleInit()
-					}, 500)
+						this.$store.dispatch('GetContactsList')
+						this.handleCancel()
+					}, 1000)
 				})
-				console.log(this.contactList, '9999')
 			},
 			handleCancel() {
 				uni.navigateBack()
-			},
-			handleSave() {
-
 			}
 		},
 		onShow() {
-			// this.handleInit()
+			this.handleInit()
 		}
 	}
 </script>
@@ -177,7 +173,7 @@
 
 				.input-left,
 				.input-right {
-					width: 200rpx;
+					width: 240rpx;
 				}
 
 			}

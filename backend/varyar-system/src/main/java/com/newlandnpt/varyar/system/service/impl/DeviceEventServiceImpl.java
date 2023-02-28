@@ -4,11 +4,13 @@ import com.newlandnpt.varyar.common.constant.CacheConstants;
 import com.newlandnpt.varyar.common.constant.DeviceConstants;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.system.domain.*;
+import com.newlandnpt.varyar.system.domain.vo.SmsEventParamsVo;
 import com.newlandnpt.varyar.system.domain.vo.StateVo;
 import com.newlandnpt.varyar.system.mapper.*;
 import com.newlandnpt.varyar.system.service.DeviceEventService;
 import com.newlandnpt.varyar.system.service.IEventService;
 import com.newlandnpt.varyar.system.service.IMsgService;
+import com.newlandnpt.varyar.system.service.ISmsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,9 @@ public class DeviceEventServiceImpl implements DeviceEventService {
 
     @Autowired
     private RedisCache redisCache;
+
+    @Autowired
+    private ISmsService smsService;
 
     /**
      * 事件级别 严重
@@ -94,10 +99,18 @@ public class DeviceEventServiceImpl implements DeviceEventService {
     /** 事件类型 进入区域3 */
     public static final String ENTER_ZONE_3 = "enter_zone_3";
 
+    public static final String EVENT_TYPE_URGENT_OUTlINE = "0";
+    public static final String EVENT_TYPE_URGENT_FALL = "1";
+    public static final String EVENT_TYPE_URGENT_MOVE = "2";
+    public static final String EVENT_TYPE_URGENT_LEAVE = "3";
+    public static final String EVENT_TYPE_NORMAL = "";
+
     @Override
     public void deviceStateIssue(String deviceNo) {
         TDevice device = deviceMapper.selectByDeviceNo(deviceNo);
-        triggerEvent(EVENT_LEVEL_NORMAL, device, "设备 " + deviceNo + " 激活成功！");
+//        triggerEvent(EVENT_LEVEL_NORMAL, device, "设备 " + deviceNo + " 激活成功！");
+        SmsEventParamsVo smsEventParamsVo = new SmsEventParamsVo();
+        triggerEvent(EVENT_LEVEL_NORMAL, device, "设备 " + deviceNo + " 激活成功！",EVENT_TYPE_NORMAL,smsEventParamsVo);
     }
 
     @Override
@@ -130,7 +143,11 @@ public class DeviceEventServiceImpl implements DeviceEventService {
                 devIds.add(device.getNo());
                 //状态一直是断网的情况不重复发断网事件
                 if(!cacheList.contains(device.getNo())){
-                    triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getName() + " 疑似断网，请及时处理！");
+//                    triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getName() + " 疑似断网，请及时处理！");
+                    SmsEventParamsVo smsEventParamsVo = new SmsEventParamsVo();
+                    triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getName() + " 疑似断网，请及时处理！",EVENT_TYPE_URGENT_OUTlINE,smsEventParamsVo);
+                    //发送sms短信
+
                 }else{
                     log.info(">>>>>>>设备{}仍然是断网,忽略触发事件",device.getNo());
                 }
@@ -165,7 +182,9 @@ public class DeviceEventServiceImpl implements DeviceEventService {
                 if (device == null) {
                     continue;
                 }
-                triggerEvent(EVENT_LEVEL_NORMAL, device, "设备" + device.getName() + " 已恢复网络连接");
+//                triggerEvent(EVENT_LEVEL_NORMAL, device, "设备" + device.getName() + " 已恢复网络连接");
+                SmsEventParamsVo smsEventParamsVo =new SmsEventParamsVo();
+                triggerEvent(EVENT_LEVEL_NORMAL, device, "设备" + device.getName() + " 已恢复网络连接",EVENT_TYPE_NORMAL,smsEventParamsVo);
             }
             discDevices.removeAll(reconnects);
             //更新Redis
@@ -194,7 +213,14 @@ public class DeviceEventServiceImpl implements DeviceEventService {
                 TDevice redisDev = redisCache.getCacheObject(cacheKey);
                 if (redisDev.getStatus().equals(STATUS_ACTIVATED)) {
                     //todoL Redis缓存设备结构
-                    triggerEvent(EVENT_LEVEL_HIGH, device, "设备 " + device.getName() + " 监控到"+areaName+"内【"+typeFormat(type)+"】超过" + (delayTime/60) + "分钟，请及时处理！");
+//                    triggerEvent(EVENT_LEVEL_HIGH, device, "设备 " + device.getName() + " 监控到"+areaName+"内【"+typeFormat(type)+"】超过" + (delayTime/60) + "分钟，请及时处理！");
+                    SmsEventParamsVo smsEventParamsVo =new SmsEventParamsVo();
+                    smsEventParamsVo.setDeviceName(device.getName());
+                    smsEventParamsVo.setPhone(device.getMemberPhone());
+                    smsEventParamsVo.setAction(typeFormat(type));
+                    smsEventParamsVo.setTime((delayTime/60));
+                    smsEventParamsVo.setField(areaName);
+                    triggerEvent(EVENT_LEVEL_HIGH, device, "设备 " + device.getName() + " 监控到"+areaName+"内【"+typeFormat(type)+"】超过" + (delayTime/60) + "分钟，请及时处理！",EVENT_TYPE_URGENT_MOVE,smsEventParamsVo);
                 }
             }
         }
@@ -232,7 +258,9 @@ public class DeviceEventServiceImpl implements DeviceEventService {
             return;
         }
         for (TDevice device : devices) {
-            triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getName() + "检测到有人跌倒，请及时处理！");
+//            triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getName() + "检测到有人跌倒，请及时处理！");
+            SmsEventParamsVo smsEventParamsVo =new SmsEventParamsVo();
+            triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getName() + "检测到有人跌倒，请及时处理！",EVENT_TYPE_URGENT_FALL,smsEventParamsVo);
         }
     }
 
@@ -248,7 +276,9 @@ public class DeviceEventServiceImpl implements DeviceEventService {
             return;
         }
         for (TDevice device : devices) {
-            triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getName() + "超出地理围栏范围，请及时处理！");
+//            triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getName() + "超出地理围栏范围，请及时处理！");
+            SmsEventParamsVo smsEventParamsVo =new SmsEventParamsVo();
+            triggerEvent(EVENT_LEVEL_HIGH, device, "设备" + device.getName() + "超出地理围栏范围，请及时处理！",EVENT_TYPE_URGENT_LEAVE,smsEventParamsVo);
         }
     }
 
@@ -257,7 +287,8 @@ public class DeviceEventServiceImpl implements DeviceEventService {
      *
      * @param device 终端信息
      */
-    private void triggerEvent(String level, TDevice device, String content) {
+//    private void triggerEvent(String level, TDevice device, String content) {
+    private void triggerEvent(String level, TDevice device, String content,String eventType,SmsEventParamsVo smsEventParamsVo) {
         if(!STATUS_ACTIVATED.equals(device.getStatus())){
             log.warn(">>>> 设备号：{},不是激活状态，不触发事件：{}|{}",device.getNo(),level,content);
         }
@@ -273,6 +304,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         event.setMemberPhone(device.getMemberPhone());
         event.setLevel(level);
         event.setContent(content);
+        event.setEventType(eventType);
         event.setOperateType(AUTO_EVENT);
         event.setOperateFlag(AUTO_FLAG);
         // 根据设备查找运营人员信息
@@ -307,6 +339,11 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         //会员设备事件同时触发发消息
         if(device.getMemberId()!=null){
             msgService.sendMsgByEvent(event);
+
+            //紧急事件触发发送SMS事件短信模板接口
+            if (EVENT_LEVEL_HIGH.equals(event.getEventType())) {
+                smsService.sendSmsEvent(event, smsEventParamsVo, event.getEventType());
+            }
         }
     }
 
