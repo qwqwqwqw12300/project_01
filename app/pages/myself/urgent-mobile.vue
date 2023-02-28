@@ -83,7 +83,7 @@
 			},
 			handleInit() {
 				GetContactsList({}).then(res => {
-					console.log(res, 'res')
+
 					this.contactList = this.contactList.map(item => {
 						const data = res.rows.find(n => {
 							return n.orderNum === item.orderNum
@@ -105,20 +105,19 @@
 					}
 				}
 				PostSetContacts(this.contactList).then(res => {
-					uni.$u.toast(res.msg)
-					this.$store.dispatch('GetContactsList')
+					uni.$u.toast('保存成功')
 					setTimeout(() => {
-						this.handleInit()
-					}, 500)
+						this.$store.dispatch('GetContactsList')
+						this.handleCancel()
+					}, 1000)
 				})
-				console.log(this.contactList, '9999')
 			},
 			handleCancel() {
 				uni.navigateBack()
 			}
 		},
 		onShow() {
-			// this.handleInit()
+			this.handleInit()
 		}
 	}
 </script>
