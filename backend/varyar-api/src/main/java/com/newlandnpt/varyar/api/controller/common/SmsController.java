@@ -57,11 +57,11 @@ public class SmsController {
         // 生成验证码
         Random random = new Random();
         StringBuffer randomSb = new StringBuffer();
-        /*for(int i = 0; i < 4; ++i) {
+        for(int i = 0; i < 4; ++i) {
             randomSb.append(random.nextInt(10));
         }
-        String code = randomSb.toString();*/
-        String code = "1234";
+        String code = randomSb.toString();
+//        String code = "1234";
         redisCache.setCacheObject(smsVerifyKey, code, Constants.SMS_CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
 
         smsService.sendSms(code,smsRequest.getPhone());
