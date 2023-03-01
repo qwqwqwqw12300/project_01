@@ -8,7 +8,7 @@
 <template>
 	<view>
 		<u-input :prefixIcon="prefixIcon" :prefixIconStyle="prefixIconStyle" :fontSize="fontSize" placeholder="请输入短信认证码"
-			v-model="checkPayLoad.code" type="number" maxlength="4" :readonly="status === 'checked'" @input="checkSms"
+			v-model="checkPayLoad.code" type="number" maxlength="6" :readonly="status === 'checked'" @input="checkSms"
 			:border="'none'" clearable>
 			<template slot="suffix">
 				<button class="wd-sms ui-mini" @click="sendCode" size="mini">{{suffix}}</button>
