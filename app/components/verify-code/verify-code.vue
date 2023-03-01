@@ -131,7 +131,7 @@
 			 * 校验
 			 */
 			checkSms(code) {
-				if (this.status === 'send' && code.length === 4) {
+				if (this.status === 'send' && code.length === 6) {
 					this.urls.checkSms({
 						...this.checkPayLoad,
 						captcha: code
