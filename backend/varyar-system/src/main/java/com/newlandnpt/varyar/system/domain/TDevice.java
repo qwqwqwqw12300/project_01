@@ -10,11 +10,10 @@ import com.alibaba.fastjson2.JSON;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.newlandnpt.varyar.common.core.domain.entity.DeviceLocation;
-import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
-import com.newlandnpt.varyar.common.core.domain.entity.DeviceRoomParameter;
+import com.newlandnpt.varyar.common.core.domain.entity.*;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
+import com.newlandnpt.varyar.system.domain.vo.LeaveBedWarnParameter;
 import org.springframework.data.annotation.Transient;
 
 import javax.validation.constraints.NotBlank;
@@ -447,14 +446,49 @@ public class TDevice extends BaseEntity
         private List<TRoomZone> roomZones;
 
         /**
+         * 设备安装位置：0:壁挂、1:顶挂
+         * */
+        private String installPosition;
+
+        /**
          * 设备位置信息
          * */
         private DeviceLocation deviceLocation;
+
+        private DeviceLocationTop deviceLocationTop;
+
+        private DeviceLocationWall deviceLocationWall;
 
         /**
          * 设备房间设置信息
          */
         private DeviceRoomParameter deviceRoomParameter;
+
+        /**
+         * 设备预警规则
+         */
+        private DeviceWarnParameter deviceWarnParameter;
+
+        /**
+         * 离床预警规则
+         */
+        private LeaveBedWarnParameter leaveBedWarnParameter;
+
+        public LeaveBedWarnParameter getLeaveBedWarnParameter() {
+            return leaveBedWarnParameter;
+        }
+
+        public void setLeaveBedWarnParameter(LeaveBedWarnParameter leaveBedWarnParameter) {
+            this.leaveBedWarnParameter = leaveBedWarnParameter;
+        }
+
+        public DeviceWarnParameter getDeviceWarnParameter() {
+            return deviceWarnParameter;
+        }
+
+        public void setDeviceWarnParameter(DeviceWarnParameter deviceWarnParameter) {
+            this.deviceWarnParameter = deviceWarnParameter;
+        }
 
         public DeviceRoomParameter getDeviceRoomParameter() {
             return deviceRoomParameter;
@@ -470,6 +504,30 @@ public class TDevice extends BaseEntity
 
         public void setDeviceLocation(DeviceLocation deviceLocation) {
             this.deviceLocation = deviceLocation;
+        }
+
+        public String getInstallPosition() {
+            return installPosition;
+        }
+
+        public void setInstallPosition(String installPosition) {
+            this.installPosition = installPosition;
+        }
+
+        public DeviceLocationTop getDeviceLocationTop() {
+            return deviceLocationTop;
+        }
+
+        public void setDeviceLocationTop(DeviceLocationTop deviceLocationTop) {
+            this.deviceLocationTop = deviceLocationTop;
+        }
+
+        public DeviceLocationWall getDeviceLocationWall() {
+            return deviceLocationWall;
+        }
+
+        public void setDeviceLocationWall(DeviceLocationWall deviceLocationWall) {
+            this.deviceLocationWall = deviceLocationWall;
         }
 
         public List<TRoomZone> getRoomZones() {

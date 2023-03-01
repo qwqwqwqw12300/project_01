@@ -89,7 +89,7 @@ public class SmsServiceImpl implements ISmsService {
         String phone = event.getMemberPhone();
         //获取手机尾号
         String telPhone = phone.substring(phone.length() - 4);
-        String deviceName = smsEventParamsVo.getDeviceName();
+        String deviceName = event.getDeviceName();
         TMsg msg = new TMsg();
         //短信类型
         msg.setMsgType(MSG_TYPE_SMS);

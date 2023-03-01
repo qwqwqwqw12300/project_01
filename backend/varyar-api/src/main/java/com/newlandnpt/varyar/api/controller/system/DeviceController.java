@@ -3,11 +3,10 @@ package com.newlandnpt.varyar.api.controller.system;
 import com.alibaba.fastjson2.JSON;
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.entity.DeviceLocation;
-import com.newlandnpt.varyar.common.core.domain.entity.DeviceRoomParameter;
-import com.newlandnpt.varyar.common.core.domain.entity.nowLocation;
+import com.newlandnpt.varyar.common.core.domain.entity.*;
 import com.newlandnpt.varyar.common.core.domain.model.DevicePhoneRequest;
 import com.newlandnpt.varyar.common.core.domain.model.DeviceRequest;
+import com.newlandnpt.varyar.common.core.domain.model.DeviceWarnRequest;
 import com.newlandnpt.varyar.common.core.domain.vo.ExtraVo;
 import com.newlandnpt.varyar.common.core.domain.vo.TrackerTargetVo;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
@@ -15,7 +14,7 @@ import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.domain.TDevice;
-import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
+import com.newlandnpt.varyar.system.domain.vo.LeaveBedWarnParameter;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -27,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import static com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_SWITCH_KEY;
@@ -227,6 +227,34 @@ public class DeviceController extends BaseController {
         if (deviceRequest.getRoomRight()==null||deviceRequest.getRoomRight().equals("")){
             return error("右边长度不能为空！");
         }
+        if((deviceRequest.getRoomLeft().add(deviceRequest.getRoomRight())).compareTo(new BigDecimal(4))==1){
+            return error("左右侧距离之和必须小于等于4！");
+        }
+        //顶装时: 前后距离及左右距离和大于0.3小于4
+        if ("1".equals(deviceRequest.getInstallPosition())){
+            if((deviceRequest.getRoomLeft().add(deviceRequest.getRoomRight())).compareTo(new BigDecimal(4))==1 ||
+                    (deviceRequest.getRoomLeft().add(deviceRequest.getRoomRight())).compareTo(new BigDecimal(0.3))==-1
+            ){
+                return error("左右侧距离之和必须大于等于0.3、小于等于4！");
+            }
+            if((deviceRequest.getRoomBehind().add(deviceRequest.getRoomFront())).compareTo(new BigDecimal(4))==1 ||
+                    (deviceRequest.getRoomBehind().add(deviceRequest.getRoomFront())).compareTo(new BigDecimal(0.3))==-1
+            ){
+                return error("前后距离之和必须大于等于0.3、小于等于4！");
+            }
+            if(deviceRequest.getRoomHeight().compareTo(new BigDecimal(4))==1||deviceRequest.getRoomHeight().compareTo(new BigDecimal(0))==-1)
+            {
+                return error("设备高度必须介于0到4米之间！");
+            }
+        }
+
+
+        /*if (deviceRequest.getRoomLeft()==null||deviceRequest.getRoomLeft().equals("")){
+            return error("左边长度不能为空！");
+        }
+        if (deviceRequest.getRoomRight()==null||deviceRequest.getRoomRight().equals("")){
+            return error("右边长度不能为空！");
+        }
         if (deviceRequest.getRoomLength()==null||deviceRequest.getRoomLength().equals("")){
             return error("长度信息不能为空！");
         }
@@ -256,7 +284,8 @@ public class DeviceController extends BaseController {
         }
         if (deviceRequest.getEndTime()==null){
             return error("结束时间不能为空！");
-        }
+        }*/
+
         return null;
     }
 
@@ -313,9 +342,31 @@ public class DeviceController extends BaseController {
             location.setRoomLength(deviceRequest.getRoomLength());
             location.setRoomLeft(deviceRequest.getRoomLeft());
             location.setRoomRight(deviceRequest.getRoomRight());
-            DeviceRoomParameter dr = new DeviceRoomParameter();
             radarwave.setDeviceLocation(location);
+            DeviceLocationTop locationTop = new DeviceLocationTop();
+            DeviceLocationWall locationWall = new DeviceLocationWall();
+
+            //设备安装位置
+            radarwave.setInstallPosition(deviceRequest.getInstallPosition());
+            if("1".equals(deviceRequest.getInstallPosition())) {
+                locationTop.setRoomHeight(deviceRequest.getRoomHeight());
+                locationTop.setRoomFront(deviceRequest.getRoomLength());
+                locationTop.setRoomBehind(deviceRequest.getRoomLength());
+                locationTop.setRoomLeft(deviceRequest.getRoomLeft());
+                locationTop.setRoomRight(deviceRequest.getRoomRight());
+                radarwave.setDeviceLocationTop(locationTop);
+
+            }else {
+                locationWall.setRoomLength(deviceRequest.getRoomLength());
+                locationWall.setRoomLeft(deviceRequest.getRoomLeft());
+                locationWall.setRoomRight(deviceRequest.getRoomRight());
+                radarwave.setDeviceLocationWall(locationWall);
+
+            }
+
+
             //设备参数设置
+            DeviceRoomParameter dr = new DeviceRoomParameter();
             dr.setInMonitorFlag(deviceRequest.getInMonitorFlag());
             dr.setOutMonitorFlag(deviceRequest.getOutMonitorFlag());
             dr.setExistFlag(deviceRequest.getExistFlag());
@@ -644,6 +695,142 @@ public class DeviceController extends BaseController {
             return ajax;
         }
         return null;
+    }
+
+    @ApiOperation("获取人员监控状态")
+    @ApiImplicitParam(name = "deviceId", value = "设备ID", required = true, dataType = "int", paramType = "query", dataTypeClass = Integer.class)
+    @GetMapping("/getPeopleStatus")
+    public AjaxResult getPeopleStatus(Long deviceId) {
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("peopleStatus", "0");
+        return ajax;
+    }
+
+    @ApiOperation("设置预警规则")
+    @PostMapping("/setDeviceWarn")
+    public AjaxResult setDeviceWarn(
+            @RequestBody @Validated DeviceWarnRequest deviceWarnRequest) {
+        if (deviceWarnRequest.getDeviceId()==null||deviceWarnRequest.getDeviceId().equals("")){
+            return error("设备id不能为空！");
+        }
+        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceWarnRequest.getDeviceId()));
+        if (device==null){
+            return error("无法查找到设备信息！");
+        }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限操作！");
+        }
+        TDevice.RadarWaveDeviceSettings radarwave = (TDevice.RadarWaveDeviceSettings)device.getParameter();
+
+        DeviceWarnParameter deviceWarnParameter=new DeviceWarnParameter();
+        deviceWarnParameter.setFallWarn("1");
+        DeviceWarnParameter.NobodyWarn  nobodyWarn =new DeviceWarnParameter.NobodyWarn();
+        nobodyWarn.setNoBodyContinue("1");
+        nobodyWarn.setNoBody("1");
+        DeviceWarnParameter.WarnRule warnRule = new DeviceWarnParameter.WarnRule();
+        warnRule.setWarnRuleName(deviceWarnRequest.getWarnRuleName());
+        warnRule.setRuleSwitch(deviceWarnRequest.getRuleSwitch());
+        warnRule.setRuleSwitch(deviceWarnRequest.getRuleSwitch());
+        warnRule.setDateType(deviceWarnRequest.getDateType());
+        if("1".equals(deviceWarnRequest.getDateType()))
+        {
+          warnRule.setWeek(deviceWarnRequest.getWeek());
+
+        }   else
+        {
+            warnRule.setEndDate(deviceWarnRequest.getEndDate());
+            warnRule.setStartDate(deviceWarnRequest.getStartDate());
+        }
+        warnRule.setStartTime(deviceWarnRequest.getStartTime());
+        warnRule.setEndTime(deviceWarnRequest.getEndTime());
+        List<DeviceWarnParameter.WarnRule> warnRuleList = new ArrayList<>();
+        warnRuleList.add(warnRule);
+        nobodyWarn.setWarnRules(warnRuleList);
+        deviceWarnParameter.setNobodyWarn(nobodyWarn);
+        radarwave.setDeviceWarnParameter(deviceWarnParameter);
+
+        device.setParameter(radarwave);
+
+
+
+
+
+
+
+        try {
+            //绑定雷达波设备
+            if (device.getType().equals("0")){
+                int i = iDeviceService.setDevice(device);
+                if (i==0){
+                    return error("设置预警策略失败！");
+                }
+            }
+
+        } catch (Exception e){
+            log.error("设置预警策略失败！",e);
+            return error("设置预警策略失败！");
+        }
+        return success();
+    }
+
+    @ApiOperation("设置预警规则")
+    @PostMapping("/setLeaveBedWarn")
+    public AjaxResult setLeaveBedWarn(
+            @RequestBody @Validated DeviceWarnRequest deviceWarnRequest) {
+        if (deviceWarnRequest.getDeviceId()==null||deviceWarnRequest.getDeviceId().equals("")){
+            return error("设备id不能为空！");
+        }
+        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceWarnRequest.getDeviceId()));
+        if (device==null){
+            return error("无法查找到设备信息！");
+        }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限操作！");
+        }
+        TDevice.RadarWaveDeviceSettings radarwave = (TDevice.RadarWaveDeviceSettings)device.getParameter();
+
+
+        LeaveBedWarnParameter leaveBedWarnParameter =new LeaveBedWarnParameter();
+        LeaveBedWarnParameter.Bed bed = new LeaveBedWarnParameter.Bed();
+        bed.setName(deviceWarnRequest.getName());
+        bed.setDateType(deviceWarnRequest.getDateType());
+        bed.setLeaveBedInterval(deviceWarnRequest.getLeaveBedInterval());
+        bed.setIntervalTime(deviceWarnRequest.getIntervalTime());
+        if("1".equals(deviceWarnRequest.getDateType()))
+        {
+            bed.setWeek(deviceWarnRequest.getWeek());
+
+        }   else
+        {
+            bed.setStartDate(deviceWarnRequest.getStartDate());
+            bed.setEndDate(deviceWarnRequest.getEndDate());
+        }
+
+        bed.setStartTime(deviceWarnRequest.getStartTime());
+        bed.setEndTime(deviceWarnRequest.getEndTime());
+
+
+        List<LeaveBedWarnParameter.Bed> beds = new ArrayList<>();
+        beds.add(bed);
+        leaveBedWarnParameter.setBeds(beds);
+        radarwave.setLeaveBedWarnParameter(leaveBedWarnParameter);
+
+        device.setParameter(radarwave);
+
+        try {
+            //绑定雷达波设备
+            if (device.getType().equals("0")){
+                int i = iDeviceService.setDevice(device);
+                if (i==0){
+                    return error("设置离床预警策略失败！");
+                }
+            }
+
+        } catch (Exception e){
+            log.error("设置离床预警策略失败！",e);
+            return error("设置离床预警策略失败！");
+        }
+        return success();
     }
 
 }
