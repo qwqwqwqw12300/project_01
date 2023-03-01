@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.system.service;
 
 import com.newlandnpt.varyar.system.domain.req.CircleReq;
 import com.newlandnpt.varyar.system.domain.req.FenceReq;
+import com.newlandnpt.varyar.system.domain.req.TerminalAddReq;
 
 /**
  * 高德API-围栏服务接口
@@ -51,5 +52,19 @@ public interface GeoFenceService {
      * @return resultJson
      */
     String getFenceTerminalStatus(FenceReq fenceReq);
+
+    /**
+     * 创建终端
+     * @param terminalAddReq
+     * @return
+     */
+    String addTerminal(TerminalAddReq terminalAddReq);
+
+    /**
+     * 根据终端名称获取终端id
+     * @param name
+     * @return
+     */
+    String findTerminalIdByName(String name);
 
 }

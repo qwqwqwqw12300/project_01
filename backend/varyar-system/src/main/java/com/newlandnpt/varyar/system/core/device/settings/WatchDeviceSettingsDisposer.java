@@ -40,7 +40,7 @@ public class WatchDeviceSettingsDisposer extends DeviceSettingsDisposer<TDevice.
     @Override
     protected void insideDispose(String deviceNo, TDevice.WatchSettings settings) {
 
-        //todo 手表设备参数下发
+        //todo 电子牵挂卡 参数下发 绑定电子围栏和设备
 
     }
 }

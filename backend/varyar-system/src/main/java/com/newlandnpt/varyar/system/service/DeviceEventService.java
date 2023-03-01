@@ -41,4 +41,10 @@ public interface DeviceEventService {
      * 设备超出地理围栏事件
      */
     void deviceLeaveLocationIssue(String deviceNo);
+
+    /**
+     * 设备24小时无人预警
+     * @param deviceNo
+     */
+    void device24HoursExistsIssue(String deviceNo);
 }
