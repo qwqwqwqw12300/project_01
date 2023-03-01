@@ -79,8 +79,11 @@ public class CacheConstants
     /** 跌倒坐标信息 **/
     public static final String TARGET_LOCATION_FALL_KEY = "cloud:fall:targetLocation:";
 
-    /** 电子牵挂卡 tpc响应 */
+    /** 电子牵挂卡 tcp响应 */
     public static final String TCP_WATCH_TRADE_NO = "t_device_watch_tcp_response:";
     /** 秒级 4位循环数 */
     public static final String SECOND_4_CYCLE_NUMBER = "second_4_cycle_number:";
+
+    /** 高德地图猎鹰api 终端设备id */
+    public static final String GAODE_TID = "gaode:tid:";
 }

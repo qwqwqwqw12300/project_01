@@ -45,7 +45,7 @@ public class RegMemberController extends BaseController {
     @Autowired
     private IRegMemberService regMemberService;
 
-    @Value("${location.privateKey}")
+    @Value("${encrypt.privateKey}")
     private String privateKey;
     @Autowired
     private TokenService tokenService;

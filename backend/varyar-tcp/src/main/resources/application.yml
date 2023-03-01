@@ -146,6 +146,7 @@ rocketmq:
       locationInfo: group_locationInfo
       alarmPower: group_alarmPower
       reportHeartBeat: group_reportHeartBeat
+      deviceLogin: group_deviceLogin
     topic:
       deviceConfig: deviceConfigTopic
       deviceConfigErr: deviceConfigErrTopic
@@ -154,6 +155,7 @@ rocketmq:
       locationInfo: locationInfoTopic
       alarmPower: alarmPowerTopic
       reportHeartBeat: reportHeartBeatTopic
+      deviceLogin: deviceLoginTopic
 
 
 

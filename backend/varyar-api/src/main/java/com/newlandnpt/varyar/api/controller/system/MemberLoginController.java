@@ -57,7 +57,7 @@ public class MemberLoginController extends BaseController {
     @Autowired
     private TokenService tokenService;
 
-    @Value("${location.privateKey}")
+    @Value("${encrypt.privateKey}")
     private String privateKey;
     @Autowired
     private ISmsService smsService;
