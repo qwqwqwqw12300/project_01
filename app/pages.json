@@ -460,6 +460,24 @@
 		   	}
 		   }
 		    
+		},{
+		    "path" : "pages/new/guard",
+		   "style": {
+		   	"navigationStyle": "custom",
+		   	"app-plus": {
+		   		"titleNView": false
+		   	}
+		   }
+		    
+		},{
+		    "path" : "pages/new/new-guard",
+		   "style": {
+		   	"navigationStyle": "custom",
+		   	"app-plus": {
+		   		"titleNView": false
+		   	}
+		   }
+		    
 		}
     ],
 	"globalStyle": {

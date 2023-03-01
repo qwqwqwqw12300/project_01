@@ -40,8 +40,8 @@
 					title: '远程监听',
 					url: '/pages/new/monitor'
 				}, {
-					title: '协议信息',
-					url: '/pages/myself/agreement/agreement-info'
+					title: '位置守护',
+					url: '/pages/new/guard'
 				}, {
 					title: '问题与建议',
 					url: '/pages/myself/suggestion'
