@@ -37,8 +37,8 @@
 					title: '时段禁用',
 					url: '/pages/new/time-interval',
 				}, {
-					title: '密码修改',
-					url: '/pages/myself/pwd'
+					title: '远程监听',
+					url: '/pages/new/monitor'
 				}, {
 					title: '协议信息',
 					url: '/pages/myself/agreement/agreement-info'

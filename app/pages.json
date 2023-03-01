@@ -451,6 +451,16 @@
            }
             
         }
+		,{
+		    "path" : "pages/new/monitor",
+		   "style": {
+		   	"navigationStyle": "custom",
+		   	"app-plus": {
+		   		"titleNView": false
+		   	}
+		   }
+		    
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
