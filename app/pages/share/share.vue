@@ -100,9 +100,9 @@
 				if (!phoneValidator(this.shareForm.phone)) {
 					return uni.$u.toast('请填写正确的手机号码')
 				}
-				if (this.shareForm.code.length !== 6) {
-					return uni.$u.toast('请填写正确的验证码')
-				}
+				// if (this.shareForm.code.length !== 6) {
+				// 	return uni.$u.toast('请填写正确的验证码')
+				// }
 				if (this.shareForm.smsUuid) {
 					const res = await this.shareFamilys();
 					this.getShareList();

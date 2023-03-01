@@ -430,6 +430,41 @@
 					"titleNView": false
 				}
 			}
+		}, {
+			"path": "pages/equipment/setting/alert-rules",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/equipment/setting/out-bed",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/new/monitor",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "pages/new/tel-books",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		}
 	    ,{
             "path" : "pages/equipment/setting/alert-rules",

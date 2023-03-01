@@ -84,9 +84,9 @@
 				const {
 					oldCode
 				} = this.form
-				if (oldCode.length !== 6) {
-					return uni.$u.toast('请填写正确的验证码')
-				}
+				// if (oldCode.length !== 6) {
+				// 	return uni.$u.toast('请填写正确的验证码')
+				// }
 				PostUpdatePhoneBySms({
 					...this.form,
 					oldPhone: this.userInfoPhone,
