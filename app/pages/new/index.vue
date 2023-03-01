@@ -1,34 +1,6 @@
 <template>
 	<app-body :hideTitle="true" :needService="false">
 		<view class="ui-body">
-			<view class="ui-header">
-				<u-avatar size="60" :src="userInfo.avatar"></u-avatar>
-				<view class="info">
-					<view class="name">{{ userInfo.nickname || '暂无昵称' }}</view>
-					<view class="phone">{{ userInfo.phone }}</view>
-				</view>
-				<view class="edit" @tap="handleJump('/pages/myself/info-edit')">
-					编辑个人资料
-					<u-icon style="margin-left: 8rpx;" name="arrow-right" size="18"></u-icon>
-				</view>
-			</view>
-
-			<view class="ui-manage">
-				<view class="mag-box">
-					<view class="item" v-for="(item,index) in magList" :key="index" @tap="handleJump(item.url)">
-						<u-icon :name="item.icon" size="36"></u-icon>
-						<text>{{ item.title }}</text>
-					</view>
-					<!-- 		<view class="item">
-						<u-icon :name="'/static/images/device-mg.png'" size="36"></u-icon>
-						<text>设备管理</text>
-					</view>
-					<view class="item">
-						<u-icon :name="'/static/images/urgent-phone.png'" size="36"></u-icon>
-						<text>设置紧急电话</text>
-					</view> -->
-				</view>
-			</view>
 
 			<view class="ui-cell">
 				<u-cell-group>
@@ -39,11 +11,6 @@
 				</u-cell-group>
 			</view>
 
-			<view class="ui-button">
-				<button @click="loginOut">
-					注销
-				</button>
-			</view>
 
 		</view>
 	</app-body>
@@ -65,22 +32,10 @@
 	export default {
 		data() {
 			return {
-				magList: [{
-					title: '家庭组管理',
-					icon: '/static/images/home.png',
-					url: '/pages/myself/famliy-manage',
-				}, {
-					title: '设备管理',
-					icon: '/static/images/device-mg.png',
-					url: '/pages/myself/device-manage'
-				}, {
-					title: '设置紧急电话',
-					icon: '/static/images/urgent-phone.png',
-					url: '/pages/myself/urgent-mobile'
-				}],
+				
 				cellList: [{
-					title: '消息设置',
-					url: '/pages/myself/push-set',
+					title: '时段禁用',
+					url: '/pages/new/time-interval',
 				}, {
 					title: '密码修改',
 					url: '/pages/myself/pwd'
@@ -95,7 +50,7 @@
 					url: '/pages/myself/version-manage'
 				},{
 					title: '电子牵挂卡',
-					url: '/pages/new/index'
+					url: '/pages/myself/version-manage'
 				}]
 			}
 		},
