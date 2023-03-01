@@ -34,7 +34,7 @@
 		</view>
 		<view class="ui-button">
 			<button @click="loginOut">
-				注销
+				解绑
 			</button>
 		</view>
 	</app-body>
