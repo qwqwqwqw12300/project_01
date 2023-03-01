@@ -91,9 +91,9 @@
 				if (!phoneValidator(newPhone)) {
 					return uni.$u.toast('请填写正确的手机号码')
 				}
-				if (newCode.length !== 6) {
-					return uni.$u.toast('请填写正确的验证码')
-				}
+				// if (newCode.length !== 6) {
+				// 	return uni.$u.toast('请填写正确的验证码')
+				// }
 				PostUpdatePhoneByToken({
 					...this.form,
 				}).then(res => {

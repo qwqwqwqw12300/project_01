@@ -136,9 +136,9 @@
 				if (!phoneValidator(phone)) {
 					return uni.$u.toast('请填写正确的手机号码')
 				}
-				if (code.length !== 4) {
-					return uni.$u.toast('请填写正确的短信码')
-				}
+				// if (code.length !== 4) {
+				// 	return uni.$u.toast('请填写正确的短信码')
+				// }
 				if (!pwd) {
 					return uni.$u.toast('请填写密码')
 				}

@@ -1,7 +1,7 @@
 <!--
 * @Author: zhanch
 * @Date: 2022-12-27 12:47:07
-* @LastEditors: zhanch
+ * @LastEditors: Please set LastEditors
 * @Description: 注册页面
 -->
 
@@ -138,9 +138,9 @@
 				if (!phoneValidator(phone)) {
 					return uni.$u.toast('请填写正确的手机号码')
 				}
-				if (code.length !== 4) {
-					return uni.$u.toast('请填写正确的短信码')
-				}
+				// if (code.length !== 4) {
+				// 	return uni.$u.toast('请填写正确的短信码')
+				// }
 				if (!pwd) {
 					return uni.$u.toast('请填写密码')
 				}
