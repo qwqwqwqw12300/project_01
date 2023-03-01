@@ -655,7 +655,7 @@ export default {
     roomZoneYValidator(rule,value,callback){
       if(this.roomZone?.y1>=this.roomZone?.y2){
         callback(new Error("Y1必须小于Y2"))
-      }else if(value<0.3||value>this.settings?.deviceLocation?.roomLength){
+      }else if(value<0||value>this.settings?.deviceLocation?.roomLength){
         if(value>this.settings?.deviceLocation?.roomLength){
           callback(new Error("不包含在房间内,超过房间长度"))
         }else{
