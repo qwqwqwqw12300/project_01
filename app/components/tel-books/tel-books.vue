@@ -1,7 +1,7 @@
 <template>
-	<u-popup :round="14" :show="visible" mode="bottom" @close="visible = false">
+	<u-popup :round="14" :show="visible" mode="bottom" @close="visible = false" :closeable="true">
 		<view style="height: 1400rpx;">
-			<contact-select placeholder="请输入联系人姓名" @cityClick="phoneClick" formatName="name" :obtainCitys="contactList"
+			<contact-select placeholder="请输入联系人姓名" @click="phoneClick" formatName="name" :obtainTels="contactList"
 				:isSearch="true"></contact-select>
 		</view>
 	</u-popup>
@@ -15,22 +15,58 @@
 		data() {
 			return {
 				visible: false,
-				contactList: [{
-					name: '阿一',
-					phone: '13554636343'
-				}, {
-					name: '斌二',
-					phone: '13654636340'
-				}, {
-					name: '陈三',
-					phone: '13344306340'
-				}],
+				contactList: [],
+				// contactList: [{
+				// 		name: '阿一',
+				// 		phone: '13554636343'
+				// 	}, {
+				// 		name: '阿三',
+				// 		phone: '13554636343'
+				// 	}, {
+				// 		name: '斌二',
+				// 		phone: '13654636340'
+				// 	}, {
+				// 		name: '陈三',
+				// 		phone: '13344306340'
+				// 	},
+				// 	{
+				// 		name: '陈三',
+				// 		phone: '13344306340'
+				// 	},
+				// 	{
+				// 		name: '陈三',
+				// 		phone: '13344306340'
+				// 	},
+				// 	{
+				// 		name: '陈三',
+				// 		phone: '13344306340'
+				// 	},
+				// 	{
+				// 		name: '在三',
+				// 		phone: '13344306340'
+				// 	},
+				// 	{
+				// 		name: '想三',
+				// 		phone: '13344306340'
+				// 	},
+				// 	{
+				// 		name: '哦三',
+				// 		phone: '13344306340'
+				// 	},
+				// 	{
+				// 		name: '无三',
+				// 		phone: '13344306340'
+				// 	}, {
+				// 		name: '林三',
+				// 		phone: '13344306340'
+				// 	}
+				// ],
 			}
 		},
 		methods: {
 			show() {
-				this.visible = true
-				// this.getContact()
+				// this.visible = true
+				this.getContact()
 			},
 			/**
 			 * 选择手机联系人
@@ -45,7 +81,6 @@
 			 */
 			getContact() {
 				this.contactList = [];
-				console.log(plus.contacts.ADDRESSBOOK_PHONE, 'ppppp000000000000000000')
 				Promise.all([this.getTypeContact(plus.contacts.ADDRESSBOOK_PHONE), this.getTypeContact(plus.contacts
 					.ADDRESSBOOK_SIM)]).then(res => {
 					console.log(res, 'rerere')

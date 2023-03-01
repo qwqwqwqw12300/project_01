@@ -8,13 +8,19 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<view class="ui-tabs">
-			<view class="ui-tabs-item" v-for="item in tabList" :key="item.key">
-				<text @tap="handleTab(item.key)" :class="{'active': tabKey === item.key }">{{ item.name }}</text>
+		<view class="ui-tabar">
+			<view class="ui-tabs">
+				<view class="ui-tabs-item" v-for="item in tabList" :key="item.key">
+					<text @tap="handleTab(item.key)" :class="{'active': tabKey === item.key }">{{ item.name }}</text>
+				</view>
+			</view>
+			<view class="ui-action">
+				<text></text>
+				<u-icon name="/static/images/read-all.png" size="50rpx" @click="readMsgAll"></u-icon>
 			</view>
 		</view>
 		<view class="ui-content">
-			<component :is="tabKey" :key="tabKey" :deviceInfo="swiperData"></component>
+			<component ref="comRef" :is="tabKey" :key="tabKey" :deviceInfo="swiperData"></component>
 		</view>
 	</app-body>
 </template>
@@ -74,6 +80,12 @@
 				this.swiperData = this.deviceList[val.detail.current]
 				this.tabKey = 'MsgList'
 			},
+			readMsgAll() {
+				if (this.$refs.comRef?.readMsgAll) {
+					console.log(99999999999)
+					this.$ref.comRef.readMsgAll()
+				}
+			}
 		}
 	}
 </script>
@@ -94,23 +106,41 @@
 		font-weight: 550 !important;
 	}
 
-	.ui-tabs {
+	.ui-tabar {
 		display: flex;
-		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
 		padding: 0 20rpx;
 
-		.ui-tabs-item {
-			height: 90rpx;
-			line-height: 90rpx;
-			padding: 0 18rpx;
+		.ui-tabs {
+			display: flex;
+			flex-direction: row;
+
+			.ui-tabs-item {
+				height: 90rpx;
+				line-height: 90rpx;
+				padding: 0 18rpx;
+
+				text {
+					font-size: 36rpx;
+					color: #888888;
+					font-weight: 500;
+				}
+			}
+		}
+
+		.ui-action {
+			display: flex;
+			align-items: center;
 
 			text {
-				font-size: 36rpx;
-				color: #888888;
-				font-weight: 500;
+				height: 50rpx;
+				border-left: 1px solid rgba(53, 53, 53, 1);
+				margin-right: 30rpx;
 			}
 		}
 	}
+
 
 	.ui-content {
 		padding: 0 20rpx;

@@ -3,7 +3,8 @@
 		<image class="img" src="/static/images/leida-nm.png"></image>
 		<view class="device-info">
 			<view class="title">
-				{{record.name || '未命名设备'}}<text
+				<text class="name">{{record.name || '未命名设备'}}</text>
+				<text class="line"
 					:class="[record.onlineFlag === '1' ? 'online' : 'offline']">{{record.onlineFlag === '1' ? '在线' : '离线'}}</text>
 			</view>
 			<view class="position">
@@ -12,7 +13,7 @@
 		</view>
 		<view class="device-set" @click="goSetting">
 			<u-icon name="/static/images/device-set.png" size="44rpx" style="margin-right: 4rpx;">
-			</u-icon>设备配置
+			</u-icon>配置
 		</view>
 	</view>
 </template>
@@ -72,8 +73,13 @@
 				font-weight: 500;
 				display: flex;
 				align-items: center;
-
-				text {
+				.name{
+					max-width: 240rpx;
+					white-space: nowrap;
+					text-overflow:ellipsis;
+					overflow: hidden;
+				}
+				.line {
 					margin-left: 30rpx;
 					color: #fff;
 					font-size: 22rpx;
@@ -94,7 +100,7 @@
 		}
 
 		.device-set {
-			width: 180rpx;
+			width: 120rpx;
 			display: flex;
 			color: #FEAE43;
 			font-size: 30rpx;

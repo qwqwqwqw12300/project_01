@@ -15,6 +15,11 @@ public class MsgConstants {
     public static final String SEND_STATUS_NOT_SEND="0";
     /** 发送状态 已发送*/
     public static final String SEND_STATUS_SEND="1";
+    /** 发送状态 不予发送*/
+    public static final String SEND_STATUS_SEND_NOT="2";
+    /** 发送状态 发送失败*/
+    public static final String SEND_STATUS_SEND_FAILURE="3";
+
     /** 已读未读标志 未处理*/
     public static final String OPERATE_FLAG_NOT_HANDLE="0";
     /** 已读未读标志 已处理*/

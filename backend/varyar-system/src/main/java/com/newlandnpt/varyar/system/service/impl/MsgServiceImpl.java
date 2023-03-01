@@ -291,7 +291,7 @@ public class MsgServiceImpl implements IMsgService {
         }
 
         //如果是紧急事件的话同时发送短信
-        if ("urgent".equals(event.getLevel())) {
+/*        if ("urgent".equals(event.getLevel())) {
             if (memberFamilies == null || memberFamilies.stream().noneMatch(p -> p.getMemberId().longValue() == memberId.longValue())) {
                 //会员设备未加入家庭组的情况 单独发消息
                 TMsg msg = new TMsg();
@@ -339,7 +339,7 @@ public class MsgServiceImpl implements IMsgService {
 
             }
 
-        }
+        }*/
         return result;
     }
 }

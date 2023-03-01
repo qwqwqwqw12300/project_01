@@ -9,7 +9,7 @@ export const INIT_DEIVCE_SET = {
 	roomLeft: 3,
 	roomHeight: 4,
 	roomRight: 3,
-	roomLength: 6,
+	roomLength: 4,
 	existFlag: 0,
 	fallFlag: 1,
 	entryTime: 1,

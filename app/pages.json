@@ -29,7 +29,7 @@
 			"path": "pages/equipment/add/radar",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "添加雷达波设备"
+				"navigationBarTitleText": "添加跌倒检测器"
 			}
 		},
 		{
@@ -431,7 +431,27 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/equipment/setting/alert-rules",
+            "style": {
+            	"navigationStyle": "custom",
+            	"app-plus": {
+            		"titleNView": false
+            	}
+            }
+            
+        }
+        ,{
+            "path" : "pages/equipment/setting/out-bed",
+           "style": {
+           	"navigationStyle": "custom",
+           	"app-plus": {
+           		"titleNView": false
+           	}
+           }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
