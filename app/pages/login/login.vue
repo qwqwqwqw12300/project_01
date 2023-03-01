@@ -175,7 +175,7 @@
 				if (!password) {
 					return uni.$u.toast('请填写密码')
 				}
-				if (code.length !== 4) {
+				if (code.length !== 6) {
 					return uni.$u.toast('请填写正确的验证码')
 				}
 				PostLoginByPwd({
@@ -245,7 +245,7 @@
 					if (!phoneValidator(phone)) {
 						return uni.$u.toast('请填写正确的手机号码')
 					}
-					if (code.length !== 4) {
+					if (code.length !== 6) {
 						return uni.$u.toast('请填写正确的验证码')
 					}
 					loginBySms({
