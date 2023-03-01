@@ -659,7 +659,7 @@ export default {
         if(value>this.settings?.deviceLocation?.roomLength){
           callback(new Error("不包含在房间内,超过房间长度"))
         }else{
-          callback(new Error("最小值需大于等于0.3"))
+          callback(new Error("最小值需大于等于0"))
         }
       }else{
         callback()
