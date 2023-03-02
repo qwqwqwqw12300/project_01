@@ -47,8 +47,8 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 			response.setHeadByRequest(req);
 			Channel channel = ctx.channel();
 
-			log.debug(">>>>>>>>>>>>当前连接id:",channel.id());
-			log.debug(">>>>>>>>>>>>缓存连接id:",DeviceChannelCache.getChannelByDeviceNo(req.getDeviceNo()).id());
+			log.debug(">>>>>>>>>>>>当前连接id:{}",channel.id());
+			log.debug(">>>>>>>>>>>>缓存连接id:{}",DeviceChannelCache.getChannelByDeviceNo(req.getDeviceNo()).id());
 			//System.out.println(str);
 			// 响应消息
 			String message = response.generateMessage();
