@@ -1,9 +1,8 @@
 package com.newlandnpt.varyar.api.controller.business.rocketmq;
 
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
+import com.newlandnpt.varyar.common.core.domain.entity.AccessInfo;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
-import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -11,10 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
-
-import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_ACCESS_KEY;
 
 /**
  * 房间进出计算事件消息 监听器
@@ -24,7 +20,7 @@ import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYY
  **/
 @Component
 @RocketMQMessageListener(topic = "${rocketmq.topic.access}", consumerGroup = "${rocketmq.group.access}")
-public class AccessListener implements RocketMQListener<PresenceListener.AccessInfo> {
+public class AccessListener implements RocketMQListener<AccessInfo> {
 
     private static final Logger log = LoggerFactory.getLogger(AccessListener.class);
 
@@ -66,7 +62,7 @@ public class AccessListener implements RocketMQListener<PresenceListener.AccessI
     private static final String ACCESS_DELAY_TOPIC = "access_delay_";
 
     @Override
-    public void onMessage(PresenceListener.AccessInfo accessInfo) {
+    public void onMessage(AccessInfo accessInfo) {
         log.debug("----" + System.currentTimeMillis() + "----" + " 房间进出计算事件消息： " + JSON.toJSONString(accessInfo));
 
         // todo 计算并发送事件

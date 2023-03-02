@@ -3,9 +3,11 @@ package com.newlandnpt.varyar.api.controller.business.rocketmq;
 import com.alibaba.fastjson.JSON;
 import com.newlandnpt.varyar.cloudBase.constant.VayyarCloudConstants;
 import com.newlandnpt.varyar.cloudBase.domain.Presence;
+import com.newlandnpt.varyar.common.core.domain.entity.AccessInfo;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.service.IDeviceService;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -17,10 +19,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import static com.newlandnpt.varyar.api.controller.business.rocketmq.AccessListener.*;
-import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_ACCESS_KEY;
+import static com.newlandnpt.varyar.common.constant.CacheConstants.*;
 
 /**
  * MQ监听 - 进出事件
@@ -79,7 +82,8 @@ public class PresenceListener implements RocketMQListener<Presence> {
 //					presence.getTrackerTargets().size();
 			accessInfo.setPeopleCount(peopleCount);
 			accessInfo.setAreaName("房间");
-
+			String redisKey = T_DEVICE_VAYYAR_ACCESS_24HOURS_IN_ROOM_KEY + accessInfo.getDeviceNo();
+			redisCache.setCacheObject(redisKey,accessInfo);
 
 		}else if(VayyarCloudConstants.EVENT_ROOM_OUT.equals(presence.getEventType())){
     		log.debug("监听到[{}], 报文对象：{} " ,"出房间事件"  ,JSON.toJSONString(presence));
@@ -90,6 +94,8 @@ public class PresenceListener implements RocketMQListener<Presence> {
 //					presence.getTrackerTargets().size();
 			accessInfo.setPeopleCount(peopleCount);
 			accessInfo.setAreaName("房间");
+			String redisKey = T_DEVICE_VAYYAR_ACCESS_24HOURS_OUT_ROOM_KEY + accessInfo.getDeviceNo();
+			redisCache.setCacheObject(redisKey,accessInfo);
 
 		}else if(VayyarCloudConstants.EVENT_REGION0_IN.equals(presence.getEventType())){
     		log.debug("监听到[{}], 报文对象：{} " ,"进0号区域事件"  ,JSON.toJSONString(presence));
@@ -220,7 +226,7 @@ public class PresenceListener implements RocketMQListener<Presence> {
     	}
 
     	// 将进出消息存入redis
-		String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + accessInfo.getDeviceNo();
+		String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + accessInfo.getDeviceNo()+ DateFormatUtils.format(new Date(),"yyyy-MM-dd");
 		boolean hasKey = redisCache.hasKey(redisKey);
 		redisCache.setCacheList(redisKey, Arrays.asList(accessInfo));
 		if(!hasKey){
@@ -229,100 +235,5 @@ public class PresenceListener implements RocketMQListener<Presence> {
 		}
 
     }
-
-	public static class AccessInfo {
-
-		/**
-		 * 设备no
-		 */
-		private String deviceNo;
-
-		/**
-		 * 进出类型
-		 */
-		private String type;
-
-		/**
-		 * 子区域编号
-		 */
-		private int zoneNo = -1;
-
-		/**
-		 * 房间人数
-		 */
-		private int peopleCount;
-
-		/**
-		 * 发生时间
-		 */
-		private long time;
-
-		/**
-		 * 设备名称
-		 */
-		private String deviceName;
-
-		/**
-		 * 区域名称
-		 */
-		private String areaName = "房间";
-
-
-		public String getDeviceNo() {
-			return deviceNo;
-		}
-
-		public void setDeviceNo(String deviceNo) {
-			this.deviceNo = deviceNo;
-		}
-
-		public String getType() {
-			return type;
-		}
-
-		public void setType(String type) {
-			this.type = type;
-		}
-
-		public int getZoneNo() {
-			return zoneNo;
-		}
-
-		public void setZoneNo(int zoneNo) {
-			this.zoneNo = zoneNo;
-		}
-
-		public int getPeopleCount() {
-			return peopleCount;
-		}
-
-		public void setPeopleCount(int peopleCount) {
-			this.peopleCount = peopleCount;
-		}
-
-		public long getTime() {
-			return time;
-		}
-
-		public void setTime(long time) {
-			this.time = time;
-		}
-
-		public String getDeviceName() {
-			return deviceName;
-		}
-
-		public void setDeviceName(String deviceName) {
-			this.deviceName = deviceName;
-		}
-
-		public String getAreaName() {
-			return areaName;
-		}
-
-		public void setAreaName(String areaName) {
-			this.areaName = areaName;
-		}
-	}
 
 }
