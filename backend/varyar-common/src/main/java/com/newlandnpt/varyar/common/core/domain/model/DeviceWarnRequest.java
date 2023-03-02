@@ -31,10 +31,17 @@ public class DeviceWarnRequest{
     @Size(min = 0, max = 1, message = "设备类型不能超过1个字符")
     private String deviceType;
 
+    /** 跌倒预警开关 ：1开 0关  */
+    private String fallWarn;
+    /** 无人预警开关 ：1开 0关 */
+    private String noBody = "1";
+    /** 无人预警连续24小时开关 1开 0关 */
+    private String noBodyContinue = "1";
+
     /**
      * 规则名称
      */
-    private String WarnRuleName;
+    private String warnRuleName;
 
     private String  ruleSwitch="1";
     /**
@@ -79,8 +86,32 @@ public class DeviceWarnRequest{
     /**
      * 名称
      */
-    private String name;
+    private String bedName;
 
+
+    public String getFallWarn() {
+        return fallWarn;
+    }
+
+    public void setFallWarn(String fallWarn) {
+        this.fallWarn = fallWarn;
+    }
+
+    public String getNoBody() {
+        return noBody;
+    }
+
+    public void setNoBody(String noBody) {
+        this.noBody = noBody;
+    }
+
+    public String getNoBodyContinue() {
+        return noBodyContinue;
+    }
+
+    public void setNoBodyContinue(String noBodyContinue) {
+        this.noBodyContinue = noBodyContinue;
+    }
 
     public String getLeaveBedInterval() {
         return leaveBedInterval;
@@ -98,12 +129,12 @@ public class DeviceWarnRequest{
         this.intervalTime = intervalTime;
     }
 
-    public String getName() {
-        return name;
+    public String getBedName() {
+        return bedName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setBedName(String bedName) {
+        this.bedName = bedName;
     }
 
     public String getDeviceId() {
@@ -147,11 +178,11 @@ public class DeviceWarnRequest{
     }
 
     public String getWarnRuleName() {
-        return WarnRuleName;
+        return warnRuleName;
     }
 
     public void setWarnRuleName(String warnRuleName) {
-        WarnRuleName = warnRuleName;
+        warnRuleName = warnRuleName;
     }
 
     public String getRuleSwitch() {

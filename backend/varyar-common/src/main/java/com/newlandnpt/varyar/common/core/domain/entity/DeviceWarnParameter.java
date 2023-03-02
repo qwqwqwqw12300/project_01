@@ -9,13 +9,14 @@ import java.util.List;
 public class DeviceWarnParameter implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String fallWarn;
+    /** 跌倒预警开关 ：1开 0关  */
+    private String fallWarn="1";
 
+    /** 无人预警 */
     private NobodyWarn nobodyWarn;
 
 
-//    private String leaveBedWarn;
-
+//    private LeaveBedWarn leaveBedWarn;
 
     public String getFallWarn() {
         return fallWarn;
@@ -35,8 +36,11 @@ public class DeviceWarnParameter implements Serializable {
 
     public static class NobodyWarn {
 
+        /** 无人预警开关 ：1开 0关 */
         private String noBody = "1";
+        /** 无人预警连续24小时开关 1开 0关 */
         private String noBodyContinue = "1";
+        /** 无人预警规列表 */
         private List<WarnRule> warnRules;
 
         public String getNoBody() {
@@ -66,17 +70,24 @@ public class DeviceWarnParameter implements Serializable {
 
     public static class WarnRule {
         /**
+         * 规则编号
+         */
+        private String  ruleNo;
+        /**
          * 规则名称
          */
         private String WarnRuleName;
 
+        /**
+         * 规则开关
+         */
         private String  ruleSwitch="1";
         /**
          * 日期类型
          */
         private String dateType;
         /**
-         * 星期
+         * 星期 0 星期天
          */
         private String[] week = {"0", "1", "2", "3", "4", "5", "6"};
         /**
@@ -100,6 +111,14 @@ public class DeviceWarnParameter implements Serializable {
          */
         @JsonFormat(pattern = "HH:mm")
         private Date endTime;
+
+        public String getRuleNo() {
+            return ruleNo;
+        }
+
+        public void setRuleNo(String ruleNo) {
+            this.ruleNo = ruleNo;
+        }
 
         public String getWarnRuleName() {
             return WarnRuleName;
@@ -165,6 +184,7 @@ public class DeviceWarnParameter implements Serializable {
             this.endTime = endTime;
         }
     }
+
 }
 
 
