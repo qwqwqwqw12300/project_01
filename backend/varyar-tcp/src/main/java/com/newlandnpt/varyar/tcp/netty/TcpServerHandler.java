@@ -2,7 +2,6 @@ package com.newlandnpt.varyar.tcp.netty;
 
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
-import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.tcp.base.ChannelMessageHandlers;
 import com.newlandnpt.varyar.tcp.base.DeviceChannelCache;
 import com.newlandnpt.varyar.tcp.base.Response;
@@ -12,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.newlandnpt.varyar.tcp.base.Req;
-import com.newlandnpt.varyar.tcp.gateway.handler.login.DeviceLoginReq;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,13 +19,6 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.AttributeKey;
 import io.netty.util.ReferenceCountUtil;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.stereotype.Component;
-
-import java.util.concurrent.TimeUnit;
-
-import static com.newlandnpt.varyar.common.constant.CacheConstants.SECOND_4_CYCLE_NUMBER;
 
 public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 
@@ -53,9 +44,9 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 			// 响应消息
 			String message = response.generateMessage();
 			log.debug(">>>>>> 响应报文：{}",message);
-			message = AESUtils.encryptFromString(response.generateMessage(), Mode.CBC, Padding.PKCS5Padding);
-			log.debug(">>>>>> 加密响应报文：{}",message+"==#morefun#170");
-			channel.writeAndFlush(message+"==#morefun#170");
+			message = AESUtils.encryptFromStringForResponse(response.generateMessage(), Mode.CBC, Padding.PKCS5Padding);
+			log.debug(">>>>>> 加密响应报文：{}",message);
+			channel.writeAndFlush(message);
 		} catch (Exception e) {
 			log.error("报文解析异常", e);
 			log.error("异常报文内容:");

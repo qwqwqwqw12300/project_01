@@ -5,11 +5,9 @@ import cn.hutool.crypto.Padding;
 import com.newlandnpt.varyar.common.constant.tcp.ApiTypes;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.ServiceException;
-import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.tcp.base.DeviceChannelCache;
 import com.newlandnpt.varyar.tcp.base.Req;
 import com.newlandnpt.varyar.tcp.base.Response;
-import com.newlandnpt.varyar.tcp.netty.TcpServerHandler;
 import com.newlandnpt.varyar.tcp.utils.AESUtils;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
@@ -62,8 +60,8 @@ public class ChannelMessageDisposer{
         String writeMessage = req.generateMessage();
         log.debug(">>>>>> 下发报文：{}",writeMessage);
         writeMessage = AESUtils.encryptFromString(response.generateMessage(), Mode.CBC, Padding.PKCS5Padding);
-        log.debug(">>>>>> 加密下发报文：{}",writeMessage);
-        channel.writeAndFlush(writeMessage);
+        log.debug(">>>>>> 加密下发报文：{}",writeMessage+"==#morefun#170\n");
+        channel.writeAndFlush(writeMessage+"==#morefun#170\n");
         String message = null;
         while (redisCache.hasKey(TCP_WATCH_TRADE_NO + req.getTranNo())) {
             message = redisCache.getCacheObject(TCP_WATCH_TRADE_NO + req.getTranNo());
