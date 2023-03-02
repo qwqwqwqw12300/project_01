@@ -104,6 +104,7 @@ public class PresenceListener implements RocketMQListener<Presence> {
 					presence.getRegionMap().getOrDefault(""+zoneNo,0);
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
+				return;
 			}
 			accessInfo.setType(ENTER_ZONE_0);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
@@ -119,6 +120,7 @@ public class PresenceListener implements RocketMQListener<Presence> {
 					presence.getRegionMap().getOrDefault(""+zoneNo,0);
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
+				return;
 			}
 			accessInfo.setType(LEAVE_ZONE_0);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
@@ -135,6 +137,7 @@ public class PresenceListener implements RocketMQListener<Presence> {
 					presence.getRegionMap().getOrDefault(""+zoneNo,0);
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
+				return;
 			}
 			accessInfo.setType(ENTER_ZONE_1);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
@@ -151,6 +154,7 @@ public class PresenceListener implements RocketMQListener<Presence> {
 					presence.getRegionMap().getOrDefault(""+zoneNo,0);
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
+				return;
 			}
 			accessInfo.setType(LEAVE_ZONE_1);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
@@ -165,6 +169,7 @@ public class PresenceListener implements RocketMQListener<Presence> {
 					presence.getRegionMap().getOrDefault(""+zoneNo,0);
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
+				return;
 			}
 			accessInfo.setType(ENTER_ZONE_2);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
@@ -180,6 +185,7 @@ public class PresenceListener implements RocketMQListener<Presence> {
 					presence.getRegionMap().getOrDefault(""+zoneNo,0);
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
+				return;
 			}
 			accessInfo.setType(LEAVE_ZONE_2);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
@@ -196,6 +202,7 @@ public class PresenceListener implements RocketMQListener<Presence> {
 					presence.getRegionMap().getOrDefault(""+zoneNo,0);
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
+				return;
 			}
 			accessInfo.setType(ENTER_ZONE_3);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
@@ -213,6 +220,7 @@ public class PresenceListener implements RocketMQListener<Presence> {
 					presence.getRegionMap().getOrDefault(""+zoneNo,0);
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
+				return;
 			}
 			accessInfo.setType(LEAVE_ZONE_3);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
