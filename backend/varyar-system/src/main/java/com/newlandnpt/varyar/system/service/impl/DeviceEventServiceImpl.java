@@ -285,6 +285,9 @@ public class DeviceEventServiceImpl implements DeviceEventService {
     @Override
     public void device24HoursExistsIssue(String deviceNo) {
         // todo 查看触发时 是否已24小时无人
+
+
+
     }
 
     /**
