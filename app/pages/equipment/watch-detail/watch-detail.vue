@@ -16,12 +16,15 @@
 				</view>
 			</view>
 		</view>
+		<view class="ui-content">
+			<component ref="comRef" :is="tabKey" :key="tabKey"></component>
+		</view>
 	</app-body>
 </template>
 
 <script>
 	import DeviceSwiper from './components/device-swiper.vue'
-	import GetPosition from './components/device-swiper.vue'
+	import GetPosition from './components/get-position.vue'
 	import MsgList from './components/msg-list.vue'
 	// import {
 	// 	getMessage,

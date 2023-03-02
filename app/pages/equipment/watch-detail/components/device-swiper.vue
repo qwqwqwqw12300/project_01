@@ -16,8 +16,8 @@
 					<text>剩余电量: 100%</text>
 				</view>
 			</view>
-			<view class="device-set">
-				<u-icon name="/static/images/reStart.png" size="44rpx" style="margin-right: 6rpx;" />重启设备
+			<view class="device-set" @click="handleSet">
+				<u-icon name="/static/images/reStart.png" size="44rpx" style="margin-right: 6rpx;" />配置
 			</view>
 		</view>
 	</view>
@@ -31,7 +31,11 @@
 			}
 		},
 		methods: {
-
+			handleSet(){
+				uni.navigateTo({
+					url: '/pages/equipment/card-set'
+				})
+			}
 		}
 	}
 </script>
@@ -99,7 +103,7 @@
 			}
 
 			.device-set {
-				width: 180rpx;
+				width: 130rpx;
 				display: flex;
 				color: #FEAE43;
 				font-size: 30rpx;
