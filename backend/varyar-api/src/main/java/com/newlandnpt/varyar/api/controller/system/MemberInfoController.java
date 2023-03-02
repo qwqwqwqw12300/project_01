@@ -64,7 +64,7 @@ public class MemberInfoController extends BaseController
     @Autowired
     private RedisCache redisCache;
 
-    @Value("${location.privateKey}")
+    @Value("${encrypt.privateKey}")
     private String privateKey;
 
     @Value(value = "${user.password.maxRetryCount}")

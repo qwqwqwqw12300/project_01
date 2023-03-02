@@ -13,6 +13,8 @@
         <result property="longitude"    column="longitude"    />
         <result property="latitude"    column="latitude"    />
         <result property="radius"    column="radius"    />
+        <result property="points"   column="points"    />
+        <result property="fenceType" column="fence_type"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
     </resultMap>
@@ -31,6 +33,8 @@
             <if test="longitude != null  and longitude != ''"> and longitude = #{longitude}</if>
             <if test="latitude != null  and latitude != ''"> and latitude = #{latitude}</if>
             <if test="radius != null  and radius != ''"> and radius = #{radius}</if>
+            <if test="points != null">and points = #{points},</if>
+            <if test="fenceType != null">and fence_type = #{fenceType},</if>
         </where>
     </select>
 
@@ -58,6 +62,8 @@
             <if test="longitude != null">longitude,</if>
             <if test="latitude != null">latitude,</if>
             <if test="radius != null">radius,</if>
+            <if test="points != null">points,</if>
+            <if test="fenceType != null">fence_type,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
         </trim>
@@ -69,6 +75,8 @@
             <if test="longitude != null">#{longitude},</if>
             <if test="latitude != null">#{latitude},</if>
             <if test="radius != null">#{radius},</if>
+            <if test="points != null">#{points},</if>
+            <if test="fenceType != null">#{fenceType},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
         </trim>
@@ -84,6 +92,8 @@
             <if test="longitude != null">longitude = #{longitude},</if>
             <if test="latitude != null">latitude = #{latitude},</if>
             <if test="radius != null">radius = #{radius},</if>
+            <if test="points != null">points = #{points},</if>
+            <if test="fenceType != null">fence_type = #{fenceType},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>

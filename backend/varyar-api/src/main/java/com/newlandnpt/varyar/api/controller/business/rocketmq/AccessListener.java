@@ -1,9 +1,8 @@
 package com.newlandnpt.varyar.api.controller.business.rocketmq;
 
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
+import com.newlandnpt.varyar.common.core.domain.entity.AccessInfo;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
-import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -11,20 +10,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
-import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_ACCESS_KEY;
-
 /**
- * 离开房间事件消息监听器
+ * 房间进出计算事件消息 监听器
  *
  * @author lisd
  * @date 2023/1/4
  **/
 @Component
 @RocketMQMessageListener(topic = "${rocketmq.topic.access}", consumerGroup = "${rocketmq.group.access}")
-public class AccessListener implements RocketMQListener<String> {
+public class AccessListener implements RocketMQListener<AccessInfo> {
 
     private static final Logger log = LoggerFactory.getLogger(AccessListener.class);
 
@@ -66,36 +62,9 @@ public class AccessListener implements RocketMQListener<String> {
     private static final String ACCESS_DELAY_TOPIC = "access_delay_";
 
     @Override
-    public void onMessage(String s) {
-        log.debug("----" + System.currentTimeMillis() + "----" + " 监听到进/出房间事件消息： " + s);
-        JSONObject jsonObject = JSON.parseObject(s);
-        //消息s格式
-        String deviceNo = jsonObject.getString("devId");
-        String type = jsonObject.getString("type");
-        int peopleCount = jsonObject.getIntValue("peopleCount");
-        String timeStr = jsonObject.getString("time");
-        String areaName = jsonObject.getString("areaName");
-        String deviceName = jsonObject.getString("deviceName");
-        int delayTime = jsonObject.getIntValue("delayTime");
-        //离开房间事件 Redis缓存key
-        String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + deviceNo+":"+type+":"+peopleCount+":"+timeStr;
-        SendResult result;
-        JSONObject msgObject = new JSONObject();
-        msgObject.put("deviceNo", deviceNo);
-        msgObject.put("type", type);
-        msgObject.put("time", timeStr);
-        msgObject.put("areaName", areaName);
-        msgObject.put("deviceName", deviceName);
-        msgObject.put("peopleCount", peopleCount);
-        msgObject.put("delayTime", delayTime);
+    public void onMessage(AccessInfo accessInfo) {
+        log.debug("----" + System.currentTimeMillis() + "----" + " 房间进出计算事件消息： " + JSON.toJSONString(accessInfo));
 
-        MqDelayTime mqDelayTime = new MqDelayTime();
-        int delayLevel = mqDelayTime.getDelayLevel(delayTime);
-        log.info("为设备[" + deviceNo + "]发送进出房间延迟消息,延迟[{}]秒，延迟等级[{}]"+delayTime,delayLevel);
-        //记录当前房间信息
-        redisCache.setCacheObject(redisKey,msgObject);
-        //发送延迟消息
-        result = rocketMQTemplate.syncSend(accessDelayTopic, MessageBuilder.withPayload(redisKey).build(), 3000, delayLevel);
-        log.info(" 发送消息结果： " + result);
+        // todo 计算并发送事件
     }
 }

@@ -49,12 +49,6 @@
             <artifactId>varyar-framework</artifactId>
         </dependency>
 
-        <!-- 定时任务-->
-        <dependency>
-            <groupId>com.newlandnpt.varyar</groupId>
-            <artifactId>varyar-quartz</artifactId>
-        </dependency>
-
 		<dependency>
             <groupId>com.newlandnpt.varyar</groupId>
             <artifactId>varyar-cloudBase</artifactId>

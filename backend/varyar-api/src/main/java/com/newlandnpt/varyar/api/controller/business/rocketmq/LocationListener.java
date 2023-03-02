@@ -12,6 +12,7 @@ import com.newlandnpt.varyar.system.domain.req.FenceReq;
 import com.newlandnpt.varyar.system.domain.req.LocationMsgReq;
 import com.newlandnpt.varyar.system.domain.vo.GeoFenceResultVo;
 import com.newlandnpt.varyar.system.service.*;
+import com.newlandnpt.varyar.system.service.impl.CommonDeviceFenceServiceImpl;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +42,10 @@ public class LocationListener implements RocketMQListener<String> {
     @Autowired
     private DeviceEventService deviceEventService;
 
+//    @Autowired
+//    private IDeviceFenceService deviceFenceService;
     @Autowired
-    private IDeviceFenceService deviceFenceService;
+    private CommonDeviceFenceServiceImpl deviceFenceService;
 
     @Override
     public void onMessage(String s) {

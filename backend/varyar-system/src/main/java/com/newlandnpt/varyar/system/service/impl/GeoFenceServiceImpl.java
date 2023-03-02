@@ -1,10 +1,13 @@
 package com.newlandnpt.varyar.system.service.impl;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.newlandnpt.varyar.common.constant.GeoConstant;
 import com.newlandnpt.varyar.system.domain.req.CircleReq;
 import com.newlandnpt.varyar.system.domain.req.FenceReq;
+import com.newlandnpt.varyar.system.domain.req.PolygonReq;
+import com.newlandnpt.varyar.system.domain.req.TerminalAddReq;
 import com.newlandnpt.varyar.system.service.GeoFenceService;
 import com.newlandnpt.varyar.system.service.HttpSendService;
 import org.slf4j.Logger;
@@ -53,6 +56,37 @@ public class GeoFenceServiceImpl implements GeoFenceService {
         String result = HttpSendService.sendPost(paramsMap, GeoConstant.GEO_FENCE_CIRCLE_UPDATE);
         JSONObject resultJson = JSON.parseObject(result);
         log.info("更新圆形围栏结果：{}", resultJson);
+        return result;
+    }
+
+    @Override
+    public String addPolygonFence(PolygonReq polygonReq) {
+        //构造请求参数
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("name", polygonReq.getName());
+        paramsMap.put("points", polygonReq.getPoints());
+        paramsMap.put("key", GeoConstant.GEO_KEY);
+        paramsMap.put("sid", GeoConstant.GEO_SERVICE_ID);
+        //发送请求
+        String result = HttpSendService.sendPost(paramsMap, GeoConstant.GEO_FENCE_POLYGON_ADD);
+        JSONObject resultJson = JSON.parseObject(result);
+        log.info("新增多边形围栏结果：{}", resultJson);
+        return result;
+    }
+
+    @Override
+    public String updatePolygonFence(PolygonReq polygonReq) {
+        //构造请求参数
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("name", polygonReq.getName());
+        paramsMap.put("points", polygonReq.getPoints());
+        paramsMap.put("key", GeoConstant.GEO_KEY);
+        paramsMap.put("sid", GeoConstant.GEO_SERVICE_ID);
+        paramsMap.put("gfid", polygonReq.getGfid());
+        //发送请求
+        String result = HttpSendService.sendPost(paramsMap, GeoConstant.GEO_FENCE_POLYGON_UPDATE);
+        JSONObject resultJson = JSON.parseObject(result);
+        log.info("更新多边形围栏结果：{}", resultJson);
         return result;
     }
 
@@ -126,5 +160,54 @@ public class GeoFenceServiceImpl implements GeoFenceService {
         int in = (int) resultsJson.get("in");
         log.info("查询检测对象与围栏关系结果：{}", resultJson);
         return result;
+    }
+
+    @Override
+    public String addTerminal(TerminalAddReq terminalAddReq) {
+
+        //构造请求参数
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("key", GeoConstant.GEO_KEY);
+        paramsMap.put("sid", GeoConstant.GEO_SERVICE_ID);
+        paramsMap.put("name", terminalAddReq.getName());
+        paramsMap.put("desc", terminalAddReq.getDesc());
+        paramsMap.put("props", terminalAddReq.getProps());
+        //发送请求
+        String result = HttpSendService.sendRequest(paramsMap, GeoConstant.GEO_TERMINAL_ADD);
+        JSONObject resultJson = JSON.parseObject(result);
+        JSONObject resultsJson = JSON.parseObject(JSON.parseObject(resultJson.get("data").toString()).get("results").toString());
+
+
+        return resultsJson.getString("tid");
+    }
+
+    @Override
+    public String findTerminalIdByName(String name) {
+        //构造请求参数
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("key", GeoConstant.GEO_KEY);
+        paramsMap.put("sid", GeoConstant.GEO_SERVICE_ID);
+        paramsMap.put("name", name);
+        //发送请求
+        String result = HttpSendService.sendRequest(paramsMap, GeoConstant.GEO_TERMINAL_ADD);
+        JSONObject resultJson = JSON.parseObject(result);
+        JSONArray resultsJson = resultJson.getJSONArray("data.results");
+
+        if(resultsJson.isEmpty()){
+            return null;
+        }
+        return resultsJson.getJSONObject(0).getString("tid");
+    }
+
+    public static void main(String[] args) {
+
+        //构造请求参数
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("key", "2ecab3d1b4d0f57a9661b76f0c5cc3a0");
+        paramsMap.put("name", "猎鹰");
+        //发送请求
+        String result = HttpSendService.sendPost(paramsMap, "https://tsapi.amap.com/v1/track/service/add");
+
+        System.out.println(result);
     }
 }

@@ -13,9 +13,27 @@
 		<view class="map-address">
 			<view class="address-box">
 				<view class="list-item">
-
+					<text class="label">
+						新大陆科技园
+					</text>
+					<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
+				</view>
+				<view class="list-item">
+					<text class="label">
+						新大陆科技园
+					</text>
+					<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
+				</view>
+				<view class="list-item">
+					<text class="label">
+						新大陆科技园
+					</text>
+					<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
 				</view>
 			</view>
+		</view>
+		<view class="ui-btn">
+			<button class="default">历史位置</button>
 		</view>
 	</view>
 </template>
@@ -63,19 +81,28 @@
 
 		.map-address {
 			margin-top: 30rpx;
-			padding: 32rpx;
+			padding: 0 32rpx;
 			background-color: #fff;
 			border-radius: 16rpx;
 
 			.address-box {
 				display: flex;
 				flex-direction: column;
-				border-bottom: solid 2px #f7f7f7;
+
 
 				.list-item {
-					padding: 48rpx 32rpx;
+					// padding: 48rpx 32rpx;
+					height: 128rpx;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					border-bottom: solid 2px #f7f7f7;
 				}
 			}
+		}
+		
+		.ui-btn{
+			margin-top: 50rpx;
 		}
 	}
 </style>

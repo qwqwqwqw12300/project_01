@@ -38,7 +38,7 @@ public class ResetMemberPwdController{
     @Autowired
     private IResetMemberPwdService resetMemberPwdService;
 
-    @Value("${location.privateKey}")
+    @Value("${encrypt.privateKey}")
     private String privateKey;
 
     @ApiOperation("找回密码(重置密码)")

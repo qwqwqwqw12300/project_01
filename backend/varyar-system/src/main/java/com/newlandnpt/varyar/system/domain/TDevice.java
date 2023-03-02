@@ -118,6 +118,27 @@ public class TDevice extends BaseEntity
     /**是否在线 0:不在线  1:在线*/
     @Transient
     private String onlineFlag;
+
+    /** 当前电量**/
+    @Transient
+    private String currentPower;
+
+    /** 当前步数**/
+    @Transient
+    private String currentSteps;
+
+    /**gps数据**/
+    @Transient
+    private String gpsData;
+
+    /**LBS数据**/
+    @Transient
+    private String lbsData;
+
+    /**Wi-Fi数据**/
+    @Transient
+    private String wifiData;
+
     /**设备未读消息数量*/
     @Transient
     private String msgNum;
@@ -152,6 +173,46 @@ public class TDevice extends BaseEntity
 
     public void setNowLoacation(String nowLoacation) {
         this.nowLoacation = nowLoacation;
+    }
+
+    public String getCurrentPower() {
+        return currentPower;
+    }
+
+    public void setCurrentPower(String currentPower) {
+        this.currentPower = currentPower;
+    }
+
+    public String getCurrentSteps() {
+        return currentSteps;
+    }
+
+    public void setCurrentSteps(String currentSteps) {
+        this.currentSteps = currentSteps;
+    }
+
+    public String getGpsData() {
+        return gpsData;
+    }
+
+    public void setGpsData(String gpsData) {
+        this.gpsData = gpsData;
+    }
+
+    public String getLbsData() {
+        return lbsData;
+    }
+
+    public void setLbsData(String lbsData) {
+        this.lbsData = lbsData;
+    }
+
+    public String getWifiData() {
+        return wifiData;
+    }
+
+    public void setWifiData(String wifiData) {
+        this.wifiData = wifiData;
     }
 
     public String getMsgNum() {
@@ -558,6 +619,59 @@ public class TDevice extends BaseEntity
          * Map Key值（P：普通电话  0：sos电话  1：按钮1  2：按钮2  3：按钮3  4：按钮4)
          * */
         public Map<String ,DevicePhone> mapSet;
+
+
+        /**
+         * 通讯录设置
+         */
+        public List<DeviceIncomingCall> addressBookList;
+
+        /**
+         * 呼入限制
+         */
+        public String incomingCallRestrict = "2";
+
+        /**
+         * 位置守护任务
+         */
+        public List<LocationJob> locationJobs;
+
+        /**
+         * 禁用时段
+         */
+        public Map<Integer,ClassTimePeriod> classTimePeriods;
+
+        public Map<Integer, ClassTimePeriod> getClassTimePeriods() {
+            return classTimePeriods;
+        }
+
+        public void setClassTimePeriods(Map<Integer, ClassTimePeriod> classTimePeriods) {
+            this.classTimePeriods = classTimePeriods;
+        }
+
+        public List<LocationJob> getLocationJobs() {
+            return locationJobs;
+        }
+
+        public void setLocationJobs(List<LocationJob> locationJobs) {
+            this.locationJobs = locationJobs;
+        }
+
+        public List<DeviceIncomingCall> getAddressBookList() {
+            return addressBookList;
+        }
+
+        public void setAddressBookList(List<DeviceIncomingCall> addressBookList) {
+            this.addressBookList = addressBookList;
+        }
+
+        public String getIncomingCallRestrict() {
+            return incomingCallRestrict;
+        }
+
+        public void setIncomingCallRestrict(String incomingCallRestrict) {
+            this.incomingCallRestrict = incomingCallRestrict;
+        }
 
         public List<DevicePhone> getList() {
             return list;

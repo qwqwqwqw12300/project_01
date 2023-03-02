@@ -31,7 +31,7 @@
 			}
 		},
 		methods: {
-			handleSet(){
+			handleSet() {
 				uni.navigateTo({
 					url: '/pages/equipment/card-set'
 				})

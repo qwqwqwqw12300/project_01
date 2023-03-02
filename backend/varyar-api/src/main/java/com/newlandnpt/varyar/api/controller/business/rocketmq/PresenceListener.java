@@ -1,15 +1,14 @@
 package com.newlandnpt.varyar.api.controller.business.rocketmq;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson2.JSONObject;
 import com.newlandnpt.varyar.cloudBase.constant.VayyarCloudConstants;
 import com.newlandnpt.varyar.cloudBase.domain.Presence;
+import com.newlandnpt.varyar.common.core.domain.entity.AccessInfo;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
-import com.newlandnpt.varyar.common.exception.base.BaseException;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.service.IDeviceService;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.rocketmq.client.producer.SendResult;
-import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -17,17 +16,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import static com.newlandnpt.varyar.api.controller.business.rocketmq.AccessListener.*;
-import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_ACCESS_KEY;
-import static com.newlandnpt.varyar.system.domain.TRoomZone.FLAG_YES;
+import static com.newlandnpt.varyar.common.constant.CacheConstants.*;
 
 /**
  * MQ监听 - 进出事件
@@ -58,9 +54,9 @@ public class PresenceListener implements RocketMQListener<Presence> {
     public void onMessage(Presence presence) {
 		SendResult result = null;
 
-		PresenceInfo presenceInfo = new PresenceInfo();
-		presenceInfo.setDeviceNo(presence.getDeviceId());
-		presenceInfo.setTime(presence.getTimestampMillis());
+		AccessInfo accessInfo = new AccessInfo();
+		accessInfo.setDeviceNo(presence.getDeviceId());
+		accessInfo.setTime(presence.getTimestampMillis());
 
 		TDevice device = deviceService.selectByDeviceNo(presence.getDeviceNo());
 
@@ -75,28 +71,31 @@ public class PresenceListener implements RocketMQListener<Presence> {
 		TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)device.getParameter();
 
 
-		presenceInfo.setDeviceName(device.getName());
+		accessInfo.setDeviceName(device.getName());
 
     	if(VayyarCloudConstants.EVENT_ROOM_IN.equals(presence.getEventType())){
     		log.debug("监听到[{}], 报文对象：{} " ,"进房间事件"  ,JSON.toJSONString(presence));
 
 			int peopleCount = presence.getRoomPresenceDetected()?1:0;
-			presenceInfo.setType(ENTER_ROOM);
+			accessInfo.setType(ENTER_ROOM);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
 //					presence.getTrackerTargets().size();
-			presenceInfo.setPeopleCount(peopleCount);
-			presenceInfo.setAreaName("房间");
-
+			accessInfo.setPeopleCount(peopleCount);
+			accessInfo.setAreaName("房间");
+			String redisKey = T_DEVICE_VAYYAR_ACCESS_24HOURS_IN_ROOM_KEY + accessInfo.getDeviceNo();
+			redisCache.setCacheObject(redisKey,accessInfo);
 
 		}else if(VayyarCloudConstants.EVENT_ROOM_OUT.equals(presence.getEventType())){
     		log.debug("监听到[{}], 报文对象：{} " ,"出房间事件"  ,JSON.toJSONString(presence));
 
 			int peopleCount = presence.getRoomPresenceDetected()?1:0;
-			presenceInfo.setType(LEAVE_ROOM);
+			accessInfo.setType(LEAVE_ROOM);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
 //					presence.getTrackerTargets().size();
-			presenceInfo.setPeopleCount(peopleCount);
-			presenceInfo.setAreaName("房间");
+			accessInfo.setPeopleCount(peopleCount);
+			accessInfo.setAreaName("房间");
+			String redisKey = T_DEVICE_VAYYAR_ACCESS_24HOURS_OUT_ROOM_KEY + accessInfo.getDeviceNo();
+			redisCache.setCacheObject(redisKey,accessInfo);
 
 		}else if(VayyarCloudConstants.EVENT_REGION0_IN.equals(presence.getEventType())){
     		log.debug("监听到[{}], 报文对象：{} " ,"进0号区域事件"  ,JSON.toJSONString(presence));
@@ -106,12 +105,12 @@ public class PresenceListener implements RocketMQListener<Presence> {
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
 			}
-			presenceInfo.setType(ENTER_ZONE_0);
+			accessInfo.setType(ENTER_ZONE_0);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
 //					presence.getTrackerTargets().size();
-			presenceInfo.setZoneNo(zoneNo);
-			presenceInfo.setPeopleCount(peopleCount);
-			presenceInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
+			accessInfo.setZoneNo(zoneNo);
+			accessInfo.setPeopleCount(peopleCount);
+			accessInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
 		}else if(VayyarCloudConstants.EVENT_REGION0_OUT.equals(presence.getEventType())){
     		log.debug("监听到[{}], 报文对象：{} " ,"出0号区域事件"  ,JSON.toJSONString(presence));
 
@@ -121,12 +120,12 @@ public class PresenceListener implements RocketMQListener<Presence> {
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
 			}
-			presenceInfo.setType(LEAVE_ZONE_0);
+			accessInfo.setType(LEAVE_ZONE_0);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
 //					presence.getTrackerTargets().size();
-			presenceInfo.setZoneNo(zoneNo);
-			presenceInfo.setPeopleCount(peopleCount);
-			presenceInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
+			accessInfo.setZoneNo(zoneNo);
+			accessInfo.setPeopleCount(peopleCount);
+			accessInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
 
     	}else if(VayyarCloudConstants.EVENT_REGION1_IN.equals(presence.getEventType())){
     		log.debug("监听到[{}], 报文对象：{} " ,"进1号区域事件"  ,JSON.toJSONString(presence));
@@ -137,12 +136,12 @@ public class PresenceListener implements RocketMQListener<Presence> {
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
 			}
-			presenceInfo.setType(ENTER_ZONE_1);
+			accessInfo.setType(ENTER_ZONE_1);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
 //					presence.getTrackerTargets().size();
-			presenceInfo.setZoneNo(zoneNo);
-			presenceInfo.setPeopleCount(peopleCount);
-			presenceInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
+			accessInfo.setZoneNo(zoneNo);
+			accessInfo.setPeopleCount(peopleCount);
+			accessInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
 
     	}else if(VayyarCloudConstants.EVENT_REGION1_OUT.equals(presence.getEventType())){
     		log.debug("监听到[{}], 报文对象：{} " ,"出1号区域事件"  ,JSON.toJSONString(presence));
@@ -153,12 +152,12 @@ public class PresenceListener implements RocketMQListener<Presence> {
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
 			}
-			presenceInfo.setType(LEAVE_ZONE_1);
+			accessInfo.setType(LEAVE_ZONE_1);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
 //					presence.getTrackerTargets().size();
-			presenceInfo.setZoneNo(zoneNo);
-			presenceInfo.setPeopleCount(peopleCount);
-			presenceInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
+			accessInfo.setZoneNo(zoneNo);
+			accessInfo.setPeopleCount(peopleCount);
+			accessInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
     	}else if(VayyarCloudConstants.EVENT_REGION2_IN.equals(presence.getEventType())){
     		log.debug("监听到[{}], 报文对象：{} " ,"进2号区域事件"  ,JSON.toJSONString(presence));
 			int zoneNo = 2;
@@ -167,12 +166,12 @@ public class PresenceListener implements RocketMQListener<Presence> {
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
 			}
-			presenceInfo.setType(ENTER_ZONE_2);
+			accessInfo.setType(ENTER_ZONE_2);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
 //					presence.getTrackerTargets().size();
-			presenceInfo.setZoneNo(zoneNo);
-			presenceInfo.setPeopleCount(peopleCount);
-			presenceInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
+			accessInfo.setZoneNo(zoneNo);
+			accessInfo.setPeopleCount(peopleCount);
+			accessInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
     	}else if(VayyarCloudConstants.EVENT_REGION2_OUT.equals(presence.getEventType())){
     		log.debug("监听到[{}], 报文对象：{} " ,"出2号区域事件"  ,JSON.toJSONString(presence));
 
@@ -182,12 +181,12 @@ public class PresenceListener implements RocketMQListener<Presence> {
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
 			}
-			presenceInfo.setType(LEAVE_ZONE_2);
+			accessInfo.setType(LEAVE_ZONE_2);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
 //					presence.getTrackerTargets().size();
-			presenceInfo.setZoneNo(zoneNo);
-			presenceInfo.setPeopleCount(peopleCount);
-			presenceInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
+			accessInfo.setZoneNo(zoneNo);
+			accessInfo.setPeopleCount(peopleCount);
+			accessInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
 
     	}else if(VayyarCloudConstants.EVENT_REGION3_IN.equals(presence.getEventType())){
     		log.debug("监听到[{}], 报文对象：{} " ,"进3号区域事件"  ,JSON.toJSONString(presence));
@@ -198,12 +197,12 @@ public class PresenceListener implements RocketMQListener<Presence> {
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
 			}
-			presenceInfo.setType(ENTER_ZONE_3);
+			accessInfo.setType(ENTER_ZONE_3);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
 //					presence.getTrackerTargets().size();
-			presenceInfo.setZoneNo(zoneNo);
-			presenceInfo.setPeopleCount(peopleCount);
-			presenceInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
+			accessInfo.setZoneNo(zoneNo);
+			accessInfo.setPeopleCount(peopleCount);
+			accessInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
 
     	}else if(VayyarCloudConstants.EVENT_REGION3_OUT.equals(presence.getEventType())){
     		log.debug("监听到[{}], 报文对象：{} " ,"出3号区域事件"  ,JSON.toJSONString(presence));
@@ -215,121 +214,26 @@ public class PresenceListener implements RocketMQListener<Presence> {
 			if(radarWaveDeviceSettings.getRoomZones().size()<(zoneNo+1)){
 				log.warn(">>>> 设备号：{},设备无{}号区域配置，忽略进出事件",presence.getDeviceNo(),zoneNo);
 			}
-			presenceInfo.setType(LEAVE_ZONE_3);
+			accessInfo.setType(LEAVE_ZONE_3);
 //			int peopleCount = presence.getTrackerTargets()==null?0:
 //					presence.getTrackerTargets().size();
-			presenceInfo.setZoneNo(zoneNo);
-			presenceInfo.setPeopleCount(peopleCount);
-			presenceInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
+			accessInfo.setZoneNo(zoneNo);
+			accessInfo.setPeopleCount(peopleCount);
+			accessInfo.setAreaName(radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName());
 
 		}else {
     		log.debug("监听到[{}], 报文对象：{} " ,"未知事件消息"  ,JSON.toJSONString(presence));
     	}
 
     	// 将进出消息存入redis
-		String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + presenceInfo.getDeviceNo();
+		String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + accessInfo.getDeviceNo()+ DateFormatUtils.format(new Date(),"yyyy-MM-dd");
 		boolean hasKey = redisCache.hasKey(redisKey);
-		redisCache.setCacheList(redisKey, Arrays.asList(presenceInfo));
+		redisCache.setCacheList(redisKey, Arrays.asList(accessInfo));
 		if(!hasKey){
 			// 初次设值的时候设值过期时间一天
 			redisCache.expire(redisKey,1, TimeUnit.DAYS);
 		}
 
     }
-
-	public static class PresenceInfo {
-
-		/**
-		 * 设备no
-		 */
-		private String deviceNo;
-
-		/**
-		 * 进出类型
-		 */
-		private String type;
-
-		/**
-		 * 子区域编号
-		 */
-		private int zoneNo = -1;
-
-		/**
-		 * 房间人数
-		 */
-		private int peopleCount;
-
-		/**
-		 * 发生时间
-		 */
-		private long time;
-
-		/**
-		 * 设备名称
-		 */
-		private String deviceName;
-
-		/**
-		 * 区域名称
-		 */
-		private String areaName = "房间";
-
-
-		public String getDeviceNo() {
-			return deviceNo;
-		}
-
-		public void setDeviceNo(String deviceNo) {
-			this.deviceNo = deviceNo;
-		}
-
-		public String getType() {
-			return type;
-		}
-
-		public void setType(String type) {
-			this.type = type;
-		}
-
-		public int getZoneNo() {
-			return zoneNo;
-		}
-
-		public void setZoneNo(int zoneNo) {
-			this.zoneNo = zoneNo;
-		}
-
-		public int getPeopleCount() {
-			return peopleCount;
-		}
-
-		public void setPeopleCount(int peopleCount) {
-			this.peopleCount = peopleCount;
-		}
-
-		public long getTime() {
-			return time;
-		}
-
-		public void setTime(long time) {
-			this.time = time;
-		}
-
-		public String getDeviceName() {
-			return deviceName;
-		}
-
-		public void setDeviceName(String deviceName) {
-			this.deviceName = deviceName;
-		}
-
-		public String getAreaName() {
-			return areaName;
-		}
-
-		public void setAreaName(String areaName) {
-			this.areaName = areaName;
-		}
-	}
 
 }
