@@ -4,6 +4,7 @@ import com.newlandnpt.varyar.common.core.domain.config.AppConfig;
 import com.newlandnpt.varyar.common.core.domain.config.DeviceConfig;
 import com.newlandnpt.varyar.common.core.domain.config.SubRegion;
 import com.newlandnpt.varyar.common.core.domain.config.WalabotConfig;
+import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.base.BaseException;
 import com.newlandnpt.varyar.system.core.device.DeviceSettingsDisposer;
 import com.newlandnpt.varyar.system.domain.TDevice.RadarWaveDeviceSettings;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
 
+import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_ACCESS_KEY;
 import static com.newlandnpt.varyar.system.domain.TRoomZone.FLAG_YES;
 
 /**
@@ -34,6 +36,9 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
     private String deviceConfigTopic;
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
+
+    @Autowired
+    private RedisCache redisCache;
 
     @Override
     protected Class<RadarWaveDeviceSettings> supportType() {
@@ -106,6 +111,11 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
         }else{
             deviceConfig.getWalabotConfig().setTrackerSubRegions(new ArrayList<>(0));
         }
+
+        // todo 是否精确清除数据
+        // 清除进出缓存key
+        String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + deviceNo;
+        redisCache.deleteObject(redisKey);
 
         SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic+":vayyar",
                 MessageBuilder.withPayload(deviceConfig)
