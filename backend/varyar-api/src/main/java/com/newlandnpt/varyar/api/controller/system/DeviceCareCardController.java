@@ -193,8 +193,16 @@ public class DeviceCareCardController extends BaseController {
             // 获取通讯录
             List<DeviceIncomingCall> addressBook = object.addressBookList;
             // 流操作
-            DeviceIncomingCall oldDeviceIncomingCall = addressBook.stream().filter(address -> address.getAddressBookId().equals(req.getAddressBookId())).findAny().get();
-            addressBook.remove(oldDeviceIncomingCall);
+            DeviceIncomingCall oldDeviceIncomingCall = addressBook.stream().filter(address -> address.getAddressBookId().equals(req.getAddressBookId())).findAny().orElse(null);
+            if(Objects.isNull(oldDeviceIncomingCall)){
+                return error("记录不存在");
+            }else {
+                addressBook.remove(oldDeviceIncomingCall);
+                // 更新通讯录
+                object.setAddressBookList(addressBook);
+                device.setParameter(object);
+                iDeviceService.updateDevice(device);
+            }
         } else {
             return error("该设备不是牵挂卡或设备不存在");
         }
