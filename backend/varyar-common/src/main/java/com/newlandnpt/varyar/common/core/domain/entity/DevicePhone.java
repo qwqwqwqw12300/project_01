@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class DevicePhone implements Serializable
 {
     private static final long serialVersionUID = 1L;
+    public String button;
     /**
      * 联系人名称
      * */
@@ -23,10 +24,19 @@ public class DevicePhone implements Serializable
     public DevicePhone() {
     }
 
-    public DevicePhone(String phoneName, String phone) {
+    public DevicePhone(String button) {
+        this.button = button;
+    }
+
+    public DevicePhone(String button, String phoneName, String phone) {
+        this.button = button;
         this.phoneName = phoneName;
         this.phone = phone;
     }
+
+
+
+
 
     public String getPhoneName() {
         return phoneName;
@@ -44,4 +54,11 @@ public class DevicePhone implements Serializable
         this.phone = phone;
     }
 
+    public String getButton() {
+        return button;
+    }
+
+    public void setButton(String button) {
+        this.button = button;
+    }
 }
