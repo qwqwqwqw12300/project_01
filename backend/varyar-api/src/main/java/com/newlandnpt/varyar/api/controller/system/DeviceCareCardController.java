@@ -77,6 +77,7 @@ public class DeviceCareCardController extends BaseController {
         }
     }
 
+    @ApiOperation("插入通讯录")
     @PostMapping("/insertAddressBook")
     public AjaxResult insertAddressBook(@RequestBody @Validated AddOrUpdateAddressBookReq req){
         // 入库
@@ -86,7 +87,7 @@ public class DeviceCareCardController extends BaseController {
         }
         if(DEVICE_TYPE.equals(device.getType())) {
             // 获取设备参数
-            TDevice.WatchSettings object = (TDevice.WatchSettings) device.getParameter();
+            TDevice.WatchSettings object = getParameter(device);
             // 获取通讯录
             List<DeviceIncomingCall> addressBook = object.addressBookList;
             // 如果通讯录为空
@@ -120,6 +121,7 @@ public class DeviceCareCardController extends BaseController {
         return setAddressBook(setIncomingCallReq);
     }
 
+    @ApiOperation("更新通讯录")
     @PutMapping("/updateAddressBook")
     public AjaxResult updateAddressBook(@RequestBody @Validated AddOrUpdateAddressBookReq req){
         // 入库
@@ -129,7 +131,7 @@ public class DeviceCareCardController extends BaseController {
         }
         if(DEVICE_TYPE.equals(device.getType())) {
             // 获取设备参数
-            TDevice.WatchSettings object = (TDevice.WatchSettings) device.getParameter();
+            TDevice.WatchSettings object = getParameter(device);
             // 获取通讯录
             List<DeviceIncomingCall> addressBook = object.addressBookList;
             // 如果通讯录为空
@@ -180,6 +182,7 @@ public class DeviceCareCardController extends BaseController {
         return setAddressBook(setIncomingCallReq);
     }
 
+    @ApiOperation("删除通讯录")
     @DeleteMapping("/deleteAddressBook")
     public AjaxResult deleteAddressBook(@RequestBody @Validated DeleteAddressBookReq req){
         // 入库
@@ -189,7 +192,7 @@ public class DeviceCareCardController extends BaseController {
         }
         if(DEVICE_TYPE.equals(device.getType())){
             // 获取设备参数
-            TDevice.WatchSettings object = (TDevice.WatchSettings) device.getParameter();
+            TDevice.WatchSettings object = getParameter(device);
             // 获取通讯录
             List<DeviceIncomingCall> addressBook = object.addressBookList;
             // 流操作
@@ -227,28 +230,6 @@ public class DeviceCareCardController extends BaseController {
         }
     }
 
-    /**
-     * 获取数据库通讯录
-     * @param deviceNo
-     * @return
-     */
-    protected List<DeviceIncomingCall> getAddressBook(String deviceNo){
-        TDevice device = iDeviceService.selectByDeviceNo(deviceNo);
-        if(DEVICE_TYPE.equals(device.getType())) {
-            // 获取设备参数
-            TDevice.WatchSettings object = (TDevice.WatchSettings) device.getParameter();
-            // 获取通讯录
-            List<DeviceIncomingCall> addressBook = object.addressBookList;
-            // 如果通讯录为空
-            if (Objects.isNull(addressBook)) {
-                addressBook = new ArrayList<>();
-            }
-            return addressBook;
-        } else {
-            log.error("该设备不是牵挂卡或设备不存在");
-        }
-        return null;
-    }
 
     @ApiOperation("设置亲情号码")
     @PostMapping("/setFamilyNumber")
@@ -260,13 +241,13 @@ public class DeviceCareCardController extends BaseController {
             TDevice device = iDeviceService.selectByDeviceNo(req.getDeviceNo());
             if(DEVICE_TYPE.equals(device.getType())){
                 // 获取设备参数
-                TDevice.WatchSettings object = (TDevice.WatchSettings) device.getParameter();
+                TDevice.WatchSettings object = getParameter(device);
                 // 获取亲情号码
                 Map<String, DevicePhone> familyNumber =  new HashMap<>(16);
                 // 设置亲情号码
                 req.getButtonFroms().forEach(
                         item->{
-                            DevicePhone devicePhone = new DevicePhone(item.getButton(),item.getPhone());
+                            DevicePhone devicePhone = new DevicePhone(item.getPhoneName(),item.getPhone());
                             familyNumber.put(item.getButton(),devicePhone);
                         }
                 );
@@ -279,6 +260,42 @@ public class DeviceCareCardController extends BaseController {
         }catch (Exception e){
             return AjaxResult.error(e.getMessage());
         }
+    }
+
+    @ApiOperation("获取亲情号码")
+    @GetMapping("/getFamilyNumber")
+    public AjaxResult getFamilyNumber(GetDeviceButtonReq req){
+        Map<String, DevicePhone> familyNumber = new HashMap<>(16);
+        try {
+            TDevice device = iDeviceService.selectByDeviceNo(req.getDeviceNo());
+            if (Objects.isNull(device)) {
+                return error("数据库中不存在此数据。");
+            }
+            if (DEVICE_TYPE.equals(device.getType())) {
+                // 获取设备参数
+                TDevice.WatchSettings object = getParameter(device);
+                if (Objects.isNull(object)) {
+                    device.setParameter(new TDevice.DeviceParameter());
+                } else {
+                    familyNumber = object.getMapSet();
+                }
+                if (Objects.isNull(familyNumber.get("0"))) {
+                    familyNumber.put("0", new DevicePhone());
+                }
+                if (Objects.isNull(familyNumber.get("1"))) {
+                    familyNumber.put("1", new DevicePhone());
+                }
+                if (Objects.isNull(familyNumber.get("2"))) {
+                    familyNumber.put("2", new DevicePhone());
+                }
+                if (Objects.isNull(familyNumber.get("3"))) {
+                    familyNumber.put("3", new DevicePhone());
+                }
+            }
+        }catch (Exception e){
+            return error(e.getMessage());
+        }
+        return success(familyNumber);
     }
 
     @ApiOperation("设置电子围栏")
@@ -298,6 +315,7 @@ public class DeviceCareCardController extends BaseController {
     public AjaxResult setLocationGuard() {
         try{
             // TODO:入库
+            // 调用高德API
             // commonDeviceFenceService.insertTDeviceFence()
         }catch (Exception e){
             return AjaxResult.error(e.getMessage());
@@ -315,7 +333,7 @@ public class DeviceCareCardController extends BaseController {
             TDevice device = iDeviceService.selectByDeviceNo(req.getDeviceNo());
 //            if(DEVICE_TYPE.equals(device.getType())){
 //                // 获取设备参数
-//                TDevice.WatchSettings object = (TDevice.WatchSettings) device.getParameter();
+//                TDevice.WatchSettings object = getParameter(device);
 //                // 获取禁用时段
 //                List<ClassTimePeriod> classTimePeriods = object.getClassTimePeriods();
 //                // 如果通讯录为空
@@ -354,7 +372,6 @@ public class DeviceCareCardController extends BaseController {
         try{
             // 拼接url
             String url = DEVICE_CARE_CARD_URL + "/setOperateTerminal";
-//            SetOperateTerminalReq req = new SetOperateTerminalReq();
             // http请求
             return httpRequest(url,req);
         }catch (Exception e){
@@ -383,6 +400,10 @@ public class DeviceCareCardController extends BaseController {
      * @return
      */
    protected TDevice.WatchSettings getParameter(TDevice device){
-       return null;
+       TDevice.WatchSettings paramete = (TDevice.WatchSettings) device.getParameter();
+       if(Objects.isNull(paramete)){
+           paramete = new TDevice.WatchSettings();
+       }
+       return paramete;
    }
 }
