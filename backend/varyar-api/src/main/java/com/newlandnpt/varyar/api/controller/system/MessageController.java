@@ -88,6 +88,8 @@ public class MessageController extends BaseController {
         tMsg.setEndDate(messageRequest.getEndDate());
         Long memberId = getLoginUser().getMemberId();
         tMsg.setMemberId(memberId);
+        //限制查询app消息 ,过滤短信消息
+        tMsg.setMsgType("2");
         List<TMsg> list = itMsgService.selectTMsgList(tMsg);
         return getDataTable(list);
     }
