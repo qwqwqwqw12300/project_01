@@ -1,5 +1,7 @@
 package com.newlandnpt.varyar.system.service;
 
+import com.newlandnpt.varyar.system.domain.TDevice;
+
 /**
  * 设备事件服务
  * @author lisd
@@ -45,6 +47,7 @@ public interface DeviceEventService {
     /**
      * 设备24小时无人预警
      * @param deviceNo
+     * @param device
      */
-    void device24HoursExistsIssue(String deviceNo);
+    void device24HoursExistsIssue(String deviceNo, TDevice device);
 }

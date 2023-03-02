@@ -8,7 +8,6 @@ import com.newlandnpt.varyar.common.utils.PageUtils;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.service.DeviceEventService;
 import com.newlandnpt.varyar.system.service.IDeviceService;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -69,12 +68,15 @@ public class VayyarDevice24HoursExistTask {
                     long currentTimeMills = new Date().getTime();
                     currentTimeMills -=outInfo.getTime()+24*60*60*1000;
                     if(currentTimeMills<=0){
-
+                        // 触发24小时无人预警
+                        disconnectionService.device24HoursExistsIssue(p.getNo(), p);
+                        // 离开时间更新到当前时间，开始新一轮计算周期
+                        outInfo.setTime(new Date().getTime());
+                        redisCache.setCacheObject(outKey,outInfo);
                     }
 
                 }
 
-                disconnectionService.device24HoursExistsIssue(p.getNo());
             });
             pageInfo = new PageInfo(list);
         }while (pageInfo.isHasNextPage());
