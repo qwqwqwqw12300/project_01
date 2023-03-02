@@ -22,7 +22,7 @@ import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYY
  * @author lin.ju
  * @date 2023/3/1
  */
-@Component()
+@Component("vayyarDevice24HoursExistTask")
 public class VayyarDevice24HoursExistTask {
 
     @Autowired

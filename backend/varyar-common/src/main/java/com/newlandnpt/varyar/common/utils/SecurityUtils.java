@@ -82,7 +82,11 @@ public class SecurityUtils
     {
         try
         {
-            Object object = getAuthentication().getPrincipal();
+            Authentication authentication = getAuthentication();
+            if(authentication == null){
+                return null;
+            }
+            Object object = authentication.getPrincipal();
             if(object instanceof LoginUser){
                 return (LoginUser) object;
             }
