@@ -4,6 +4,7 @@ import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.tcp.base.ChannelMessageHandlers;
+import com.newlandnpt.varyar.tcp.base.DeviceChannelCache;
 import com.newlandnpt.varyar.tcp.base.Response;
 import com.newlandnpt.varyar.tcp.utils.AESUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +46,9 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 			Response response = ChannelMessageHandlers.handleRequest(ctx, req);
 			response.setHeadByRequest(req);
 			Channel channel = ctx.channel();
+
+			log.debug(">>>>>>>>>>>>当前连接id:",channel.id());
+			log.debug(">>>>>>>>>>>>缓存连接id:",DeviceChannelCache.getChannelByDeviceNo(req.getDeviceNo()).id());
 			//System.out.println(str);
 			// 响应消息
 			String message = response.generateMessage();
