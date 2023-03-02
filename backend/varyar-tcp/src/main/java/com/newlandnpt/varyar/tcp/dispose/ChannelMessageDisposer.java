@@ -1,12 +1,17 @@
 package com.newlandnpt.varyar.tcp.dispose;
 
+import cn.hutool.crypto.Mode;
+import cn.hutool.crypto.Padding;
 import com.newlandnpt.varyar.common.constant.tcp.ApiTypes;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.tcp.base.DeviceChannelCache;
 import com.newlandnpt.varyar.tcp.base.Req;
 import com.newlandnpt.varyar.tcp.base.Response;
+import com.newlandnpt.varyar.tcp.utils.AESUtils;
 import io.netty.channel.Channel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +30,7 @@ import static com.newlandnpt.varyar.common.constant.CacheConstants.TCP_WATCH_TRA
 @Component
 public class ChannelMessageDisposer{
 
+    private static final Logger log = LoggerFactory.getLogger(ChannelMessageDisposer.class);
     @Autowired
     private RedisCache redisCache;
 
@@ -49,8 +55,13 @@ public class ChannelMessageDisposer{
         req.setMsgTime(time);
         T response = responseSupplier.get();
         // 默认3秒超时
-        redisCache.setCacheObject(TCP_WATCH_TRADE_NO+req.getTranNo(),null,3, TimeUnit.MINUTES);
-        channel.writeAndFlush(req.generateMessage());
+        redisCache.setCacheObject(TCP_WATCH_TRADE_NO+req.getTranNo(),null,3, TimeUnit.SECONDS);
+
+        String writeMessage = req.generateMessage();
+        log.debug(">>>>>> 下发报文：{}",writeMessage);
+        writeMessage = AESUtils.encryptFromString(response.generateMessage(), Mode.CBC, Padding.PKCS5Padding);
+        log.debug(">>>>>> 加密下发报文：{}",writeMessage+"==#morefun#170\n");
+        channel.writeAndFlush(writeMessage+"==#morefun#170\n");
         String message = null;
         while (redisCache.hasKey(TCP_WATCH_TRADE_NO + req.getTranNo())) {
             message = redisCache.getCacheObject(TCP_WATCH_TRADE_NO + req.getTranNo());

@@ -247,7 +247,7 @@ public class DeviceCareCardController extends BaseController {
                 // 设置亲情号码
                 req.getButtonFroms().forEach(
                         item->{
-                            DevicePhone devicePhone = new DevicePhone(item.getPhoneName(),item.getPhone());
+                            DevicePhone devicePhone = new DevicePhone(item.getButton(),item.getPhoneName(),item.getPhone());
                             familyNumber.put(item.getButton(),devicePhone);
                         }
                 );
@@ -266,6 +266,7 @@ public class DeviceCareCardController extends BaseController {
     @GetMapping("/getFamilyNumber")
     public AjaxResult getFamilyNumber(GetDeviceButtonReq req){
         Map<String, DevicePhone> familyNumber = new HashMap<>(16);
+        List<DevicePhone> familyNumberList = new ArrayList<>();
         try {
             TDevice device = iDeviceService.selectByDeviceNo(req.getDeviceNo());
             if (Objects.isNull(device)) {
@@ -279,23 +280,18 @@ public class DeviceCareCardController extends BaseController {
                 } else {
                     familyNumber = object.getMapSet();
                 }
-                if (Objects.isNull(familyNumber.get("0"))) {
-                    familyNumber.put("0", new DevicePhone());
-                }
-                if (Objects.isNull(familyNumber.get("1"))) {
-                    familyNumber.put("1", new DevicePhone());
-                }
-                if (Objects.isNull(familyNumber.get("2"))) {
-                    familyNumber.put("2", new DevicePhone());
-                }
-                if (Objects.isNull(familyNumber.get("3"))) {
-                    familyNumber.put("3", new DevicePhone());
+                for(int i=0;i<=3;i++){
+                    String number = String.valueOf(i);
+                    if(Objects.isNull(familyNumber.get(number))){
+                        familyNumber.put(number,new DevicePhone(number));
+                    }
+                    familyNumberList.add(familyNumber.get(number));
                 }
             }
         }catch (Exception e){
             return error(e.getMessage());
         }
-        return success(familyNumber);
+        return success(familyNumberList);
     }
 
     @ApiOperation("设置电子围栏")

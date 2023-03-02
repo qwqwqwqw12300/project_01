@@ -66,9 +66,9 @@ public class CustStringDecoder extends StringDecoder {
 		 if(StringUtils.isBlank(msg)){
 			 return ;
 		 }
-//		 msg = AESUtils.decryptFromString(msg, Mode.CBC, Padding.PKCS5Padding);
-//		 log.debug(">>>>> 解密后字符：{}",msg);
-//		 msg = msg.replace("\n","");
+		 msg = AESUtils.decryptFromString(msg, Mode.CBC, Padding.PKCS5Padding);
+		 log.debug(">>>>> 解密后字符：{}",msg);
+		 msg = msg.replace("\n","");
 		 String first = StringUtils.substring(msg, 0, 1);
 		 String end = StringUtils.substring(msg, msg.length()-1, msg.length());
 		 if(!"[".equals(first) || !"]".equals(end)){

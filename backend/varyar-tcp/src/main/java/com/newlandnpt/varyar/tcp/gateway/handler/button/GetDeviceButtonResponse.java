@@ -43,7 +43,7 @@ public class GetDeviceButtonResponse extends MessageHead implements Response {
     public static class buttonPhone{
 
         /**
-         * 按键
+         * 按键 0=sos按键!按键1=按键1!2=按键2!
          */
         private String button;
 

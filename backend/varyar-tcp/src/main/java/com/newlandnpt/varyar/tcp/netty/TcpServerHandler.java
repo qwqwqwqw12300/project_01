@@ -2,8 +2,8 @@ package com.newlandnpt.varyar.tcp.netty;
 
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
-import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.tcp.base.ChannelMessageHandlers;
+import com.newlandnpt.varyar.tcp.base.DeviceChannelCache;
 import com.newlandnpt.varyar.tcp.base.Response;
 import com.newlandnpt.varyar.tcp.utils.AESUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.newlandnpt.varyar.tcp.base.Req;
-import com.newlandnpt.varyar.tcp.gateway.handler.login.DeviceLoginReq;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -20,13 +19,6 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.AttributeKey;
 import io.netty.util.ReferenceCountUtil;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.stereotype.Component;
-
-import java.util.concurrent.TimeUnit;
-
-import static com.newlandnpt.varyar.common.constant.CacheConstants.SECOND_4_CYCLE_NUMBER;
 
 public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 
@@ -45,11 +37,14 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 			Response response = ChannelMessageHandlers.handleRequest(ctx, req);
 			response.setHeadByRequest(req);
 			Channel channel = ctx.channel();
+
+			log.debug(">>>>>>>>>>>>当前连接id:{}",channel.id());
+			log.debug(">>>>>>>>>>>>缓存连接id:{}",DeviceChannelCache.getChannelByDeviceNo(req.getDeviceNo()).id());
 			//System.out.println(str);
 			// 响应消息
 			String message = response.generateMessage();
 			log.debug(">>>>>> 响应报文：{}",message);
-//			message = AESUtils.encryptFromString(response.generateMessage(), Mode.CBC, Padding.PKCS5Padding);
+			message = AESUtils.encryptFromStringForResponse(response.generateMessage(), Mode.CBC, Padding.PKCS5Padding);
 			log.debug(">>>>>> 加密响应报文：{}",message);
 			channel.writeAndFlush(message);
 		} catch (Exception e) {

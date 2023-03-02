@@ -553,7 +553,16 @@
 					"titleNView": false
 				}
 			}
+		},{
+			"path": "pages/equipment/historical-location",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
+		
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
