@@ -33,7 +33,7 @@
 			</view>
 		</view>
 		<view class="ui-btn">
-			<button class="default">历史位置</button>
+			<button class="default" @click="toJump">历史位置</button>
 		</view>
 	</view>
 </template>
@@ -44,6 +44,13 @@
 			return {
 				latitude: 39.909,
 				longitude: 116.39742,
+			}
+		},
+		methods: {
+			toJump(){
+				uni.navigateTo({
+					url:'/pages/equipment/historical-location'
+				})
 			}
 		}
 	}
