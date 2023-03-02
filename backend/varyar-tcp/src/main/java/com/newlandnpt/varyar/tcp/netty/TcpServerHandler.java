@@ -49,7 +49,7 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 			// 响应消息
 			String message = response.generateMessage();
 			log.debug(">>>>>> 响应报文：{}",message);
-//			message = AESUtils.encryptFromString(response.generateMessage(), Mode.CBC, Padding.PKCS5Padding);
+			message = AESUtils.encryptFromString(response.generateMessage(), Mode.CBC, Padding.PKCS5Padding);
 			log.debug(">>>>>> 加密响应报文：{}",message);
 			channel.writeAndFlush(message);
 		} catch (Exception e) {
