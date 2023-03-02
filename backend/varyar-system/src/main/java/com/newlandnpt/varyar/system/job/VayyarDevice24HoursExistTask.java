@@ -66,7 +66,9 @@ public class VayyarDevice24HoursExistTask {
                         }
                     }
                     long currentTimeMills = new Date().getTime();
-                    currentTimeMills -=outInfo.getTime()+24*60*60*1000;
+                    currentTimeMills -=outInfo.getTime()+
+//                            24*60*
+                                    60*1000;
                     if(currentTimeMills<=0){
                         // 触发24小时无人预警
                         disconnectionService.device24HoursExistsIssue(p.getNo(), p);
