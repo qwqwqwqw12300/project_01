@@ -115,7 +115,7 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
         // todo 是否精确清除数据
         // 清除进出缓存key
         String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + deviceNo;
-        redisCache.deleteObject(redisKey);
+//        redisCache.deleteObject(redisKey);
 
         SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic+":vayyar",
                 MessageBuilder.withPayload(deviceConfig)
