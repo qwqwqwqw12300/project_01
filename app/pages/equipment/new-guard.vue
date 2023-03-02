@@ -2,7 +2,13 @@
 <template>
 	<app-body :bg="false">
 		<view class="ui-logo">
-			<app-logo color="#353535" text="新建守护位置"></app-logo>
+			<view class="ui-edit">
+				<app-logo color="#353535" text="新建守护位置"></app-logo>
+				<view class="ui-edit-right" @click="handleEdit">
+					<text v-if="editBtn">删除</text>
+					<text v-else>编辑</text>
+				</view>
+			</view>
 			<u-cell title="名称" class="u-cell-title">
 				<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="right-icon"
 					v-model="name"></u-input>
@@ -16,8 +22,9 @@
 						{{ item.orderName }}
 					</view>
 					<view  >
-						<u-switch @change="handleSwitch" v-model="flag" activeValue="1" inactiveValue="0"
-							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20"> >
+						<text  v-if="editBtn" class="ui-form-del" @click="handleDel(item.orderNum,item.orderName)">删除</text>
+						<u-switch v-else @change="handleSwitch" v-model="item.flag" activeValue="1" inactiveValue="0"
+							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20"> 
 						</u-switch>
 					</view>
 				</view>
@@ -28,12 +35,12 @@
 								{{item.address}}
 							</text>
 						</u-cell>
-						<u-cell @tap="handleSelect" title="到达日期" arrow-direction="right" isLink>
+						<u-cell @tap="handleSelect(item.orderNum)" title="到达日期" arrow-direction="right" isLink>
 							<text slot="value" class="u-slot-value">
 								{{item.date}}
 							</text>
 						</u-cell>
-						<u-cell @tap="handleTime" title="到达时间" arrow-direction="right" isLink>
+						<u-cell @tap="handleTime(item.orderNum)" title="到达时间" arrow-direction="right" isLink>
 							<text slot="value" class="u-slot-value">
 								{{item.time}}
 							</text>
@@ -42,11 +49,11 @@
 				</view>
 			</view>
 		</view>
-		<view class="ui-add">
+		<view class="ui-add" @click="addPlace">
 			<image class="ui-add-icon" src="@/static/images/add-guard.png"></image>
 			<text>添加地点</text>
 		</view>
-		<view class="ui-btn">
+		<view class="ui-btn" v-if="editBtn==false">
 			<view class="btn-box">
 				<view class="cancel-btn" @click="handleCancel">
 					取消
@@ -56,14 +63,14 @@
 				</view>
 			</view>
 		</view>
-		<u-calendar :show="showDate" :mode="mode" @confirm="confirm"></u-calendar>
+		<u-calendar :show="showDate" :mode="mode" @confirm="confirm" @close="close" closeOnClickOverlay></u-calendar>
 		<u-datetime-picker
 			:show="showTime"
-			v-model="value4"
+			v-model="time"
 			mode="time"
 			closeOnClickOverlay
-			@confirm="confirms"
-			@cancel="cancel"
+			@confirm="confirmTime"
+			@cancel="cancelTime"
 		></u-datetime-picker>
 	</app-body>
 </template>
@@ -77,53 +84,104 @@
 				index: 0,
 				name:'',
 				flag:'0',
+				editBtn:false,
 				showDate:false,
 				mode:'single',
 				showTime:false,
-				value4:'15:26',
+				time:'15:26',
+				id:0,
 				contactList: [{
 						orderNum: 1,
 						orderName: '地点1',
 						address:'新大陆科技园',
 						date:'2023-03-01',
-						time:'15:32'
+						time:'15:32',
+						flag:'1'
 					},
 					{
 						orderNum: 2,
 						orderName: '地点2',
 						address:'新大陆壹号',
 						date:'2023-03-01',
-						time:'15:32'
+						time:'15:32',
+						flag:'1'
 					},
 				],
 			}
 		},
 		methods: {
-			handleSelect(){
+			// 日期
+			handleSelect(id){
+				this.id = id
 				this.showDate = true
-			},
-			handleTime(){
-				this.showTime = true
 			},
 			confirm(e) {
 				console.log(e);
+				this.contactList.map(item=>{
+					if(item.orderNum == this.id){
+						item.date = e[0]
+					}
+				})
 				this.showDate = false
 			},
-			cancel() {
-				this.showTime = false
+			close() {
+				this.showDate = false
 			},
-			confirms(e) {
+			//时间
+			handleTime(id){
+				this.id = id
+				this.showTime = true
+			},
+			confirmTime(e) {
 				this.showTime = false
 				this.result(e.value, e.mode)
 			},
+			cancelTime(){
+				this.showTime = false
+			},
 			result(time, mode) {
-				console.log(time,'time')
+				this.contactList.map(item=>{
+					if(item.orderNum == this.id){
+						item.time = time
+					}
+				})
 			},
 			handleCancel() {
 				uni.navigateBack()
 			},
+			handleSave(){
+				console.log(this.name,'this.name')
+				console.log(this.contactList,'this.contactList')
+			},
 			handleSwitch(){
 				
+			},
+			addPlace(){
+				let date = Date.now()
+				let rund = Math.ceil(Math.random()*1000)
+				let orderNum = date + '' + rund
+				console.log(date,'date')
+				this.contactList.push({
+					orderNum,
+					orderName: '地点' + (this.contactList.length+1),
+					address:'默认地址',
+					date:'2023-03-01',
+					time:'15:32',
+					flag:'1'
+				})
+				console.log(this.contactList,'this.contactList')
+			},
+			handleEdit(){
+				this.editBtn =! this.editBtn
+			},
+			handleDel(id,orderName){
+				uni.showModal({
+					title: '提示',
+					content: `是否确认删除${orderName}？`,
+					success: res => {
+						this.contactList.splice(this.contactList.findIndex(item=>item.orderNum==id),1)
+					}
+				});
 			}
 		},
 		onShow() {
@@ -135,10 +193,23 @@
 <style lang="scss">
 	.ui-logo {
 		background: #ffffff;
+		.ui-edit{
+			display: flex;
+			align-items: flex-end;
+			justify-content: space-between;
+			.ui-edit-right{
+				margin-right: 34rpx;
+				font-size: 30rpx;
+				color: #353535;
+				line-height: 30rpx;
+				font-weight: 400;
+			}
+		}
 		.u-cell-title{
 			margin-top: 64rpx;
 		}
 	}
+	
 	.ui-add{
 		width: 100%;
 		margin-top: 64rpx;
@@ -193,7 +264,12 @@
 					}
 				}
 			}
-
+			.ui-form-del{
+				font-size: 30rpx;
+				color: #E95656;
+				line-height: 30rpx;
+				font-weight: 400;
+			}
 			.item-input {
 				min-height: 128rpx;
 				border-bottom: solid 2px #f7f7f7;

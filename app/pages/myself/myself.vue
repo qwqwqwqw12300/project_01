@@ -93,9 +93,6 @@
 				}, {
 					title: '版本管理',
 					url: '/pages/myself/version-manage'
-				},{
-					title: '电子牵挂卡',
-					url: '/pages/new/index'
 				}]
 			}
 		},
