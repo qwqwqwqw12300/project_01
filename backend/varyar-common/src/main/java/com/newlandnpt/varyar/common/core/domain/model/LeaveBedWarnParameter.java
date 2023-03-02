@@ -1,16 +1,16 @@
-package com.newlandnpt.varyar.system.domain.vo;
+package com.newlandnpt.varyar.common.core.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.newlandnpt.varyar.system.domain.TRoomZone;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class LeaveBedWarnParameter implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private List<Bed> Beds;
+    private List<Bed> Beds = new ArrayList<>();
 
     public List<Bed> getBeds() {
         return Beds;
@@ -39,7 +39,7 @@ public class LeaveBedWarnParameter implements Serializable{
          */
         private String bedNo;
 
-        private TRoomZone roomZone;
+        private String roomZoneId;
 
         /**
          * 日期类型
@@ -87,12 +87,12 @@ public class LeaveBedWarnParameter implements Serializable{
             this.leaveBedInterval = leaveBedInterval;
         }
 
-        public TRoomZone getRoomZone() {
-            return roomZone;
+        public String getRoomZoneId() {
+            return roomZoneId;
         }
 
-        public void setRoomZone(TRoomZone roomZone) {
-            this.roomZone = roomZone;
+        public void setRoomZoneId(String roomZoneId) {
+            this.roomZoneId = roomZoneId;
         }
 
         public long getIntervalTime() {

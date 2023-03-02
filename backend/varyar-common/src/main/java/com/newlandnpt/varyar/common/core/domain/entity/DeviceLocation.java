@@ -5,16 +5,16 @@ import java.math.BigDecimal;
 public class DeviceLocation {
 
     /** 长度 */
-    private BigDecimal roomLength;
+    private BigDecimal roomLength =new BigDecimal(4);
 
     /** 左侧 */
-    private BigDecimal roomLeft;
+    private BigDecimal roomLeft=new BigDecimal(2);
 
     /** 右侧 */
-    private BigDecimal roomRight;
+    private BigDecimal roomRight=new BigDecimal(2);
 
     /** 高度 */
-    private BigDecimal roomHeight;
+    private BigDecimal roomHeight=new BigDecimal(1.5);
 
     public BigDecimal getRoomLength() {
         return roomLength;
