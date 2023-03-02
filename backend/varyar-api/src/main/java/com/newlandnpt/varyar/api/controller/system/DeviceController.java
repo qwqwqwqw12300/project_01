@@ -13,6 +13,7 @@ import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
+import com.newlandnpt.varyar.common.utils.uuid.IdUtils;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.vo.LeaveBedWarnParameter;
 import com.newlandnpt.varyar.system.service.IDeviceService;
@@ -350,8 +351,8 @@ public class DeviceController extends BaseController {
             radarwave.setInstallPosition(deviceRequest.getInstallPosition());
             if("1".equals(deviceRequest.getInstallPosition())) {
                 locationTop.setRoomHeight(deviceRequest.getRoomHeight());
-                locationTop.setRoomFront(deviceRequest.getRoomLength());
-                locationTop.setRoomBehind(deviceRequest.getRoomLength());
+                locationTop.setRoomFront(deviceRequest.getRoomFront());
+                locationTop.setRoomBehind(deviceRequest.getRoomBehind());
                 locationTop.setRoomLeft(deviceRequest.getRoomLeft());
                 locationTop.setRoomRight(deviceRequest.getRoomRight());
                 radarwave.setDeviceLocationTop(locationTop);
@@ -723,15 +724,16 @@ public class DeviceController extends BaseController {
         TDevice.RadarWaveDeviceSettings radarwave = (TDevice.RadarWaveDeviceSettings)device.getParameter();
 
         DeviceWarnParameter deviceWarnParameter=new DeviceWarnParameter();
-        deviceWarnParameter.setFallWarn("1");
+        deviceWarnParameter.setFallWarn(deviceWarnRequest.getFallWarn());
         DeviceWarnParameter.NobodyWarn  nobodyWarn =new DeviceWarnParameter.NobodyWarn();
-        nobodyWarn.setNoBodyContinue("1");
-        nobodyWarn.setNoBody("1");
+        nobodyWarn.setNoBodyContinue(deviceWarnRequest.getNoBodyContinue());
+        nobodyWarn.setNoBody(deviceWarnRequest.getNoBody());
         DeviceWarnParameter.WarnRule warnRule = new DeviceWarnParameter.WarnRule();
         warnRule.setWarnRuleName(deviceWarnRequest.getWarnRuleName());
         warnRule.setRuleSwitch(deviceWarnRequest.getRuleSwitch());
-        warnRule.setRuleSwitch(deviceWarnRequest.getRuleSwitch());
         warnRule.setDateType(deviceWarnRequest.getDateType());
+        //规则编号用于规则列表删改操作
+        warnRule.setRuleNo(IdUtils.fastSimpleUUID());
         if("1".equals(deviceWarnRequest.getDateType()))
         {
           warnRule.setWeek(deviceWarnRequest.getWeek());
@@ -792,7 +794,9 @@ public class DeviceController extends BaseController {
 
         LeaveBedWarnParameter leaveBedWarnParameter =new LeaveBedWarnParameter();
         LeaveBedWarnParameter.Bed bed = new LeaveBedWarnParameter.Bed();
-        bed.setName(deviceWarnRequest.getName());
+        bed.setName(deviceWarnRequest.getBedName());
+        //设置编号
+        bed.setBedNo(IdUtils.fastSimpleUUID());
         bed.setDateType(deviceWarnRequest.getDateType());
         bed.setLeaveBedInterval(deviceWarnRequest.getLeaveBedInterval());
         bed.setIntervalTime(deviceWarnRequest.getIntervalTime());
@@ -833,4 +837,20 @@ public class DeviceController extends BaseController {
         return success();
     }
 
+
+    @ApiOperation("删除预警规则")
+    @PostMapping("/delDeviceWarn")
+    public AjaxResult delDeviceWarn(
+            @RequestBody @Validated DeviceWarnRequest deviceWarnRequest) {
+
+        return success();
+    }
+
+    @ApiOperation("设置预警规则")
+    @PostMapping("/delLeaveBedWarn")
+    public AjaxResult delLeaveBedWarn(
+            @RequestBody @Validated DeviceWarnRequest deviceWarnRequest) {
+
+        return success();
+    }
 }

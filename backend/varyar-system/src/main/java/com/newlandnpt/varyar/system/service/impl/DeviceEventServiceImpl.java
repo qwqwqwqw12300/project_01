@@ -307,6 +307,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         event.setDevicegroupId(device.getDevicegroupId());
         event.setFamilyId(device.getFamilyId());
         event.setDeviceNo(device.getNo());
+        event.setDeviceName(device.getName());
         event.setOrgId(device.getOrgId());
         event.setOrgName(device.getOrgName());
         event.setMemberId(device.getMemberId());
