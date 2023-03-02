@@ -54,8 +54,8 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 			String message = response.generateMessage();
 			log.debug(">>>>>> 响应报文：{}",message);
 			message = AESUtils.encryptFromString(response.generateMessage(), Mode.CBC, Padding.PKCS5Padding);
-			log.debug(">>>>>> 加密响应报文：{}",message);
-			channel.writeAndFlush(message);
+			log.debug(">>>>>> 加密响应报文：{}",message+"==#morefun#170");
+			channel.writeAndFlush(message+"==#morefun#170");
 		} catch (Exception e) {
 			log.error("报文解析异常", e);
 			log.error("异常报文内容:");
