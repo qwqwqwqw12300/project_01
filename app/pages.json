@@ -405,7 +405,7 @@
 			}
 		},
 		{
-			"path": "pages/new/time-interval",
+			"path": "pages/equipment/time-interval",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -423,7 +423,7 @@
 			}
 		},
 		{
-			"path": "pages/new/new-interval",
+			"path": "pages/equipment/new-interval",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -449,7 +449,7 @@
 			}
 
 		}, {
-			"path": "pages/new/monitor",
+			"path": "pages/equipment/monitor",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -457,7 +457,7 @@
 				}
 			}
 		}, {
-			"path": "pages/new/tel-books",
+			"path": "pages/equipment/tel-books",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -487,7 +487,7 @@
             
         }
 		,{
-		    "path" : "pages/new/monitor",
+		    "path" : "pages/equipment/monitor",
 		   "style": {
 		   	"navigationStyle": "custom",
 		   	"app-plus": {
@@ -496,7 +496,7 @@
 		   }
 		    
 		},{
-		    "path" : "pages/new/guard",
+		    "path" : "pages/equipment/guard",
 		   "style": {
 		   	"navigationStyle": "custom",
 		   	"app-plus": {
@@ -505,7 +505,7 @@
 		   }
 		    
 		},{
-		    "path" : "pages/new/new-guard",
+		    "path" : "pages/equipment/new-guard",
 		   "style": {
 		   	"navigationStyle": "custom",
 		   	"app-plus": {
@@ -521,7 +521,22 @@
 					"titleNView": false
 				}
 			}
-
+		},{
+			"path": "pages/equipment/card-set",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},{
+			"path": "pages/equipment/kinship-number",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
     ],
 	"globalStyle": {
