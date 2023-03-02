@@ -161,6 +161,7 @@ rocketmq:
     locationInfo: ${rocketmq.namespace}%GID_group_locationInfo
     alarmPower: ${rocketmq.namespace}%GID_group_alarmPower
     reportHeartBeat: ${rocketmq.namespace}%GID_group_reportHeartBeat
+    deviceLogin: ${rocketmq.namespace}%GID_group_deviceLogin
   topic:
     fall: ${rocketmq.namespace}%fallTopic
     presence: ${rocketmq.namespace}%presenceTopic
@@ -174,7 +175,7 @@ rocketmq:
     locationInfo: ${rocketmq.namespace}%locationInfoTopic
     alarmPower: ${rocketmq.namespace}%alarmPowerTopic
     reportHeartBeat: ${rocketmq.namespace}%reportHeartBeatTopic
-
+    deviceLogin: ${rocketmq.namespace}%deviceLoginTopic
 # 验证码
 kaptcha:
   textproducer:

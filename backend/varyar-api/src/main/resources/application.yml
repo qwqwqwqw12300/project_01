@@ -161,6 +161,7 @@ rocketmq:
     locationInfo: group_locationInfo
     alarmPower: group_alarmPower
     reportHeartBeat: group_reportHeartBeat
+    deviceLogin: group_deviceLogin
   topic:
     fall: fallTopic
     presence: presenceTopic
@@ -175,7 +176,7 @@ rocketmq:
     locationInfo: locationInfoTopic
     alarmPower: alarmPowerTopic
     reportHeartBeat: reportHeartBeatTopic
-
+    deviceLogin: deviceLoginTopic
 
 location:
   gaode:
