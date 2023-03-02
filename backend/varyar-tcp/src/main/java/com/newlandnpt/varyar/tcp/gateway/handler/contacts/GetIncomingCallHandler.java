@@ -37,6 +37,8 @@ public class GetIncomingCallHandler extends AbstractChannelMessageHandler<GetInc
         List<GetIncomingCallResponse.AddPhoneNumbers> addPhoneNumbers = new ArrayList<>();
         GetIncomingCallResponse.AddPhoneNumbers addPhoneNumbers1 = new GetIncomingCallResponse.AddPhoneNumbers();
         addPhoneNumbers1.setPhone("15060665801");
+        addPhoneNumbers.add(addPhoneNumbers1);
+        getIncomingCallResponse.setAddPhoneNumbers(addPhoneNumbers);
 //        ChannelCache.setCache(req.getDeviceNo(),ctx.channel());
         return getIncomingCallResponse;
     }
