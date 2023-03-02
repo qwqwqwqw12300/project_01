@@ -9,7 +9,7 @@
 	<app-body>
 		<app-logo color="#353535" text="时段禁止" ></app-logo>
 		<CardTitle :title="'禁用运行中'" :content="'禁用时间拒绝所有电话和短信，但可查看时间和定位'" :backGroundImg="'/static/images/prohibit-moving.png'"></CardTitle>
-		<view class="ui-cell">
+		<view class="ui-cell" @click="toJump('/pages/equipment/info-interval')">
 			<view class="ui-cell-content">
 				<view class="ui-cell-style">
 					<view class="ui-cell-title">禁用时段</view>
@@ -26,7 +26,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="ui-btn"><button class="default" @click="toJump">新增时间段</button></view>
+		<view class="ui-btn"><button class="default" @click="toJump('/pages/equipment/new-interval')">新增时间段</button></view>
 	</app-body>
 </template>
 
@@ -52,9 +52,9 @@
 				// 	uni.$u.toast(res.msg)
 				// })
 			},
-			toJump(){
+			toJump(url){
 				uni.navigateTo({
-					url:'/pages/new/new-interval'
+					url:url
 				})
 			}
 		}
