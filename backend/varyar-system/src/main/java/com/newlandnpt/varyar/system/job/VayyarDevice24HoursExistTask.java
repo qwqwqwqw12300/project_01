@@ -41,7 +41,7 @@ public class VayyarDevice24HoursExistTask {
             PageUtils.startPage(pageNo,pageSize);
             List<TDevice> list = deviceService.selectDeviceList(device);
             list.forEach(p->{
-                if(p.getParameter() == null || !(p.getParameter() instanceof TDevice.RadarWaveDeviceSettings)){
+                 if(p.getParameter() == null || !(p.getParameter() instanceof TDevice.RadarWaveDeviceSettings)){
                     return;
                 }
                 TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)p.getParameter();
