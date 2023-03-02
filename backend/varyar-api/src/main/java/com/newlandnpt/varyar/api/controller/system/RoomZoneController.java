@@ -101,8 +101,16 @@ public class RoomZoneController extends BaseController {
         tRoomZone.setX2(radarRequest.getX2());
         tRoomZone.setY1(radarRequest.getY1());
         tRoomZone.setY2(radarRequest.getY2());
-        tRoomZone.setZ1(radarRequest.getZ1());
-        tRoomZone.setZ2(radarRequest.getZ2());
+        //雷达波为顶挂时设置
+        if("1".equals(radarWaveDeviceSettings.getInstallPosition()))
+        {
+            tRoomZone.setZ1(radarRequest.getZ1());
+            tRoomZone.setZ2(radarRequest.getZ2());
+        }else{
+            tRoomZone.setZ1(new BigDecimal(1.5));
+            tRoomZone.setZ2(new BigDecimal(1.5));
+        }
+
         tRoomZone.setInMonitorFlag(radarRequest.getInMonitorFlag());
         tRoomZone.setOutMonitorFlag(radarRequest.getOutMonitorFlag());
         tRoomZone.setStartTime(radarRequest.getStartTime());

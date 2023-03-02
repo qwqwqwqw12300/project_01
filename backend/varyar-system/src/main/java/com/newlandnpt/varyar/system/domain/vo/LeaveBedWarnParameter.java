@@ -34,6 +34,11 @@ public class LeaveBedWarnParameter implements Serializable{
          */
         private String name;
 
+        /**
+         * 编号no
+         */
+        private String bedNo;
+
         private TRoomZone roomZone;
 
         /**
@@ -65,6 +70,14 @@ public class LeaveBedWarnParameter implements Serializable{
          */
         @JsonFormat(pattern = "HH:mm")
         private Date endTime;
+
+        public String getBedNo() {
+            return bedNo;
+        }
+
+        public void setBedNo(String bedNo) {
+            this.bedNo = bedNo;
+        }
 
         public String getLeaveBedInterval() {
             return leaveBedInterval;

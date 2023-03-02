@@ -37,6 +37,11 @@ public class SetDeviceButtonReq extends MessageHead  {
         private String button;
 
         /**
+         * 姓名
+         */
+        private String phoneName;
+
+        /**
          * 手机号
          */
         private String phone;
@@ -55,6 +60,14 @@ public class SetDeviceButtonReq extends MessageHead  {
 
         public void setButton(String button) {
             this.button = button;
+        }
+
+        public String getPhoneName() {
+            return phoneName;
+        }
+
+        public void setPhoneName(String phoneName) {
+            this.phoneName = phoneName;
         }
 
         public String generateMessage(){
