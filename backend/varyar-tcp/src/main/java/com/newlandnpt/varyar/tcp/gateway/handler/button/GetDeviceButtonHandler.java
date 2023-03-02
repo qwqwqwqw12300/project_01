@@ -6,6 +6,9 @@ import com.newlandnpt.varyar.tcp.gateway.AbstractChannelMessageHandler;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 设备通讯录处理器
  * @author chenxw1
@@ -32,6 +35,15 @@ public class GetDeviceButtonHandler extends AbstractChannelMessageHandler<GetDev
     @Override
     public Response handle(ChannelHandlerContext ctx, GetDeviceButtonReq req) {
         GetDeviceButtonResponse getDeviceButtonResponse = new GetDeviceButtonResponse();
+
+        List<GetDeviceButtonResponse.buttonPhone> buttonFroms = new ArrayList<>();
+        GetDeviceButtonResponse.buttonPhone buttonPhone = new GetDeviceButtonResponse.buttonPhone();
+        buttonPhone.setButton("0");
+        buttonPhone.setPhone("15060665801");
+        buttonFroms.add(buttonPhone);
+
+        getDeviceButtonResponse.setButtonFroms(buttonFroms);
+
         return getDeviceButtonResponse;
     }
 }
