@@ -513,6 +513,15 @@
 		   	}
 		   }
 		    
+		},{
+			"path": "pages/equipment/watch-detail/watch-detail",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		}
     ],
 	"globalStyle": {
