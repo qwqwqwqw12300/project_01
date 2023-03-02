@@ -85,8 +85,10 @@
 										<view class="ui-device-name">
 											<view class="ui-list-static"
 												:class="{online: getDeives(room).onlineFlag === '1'}"></view>
-											{{getDeives(room).onlineFlag === '1' ? '在线': getDeives(room).onlineFlag === '0' ? '离线' : ''}}
-											有人
+											<text class="ui-list-static-font">{{getDeives(room).onlineFlag === '1' ? '在线': getDeives(room).onlineFlag === '0' ? '离线' : ''}}</text>
+											<view class="ui-list-people"
+												:class="{online: getDeives(room).onlineFlag === '0'}"></view>
+											{{getDeives(room).onlineFlag === '1' ? '有人': getDeives(room).onlineFlag === '0' ? '无人' : ''}}
 										</view>
 									</view>
 									<u-badge v-if="getDeives(room).msgNum > 1" color="#fff" :offset="[-1, 0]"
@@ -470,7 +472,7 @@
 					flex-direction: row;
 					background: #FFFFFF;
 					border-radius: 16rpx;
-					padding-left: 32rpx;
+					padding-left: 15rpx;
 					box-sizing: border-box;
 
 					image {
@@ -497,17 +499,37 @@
 						margin-top: 10rpx;
 						color: #888888;
 						font-size: 26rpx;
+						.ui-list-static-font{
+							font-size: 26rpx;
+							margin-right: 10rpx;
+							color: #888888;
+						}
 					}
 
 					.ui-list-static {
 						margin-right: 10rpx;
-						height: 15rpx;
-						width: 15rpx;
+						margin-bottom: 6rpx;
+						height: 36rpx;
+						width: 36rpx;
 						border-radius: 50% 50%;
-						background: #D4D4D4;
-
+						background-image: url('@/static/images/index/off-line.png');
+						background-size: 100% 100%;
 						&.online {
-							background: linear-gradient(90deg, #4AF78F 0%, #13B98F 100%);
+							background-image: url('@/static/images/index/online.png');
+							background-size: 100% 100%;
+						}
+					}
+					.ui-list-people{
+						margin-right: 10rpx;
+						margin-bottom: 6rpx;
+						height: 36rpx;
+						width: 36rpx;
+						border-radius: 50% 50%;
+						background-image: url('@/static/images/index/someone.png');
+						background-size: 100% 100%;
+						&.online {
+							background-image: url('@/static/images/index/nobody.png');
+							background-size: 100% 100%;
 						}
 					}
 
