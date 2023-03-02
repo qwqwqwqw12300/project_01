@@ -537,6 +537,22 @@
 					"titleNView": false
 				}
 			}
+		},{
+			"path": "pages/equipment/info-guard",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},{
+			"path": "pages/equipment/info-interval",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
     ],
 	"globalStyle": {
