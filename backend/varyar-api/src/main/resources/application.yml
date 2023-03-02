@@ -157,7 +157,10 @@ rocketmq:
     deviceConfig: group_deviceConfig
     deviceConfigErr: group_deviceConfigErr
     deviceActive: group_deviceActive
-    deviceLogin: group_deviceLogin
+    sosWarn: group_sosWarn
+    locationInfo: group_locationInfo
+    alarmPower: group_alarmPower
+    reportHeartBeat: group_reportHeartBeat
   topic:
     fall: fallTopic
     presence: presenceTopic
@@ -168,15 +171,20 @@ rocketmq:
     deviceConfig: deviceConfigTopic
     deviceConfigErr: deviceConfigErrTopic
     deviceActive: deviceActiveTopic
-    deviceLogin: deviceLoginTopic
+    sosWarn: sosWarnTopic
+    locationInfo: locationInfoTopic
+    alarmPower: alarmPowerTopic
+    reportHeartBeat: reportHeartBeatTopic
 
 
 location:
   gaode:
-    key: 2ecab3d1b4d0f57a9661b76f0c5cc3a0
-    sid: 886075
+    key: 92e29e7a06fa0d24124beac6efb5c154
+    sid: 856898
     fenceCircleAdd: https://tsapi.amap.com/v1/track/geofence/add/circle
     fenceCircleUpdate: https://tsapi.amap.com/v1/track/geofence/update/circle
+    fencePolygonAdd: https://tsapi.amap.com/v1/track/geofence/add/polygon
+    fencePolygonUpdate: https://tsapi.amap.com/v1/track/geofence/update/polygon
     fenceLocation: https://tsapi.amap.com/v1/track/geofence/status/location
     trackServiceAdd: https://tsapi.amap.com/v1/track/service/add
     trackTerminalAdd: https://tsapi.amap.com/v1/track/terminal/add

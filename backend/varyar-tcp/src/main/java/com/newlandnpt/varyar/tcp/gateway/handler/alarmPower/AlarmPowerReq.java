@@ -21,12 +21,17 @@ public class AlarmPowerReq extends MessageHead implements Req {
     /**
      * 缺电警告
      */
-    private final static String POWER_SHORTAGE_ALARM = "1";
+    protected final static String POWER_SHORTAGE_ALARM = "1";
+
+    /**
+     * 关机警告
+     */
+    protected final static String SHUT_DOWN_ALARM = "2";
 
     /**
      * 自动关机警告
      */
-    private final static String AUTOMATIC_SHUTDOWN_ALARM = "3";
+    protected final static String AUTOMATIC_SHUTDOWN_ALARM = "3";
 
     /**
      * 上报类型
@@ -71,6 +76,8 @@ public class AlarmPowerReq extends MessageHead implements Req {
         setReportType(str[0]);
         if(POWER_SHORTAGE_ALARM.equals(str[0]) || AUTOMATIC_SHUTDOWN_ALARM.equals(str[0])) {
             setRemainPower(str[1]);
+        }else if(SHUT_DOWN_ALARM.equals(str[0])){
+            setRemainPower("0%");
         }
     }
 }

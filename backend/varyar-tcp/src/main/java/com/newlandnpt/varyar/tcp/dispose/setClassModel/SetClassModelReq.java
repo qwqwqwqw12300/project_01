@@ -1,36 +1,38 @@
-package com.newlandnpt.varyar.tcp.gateway.handler.getClassModel;
+package com.newlandnpt.varyar.tcp.dispose.setClassModel;
 
 import com.newlandnpt.varyar.tcp.base.MessageHead;
-import com.newlandnpt.varyar.tcp.base.Response;
-import com.newlandnpt.varyar.tcp.dispose.setClassModel.SetClassModelReq;
+import com.newlandnpt.varyar.tcp.base.Req;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 获取课堂模式响应
- * 响应报文体: SOS呼入标识@SOS呼出标识@1=开始时间-结束时间!周期!是否生效@2=开始时间-结束时间!周期!是否生效
+ * 设置课堂模式
  * @author ljx
- * @date 2023/2/22
+ * @date 2023/2/28
  */
-public class GetClassModelResponse extends MessageHead implements Response {
+public class SetClassModelReq extends MessageHead implements Req {
     /**
      * SOS呼入标识 (0 ：SOS不可呼入 1：SOS可以呼入)
      */
-    private String sosIncomingSign="0";
+    private String sosIncomingSign;
 
     /**
      * SOS呼出标识 (0：不可拨打SOS 1：可以拨打SOS)
      */
-    private String sosOutgoingSign="0";
+    private String sosOutgoingSign;
 
     /**
      * 时段设置
      */
     private List<timePeriod> timePeriodSetting;
+
+    public SetClassModelReq(){
+        setApiType("SET_CLASS_MODEL");
+        setMsgType("1");
+    }
 
     public static class timePeriod{
 
@@ -79,14 +81,6 @@ public class GetClassModelResponse extends MessageHead implements Response {
         }
     }
 
-    public List<timePeriod> getTimePeriodSetting() {
-        return timePeriodSetting;
-    }
-
-    public void setTimePeriodSetting(List<timePeriod> timePeriodSetting) {
-        this.timePeriodSetting = timePeriodSetting;
-    }
-
     public String getSosIncomingSign() {
         return sosIncomingSign;
     }
@@ -103,11 +97,20 @@ public class GetClassModelResponse extends MessageHead implements Response {
         this.sosOutgoingSign = sosOutgoingSign;
     }
 
+
+    public List<timePeriod> getTimePeriodSetting() {
+        return timePeriodSetting;
+    }
+
+    public void setTimePeriodSetting(List<timePeriod> timePeriodSetting) {
+        this.timePeriodSetting = timePeriodSetting;
+    }
+
     @Override
-    public List<String> getResponses() {
-        return  Arrays.asList(
+    public List<String> getRequests(){
+        return Arrays.asList(
                 sosIncomingSign,sosOutgoingSign,
-                CollectionUtils.isEmpty(timePeriodSetting)? "0" : timePeriodSetting.stream().map(p->p.generateMessage()).collect(Collectors.joining("" +
+                CollectionUtils.isEmpty(timePeriodSetting)? "0" : timePeriodSetting.stream().map(p->p.generateMessage()).collect(Collectors.joining(
                         "@","","")));
     }
 }

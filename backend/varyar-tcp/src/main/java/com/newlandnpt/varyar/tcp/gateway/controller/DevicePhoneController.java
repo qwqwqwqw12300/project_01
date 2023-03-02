@@ -4,11 +4,15 @@ import com.newlandnpt.varyar.tcp.dispose.button.SetDeviceButtonReq;
 import com.newlandnpt.varyar.tcp.dispose.button.SetDeviceButtonResponse;
 import com.newlandnpt.varyar.tcp.dispose.incoming.call.SetIncomingCallReq;
 import com.newlandnpt.varyar.tcp.dispose.incoming.call.SetIncomingCallResponse;
+import com.newlandnpt.varyar.tcp.dispose.protect.RequestCallReq;
+import com.newlandnpt.varyar.tcp.dispose.protect.RequestCallResponse;
 import com.newlandnpt.varyar.tcp.dispose.serverInfo.SetServerInfoReq;
 import com.newlandnpt.varyar.tcp.dispose.serverInfo.SetServerInfoResponse;
+import com.newlandnpt.varyar.tcp.dispose.setClassModel.SetClassModelReq;
+import com.newlandnpt.varyar.tcp.dispose.setClassModel.SetClassModelResponse;
 import com.newlandnpt.varyar.tcp.dispose.terminal.SetOperateTerminalReq;
 import com.newlandnpt.varyar.tcp.dispose.terminal.SetOperateTerminalResponse;
-import com.newlandnpt.varyar.tcp.service.IDeviceButtonService;
+import com.newlandnpt.varyar.tcp.service.*;
 import com.newlandnpt.varyar.tcp.dispose.location.locationFrequency.SetLocationFrequencyReq;
 import com.newlandnpt.varyar.tcp.dispose.location.locationFrequency.SetLocationFrequencyResponse;
 import com.newlandnpt.varyar.tcp.dispose.location.locationMode.SetLocationModeReq;
@@ -38,16 +42,25 @@ public class DevicePhoneController {
     private IDeviceButtonService deviceButtonService;
     @Autowired
     private IDeviceServerService deviceServerService;
-
-
-
     @Autowired
     private IDeviceLocationService deviceLocationService;
+    @Autowired
+    private IDeviceProtectService deviceProtectService;
+    @Autowired
+    private IDeviceClassModelService deviceClassModelService;
+
+
 
     @PostMapping("/incoming/call")
     @ResponseBody
     public SetIncomingCallResponse setIncomingCall(@RequestBody SetIncomingCallReq req) {
         return devicePhoneService.setIncomingCall(req);
+    }
+
+    @PostMapping("/setClassModel")
+    @ResponseBody
+    public SetClassModelResponse setClassModel(@RequestBody SetClassModelReq req){
+        return deviceClassModelService.setClassModel(req);
     }
 
     /**
@@ -69,6 +82,12 @@ public class DevicePhoneController {
     @ResponseBody
     public SetServerInfoResponse setServerInfoResponse(@RequestBody SetServerInfoReq req) {
         return deviceServerService.setServerInfoResponse(req);
+    }
+
+    @PostMapping("/protect")
+    @ResponseBody
+    public RequestCallResponse requestCallResponse(@RequestBody RequestCallReq req){
+        return deviceProtectService.requestCallResponse(req);
     }
 
     /**

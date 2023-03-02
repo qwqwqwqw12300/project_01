@@ -157,7 +157,10 @@ rocketmq:
     location: ${rocketmq.namespace}%GID_group_location
     deviceConfig: ${rocketmq.namespace}%GID_group_deviceConfig
     deviceActive: ${rocketmq.namespace}%GID_group_deviceActive
-    deviceLogin: ${rocketmq.namespace}%GID_group_deviceLogin
+    sosWarn: ${rocketmq.namespace}%GID_group_sosWarn
+    locationInfo: ${rocketmq.namespace}%GID_group_locationInfo
+    alarmPower: ${rocketmq.namespace}%GID_group_alarmPower
+    reportHeartBeat: ${rocketmq.namespace}%GID_group_reportHeartBeat
   topic:
     fall: ${rocketmq.namespace}%fallTopic
     presence: ${rocketmq.namespace}%presenceTopic
@@ -167,7 +170,10 @@ rocketmq:
     location: ${rocketmq.namespace}%locationTopic
     deviceConfig: ${rocketmq.namespace}%deviceConfigTopic
     deviceActive: ${rocketmq.namespace}%deviceActiveTopic
-    deviceLogin:  ${rocketmq.namespace}%deviceLoginTopic
+    sosWarn: ${rocketmq.namespace}%sosWarnTopic
+    locationInfo: ${rocketmq.namespace}%locationInfoTopic
+    alarmPower: ${rocketmq.namespace}%alarmPowerTopic
+    reportHeartBeat: ${rocketmq.namespace}%reportHeartBeatTopic
 
 # 验证码
 kaptcha:
@@ -179,8 +185,8 @@ kaptcha:
 
 location:
   gaode:
-    key: 2ecab3d1b4d0f57a9661b76f0c5cc3a0
-    sid: 886075
+    key: 92e29e7a06fa0d24124beac6efb5c154
+    sid: 856898
     fenceCircleAdd: https://tsapi.amap.com/v1/track/geofence/add/circle
     fenceCircleUpdate: https://tsapi.amap.com/v1/track/geofence/update/circle
     fenceLocation: https://tsapi.amap.com/v1/track/geofence/status/location

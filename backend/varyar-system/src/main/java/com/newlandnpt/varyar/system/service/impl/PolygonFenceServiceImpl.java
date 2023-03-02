@@ -6,7 +6,7 @@ import com.newlandnpt.varyar.common.annotation.Fence;
 import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.domain.TDeviceFence;
-import com.newlandnpt.varyar.system.domain.req.CircleReq;
+import com.newlandnpt.varyar.system.domain.req.PolygonReq;
 import com.newlandnpt.varyar.system.domain.vo.GeoResultVo;
 import com.newlandnpt.varyar.system.mapper.DeviceFenceMapper;
 import com.newlandnpt.varyar.system.service.GeoFenceService;
@@ -20,16 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 设备电子围栏Service业务层处理
- *
- * @author ruoyi
- * @date 2023-01-06
+ * 多边形电子围栏
+ * @author ljx
+ * @date 2023/3/1
  */
-@Fence(value = "circle", name="基础圆形围栏")
+@Fence(value = "polygon", name="多边形电子围栏")
 @Service
-public class DeviceFenceServiceImpl implements IDeviceFenceService {
+public class PolygonFenceServiceImpl implements IDeviceFenceService {
 
-	private static final Logger log = LoggerFactory.getLogger(DeviceFenceServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(PolygonFenceServiceImpl.class);
+
 
     @Autowired
     private DeviceFenceMapper deviceFenceMapper;
@@ -52,16 +52,12 @@ public class DeviceFenceServiceImpl implements IDeviceFenceService {
     public TDeviceFence selectTDeviceFenceByDeviceNo(String deviceNo) {
         return deviceFenceMapper.selectTDeviceFenceByDeviceNo(deviceNo);
     }
+
     @Override
     public List<TDeviceFence> selectTDeviceFenceByDeviceId(Long deviceId) {
         return deviceFenceMapper.selectTDeviceFenceByDeviceId(deviceId);
     }
-    /**
-     * 查询设备电子围栏列表
-     *
-     * @param tDeviceFence 设备电子围栏
-     * @return 设备电子围栏
-     */
+
     @Override
     public List<TDeviceFence> selectTDeviceFenceList(TDeviceFence tDeviceFence) {
         return deviceFenceMapper.selectTDeviceFenceList(tDeviceFence);
@@ -81,14 +77,12 @@ public class DeviceFenceServiceImpl implements IDeviceFenceService {
         if (tDeviceFenceQuery != null) {
             return updateTDeviceFence(tDeviceFence);
         }
-
         //调用高德地理围栏api
-        try {
-            CircleReq circleReq = new CircleReq();
-            circleReq.setName(tDeviceFence.getDeviceNo() + "_fence");
-            circleReq.setCenter(tDeviceFence.getLongitude() + "," + tDeviceFence.getLatitude());
-            circleReq.setRadius(tDeviceFence.getRadius());
-            String result = geoFenceService.addCircleFence(circleReq);
+        try{
+            PolygonReq polygonReq = new PolygonReq();
+            polygonReq.setName(tDeviceFence.getDeviceNo() + "_fence");
+            polygonReq.setPoints(tDeviceFence.getPoints());
+            String result = geoFenceService.addPolygonFence(polygonReq);
             JSONObject jsonObject = JSON.parseObject(result);
             GeoResultVo geoResultVo = jsonObject.toJavaObject(GeoResultVo.class);
             if (!geoResultVo.getErrcode().equals(Constants.GEO_RESP_SUCCESS)) {
@@ -96,8 +90,8 @@ public class DeviceFenceServiceImpl implements IDeviceFenceService {
             }
             Long geoFenceId = Long.parseLong(geoResultVo.getData().get("gfid").toString());
             tDeviceFence.setGeoFenceId(geoFenceId);
-        } catch (Exception e) {
-            log.error("调用高德地图api-新增圆形围栏-响应失败");
+        }catch (Exception e){
+            log.error("调用高德地图api-新增多边形围栏-响应失败");
             return 0;
         }
         //高德地理围栏api响应成功，将围栏信息插入至数据库
@@ -114,22 +108,20 @@ public class DeviceFenceServiceImpl implements IDeviceFenceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int updateTDeviceFence(TDeviceFence tDeviceFence) {
-
         //调用高德地理围栏api
-        try {
-            CircleReq circleReq = new CircleReq();
-            circleReq.setGfid(tDeviceFence.getGeoFenceId().toString());
-            circleReq.setName(tDeviceFence.getDeviceNo() + "_fence");
-            circleReq.setCenter(tDeviceFence.getLongitude() + "," + tDeviceFence.getLatitude());
-            circleReq.setRadius(tDeviceFence.getRadius());
-            String result = geoFenceService.updateCircleFence(circleReq);
+        try{
+            PolygonReq polygonReq = new PolygonReq();
+            polygonReq.setGfid(tDeviceFence.getGeoFenceId().toString());
+            polygonReq.setName(tDeviceFence.getDeviceNo() + "_fence");
+            polygonReq.setPoints(tDeviceFence.getPoints());
+            String result = geoFenceService.updatePolygonFence(polygonReq);
             JSONObject jsonObject = JSON.parseObject(result);
             GeoResultVo geoResultVo = jsonObject.toJavaObject(GeoResultVo.class);
             if (!geoResultVo.getErrcode().equals(Constants.GEO_RESP_SUCCESS)) {
                 throw new Exception();
             }
-        } catch (Exception e) {
-            log.error("调用高德地图api-更新圆形围栏-响应失败");
+        }catch (Exception e) {
+            log.error("调用高德地图api-更新多边形围栏-响应失败");
             return 0;
         }
         //高德地理围栏api响应成功，将围栏信息更新至数据库
@@ -156,7 +148,6 @@ public class DeviceFenceServiceImpl implements IDeviceFenceService {
      */
     @Override
     public int deleteTDeviceFenceByDeviceFenceId(Long deviceFenceId) {
-        // TODO: 删除电子围栏API
         return deviceFenceMapper.deleteTDeviceFenceByDeviceFenceId(deviceFenceId);
     }
 }

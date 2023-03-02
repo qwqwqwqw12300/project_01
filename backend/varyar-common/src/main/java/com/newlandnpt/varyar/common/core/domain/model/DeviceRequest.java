@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -25,7 +26,8 @@ public class DeviceRequest extends PageRequest {
     private String roomId;
 
     @ApiModelProperty("设备名称")
-    @Size(min = 0, max = 50, message = "设备名称不能超过50个字符")
+    @Pattern(regexp = "^[\\u4e00-\\u9fa5a-zA-Z0-9]+$",message = "设备名称限制中英文加数字")
+    @Size(min = 0, max = 20, message = "设备名称不能超过20个字符")
     private String deviceName;
 
     @ApiModelProperty("设备类型")

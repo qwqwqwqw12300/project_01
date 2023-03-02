@@ -21,6 +21,10 @@ public class TDeviceFence extends BaseEntity
     @ApiModelProperty("设备电子围栏id")
     private Long deviceFenceId;
 
+    @ApiModelProperty("设备电子围栏id")
+    @Excel(name = "高德API服务-电子围栏类型")
+    private String fenceType;
+
     @ApiModelProperty("高德API服务-电子围栏id")
     @Excel(name = "高德API服务-电子围栏id")
     private Long geoFenceId;
@@ -48,6 +52,15 @@ public class TDeviceFence extends BaseEntity
     @ApiModelProperty("半径")
     @Excel(name = "半径")
     private String radius;
+
+    /**
+     * 多边形顶点坐标
+     * 格式 X1,Y1;X2,Y2;...
+     * 顶点顺序可按顺时针或逆时针排列；
+     */
+    @ApiModelProperty("多边形顶点坐标")
+    @Excel(name = "多边形顶点坐标")
+    private String points;
 
     public void setDeviceFenceId(Long deviceFenceId)
     {
@@ -122,9 +135,28 @@ public class TDeviceFence extends BaseEntity
         return radius;
     }
 
+    public String getFenceType() {
+        return fenceType;
+    }
+
+    public void setFenceType(String fenceType) {
+        this.fenceType = fenceType;
+    }
+
+    public String getPoints() {
+        return points;
+    }
+
+    public void setPoints(String points) {
+        this.points = points;
+    }
+
+
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+                .append("FenceType", getFenceType())
                 .append("deviceFenceId", getDeviceFenceId())
                 .append("geoFenceId", getGeoFenceId())
                 .append("deviceId", getDeviceId())
@@ -133,6 +165,7 @@ public class TDeviceFence extends BaseEntity
                 .append("longitude", getLongitude())
                 .append("latitude", getLatitude())
                 .append("radius", getRadius())
+                .append("points", getPoints())
                 .append("createTime", getCreateTime())
                 .append("updateTime", getUpdateTime())
                 .toString();

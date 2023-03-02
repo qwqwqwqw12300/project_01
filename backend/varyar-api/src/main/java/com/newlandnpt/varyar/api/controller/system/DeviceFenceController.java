@@ -9,6 +9,7 @@ import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TDeviceFence;
 import com.newlandnpt.varyar.system.service.IDeviceFenceService;
 import com.newlandnpt.varyar.system.service.IDeviceService;
+import com.newlandnpt.varyar.system.service.impl.CommonDeviceFenceServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,10 @@ import java.util.List;
 @RequestMapping("/api/fence")
 public class DeviceFenceController extends BaseController
 {
+ //   @Autowired
+//    private IDeviceFenceService deviceFenceService;
     @Autowired
-    private IDeviceFenceService deviceFenceService;
+    private CommonDeviceFenceServiceImpl deviceFenceService;
 
     @Autowired
     private IDeviceService iDeviceService;

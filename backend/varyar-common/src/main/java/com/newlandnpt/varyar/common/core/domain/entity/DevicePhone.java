@@ -20,6 +20,13 @@ public class DevicePhone implements Serializable
      * */
     public String phone;
 
+    public DevicePhone() {
+    }
+
+    public DevicePhone(String phoneName, String phone) {
+        this.phoneName = phoneName;
+        this.phone = phone;
+    }
 
     public String getPhoneName() {
         return phoneName;

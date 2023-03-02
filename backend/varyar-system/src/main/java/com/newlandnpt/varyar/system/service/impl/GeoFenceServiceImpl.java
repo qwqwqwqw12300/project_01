@@ -6,6 +6,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.newlandnpt.varyar.common.constant.GeoConstant;
 import com.newlandnpt.varyar.system.domain.req.CircleReq;
 import com.newlandnpt.varyar.system.domain.req.FenceReq;
+import com.newlandnpt.varyar.system.domain.req.PolygonReq;
 import com.newlandnpt.varyar.system.domain.req.TerminalAddReq;
 import com.newlandnpt.varyar.system.service.GeoFenceService;
 import com.newlandnpt.varyar.system.service.HttpSendService;
@@ -55,6 +56,37 @@ public class GeoFenceServiceImpl implements GeoFenceService {
         String result = HttpSendService.sendPost(paramsMap, GeoConstant.GEO_FENCE_CIRCLE_UPDATE);
         JSONObject resultJson = JSON.parseObject(result);
         log.info("更新圆形围栏结果：{}", resultJson);
+        return result;
+    }
+
+    @Override
+    public String addPolygonFence(PolygonReq polygonReq) {
+        //构造请求参数
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("name", polygonReq.getName());
+        paramsMap.put("points", polygonReq.getPoints());
+        paramsMap.put("key", GeoConstant.GEO_KEY);
+        paramsMap.put("sid", GeoConstant.GEO_SERVICE_ID);
+        //发送请求
+        String result = HttpSendService.sendPost(paramsMap, GeoConstant.GEO_FENCE_POLYGON_ADD);
+        JSONObject resultJson = JSON.parseObject(result);
+        log.info("新增多边形围栏结果：{}", resultJson);
+        return result;
+    }
+
+    @Override
+    public String updatePolygonFence(PolygonReq polygonReq) {
+        //构造请求参数
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("name", polygonReq.getName());
+        paramsMap.put("points", polygonReq.getPoints());
+        paramsMap.put("key", GeoConstant.GEO_KEY);
+        paramsMap.put("sid", GeoConstant.GEO_SERVICE_ID);
+        paramsMap.put("gfid", polygonReq.getGfid());
+        //发送请求
+        String result = HttpSendService.sendPost(paramsMap, GeoConstant.GEO_FENCE_POLYGON_UPDATE);
+        JSONObject resultJson = JSON.parseObject(result);
+        log.info("更新多边形围栏结果：{}", resultJson);
         return result;
     }
 

@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.system.service;
 
 import com.newlandnpt.varyar.system.domain.req.CircleReq;
 import com.newlandnpt.varyar.system.domain.req.FenceReq;
+import com.newlandnpt.varyar.system.domain.req.PolygonReq;
 import com.newlandnpt.varyar.system.domain.req.TerminalAddReq;
 
 /**
@@ -24,6 +25,19 @@ public interface GeoFenceService {
      * @return resultJson
      */
     String updateCircleFence(CircleReq circleReq);
+
+    /**
+     * 创建多边形地理围栏
+     * @return
+     */
+    String addPolygonFence(PolygonReq polygonReq);
+
+    /**
+     * 更新多边形地理围栏
+     * @param polygonReq
+     * @return
+     */
+    String updatePolygonFence(PolygonReq polygonReq);
 
     /**
      * 查询围栏

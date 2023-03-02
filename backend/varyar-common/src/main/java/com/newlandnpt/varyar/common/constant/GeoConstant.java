@@ -61,6 +61,16 @@ public class GeoConstant {
     public static String GEO_FENCE_CIRCLE_UPDATE;
 
     /**
+     * 创建多边形围栏
+     */
+    public static String GEO_FENCE_POLYGON_ADD;
+
+    /**
+     * 更新多边形围栏
+     */
+    public static String GEO_FENCE_POLYGON_UPDATE;
+
+    /**
      * 查询围栏列表
      */
     public static String GEO_FENCE_LIST;
@@ -169,6 +179,23 @@ public class GeoConstant {
     @Value("${location.gaode.fenceCircleUpdate:}")
     public void setGeoFenceCircleUpdate(String geoFenceCircleUpdate) {
         GeoConstant.GEO_FENCE_CIRCLE_UPDATE = geoFenceCircleUpdate;
+    }
+
+    public static String getGeoFencePolygonAdd() {
+        return GEO_FENCE_POLYGON_ADD;
+    }
+    @Value("${location.gaode.fencePolygonAdd:}")
+    public void setGeoFencePolygonAdd(String geoFencePolygonAdd) {
+        GEO_FENCE_POLYGON_ADD = geoFencePolygonAdd;
+    }
+
+    public static String getGeoFencePolygonUpdate() {
+        return GEO_FENCE_POLYGON_UPDATE;
+    }
+
+    @Value("${location.gaode.fencePolygonUpdate:}")
+    public void setGeoFencePolygonUpdate(String geoFencePolygonUpdate) {
+        GEO_FENCE_POLYGON_UPDATE = geoFencePolygonUpdate;
     }
 
     public String getGeoFenceList() {
