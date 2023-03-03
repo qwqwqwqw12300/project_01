@@ -10,6 +10,7 @@ import com.newlandnpt.varyar.system.domain.TRoomZone;
 import com.newlandnpt.varyar.system.service.DeviceEventService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -40,7 +41,7 @@ import static org.apache.rocketmq.spring.annotation.ConsumeMode.ORDERLY;
 @Component
 @RocketMQMessageListener(topic = "${rocketmq.topic.access-calculate}", consumerGroup = "${rocketmq.group.access-calculate}",
         consumeMode = ORDERLY)
-public class AccessCalculateListener implements RocketMQListener<Message<String>> {
+public class AccessCalculateListener implements RocketMQListener<MessageExt> {
 
     private static final Logger log = LoggerFactory.getLogger(AccessCalculateListener.class);
 
@@ -104,12 +105,12 @@ public class AccessCalculateListener implements RocketMQListener<Message<String>
     private DeviceEventService deviceEventService;
 
     @Override
-    public void onMessage(Message<String> message) {
+    public void onMessage(MessageExt message) {
 
-        log.debug("----" + System.currentTimeMillis() + "----" + " 房间进出计算事件消息： " + message.getPayload());
+        log.debug("----" + System.currentTimeMillis() + "----" + " 房间进出计算事件消息： " + new String(message.getBody()));
         TDevice device;
         try{
-            device = JSON.parseObject(message.getPayload(),TDevice.class);
+            device = JSON.parseObject(message.getBody(),TDevice.class);
         }catch (Exception e){
             log.error(">>>>>> 类型转换异常，忽略执行",e);
             return;
@@ -120,11 +121,11 @@ public class AccessCalculateListener implements RocketMQListener<Message<String>
             return;
         }
         Date calculateTime;
-        if (message.getHeaders().containsKey(TRIGGER_TIME)) {
+        if (message.getProperties().containsKey(TRIGGER_TIME)) {
             // 如果指定了触发时间,使用触发时间作为计算时间
             try {
                 Calendar current = Calendar.getInstance();
-                current.setTime(DateUtils.parseDate(message.getHeaders().get(TRIGGER_TIME, String.class),
+                current.setTime(DateUtils.parseDate(message.getProperties().get(TRIGGER_TIME),
                         YYYY_MM_DD_HH_MM));
                 calculateTime = current.getTime();
             } catch (Exception e) {
