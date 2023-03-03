@@ -787,8 +787,8 @@ public class DeviceController extends BaseController {
     }
 
     @ApiOperation("设置预警规则")
-    @PostMapping("/setDeviceWarn")
-    public AjaxResult setDeviceWarn(
+    @PostMapping("/setRadarWaveNobodyWarn")
+    public AjaxResult setRadarWaveNobodyWarn(
             @RequestBody @Validated DeviceWarnRequest deviceWarnRequest) {
         if (deviceWarnRequest.getDeviceId()==null||deviceWarnRequest.getDeviceId().equals("")){
             return error("设备id不能为空！");
@@ -894,7 +894,8 @@ public class DeviceController extends BaseController {
             log.error("设置预警策略失败！",e);
             return error("设置预警策略失败！");
         }
-        return success();
+        //查询
+        return success(radarwave.getDeviceWarnParameter().getNobodyWarn().getWarnRules());
     }
 
     @ApiOperation("设置预警规则")
@@ -960,9 +961,9 @@ public class DeviceController extends BaseController {
     }
 
 
-    @ApiOperation("删除预警规则")
-    @PostMapping("/delDeviceWarn")
-    public AjaxResult delDeviceWarn(
+    @ApiOperation("删除无人预警规则")
+    @PostMapping("/delRadarWaveNobodyWarn")
+    public AjaxResult delRadarWaveNobodyWarn(
             @RequestBody @Validated DeviceWarnRequest deviceWarnRequest) {
         AjaxResult ajax = AjaxResult.success();
         if (deviceWarnRequest.getDeviceId()==null||deviceWarnRequest.getDeviceId().equals("")){
