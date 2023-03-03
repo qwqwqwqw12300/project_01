@@ -4,10 +4,11 @@
 			<view class="header">
 				<text class="title">通讯录白名单</text>
 				<view class="action">
-					<u-icon name="/static/images/add-contact.png" size="44rpx" style="margin-right: 6rpx;" />
+					<u-icon name="/static/images/add-contact.png" size="44rpx" style="margin-right: 6rpx;"
+						@click="handleAdd" />
 					添加
 				</view>
-				<view class="action">
+				<view class="action" @click="openTelBooks">
 					<u-icon name="/static/images/tel-book.png" size="44rpx" style="margin-right: 6rpx;" />
 					通讯录
 				</view>
@@ -17,38 +18,15 @@
 		</view>
 		<view class="ui-content">
 			<u-swipe-action>
-				<u-swipe-action-item :options="options2">
+				<u-swipe-action-item :options="item.options" v-for="(item, index) in options4" :key="index"
+					@click="handleDel(item.id)">
 					<view class="cell">
 						<view class="cell-box">
 							<view class="input">
-								<u--input placeholder="请输入姓名" border="none" clearable></u--input>
+								<u--input v-model="item.name" placeholder="请输入姓名" border="none" clearable></u--input>
 							</view>
 							<view class="input">
-								<u--input placeholder="请输入手机号" border="none" clearable></u--input>
-							</view>
-						</view>
-					</view>
-				</u-swipe-action-item>
-				<u-swipe-action-item :options="options2">
-					<view class="cell">
-						<view class="cell-box">
-							<view class="input">
-								<u--input placeholder="请输入姓名" border="none" clearable></u--input>
-							</view>
-							<view class="input">
-								<u--input placeholder="请输入手机号" border="none" clearable></u--input>
-							</view>
-						</view>
-					</view>
-				</u-swipe-action-item>
-				<u-swipe-action-item :options="options2">
-					<view class="cell">
-						<view class="cell-box">
-							<view class="input">
-								<u--input placeholder="请输入姓名" border="none" clearable></u--input>
-							</view>
-							<view class="input">
-								<u--input placeholder="请输入手机号" border="none" clearable></u--input>
+								<u--input v-model="item.phone" placeholder="请输入手机号" border="none" clearable></u--input>
 							</view>
 						</view>
 					</view>
@@ -65,6 +43,7 @@
 				</view>
 			</view>
 		</view>
+		<tel-books ref="telBookRefs" @select="phoneSelect"></tel-books>
 	</app-body>
 </template>
 
@@ -72,11 +51,36 @@
 	export default {
 		data() {
 			return {
-				options2: [{
-					text: '删除',
-					style: {
-						backgroundColor: '#f56c6c'
-					}
+				options4: [{
+					id: 0,
+					name: '测试1',
+					phone: '13222222222',
+					options: [{
+						text: '删除',
+						style: {
+							backgroundColor: '#f56c6c'
+						}
+					}],
+				}, {
+					id: 1,
+					name: '测试2',
+					phone: '13333333333',
+					options: [{
+						text: '删除',
+						style: {
+							backgroundColor: '#f56c6c'
+						}
+					}],
+				}, {
+					id: 2,
+					name: '测试3',
+					phone: '13444444444',
+					options: [{
+						text: '删除',
+						style: {
+							backgroundColor: '#f56c6c'
+						}
+					}],
 				}],
 			}
 		},
@@ -86,6 +90,42 @@
 			},
 			handleSave() {
 
+			},
+			handleAdd() {
+				let date = Date.now()
+				let rund = Math.ceil(Math.random() * 1000)
+				let id = date + '' + rund
+				this.options4.push({
+					id,
+					name: '测试' + (this.options4.length + 1),
+					phone: '13333333333',
+					options: [{
+						text: '删除',
+						style: {
+							backgroundColor: '#f56c6c'
+						}
+					}],
+				})
+			},
+			handleDel(id) {
+				uni.showModal({
+					title: '提示',
+					content: '是否确认删除？',
+					success: res => {
+						console.log(res, 'res')
+						if (res.confirm) {
+							this.options4.splice(this.options4.findIndex(item => item.id == id), 1)
+						} else {
+
+						}
+					}
+				});
+			},
+			openTelBooks() {
+				this.$refs.telBookRefs.show(false)
+			},
+			phoneSelect(data) {
+				console.log(data)
 			}
 		}
 

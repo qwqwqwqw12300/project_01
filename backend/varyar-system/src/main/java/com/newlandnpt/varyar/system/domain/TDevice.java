@@ -115,6 +115,9 @@ public class TDevice extends BaseEntity
     /**是否在线 0:不在线  1:在线*/
     @Transient
     private String onlineFlag;
+    /**是否有人 0:无人  1:有人 */
+    @Transient
+    private String hasPerson;
 
     /** 当前电量**/
     @Transient
@@ -226,6 +229,14 @@ public class TDevice extends BaseEntity
 
     public void setOnlineFlag(String onlineFlag) {
         this.onlineFlag = onlineFlag;
+    }
+
+    public String getHasPerson() {
+        return hasPerson;
+    }
+
+    public void setHasPerson(String hasPerson) {
+        this.hasPerson = hasPerson;
     }
 
     public void setDeviceId(Long deviceId)

@@ -21,9 +21,9 @@ public class AESUtils {
     private static final String IV_KEY = "A1B2C3D4E5F6G7H8";
 
     public static void main(String[] args) throws IOException {
-        String encryptData = encryptFromStringForResponse("[867597011508550,89860321245910333529,202302170933320000,DEVICE_LOGIN,3,20230217093332,12,3@1@1@0@1@21]", Mode.CBC, Padding.PKCS5Padding);
+        String encryptData = encryptFromStringForResponse("[868976030354448,89860321245910333529,202302170933320000,DEVICE_LOGIN,3,20230217093332,12,3@1@1@0@1@21]", Mode.CBC, Padding.PKCS5Padding);
         System.out.println("加密：" + encryptData+"#morefun#170");
-        encryptData = "aJStPeBZ6Qt8mTFWxGR0XA+tWH8s4K+XGHmpxa0IK6LZZFBUAX8kPTTtEMXtBH2AyotLFx5y3OQXRVhVvlVLuXy26oClvB8EB0rs46MBe5KRU9l1RVEV8xIlSzWXFAVI";
+        encryptData = "5h2inHBnnjUfL38jRrLzE1tgyDGSyNeRzsc5Eil4qW659CNCzOGE057CznMrjnHoKtGtfGwnvEFCz50Ct8jDRgz1ZtH5XK9R5W5xk5DlwqfTle13+e7srSVvYzzfMXzXW8Dpi20SW2xLyOCaFi9b5A==";
         String decryptData = decryptFromString(encryptData, Mode.CBC, Padding.PKCS5Padding);
         System.out.println("解密：" + decryptData);
     }

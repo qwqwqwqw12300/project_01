@@ -98,7 +98,7 @@ public class DeviceConfigListener implements RocketMQListener<DeviceConfig> {
     	}
     	log.info("参数下发response:" + result);
     	String deviceId = deviceConfig.getDeviceId();
-    	SpringUtils.getBean(RedisCache.class).deleteObject(CacheConstants.PRESENCE_ROOM_KEY + deviceId);
+    	SpringUtils.getBean(RedisCache.class).deleteObject(com.newlandnpt.varyar.common.constant.CacheConstants.PRESENCE_ROOM_KEY + deviceId);
     	SpringUtils.getBean(RedisCache.class).deleteObject(CacheConstants.PRESENCE_REGION0_KEY + deviceId);
     	SpringUtils.getBean(RedisCache.class).deleteObject(CacheConstants.PRESENCE_REGION1_KEY + deviceId);
     	SpringUtils.getBean(RedisCache.class).deleteObject(CacheConstants.PRESENCE_REGION2_KEY + deviceId);

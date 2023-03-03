@@ -87,8 +87,8 @@
 												:class="{online: getDeives(room).onlineFlag === '1'}"></view>
 											<text class="ui-list-static-font">{{getDeives(room).onlineFlag === '1' ? '在线': getDeives(room).onlineFlag === '0' ? '离线' : ''}}</text>
 											<view class="ui-list-people"
-												:class="{online: getDeives(room).onlineFlag === '0'}"></view>
-											{{getDeives(room).onlineFlag === '1' ? '有人': getDeives(room).onlineFlag === '0' ? '无人' : ''}}
+												:class="{online: getDeives(room).hasPerson === '1'}"></view>
+											{{getDeives(room).hasPerson === '1' ? '有人': getDeives(room).hasPerson === '0' ? '无人' : ''}}
 										</view>
 									</view>
 									<u-badge v-if="getDeives(room).msgNum > 1" color="#fff" :offset="[-1, 0]"
@@ -525,10 +525,10 @@
 						height: 36rpx;
 						width: 36rpx;
 						border-radius: 50% 50%;
-						background-image: url('@/static/images/index/someone.png');
+						background-image: url('@/static/images/index/nobody.png');
 						background-size: 100% 100%;
 						&.online {
-							background-image: url('@/static/images/index/nobody.png');
+							background-image: url('@/static/images/index/someone.png');
 							background-size: 100% 100%;
 						}
 					}
