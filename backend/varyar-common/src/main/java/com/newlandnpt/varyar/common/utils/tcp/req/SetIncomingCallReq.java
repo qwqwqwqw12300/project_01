@@ -78,11 +78,16 @@ public class SetIncomingCallReq extends MessageHead {
         /**
          * 时间段0600-0800
          */
-        private List<String> timePeriods = new ArrayList<>();
+        private List<String> timePeriods ;
 
         public IncomingCallPhone(String phone, List<String> timePeriods) {
             this.phone = phone;
             this.timePeriods = timePeriods;
+        }
+
+        public IncomingCallPhone(String phone) {
+            this.phone = phone;
+            this.timePeriods = Arrays.asList("0000-2359");
         }
 
         public String getPhone() {
