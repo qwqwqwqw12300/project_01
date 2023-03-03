@@ -561,6 +561,15 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/equipment/new-address",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 		
     ],

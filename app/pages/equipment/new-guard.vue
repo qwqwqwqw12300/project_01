@@ -30,7 +30,7 @@
 				</view>
 				<view class="item-input">
 					<u-cell-group>
-						<u-cell title="地址" arrow-direction="right" isLink>
+						<u-cell title="地址" arrow-direction="right" isLink @tap="handleJump()"> 
 							<text slot="value" class="u-slot-value">
 								{{item.address}}
 							</text>
@@ -144,6 +144,11 @@
 					if(item.orderNum == this.id){
 						item.time = time
 					}
+				})
+			},
+			handleJump(){
+				uni.navigateTo({
+					url:'/pages/equipment/new-address'
 				})
 			},
 			handleCancel() {
