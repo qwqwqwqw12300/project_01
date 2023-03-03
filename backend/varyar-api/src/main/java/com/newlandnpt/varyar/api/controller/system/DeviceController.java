@@ -777,15 +777,6 @@ public class DeviceController extends BaseController {
         return null;
     }
 
-    @ApiOperation("获取人员监控状态")
-    @ApiImplicitParam(name = "deviceId", value = "设备ID", required = true, dataType = "int", paramType = "query", dataTypeClass = Integer.class)
-    @GetMapping("/getPeopleStatus")
-    public AjaxResult getPeopleStatus(Long deviceId) {
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("peopleStatus", "0");
-        return ajax;
-    }
-
     @ApiOperation("设置预警规则")
     @PostMapping("/setRadarWaveNobodyWarn")
     public AjaxResult setRadarWaveNobodyWarn(
@@ -879,7 +870,6 @@ public class DeviceController extends BaseController {
                 warnRule.setStartTime(deviceWarnRequest.getStartTime());
                 warnRule.setEndTime(deviceWarnRequest.getEndTime());
             }
-
         }
         try {
             //设置雷达波设备策略规则
@@ -895,70 +885,10 @@ public class DeviceController extends BaseController {
             return error("设置预警策略失败！");
         }
         //查询
-        return success(radarwave.getDeviceWarnParameter().getNobodyWarn().getWarnRules());
-    }
-
-    @ApiOperation("设置预警规则")
-    @PostMapping("/setLeaveBedWarn")
-    public AjaxResult setLeaveBedWarn(
-            @RequestBody @Validated DeviceWarnRequest deviceWarnRequest) {
-        if (deviceWarnRequest.getDeviceId()==null||deviceWarnRequest.getDeviceId().equals("")){
-            return error("设备id不能为空！");
-        }
-        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(deviceWarnRequest.getDeviceId()));
-        if (device==null){
-            return error("无法查找到设备信息！");
-        }
-        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
-            return  error("非创建者无权限操作！");
-        }
-        TDevice.RadarWaveDeviceSettings radarwave = (TDevice.RadarWaveDeviceSettings)device.getParameter();
-
-
-        LeaveBedWarnParameter leaveBedWarnParameter =new LeaveBedWarnParameter();
-        LeaveBedWarnParameter.Bed bed = new LeaveBedWarnParameter.Bed();
-        bed.setName(deviceWarnRequest.getBedName());
-        //设置编号
-        bed.setBedNo(IdUtils.fastSimpleUUID());
-        bed.setDateType(deviceWarnRequest.getDateType());
-        bed.setLeaveBedInterval(deviceWarnRequest.getLeaveBedInterval());
-        bed.setIntervalTime(deviceWarnRequest.getIntervalTime());
-        if("1".equals(deviceWarnRequest.getDateType()))
-        {
-            bed.setWeek(deviceWarnRequest.getWeek());
-
-        }   else
-        {
-            bed.setStartDate(deviceWarnRequest.getStartDate());
-            bed.setEndDate(deviceWarnRequest.getEndDate());
-        }
-
-        bed.setStartTime(deviceWarnRequest.getStartTime());
-        bed.setEndTime(deviceWarnRequest.getEndTime());
-
-
-        List<LeaveBedWarnParameter.Bed> beds = new ArrayList<>();
-        beds.add(bed);
-        leaveBedWarnParameter.setBeds(beds);
-        radarwave.setLeaveBedWarnParameter(leaveBedWarnParameter);
-
-        device.setParameter(radarwave);
-
-        try {
-            //绑定雷达波设备
-            if (device.getType().equals("0")){
-                int i = iDeviceService.setDevice(device);
-                if (i==0){
-                    return error("设置离床预警策略失败！");
-                }
-            }
-
-        } catch (Exception e){
-            log.error("设置离床预警策略失败！",e);
-            return error("设置离床预警策略失败！");
-        }
+//        return success(radarwave.getDeviceWarnParameter().getNobodyWarn().getWarnRules());
         return success();
     }
+
 
 
     @ApiOperation("删除无人预警规则")
@@ -1011,50 +941,5 @@ public class DeviceController extends BaseController {
         return ajax;
     }
 
-    @ApiOperation("设置预警规则")
-    @PostMapping("/delLeaveBedWarn")
-    public AjaxResult delLeaveBedWarn(
-            @RequestBody @Validated DeviceWarnRequest deviceWarnRequest) {
-        AjaxResult ajax = AjaxResult.success();
-        if (deviceWarnRequest.getDeviceId()==null||deviceWarnRequest.getDeviceId().equals("")){
-            return error("设备id不能为空！");
-        }
-        if (deviceWarnRequest.getBedNo()==null||deviceWarnRequest.getBedNo().equals("")){
-            return error("床编号不能为空！");
-        }
-        Long deviceId = Long.valueOf(deviceWarnRequest.getDeviceId());
-        //根据设备id获取参数信息
-        TDevice.DeviceParameter parameter = iDeviceService.loadSettings(deviceId);
-        if(!(parameter instanceof TDevice.RadarWaveDeviceSettings)){
-            return error("设备不是雷达波设备！");
-        }
-        //雷达波参数
-        TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
-        DeviceWarnParameter.WarnRule warnRule = null;
-        if (deviceWarnRequest.getRuleNo() != null && !deviceWarnRequest.getRuleNo().equals("")
-                && CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getDeviceWarnParameter().getNobodyWarn().getWarnRules())) {
 
-            warnRule = radarWaveDeviceSettings.getDeviceWarnParameter().getNobodyWarn().getWarnRules().stream()
-                    .filter(p -> deviceWarnRequest.getRuleNo().equals(p.getRuleNo() + ""))
-                    .findAny()
-                    .orElse(null);
-        }
-        if(warnRule==null){
-            return  error("不存在此规则，删除失败！");
-        }
-        //删除规则
-        radarWaveDeviceSettings.getLeaveBedWarnParameter().getBeds()
-                .removeIf(item->item.getBedNo().equals(deviceWarnRequest.getBedNo()));
-
-        try {
-            //更新雷达波参数
-            iDeviceService.setSettings(deviceId,radarWaveDeviceSettings);
-        } catch (Exception e){
-            log.error(">>>>>>",e);
-            ajax = AjaxResult.error("删除离床预警规则失败");
-            return ajax;
-        }
-
-        return ajax;
-    }
 }

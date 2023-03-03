@@ -6,9 +6,11 @@ import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
 import com.newlandnpt.varyar.system.domain.TDevice;
+import com.newlandnpt.varyar.system.domain.TRoomZone;
 import com.newlandnpt.varyar.system.service.DeviceEventService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -39,7 +41,7 @@ import static org.apache.rocketmq.spring.annotation.ConsumeMode.ORDERLY;
 @Component
 @RocketMQMessageListener(topic = "${rocketmq.topic.access-calculate}", consumerGroup = "${rocketmq.group.access-calculate}",
         consumeMode = ORDERLY)
-public class AccessCalculateListener implements RocketMQListener<Message<TDevice>> {
+public class AccessCalculateListener implements RocketMQListener<MessageExt> {
 
     private static final Logger log = LoggerFactory.getLogger(AccessCalculateListener.class);
 
@@ -103,20 +105,27 @@ public class AccessCalculateListener implements RocketMQListener<Message<TDevice
     private DeviceEventService deviceEventService;
 
     @Override
-    public void onMessage(Message<TDevice> message) {
-        TDevice device = message.getPayload();
-        log.debug("----" + System.currentTimeMillis() + "----" + " 房间进出计算事件消息： " + JSON.toJSONString(device));
+    public void onMessage(MessageExt message) {
+
+        log.debug("----" + System.currentTimeMillis() + "----" + " 房间进出计算事件消息： " + new String(message.getBody()));
+        TDevice device;
+        try{
+            device = JSON.parseObject(message.getBody(),TDevice.class);
+        }catch (Exception e){
+            log.error(">>>>>> 类型转换异常，忽略执行",e);
+            return;
+        }
 
         // 计算并发送事件
         if (device.getParameter() == null || !(device.getParameter() instanceof TDevice.RadarWaveDeviceSettings)) {
             return;
         }
         Date calculateTime;
-        if (message.getHeaders().containsKey(TRIGGER_TIME)) {
+        if (message.getProperties().containsKey(TRIGGER_TIME)) {
             // 如果指定了触发时间,使用触发时间作为计算时间
             try {
                 Calendar current = Calendar.getInstance();
-                current.setTime(DateUtils.parseDate(message.getHeaders().get(TRIGGER_TIME, String.class),
+                current.setTime(DateUtils.parseDate(message.getProperties().get(TRIGGER_TIME),
                         YYYY_MM_DD_HH_MM));
                 calculateTime = current.getTime();
             } catch (Exception e) {
@@ -138,43 +147,53 @@ public class AccessCalculateListener implements RocketMQListener<Message<TDevice
             nobodyWarnCalculate(device, calculateTime, radarWaveDeviceSettings);
         }
 
-        if (radarWaveDeviceSettings.getLeaveBedWarnParameter() != null &&
-                CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getLeaveBedWarnParameter().getBeds())
+        if (CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getRoomZones()) &&
+                radarWaveDeviceSettings.getRoomZones().stream()
+                        .anyMatch(roomZone -> roomZone.getLeaveBedWarnParameter() != null &&
+                                "1".equals(roomZone.getLeaveBedWarnParameter().getLeaveBedInterval()))
         ) {
             // 如果开启了离床预警则进行计算
-            radarWaveDeviceSettings.getLeaveBedWarnParameter().getBeds().forEach(bed -> {
-                if (!"1".equals(bed.getLeaveBedInterval())) {
-                    return;
-                }
+            leaveBedWarnCalculate(device, calculateTime, radarWaveDeviceSettings);
+        }
 
-                if ("0".equals(bed.getDateType()) && bed.getStartDate() != null) {
+    }
+
+    private void leaveBedWarnCalculate(TDevice device, Date calculateTime, TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings) {
+        for(int zoneNo=0;zoneNo<radarWaveDeviceSettings.getRoomZones().size();zoneNo++){
+            TRoomZone roomZone = radarWaveDeviceSettings.getRoomZones().get(zoneNo);
+            if (roomZone.getLeaveBedWarnParameter() == null || !"1".equals(roomZone.getLeaveBedWarnParameter().getLeaveBedInterval())) {
+                return;
+            }
+            // 时间日期不为空时进行时间范围判断，为空则代表全天候都进行离床预警
+            if (roomZone.getLeaveBedWarnParameter().getSetRuleDate() != null) {
+                if ("0".equals(roomZone.getLeaveBedWarnParameter().getSetRuleDate().getDateType()) && roomZone.getLeaveBedWarnParameter().getSetRuleDate().getStartDate() != null) {
                     Calendar startCalendar = Calendar.getInstance();
-                    startCalendar.setTime(bed.getStartDate());
+                    startCalendar.setTime(roomZone.getLeaveBedWarnParameter().getSetRuleDate().getStartDate());
                     startCalendar.set(Calendar.HOUR_OF_DAY, 0);
                     startCalendar.set(Calendar.MINUTE, 0);
                     startCalendar.set(Calendar.SECOND, 0);
                     startCalendar.set(Calendar.MILLISECOND, 0);
                     if (calculateTime.getTime() < startCalendar.getTimeInMillis()) {
-                        log.debug(">>>>> 离床预警规则：{},当前时间：{},小于开始计算时间{},忽略", bed.getName(), calculateTime, startCalendar.getTime());
+                        log.debug(">>>>> 离床预警规则：{},当前时间：{},小于开始计算时间{},忽略", roomZone.getName(), calculateTime, startCalendar.getTime());
                         return;
                     }
                 }
-                if ("0".equals(bed.getDateType()) && bed.getEndDate() != null) {
+                if ("0".equals(roomZone.getLeaveBedWarnParameter().getSetRuleDate().getDateType()) && roomZone.getLeaveBedWarnParameter().getSetRuleDate().getEndDate() != null) {
                     Calendar endCalendar = Calendar.getInstance();
-                    endCalendar.setTime(bed.getEndDate());
+                    endCalendar.setTime(roomZone.getLeaveBedWarnParameter().getSetRuleDate().getEndDate());
                     endCalendar.set(Calendar.HOUR_OF_DAY, 23);
                     endCalendar.set(Calendar.MINUTE, 59);
                     endCalendar.set(Calendar.SECOND, 59);
                     endCalendar.set(Calendar.MILLISECOND, 999);
                     if (calculateTime.getTime() > endCalendar.getTimeInMillis()) {
-                        log.debug(">>>>> 离床预警规则：{},当前时间：{},大于结束计算时间{},忽略", bed.getName(), calculateTime, endCalendar.getTime());
+                        log.debug(">>>>> 离床预警规则：{},当前时间：{},大于结束计算时间{},忽略", roomZone.getName(), calculateTime, endCalendar.getTime());
                         return;
                     }
                 }
 
-                if ("1".equals(bed.getDateType())) {
-                    if (bed.getWeek() == null || bed.getWeek().length == 0) {
-                        log.debug(">>>>> 无人预警规则：{},未设置计算的星期,忽略", bed.getName());
+                if ("1".equals(roomZone.getLeaveBedWarnParameter().getSetRuleDate().getDateType())) {
+                    if (roomZone.getLeaveBedWarnParameter().getSetRuleDate().getWeek() == null || roomZone.getLeaveBedWarnParameter().getSetRuleDate().getWeek().length == 0) {
+                        log.debug(">>>>> 无人预警规则：{},未设置计算的星期,忽略", roomZone.getName());
                         return;
                     }
                     Calendar now = Calendar.getInstance();
@@ -182,96 +201,87 @@ public class AccessCalculateListener implements RocketMQListener<Message<TDevice
                     // calendar 取值是1-7（1代表星期天）对应设置的值为0-6
                     int dayOfWeek = now.get(Calendar.DAY_OF_WEEK) - 1;
                     final int finalDayOfWeek = dayOfWeek;
-                    if (Stream.of(bed.getWeek()).noneMatch(p -> p.equals("" + finalDayOfWeek))) {
-                        log.debug(">>>>> 离床预警规则：{},当前星期{},未在执行计算星期{}内,忽略", bed.getName(), finalDayOfWeek, bed.getWeek());
+                    if (Stream.of(roomZone.getLeaveBedWarnParameter().getSetRuleDate().getWeek()).noneMatch(p -> p.equals("" + finalDayOfWeek))) {
+                        log.debug(">>>>> 离床预警规则：{},当前星期{},未在执行计算星期{}内,忽略", roomZone.getName(), finalDayOfWeek, roomZone.getLeaveBedWarnParameter().getSetRuleDate().getWeek());
                         return;
                     }
                 }
+            }
 
-                if (bed.getStartTime() == null) {
-                    // 起始时间没提供默认给 0点0分作为计算时间点
-                    Calendar startCalendar = Calendar.getInstance();
-                    startCalendar.set(Calendar.HOUR_OF_DAY, 0);
-                    startCalendar.set(Calendar.MINUTE, 0);
-                    startCalendar.set(Calendar.SECOND, 0);
-                    startCalendar.set(Calendar.MILLISECOND, 0);
-                    bed.setStartTime(startCalendar.getTime());
+            String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + device.getNo() + DateFormatUtils.format(calculateTime, "yyyy-MM-dd");
+
+            Calendar now = Calendar.getInstance();
+            now.setTime(calculateTime);
+
+            // 结束时间
+            Calendar endTime = Calendar.getInstance();
+            if (roomZone.getLeaveBedWarnParameter().getSetRuleDate() != null &&
+                    roomZone.getLeaveBedWarnParameter().getSetRuleDate().getEndTime() != null) {
+                endTime.setTime(roomZone.getLeaveBedWarnParameter().getSetRuleDate().getEndTime());
+            } else {
+                endTime.set(Calendar.HOUR_OF_DAY, 23);
+                endTime.set(Calendar.MINUTE, 59);
+                endTime.set(Calendar.SECOND, 0);
+                endTime.set(Calendar.MILLISECOND, 0);
+            }
+            endTime.set(Calendar.YEAR, now.get(Calendar.YEAR));
+            endTime.set(Calendar.MONTH, now.get(Calendar.MONTH));
+            endTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+
+            // 开始时间
+            Calendar startTime = Calendar.getInstance();
+            if (roomZone.getLeaveBedWarnParameter().getSetRuleDate() != null &&
+                    roomZone.getLeaveBedWarnParameter().getSetRuleDate().getStartTime() != null) {
+                startTime.setTime(roomZone.getLeaveBedWarnParameter().getSetRuleDate().getStartTime());
+            } else {
+                // 起始时间没提供默认给 0点0分作为计算时间点
+                startTime.set(Calendar.HOUR_OF_DAY, 0);
+                startTime.set(Calendar.MINUTE, 0);
+                startTime.set(Calendar.SECOND, 0);
+                startTime.set(Calendar.MILLISECOND, 0);
+            }
+            startTime.set(Calendar.YEAR, now.get(Calendar.YEAR));
+            startTime.set(Calendar.MONTH, now.get(Calendar.MONTH));
+            startTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+
+            if (now.getTimeInMillis() >= startTime.getTimeInMillis() &&
+                    now.getTimeInMillis() <= endTime.getTimeInMillis()) {
+                // 在无人预警计算时间范围内则开始计算
+                // 获取计算当天的进出记录
+                List<AccessInfo> accessInfos = redisCache.getCacheList(redisKey);
+                AccessInfo accessInfo = null;
+                if (accessInfos != null) {
+                    // 计算周期内有进出记录则取周期内的最后一条
+                    accessInfo = accessInfos.stream()
+                            .filter(p -> (ENTER_ROOM.equals(p.getType()) || LEAVE_ROOM.equals(p.getType())) &&
+                                    p.getTime() > startTime.getTimeInMillis() && p.getTime() < endTime.getTimeInMillis())
+                            //按时间倒序排
+                            .sorted(Comparator.comparing(p -> -p.getTime()))
+                            .findFirst()
+                            // 如果没有记录
+                            .orElse(null);
                 }
-                if (bed.getEndTime() == null) {
-                    // 结束时间没提供默认给 23点59分作为计算时间点
-                    Calendar endCalendar = Calendar.getInstance();
-                    endCalendar.set(Calendar.HOUR_OF_DAY, 23);
-                    endCalendar.set(Calendar.MINUTE, 59);
-                    endCalendar.set(Calendar.SECOND, 0);
-                    endCalendar.set(Calendar.MILLISECOND, 0);
-                    bed.setEndTime(endCalendar.getTime());
-                }
-                String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + device.getNo() + DateFormatUtils.format(calculateTime, "yyyy-MM-dd");
 
+                if (accessInfo != null && LEAVE_ROOM.equals(accessInfo.getType())) {
+                    // 如果区间内最后一条是离开则证明监控时间范围内离开未回来
+                    boolean triggerWarn = false;
+                    if (StringUtils.equals(DateUtils.parseDateToStr(YYYY_MM_DD_HH_MM, endTime.getTime()),
+                            DateUtils.parseDateToStr(YYYY_MM_DD_HH_MM, calculateTime))) {
+                        //计算时间等于结束时间 直接触发警告
+                        triggerWarn = true;
+                    } else {
+                        // 否则计算是否离开超过间隔时间
+                        if (calculateTime.getTime() >= accessInfo.getTime() + (roomZone.getLeaveBedWarnParameter().getIntervalTime() * 1000)) {
 
-                Calendar now = Calendar.getInstance();
-                now.setTime(calculateTime);
-
-                // 结束时间
-                Calendar endTime = Calendar.getInstance();
-                endTime.setTime(bed.getEndTime());
-                endTime.set(Calendar.YEAR, now.get(Calendar.YEAR));
-                endTime.set(Calendar.MONTH, now.get(Calendar.MONTH));
-                endTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
-
-
-                // 开始时间
-                Calendar startTime = Calendar.getInstance();
-                startTime.setTime(bed.getStartTime());
-                startTime.set(Calendar.YEAR, now.get(Calendar.YEAR));
-                startTime.set(Calendar.MONTH, now.get(Calendar.MONTH));
-                startTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
-
-                // 获取子区域编号
-                int zoneNo = 0;
-
-                if (now.getTimeInMillis() >= startTime.getTimeInMillis() &&
-                        now.getTimeInMillis() <= endTime.getTimeInMillis()) {
-                    // 在无人预警计算时间范围内则开始计算
-                    // 获取计算当天的进出记录
-                    List<AccessInfo> accessInfos = redisCache.getCacheList(redisKey);
-                    AccessInfo accessInfo = null;
-                    if (accessInfos != null) {
-                        // 计算周期内有进出记录则取周期内的最后一条
-                        accessInfo = accessInfos.stream()
-                                .filter(p -> (ENTER_ROOM.equals(p.getType()) || LEAVE_ROOM.equals(p.getType())) &&
-                                        p.getTime() > startTime.getTimeInMillis() && p.getTime() < endTime.getTimeInMillis())
-                                //按时间倒序排
-                                .sorted(Comparator.comparing(p -> -p.getTime()))
-                                .findFirst()
-                                // 如果没有记录
-                                .orElse(null);
-                    }
-
-                    if (accessInfo != null && LEAVE_ROOM.equals(accessInfo.getType())) {
-                        // 如果区间内最后一条是离开则证明监控时间范围内离开未回来
-                        boolean triggerWarn = false;
-                        if (StringUtils.equals(DateUtils.parseDateToStr(YYYY_MM_DD_HH_MM, endTime.getTime()),
-                                DateUtils.parseDateToStr(YYYY_MM_DD_HH_MM, calculateTime))) {
-                            //计算时间等于结束时间 直接触发警告
                             triggerWarn = true;
-                        } else {
-                            // 否则计算是否离开超过间隔时间
-                            if (calculateTime.getTime() >= accessInfo.getTime() + (bed.getIntervalTime() * 1000)) {
-
-                                triggerWarn = true;
-                            }
-                        }
-                        if (triggerWarn) {
-                            deviceEventService.deviceAccessIssue(device.getNo(), radarWaveDeviceSettings.getRoomZones().get(zoneNo).getName(), "leave_zone_"+zoneNo, (now.getTimeInMillis() - accessInfo.getTime()) / 1000);
                         }
                     }
+                    if (triggerWarn) {
+                        deviceEventService.deviceAccessIssue(device.getNo(), roomZone.getName(), "leave_zone_" + zoneNo, (now.getTimeInMillis() - accessInfo.getTime()) / 1000);
+                    }
                 }
-
-            });
+            }
         }
-
-
     }
 
     private void nobodyWarnCalculate(TDevice device, Date calculateTime, TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings) {

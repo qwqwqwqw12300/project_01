@@ -54,7 +54,7 @@ public class ReportHeartBeatHandler extends AbstractChannelMessageHandler<Report
             BeanUtils.copyProperties(oldInfo, info);
         }
         BeanUtils.copyProperties(req,info);
-        redisCache.setCacheObject(CacheConstants.DEVICE_ONLINE_INFO+req.getDeviceNo(),info,8, TimeUnit.MINUTES);
+        redisCache.setCacheObject(CacheConstants.DEVICE_ONLINE_INFO+req.getDeviceNo(),info);
         redisCache.setCacheObject(CacheConstants.DEVICE_STATE_KEY+req.getDeviceNo(),req.getDeviceNo(),8,TimeUnit.MINUTES);
         return reportHeartBeatResponse;
     }

@@ -68,7 +68,7 @@ public class AlarmPowerHandler extends AbstractChannelMessageHandler<AlarmPowerR
             }
             BeanUtils.copyProperties(req,info);
             info.setCurrentPower(req.getRemainPower());
-            redisCache.setCacheObject(CacheConstants.DEVICE_ONLINE_INFO + req.getDeviceNo(), info, 8, TimeUnit.MINUTES);
+            redisCache.setCacheObject(CacheConstants.DEVICE_ONLINE_INFO + req.getDeviceNo(), info);
         }
         redisCache.setCacheObject(CacheConstants.DEVICE_STATE_KEY + req.getDeviceNo(), req.getDeviceNo(), 8, TimeUnit.MINUTES);
 

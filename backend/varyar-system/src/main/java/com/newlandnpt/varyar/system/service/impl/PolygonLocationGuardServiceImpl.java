@@ -56,12 +56,24 @@ public class PolygonLocationGuardServiceImpl implements ILocationGuardService {
     }
 
     @Override
-    public AjaxResult updateLocationGuard(LocationGuard locationGuard) {
-        return null;
+    public Integer updateLocationGuard(LocationGuard locationGuard) {
+        //调用高德地理围栏api
+        try{
+            PolygonReq polygonReq = new PolygonReq();
+            polygonReq.setGfid(locationGuard.getGeoFenceId().toString());
+            polygonReq.setName("locationGuard_"+ IdUtil.simpleUUID());
+            polygonReq.setPoints(locationGuard.getPoints());
+            String result = geoFenceService.updatePolygonFence(polygonReq);
+            JSONObject jsonObject = JSON.parseObject(result);
+            GeoResultVo geoResultVo = jsonObject.toJavaObject(GeoResultVo.class);
+            if (!geoResultVo.getErrcode().equals(Constants.GEO_RESP_SUCCESS)) {
+                throw new Exception();
+            }
+        }catch (Exception e) {
+            log.error("调用高德地图api-更新多边形围栏-响应失败");
+            return  0;
+        }
+        return 1;
     }
 
-    @Override
-    public Integer deleteLocationGuard(DelLocationGuardReq delReq) {
-        return null;
-    }
 }

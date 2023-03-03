@@ -143,6 +143,18 @@
             <artifactId>swagger-models</artifactId>
             <version>1.6.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>3.8.4</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.79</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 

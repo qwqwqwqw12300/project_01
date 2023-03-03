@@ -4,10 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.newlandnpt.varyar.common.constant.GeoConstant;
-import com.newlandnpt.varyar.system.domain.req.CircleReq;
-import com.newlandnpt.varyar.system.domain.req.FenceReq;
-import com.newlandnpt.varyar.system.domain.req.PolygonReq;
-import com.newlandnpt.varyar.system.domain.req.TerminalAddReq;
+import com.newlandnpt.varyar.system.domain.req.*;
 import com.newlandnpt.varyar.system.service.GeoFenceService;
 import com.newlandnpt.varyar.system.service.HttpSendService;
 import org.slf4j.Logger;
@@ -87,6 +84,20 @@ public class GeoFenceServiceImpl implements GeoFenceService {
         String result = HttpSendService.sendPost(paramsMap, GeoConstant.GEO_FENCE_POLYGON_UPDATE);
         JSONObject resultJson = JSON.parseObject(result);
         log.info("更新多边形围栏结果：{}", resultJson);
+        return result;
+    }
+
+    @Override
+    public String deleteFence(DeleteFenceReq deleteFenceReq) {
+        //构造请求参数
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("key", GeoConstant.GEO_KEY);
+        paramsMap.put("sid", GeoConstant.GEO_SERVICE_ID);
+        paramsMap.put("gfids", deleteFenceReq.getGfid());
+        //发送请求
+        String result = HttpSendService.sendPost(paramsMap, GeoConstant.GEO_FENCE_DELETE);
+        JSONObject resultJson = JSON.parseObject(result);
+        log.info("删除围栏结果：{}", resultJson);
         return result;
     }
 

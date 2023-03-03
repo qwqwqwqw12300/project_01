@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.newlandnpt.varyar.common.core.domain.model.LeaveBedWarnParameter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -109,6 +110,17 @@ public class TRoomZone extends BaseEntity
     /** 0:普通区域  1：屏蔽区域  2：床  */
     @ApiModelProperty("0:普通区域  1：屏蔽区域  2：床")
     private String zoneType;
+
+
+    private LeaveBedWarnParameter leaveBedWarnParameter= new LeaveBedWarnParameter();
+
+    public LeaveBedWarnParameter getLeaveBedWarnParameter() {
+        return leaveBedWarnParameter;
+    }
+
+    public void setLeaveBedWarnParameter(LeaveBedWarnParameter leaveBedWarnParameter) {
+        this.leaveBedWarnParameter = leaveBedWarnParameter;
+    }
 
     public String getZoneType() {
         return zoneType;

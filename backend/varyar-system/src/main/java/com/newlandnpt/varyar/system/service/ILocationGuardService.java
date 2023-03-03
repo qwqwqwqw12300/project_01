@@ -24,13 +24,7 @@ public interface ILocationGuardService {
      * @param locationGuard
      * @return
      */
-    AjaxResult updateLocationGuard(LocationGuard locationGuard);
+    Integer updateLocationGuard(LocationGuard locationGuard);
 
 
-    /**
-     * 删除高德位置守护
-     * @param delReq
-     * @return
-     */
-    Integer deleteLocationGuard(DelLocationGuardReq delReq);
 }
