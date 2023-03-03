@@ -146,6 +146,7 @@ rocketmq:
     presence: group_presence
     deviceState: group_deviceState
     access: group_access
+    access-calculate: group_access_alculate
     accessDelay: group_access_delay
     location: group_location
     deviceConfig: group_deviceConfig
@@ -160,6 +161,7 @@ rocketmq:
     presence: presenceTopic
     deviceState: deviceStateTopic
     access: accessTopic
+    access-calculate: accessCalculateTopic
     accessDelay: accessDelayTopic
     location: locationTopic
     deviceConfig: deviceConfigTopic

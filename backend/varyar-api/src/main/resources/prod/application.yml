@@ -153,6 +153,7 @@ rocketmq:
     presence: ${rocketmq.namespace}%GID_group_presence
     deviceState: ${rocketmq.namespace}%GID_group_deviceState
     access: ${rocketmq.namespace}%GID_group_access
+    access-calculate: ${rocketmq.namespace}%GID_group_access_alculate
     accessDelay: ${rocketmq.namespace}%GID_group_access_delay
     location: ${rocketmq.namespace}%GID_group_location
     deviceConfig: ${rocketmq.namespace}%GID_group_deviceConfig
@@ -167,6 +168,7 @@ rocketmq:
     presence: ${rocketmq.namespace}%presenceTopic
     deviceState: ${rocketmq.namespace}%deviceStateTopic
     access: ${rocketmq.namespace}%accessTopic
+    access-calculate: ${rocketmq.namespace}%accessCalculateTopic
     accessDelay: ${rocketmq.namespace}%accessDelayTopic
     location: ${rocketmq.namespace}%locationTopic
     deviceConfig: ${rocketmq.namespace}%deviceConfigTopic

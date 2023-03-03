@@ -167,5 +167,8 @@ rocketmq:
   name-server: 192.168.132.204:9876
   producer:
     group: group_msg
+  group:
+    access-calculate: group_access_alculate
   topic:
     deviceConfig: deviceConfigTopic
+    access-calculate: accessCalculateTopic
