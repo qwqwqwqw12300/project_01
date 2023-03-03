@@ -469,11 +469,19 @@ public class DeviceServiceImpl implements IDeviceService {
             String deviceNo = device.getNo();
             if (!redisCache.hasKey(CacheConstants.DEVICE_STATE_KEY + deviceNo)) {
                 device.setOnlineFlag("0");
+                device.setHasPerson("0");
             }else {
                 device.setOnlineFlag("1");
                 DeviceOnlineInfo info = redisCache.getCacheObject(CacheConstants.DEVICE_ONLINE_INFO+ deviceNo);
                 if(!Objects.isNull(info)){
                     BeanUtils.copyProperties(info,device);
+                }
+                // 设备在线状态再去获取是否有人
+                Boolean roomPresence = redisCache.getCacheObject(CacheConstants.PRESENCE_ROOM_KEY+ deviceNo);
+                if (roomPresence!=null && roomPresence == true) {
+                    device.setHasPerson("1");
+                }else{
+                    device.setHasPerson("0");
                 }
             }
 
