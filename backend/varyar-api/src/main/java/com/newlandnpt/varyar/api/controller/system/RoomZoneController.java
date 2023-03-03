@@ -2,7 +2,7 @@ package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
-import com.newlandnpt.varyar.common.core.domain.model.RadarRequest;
+import com.newlandnpt.varyar.common.core.domain.model.*;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.system.domain.*;
@@ -124,6 +124,254 @@ public class RoomZoneController extends BaseController {
         }
         return ajax;
     }
+
+    /**
+     * 设置雷达波屏蔽区域 (创建和修改)
+     * */
+    @ApiOperation("设置雷达波屏蔽区域 (创建和修改)")
+    @PostMapping("/setRadarWareShadowZone")
+    public AjaxResult setRadarWareShadowZone(
+            @RequestBody @Validated RadarWareShadowZoneRequest radarWareShadowZoneRequest) {
+        if (radarWareShadowZoneRequest.getShadowZoneName()==null || radarWareShadowZoneRequest.getShadowZoneName().equals("")){
+            return error("屏蔽区域名称不能为空！");
+        }
+//
+        AjaxResult ajax = AjaxResult.success();
+        TRoomZone tRoomZone= null;
+        Long deviceId = Long.valueOf(radarWareShadowZoneRequest.getDeviceId());
+        TDevice.DeviceParameter parameter = iDeviceService.loadSettings(deviceId);
+        if(!(parameter instanceof TDevice.RadarWaveDeviceSettings)){
+            return error("设备不是雷达波设备！");
+        }
+        TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
+
+        if (radarWareShadowZoneRequest.getRoomZoneId()!=null && !radarWareShadowZoneRequest.getRoomZoneId().equals("")
+                && CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getRoomZones())){
+
+            tRoomZone = radarWaveDeviceSettings.getRoomZones().stream()
+                    .filter(p->radarWareShadowZoneRequest.getRoomZoneId().equals(p.getRoomZoneId()+"") )
+                    .findAny()
+                    .orElse(null);
+        }
+
+        if(radarWaveDeviceSettings.getRoomZones() == null){
+            radarWaveDeviceSettings.setRoomZones(new ArrayList<>());
+        }
+
+        if(tRoomZone == null){
+            tRoomZone = new TRoomZone();
+            radarWaveDeviceSettings.getRoomZones().add(tRoomZone);
+        }
+
+        tRoomZone.setName(radarWareShadowZoneRequest.getShadowZoneName());
+        tRoomZone.setDeviceId(Long.valueOf(radarWareShadowZoneRequest.getDeviceId()));
+        tRoomZone.setRoomId(Long.valueOf(radarWareShadowZoneRequest.getRoomId()));
+        tRoomZone.setX1(radarWareShadowZoneRequest.getX1());
+        tRoomZone.setX2(radarWareShadowZoneRequest.getX2());
+        tRoomZone.setY1(radarWareShadowZoneRequest.getY1());
+        tRoomZone.setY2(radarWareShadowZoneRequest.getY2());
+        //子区域类型：0:普通区域 1：屏蔽区域 2：床
+        tRoomZone.setZoneType("1");
+        //雷达波为顶挂时设置
+        if("1".equals(radarWaveDeviceSettings.getInstallPosition()))
+        {
+            tRoomZone.setZ1(radarWareShadowZoneRequest.getZ1());
+            tRoomZone.setZ2(radarWareShadowZoneRequest.getZ2());
+        }else{
+            tRoomZone.setZ1(new BigDecimal(0));
+            tRoomZone.setZ2(new BigDecimal(1.5));
+        }
+        try {
+            iDeviceService.setSettings(deviceId,radarWaveDeviceSettings);
+        } catch (Exception e){
+            log.error(">>>>>>",e);
+            ajax = AjaxResult.error("设置雷达波屏蔽区域失败！");
+            return ajax;
+        }
+
+        return ajax;
+    }
+
+    /**
+     * 设置雷达波床区域 (创建和修改)
+     * */
+    @ApiOperation("设置雷达波床区域 (创建和修改)")
+    @PostMapping("/setRadarWareBedZone")
+    public AjaxResult setRadarWareBedZone(
+            @RequestBody @Validated RadarWareBedZoneRequest radarWareBedZoneRequest) {
+        if (radarWareBedZoneRequest.getBedName()==null || radarWareBedZoneRequest.getBedName().equals("")){
+            return error("房间名称不能为空！");
+        }
+        AjaxResult ajax = AjaxResult.success();
+        TRoomZone tRoomZone= null;
+        Long deviceId = Long.valueOf(radarWareBedZoneRequest.getDeviceId());
+        TDevice.DeviceParameter parameter = iDeviceService.loadSettings(deviceId);
+        if(!(parameter instanceof TDevice.RadarWaveDeviceSettings)){
+            return error("设备不是雷达波设备！");
+        }
+        TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
+
+        if (radarWareBedZoneRequest.getRoomZoneId()!=null && !radarWareBedZoneRequest.getRoomZoneId().equals("")
+                && CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getRoomZones())){
+
+            tRoomZone = radarWaveDeviceSettings.getRoomZones().stream()
+                    .filter(p->radarWareBedZoneRequest.getRoomZoneId().equals(p.getRoomZoneId()+"") )
+                    .findAny()
+                    .orElse(null);
+        }
+
+        if(radarWaveDeviceSettings.getRoomZones() == null){
+            radarWaveDeviceSettings.setRoomZones(new ArrayList<>());
+        }
+
+        if(tRoomZone == null){
+            tRoomZone = new TRoomZone();
+            radarWaveDeviceSettings.getRoomZones().add(tRoomZone);
+        }
+        //子区域类型：0:普通区域 1：屏蔽区域 2：床
+        tRoomZone.setZoneType("2");
+        tRoomZone.setName(radarWareBedZoneRequest.getBedName());
+        tRoomZone.setDeviceId(Long.valueOf(radarWareBedZoneRequest.getDeviceId()));
+        tRoomZone.setRoomId(Long.valueOf(radarWareBedZoneRequest.getRoomId()));
+        tRoomZone.setX1(radarWareBedZoneRequest.getX1());
+        tRoomZone.setX2(radarWareBedZoneRequest.getX2());
+        tRoomZone.setY1(radarWareBedZoneRequest.getY1());
+        tRoomZone.setY2(radarWareBedZoneRequest.getY2());
+        //雷达波为顶挂时设置
+        if("1".equals(radarWaveDeviceSettings.getInstallPosition()))
+        {
+            tRoomZone.setZ1(radarWareBedZoneRequest.getZ1());
+            tRoomZone.setZ2(radarWareBedZoneRequest.getZ2());
+        }else{
+            tRoomZone.setZ1(new BigDecimal(0));
+            tRoomZone.setZ2(new BigDecimal(1.5));
+        }
+        tRoomZone.setLeaveBedWarnParameter(radarWareBedZoneRequest.getLeaveBedWarnParameter());
+        try {
+            iDeviceService.setSettings(deviceId,radarWaveDeviceSettings);
+        } catch (Exception e){
+            log.error(">>>>>>",e);
+            ajax = AjaxResult.error("设置雷达波床区域失败！");
+            return ajax;
+        }
+        return ajax;
+    }
+
+    @ApiOperation("设置雷达波离床时间规则")
+    @PostMapping("/setRadarWaveLeaveBedRulesDate")
+    public AjaxResult setRadarWaveLeaveBedRulesDate(
+            @RequestBody @Validated RadarWaveLeaveBedRulesRequest radarWaveLeaveBedRulesRequest) {
+
+        if (radarWaveLeaveBedRulesRequest.getDeviceId()==null|| radarWaveLeaveBedRulesRequest.getDeviceId().equals("")){
+            return error("设备id不能为空！");
+        }
+        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(radarWaveLeaveBedRulesRequest.getDeviceId()));
+        if (device==null){
+            return error("无法查找到设备信息！");
+        }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限操作！");
+        }
+        if(radarWaveLeaveBedRulesRequest.getStartTime()==null  || radarWaveLeaveBedRulesRequest.getEndTime()==null)
+        {
+            return  error("开始结束时间不能为空！");
+        }
+        if ("0".equals(radarWaveLeaveBedRulesRequest.getDateType())) {
+            if (radarWaveLeaveBedRulesRequest.getStartDate() == null || radarWaveLeaveBedRulesRequest.getEndDate() == null) {
+                return error("开始结束日期不能为空！");
+            }
+            if (radarWaveLeaveBedRulesRequest.getStartDate().getTime()  > radarWaveLeaveBedRulesRequest.getEndDate().getTime() ) {
+                return error("开始不能大于结束日期！");
+            }
+        }else {
+            if (radarWaveLeaveBedRulesRequest.getWeek() == null || radarWaveLeaveBedRulesRequest.getWeek().length==0) {
+                return error("星期不能为空！");
+            }
+        }
+
+        Long deviceId = Long.valueOf(radarWaveLeaveBedRulesRequest.getDeviceId());
+
+        TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)device.getParameter();
+        TRoomZone troomZone = radarWaveDeviceSettings.getRoomZones().stream()
+                .filter(p-> radarWaveLeaveBedRulesRequest.getRoomZoneId().equals(""+p.getRoomZoneId().longValue()))
+                .findAny().orElse(null);
+
+        LeaveBedWarnParameter.SetRuleDate setRuleDate =null;
+
+
+        if(radarWaveDeviceSettings.getRoomZones()!=null) {
+            setRuleDate.setDateType(radarWaveLeaveBedRulesRequest.getDateType());
+            if("1".equals(radarWaveLeaveBedRulesRequest.getDateType()))
+            {
+                setRuleDate.setWeek(radarWaveLeaveBedRulesRequest.getWeek());
+
+            }   else
+            {
+                setRuleDate.setEndDate(radarWaveLeaveBedRulesRequest.getEndDate());
+                setRuleDate.setStartDate(radarWaveLeaveBedRulesRequest.getStartDate());
+            }
+
+        }
+        troomZone.getLeaveBedWarnParameter().setSetRuleDate(setRuleDate);
+
+        try {
+            //设置时间规则
+            if (device.getType().equals("0")){
+                int i = iDeviceService.setSettings(deviceId,radarWaveDeviceSettings);
+                if (i==0){
+                    return error("设置离床时间规则失败！");
+                }
+            }
+
+        } catch (Exception e){
+            log.error("设置离床时间规则失败！",e);
+            return error("设置离床时间规则失败！");
+        }
+        //保存查询返回
+        return success();
+    }
+
+
+
+
+    @ApiOperation("删除无人预警时间规则")
+    @PostMapping("/delRadarWaveLeaveBedRulesDate")
+    public AjaxResult delRadarWaveLeaveBedRulesDate(
+            @RequestBody @Validated RadarWaveLeaveBedRulesRequest  radarWaveLeaveBedRulesRequest) {
+        AjaxResult ajax = AjaxResult.success();
+        if (radarWaveLeaveBedRulesRequest.getDeviceId()==null||radarWaveLeaveBedRulesRequest.getDeviceId().equals("")){
+            return error("设备id不能为空！");
+        }
+        Long deviceId = Long.valueOf(radarWaveLeaveBedRulesRequest.getDeviceId());
+        //根据设备id获取参数信息
+        TDevice.DeviceParameter parameter = iDeviceService.loadSettings(deviceId);
+        if(!(parameter instanceof TDevice.RadarWaveDeviceSettings)){
+            return error("设备不是雷达波设备！");
+        }
+        //雷达波参数
+        TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
+        TRoomZone troomZone = radarWaveDeviceSettings.getRoomZones().stream()
+                .filter(p-> radarWaveLeaveBedRulesRequest.getRoomZoneId().equals(""+p.getRoomZoneId().longValue()))
+                .findAny().orElse(null);
+
+
+        troomZone.getLeaveBedWarnParameter().setSetRuleDate(null);
+
+        try {
+                //设置时间规则
+            // if (device.getType().equals("0")) {
+                    int i = iDeviceService.setSettings(deviceId, radarWaveDeviceSettings);
+                    if (i == 0) {
+                        return error("设置离床时间规则失败！");
+                    }
+            } catch (Exception e) {
+                log.error("设置离床时间规则失败！", e);
+                return error("设置离床时间规则失败！");
+            }
+            return ajax;
+        }
+
+
     /**
      * 删除雷达波设备
      * */
