@@ -962,8 +962,8 @@ public class DeviceController extends BaseController {
 
 
     @ApiOperation("删除无人预警规则")
-    @PostMapping("/delRadarWaveDeviceNobodyWarn")
-    public AjaxResult delRadarWaveDeviceNobodyWarn(
+    @PostMapping("/delRadarWaveNobodyWarn")
+    public AjaxResult delRadarWaveNobodyWarn(
             @RequestBody @Validated DeviceWarnRequest deviceWarnRequest) {
         AjaxResult ajax = AjaxResult.success();
         if (deviceWarnRequest.getDeviceId()==null||deviceWarnRequest.getDeviceId().equals("")){
