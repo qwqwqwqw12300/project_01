@@ -366,6 +366,9 @@ export const PostUpdateAvatar = (params) => http.upload('/api/memberInfo/avatar'
 /**
  *获取亲情号码*
  */
-export const GetFamilyNumber = (params) => http.get('/api/careCard/getFamilyNumber', params, {
-	error: false
-})
+export const GetFamilyNumber = (params) => http.get('/api/careCard/getFamilyNumber', params, {})
+
+/**
+ *保存亲情号码*
+ */
+export const PostSetFamilyNumber = (params) => http.post('/api/careCard/setFamilyNumber', params, {})
