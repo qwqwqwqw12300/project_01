@@ -137,8 +137,8 @@ sms:
 
 location:
   gaode:
-    key: 92e29e7a06fa0d24124beac6efb5c154
-    sid: 856898
+    key: 2ecab3d1b4d0f57a9661b76f0c5cc3a0
+    sid: 886075
     fenceCircleAdd: https://tsapi.amap.com/v1/track/geofence/add/circle
     fenceCircleUpdate: https://tsapi.amap.com/v1/track/geofence/update/circle
     fenceLocation: https://tsapi.amap.com/v1/track/geofence/status/location
@@ -168,5 +168,8 @@ rocketmq:
   consumer:
     access-key: a1184af46e8544a8af861cca2b711bdf
     secret-key: 99f1cf73e4354f06ba88750fc6cce6a6
+  group:
+    access-calculate: ${rocketmq.namespace}%GID_group_access_alculate
   topic:
     deviceConfig: ${rocketmq.namespace}%deviceConfigTopic
+    access-calculate: ${rocketmq.namespace}%daccessCalculateTopic

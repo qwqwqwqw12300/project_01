@@ -42,7 +42,7 @@ public class CustMessageConvertDecoder extends MessageToMessageDecoder<Object> {
 			return ;
 		}
 
-		//todo 将设备上报的和平台下发设备响应的区分开
+		// 将设备上报的和平台下发设备响应的区分开
 		// 默认3秒超时
 		String[] arr = message.split(",");
 		if(arr.length>=3&&redisCache.hasKey(TCP_WATCH_TRADE_NO+arr[2])){

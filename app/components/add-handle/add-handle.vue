@@ -35,7 +35,7 @@
 						{
 							name: '电子牵挂卡',
 							icon: 'dzqgk',
-							url: '/pages/equipment/add/monitor'
+							url: '/pages/equipment/watch-detail/watch-detail'
 						},
 						{
 							name: '监测手表',
@@ -54,7 +54,7 @@
 				url,
 				name
 			}) {
-				if (name === '电子牵挂卡' || name === '监测手表') return uni.$u.toast('暂不支持添加该设备');
+				// if (name === '电子牵挂卡' || name === '监测手表') return uni.$u.toast('暂不支持添加该设备');
 			
 				this.$emit('cancle')
 			

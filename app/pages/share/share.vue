@@ -44,12 +44,13 @@
 			<view class="ui-code"><canvas id="qrcode" canvas-id="qrcode"
 					:style="{ width: `${size}px`, height: `${size}px` }"></canvas></view>
 		</u-popup>
-		<u-popup :round="10" :show="contactShow" mode="bottom" @close="contactShow = false">
+		<tel-books ref="telBookRef" @select="phoneClick"></tel-books>
+	<!-- 	<u-popup :round="10" mode="bottom">
 			<view style="height: 1300rpx;">
 				<contact-select placeholder="请输入联系人姓名" @cityClick="phoneClick" formatName="name"
 					:obtainCitys="contactList" :isSearch="true"></contact-select>
 			</view>
-		</u-popup>
+		</u-popup> -->
 	</app-body>
 </template>
 
@@ -78,8 +79,6 @@
 					smsUuid: '',
 					familyPhone: ''
 				},
-				contactList: [],
-				contactShow: false,
 				/**家庭名称**/
 				name: ''
 			}
@@ -100,9 +99,9 @@
 				if (!phoneValidator(this.shareForm.phone)) {
 					return uni.$u.toast('请填写正确的手机号码')
 				}
-				if (this.shareForm.code.length !== 4) {
-					return uni.$u.toast('请填写正确的验证码')
-				}
+				// if (this.shareForm.code.length !== 6) {
+				// 	return uni.$u.toast('请填写正确的验证码')
+				// }
 				if (this.shareForm.smsUuid) {
 					const res = await this.shareFamilys();
 					this.getShareList();
@@ -218,71 +217,20 @@
 			 * 获取手机联系人
 			 */
 			getContact() {
-				this.contactList = [];
-				Promise.all([this.getTypeContact(plus.contacts.ADDRESSBOOK_PHONE), this.getTypeContact(plus.contacts
-					.ADDRESSBOOK_SIM)]).then(res => {
-					const data = [...res[0], ...res[1]];
-					const obj = {};
-					this.contactList = data.reduce(function(item, next) {
-						obj[next.phone] ? '' : obj[next.phone] = true && item.push(next);
-						return item;
-					}, []);
-					this.contactShow = true;
-				})
-			},
-			/**
-			 * 获取手机联系人
-			 */
-			getTypeContact(type) {
-				return new Promise((resolve, reject) => {
-					plus.contacts.getAddressBook(type, res => {
-						res.find([], data => {
-							const list = data.map(n => {
-								const {
-									displayName: name,
-									phoneNumbers,
-								} = n
-								return {
-									name,
-									phone: phoneRemove(phoneNumbers[0]?.value || '')
-								}
-							}).filter(item => {
-								return item.phone !== ''
-							});
-							resolve(list)
-						});
-
-					}, error => {
-						reject()
-						uni.showToast({
-							title: '获取通讯录失败',
-							duration: 2000
-						})
-					})
-				})
+				this.$refs.telBookRef.show(true)
 			},
 			/**
 			 * 选择手机联系人
 			 */
 
 			phoneClick(item) {
-				this.shareForm.phone = item.phone;
-				console.log(item, '选择的手机号');
-				console.log(this.shareForm, '界面表单');
-				this.contactShow = false
+				this.shareForm.phone = item[0].phone;
 			},
 
 			/**
 			 * 重置
 			 */
 			init() {
-				// this.shareForm = {
-				// 	phone: '',
-				// 	code: '',
-				// 	// familyId: '',
-				// 	smsUuid: '',
-				// 	familyPhone: ''
-				// };
 				this.shareForm.phone = ''
 				this.shareForm.code = ''
 				this.shareForm.smsUuid = ''

@@ -1,0 +1,258 @@
+<template>
+	<app-body :bodyStyle="{background: 'rgb(247,247,247)' }" :bg="false">
+		<view class="ui-navbar">
+			<view class="header">
+				<text class="title">通讯录白名单</text>
+				<view class="action">
+					<u-icon name="/static/images/add-contact.png" size="44rpx" style="margin-right: 6rpx;"
+						@click="handleAdd" />
+					添加
+				</view>
+				<view class="action" @click="openTelBooks">
+					<u-icon name="/static/images/tel-book.png" size="44rpx" style="margin-right: 6rpx;" />
+					通讯录
+				</view>
+			</view>
+			<card-title title="白名单已启用" content="您可以设置允许呼入的联系人" backGroundImg="/static/images/tel-book-bg.png">
+			</card-title>
+		</view>
+		<view class="ui-content">
+			<u-swipe-action>
+				<u-swipe-action-item :options="item.options" v-for="(item, index) in options4" :key="index"
+					@click="handleDel(index,item)">
+					<view class="cell">
+						<view class="cell-box">
+							<view class="input">
+								<u--input v-model="item.name" placeholder="请输入姓名" border="none" clearable></u--input>
+							</view>
+							<view class="input">
+								<u--input v-model="item.phone" placeholder="请输入手机号" border="none" clearable></u--input>
+							</view>
+						</view>
+					</view>
+				</u-swipe-action-item>
+			</u-swipe-action>
+		</view>
+		<view class="ui-btn">
+			<view class="btn-box">
+				<view class="cancel-btn" @click="handleCancel">
+					取消
+				</view>
+				<view class="save-btn" @tap="handleSave">
+					保存
+				</view>
+			</view>
+		</view>
+		<tel-books ref="telBookRefs" @select="phoneSelect"></tel-books>
+	</app-body>
+</template>
+
+<script>
+	import {
+		PostAddOrUpdateAddressBook,
+		GetAddressBook,
+		PostDeleteAddressBook
+	} from '@/common/http/api';
+	export default {
+		data() {
+			return {
+				options4: [],
+			}
+		},
+		methods: {
+			initData(){
+				this.options4 = []
+				GetAddressBook({
+					deviceNo:'867597011508550'
+				}).then(res=>{
+					console.log(res,'res')
+					res.data.map(item=>{
+						this.options4.push({
+							addressBookId:item.addressBookId,
+							name: item.phoneName,
+							phone: item.phoneNumber,
+							options: [{
+								text: '删除',
+								style: {
+									backgroundColor: '#f56c6c'
+								}
+							}],
+						})
+					})
+					
+				})
+			},
+			handleCancel() {
+				uni.navigateBack()
+			},
+			handleSave() {
+				console.log('保存')
+				console.log(this.options4)
+				let addressBooks = []
+				this.options4.map(item=>{
+					if(item.addressBookId!=undefined){
+						addressBooks.push({
+							addressBookId:item.addressBookId,
+							phoneNumber:item.phone,
+							phoneName:item.name
+						})
+					}else{
+						addressBooks.push({
+							phoneNumber:item.phone,
+							phoneName:item.name
+						})
+					}
+					
+				})
+				PostAddOrUpdateAddressBook({
+					deviceNo:"867977060000248",
+					addressBooks:addressBooks
+				}).then(res=>{
+					console.log(res,'res')
+					setTimeout(() => {
+						uni.navigateBack()
+					}, 1000);
+				})
+			},
+			handleAdd() {
+				this.options4.push({
+					name: '',
+					phone: '',
+					options: [{
+						text: '删除',
+						style: {
+							backgroundColor: '#f56c6c'
+						}
+					}],
+				})
+			},
+			handleDel(index,list) {
+				uni.showModal({
+					title: '提示',
+					content: '是否确认删除？',
+					success: res => {
+						console.log(res, 'res')
+						if (res.confirm) {
+							if(list.addressBookId!=undefined){
+								PostDeleteAddressBook({
+									deviceNo:'867597011508550',
+									addressBookId:list.addressBookId,
+									phoneNumber:list.phone
+								}).then(res=>{
+									console.log(res)
+								})
+								this.initData()
+							}else{
+								this.options4.splice(this.options4.findIndex((item,index) => index == index), 1)
+							}
+						} 
+					}
+				});
+			},
+			openTelBooks() {
+				this.$refs.telBookRefs.show(false)
+			},
+			phoneSelect(data) {
+				console.log(data)
+				let date = Date.now()
+				let rund = Math.ceil(Math.random() * 1000)
+				let id = date + '' + rund
+				data.map(item=>{
+					this.options4.push({
+						id,
+						name: item.name,
+						phone: item.phone,
+						options: [{
+							text: '删除',
+							style: {
+								backgroundColor: '#f56c6c'
+							}
+						}],
+					})
+				})
+			}
+		},
+		onShow(){
+			this.initData()
+		}
+
+	}
+</script>
+
+<style lang="scss" scoped>
+	.ui-navbar {
+		padding: 32rpx;
+		background-color: #fff;
+
+		.header {
+			height: 60rpx;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.title {
+				font-size: 50rpx;
+				color: #353535;
+				font-weight: 600;
+				margin-right: 40rpx;
+				// flex: 1;
+			}
+
+			.action {
+				// margin-left: 20rpx;
+				display: flex;
+				align-items: center;
+			}
+		}
+	}
+
+	.ui-content {
+		margin-top: 30rpx;
+
+		background-color: #fff;
+
+		.cell {
+			padding: 0rpx 32rpx;
+
+			.cell-box {
+				height: 128rpx;
+				border-bottom: solid 2px #f7f7f7;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+
+				.input {
+					width: 240rpx;
+				}
+			}
+		}
+	}
+
+	.ui-btn {
+		width: 100%;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+
+		.btn-box {
+			height: 100rpx;
+			line-height: 100rpx;
+			display: flex;
+			font-size: 36rpx;
+
+			.cancel-btn {
+				flex: 1;
+				background-color: #fff;
+				color: #E95656;
+				text-align: center;
+			}
+
+			.save-btn {
+				flex: 1;
+				background-image: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);
+				color: #fff;
+				text-align: center;
+			}
+		}
+	}
+</style>

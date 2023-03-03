@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 import static com.newlandnpt.varyar.common.constant.MsgConstants.*;
+import static com.newlandnpt.varyar.system.service.impl.DeviceEventServiceImpl.*;
 
 
 /**
@@ -89,7 +90,7 @@ public class SmsServiceImpl implements ISmsService {
         String phone = event.getMemberPhone();
         //获取手机尾号
         String telPhone = phone.substring(phone.length() - 4);
-        String deviceName = smsEventParamsVo.getDeviceName();
+        String deviceName = event.getDeviceName();
         TMsg msg = new TMsg();
         //短信类型
         msg.setMsgType(MSG_TYPE_SMS);
@@ -106,7 +107,7 @@ public class SmsServiceImpl implements ISmsService {
         msg.setSendTime(DateUtils.getNowDate());
         //事件消息类型：级别为紧急时细分(0:断网,1:人员跌倒,2:人员移动);普通事件(暂无)
         switch (tempType) {
-            case "0":
+            case EVENT_TYPE_URGENT_OUTlINE:
                 msg.setContent("【艾吉通】会员（手机尾号"+telPhone+"）您好，艾吉通监测发现：设备 "+deviceName+ "疑似断网，请及时处理！");
                 DeviceOutLineWarn deviceOutLineWarn = new DeviceOutLineWarn(telPhone, deviceName);
                 if (deviceOutLineWarn.isCorrectParams()) {
@@ -128,7 +129,7 @@ public class SmsServiceImpl implements ISmsService {
                     log.error(">>>> 断网模板短信内容参数校验失败！");
                 }
                 break;
-            case "1":
+            case EVENT_TYPE_URGENT_FALL:
                 msg.setContent("【艾吉通】会员（手机尾号"+telPhone+"）您好，艾吉通监测发现：设备 "+deviceName+ "检测到有人疑似跌倒，请及时处理！");
                 FallWarn fallWarn = new FallWarn(telPhone, deviceName);
                 if (fallWarn.isCorrectParams()) {
@@ -150,12 +151,34 @@ public class SmsServiceImpl implements ISmsService {
                     log.error(">>>> 人员跌倒模板短信内容参数校验失败！");
                 }
                 break;
-            case "2":
+            case EVENT_TYPE_URGENT_MOVE:
                 msg.setContent("【艾吉通】会员（手机尾号"+telPhone+"）您好，艾吉通监测发现：设备 "+deviceName+ "监控到("+smsEventParamsVo.getField()+")内"+"【"+ smsEventParamsVo.getAction() +"】超过"+smsEventParamsVo.getTime()+"分钟，请及时处理！");
-                PassOutWarn passOutWarn = new PassOutWarn(telPhone, deviceName, smsEventParamsVo.getField(), smsEventParamsVo.getAction(), String.valueOf(smsEventParamsVo.getTime()));
+                PassOutWarn passOutWarn = new PassOutWarn(telPhone, deviceName, smsEventParamsVo.getField(), smsEventParamsVo.getAction(), String.valueOf(smsEventParamsVo.getTime())+"分钟");
                 if (passOutWarn.isCorrectParams()) {
                     try {
                         SMSUtils.sendMsg(phone, passOutWarn);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    msg.setSendStatus(SEND_STATUS_SEND);
+                    msg.setOperateFlag(OPERATE_FLAG_HANDLED);
+                    //记入信息表
+                    msgService.insertTMsg(msg);
+                } else {
+                    msg.setSendStatus(SEND_STATUS_SEND_FAILURE);
+                    msg.setOperateFlag(OPERATE_FLAG_NOT_HANDLE);
+                    msg.setReason("人员移动模板短信内容参数校验失败！");
+                    //记入信息表
+                    msgService.insertTMsg(msg);
+                    log.error(">>>> 人员移动模板短信内容参数校验失败！");
+                }
+                break;
+            case EVENT_TYPE_URGENT_LEAVE_24HOURS:
+                msg.setContent("【艾吉通】会员（手机尾号"+telPhone+"）您好，艾吉通监测发现：设备 "+deviceName+ "监控到(房间)内"+"【离开】超过24小时，请及时处理！");
+                PassOutWarn passOutWarn2 = new PassOutWarn(telPhone, deviceName, "房间", "离开", "24小时");
+                if (passOutWarn2.isCorrectParams()) {
+                    try {
+                        SMSUtils.sendMsg(phone, passOutWarn2);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

@@ -362,3 +362,35 @@ export const PostUpdateNick = (params) => http.post('/api/memberInfo/updateMemIn
  * 修改头像
  */
 export const PostUpdateAvatar = (params) => http.upload('/api/memberInfo/avatar', params)
+
+/**
+ *获取亲情号码*
+ */
+export const GetFamilyNumber = (params) => http.get('/api/careCard/getFamilyNumber', params, {})
+
+/**
+ *保存亲情号码*
+ */
+export const PostSetFamilyNumber = (params) => http.post('/api/careCard/setFamilyNumber', params, {})
+
+/**
+ *保存通讯录白名单*
+ */
+export const PostAddOrUpdateAddressBook = (params) => http.post('/api/careCard/addOrUpdateAddressBook', params, {})
+
+/**
+ *获取通讯录白名单*
+ */
+export const GetAddressBook= (params) => http.get('/api/careCard/getAddressBook', params, {})
+
+
+/**
+ *删除通讯录白名单*
+ */
+export const PostDeleteAddressBook= (params) => http.post('/api/careCard/deleteAddressBook', params, {})
+
+
+/**
+ *开始远程监听*
+ */
+export const PostRemoteMonitor = (params) => http.post('/api/careCard/remoteMonitor', params, {})

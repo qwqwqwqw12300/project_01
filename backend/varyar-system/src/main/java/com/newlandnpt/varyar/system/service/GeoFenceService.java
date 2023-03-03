@@ -1,7 +1,6 @@
 package com.newlandnpt.varyar.system.service;
 
-import com.newlandnpt.varyar.system.domain.req.CircleReq;
-import com.newlandnpt.varyar.system.domain.req.FenceReq;
+import com.newlandnpt.varyar.system.domain.req.*;
 
 /**
  * 高德API-围栏服务接口
@@ -23,6 +22,19 @@ public interface GeoFenceService {
      * @return resultJson
      */
     String updateCircleFence(CircleReq circleReq);
+
+    /**
+     * 创建多边形地理围栏
+     * @return
+     */
+    String addPolygonFence(PolygonReq polygonReq);
+
+    /**
+     * 更新多边形地理围栏
+     * @param polygonReq
+     * @return
+     */
+    String updatePolygonFence(PolygonReq polygonReq);
 
     /**
      * 查询围栏
@@ -52,4 +64,25 @@ public interface GeoFenceService {
      */
     String getFenceTerminalStatus(FenceReq fenceReq);
 
+    /**
+     * 创建终端
+     * @param terminalAddReq
+     * @return
+     */
+    String addTerminal(TerminalAddReq terminalAddReq);
+
+    /**
+     * 根据终端名称获取终端id
+     * @param name
+     * @return
+     */
+    String findTerminalIdByName(String name);
+
+
+    /**
+     * 删除电子围栏
+     * @param deleteFenceReq
+     * @return
+     */
+    String deleteFence(DeleteFenceReq deleteFenceReq);
 }

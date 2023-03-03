@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.system.service.impl;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.newlandnpt.varyar.common.annotation.Fence;
 import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.domain.TDeviceFence;
@@ -24,6 +25,7 @@ import java.util.List;
  * @author ruoyi
  * @date 2023-01-06
  */
+@Fence(value = "circle", name="基础圆形围栏")
 @Service
 public class DeviceFenceServiceImpl implements IDeviceFenceService {
 
@@ -154,6 +156,7 @@ public class DeviceFenceServiceImpl implements IDeviceFenceService {
      */
     @Override
     public int deleteTDeviceFenceByDeviceFenceId(Long deviceFenceId) {
+        // TODO: 删除电子围栏API
         return deviceFenceMapper.deleteTDeviceFenceByDeviceFenceId(deviceFenceId);
     }
 }

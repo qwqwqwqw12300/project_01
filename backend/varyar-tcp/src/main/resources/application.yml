@@ -139,13 +139,14 @@ rocketmq:
     producer:
       group: group_msg
     group:
-      deviceConfig: group_deviceConfig
+      deviceConfig: group_deviceConfig_tcp
       deviceConfigErr: group_deviceConfigErr
       deviceActive: group_deviceActive
       sosWarn: group_sosWarn
       locationInfo: group_locationInfo
       alarmPower: group_alarmPower
       reportHeartBeat: group_reportHeartBeat
+      deviceLogin: group_deviceLogin
     topic:
       deviceConfig: deviceConfigTopic
       deviceConfigErr: deviceConfigErrTopic
@@ -154,6 +155,7 @@ rocketmq:
       locationInfo: locationInfoTopic
       alarmPower: alarmPowerTopic
       reportHeartBeat: reportHeartBeatTopic
+      deviceLogin: deviceLoginTopic
 
 
 

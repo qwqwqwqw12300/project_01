@@ -5,34 +5,50 @@
 			<u--input class="search-input" @input="keyInput" :placeholder="placeholder" prefixIcon="search"
 				prefixIconStyle="font-size: 22px;color: #909399" />
 		</view>
-		<scroll-view :scroll-top="scrollTop" scroll-y="true" class="ui-select-main" id="ui-select-main"
-			:scroll-into-view="toView">
-			<!-- 城市列表(搜索前) -->
-			<view class="tel-list" v-if="!serachData">
-				<view v-for="(city, index) in sortItems" :key="index" v-show="city.isCity" class="select-row">
-					<view class="citys-item-letter" :id="'city-letter-' + (city.name === '#' ? '0' : city.name)">
-						{{ city.name }}
-					</view>
-					<view class="citys-item" v-for="(item, inx) in city.citys" :key="inx" @click="contactTrigger(item)">
-						{{ item.cityName }}
+		<checkbox-group class="block" @change="checkboxChange">
+			<scroll-view :scroll-top="scrollTop" scroll-y="true" class="ui-select-main" id="ui-select-main"
+				:scroll-into-view="toView">
+				<!-- 联系人列表(搜索前) -->
+				<view class="tel-list" v-if="!serachValue">
+					<view v-for="(record, index) in sortItems" :key="index" v-show="record.isCity" class="select-row">
+						<view class="citys-item-letter"
+							:id="'city-letter-' + (record.name === '#' ? '0' : record.name)">
+							{{ record.name }}
+						</view>
+						<view class="citys-item" v-for="(item, inx) in record.citys" :key="inx">
+							<checkbox v-if="!isSingle" class='round' :value="findValue(item)"
+								:checked="findCheck(item)" />
+							<text @click="contactTrigger(item)">{{ item.cityName }}</text>
+						</view>
 					</view>
 				</view>
-			</view>
-			<!-- 城市列表(搜索后)  -->
-			<view class="tel-list" v-if="serachData">
-				<view v-for="(item, index) in searchDatas" :key="index" class="select-row">
-					<view class="citys-item" :key="index" @click="contactTrigger(item)">{{ item.name }}</view>
+				<!-- 联系人列表(搜索后)  -->
+				<view class="tel-list" v-if="serachValue">
+					<view v-for="(item, index) in searchDatas" :key="index" class="select-row">
+						<view class="citys-item" :key="index">
+							<checkbox v-if="!isSingle" class='round' :value="findValue(item)"
+								:checked="findCheck(item)" />
+							<text @click="contactTrigger(item)">{{ item.name }}</text>
+						</view>
+					</view>
 				</view>
-			</view>
-		</scroll-view>
+			</scroll-view>
+		</checkbox-group>
 		<!-- 联系人选择索引-->
-		<view class="tel-indexs-view" v-if="!serachData">
+		<view class="tel-indexs-view" v-if="!serachValue">
 			<view class="tel-indexs">
 				<view v-for="(cityIns, index) in handleTels" class="tel-indexs-text"
 					:class="{ 'active': cityIns.forName === forName }" v-show="cityIns.isCity" :key="index"
 					@click="telIndex(cityIns.forName)">
 					{{ cityIns.name }}
 				</view>
+			</view>
+		</view>
+		<view class="ui-footer" v-if="!isSingle">
+			<view class="footer-box">
+				<button class="select-btn" @click="selectAll">{{ checkbox_all ? '取消': '全选' }}</button>
+				<text>已选({{ selectData.length }})</text>
+				<button @click="handleComplete">完成</button>
 			</view>
 		</view>
 	</view>
@@ -61,17 +77,24 @@
 			isSearch: {
 				type: Boolean,
 				default: true
+			},
+			isSingle: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data() {
 			return {
-				contactList: [],
+				contactList: [], //联系人列表
 				handleTels: [], // 处理后的联系人数据
 				telIndexs: [], // 城市索引
-				serachData: '', // 搜索的城市
+				serachValue: '', // 搜索的联系人
 				scrollTop: 0, //scroll-view 滑动的距离
 				toView: 'city-letter-Find', //锚链接 初始值
 				forName: '',
+				checkbox_all: false, //是否全选
+				selectData: [], //已选取的数据，
+				contactData: [],
 			}
 		},
 		created() {
@@ -81,6 +104,31 @@
 			this.buildTelindexs();
 		},
 		computed: {
+			findCheck: function() {
+				return function(item) {
+					return this.contactData.find(n => {
+						return n.phone === item.phone
+					}).checked
+				}
+			},
+			findValue() {
+				return function(item) {
+					return this.contactData.find(n => {
+						return n.phone === item.phone
+					}).phone
+				}
+			},
+			getAddress: function() {
+				return function(item) {
+					const {
+						province,
+						city,
+						district,
+						address
+					} = item;
+					return province + city + district + address;
+				}
+			},
 			/**
 			 * @desc 城市列表排序
 			 * @return  Array
@@ -105,14 +153,19 @@
 			searchDatas() {
 				const searchData = [];
 				for (let i = 0; i < this.contactList.length; i++) {
-					if (this.contactList[i][this.formatName].indexOf(this.serachData) !== -1) {
+					if (this.contactList[i][this.formatName].indexOf(this.serachValue) !== -1) {
 						searchData.push({
 							oldData: this.contactList[i],
+							phone: this.contactList[i].phone,
 							name: this.contactList[i][this.formatName]
 						});
 					}
 				}
-				return searchData;
+				return searchData.map((n, i) => {
+					n.index = i
+					n.checked = false
+					return n
+				})
 			}
 		},
 		watch: {
@@ -125,7 +178,8 @@
 			 * 监听输入框的值
 			 */
 			keyInput(value) {
-				this.serachData = value;
+				this.serachValue = value;
+				this.contactData = [...this.searchDatas]
 			},
 			/**
 			 * 初始化
@@ -175,11 +229,16 @@
 
 					this.handleTels[index].citys.push({
 						cityName: this.contactList[i][this.formatName],
+						phone: this.contactList[i].phone,
+						index: i,
 						unicode: unicode,
-						oldData: this.contactList[i]
+						oldData: this.contactList[i],
+						checked: false,
 					});
 				}
-				console.log(this.handleTels, 'hhhhhhh')
+				this.handleTels.forEach(n => {
+					this.contactData = [...this.contactData, ...n.citys]
+				})
 			},
 			/**
 			 * @desc 得到城市的首字母
@@ -203,26 +262,92 @@
 			 *  @param Object
 			 */
 			contactTrigger(item) {
+				if (!this.isSingle) return
 				// 传值到父组件
-				this.$emit('click', item.oldData ? item.oldData : item);
+				this.$emit('click', item.oldData ? [item.oldData] : [item]);
 			},
 			/**
 			 * @desc 滑动到城市索引所在的地方
 			 * @param id String 城市索引
 			 */
 			telIndex(id) {
-				console.log(id, '0000')
 				this.forName = id
 				this.toView = id;
+			},
+			/**
+			 * @desc 选择全部
+			 */
+			selectAll() {
+				if (this.checkbox_all) {
+					this.selectData = []
+					this.contactData.map(n => {
+						n.checked = false
+						return n
+					})
+				} else {
+					this.contactData.map(n => {
+						n.checked = true
+						return n
+					})
+					this.selectData = this.contactData.map(n => {
+						return n.oldData
+					})
+				}
+				this.checkbox_all = !this.checkbox_all
+				this.contactData = [...this.contactData]
+				this.$forceUpdate()
+			},
+			/**
+			 * @desc 勾选回调
+			 */
+			checkboxChange(val) {
+				this.selectData = []
+				// this.selectData = val.detail.value
+				this.contactData.map(n => {
+					n.checked = false
+					return n
+				})
+				val.detail.value.forEach(n => {
+					const item = this.contactData.find(item => {
+						return item.phone === n
+					})
+					this.$set(item, 'checked', true)
+					this.selectData.push(item.oldData)
+				})
+				this.contactData = [...this.contactData]
+			},
+			handleComplete() {
+				this.$emit('click', this.selectData);
 			}
 		},
 	}
 </script>
 
 <style lang="scss" scoped>
-	.active {
-		color: #FFFFFF !important;
-		background-color: #FD913B;
+	::v-deep {
+		.uni-checkbox-input {
+			border-radius: 2600px !important;
+			margin-right: 20rpx;
+		}
+
+		.uni-checkbox-input-checked {
+			color: #fff !important;
+			background-color: #FD913B !important;
+			border: none;
+		}
+
+		.uni-checkbox-input {
+			// border: none;
+		}
+	}
+
+	// .active {
+	// 	color: #FFFFFF !important;
+	// 	background-color: #FD913B;
+	// }
+
+	.round {
+		border-radius: 2600px !important;
 	}
 
 	.ui-box {
@@ -247,8 +372,8 @@
 	.ui-select-main {
 		position: relative;
 		width: 100%;
-		height: calc(100% - 40rpx);
-		// margin-bottom: 30rpx;
+		height: calc(100vh - 520rpx);
+		margin-bottom: 30rpx;
 		// background: #f6f5fa;
 
 		// border-radius: 20rpx;
@@ -318,6 +443,42 @@
 				&:last-child {
 					margin-bottom: 0;
 				}
+			}
+		}
+	}
+
+	.ui-footer {
+		position: fixed;
+		z-index: 999999;
+		width: 100%;
+		bottom: 0;
+		left: 0;
+		background-color: #ffffff;
+
+		.footer-box {
+			padding: 0 32rpx;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			height: 98rpx;
+
+			.select-btn {
+				border: 2px solid rgba(229, 229, 229, 1);
+				background-color: #fff;
+				color: #333 !important;
+			}
+
+			button {
+				height: 60rpx;
+				width: 148rpx;
+				line-height: 55rpx;
+				font-size: 28rpx;
+			}
+
+			text {
+				font-size: 32rpx;
+				color: #888888;
+				font-weight: 600;
 			}
 		}
 	}

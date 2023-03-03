@@ -4,6 +4,7 @@ import com.newlandnpt.varyar.common.core.domain.config.AppConfig;
 import com.newlandnpt.varyar.common.core.domain.config.DeviceConfig;
 import com.newlandnpt.varyar.common.core.domain.config.SubRegion;
 import com.newlandnpt.varyar.common.core.domain.config.WalabotConfig;
+import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.exception.base.BaseException;
 import com.newlandnpt.varyar.system.core.device.DeviceSettingsDisposer;
 import com.newlandnpt.varyar.system.domain.TDevice.RadarWaveDeviceSettings;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
 
+import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_ACCESS_KEY;
 import static com.newlandnpt.varyar.system.domain.TRoomZone.FLAG_YES;
 
 /**
@@ -34,6 +36,9 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
     private String deviceConfigTopic;
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
+
+    @Autowired
+    private RedisCache redisCache;
 
     @Override
     protected Class<RadarWaveDeviceSettings> supportType() {
@@ -53,29 +58,49 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
         if(deviceConfig.getWalabotConfig() == null){
             deviceConfig.setWalabotConfig(new WalabotConfig());
         }
-        // 相当于房间长度 ，https://walabot-home.cn/#/config/rooms 控制台页面获取大于0.3
-        deviceConfig.getWalabotConfig().setyMax(settings.getDeviceLocation().getRoomLength().floatValue());
-        //https://walabot-home.cn/#/config/rooms 控制台页面获取默认值0.3
-        deviceConfig.getWalabotConfig().setyMin(0.3F);
-        // 左侧距离
-        deviceConfig.getWalabotConfig().setxMin(-settings.getDeviceLocation().getRoomLeft().floatValue());
-        // 右侧距离
-        deviceConfig.getWalabotConfig().setxMax(settings.getDeviceLocation().getRoomRight().floatValue());
-        // 高度最小值 ，https://walabot-home.cn/#/config/rooms 控制台页面获取默认值0
-        deviceConfig.getWalabotConfig().setzMin(0F);
-        // 房间高度
-        deviceConfig.getWalabotConfig().setzMax(settings.getDeviceLocation().getRoomHeight().floatValue());
-        // 高度最大值 ，https://walabot-home.cn/#/config/rooms 控制台页面获取默认值1
-        deviceConfig.getWalabotConfig().setzMax(1F);
-        // 默认墙壁模式：0
-        deviceConfig.getWalabotConfig().setSensorMounting(0);
-        // 墙壁模式下 设置高度
-        deviceConfig.getWalabotConfig().setSensorHeight(settings.getDeviceLocation().getRoomHeight().floatValue());
+        //根据安装位置判断
+        if("0".equals(settings.getInstallPosition())){
+            // 相当于房间长度 ，https://walabot-home.cn/#/config/rooms 控制台页面获取大于0.3
+            deviceConfig.getWalabotConfig().setyMax(settings.getDeviceLocationWall().getRoomLength().floatValue());
+            //https://walabot-home.cn/#/config/rooms 控制台页面获取默认值0.3
+            deviceConfig.getWalabotConfig().setyMin(0.3F);
+            // 左侧距离
+            deviceConfig.getWalabotConfig().setxMin(-settings.getDeviceLocationWall().getRoomLeft().floatValue());
+            // 右侧距离
+            deviceConfig.getWalabotConfig().setxMax(settings.getDeviceLocationWall().getRoomRight().floatValue());
+            // 高度最小值 ，https://walabot-home.cn/#/config/rooms 控制台页面获取默认值0
+            deviceConfig.getWalabotConfig().setzMin(0F);
+            // 房间高度
+            deviceConfig.getWalabotConfig().setzMax(settings.getDeviceLocationWall().getRoomHeight().floatValue());
+            // 高度最大值 ，https://walabot-home.cn/#/config/rooms 控制台页面获取默认值1
+            deviceConfig.getWalabotConfig().setzMax(1F);
+            // 默认墙壁模式：0
+            deviceConfig.getWalabotConfig().setSensorMounting(0);
+            // 墙壁模式下 设置高度
+            deviceConfig.getWalabotConfig().setSensorHeight(settings.getDeviceLocationWall().getRoomHeight().floatValue());
+         }else {
+            // 相当于房间长度 ，https://walabot-home.cn/#/config/rooms 控制台页面获取大于0.3
+            deviceConfig.getWalabotConfig().setyMax(settings.getDeviceLocationTop().getRoomFront().floatValue());
+            //https://walabot-home.cn/#/config/rooms 控制台页面获取默认值0.3
+            deviceConfig.getWalabotConfig().setyMin(-settings.getDeviceLocationTop().getRoomBehind().floatValue());
+            // 左侧距离
+            deviceConfig.getWalabotConfig().setxMin(-settings.getDeviceLocationTop().getRoomLeft().floatValue());
+            // 右侧距离
+            deviceConfig.getWalabotConfig().setxMax(settings.getDeviceLocationTop().getRoomRight().floatValue());
+            // 高度最小值 ，https://walabot-home.cn/#/config/rooms 控制台页面获取默认值0
+            deviceConfig.getWalabotConfig().setzMin(0F);
+            // 房间高度
+            deviceConfig.getWalabotConfig().setzMax(settings.getDeviceLocationWall().getRoomHeight().floatValue());
+            // 高度最大值 ，https://walabot-home.cn/#/config/rooms 控制台页面获取默认值1
+            deviceConfig.getWalabotConfig().setzMax(1F);
+            // 默认墙壁模式：0
+            deviceConfig.getWalabotConfig().setSensorMounting(0);
+            // 墙壁模式下 设置高度
+            deviceConfig.getWalabotConfig().setSensorHeight(settings.getDeviceLocationWall().getRoomHeight().floatValue());
 
-        deviceConfig.getWalabotConfig().setEnterDuration(FLAG_YES.equals(settings.getDeviceRoomParameter().getInMonitorFlag())?
-                Optional.ofNullable(settings.getDeviceRoomParameter().getEntryTime()).map(p->p.intValue()).orElse(0):0);
-        deviceConfig.getWalabotConfig().setExitDuration(FLAG_YES.equals(settings.getDeviceRoomParameter().getOutMonitorFlag())?
-                Optional.ofNullable(settings.getDeviceRoomParameter().getDepartureTime()).map(p->p.intValue()).orElse(0):0);
+        }
+        deviceConfig.getWalabotConfig().setEnterDuration(1);
+        deviceConfig.getWalabotConfig().setExitDuration(1);
 
         if(CollectionUtils.isNotEmpty(settings.getRoomZones())){
             if(deviceConfig.getWalabotConfig().getTrackerSubRegions() == null){
@@ -86,18 +111,25 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
                     .sorted(Comparator.comparing(p->p.getRoomZoneId()))
                     .forEach(roomZone ->{
                         SubRegion subRegion = new SubRegion();
-                        subRegion.setEnterDuration(FLAG_YES.equals(roomZone.getInMonitorFlag())?
-                                Optional.ofNullable(roomZone.getEntryTime()).map(p->p.intValue()).orElse(0):0);
-                        subRegion.setExitDuration(FLAG_YES.equals(roomZone.getOutMonitorFlag())?
-                                Optional.ofNullable(roomZone.getDepartureTime()).map(p->p.intValue()).orElse(0):0);
+                        subRegion.setEnterDuration(1);
+                        subRegion.setExitDuration(1);
+                        if ("0".equals(roomZone.getZoneType())) {
+                            subRegion.setIsFallingDetection(true);
+                            subRegion.setIsPresenceDetection(true);
 
-                        subRegion.setIsFallingDetection(FLAG_YES.equals(roomZone.getFallFlag()));
-                        subRegion.setIsPresenceDetection(FLAG_YES.equals(roomZone.getExistFlag()));
+                        }else{
+                            subRegion.setIsFallingDetection(false);
+                            subRegion.setIsPresenceDetection(false);
+                        }
                         subRegion.setName(roomZone.getName());
+                        if("0".equals(settings.getInstallPosition())){
+                            subRegion.setyMin(Optional.ofNullable(roomZone.getY1()).map(p->p.floatValue()<0.3?0.3f:p.floatValue()).orElse(null));
 
+                        }else{
+                            subRegion.setyMin(Optional.ofNullable(roomZone.getY1()).map(p->p.floatValue()).orElse(null));
+                        }
                         subRegion.setxMin(Optional.ofNullable(roomZone.getX1()).map(p->p.floatValue()).orElse(null));
                         subRegion.setxMax(Optional.ofNullable(roomZone.getX2()).map(p->p.floatValue()).orElse(null));
-                        subRegion.setyMin(Optional.ofNullable(roomZone.getY1()).map(p->p.floatValue()<0.3?0.3f:p.floatValue()).orElse(null));
                         subRegion.setyMax(Optional.ofNullable(roomZone.getY2()).map(p->p.floatValue()).orElse(null));
                         subRegion.setzMin(Optional.ofNullable(roomZone.getZ1()).map(p->p.floatValue()).orElse(null));
                         subRegion.setzMax(Optional.ofNullable(roomZone.getZ2()).map(p->p.floatValue()).orElse(null));
@@ -106,6 +138,10 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
         }else{
             deviceConfig.getWalabotConfig().setTrackerSubRegions(new ArrayList<>(0));
         }
+
+        // 清除进出缓存key
+        String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + deviceNo;
+        redisCache.deleteObject(redisKey);
 
         SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic+":vayyar",
                 MessageBuilder.withPayload(deviceConfig)

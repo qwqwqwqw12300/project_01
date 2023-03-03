@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -25,7 +26,8 @@ public class DeviceRequest extends PageRequest {
     private String roomId;
 
     @ApiModelProperty("设备名称")
-    @Size(min = 0, max = 50, message = "设备名称不能超过50个字符")
+    @Pattern(regexp = "^[\\u4e00-\\u9fa5a-zA-Z0-9]+$",message = "设备名称限制中英文加数字")
+    @Size(min = 0, max = 20, message = "设备名称不能超过20个字符")
     private String deviceName;
 
     @ApiModelProperty("设备类型")
@@ -35,6 +37,9 @@ public class DeviceRequest extends PageRequest {
     @ApiModelProperty("设备编号")
     @Size(min = 0, max = 50, message = "设备编号不能超过50个字符")
     private String deviceNo;
+
+    @ApiModelProperty("设备安装位置")
+    private String installPosition;
 
     @ApiModelProperty("位置")
     @Size(min = 0, max = 100, message = "位置信息不能超过100个字符")
@@ -51,6 +56,13 @@ public class DeviceRequest extends PageRequest {
 
     @ApiModelProperty("高度")
     private BigDecimal roomHeight;
+
+
+    @ApiModelProperty("前距离")
+    private BigDecimal roomFront;
+
+    @ApiModelProperty("后距离")
+    private BigDecimal roomBehind;
 
     @ApiModelProperty("进入时间")
     private Long entryTime;
@@ -86,6 +98,22 @@ public class DeviceRequest extends PageRequest {
     @Size(min = 0, max = 1, message = "操作标识不能超过1个字符")
     private String flag;
 
+    public BigDecimal getRoomFront() {
+        return roomFront;
+    }
+
+    public void setRoomFront(BigDecimal roomFront) {
+        this.roomFront = roomFront;
+    }
+
+    public BigDecimal getRoomBehind() {
+        return roomBehind;
+    }
+
+    public void setRoomBehind(BigDecimal roomBehind) {
+        this.roomBehind = roomBehind;
+    }
+
     public String getFlag() {
         return flag;
     }
@@ -100,6 +128,14 @@ public class DeviceRequest extends PageRequest {
 
     public void setEntryTime(Long entryTime) {
         this.entryTime = entryTime;
+    }
+
+    public String getInstallPosition() {
+        return installPosition;
+    }
+
+    public void setInstallPosition(String installPosition) {
+        this.installPosition = installPosition;
     }
 
     public Long getDepartureTime() {

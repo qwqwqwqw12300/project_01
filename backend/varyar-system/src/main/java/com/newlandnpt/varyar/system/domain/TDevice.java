@@ -1,20 +1,16 @@
 package com.newlandnpt.varyar.system.domain;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.alibaba.fastjson2.JSON;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.newlandnpt.varyar.common.core.domain.entity.DeviceLocation;
-import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
-import com.newlandnpt.varyar.common.core.domain.entity.DeviceRoomParameter;
+import com.newlandnpt.varyar.common.core.domain.entity.*;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
+import com.newlandnpt.varyar.common.core.domain.model.LeaveBedWarnParameter;
 import org.springframework.data.annotation.Transient;
 
 import javax.validation.constraints.NotBlank;
@@ -119,6 +115,30 @@ public class TDevice extends BaseEntity
     /**是否在线 0:不在线  1:在线*/
     @Transient
     private String onlineFlag;
+    /**是否有人 0:无人  1:有人 */
+    @Transient
+    private String hasPerson;
+
+    /** 当前电量**/
+    @Transient
+    private String currentPower;
+
+    /** 当前步数**/
+    @Transient
+    private String currentSteps;
+
+    /**gps数据**/
+    @Transient
+    private String gpsData;
+
+    /**LBS数据**/
+    @Transient
+    private String lbsData;
+
+    /**Wi-Fi数据**/
+    @Transient
+    private String wifiData;
+
     /**设备未读消息数量*/
     @Transient
     private String msgNum;
@@ -155,6 +175,46 @@ public class TDevice extends BaseEntity
         this.nowLoacation = nowLoacation;
     }
 
+    public String getCurrentPower() {
+        return currentPower;
+    }
+
+    public void setCurrentPower(String currentPower) {
+        this.currentPower = currentPower;
+    }
+
+    public String getCurrentSteps() {
+        return currentSteps;
+    }
+
+    public void setCurrentSteps(String currentSteps) {
+        this.currentSteps = currentSteps;
+    }
+
+    public String getGpsData() {
+        return gpsData;
+    }
+
+    public void setGpsData(String gpsData) {
+        this.gpsData = gpsData;
+    }
+
+    public String getLbsData() {
+        return lbsData;
+    }
+
+    public void setLbsData(String lbsData) {
+        this.lbsData = lbsData;
+    }
+
+    public String getWifiData() {
+        return wifiData;
+    }
+
+    public void setWifiData(String wifiData) {
+        this.wifiData = wifiData;
+    }
+
     public String getMsgNum() {
         return this.msgNum;
     }
@@ -169,6 +229,14 @@ public class TDevice extends BaseEntity
 
     public void setOnlineFlag(String onlineFlag) {
         this.onlineFlag = onlineFlag;
+    }
+
+    public String getHasPerson() {
+        return hasPerson;
+    }
+
+    public void setHasPerson(String hasPerson) {
+        this.hasPerson = hasPerson;
     }
 
     public void setDeviceId(Long deviceId)
@@ -444,32 +512,84 @@ public class TDevice extends BaseEntity
         /**
          * 房间子区域
          */
-        private List<TRoomZone> roomZones;
+        private List<TRoomZone> roomZones = new ArrayList<>();
+
+
+        /**
+         * 设备安装位置：0:壁挂、1:顶挂
+         * */
+        private String installPosition = "0";
 
         /**
          * 设备位置信息
          * */
-        private DeviceLocation deviceLocation;
+        @Deprecated
+        private DeviceLocation deviceLocation =new DeviceLocation();
+
+        private DeviceLocationTop deviceLocationTop =new DeviceLocationTop();
+
+        private DeviceLocationWall deviceLocationWall =new DeviceLocationWall();
 
         /**
          * 设备房间设置信息
          */
+        @Deprecated
         private DeviceRoomParameter deviceRoomParameter;
 
+        /**
+         * 设备预警规则
+         */
+        private DeviceWarnParameter deviceWarnParameter =new DeviceWarnParameter();
+
+
+        public DeviceWarnParameter getDeviceWarnParameter() {
+            return deviceWarnParameter;
+        }
+
+        public void setDeviceWarnParameter(DeviceWarnParameter deviceWarnParameter) {
+            this.deviceWarnParameter = deviceWarnParameter;
+        }
+        @Deprecated
         public DeviceRoomParameter getDeviceRoomParameter() {
             return deviceRoomParameter;
         }
-
+        @Deprecated
         public void setDeviceRoomParameter(DeviceRoomParameter deviceRoomParameter) {
             this.deviceRoomParameter = deviceRoomParameter;
         }
+        @Deprecated
 
         public DeviceLocation getDeviceLocation() {
             return deviceLocation;
         }
+        @Deprecated
 
         public void setDeviceLocation(DeviceLocation deviceLocation) {
             this.deviceLocation = deviceLocation;
+        }
+
+        public String getInstallPosition() {
+            return installPosition;
+        }
+
+        public void setInstallPosition(String installPosition) {
+            this.installPosition = installPosition;
+        }
+
+        public DeviceLocationTop getDeviceLocationTop() {
+            return deviceLocationTop;
+        }
+
+        public void setDeviceLocationTop(DeviceLocationTop deviceLocationTop) {
+            this.deviceLocationTop = deviceLocationTop;
+        }
+
+        public DeviceLocationWall getDeviceLocationWall() {
+            return deviceLocationWall;
+        }
+
+        public void setDeviceLocationWall(DeviceLocationWall deviceLocationWall) {
+            this.deviceLocationWall = deviceLocationWall;
         }
 
         public List<TRoomZone> getRoomZones() {
@@ -500,6 +620,59 @@ public class TDevice extends BaseEntity
          * Map Key值（P：普通电话  0：sos电话  1：按钮1  2：按钮2  3：按钮3  4：按钮4)
          * */
         public Map<String ,DevicePhone> mapSet;
+
+
+        /**
+         * 通讯录设置
+         */
+        public List<DeviceIncomingCall> addressBookList;
+
+        /**
+         * 呼入限制
+         */
+        public String incomingCallRestrict = "2";
+
+        /**
+         * 位置守护任务
+         */
+        public List<LocationJob> locationJobs;
+
+        /**
+         * 禁用时段
+         */
+        public Map<Integer,ClassTimePeriod> classTimePeriods;
+
+        public Map<Integer, ClassTimePeriod> getClassTimePeriods() {
+            return classTimePeriods;
+        }
+
+        public void setClassTimePeriods(Map<Integer, ClassTimePeriod> classTimePeriods) {
+            this.classTimePeriods = classTimePeriods;
+        }
+
+        public List<LocationJob> getLocationJobs() {
+            return locationJobs;
+        }
+
+        public void setLocationJobs(List<LocationJob> locationJobs) {
+            this.locationJobs = locationJobs;
+        }
+
+        public List<DeviceIncomingCall> getAddressBookList() {
+            return addressBookList;
+        }
+
+        public void setAddressBookList(List<DeviceIncomingCall> addressBookList) {
+            this.addressBookList = addressBookList;
+        }
+
+        public String getIncomingCallRestrict() {
+            return incomingCallRestrict;
+        }
+
+        public void setIncomingCallRestrict(String incomingCallRestrict) {
+            this.incomingCallRestrict = incomingCallRestrict;
+        }
 
         public List<DevicePhone> getList() {
             return list;

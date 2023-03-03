@@ -10,6 +10,7 @@ import com.newlandnpt.varyar.common.exception.ServiceException;
 import com.newlandnpt.varyar.common.exception.base.BaseException;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.common.utils.StringUtils;
+import com.newlandnpt.varyar.common.utils.tcp.domain.DeviceOnlineInfo;
 import com.newlandnpt.varyar.system.core.device.settings.RadarDeviceSettingsDisposer;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TDeviceFence;
@@ -20,6 +21,7 @@ import com.newlandnpt.varyar.system.service.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -55,8 +57,10 @@ public class DeviceServiceImpl implements IDeviceService {
     private IRoomService roomService;
     @Autowired
     private IRoomZoneService roomZoneService;
+//    @Autowired
+//    private IDeviceFenceService deviceFenceService;
     @Autowired
-    private IDeviceFenceService deviceFenceService;
+    private CommonDeviceFenceServiceImpl deviceFenceService;
     @Autowired
     private StateMapper stateMapper;
 
@@ -465,8 +469,20 @@ public class DeviceServiceImpl implements IDeviceService {
             String deviceNo = device.getNo();
             if (!redisCache.hasKey(CacheConstants.DEVICE_STATE_KEY + deviceNo)) {
                 device.setOnlineFlag("0");
+                device.setHasPerson("0");
             }else {
                 device.setOnlineFlag("1");
+                DeviceOnlineInfo info = redisCache.getCacheObject(CacheConstants.DEVICE_ONLINE_INFO+ deviceNo);
+                if(!Objects.isNull(info)){
+                    BeanUtils.copyProperties(info,device);
+                }
+                // 设备在线状态再去获取是否有人
+                Boolean roomPresence = redisCache.getCacheObject(CacheConstants.PRESENCE_ROOM_KEY+ deviceNo);
+                if (roomPresence!=null && roomPresence == true) {
+                    device.setHasPerson("1");
+                }else{
+                    device.setHasPerson("0");
+                }
             }
 
         }
@@ -481,6 +497,10 @@ public class DeviceServiceImpl implements IDeviceService {
                 device.setOnlineFlag("0");
             }else {
                 device.setOnlineFlag("1");
+                DeviceOnlineInfo info = redisCache.getCacheObject(CacheConstants.DEVICE_ONLINE_INFO+ deviceNo);
+                if(!Objects.isNull(info)){
+                    BeanUtils.copyProperties(info,device);
+                }
             }
         return  device;
     }
@@ -520,8 +540,9 @@ public class DeviceServiceImpl implements IDeviceService {
         List<ExtraVo> result = new ArrayList<ExtraVo>();
         for (String i:keys){
             ExtraVo item = redisCache.getCacheObject(i);
-            if (item!=null)
+            if (item!=null) {
                 result.add(redisCache.getCacheObject(i));
+            }
         }
         return result;
     }
@@ -529,8 +550,9 @@ public class DeviceServiceImpl implements IDeviceService {
      * 重置单个设备缓存
      */
     protected void resetDeviceCache(TDevice device){
-        if(device!=null)
+        if(device!=null) {
             redisCache.setCacheObject(getCacheKey(device.getNo()), device);
+        }
     }
 
     /**

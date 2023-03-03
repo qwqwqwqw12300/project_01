@@ -1,0 +1,114 @@
+<template>
+	<view class="ui-detail">
+		<view class="detail-box">
+			<image class="device-img" src="/static/images/electron-card.png"></image>
+			<view class="device-info">
+				<view class="title">
+					<text class="name">艾吉通</text>
+					<text class="line online">在线</text>
+				</view>
+				<view class="status">
+					<u-icon name="/static/images/run-status.png" size="44rpx" style="margin-right: 6rpx;" />
+					<text>运行状态: 正常</text>
+				</view>
+				<view class="status">
+					<u-icon name="/static/images/card-power.png" size="44rpx" style="margin-right: 6rpx;" />
+					<text>剩余电量: 100%</text>
+				</view>
+			</view>
+			<view class="device-set" @click="handleSet">
+				<u-icon name="/static/images/reStart.png" size="44rpx" style="margin-right: 6rpx;" />配置
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+
+			}
+		},
+		methods: {
+			handleSet() {
+				uni.navigateTo({
+					url: '/pages/equipment/card-set'
+				})
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.ui-detail {
+		margin-top: 52rpx;
+		padding: 0 32rpx;
+
+		.detail-box {
+			background-color: #fff;
+			border-radius: 16rpx;
+			padding: 32rpx;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			.device-img {
+				width: 150rpx;
+				height: 150rpx;
+			}
+
+			.device-info {
+				flex: 1;
+				align-self: flex-start !important;
+				padding-left: 10rpx;
+				padding-top: 10rpx;
+
+				.title {
+					color: #353535;
+					font-size: 34rpx;
+					font-weight: 500;
+					padding-left: 4rpx;
+					display: flex;
+					align-items: center;
+
+					.name {
+						max-width: 240rpx;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						overflow: hidden;
+					}
+
+					.line {
+						margin-left: 30rpx;
+						color: #fff;
+						font-size: 22rpx;
+						padding: 6rpx 12rpx;
+						// background-image: linear-gradient(90deg, #1EC862 0%, #13B98F 100%);
+						border-radius: 4px;
+					}
+				}
+
+				.status {
+					// height: 60rpx;
+					margin-top: 4rpx;
+					display: flex;
+					align-items: center;
+
+					text {
+						font-size: 26rpx;
+						color: #888888;
+					}
+				}
+			}
+
+			.device-set {
+				width: 130rpx;
+				display: flex;
+				color: #FEAE43;
+				font-size: 30rpx;
+				font-weight: 400;
+			}
+		}
+	}
+</style>

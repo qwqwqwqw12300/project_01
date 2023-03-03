@@ -103,6 +103,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
     public static final String EVENT_TYPE_URGENT_FALL = "1";
     public static final String EVENT_TYPE_URGENT_MOVE = "2";
     public static final String EVENT_TYPE_URGENT_LEAVE = "3";
+    public static final String EVENT_TYPE_URGENT_LEAVE_24HOURS = "4";
     public static final String EVENT_TYPE_NORMAL = "";
 
     @Override
@@ -282,6 +283,14 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         }
     }
 
+    @Override
+    public void device24HoursExistsIssue(String deviceNo, TDevice device) {
+        // 发送无人消息
+        SmsEventParamsVo smsEventParamsVo =new SmsEventParamsVo();
+        triggerEvent(EVENT_LEVEL_HIGH, device, "设备 " + device.getName() + " 监控到房间内【离开】超过24小时，请及时处理！",EVENT_TYPE_URGENT_LEAVE_24HOURS,smsEventParamsVo);
+
+    }
+
     /**
      * 新增事件
      *
@@ -298,6 +307,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
         event.setDevicegroupId(device.getDevicegroupId());
         event.setFamilyId(device.getFamilyId());
         event.setDeviceNo(device.getNo());
+        event.setDeviceName(device.getName());
         event.setOrgId(device.getOrgId());
         event.setOrgName(device.getOrgName());
         event.setMemberId(device.getMemberId());
@@ -341,7 +351,7 @@ public class DeviceEventServiceImpl implements DeviceEventService {
             msgService.sendMsgByEvent(event);
 
             //紧急事件触发发送SMS事件短信模板接口
-            if (EVENT_LEVEL_HIGH.equals(event.getEventType())) {
+            if (EVENT_LEVEL_HIGH.equals(event.getLevel())) {
                 smsService.sendSmsEvent(event, smsEventParamsVo, event.getEventType());
             }
         }
