@@ -126,10 +126,8 @@ public class AccessCalculateListener implements RocketMQListener<TDevice> {
                     }
                     Calendar now = Calendar.getInstance();
                     now.setTime(currentTime);
-                    int dayOfWeek = now.get(Calendar.DAY_OF_WEEK);
-                    if(dayOfWeek == 7){
-                        dayOfWeek = 0;
-                    }
+                    // calendar 取值是1-7（1代表星期天）对应设置的值为0-6
+                    int dayOfWeek = now.get(Calendar.DAY_OF_WEEK)-1;
                     final int finalDayOfWeek = dayOfWeek;
                     if(Stream.of(rule.getWeek()).noneMatch(p->p.equals(""+finalDayOfWeek))){
                         log.debug(">>>>> 无人预警规则：{},当前星期{},未在执行计算星期{}内,忽略",rule.getWarnRuleName(),finalDayOfWeek,rule.getWeek());
@@ -149,7 +147,6 @@ public class AccessCalculateListener implements RocketMQListener<TDevice> {
                         return;
                     }
                 }
-
 
                 if(rule.getStartTime() == null){
                     // 起始时间没提供默认给 0点0分0秒作为计算时间点
