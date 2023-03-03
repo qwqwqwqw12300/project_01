@@ -8,11 +8,14 @@ import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.common.core.domain.entity.ClassTimePeriod;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceIncomingCall;
 import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
+import com.newlandnpt.varyar.common.core.domain.entity.LocationJob;
 import com.newlandnpt.varyar.common.utils.tcp.req.*;
+import com.newlandnpt.varyar.system.domain.LocationGuard;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TDeviceFence;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import com.newlandnpt.varyar.system.service.impl.CommonDeviceFenceServiceImpl;
+import com.newlandnpt.varyar.system.service.impl.CommonLocationGuardServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -23,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -42,7 +46,8 @@ public class DeviceCareCardController extends BaseController {
     private IDeviceService iDeviceService;
     @Autowired
     private CommonDeviceFenceServiceImpl commonDeviceFenceService;
-
+    @Autowired
+    private CommonLocationGuardServiceImpl commonLocationGuardService;
     /**
      * 牵挂卡URL
      */
@@ -71,7 +76,8 @@ public class DeviceCareCardController extends BaseController {
             // 拼接url
             String url = DEVICE_CARE_CARD_URL + "/protect";
             // http请求
-            return httpRequest(url,req);
+//            return httpRequest(url,req);
+            return success();
         }catch (Exception e){
             return AjaxResult.error(e.getMessage());
         }
@@ -224,7 +230,8 @@ public class DeviceCareCardController extends BaseController {
             // 拼接url
             String url = DEVICE_CARE_CARD_URL + "/incoming/call";
             // http请求
-            return httpRequest(url,req);
+//            return httpRequest(url,req);
+            return success();
         }catch (Exception e){
             return AjaxResult.error(e.getMessage());
         }
@@ -256,7 +263,8 @@ public class DeviceCareCardController extends BaseController {
                 iDeviceService.updateDevice(device);
             }
             // http请求
-            return httpRequest(url,req);
+//            return httpRequest(url,req);
+            return success();
         }catch (Exception e){
             return AjaxResult.error(e.getMessage());
         }
@@ -308,9 +316,85 @@ public class DeviceCareCardController extends BaseController {
 
     @ApiOperation("设置位置守护")
     @PostMapping("/setLocationGuard")
-    public AjaxResult setLocationGuard() {
+    public AjaxResult setLocationGuard(@RequestBody @Validated LocationJob locationJob) {
         try{
-            // TODO:入库
+            //获取设备id,存在则修改原记录
+            TDevice device = iDeviceService.selectByDeviceNo(locationJob.getDeviceNo());
+            if (Objects.isNull(device)) {
+                return AjaxResult.error("数据库中不存在此设备。");
+            }
+            if(DEVICE_TYPE.equals(device.getType())){
+                // 获取设备参数
+                TDevice.WatchSettings object = getParameter(device);
+                // 获取位置守护信息
+                List<LocationJob> locationJobs = object.getLocationJobs();
+                // 如果位置守护信息为空
+                if(Objects.isNull(locationJobs)){
+                    locationJobs = new ArrayList<>();
+                }
+                // 如果任务的uuid不为空
+                if( !Objects.isNull(locationJob.getUuid())){
+                    LocationJob oldLocationJob = locationJobs.stream().filter(job -> job.getUuid().equals(locationJob.getUuid())).findAny().orElse(null);
+                   if(!Objects.isNull(oldLocationJob)) {
+                       // 被任务的index
+                       int index = locationJobs.indexOf(oldLocationJob);
+                       // 新建地点列表
+                       List<LocationJob.place> places = oldLocationJob.getPlaces();
+                       // 待删除的地点下标
+                       List<LocationJob.place> delPlaceIndexs = new ArrayList<>();
+                       // 已被更新过的地点下标
+                       List<LocationJob.place> updatedPlaceIndexs = new ArrayList<>();
+                       // 本次更新需要新建的地点
+                       List<LocationJob.place> collect = locationJob.getPlaces().stream().filter(place -> Objects.isNull(place.getGeoFenceId())).collect(Collectors.toList());
+                       locationJob.getPlaces().removeAll(collect);
+                       // 删除与更新
+                       for(int i=0;i<places.size();i++){
+                           // 寻找高德围栏ID相同的地点
+                           LocationJob.place dataPlace = places.get(i);
+                           LocationJob.place reqPlace = locationJob.getPlaces().stream().filter(place -> {
+                               return place.getGeoFenceId().equals(dataPlace.getGeoFenceId());
+                           }).findAny().orElse(null);
+                           if(Objects.isNull(reqPlace)){
+                               // 如果没有相同高德ID地点，则需要删除
+                               delPlaceIndexs.add(dataPlace);
+                               // TODO:调用高德删除API
+
+                           } else {
+                               // 拷贝更新属性
+                               oldLocationJob.getPlaces().set(i,reqPlace);
+                               // 更新过的地址可以做标注
+                               updatedPlaceIndexs.add(reqPlace);
+                           }
+                       }
+                       // 删除应被删除的地址
+                       delPlaceIndexs.forEach(del->oldLocationJob.getPlaces().remove(del));
+                       // 删除已被更新过的地址
+                       updatedPlaceIndexs.forEach(updated->locationJob.getPlaces().remove(updated));
+                       // 更新数据
+                       locationJobs.remove(index);
+                       // 新建地点
+                       oldLocationJob.getPlaces().addAll(collect);
+                       // 调用高德ID地点
+                       if(index!=locationJobs.size()) {
+                           locationJobs.set(index, oldLocationJob);
+                       }else{
+                           locationJobs.add(oldLocationJob);
+                       }
+
+                   }
+                }else{
+                     // 给新建任务一个uuid
+                    locationJob.setUuid(IdUtil.simpleUUID());
+                    locationJobs.add(locationJob);
+                }
+                // 调用高德的插入API
+                locationJob.getPlaces().forEach(place -> {
+
+                });
+                object.setLocationJobs(locationJobs);
+                device.setParameter(object);
+                iDeviceService.updateDevice(device);
+            }
             // 调用高德API
             // commonDeviceFenceService.insertTDeviceFence()
         }catch (Exception e){
@@ -355,11 +439,12 @@ public class DeviceCareCardController extends BaseController {
 //                iDeviceService.updateDevice(device);
 //            }
             // http请求发送
-            httpRequest(url,req);
+//          return  httpRequest(url,req);
+            return success();
         }catch (Exception e){
             return AjaxResult.error(e.getMessage());
         }
-        return AjaxResult.success();
+//        return AjaxResult.success();
     }
 
     @ApiOperation("重启设备")
@@ -369,7 +454,8 @@ public class DeviceCareCardController extends BaseController {
             // 拼接url
             String url = DEVICE_CARE_CARD_URL + "/setOperateTerminal";
             // http请求
-            return httpRequest(url,req);
+//            return httpRequest(url,req);
+            return success();
         }catch (Exception e){
             return AjaxResult.error(e.getMessage());
         }
