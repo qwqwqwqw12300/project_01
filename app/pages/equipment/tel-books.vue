@@ -7,7 +7,7 @@
 					<u-icon name="/static/images/add-contact.png" size="44rpx" style="margin-right: 6rpx;" @click="handleAdd"/>
 					添加
 				</view>
-				<view class="action">
+				<view class="action" @click="openTelBooks">
 					<u-icon name="/static/images/tel-book.png" size="44rpx" style="margin-right: 6rpx;" />
 					通讯录
 				</view>
@@ -41,6 +41,7 @@
 				</view>
 			</view>
 		</view>
+		<tel-books ref="telBookRefs"></tel-books>
 	</app-body>
 </template>
 
@@ -121,6 +122,9 @@
 						}
 					}
 				});
+			},
+			openTelBooks() {
+				this.$refs.telBookRefs.show(false)
 			}
 		}
 

@@ -74,12 +74,13 @@
 		methods: {
 			getContact(index) {
 				this.index = index
-				this.$refs.telBookRef.show()
+				this.$refs.telBookRef.show(true)
 			},
-			phoneSelect(phone) {
+			phoneSelect(data) {
+				const { phone,name } = data[0]
 				this.contactList[this.index].phone = phone
+				this.contactList[this.index].name = name
 				this.contactList = [...this.contactList]
-				console.log(this.contactList, 'cccccccllllll')
 			},
 			handleInit() {
 				GetContactsList({}).then(res => {
