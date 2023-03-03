@@ -112,7 +112,7 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
         try{
             device = JSON.parseObject(message.getBody(),TDevice.class);
         }catch (Exception e){
-            log.error(">>>>>> 类型转换异常，忽略执行",e);
+            log.error(">>>>>> 房间进出计算事件消息处理 类型转换异常，忽略执行",e);
             return;
         }
 
@@ -161,6 +161,7 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
     private void leaveBedWarnCalculate(TDevice device, Date calculateTime, TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings) {
         for(int zoneNo=0;zoneNo<radarWaveDeviceSettings.getRoomZones().size();zoneNo++){
             TRoomZone roomZone = radarWaveDeviceSettings.getRoomZones().get(zoneNo);
+            final int finalZoneNo = zoneNo;
             if (roomZone.getLeaveBedWarnParameter() == null || !"1".equals(roomZone.getLeaveBedWarnParameter().getLeaveBedInterval())) {
                 return;
             }
@@ -253,7 +254,7 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
                 if (accessInfos != null) {
                     // 计算周期内有进出记录则取周期内的最后一条
                     accessInfo = accessInfos.stream()
-                            .filter(p -> (ENTER_ROOM.equals(p.getType()) || LEAVE_ROOM.equals(p.getType())) &&
+                            .filter(p -> (("enter_zone_"+finalZoneNo).equals(p.getType()) || ("leave_zone_"+finalZoneNo).equals(p.getType())) &&
                                     p.getTime() > startTime.getTimeInMillis() && p.getTime() < endTime.getTimeInMillis())
                             //按时间倒序排
                             .sorted(Comparator.comparing(p -> -p.getTime()))
@@ -261,6 +262,7 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
                             // 如果没有记录
                             .orElse(null);
                 }
+
 
                 if (accessInfo != null && LEAVE_ROOM.equals(accessInfo.getType())) {
                     // 如果区间内最后一条是离开则证明监控时间范围内离开未回来
@@ -277,7 +279,7 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
                         }
                     }
                     if (triggerWarn) {
-                        deviceEventService.deviceAccessIssue(device.getNo(), roomZone.getName(), "leave_zone_" + zoneNo, (now.getTimeInMillis() - accessInfo.getTime()) / 1000);
+//                        deviceEventService.deviceAccessIssue(device.getNo(), roomZone.getName(), "leave_zone_" + zoneNo, (now.getTimeInMillis() - accessInfo.getTime()) / 1000);
                     }
                 }
             }
