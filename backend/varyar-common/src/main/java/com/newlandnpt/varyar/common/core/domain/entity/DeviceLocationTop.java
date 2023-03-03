@@ -6,19 +6,19 @@ public class DeviceLocationTop {
 
 
     /** 前距离 */
-    private BigDecimal roomFront;
+    private BigDecimal roomFront = new BigDecimal(2);
 
     /** 后距离 */
-    private BigDecimal roomBehind;
+    private BigDecimal roomBehind = new BigDecimal(2);
 
     /** 左侧 */
-    private BigDecimal roomLeft;
+    private BigDecimal roomLeft = new BigDecimal(2);
 
     /** 右侧 */
-    private BigDecimal roomRight;
+    private BigDecimal roomRight = new BigDecimal(2);
 
     /** 高度 */
-    private BigDecimal roomHeight;
+    private BigDecimal roomHeight = new BigDecimal(4);
 
     public BigDecimal getRoomFront() {
         return roomFront;
