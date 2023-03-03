@@ -41,14 +41,14 @@ public class VayyarDeviceAccessTask {
     public void check(){
         TDevice device = new TDevice();
         device.setType(DeviceConstants.TYPE_READER_WAVE);
-        int pageNo = 1,pageSize = 100;
+        int pageNo = 1,pageSize = 10;
         PageInfo pageInfo;
         String triggerTime = DateFormatUtils.format(new Date(), YYYY_MM_DD_HH_MM);
         do {
             PageUtils.startPage(pageNo++, pageSize);
             List<TDevice> list = deviceService.selectDeviceList(device);
 
-            list.forEach(p->{
+            list.stream().parallel().forEach(p->{
                 if(p.getParameter() == null || !(p.getParameter() instanceof TDevice.RadarWaveDeviceSettings)){
                     return;
                 }
