@@ -64,8 +64,10 @@ public class VayyarDeviceAccessTask {
                 }
 
                 boolean hasOutWarn = false;
-                if(radarWaveDeviceSettings.getLeaveBedWarnParameter()!=null&&
-                        CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getLeaveBedWarnParameter().getBeds())
+                if(CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getRoomZones())&&
+                        radarWaveDeviceSettings.getRoomZones().stream()
+                                .anyMatch(roomZone->roomZone.getLeaveBedWarnParameter()!=null&&
+                                        "1".equals(roomZone.getLeaveBedWarnParameter().getLeaveBedInterval()))
                 ){
                     hasOutWarn = true;
                 }

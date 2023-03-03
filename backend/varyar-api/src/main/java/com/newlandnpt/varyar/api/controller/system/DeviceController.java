@@ -916,31 +916,31 @@ public class DeviceController extends BaseController {
 
 
         LeaveBedWarnParameter leaveBedWarnParameter =new LeaveBedWarnParameter();
-        LeaveBedWarnParameter.Bed bed = new LeaveBedWarnParameter.Bed();
-        bed.setName(deviceWarnRequest.getBedName());
-        //设置编号
-        bed.setBedNo(IdUtils.fastSimpleUUID());
-        bed.setDateType(deviceWarnRequest.getDateType());
-        bed.setLeaveBedInterval(deviceWarnRequest.getLeaveBedInterval());
-        bed.setIntervalTime(deviceWarnRequest.getIntervalTime());
-        if("1".equals(deviceWarnRequest.getDateType()))
-        {
-            bed.setWeek(deviceWarnRequest.getWeek());
-
-        }   else
-        {
-            bed.setStartDate(deviceWarnRequest.getStartDate());
-            bed.setEndDate(deviceWarnRequest.getEndDate());
-        }
-
-        bed.setStartTime(deviceWarnRequest.getStartTime());
-        bed.setEndTime(deviceWarnRequest.getEndTime());
-
-
-        List<LeaveBedWarnParameter.Bed> beds = new ArrayList<>();
-        beds.add(bed);
-        leaveBedWarnParameter.setBeds(beds);
-        radarwave.setLeaveBedWarnParameter(leaveBedWarnParameter);
+//        LeaveBedWarnParameter.Bed bed = new LeaveBedWarnParameter.Bed();
+//        bed.setName(deviceWarnRequest.getBedName());
+//        //设置编号
+//        bed.setBedNo(IdUtils.fastSimpleUUID());
+//        bed.setDateType(deviceWarnRequest.getDateType());
+//        bed.setLeaveBedInterval(deviceWarnRequest.getLeaveBedInterval());
+//        bed.setIntervalTime(deviceWarnRequest.getIntervalTime());
+//        if("1".equals(deviceWarnRequest.getDateType()))
+//        {
+//            bed.setWeek(deviceWarnRequest.getWeek());
+//
+//        }   else
+//        {
+//            bed.setStartDate(deviceWarnRequest.getStartDate());
+//            bed.setEndDate(deviceWarnRequest.getEndDate());
+//        }
+//
+//        bed.setStartTime(deviceWarnRequest.getStartTime());
+//        bed.setEndTime(deviceWarnRequest.getEndTime());
+//
+//
+//        List<LeaveBedWarnParameter.Bed> beds = new ArrayList<>();
+//        beds.add(bed);
+//        leaveBedWarnParameter.setBeds(beds);
+//        radarwave.setLeaveBedWarnParameter(leaveBedWarnParameter);
 
         device.setParameter(radarwave);
 
@@ -1042,9 +1042,9 @@ public class DeviceController extends BaseController {
         if(warnRule==null){
             return  error("不存在此规则，删除失败！");
         }
-        //删除规则
-        radarWaveDeviceSettings.getLeaveBedWarnParameter().getBeds()
-                .removeIf(item->item.getBedNo().equals(deviceWarnRequest.getBedNo()));
+//        //删除规则
+//        radarWaveDeviceSettings.getLeaveBedWarnParameter().getBeds()
+//                .removeIf(item->item.getBedNo().equals(deviceWarnRequest.getBedNo()));
 
         try {
             //更新雷达波参数
