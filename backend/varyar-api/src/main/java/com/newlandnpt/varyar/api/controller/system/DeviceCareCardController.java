@@ -389,7 +389,9 @@ public class DeviceCareCardController extends BaseController {
                 }
                 // 调用高德的插入API
                 locationJob.getPlaces().forEach(place -> {
-
+                    System.out.println();
+//                    LocationGuard locationGuard =
+//                    commonLocationGuardService.insertLocationGuard();
                 });
                 object.setLocationJobs(locationJobs);
                 device.setParameter(object);
@@ -454,8 +456,8 @@ public class DeviceCareCardController extends BaseController {
             // 拼接url
             String url = DEVICE_CARE_CARD_URL + "/setOperateTerminal";
             // http请求
-//            return httpRequest(url,req);
-            return success();
+            return httpRequest(url,req);
+//            return success();
         }catch (Exception e){
             return AjaxResult.error(e.getMessage());
         }
