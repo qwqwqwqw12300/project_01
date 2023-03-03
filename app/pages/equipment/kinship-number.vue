@@ -49,7 +49,7 @@
 
 <script>
 	import {
-		GetContactsList,
+		GetFamilyNumber,
 		PostSetContacts,
 	} from '@/common/http/api.js';
 	import {
@@ -93,8 +93,10 @@
 				console.log(this.contactList, 'cccccccllllll')
 			},
 			handleInit() {
-				GetContactsList({}).then(res => {
-
+				GetFamilyNumber({
+					deviceNo: "867977060000248"
+				}).then(res => {
+					console.log(res,'res')
 					this.contactList = this.contactList.map(item => {
 						const data = res.rows.find(n => {
 							return n.orderNum === item.orderNum

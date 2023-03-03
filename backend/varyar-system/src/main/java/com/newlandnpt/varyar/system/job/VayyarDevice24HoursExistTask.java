@@ -38,10 +38,10 @@ public class VayyarDevice24HoursExistTask {
         int pageNo = 1,pageSize = 100;
         PageInfo pageInfo;
         do{
-            PageUtils.startPage(pageNo,pageSize);
+            PageUtils.startPage(pageNo++,pageSize);
             List<TDevice> list = deviceService.selectDeviceList(device);
             list.forEach(p->{
-                 if(p.getParameter() == null || !(p.getParameter() instanceof TDevice.RadarWaveDeviceSettings)){
+                if(p.getParameter() == null || !(p.getParameter() instanceof TDevice.RadarWaveDeviceSettings)){
                     return;
                 }
                 TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)p.getParameter();
@@ -67,8 +67,7 @@ public class VayyarDevice24HoursExistTask {
                     }
                     long currentTimeMills = new Date().getTime();
                     currentTimeMills -=outInfo.getTime()+
-//                            24*60*
-                                    60*1000;
+                            24*60*60*1000;
                     if(currentTimeMills>=0){
                         // 触发24小时无人预警
                         disconnectionService.device24HoursExistsIssue(p.getNo(), p);

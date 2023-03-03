@@ -3,6 +3,7 @@ package com.newlandnpt.varyar.common.core.domain.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class DeviceWarnParameter implements Serializable {
     private String fallWarn="1";
 
     /** 无人预警 */
-    private NobodyWarn nobodyWarn;
+    private NobodyWarn nobodyWarn = new NobodyWarn();
 
 
 //    private LeaveBedWarn leaveBedWarn;
@@ -41,7 +42,7 @@ public class DeviceWarnParameter implements Serializable {
         /** 无人预警连续24小时开关 1开 0关 */
         private String noBodyContinue = "1";
         /** 无人预警规列表 */
-        private List<WarnRule> warnRules;
+        private List<WarnRule> warnRules = new ArrayList<>();
 
         public String getNoBody() {
             return noBody;

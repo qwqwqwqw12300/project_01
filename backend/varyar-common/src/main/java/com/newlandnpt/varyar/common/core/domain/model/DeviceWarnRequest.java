@@ -31,6 +31,12 @@ public class DeviceWarnRequest{
     @Size(min = 0, max = 1, message = "设备类型不能超过1个字符")
     private String deviceType;
 
+
+    /** 规则编号 */
+    private String ruleNo;
+    /** 跌倒预警开关 ：1开 0关  */
+    private String bedNo;
+
     /** 跌倒预警开关 ：1开 0关  */
     private String fallWarn;
     /** 无人预警开关 ：1开 0关 */
@@ -88,55 +94,6 @@ public class DeviceWarnRequest{
      */
     private String bedName;
 
-
-    public String getFallWarn() {
-        return fallWarn;
-    }
-
-    public void setFallWarn(String fallWarn) {
-        this.fallWarn = fallWarn;
-    }
-
-    public String getNoBody() {
-        return noBody;
-    }
-
-    public void setNoBody(String noBody) {
-        this.noBody = noBody;
-    }
-
-    public String getNoBodyContinue() {
-        return noBodyContinue;
-    }
-
-    public void setNoBodyContinue(String noBodyContinue) {
-        this.noBodyContinue = noBodyContinue;
-    }
-
-    public String getLeaveBedInterval() {
-        return leaveBedInterval;
-    }
-
-    public void setLeaveBedInterval(String leaveBedInterval) {
-        this.leaveBedInterval = leaveBedInterval;
-    }
-
-    public long getIntervalTime() {
-        return intervalTime;
-    }
-
-    public void setIntervalTime(long intervalTime) {
-        this.intervalTime = intervalTime;
-    }
-
-    public String getBedName() {
-        return bedName;
-    }
-
-    public void setBedName(String bedName) {
-        this.bedName = bedName;
-    }
-
     public String getDeviceId() {
         return deviceId;
     }
@@ -177,12 +134,52 @@ public class DeviceWarnRequest{
         this.deviceType = deviceType;
     }
 
+    public String getRuleNo() {
+        return ruleNo;
+    }
+
+    public void setRuleNo(String ruleNo) {
+        this.ruleNo = ruleNo;
+    }
+
+    public String getBedNo() {
+        return bedNo;
+    }
+
+    public void setBedNo(String bedNo) {
+        this.bedNo = bedNo;
+    }
+
+    public String getFallWarn() {
+        return fallWarn;
+    }
+
+    public void setFallWarn(String fallWarn) {
+        this.fallWarn = fallWarn;
+    }
+
+    public String getNoBody() {
+        return noBody;
+    }
+
+    public void setNoBody(String noBody) {
+        this.noBody = noBody;
+    }
+
+    public String getNoBodyContinue() {
+        return noBodyContinue;
+    }
+
+    public void setNoBodyContinue(String noBodyContinue) {
+        this.noBodyContinue = noBodyContinue;
+    }
+
     public String getWarnRuleName() {
         return warnRuleName;
     }
 
     public void setWarnRuleName(String warnRuleName) {
-        warnRuleName = warnRuleName;
+        this.warnRuleName = warnRuleName;
     }
 
     public String getRuleSwitch() {
@@ -239,5 +236,29 @@ public class DeviceWarnRequest{
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public String getLeaveBedInterval() {
+        return leaveBedInterval;
+    }
+
+    public void setLeaveBedInterval(String leaveBedInterval) {
+        this.leaveBedInterval = leaveBedInterval;
+    }
+
+    public long getIntervalTime() {
+        return intervalTime;
+    }
+
+    public void setIntervalTime(long intervalTime) {
+        this.intervalTime = intervalTime;
+    }
+
+    public String getBedName() {
+        return bedName;
+    }
+
+    public void setBedName(String bedName) {
+        this.bedName = bedName;
     }
 }

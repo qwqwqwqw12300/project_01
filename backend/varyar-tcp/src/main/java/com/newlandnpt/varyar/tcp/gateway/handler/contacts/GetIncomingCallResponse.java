@@ -59,13 +59,13 @@ public class GetIncomingCallResponse extends MessageHead implements Response {
      * 添加号码和时段(呼入号码=开始时间-结束时间+开
      * 始时间-结束时间+) 最多2个时段
      */
-    private List<addPhoneNumbers> addPhoneNumbers;
+    private List<AddPhoneNumbers> addPhoneNumbers;
 
     /**
      * 呼入限制 1、无限制 2、限制白名单以外的号码呼
      * 入 3、限制所有号码呼入
      */
-    private String incomingCallLimit="1";
+    private String incomingCallLimit="2";
 
     /**
      * 周期：周一至周六用1-6表示，周日用0表示，如
@@ -81,11 +81,11 @@ public class GetIncomingCallResponse extends MessageHead implements Response {
         this.delPhoneNumbers = delPhoneNumbers;
     }
 
-    public List<addPhoneNumbers> getAddPhoneNumbers() {
+    public List<AddPhoneNumbers> getAddPhoneNumbers() {
         return addPhoneNumbers;
     }
 
-    public void setAddPhoneNumbers(List<addPhoneNumbers> addPhoneNumbers) {
+    public void setAddPhoneNumbers(List<AddPhoneNumbers> addPhoneNumbers) {
         this.addPhoneNumbers = addPhoneNumbers;
     }
 
@@ -105,7 +105,7 @@ public class GetIncomingCallResponse extends MessageHead implements Response {
         this.cycle = cycle;
     }
 
-    public static class addPhoneNumbers{
+    public static class AddPhoneNumbers {
 
         /**
          * 手机号码
@@ -113,9 +113,9 @@ public class GetIncomingCallResponse extends MessageHead implements Response {
         private String phone;
 
         /**
-         * 时间段0600-0800
+         * 时间段固定0000 - 2359
          */
-        private List<String> timePeriods = new ArrayList<>();
+        private List<String> timePeriods = Arrays.asList("0000","2359");
 
         public String getPhone() {
             return phone;
@@ -135,7 +135,7 @@ public class GetIncomingCallResponse extends MessageHead implements Response {
 
         public String generateMessage(){
             return Arrays.asList(phone,timePeriods.stream()
-                            .collect(Collectors.joining("+")))
+                            .collect(Collectors.joining("-","","+")))
                     .stream().collect(Collectors.joining("="));
         }
     }

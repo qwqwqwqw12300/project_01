@@ -5,13 +5,13 @@ import java.math.BigDecimal;
 public class DeviceLocationWall {
 
     /** 长度 */
-    private BigDecimal roomLength;
+    private BigDecimal roomLength =new BigDecimal(4);
 
     /** 左侧 */
-    private BigDecimal roomLeft;
+    private BigDecimal roomLeft=new BigDecimal(2);
 
     /** 右侧 */
-    private BigDecimal roomRight;
+    private BigDecimal roomRight=new BigDecimal(2);
 
     /** 高度  固定1.5米 */
     private BigDecimal roomHeight =new BigDecimal(1.5);

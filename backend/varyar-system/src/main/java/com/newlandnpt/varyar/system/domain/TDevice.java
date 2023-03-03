@@ -1,10 +1,7 @@
 package com.newlandnpt.varyar.system.domain;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.alibaba.fastjson2.JSON;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -13,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.newlandnpt.varyar.common.core.domain.entity.*;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
-import com.newlandnpt.varyar.system.domain.vo.LeaveBedWarnParameter;
+import com.newlandnpt.varyar.common.core.domain.model.LeaveBedWarnParameter;
 import org.springframework.data.annotation.Transient;
 
 import javax.validation.constraints.NotBlank;
@@ -504,36 +501,38 @@ public class TDevice extends BaseEntity
         /**
          * 房间子区域
          */
-        private List<TRoomZone> roomZones;
+        private List<TRoomZone> roomZones = new ArrayList<>();
 
         /**
          * 设备安装位置：0:壁挂、1:顶挂
          * */
-        private String installPosition;
+        private String installPosition = "0";
 
         /**
          * 设备位置信息
          * */
-        private DeviceLocation deviceLocation;
+        @Deprecated
+        private DeviceLocation deviceLocation =new DeviceLocation();
 
-        private DeviceLocationTop deviceLocationTop;
+        private DeviceLocationTop deviceLocationTop =new DeviceLocationTop();
 
-        private DeviceLocationWall deviceLocationWall;
+        private DeviceLocationWall deviceLocationWall =new DeviceLocationWall();
 
         /**
          * 设备房间设置信息
          */
+        @Deprecated
         private DeviceRoomParameter deviceRoomParameter;
 
         /**
          * 设备预警规则
          */
-        private DeviceWarnParameter deviceWarnParameter;
+        private DeviceWarnParameter deviceWarnParameter =new DeviceWarnParameter();
 
         /**
          * 离床预警规则
          */
-        private LeaveBedWarnParameter leaveBedWarnParameter;
+        private LeaveBedWarnParameter leaveBedWarnParameter =new LeaveBedWarnParameter();
 
         public LeaveBedWarnParameter getLeaveBedWarnParameter() {
             return leaveBedWarnParameter;
@@ -550,18 +549,20 @@ public class TDevice extends BaseEntity
         public void setDeviceWarnParameter(DeviceWarnParameter deviceWarnParameter) {
             this.deviceWarnParameter = deviceWarnParameter;
         }
-
+        @Deprecated
         public DeviceRoomParameter getDeviceRoomParameter() {
             return deviceRoomParameter;
         }
-
+        @Deprecated
         public void setDeviceRoomParameter(DeviceRoomParameter deviceRoomParameter) {
             this.deviceRoomParameter = deviceRoomParameter;
         }
+        @Deprecated
 
         public DeviceLocation getDeviceLocation() {
             return deviceLocation;
         }
+        @Deprecated
 
         public void setDeviceLocation(DeviceLocation deviceLocation) {
             this.deviceLocation = deviceLocation;
