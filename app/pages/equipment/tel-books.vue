@@ -4,7 +4,8 @@
 			<view class="header">
 				<text class="title">通讯录白名单</text>
 				<view class="action">
-					<u-icon name="/static/images/add-contact.png" size="44rpx" style="margin-right: 6rpx;" @click="handleAdd"/>
+					<u-icon name="/static/images/add-contact.png" size="44rpx" style="margin-right: 6rpx;"
+						@click="handleAdd" />
 					添加
 				</view>
 				<view class="action" @click="openTelBooks">
@@ -17,7 +18,8 @@
 		</view>
 		<view class="ui-content">
 			<u-swipe-action>
-				<u-swipe-action-item :options="item.options" v-for="(item, index) in options4" :key="index" @click="handleDel(item.id)">
+				<u-swipe-action-item :options="item.options" v-for="(item, index) in options4" :key="index"
+					@click="handleDel(item.id)">
 					<view class="cell">
 						<view class="cell-box">
 							<view class="input">
@@ -41,7 +43,7 @@
 				</view>
 			</view>
 		</view>
-		<tel-books ref="telBookRefs"></tel-books>
+		<tel-books ref="telBookRefs" @select="phoneSelect"></tel-books>
 	</app-body>
 </template>
 
@@ -50,38 +52,35 @@
 		data() {
 			return {
 				options4: [{
-					id:0,
-					name:'测试1',
-					phone:'13222222222',
+					id: 0,
+					name: '测试1',
+					phone: '13222222222',
 					options: [{
-							text: '删除',
-							style: {
-								backgroundColor: '#f56c6c'
-							}
+						text: '删除',
+						style: {
+							backgroundColor: '#f56c6c'
 						}
-					],
+					}],
 				}, {
-					id:1,
-					name:'测试2',
-					phone:'13333333333',
+					id: 1,
+					name: '测试2',
+					phone: '13333333333',
 					options: [{
-							text: '删除',
-							style: {
-								backgroundColor: '#f56c6c'
-							}
+						text: '删除',
+						style: {
+							backgroundColor: '#f56c6c'
 						}
-					],
+					}],
 				}, {
-					id:2,
-					name:'测试3',
-					phone:'13444444444',
+					id: 2,
+					name: '测试3',
+					phone: '13444444444',
 					options: [{
-							text: '删除',
-							style: {
-								backgroundColor: '#f56c6c'
-							}
+						text: '删除',
+						style: {
+							backgroundColor: '#f56c6c'
 						}
-					],
+					}],
 				}],
 			}
 		},
@@ -92,39 +91,41 @@
 			handleSave() {
 
 			},
-			handleAdd(){
+			handleAdd() {
 				let date = Date.now()
-				let rund = Math.ceil(Math.random()*1000)
+				let rund = Math.ceil(Math.random() * 1000)
 				let id = date + '' + rund
 				this.options4.push({
 					id,
-					name:'测试'+(this.options4.length+1),
-					phone:'13333333333',
+					name: '测试' + (this.options4.length + 1),
+					phone: '13333333333',
 					options: [{
-							text: '删除',
-							style: {
-								backgroundColor: '#f56c6c'
-							}
+						text: '删除',
+						style: {
+							backgroundColor: '#f56c6c'
 						}
-					],
+					}],
 				})
 			},
-			handleDel(id){
+			handleDel(id) {
 				uni.showModal({
 					title: '提示',
 					content: '是否确认删除？',
 					success: res => {
-						console.log(res,'res')
+						console.log(res, 'res')
 						if (res.confirm) {
-							this.options4.splice(this.options4.findIndex(item=>item.id==id),1)
-						}else{
-							
+							this.options4.splice(this.options4.findIndex(item => item.id == id), 1)
+						} else {
+
 						}
 					}
 				});
 			},
 			openTelBooks() {
 				this.$refs.telBookRefs.show(false)
+			},
+			phoneSelect(data) {
+				console.log(data)
 			}
 		}
 
