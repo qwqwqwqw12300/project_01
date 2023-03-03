@@ -514,6 +514,7 @@ public class TDevice extends BaseEntity
          */
         private List<TRoomZone> roomZones = new ArrayList<>();
 
+
         /**
          * 设备安装位置：0:壁挂、1:顶挂
          * */
@@ -540,18 +541,6 @@ public class TDevice extends BaseEntity
          */
         private DeviceWarnParameter deviceWarnParameter =new DeviceWarnParameter();
 
-        /**
-         * 离床预警规则
-         */
-        private LeaveBedWarnParameter leaveBedWarnParameter =new LeaveBedWarnParameter();
-
-        public LeaveBedWarnParameter getLeaveBedWarnParameter() {
-            return leaveBedWarnParameter;
-        }
-
-        public void setLeaveBedWarnParameter(LeaveBedWarnParameter leaveBedWarnParameter) {
-            this.leaveBedWarnParameter = leaveBedWarnParameter;
-        }
 
         public DeviceWarnParameter getDeviceWarnParameter() {
             return deviceWarnParameter;

@@ -3,44 +3,47 @@ package com.newlandnpt.varyar.common.core.domain.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public class LeaveBedWarnParameter implements Serializable{
+public class LeaveBedWarnParameter implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private List<Bed> Beds = new ArrayList<>();
 
-    public List<Bed> getBeds() {
-        return Beds;
+    /**
+     * 离床间隔是否开启:0关闭 1开启
+     */
+    private String leaveBedInterval = "0";
+    /**
+     * 间隔时间 s
+     */
+    private long intervalTime;
+    private SetRuleDate setRuleDate = null;
+
+    public String getLeaveBedInterval() {
+        return leaveBedInterval;
     }
 
-    public void setBeds(List<Bed> beds) {
-        Beds = beds;
+    public void setLeaveBedInterval(String leaveBedInterval) {
+        this.leaveBedInterval = leaveBedInterval;
     }
 
-    public static class Bed {
-        /**
-         * 离床间隔是否开启:0关闭 1开启
-         */
-        private  String leaveBedInterval="0";
-        /**
-         * 间隔时间 s
-         */
-        private long intervalTime;
-        /**
-         * 名称
-         */
-        private String name;
+    public long getIntervalTime() {
+        return intervalTime;
+    }
 
-        /**
-         * 编号no
-         */
-        private String bedNo;
+    public void setIntervalTime(long intervalTime) {
+        this.intervalTime = intervalTime;
+    }
 
-        private String roomZoneId;
+    public SetRuleDate getSetRuleDate() {
+        return setRuleDate;
+    }
 
+    public void setSetRuleDate(SetRuleDate setRuleDate) {
+        this.setRuleDate = setRuleDate;
+    }
+
+    public class SetRuleDate {
         /**
          * 日期类型
          */
@@ -70,46 +73,6 @@ public class LeaveBedWarnParameter implements Serializable{
          */
         @JsonFormat(pattern = "HH:mm")
         private Date endTime;
-
-        public String getBedNo() {
-            return bedNo;
-        }
-
-        public void setBedNo(String bedNo) {
-            this.bedNo = bedNo;
-        }
-
-        public String getLeaveBedInterval() {
-            return leaveBedInterval;
-        }
-
-        public void setLeaveBedInterval(String leaveBedInterval) {
-            this.leaveBedInterval = leaveBedInterval;
-        }
-
-        public String getRoomZoneId() {
-            return roomZoneId;
-        }
-
-        public void setRoomZoneId(String roomZoneId) {
-            this.roomZoneId = roomZoneId;
-        }
-
-        public long getIntervalTime() {
-            return intervalTime;
-        }
-
-        public void setIntervalTime(long intervalTime) {
-            this.intervalTime = intervalTime;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
 
         public String getDateType() {
             return dateType;
@@ -159,4 +122,6 @@ public class LeaveBedWarnParameter implements Serializable{
             this.endTime = endTime;
         }
     }
+
+
 }
