@@ -40,7 +40,7 @@ import static org.apache.rocketmq.spring.annotation.ConsumeMode.ORDERLY;
 @Component
 @RocketMQMessageListener(topic = "${rocketmq.topic.access-calculate}", consumerGroup = "${rocketmq.group.access-calculate}",
         consumeMode = ORDERLY)
-public class AccessCalculateListener implements RocketMQListener<Message<TDevice>> {
+public class AccessCalculateListener implements RocketMQListener<Message<String>> {
 
     private static final Logger log = LoggerFactory.getLogger(AccessCalculateListener.class);
 
@@ -104,9 +104,16 @@ public class AccessCalculateListener implements RocketMQListener<Message<TDevice
     private DeviceEventService deviceEventService;
 
     @Override
-    public void onMessage(Message<TDevice> message) {
-        TDevice device = message.getPayload();
-        log.debug("----" + System.currentTimeMillis() + "----" + " 房间进出计算事件消息： " + JSON.toJSONString(device));
+    public void onMessage(Message<String> message) {
+
+        log.debug("----" + System.currentTimeMillis() + "----" + " 房间进出计算事件消息： " + message.getPayload());
+        TDevice device;
+        try{
+            device = JSON.parseObject(message.getPayload(),TDevice.class);
+        }catch (Exception e){
+            log.error(">>>>>> 类型转换异常，忽略执行",e);
+            return;
+        }
 
         // 计算并发送事件
         if (device.getParameter() == null || !(device.getParameter() instanceof TDevice.RadarWaveDeviceSettings)) {
