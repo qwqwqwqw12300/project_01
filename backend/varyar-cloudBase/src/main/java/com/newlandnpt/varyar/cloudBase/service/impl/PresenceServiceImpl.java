@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSON;
 import com.newlandnpt.varyar.cloudBase.constant.CacheConstants;
 import com.newlandnpt.varyar.cloudBase.constant.VayyarCloudConstants;
 import com.newlandnpt.varyar.cloudBase.domain.Presence;
@@ -74,7 +73,7 @@ public class PresenceServiceImpl implements PresenceService {
     	Integer regionDetected3 = regionMap.get("3");
     	
     	//旧的进出事件
-    	Boolean oldRoomPresenceDetected = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_ROOM_KEY + deviceId);
+    	Boolean oldRoomPresenceDetected = SpringUtils.getBean(RedisCache.class).getCacheObject(com.newlandnpt.varyar.common.constant.CacheConstants.PRESENCE_ROOM_KEY + deviceId);
     	Integer oldRegionDetected0 = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_REGION0_KEY + deviceId);
     	Integer oldRegionDetected1 = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_REGION1_KEY + deviceId);
     	Integer oldRegionDetected2 = SpringUtils.getBean(RedisCache.class).getCacheObject(CacheConstants.PRESENCE_REGION2_KEY + deviceId);
@@ -82,7 +81,7 @@ public class PresenceServiceImpl implements PresenceService {
     	
     	//新旧事件不同，则更新到缓存
     	if(roomPresenceDetected != oldRoomPresenceDetected){
-    		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_ROOM_KEY + deviceId, roomPresenceDetected);
+    		SpringUtils.getBean(RedisCache.class).setCacheObject(com.newlandnpt.varyar.common.constant.CacheConstants.PRESENCE_ROOM_KEY + deviceId, roomPresenceDetected);
     	}
     	if(!regionDetected0.equals(oldRegionDetected0)){
     		SpringUtils.getBean(RedisCache.class).setCacheObject(CacheConstants.PRESENCE_REGION0_KEY + deviceId, regionDetected0);

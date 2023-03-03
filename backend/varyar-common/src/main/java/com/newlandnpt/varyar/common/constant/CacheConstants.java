@@ -86,6 +86,8 @@ public class CacheConstants
      */
     public static final String PHONE_TOKEN_KEY = "phone_token_key:";
 
+    /** 进出区域 **/
+    public static final String PRESENCE_ROOM_KEY = "cloud:presence:room:";
     /** 是否开启记录目标坐标信息的开关，值为true or false **/
     public static final String TARGET_LOCATION_SWITCH_KEY = "cloud:presence:targetLocationSwitch:";
     /** 进出区域坐标信息 **/

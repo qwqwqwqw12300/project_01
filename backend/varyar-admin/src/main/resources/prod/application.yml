@@ -168,5 +168,8 @@ rocketmq:
   consumer:
     access-key: a1184af46e8544a8af861cca2b711bdf
     secret-key: 99f1cf73e4354f06ba88750fc6cce6a6
+  group:
+    access-calculate: ${rocketmq.namespace}%GID_group_access_alculate
   topic:
     deviceConfig: ${rocketmq.namespace}%deviceConfigTopic
+    access-calculate: ${rocketmq.namespace}%daccessCalculateTopic

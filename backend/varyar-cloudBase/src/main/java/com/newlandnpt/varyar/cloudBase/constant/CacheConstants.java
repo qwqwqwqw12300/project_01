@@ -15,10 +15,7 @@ public class CacheConstants {
      * 设备状态
      */
     public static final String DEVICE_STATE_KEY = "cloud:deviceState:";
-    
-    /** 进出区域 **/
-    public static final String PRESENCE_ROOM_KEY = "cloud:presence:room:";
-    
+
     public static final String PRESENCE_REGION0_KEY = "cloud:presence:region0:";
     public static final String PRESENCE_REGION1_KEY = "cloud:presence:region1:";
     public static final String PRESENCE_REGION2_KEY = "cloud:presence:region2:";

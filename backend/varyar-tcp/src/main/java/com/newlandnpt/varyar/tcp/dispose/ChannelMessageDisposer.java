@@ -55,13 +55,13 @@ public class ChannelMessageDisposer{
         req.setMsgTime(time);
         T response = responseSupplier.get();
         // 默认3秒超时
-        redisCache.setCacheObject(TCP_WATCH_TRADE_NO+req.getTranNo(),null,3, TimeUnit.SECONDS);
+        redisCache.setCacheObject(TCP_WATCH_TRADE_NO+req.getTranNo(),null,1, TimeUnit.MINUTES);
 
         String writeMessage = req.generateMessage();
         log.debug(">>>>>> 下发报文：{}",writeMessage);
-        writeMessage = AESUtils.encryptFromString(response.generateMessage(), Mode.CBC, Padding.PKCS5Padding);
-        log.debug(">>>>>> 加密下发报文：{}",writeMessage+"==#morefun#170\n");
-        channel.writeAndFlush(writeMessage+"==#morefun#170\n");
+        writeMessage = AESUtils.encryptFromStringForResponse(writeMessage, Mode.CBC, Padding.PKCS5Padding);
+        log.debug(">>>>>> 加密下发报文：{}",writeMessage);
+        channel.writeAndFlush(writeMessage);
         String message = null;
         while (redisCache.hasKey(TCP_WATCH_TRADE_NO + req.getTranNo())) {
             message = redisCache.getCacheObject(TCP_WATCH_TRADE_NO + req.getTranNo());

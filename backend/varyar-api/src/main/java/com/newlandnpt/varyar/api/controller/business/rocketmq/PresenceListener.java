@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import static com.newlandnpt.varyar.api.controller.business.rocketmq.AccessListener.*;
+import static com.newlandnpt.varyar.api.controller.business.rocketmq.AccessCalculateListener.*;
 import static com.newlandnpt.varyar.common.constant.CacheConstants.*;
 
 /**
@@ -239,7 +239,7 @@ public class PresenceListener implements RocketMQListener<Presence> {
 		redisCache.setCacheList(redisKey, Arrays.asList(accessInfo));
 		if(!hasKey){
 			// 初次设值的时候设值过期时间一天
-			redisCache.expire(redisKey,1, TimeUnit.DAYS);
+			redisCache.expire(redisKey,2, TimeUnit.DAYS);
 		}
 
     }

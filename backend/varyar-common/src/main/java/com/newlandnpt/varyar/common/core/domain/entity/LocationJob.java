@@ -3,6 +3,7 @@ package com.newlandnpt.varyar.common.core.domain.entity;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -11,6 +12,17 @@ import java.util.List;
  * @date 2023/3/1
  */
 public class LocationJob {
+
+    /**
+     * 设备NO
+     */
+    private String deviceNo;
+
+    /**
+     * uuid
+     */
+    private String uuid;
+
     /**
      * 任务名称
      */
@@ -22,32 +34,51 @@ public class LocationJob {
     private List<place> places;
 
     /**
+     * 最早时间
+     */
+    private Date firstDate;
+
+    /**
+     * 最迟时间
+     */
+    private Date lastDate;
+
+    /**
      * 任务地点定义
      */
     public static class place{
+
+        /**
+         * 守护类型
+         */
+        private String guardType;
+
+        /**
+         * 高德API服务-电子围栏id
+         */
+        private Long geoFenceId;
+
+
         /**
          * 地址
          */
         private String address;
 
-        @ApiModelProperty("设备电子围栏id")
-        @Excel(name = "高德API服务-电子围栏类型")
-        private String fenceType;
 
-        @ApiModelProperty("高德API服务-电子围栏id")
-        @Excel(name = "高德API服务-电子围栏id")
-        private Long geoFenceId;
-
-        @ApiModelProperty("经度")
-        @Excel(name = "经度")
+        /**
+         * 经度
+         */
         private String longitude;
 
-        @ApiModelProperty("纬度")
-        @Excel(name = "纬度")
+
+        /**
+         * 纬度
+         */
         private String latitude;
 
-        @ApiModelProperty("半径")
-        @Excel(name = "半径")
+        /**
+         * 半径
+         */
         private String radius;
 
         /**
@@ -55,8 +86,6 @@ public class LocationJob {
          * 格式 X1,Y1;X2,Y2;...
          * 顶点顺序可按顺时针或逆时针排列；
          */
-        @ApiModelProperty("多边形顶点坐标")
-        @Excel(name = "多边形顶点坐标")
         private String points;
 
         /**
@@ -64,28 +93,12 @@ public class LocationJob {
          */
         private String estimatedTime;
 
-        public String getAddress() {
-            return address;
+        public String getGuardType() {
+            return guardType;
         }
 
-        public void setAddress(String address) {
-            this.address = address;
-        }
-
-        public String getEstimatedTime() {
-            return estimatedTime;
-        }
-
-        public void setEstimatedTime(String estimatedTime) {
-            this.estimatedTime = estimatedTime;
-        }
-
-        public String getFenceType() {
-            return fenceType;
-        }
-
-        public void setFenceType(String fenceType) {
-            this.fenceType = fenceType;
+        public void setGuardType(String guardType) {
+            this.guardType = guardType;
         }
 
         public Long getGeoFenceId() {
@@ -94,6 +107,14 @@ public class LocationJob {
 
         public void setGeoFenceId(Long geoFenceId) {
             this.geoFenceId = geoFenceId;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
         }
 
         public String getLongitude() {
@@ -127,6 +148,14 @@ public class LocationJob {
         public void setPoints(String points) {
             this.points = points;
         }
+
+        public String getEstimatedTime() {
+            return estimatedTime;
+        }
+
+        public void setEstimatedTime(String estimatedTime) {
+            this.estimatedTime = estimatedTime;
+        }
     }
 
     public LocationJob() {
@@ -151,5 +180,37 @@ public class LocationJob {
 
     public void setPlaces(List<place> places) {
         this.places = places;
+    }
+
+    public Date getFirstDate() {
+        return firstDate;
+    }
+
+    public void setFirstDate(Date firstDate) {
+        this.firstDate = firstDate;
+    }
+
+    public Date getLastDate() {
+        return lastDate;
+    }
+
+    public void setLastDate(Date lastDate) {
+        this.lastDate = lastDate;
+    }
+
+    public String getDeviceNo() {
+        return deviceNo;
+    }
+
+    public void setDeviceNo(String deviceNo) {
+        this.deviceNo = deviceNo;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }
