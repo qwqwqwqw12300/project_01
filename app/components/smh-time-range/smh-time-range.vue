@@ -96,6 +96,9 @@
 	background-color:#FFFFFF;
 	color: #000;
 	height: 450rpx;
+	position: fixed;
+	bottom: 0;
+	z-index: 999;
 	.top{
 		width: 690rpx;
 		margin: 0 auto;

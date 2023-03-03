@@ -19,7 +19,6 @@
 					</text>
 				</u-cell>
 			</u-cell-group>
-			<smh-time-range :isUnder="timeShow" :time="defaultTime" @confrim="confrim" @cancel="cancel"></smh-time-range>
 			<view class="map-box">
 				<map id="map" ref="map" style=" width: 100%; height: 560rpx;border-radius: 20rpx;" :latitude="latitude"
 					:longitude="longitude" />
@@ -35,7 +34,7 @@
 		<time-picker :show="showPicker" type="range" :value="defaultValue" :show-tips="true" :begin-text="'开始'"
 		    :end-text="'结束'" :show-seconds="true" @confirm="onSelected"  @cancel="showPicker=false">
 		</time-picker>
-		
+		<smh-time-range :isUnder="timeShow" :time="defaultTime" @confrim="confrim" @cancel="cancel"></smh-time-range>
 	</app-body>
 </template>
 
