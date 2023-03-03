@@ -62,6 +62,13 @@ public class PolygonLocationGuardServiceImpl implements ILocationGuardService {
 
     @Override
     public Integer deleteLocationGuard(DelLocationGuardReq delReq) {
+        //调用高德地理围栏api
+        try{
+
+        }catch (Exception e){
+            log.error("调用高德地图api-新增多边形围栏-响应失败");
+        }
+        //高德地理围栏api响应成功，将围栏信息插入至数据库
         return null;
     }
 }

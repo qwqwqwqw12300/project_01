@@ -1,9 +1,6 @@
 package com.newlandnpt.varyar.system.service;
 
-import com.newlandnpt.varyar.system.domain.req.CircleReq;
-import com.newlandnpt.varyar.system.domain.req.FenceReq;
-import com.newlandnpt.varyar.system.domain.req.PolygonReq;
-import com.newlandnpt.varyar.system.domain.req.TerminalAddReq;
+import com.newlandnpt.varyar.system.domain.req.*;
 
 /**
  * 高德API-围栏服务接口
@@ -81,4 +78,11 @@ public interface GeoFenceService {
      */
     String findTerminalIdByName(String name);
 
+
+    /**
+     * 删除电子围栏
+     * @param deleteFenceReq
+     * @return
+     */
+    String deleteFence(DeleteFenceReq deleteFenceReq);
 }

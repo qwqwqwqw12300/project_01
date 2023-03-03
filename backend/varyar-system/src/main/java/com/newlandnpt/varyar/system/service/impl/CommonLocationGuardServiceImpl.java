@@ -1,13 +1,16 @@
 package com.newlandnpt.varyar.system.service.impl;
 
-import com.newlandnpt.varyar.common.annotation.Fence;
+
 import com.newlandnpt.varyar.common.annotation.LocationGuardType;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
 import com.newlandnpt.varyar.system.domain.LocationGuard;
 import com.newlandnpt.varyar.system.domain.req.DelLocationGuardReq;
-import com.newlandnpt.varyar.system.service.IDeviceFenceService;
+import com.newlandnpt.varyar.system.service.GeoFenceService;
 import com.newlandnpt.varyar.system.service.ILocationGuardService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -23,6 +26,12 @@ import java.util.Map;
  */
 @Service
 public class CommonLocationGuardServiceImpl implements ApplicationListener<ContextRefreshedEvent> {
+
+    private static final Logger log = LoggerFactory.getLogger(CommonLocationGuardServiceImpl.class);
+
+    @Autowired
+    private GeoFenceService geoFenceService;
+
     private static Map<String, ILocationGuardService> locationGuardMap = null;
 
     @Override
@@ -44,7 +53,8 @@ public class CommonLocationGuardServiceImpl implements ApplicationListener<Conte
         return locationGuardMap.get(locationGuard.getGuardType()).updateLocationGuard(locationGuard);
     }
 
-    public AjaxResult deleteLocationGuard(DelLocationGuardReq delReq){
+    public Integer deleteLocationGuard(DelLocationGuardReq delReq){
+
         return null;
     }
 }
