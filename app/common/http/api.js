@@ -362,3 +362,10 @@ export const PostUpdateNick = (params) => http.post('/api/memberInfo/updateMemIn
  * 修改头像
  */
 export const PostUpdateAvatar = (params) => http.upload('/api/memberInfo/avatar', params)
+
+/**
+ *获取亲情号码*
+ */
+export const GetFamilyNumber = (params) => http.get('/api/careCard/getFamilyNumber', params, {
+	error: false
+})
