@@ -55,7 +55,7 @@ public class ChannelMessageDisposer{
         req.setMsgTime(time);
         T response = responseSupplier.get();
         // 默认3秒超时
-        redisCache.setCacheObject(TCP_WATCH_TRADE_NO+req.getTranNo(),null,10, TimeUnit.SECONDS);
+        redisCache.setCacheObject(TCP_WATCH_TRADE_NO+req.getTranNo(),null,1, TimeUnit.MINUTES);
 
         String writeMessage = req.generateMessage();
         log.debug(">>>>>> 下发报文：{}",writeMessage);
