@@ -293,17 +293,131 @@ public class DeviceController extends BaseController {
     }
 
 
-    @ApiOperation("绑定设备-设置子区域")
+    @ApiOperation("雷达波设置页面")
     @PostMapping("/setRadarWaveDevice")
     public AjaxResult setRadarWaveDevice(
             @RequestBody @Validated RadarWaveDeviceRequest radarWaveDeviceRequest) {
+        AjaxResult ajax = AjaxResult.success();
         if (radarWaveDeviceRequest.getDeviceId()==null||radarWaveDeviceRequest.getDeviceId().equals("")){
             return error("设备id不能为空！");
         }
+        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(radarWaveDeviceRequest.getDeviceId()));
+        if (device==null){
+            return error("无法查找到设备信息！");
+        }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限操作！");
+        }
+        device.setName(radarWaveDeviceRequest.getDeviceName());
+        if (device.getType().equals("0")){
+            //雷达波 判断设备位置信息
+            AjaxResult item = checkRadarWaveDeviceLocation(radarWaveDeviceRequest);
+            if (item!=null){
+                return item;
+            }
+
+            //雷达波参数
+//            TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
+            TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)device.getParameter();
+            if (radarWaveDeviceSettings == null){
+                radarWaveDeviceSettings = new TDevice.RadarWaveDeviceSettings();
+            }
+            DeviceLocationTop locationTop = new DeviceLocationTop();
+            DeviceLocationWall locationWall = new DeviceLocationWall();
+            //设备安装位置
+            radarWaveDeviceSettings.setInstallPosition(radarWaveDeviceRequest.getInstallPosition());
+            if("1".equals(radarWaveDeviceRequest.getInstallPosition())) {
+                locationTop.setRoomHeight(radarWaveDeviceRequest.getDeviceLocationTop().getRoomHeight());
+                locationTop.setRoomFront(radarWaveDeviceRequest.getDeviceLocationTop().getRoomFront());
+                locationTop.setRoomBehind(radarWaveDeviceRequest.getDeviceLocationTop().getRoomBehind());
+                locationTop.setRoomLeft(radarWaveDeviceRequest.getDeviceLocationTop().getRoomLeft());
+                locationTop.setRoomRight(radarWaveDeviceRequest.getDeviceLocationTop().getRoomRight());
+                radarWaveDeviceSettings.setDeviceLocationTop(locationTop);
+            }else {
+                locationWall.setRoomLength(radarWaveDeviceRequest.getDeviceLocationWall().getRoomLength());
+                locationWall.setRoomLeft(radarWaveDeviceRequest.getDeviceLocationWall().getRoomLeft());
+                locationWall.setRoomRight(radarWaveDeviceRequest.getDeviceLocationWall().getRoomRight());
+                radarWaveDeviceSettings.setDeviceLocationWall(locationWall);
+            }
+            //预警参数设置
+            radarWaveDeviceSettings.getDeviceWarnParameter().setFallWarn("1");
+            radarWaveDeviceSettings.getDeviceWarnParameter().setNobodyWarn(radarWaveDeviceRequest
+                    .getDeviceWarnParameter().getNobodyWarn());
+
+            device.setParameter(radarWaveDeviceSettings);
+        }
+        try {
+            //设置雷达波设备
+            int i = iDeviceService.setSettings(Long.valueOf(radarWaveDeviceRequest.getDeviceId()),device.getParameter());
+            if (i==0){
+                    return error("设置配置失败！");
+            }
+
+        } catch (Exception e){
+            log.error("设置配置失败！",e);
+            return error("设置配置失败！");
+        }
 
 
-        return  AjaxResult.success();
+        return  ajax;
     }
+
+    private AjaxResult checkRadarWaveDeviceLocation(RadarWaveDeviceRequest radarWaveDeviceRequest){
+        //顶装时: 前后距离及左右距离和大于0.3小于4
+        if ("1".equals(radarWaveDeviceRequest.getInstallPosition())){
+            if (radarWaveDeviceRequest.getDeviceLocationTop().getRoomLeft()==null||radarWaveDeviceRequest.getDeviceLocationTop().getRoomLeft().equals("")){
+                return error("左边长度不能为空！");
+            }
+            if (radarWaveDeviceRequest.getDeviceLocationTop().getRoomRight()==null||radarWaveDeviceRequest.getDeviceLocationTop().getRoomRight().equals("")){
+                return error("右边长度不能为空！");
+            }
+
+            if (radarWaveDeviceRequest.getDeviceLocationTop().getRoomFront()==null||radarWaveDeviceRequest.getDeviceLocationTop().getRoomFront().equals("")){
+                return error("前距离不能为空！");
+            }
+            if (radarWaveDeviceRequest.getDeviceLocationTop().getRoomBehind()==null||radarWaveDeviceRequest.getDeviceLocationTop().getRoomBehind().equals("")){
+                return error("后距离不能为空！");
+            }
+            if (radarWaveDeviceRequest.getDeviceLocationTop().getRoomHeight()==null||radarWaveDeviceRequest.getDeviceLocationTop().getRoomHeight().equals("")){
+                return error("高度不能为空！");
+            }
+
+            if((radarWaveDeviceRequest.getDeviceLocationTop().getRoomLeft().add(radarWaveDeviceRequest.getDeviceLocationTop().getRoomRight())).compareTo(new BigDecimal(4))==1 ||
+                    (radarWaveDeviceRequest.getDeviceLocationTop().getRoomLeft().add(radarWaveDeviceRequest.getDeviceLocationTop().getRoomRight())).compareTo(new BigDecimal(0.3))==-1
+            ){
+                return error("左右侧距离之和必须大于等于0.3、小于等于4！");
+            }
+            if((radarWaveDeviceRequest.getDeviceLocationTop().getRoomBehind().add(radarWaveDeviceRequest.getDeviceLocationTop().getRoomFront())).compareTo(new BigDecimal(4))==1 ||
+                    (radarWaveDeviceRequest.getDeviceLocationTop().getRoomBehind().add(radarWaveDeviceRequest.getDeviceLocationTop().getRoomFront())).compareTo(new BigDecimal(0.3))==-1
+            ){
+                return error("前后距离之和必须大于等于0.3、小于等于4！");
+            }
+            if(radarWaveDeviceRequest.getDeviceLocationTop().getRoomHeight().compareTo(new BigDecimal(4))==1||radarWaveDeviceRequest.getDeviceLocationTop().getRoomHeight().compareTo(new BigDecimal(0))==-1)
+            {
+                return error("设备高度必须介于0到4米之间！");
+            }
+        }else{
+            if (radarWaveDeviceRequest.getDeviceLocationWall().getRoomLeft()==null||radarWaveDeviceRequest.getDeviceLocationWall().getRoomLeft().equals("")){
+                return error("左边长度不能为空！");
+            }
+            if (radarWaveDeviceRequest.getDeviceLocationWall().getRoomRight()==null||radarWaveDeviceRequest.getDeviceLocationWall().getRoomRight().equals("")){
+                return error("右边长度不能为空！");
+            }
+            if (radarWaveDeviceRequest.getDeviceLocationWall().getRoomLength()==null||radarWaveDeviceRequest.getDeviceLocationWall().getRoomLength().equals("")){
+                return error("前距离长度不能为空！");
+
+            }
+            if((radarWaveDeviceRequest.getDeviceLocationWall().getRoomLeft().add(radarWaveDeviceRequest.getDeviceLocationWall().getRoomRight())).compareTo(new BigDecimal(4))==1){
+                return error("左右侧距离之和必须小于等于4！");
+            }
+            if(radarWaveDeviceRequest.getDeviceLocationWall().getRoomLength().compareTo(new BigDecimal(4))==1||radarWaveDeviceRequest.getDeviceLocationWall().getRoomLength().compareTo(new BigDecimal(0))==-1)
+            {
+                return error("前距离长度必须介于0到4米之间！");
+            }
+        }
+        return null;
+    }
+
     @ApiOperation("绑定设备-设置子区域")
     @PostMapping("/setDevice")
     public AjaxResult setDevice(
@@ -850,15 +964,96 @@ public class DeviceController extends BaseController {
     @PostMapping("/delDeviceWarn")
     public AjaxResult delDeviceWarn(
             @RequestBody @Validated DeviceWarnRequest deviceWarnRequest) {
+        AjaxResult ajax = AjaxResult.success();
+        if (deviceWarnRequest.getDeviceId()==null||deviceWarnRequest.getDeviceId().equals("")){
+            return error("设备id不能为空！");
+        }
+        if (deviceWarnRequest.getRuleNo()==null||deviceWarnRequest.getRuleNo().equals("")){
+            return error("预警规则编号不能为空！");
+        }
+        Long deviceId = Long.valueOf(deviceWarnRequest.getDeviceId());
+        //根据设备id获取参数信息
+        TDevice.DeviceParameter parameter = iDeviceService.loadSettings(deviceId);
+        if(!(parameter instanceof TDevice.RadarWaveDeviceSettings)){
+            return error("设备不是雷达波设备！");
+        }
 
-        return success();
+
+        //雷达波参数
+        TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
+        //校验是否已有规则，已有取出规则否则为空
+        DeviceWarnParameter.WarnRule warnRule = null;
+        if (deviceWarnRequest.getRuleNo() != null && !deviceWarnRequest.getRuleNo().equals("")
+                && CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getDeviceWarnParameter().getNobodyWarn().getWarnRules())) {
+
+            warnRule = radarWaveDeviceSettings.getDeviceWarnParameter().getNobodyWarn().getWarnRules().stream()
+                    .filter(p -> deviceWarnRequest.getRuleNo().equals(p.getRuleNo() + ""))
+                    .findAny()
+                    .orElse(null);
+        }
+       if(warnRule==null){
+           return  error("不存在此规则，删除失败！");
+       }
+        //删除规则
+        radarWaveDeviceSettings.getDeviceWarnParameter().getNobodyWarn().getWarnRules()
+                .removeIf(item->item.getRuleNo().equals(deviceWarnRequest.getRuleNo()));
+
+        try {
+            //更新雷达波参数
+            iDeviceService.setSettings(deviceId,radarWaveDeviceSettings);
+        } catch (Exception e){
+            log.error(">>>>>>",e);
+            ajax = AjaxResult.error("删除预警规则失败");
+            return ajax;
+        }
+
+        return ajax;
     }
 
     @ApiOperation("设置预警规则")
     @PostMapping("/delLeaveBedWarn")
     public AjaxResult delLeaveBedWarn(
             @RequestBody @Validated DeviceWarnRequest deviceWarnRequest) {
+        AjaxResult ajax = AjaxResult.success();
+        if (deviceWarnRequest.getDeviceId()==null||deviceWarnRequest.getDeviceId().equals("")){
+            return error("设备id不能为空！");
+        }
+        if (deviceWarnRequest.getBedNo()==null||deviceWarnRequest.getBedNo().equals("")){
+            return error("床编号不能为空！");
+        }
+        Long deviceId = Long.valueOf(deviceWarnRequest.getDeviceId());
+        //根据设备id获取参数信息
+        TDevice.DeviceParameter parameter = iDeviceService.loadSettings(deviceId);
+        if(!(parameter instanceof TDevice.RadarWaveDeviceSettings)){
+            return error("设备不是雷达波设备！");
+        }
+        //雷达波参数
+        TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
+        DeviceWarnParameter.WarnRule warnRule = null;
+        if (deviceWarnRequest.getRuleNo() != null && !deviceWarnRequest.getRuleNo().equals("")
+                && CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getDeviceWarnParameter().getNobodyWarn().getWarnRules())) {
 
-        return success();
+            warnRule = radarWaveDeviceSettings.getDeviceWarnParameter().getNobodyWarn().getWarnRules().stream()
+                    .filter(p -> deviceWarnRequest.getRuleNo().equals(p.getRuleNo() + ""))
+                    .findAny()
+                    .orElse(null);
+        }
+        if(warnRule==null){
+            return  error("不存在此规则，删除失败！");
+        }
+        //删除规则
+        radarWaveDeviceSettings.getLeaveBedWarnParameter().getBeds()
+                .removeIf(item->item.getBedNo().equals(deviceWarnRequest.getBedNo()));
+
+        try {
+            //更新雷达波参数
+            iDeviceService.setSettings(deviceId,radarWaveDeviceSettings);
+        } catch (Exception e){
+            log.error(">>>>>>",e);
+            ajax = AjaxResult.error("删除离床预警规则失败");
+            return ajax;
+        }
+
+        return ajax;
     }
 }
