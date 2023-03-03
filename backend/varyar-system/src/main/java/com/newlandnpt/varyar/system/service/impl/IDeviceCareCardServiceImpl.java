@@ -6,10 +6,14 @@ import com.newlandnpt.varyar.common.core.domain.entity.DeviceIncomingCall;
 import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
 import com.newlandnpt.varyar.common.core.domain.entity.LocationJob;
 import com.newlandnpt.varyar.common.utils.tcp.req.*;
+import com.newlandnpt.varyar.system.domain.LocationGuard;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.domain.TDeviceFence;
+import com.newlandnpt.varyar.system.domain.req.DelLocationGuardReq;
+import com.newlandnpt.varyar.system.domain.req.DeleteFenceReq;
 import com.newlandnpt.varyar.system.service.IDeviceCareCardService;
 import com.newlandnpt.varyar.system.service.IDeviceService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -111,7 +115,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
                 SetIncomingCallReq setIncomingCallReq = new SetIncomingCallReq();
                 List<SetIncomingCallReq.IncomingCallPhone> addPhones = new ArrayList<>();
                 waitInsertAddress.forEach(phone->{
-                    addPhones.add(new SetIncomingCallReq.IncomingCallPhone(phone.getPhoneNumber(),phone.getTimePeriods()));
+                    addPhones.add(new SetIncomingCallReq.IncomingCallPhone(phone.getPhoneNumber()));
                 });
                 setIncomingCallReq.setAddPhones(addPhones);
                 setIncomingCallReq.setDeviceNo(req.getDeviceNo());
@@ -280,6 +284,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
                     List<LocationJob.place> places = oldLocationJob.getPlaces();
                     // 待删除的地点下标
                     List<LocationJob.place> delPlaceIndexs = new ArrayList<>();
+                    ArrayList<String> delList = new ArrayList<>();
                     // 已被更新过的地点下标
                     List<LocationJob.place> updatedPlaceIndexs = new ArrayList<>();
                     // 本次更新需要新建的地点
@@ -295,40 +300,54 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
                         if(Objects.isNull(reqPlace)){
                             // 如果没有相同高德ID地点，则需要删除
                             delPlaceIndexs.add(dataPlace);
-                            // TODO:调用高德删除API
-
+                            delList.add(String.valueOf(dataPlace.getGeoFenceId()));
                         } else {
                             // 拷贝更新属性
                             oldLocationJob.getPlaces().set(i,reqPlace);
+                            // 调用高德更新API
+                            LocationGuard locationGuard = new LocationGuard();
+                            BeanUtils.copyProperties(reqPlace,locationGuard);
+                            commonLocationGuardService.updateLocationGuard(locationGuard);
                             // 更新过的地址可以做标注
                             updatedPlaceIndexs.add(reqPlace);
                         }
                     }
                     // 删除应被删除的地址
                     delPlaceIndexs.forEach(del->oldLocationJob.getPlaces().remove(del));
+                    // 调用高德删除API
+                    DelLocationGuardReq delLocationGuardReq = new DelLocationGuardReq();
+                    delLocationGuardReq.setGeoLocationGuardId(delList);
+                    commonLocationGuardService.deleteLocationGuard(delLocationGuardReq);
                     // 删除已被更新过的地址
                     updatedPlaceIndexs.forEach(updated->locationJob.getPlaces().remove(updated));
                     // 更新数据
                     locationJobs.remove(index);
                     // 新建地点
                     oldLocationJob.getPlaces().addAll(collect);
+                    // 统一调用高德的插入API
+                    collect.forEach(place -> {
+                        LocationGuard locationGuard = new LocationGuard();
+                        BeanUtils.copyProperties(place, locationGuard);
+                        place.setGeoFenceId(commonLocationGuardService.insertLocationGuard(locationGuard).getGeoFenceId());
+                    });
                     // 调用高德ID地点
                     if(index!=locationJobs.size()) {
                         locationJobs.set(index, oldLocationJob);
                     }else{
                         locationJobs.add(oldLocationJob);
                     }
-
                 }
             }else{
                 // 给新建任务一个uuid
                 locationJob.setUuid(IdUtil.simpleUUID());
+                // 统一调用高德的插入API
+                locationJob.getPlaces().forEach(place -> {
+                    LocationGuard locationGuard = new LocationGuard();
+                    BeanUtils.copyProperties(place, locationGuard);
+                    place.setGeoFenceId(commonLocationGuardService.insertLocationGuard(locationGuard).getGeoFenceId());
+                });
                 locationJobs.add(locationJob);
             }
-            // 统一调用高德的插入API
-            locationJob.getPlaces().forEach(place -> {
-                System.out.println(place.getAddress());
-            });
             object.setLocationJobs(locationJobs);
             device.setParameter(object);
             iDeviceService.updateDevice(device);

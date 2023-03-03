@@ -123,7 +123,7 @@ public class DeviceCareCardController extends BaseController {
         // 生成请求
         SetIncomingCallReq setIncomingCallReq = new SetIncomingCallReq();
         List<SetIncomingCallReq.IncomingCallPhone> addPhones = new ArrayList<>();
-        addPhones.add(new SetIncomingCallReq.IncomingCallPhone(req.getPhoneNumber(),req.getTimePeriods()));
+        addPhones.add(new SetIncomingCallReq.IncomingCallPhone(req.getPhoneNumber()));
         setIncomingCallReq.setAddPhones(addPhones);
         setIncomingCallReq.setDeviceNo(req.getDeviceNo());
         return setAddressBook(setIncomingCallReq);
@@ -184,7 +184,7 @@ public class DeviceCareCardController extends BaseController {
         // 生成请求
         SetIncomingCallReq setIncomingCallReq = new SetIncomingCallReq();
         List<SetIncomingCallReq.IncomingCallPhone> addPhones = new ArrayList<>();
-        addPhones.add(new SetIncomingCallReq.IncomingCallPhone(req.getPhoneNumber(),req.getTimePeriods()));
+        addPhones.add(new SetIncomingCallReq.IncomingCallPhone(req.getPhoneNumber()));
         setIncomingCallReq.setAddPhones(addPhones);
         setIncomingCallReq.setDeviceNo(req.getDeviceNo());
         return setAddressBook(setIncomingCallReq);

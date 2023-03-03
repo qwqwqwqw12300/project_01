@@ -30,13 +30,14 @@ public class DeviceIncomingCall implements Serializable {
     /**
      * 呼入时段
      */
-    private List<String> timePeriods = new ArrayList<>();
+    private ArrayList<String> timePeriods;
+
 
 
     public DeviceIncomingCall() {
     }
 
-    public DeviceIncomingCall(String phoneName, String addressBookId, String phoneNumber, List<String> timePeriod) {
+    public DeviceIncomingCall(String phoneName, String addressBookId, String phoneNumber, ArrayList<String> timePeriods) {
         this.phoneName = phoneName;
         this.addressBookId = addressBookId;
         this.phoneNumber = phoneNumber;
@@ -59,11 +60,15 @@ public class DeviceIncomingCall implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<String> getTimePeriods() {
-        return timePeriods;
+    public ArrayList<String> getTimePeriods() {
+        ArrayList<String> objects = new ArrayList<>();
+        objects.add("0000-2359");
+        return objects;
     }
 
-    public void setTimePeriods(List<String> timePeriods) {
+    public void setTimePeriods(ArrayList<String> timePeriods) {
+        ArrayList<String> objects = new ArrayList<>();
+        objects.add("0000-2359");
         this.timePeriods = timePeriods;
     }
 

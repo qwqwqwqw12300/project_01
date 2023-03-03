@@ -64,12 +64,25 @@ public class CircleLocationGuardServiceImpl implements ILocationGuardService {
     }
 
     @Override
-    public AjaxResult updateLocationGuard(LocationGuard locationGuard) {
-        return null;
+    public Integer updateLocationGuard(LocationGuard locationGuard) {
+        //调用高德地理围栏api
+        try {
+            CircleReq circleReq = new CircleReq();
+            circleReq.setGfid(locationGuard.getGeoFenceId().toString());
+            circleReq.setName("LocationGuard_"+IdUtil.simpleUUID());
+            circleReq.setCenter(locationGuard.getLongitude() + "," + locationGuard.getLatitude());
+            circleReq.setRadius(locationGuard.getRadius());
+            String result = geoFenceService.updateCircleFence(circleReq);
+            JSONObject jsonObject = JSON.parseObject(result);
+            GeoResultVo geoResultVo = jsonObject.toJavaObject(GeoResultVo.class);
+            if (!geoResultVo.getErrcode().equals(Constants.GEO_RESP_SUCCESS)) {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            log.error("调用高德地图api-更新圆形围栏-响应失败");
+            return 0;
+        }
+        return 1;
     }
 
-    @Override
-    public Integer deleteLocationGuard(DelLocationGuardReq delReq) {
-        return null;
-    }
 }

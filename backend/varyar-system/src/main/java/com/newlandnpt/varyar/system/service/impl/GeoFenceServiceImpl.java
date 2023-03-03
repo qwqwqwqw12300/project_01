@@ -93,11 +93,11 @@ public class GeoFenceServiceImpl implements GeoFenceService {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("key", GeoConstant.GEO_KEY);
         paramsMap.put("sid", GeoConstant.GEO_SERVICE_ID);
-        paramsMap.put("gfid", deleteFenceReq.getGfid());
+        paramsMap.put("gfids", deleteFenceReq.getGfid());
         //发送请求
-        String result = HttpSendService.sendPost(paramsMap, GeoConstant.GEO_FENCE_POLYGON_UPDATE);
+        String result = HttpSendService.sendPost(paramsMap, GeoConstant.GEO_FENCE_DELETE);
         JSONObject resultJson = JSON.parseObject(result);
-        log.info("更新多边形围栏结果：{}", resultJson);
+        log.info("删除围栏结果：{}", resultJson);
         return result;
     }
 
