@@ -814,7 +814,7 @@ public class DeviceController extends BaseController {
             }
         }
 
-
+        DeviceWarnParameter.WarnRule warnRule = null;
         Long deviceId = Long.valueOf(deviceWarnRequest.getDeviceId());
         TDevice.RadarWaveDeviceSettings radarwave = (TDevice.RadarWaveDeviceSettings)device.getParameter();
         if(radarwave.getDeviceWarnParameter()!=null) {
@@ -822,7 +822,6 @@ public class DeviceController extends BaseController {
 //            radarwave.getDeviceWarnParameter().setFallWarn(deviceWarnRequest.getFallWarn());
 //            radarwave.getDeviceWarnParameter().getNobodyWarn().setNoBodyContinue(deviceWarnRequest.getNoBodyContinue());
 //            radarwave.getDeviceWarnParameter().getNobodyWarn().setNoBody(deviceWarnRequest.getNoBody());
-            DeviceWarnParameter.WarnRule warnRule = null;
             //校验是否已有规则，已有取出规则否则为空
             if (deviceWarnRequest.getRuleNo() != null && !deviceWarnRequest.getRuleNo().equals("")
                     && CollectionUtils.isNotEmpty(radarwave.getDeviceWarnParameter().getNobodyWarn().getWarnRules())) {
@@ -892,7 +891,7 @@ public class DeviceController extends BaseController {
         }
         //查询
 //        return success(radarwave.getDeviceWarnParameter().getNobodyWarn().getWarnRules());
-        return success();
+        return success(warnRule);
     }
 
 
