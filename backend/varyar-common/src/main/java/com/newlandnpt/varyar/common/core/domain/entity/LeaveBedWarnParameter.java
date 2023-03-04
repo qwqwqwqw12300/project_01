@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.common.core.domain.model;
+package com.newlandnpt.varyar.common.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
