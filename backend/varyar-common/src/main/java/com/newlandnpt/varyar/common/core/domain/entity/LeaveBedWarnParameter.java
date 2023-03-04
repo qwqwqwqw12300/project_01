@@ -12,11 +12,11 @@ public class LeaveBedWarnParameter implements Serializable {
     /**
      * 离床间隔是否开启:0关闭 1开启
      */
-    private String leaveBedInterval = "0";
+    private String leaveBedInterval = "1";
     /**
      * 间隔时间 s
      */
-    private long intervalTime;
+    private long intervalTime =300;
     private SetRuleDate setRuleDate = null;
 
     public String getLeaveBedInterval() {
@@ -43,11 +43,11 @@ public class LeaveBedWarnParameter implements Serializable {
         this.setRuleDate = setRuleDate;
     }
 
-    public class SetRuleDate {
+    public static class SetRuleDate {
         /**
          * 日期类型
          */
-        private String dateType="0";
+        private String dateType="1";
         /**
          * 星期
          */
