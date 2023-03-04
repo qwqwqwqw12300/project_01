@@ -403,6 +403,15 @@
 					"titleNView": false
 				}
 			}
+		}, {
+			"path": "pages/equipment/setting/out-bed",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		},
 		{
 			"path": "pages/equipment/time-interval",

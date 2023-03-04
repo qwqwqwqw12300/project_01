@@ -82,7 +82,7 @@
 						</view>
 					</u-cell>
 					<u-cell title="进出监控" value="已启用"></u-cell>
-					<u-cell title="离床预警" isLink></u-cell>
+					<u-cell title="离床预警" isLink @click="goBed"></u-cell>
 					<u-cell title="无人预警">
 						<u-switch space="2" v-model="editFrom.existFlag" activeValue="0" inactiveValue="1" size="20"
 							slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
@@ -94,103 +94,27 @@
 								size="20" slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
 							</u-switch>
 						</u-cell>
-						<view class="ui-cos-rule">
-							<view class="ui-rule ui-rule-top">
+						<view class="ui-rule">
+							<view class="">
 								<text>我的规则2</text>
-								<u-icon name="arrow-right"></u-icon>
+								<u-icon name="arrow-right" color="#909193" size="36rpx"></u-icon>
 							</view>
-							<view class="ui-rule ui-rule-bot">
-								<text>2023/02/21 至 2023/02/23  12:00 至 23:59</text>
+							<view>
+								<text>2023/02/21 至 2023/02/23 12:00 至 23:59</text>
 								<u-switch space="2" v-model="editFrom.inMonitorFlag" activeValue="0" inactiveValue="1"
 									size="20" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
 								</u-switch>
 							</view>
+
 						</view>
-						<u-cell title="新增规则" isLink></u-cell>
+						<!-- 	<u-cell title="我的规则2" label="2023/02/21 至 2023/02/23  12:00 至 23:59">
+							<view slot="right-icon" class="ui-right-icon">
+								<view>
+									<u-icon name="arrow-right" color="#909193" size="28"></u-icon>
+								</view>
+							</view>
+						</u-cell> -->
 					</view>
-					<!-- 旧规则 -->
-					<u-cell title="进出监控">
-						<u-switch space="2" v-model="editFrom.existFlag" activeValue="0" inactiveValue="1" size="20"
-							slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
-						</u-switch>
-					</u-cell>
-					<!-- 时间设置 -->
-					<view class="ui-existFlag" v-if="editFrom.existFlag == 0">
-						<u-cell isLink title="监控开始时间" @click="openDate('startTime')"
-							:value="editFrom.startTime || '未设置'">
-						</u-cell>
-						<u-cell isLink title="监控结束时间" @click="openDate('endTime')" :value="editFrom.endTime || '未设置'">
-						</u-cell>
-						<u-cell title="进入监控区域超时报警时间">
-							<u-switch space="2" v-model="editFrom.inMonitorFlag" activeValue="0" inactiveValue="1"
-								size="20" slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
-							</u-switch>
-						</u-cell>
-						<!-- 区域超时报警 -->
-						<template v-if="editFrom.inMonitorFlag == 0">
-							<u-cell>
-								<view slot="title" class="ui-slot-title">
-									<view class="ui-date-list">
-										<u-button :key="item + 'time'" v-for="item of timeList"
-											@click="onTimeBtn(item, 'entryTime')" type="primary"
-											:plain="!(editFrom.entryTime === item)" size="mini" :text="item + '分钟'">
-										</u-button>
-									</view>
-								</view>
-								<view slot="right-icon">
-									<u-checkbox-group shape="circle" placement="column"
-										v-model="editFrom.isDepartureTimeCus">
-										<u-checkbox activeColor="#FEAE43" label="自定义时间" :name="true">
-										</u-checkbox>
-									</u-checkbox-group>
-								</view>
-							</u-cell>
-							<u-cell v-if="editFrom.isDepartureTimeCus[0]">
-								<view slot="title" class="ui-sub-title">
-									<text>选择自定义时间</text>
-								</view>
-								<view slot="right-icon">
-									<u-number-box v-model="editFrom.entryTime"></u-number-box>
-								</view>
-							</u-cell>
-						</template>
-						<!-- /区域超时报警 -->
-						<!-- 离开超时报警 -->
-						<u-cell title="离开监控区域超时报警时间">
-							<u-switch space="2" v-model="editFrom.outMonitorFlag" activeValue="0" inactiveValue="1"
-								size="20" slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
-							</u-switch>
-						</u-cell>
-						<template v-if="editFrom.outMonitorFlag == 0">
-							<u-cell>
-								<view slot="title" class="ui-slot-title">
-									<view class="ui-date-list">
-										<u-button :key="item + 'departureTime'" v-for="item of timeList"
-											@click="onTimeBtn(item, 'departureTime')" type="primary"
-											:plain="!(editFrom.departureTime === item)" size="mini" :text="item + '分钟'">
-										</u-button>
-									</view>
-								</view>
-								<view slot="right-icon">
-									<u-checkbox-group shape="circle" placement="column"
-										v-model="editFrom.isEntryTimeCus">
-										<u-checkbox activeColor="#FEAE43" label="自定义时间" :name="true">
-										</u-checkbox>
-									</u-checkbox-group>
-								</view>
-							</u-cell>
-							<u-cell v-if="editFrom.isEntryTimeCus[0]">
-								<view slot="title" class="ui-sub-title">
-									<text>选择自定义时间</text>
-								</view>
-								<view slot="right-icon">
-									<u-number-box v-model="editFrom.departureTime"></u-number-box>
-								</view>
-							</u-cell>
-						</template>
-						<!-- /离开超时报警 -->
-					</view>
-					<!-- /时间设置 -->
 				</u-cell-group>
 			</view>
 			<view class="ui-form">
@@ -223,7 +147,6 @@
 					<text>壁挂</text>
 					<image src="@/static/images/setting/device-tip2.png" mode=""></image>
 				</view>
-
 			</view>
 		</u-popup>
 	</app-body>
@@ -482,8 +405,18 @@
 				});
 				console.log(initObj, 'initObj');
 				return initObj;
-			}
+			},
 
+			/**
+			 * 跳转离床预警
+			 */
+			goBed() {
+				console.log(121);
+				this.$store.commit('setDeviceInfo', this.source);
+				uni.navigateTo({
+					url: '/pages/equipment/setting/out-bed'
+				})
+			}
 
 		}
 	}
@@ -621,27 +554,44 @@
 	.ui-right-icon {
 		width: 300rpx;
 		height: 100%;
+		text-align: right;
+
+		>view {
+			text-align: right;
+			display: inline-block;
+			// width: 200rpx;
+		}
 	}
-	
-	.ui-cos-rule {
-		padding: 43rpx 32rpx 43rpx 32rpx;
+
+	.ui-rule {
 		display: flex;
 		flex-direction: column;
-		.ui-rule-top {
-			margin-bottom: 36rpx;
-		}
-		 .ui-rule-bot {
-			>text {
-				display: flex;
-				width: 400rpx;
+		width: 100%;
+		box-sizing: border-box;
+		padding: 47rpx 32rpx;
+		min-height: 80px;
+		border-bottom: 2px solid #f2f2f2;
+
+		>view {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+
+			&:nth-child(1) {
+				font-size: 34rpx;
+				color: #353535;
+				margin-bottom: 36rpx;
+			}
+
+			&:nth-child(2) {
 				font-size: 26rpx;
 				color: #888888;
-			} 
-		 }
-		.ui-rule {
-			width: 100%;
-			display: flex;
-			justify-content: space-between;
+
+				text {
+					width: 400rpx;
+				}
+			}
 		}
 	}
 </style>

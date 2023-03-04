@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.common.core.domain.model;
+package com.newlandnpt.varyar.common.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -12,7 +12,7 @@ public class LeaveBedWarnParameter implements Serializable {
     /**
      * 离床间隔是否开启:0关闭 1开启
      */
-    private String leaveBedInterval = "0";
+    private String leaveBedInterval = "1";
     /**
      * 间隔时间 s
      */
@@ -47,7 +47,7 @@ public class LeaveBedWarnParameter implements Serializable {
         /**
          * 日期类型
          */
-        private String dateType;
+        private String dateType="0";
         /**
          * 星期
          */
