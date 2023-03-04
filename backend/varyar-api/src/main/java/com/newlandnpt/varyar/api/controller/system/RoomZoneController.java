@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.api.controller.system;
 
 import com.newlandnpt.varyar.common.core.controller.BaseController;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.common.core.domain.entity.LeaveBedWarnParameter;
 import com.newlandnpt.varyar.common.core.domain.model.*;
 import com.newlandnpt.varyar.common.core.page.TableDataInfo;
 import com.newlandnpt.varyar.common.exception.ServiceException;
@@ -280,6 +281,9 @@ public class RoomZoneController extends BaseController {
         if (radarWaveLeaveBedRulesRequest.getDeviceId()==null|| radarWaveLeaveBedRulesRequest.getDeviceId().equals("")){
             return error("设备id不能为空！");
         }
+        if (radarWaveLeaveBedRulesRequest.getRoomZoneId()==null|| radarWaveLeaveBedRulesRequest.getRoomZoneId().equals("")){
+            return error("子区域id不能为空！");
+        }
         TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(radarWaveLeaveBedRulesRequest.getDeviceId()));
         if (device==null){
             return error("无法查找到设备信息！");
@@ -308,9 +312,20 @@ public class RoomZoneController extends BaseController {
 
         TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)device.getParameter();
         TRoomZone troomZone = radarWaveDeviceSettings.getRoomZones().stream()
-                .filter(p-> radarWaveLeaveBedRulesRequest.getRoomZoneId().equals(""+p.getRoomZoneId().longValue()))
+                .filter(p-> radarWaveLeaveBedRulesRequest.getRoomZoneId().equals(p.getRoomZoneId().longValue()+""))
                 .findAny().orElse(null);
+
+        if(radarWaveDeviceSettings.getRoomZones() == null){
+            radarWaveDeviceSettings.setRoomZones(new ArrayList<>());
+        }
+
+        if(troomZone == null){
+            troomZone = new TRoomZone();
+            radarWaveDeviceSettings.getRoomZones().add(troomZone);
+        }
+//        LeaveBedWarnParameter.SetRuleDate  setRuleDate= null;
         if(radarWaveDeviceSettings.getRoomZones()!=null) {
+//            setRuleDate = new LeaveBedWarnParameter.SetRuleDate();
             troomZone.getLeaveBedWarnParameter().getSetRuleDate().setDateType(radarWaveLeaveBedRulesRequest.getDateType());
             if("1".equals(radarWaveLeaveBedRulesRequest.getDateType()))
             {
@@ -320,7 +335,11 @@ public class RoomZoneController extends BaseController {
                 troomZone.getLeaveBedWarnParameter().getSetRuleDate().setEndDate(radarWaveLeaveBedRulesRequest.getEndDate());
                 troomZone.getLeaveBedWarnParameter().getSetRuleDate().setStartDate(radarWaveLeaveBedRulesRequest.getStartDate());
             }
+            troomZone.getLeaveBedWarnParameter().getSetRuleDate().setStartTime(radarWaveLeaveBedRulesRequest.getStartTime());
+            troomZone.getLeaveBedWarnParameter().getSetRuleDate().setEndTime(radarWaveLeaveBedRulesRequest.getEndTime());
         }
+//        troomZone.getLeaveBedWarnParameter().setSetRuleDate(setRuleDate);
+
         try {
             //设置时间规则
             if (device.getType().equals("0")){
