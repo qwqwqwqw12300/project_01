@@ -80,20 +80,6 @@ public class DeviceWarnRequest{
     @JsonFormat(pattern = "HH:mm")
     private Date endTime;
 
-
-    /**
-     * 离床间隔是否开启:0关闭 1开启
-     */
-    private  String leaveBedInterval="0";
-    /**
-     * 间隔时间 s
-     */
-    private long intervalTime;
-    /**
-     * 名称
-     */
-    private String bedName;
-
     public String getDeviceId() {
         return deviceId;
     }
@@ -238,27 +224,4 @@ public class DeviceWarnRequest{
         this.endTime = endTime;
     }
 
-    public String getLeaveBedInterval() {
-        return leaveBedInterval;
-    }
-
-    public void setLeaveBedInterval(String leaveBedInterval) {
-        this.leaveBedInterval = leaveBedInterval;
-    }
-
-    public long getIntervalTime() {
-        return intervalTime;
-    }
-
-    public void setIntervalTime(long intervalTime) {
-        this.intervalTime = intervalTime;
-    }
-
-    public String getBedName() {
-        return bedName;
-    }
-
-    public void setBedName(String bedName) {
-        this.bedName = bedName;
-    }
 }

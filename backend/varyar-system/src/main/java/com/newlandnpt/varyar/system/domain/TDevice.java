@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.newlandnpt.varyar.common.core.domain.entity.*;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import com.newlandnpt.varyar.common.core.domain.BaseEntity;
-import com.newlandnpt.varyar.common.core.domain.model.LeaveBedWarnParameter;
 import org.springframework.data.annotation.Transient;
 
 import javax.validation.constraints.NotBlank;
