@@ -6,6 +6,7 @@
  * @Description: 工具方法
  */
 import __config from '@/config/env';
+import { WEEKMAP } from '../../config/db';
 
 /**
  * formatTime 时间格式化
@@ -274,4 +275,18 @@ export function phoneHide(phone) {
 export function phoneRemove(phone) {
 	const reg = /[^\d]/g
 	return phone.replace(reg, '');
+}
+
+export function wddkAbbreviation(week) {
+	let text = '';
+	const weekend = ['6', '7'];
+	// 是否包含周末
+	const includeEnd = weekend.filter(ele => week.includes(ele)).length === 2;
+	if (week.length === 7) return '每天';
+	if (week.length === 2 && includeEnd) return '周末';
+	if (week.length === 5 && !includeEnd) return '工作日（不含节假日';
+	week.forEach((ele, index) => {
+		text += `${!index ? '' : ', '}${WEEKMAP[ele]}`;
+	});
+	return text;
 }

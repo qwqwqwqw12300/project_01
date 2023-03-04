@@ -474,55 +474,52 @@
 				}
 			}
 
-		}
-	    ,{
-            "path" : "pages/equipment/setting/alert-rules",
-            "style": {
-            	"navigationStyle": "custom",
-            	"app-plus": {
-            		"titleNView": false
-            	}
-            }
-            
-        }
-        ,{
-            "path" : "pages/equipment/setting/out-bed",
-           "style": {
-           	"navigationStyle": "custom",
-           	"app-plus": {
-           		"titleNView": false
-           	}
-           }
-            
-        }
-		,{
-		    "path" : "pages/equipment/monitor",
-		   "style": {
-		   	"navigationStyle": "custom",
-		   	"app-plus": {
-		   		"titleNView": false
-		   	}
-		   }
-		    
-		},{
-		    "path" : "pages/equipment/guard",
-		   "style": {
-		   	"navigationStyle": "custom",
-		   	"app-plus": {
-		   		"titleNView": false
-		   	}
-		   }
-		    
-		},{
-		    "path" : "pages/equipment/new-guard",
-		   "style": {
-		   	"navigationStyle": "custom",
-		   	"app-plus": {
-		   		"titleNView": false
-		   	}
-		   }
-		    
-		},{
+		}, {
+			"path": "pages/equipment/setting/alert-rules",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/equipment/setting/out-bed",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/equipment/monitor",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/equipment/guard",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/equipment/new-guard",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
 			"path": "pages/equipment/watch-detail/watch-detail",
 			"style": {
 				"navigationStyle": "custom",
@@ -530,7 +527,7 @@
 					"titleNView": false
 				}
 			}
-		},{
+		}, {
 			"path": "pages/equipment/card-set",
 			"style": {
 				"navigationStyle": "custom",
@@ -538,7 +535,7 @@
 					"titleNView": false
 				}
 			}
-		},{
+		}, {
 			"path": "pages/equipment/kinship-number",
 			"style": {
 				"navigationStyle": "custom",
@@ -546,7 +543,7 @@
 					"titleNView": false
 				}
 			}
-		},{
+		}, {
 			"path": "pages/equipment/info-guard",
 			"style": {
 				"navigationStyle": "custom",
@@ -554,7 +551,7 @@
 					"titleNView": false
 				}
 			}
-		},{
+		}, {
 			"path": "pages/equipment/info-interval",
 			"style": {
 				"navigationStyle": "custom",
@@ -562,7 +559,7 @@
 					"titleNView": false
 				}
 			}
-		},{
+		}, {
 			"path": "pages/equipment/historical-location",
 			"style": {
 				"navigationStyle": "custom",
@@ -580,8 +577,36 @@
 				}
 			}
 		}
-		
-    ],
+
+		, {
+			"path": "pages/equipment/setting/bed-rules",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/equipment/setting/select-week",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/equipment/setting/privacy-zone",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

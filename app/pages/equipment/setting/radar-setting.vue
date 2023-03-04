@@ -21,59 +21,100 @@
 								:iconStyle="{fontSize: '36rpx', color: '#3c9cff', marginLeft: '5rpx'}" text="设备位置">
 							</u-text>
 						</view>
-						<u-radio-group v-model="editFrom.location" slot="right-icon" placement="row">
-							<u-radio :customStyle="{margin: '20rpx'}" v-for="item of locationList" :key="item"
-								activeColor="#FEAE43" :name="item" :label="item"></u-radio>
+						<u-radio-group v-model="editFrom.installPosition" slot="right-icon" placement="row">
+							<u-radio :customStyle="{margin: '20rpx'}" v-for="item of locationList" :key="item.value"
+								activeColor="#FEAE43" :name="item.value" :label="item.text"></u-radio>
 						</u-radio-group>
 					</u-cell>
-					<view class="ui-box" v-if="editFrom.roomId">
-						<view class="ui-slider-box">
-							<view class="ui-slider-tit">检测高度</view>
-							<view class="ui-slider">
-								<u-slider min="10" max="40" v-model="editFrom.roomHeight" activeColor="#eeaa3d"
-									blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
-								<text>{{$u.priceFormat(editFrom.roomHeight/10, 2) + '米'}}</text>
+					<view class="ui-box">
+						<!-- 壁挂 -->
+						<template v-if="editFrom.installPosition == 0">
+							<view class="ui-slider-box">
+								<view class="ui-slider-tit">检测高度</view>
+								<view class="ui-slider">
+									<u-slider min="0" max="4" step="0.1"  v-model="editFrom.deviceLocationWall.roomHeight" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<text>{{$u.priceFormat(editFrom.deviceLocationWall.roomHeight, 2) + '米'}}</text>
+								</view>
 							</view>
-						</view>
-						<view class="ui-slider-box">
-							<view class="ui-slider-tit">检测前距离</view>
-							<view class="ui-slider">
-								<u-slider min="10" max="40" v-model="editFrom.roomLength" activeColor="#eeaa3d"
-									blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
-								<text>{{$u.priceFormat(editFrom.roomLength/10, 2) + '米'}}</text>
+							<view class="ui-slider-box">
+								<view class="ui-slider-tit">检测前距离</view>
+								<view class="ui-slider">
+									<u-slider min="0" max="4" step="0.1"  v-model="editFrom.deviceLocationWall.roomLength" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<text>{{$u.priceFormat(editFrom.deviceLocationWall.roomLength, 2) + '米'}}</text>
+								</view>
 							</view>
-						</view>
-						<view class="ui-slider-box">
-							<view class="ui-slider-tit">检测左距离</view>
-							<view class="ui-slider">
-								<u-slider min="10" max="40" v-model="editFrom.roomLeft" activeColor="#eeaa3d"
-									blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
-								<text>{{$u.priceFormat(editFrom.roomLeft/10, 2) + '米'}}</text>
+							<view class="ui-slider-box">
+								<view class="ui-slider-tit">检测左距离</view>
+								<view class="ui-slider">
+									<u-slider min="0" max="4" step="0.1"  v-model="editFrom.deviceLocationWall.roomLeft" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<text>{{$u.priceFormat(editFrom.deviceLocationWall.roomLeft, 2) + '米'}}</text>
+								</view>
 							</view>
-						</view>
-						<view class="ui-slider-box">
-							<view class="ui-slider-tit">检测右长度</view>
-							<view class="ui-slider">
-								<u-slider min="10" max="40" v-model="editFrom.roomRight" activeColor="#eeaa3d"
-									blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
-								<text>{{$u.priceFormat(editFrom.roomRight/10, 2) + '米'}}</text>
+							<view class="ui-slider-box">
+								<view class="ui-slider-tit">检测右长度</view>
+								<view class="ui-slider">
+									<u-slider min="0" max="4" step="0.1"  v-model="editFrom.deviceLocationWall.roomRight" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<text>{{$u.priceFormat(editFrom.deviceLocationWall.roomRight, 2) + '米'}}</text>
+								</view>
 							</view>
-						</view>
-						<!-- <u-cell isLink title="检测高度" @click="sliderSet('roomHeight')"
-							:value="$u.priceFormat(editFrom.roomHeight/10, 2) + '米'"></u-cell>
-						<u-cell isLink title="检测长度" @click="sliderSet('roomLength')"
-							:value="$u.priceFormat(editFrom.roomLength/10, 2) + '米'"></u-cell>
-						<u-cell isLink title="检测左长度" @click="sliderSet('roomLeft')"
-							:value="$u.priceFormat(editFrom.roomLeft/10, 2) + '米'"></u-cell>
-						<u-cell isLink title="检测右长度" @click="sliderSet('roomRight')"
-							:value="$u.priceFormat(editFrom.roomRight/10, 2) + '米'"></u-cell> -->
+						
+						</template>
+						<!-- /壁挂 -->
+						<!-- 顶挂 -->
+						<template v-if="editFrom.installPosition == 1">
+							<view class="ui-slider-box">
+								<view class="ui-slider-tit">检测高度</view>
+								<view class="ui-slider">
+									<u-slider min="0" max="4" step="0.1"  v-model="editFrom.deviceLocationWall.roomHeight" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<text>{{$u.priceFormat(editFrom.deviceLocationWall.roomHeight, 2) + '米'}}</text>
+								</view>
+							</view>
+							<view class="ui-slider-box">
+								<view class="ui-slider-tit">检测前距离</view>
+								<view class="ui-slider">
+									<u-slider min="0" max="4" step="0.1"  v-model="editFrom.deviceLocationWall.roomFront" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<text>{{$u.priceFormat(editFrom.deviceLocationWall.roomFront, 2) + '米'}}</text>
+								</view>
+							</view>
+							<view class="ui-slider-box">
+								<view class="ui-slider-tit">检测后距离</view>
+								<view class="ui-slider">
+									<u-slider min="0" max="4" step="0.1"  v-model="editFrom.deviceLocationWall.roomBehind" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<text>{{$u.priceFormat(editFrom.deviceLocationWall.roomBehind, 2) + '米'}}</text>
+								</view>
+							</view>
+							<view class="ui-slider-box">
+								<view class="ui-slider-tit">检测左距离</view>
+								<view class="ui-slider">
+									<u-slider min="0" max="4" step="0.1"  v-model="editFrom.deviceLocationWall.roomLeft" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<text>{{$u.priceFormat(editFrom.deviceLocationWall.roomLeft, 2) + '米'}}</text>
+								</view>
+							</view>
+							<view class="ui-slider-box">
+								<view class="ui-slider-tit">检测右长度</view>
+								<view class="ui-slider">
+									<u-slider min="0" max="4" step="0.1"  v-model="editFrom.deviceLocationWall.roomRight" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<text>{{$u.priceFormat(editFrom.deviceLocationWall.roomRight, 2) + '米'}}</text>
+								</view>
+							</view>
+						</template>
+						<!-- /顶挂 -->
 					</view>
 					<u-cell isLink @click="setZone" title="隐私区域设置"></u-cell>
 				</u-cell-group>
 			</view>
 		</view>
 		<!-- 区域设置 -->
-		<template v-if="editFrom.roomId">
+		<template>
 			<view class="ui-form">
 				<u-cell-group>
 					<u-cell>
@@ -81,61 +122,49 @@
 							预警设置
 						</view>
 					</u-cell>
-					<u-cell title="进出监控" value="已启用"></u-cell>
+					<u-cell title="跌倒预警" :value="editFrom.deviceWarnParameter.fallWarn == '1' ? '已启用' : '已关闭'"></u-cell>
 					<u-cell title="离床预警" isLink @click="goBed"></u-cell>
 					<u-cell title="无人预警">
-						<u-switch space="2" v-model="editFrom.existFlag" activeValue="0" inactiveValue="1" size="20"
+						<u-switch space="2" v-model="editFrom.deviceWarnParameter.nobodyWarn.noBody" activeValue="1" inactiveValue="0" size="20"
 							slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
 						</u-switch>
 					</u-cell>
-					<view class="ui-existFlag" v-if="editFrom.existFlag == 0">
+					<view class="ui-existFlag" v-if="editFrom.deviceWarnParameter.nobodyWarn.noBody == '1'">
 						<u-cell title="连续24小时无人预警">
-							<u-switch space="2" v-model="editFrom.inMonitorFlag" activeValue="0" inactiveValue="1"
+							<u-switch space="2" v-model="editFrom.deviceWarnParameter.nobodyWarn.noBodyContinue" activeValue="1" inactiveValue="0"
 								size="20" slot="right-icon" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
 							</u-switch>
 						</u-cell>
-						<view class="ui-rule">
-							<view class="">
-								<text>我的规则2</text>
+						<view class="ui-rule" v-for="(item, index) of editFrom.deviceWarnParameter.nobodyWarn.warnRules" :key="'wall'+ index">
+							<view class="" @click="addWarnRule(item)">
+								<text>{{item.warnRuleName}}</text>
 								<u-icon name="arrow-right" color="#909193" size="36rpx"></u-icon>
 							</view>
 							<view>
-								<text>2023/02/21 至 2023/02/23 12:00 至 23:59</text>
-								<u-switch space="2" v-model="editFrom.inMonitorFlag" activeValue="0" inactiveValue="1"
+								<view class="ui-rule-time" v-if="item.dateType == 0">
+									<text>{{item.startDate}} 至 {{item.endDate}}</text>
+									<text>{{item.startTime}} 至 {{item.endTime}}</text>
+								</view>
+								<text v-else>{{weekText(item.week)}}</text>
+							
+								<u-switch space="2" v-model="item.ruleSwitch" activeValue="1" inactiveValue="0"
 									size="20" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
 								</u-switch>
 							</view>
-
 						</view>
-						<!-- 	<u-cell title="我的规则2" label="2023/02/21 至 2023/02/23  12:00 至 23:59">
-							<view slot="right-icon" class="ui-right-icon">
-								<view>
-									<u-icon name="arrow-right" color="#909193" size="28"></u-icon>
-								</view>
-							</view>
-						</u-cell> -->
+							<u-cell isLink @click="addWarnRule()" title="新增规则"></u-cell>
 					</view>
 				</u-cell-group>
 			</view>
-			<view class="ui-form">
+			<!-- <view class="ui-form">
 				<u-cell-group>
 					<u-cell isLink @click="setZone" title="子区域设置"></u-cell>
 				</u-cell-group>
-			</view>
+			</view> -->
 		</template>
 		<view class="ui-confirm">
 			<button class="default" @click="submit">保存</button>
 		</view>
-		<u-datetime-picker v-if="dateHandle.show" :show="dateHandle.show" @confirm="dateConfirm"
-			@cancel="dateHandle.show = false" :mode="dateHandle.mode"></u-datetime-picker>
-		<u-modal title="区域调节" showCancelButton :show="rangeHandle.show" @cancel="rangeHandle.show = false"
-			@confirm="modalConfirm">
-			<view class="ui-slider">
-				<u-slider min="10" :max="rangeHandle.type === 'roomHeight' ? 40 : 60" v-model="rangeHandle.num"
-					activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
-				<text>{{$u.priceFormat(rangeHandle.num/10, 2)}}米</text>
-			</view>
-		</u-modal>
 		<u-popup :show="tipShow" @close="tipShow = false" mode="center" round="16rpx" closeable>
 			<view class="ui-tip-box">
 				<view class="ui-tip-title">设备安装帮助</view>
@@ -158,7 +187,9 @@
 		PosteditDevice
 	} from '../../../common/http/api';
 	import {
-		getHoursTime
+		assignDeep,
+		getHoursTime,
+		wddkAbbreviation
 	} from '../../../common/utils/util';
 	import {
 		INIT_DEIVCE_SET
@@ -167,65 +198,85 @@
 		data() {
 			return {
 				editFrom: {
-					...INIT_DEIVCE_SET,
+					//设备id
+					deviceId: '',
+					//设备名称
+					deviceName: '',
+					//设备安装位置: 0 壁挂 1 顶挂
+					installPosition: '0',
+					// 顶挂配置
+					deviceLocationTop: {
+						roomBehind: 0,
+						roomFront: 0,
+						roomHeight: 0,
+						roomLeft: 0,
+						roomRight: 0
+					},
+					// 壁挂配置
+					deviceLocationWall: {
+						roomHeight: 0,
+						roomLeft: 0,
+						roomLength: 0,
+						roomRight: 0
+					},
+					// 隐私参数
+					deviceWarnParameter: {}
 
-				},
-				/**时间设置**/
-				dateHandle: {
-					type: '',
-					show: false,
-					mode: 'time'
-				},
-				/**范围设置**/
-				rangeHandle: {
-					type: '',
-					show: false,
-					num: 0
 				},
 				tipShow: false,
 				/**时间列表**/
 				timeList: [1, 5, 10],
 				locationList: [
-					'壁挂',
-					'顶挂'
+					{text: '壁挂', value: '0'},
+					{text: '顶挂', value: '1'}
 				],
 				// 设备源数据
 				source: {}
 			};
 		},
+		computed: {
+		/**日期信息**/
+		weekText() {
+			return (week) => {
+				return wddkAbbreviation(week) || '请选择星期';
+			}
+		}
+		},
 		onLoad() {
 			const ceche = this.$getCache('setDevice') || {};
-			const device = this.dataInit(ceche);
-			const {
-				departureTime,
-				entryTime,
-				startTime,
-				endTime,
-				roomLeft,
-				roomHeight,
-				roomRight,
-				roomLength,
-				source
-			} = device;
-			this.editFrom = {
-				...device,
-				departureTime: departureTime / 60 || 0,
-				entryTime: entryTime / 60 || 0,
-				/**开始监控时间**/
-				startTime: uni.$u.timeFormat(startTime, 'hh:MM'),
-				/**结束监控时间**/
-				endTime: uni.$u.timeFormat(endTime, 'hh:MM'),
-				roomLeft: roomLeft * 10,
-				roomHeight: roomHeight * 10,
-				roomRight: roomRight * 10,
-				roomLength: roomLength * 10,
-				isDepartureTimeCus: [this.timeList.includes(departureTime /
-					60)],
-				isEntryTimeCus: [this.timeList.includes(entryTime / 60)],
-			};
-			this.source = source;
+			this.dataInit(ceche);
+			this.source = ceche;
 		},
 		methods: {
+			/**
+			 * 添加预警规则
+			 */
+			addWarnRule(rule) {
+				uni.$once('alertRule', ({type, data}) => {
+					switch (type){
+						case 'update':
+							if(rule) {
+								Object.assign(rule, data);
+							} else {
+								 this.editFrom.deviceWarnParameter.nobodyWarn.warnRules.push(data)
+							}
+							break;
+						case 'delete':
+							const index = this.editFrom.deviceWarnParameter.nobodyWarn.warnRules.indexOf(rule);
+							console.log(index, 'index');
+							this.editFrom.deviceWarnParameter.nobodyWarn.warnRules.splice(index, 1);
+							break;
+						default:
+							
+							break;
+					}
+					
+				});
+				this.$setCache('alertRuleCache', {deviceId: this.source.deviceId, ...(rule || {})});
+				uni.navigateTo({
+					url: `/pages/equipment/setting/alert-rules`
+				})
+			},
 
 			/**
 			 * 提交 
@@ -292,30 +343,6 @@
 				})
 			},
 
-
-			/**
-			 * 开启选择时间
-			 */
-			openDate(type) {
-				Object.assign(this.dateHandle, {
-					type,
-					show: true,
-					mode: 'time'
-				});
-			},
-
-			/**
-			 * 选择时间完成
-			 */
-			dateConfirm({
-				value
-			}) {
-				this.editFrom[this.dateHandle.type] = (typeof value === 'number') ? uni.$u.date(
-					value,
-					'yyyy/mm/dd hh:MM:ss') : value;
-				this.dateHandle.show = false;
-			},
-
 			/**
 			 * 监控区域修改
 			 */
@@ -336,31 +363,8 @@
 			setZone() {
 				this.$store.commit('setDeviceInfo', this.source);
 				uni.navigateTo({
-					url: '/pages/equipment/setting/position-setting'
+					url: '/pages/equipment/setting/privacy-zone'
 				})
-			},
-			/**
-			 * 设置区域
-			 */
-			sliderSet(type) {
-				Object.assign(this.rangeHandle, {
-					type,
-					num: this.editFrom[type],
-					show: true
-				});
-			},
-
-			/**
-			 * 设置区域确认
-			 */
-			modalConfirm() {
-				console.log('modalConfirm');
-				const {
-					type,
-					num
-				} = this.rangeHandle;
-				this.editFrom[type] = num;
-				this.rangeHandle.show = false;
 			},
 
 			/**
@@ -371,40 +375,23 @@
 				const {
 					name,
 					deviceId,
-					type,
-					no,
-					familyId,
-					roomId,
 					location,
 					parameter: {
-						deviceLocation = {},
-						deviceRoomParameter = {}
+						deviceLocationTop = {},
+						// 壁挂配置
+						deviceLocationWall = {},
+						// 隐私参数
+						deviceWarnParameter = [] 
 					} = {},
-				} = device,
-				initObj = {
-					deviceId: '',
-					deviceName: '',
-					deviceType: '',
-					deviceNo: '',
-					roomLeft: 6,
-					roomHeight: 4,
-					roomRight: 3,
-					roomLength: 3
-				};
-				Object.assign(initObj, {
+				} = device;
+				Object.assign(this.editFrom, assignDeep({}, {
 					deviceName: name,
 					deviceId,
-					deviceType: type,
-					deviceNo: no,
-					familyId,
-					roomId,
-					location,
-					...deviceLocation,
-					...deviceRoomParameter,
-					source: device
-				});
-				console.log(initObj, 'initObj');
-				return initObj;
+					installPosition: location,
+					deviceLocationTop,
+					deviceLocationWall,
+					deviceWarnParameter
+				}) );
 			},
 
 			/**
@@ -417,7 +404,6 @@
 					url: '/pages/equipment/setting/out-bed'
 				})
 			}
-
 		}
 	}
 </script>
@@ -590,6 +576,15 @@
 
 				text {
 					width: 400rpx;
+				}
+			}
+		}
+		.ui-rule-time {
+			display: flex;
+			flex-direction: column;
+			>text {
+				&:nth-child(2) {
+					margin-top: 10rpx;
 				}
 			}
 		}

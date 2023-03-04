@@ -393,4 +393,15 @@ export const PostDeleteAddressBook= (params) => http.post('/api/careCard/deleteA
 /**
  *开始远程监听*
  */
-export const PostRemoteMonitor = (params) => http.post('/api/careCard/remoteMonitor', params, {})
+export const PostRemoteMonitor = (params) => http.post('/api/careCard/remoteMonitor', params, {});
+
+/**
+ * 添加/修改无人预警
+ */
+export const PostSetRadarWaveNobodyWarn = (params) => http.post('/api/device/setRadarWaveNobodyWarn', params, {});
+
+/**
+ * 删除无人预警
+ */
+export const PostDelRadarWaveNobodyWarn = (params) => http.post('/api/device/delRadarWaveNobodyWarn', params, {});
+
