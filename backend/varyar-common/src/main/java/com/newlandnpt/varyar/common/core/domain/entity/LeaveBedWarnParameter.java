@@ -55,23 +55,23 @@ public class LeaveBedWarnParameter implements Serializable {
         /**
          * 开始日期 data yyyy-MM-dd
          */
-        @JsonFormat(pattern = "yyyy-MM-dd")
+        @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
         private Date startDate;
         /**
          * 结束日期 data yyyy-MM-dd
          */
-        @JsonFormat(pattern = "yyyy-MM-dd")
+        @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
         private Date endDate;
 
         /**
          * 结束时间 开始时间
          */
-        @JsonFormat(pattern = "HH:mm")
+        @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
         private Date startTime;
         /**
          * 结束时间 data HH:mm
          */
-        @JsonFormat(pattern = "HH:mm")
+        @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
         private Date endTime;
 
         public String getDateType() {

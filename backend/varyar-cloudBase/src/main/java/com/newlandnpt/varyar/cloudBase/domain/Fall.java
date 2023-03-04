@@ -30,11 +30,11 @@ public class Fall implements Serializable {
 	private String eventId;
 	
 	/** 报文:事件的时间 **/
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date timestamp;
 	
 	/** 报文:事件结束时间 **/
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date endTimestamp;
 	
 	/** 报文:当前阶段的跌倒事件(fall_detected, fall_confirmed, calling, finished, fall_exit) **/
@@ -47,7 +47,7 @@ public class Fall implements Serializable {
 	private Boolean isSimulated;
 	
 	/** 报文:最后状态更新时间 **/
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date statusUpdateTimestamp;
 	
 	/** 报文: 触发事件目标的json字符串，内容为：targetId，xCm，yCm，zCm字段<br>

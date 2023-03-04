@@ -51,7 +51,7 @@ public class TDevice extends BaseEntity
     /** 设备参数信息 */
     private DeviceParameter parameter;
     /** 激活时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date registerTime;
 
     /** 设备位置 */

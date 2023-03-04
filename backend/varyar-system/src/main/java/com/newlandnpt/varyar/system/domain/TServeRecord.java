@@ -71,7 +71,7 @@ public class TServeRecord extends BaseEntity
 
     /** 创建时间 */
     @Excel(name = "处理时间",sort = 1,dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date createTime;
 
 
