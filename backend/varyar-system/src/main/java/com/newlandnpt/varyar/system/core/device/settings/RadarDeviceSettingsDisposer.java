@@ -142,14 +142,6 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
             deviceConfig.getWalabotConfig().setTrackerSubRegions(new ArrayList<>(0));
         }
 
-        // 清除进出缓存key
-        String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + deviceNo + DateFormatUtils.format(new Date(),":yyyy-MM-dd");
-        redisCache.deleteObject(redisKey);
-
-        // 清除离床警告标记缓存key
-        redisKey = T_DEVICE_VAYYAR_LEAVE_BED_WARN_MARK_KEY + deviceNo + DateFormatUtils.format(new Date(),":yyyy-MM-dd");
-        redisCache.deleteObject(redisKey);
-
         SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic+":vayyar",
                 MessageBuilder.withPayload(deviceConfig)
                         .setHeader("KEYS",deviceConfig.getDeviceId()).build());
