@@ -9,6 +9,7 @@ import com.newlandnpt.varyar.common.exception.base.BaseException;
 import com.newlandnpt.varyar.system.core.device.DeviceSettingsDisposer;
 import com.newlandnpt.varyar.system.domain.TDevice.RadarWaveDeviceSettings;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -19,9 +20,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Optional;
 
 import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_ACCESS_KEY;
+import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_LEAVE_BED_WARN_MARK_KEY;
 import static com.newlandnpt.varyar.system.domain.TRoomZone.FLAG_YES;
 
 /**
@@ -140,7 +143,11 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
         }
 
         // 清除进出缓存key
-        String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + deviceNo;
+        String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + deviceNo + DateFormatUtils.format(new Date(),":yyyy-MM-dd");
+        redisCache.deleteObject(redisKey);
+
+        // 清除离床警告标记缓存key
+        redisKey = T_DEVICE_VAYYAR_LEAVE_BED_WARN_MARK_KEY + deviceNo + DateFormatUtils.format(new Date(),":yyyy-MM-dd");
         redisCache.deleteObject(redisKey);
 
         SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic+":vayyar",
