@@ -83,7 +83,6 @@ public class PresenceServiceImpl implements PresenceService {
 			regionMap.put("3",0);
 
 			if(device.getParameter() != null && (device.getParameter() instanceof TDevice.RadarWaveDeviceSettings)){
-				log.warn(">>>> 设备号：{},获取不到设备雷达波配置信息，将使用设备提供的区域参数", t.getDeviceId());
 				TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings) device.getParameter();
 
 				if(CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getRoomZones())&&
@@ -113,6 +112,8 @@ public class PresenceServiceImpl implements PresenceService {
 
 				t.setRegionMap(regionMap);
 				log.info(">>>>> 使用自定义规则计算子区域是否有对象后deviceId:{},子区域检测：{}",device.getNo(),regionMap);
+			}else{
+				log.warn(">>>> 设备号：{},获取不到设备雷达波配置信息，将使用设备提供的区域参数", t.getDeviceId());
 			}
 		}catch (Exception e){
 			log.error(">>>>> 自定义规则计算子区域是否有对象 失败,将使用设备提供的区域参数",e);
