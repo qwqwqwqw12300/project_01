@@ -138,7 +138,7 @@ public class MemberInfoController extends BaseController
             throw new CaptchaExpireException();
         }
         code = codes[1];
-        if (!code.equalsIgnoreCase(memberInfoRequest.getNewCode()) || !codes[0].equalsIgnoreCase(memberInfoRequest.getOldPhone())) {
+        if (!code.equalsIgnoreCase(memberInfoRequest.getNewCode()) || !codes[0].equalsIgnoreCase(memberInfoRequest.getNewPhone())) {
             throw new CaptchaException();
         }
         //解密
