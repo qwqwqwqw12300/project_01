@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.common.core.domain.model;
+package com.newlandnpt.varyar.common.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -12,12 +12,12 @@ public class LeaveBedWarnParameter implements Serializable {
     /**
      * 离床间隔是否开启:0关闭 1开启
      */
-    private String leaveBedInterval = "0";
+    private String leaveBedInterval = "1";
     /**
      * 间隔时间 s
      */
-    private long intervalTime =300;
-    private SetRuleDate setRuleDate = new SetRuleDate();
+    private long intervalTime;
+    private SetRuleDate setRuleDate = null;
 
     public String getLeaveBedInterval() {
         return leaveBedInterval;
@@ -43,11 +43,11 @@ public class LeaveBedWarnParameter implements Serializable {
         this.setRuleDate = setRuleDate;
     }
 
-    public static class SetRuleDate {
+    public class SetRuleDate {
         /**
          * 日期类型
          */
-        private String dateType="1";
+        private String dateType="0";
         /**
          * 星期
          */
@@ -55,23 +55,23 @@ public class LeaveBedWarnParameter implements Serializable {
         /**
          * 开始日期 data yyyy-MM-dd
          */
-        @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
+        @JsonFormat(pattern = "yyyy-MM-dd")
         private Date startDate;
         /**
          * 结束日期 data yyyy-MM-dd
          */
-        @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
+        @JsonFormat(pattern = "yyyy-MM-dd")
         private Date endDate;
 
         /**
          * 结束时间 开始时间
          */
-        @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
+        @JsonFormat(pattern = "HH:mm")
         private Date startTime;
         /**
          * 结束时间 data HH:mm
          */
-        @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
+        @JsonFormat(pattern = "HH:mm")
         private Date endTime;
 
         public String getDateType() {

@@ -143,6 +143,13 @@ public class RoomZoneController extends BaseController {
         if(!(parameter instanceof TDevice.RadarWaveDeviceSettings)){
             return error("设备不是雷达波设备！");
         }
+        TDevice device = iDeviceService.selectDeviceByDeviceId(deviceId);
+        if (device==null){
+            return error("无法查找到设备信息！");
+        }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限操作！");
+        }
         TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
 
         if (radarWareShadowZoneRequest.getRoomZoneId()!=null && !radarWareShadowZoneRequest.getRoomZoneId().equals("")
@@ -209,6 +216,14 @@ public class RoomZoneController extends BaseController {
         if(!(parameter instanceof TDevice.RadarWaveDeviceSettings)){
             return error("设备不是雷达波设备！");
         }
+        TDevice device = iDeviceService.selectDeviceByDeviceId(deviceId);
+        if (device==null){
+            return error("无法查找到设备信息！");
+        }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限操作！");
+        }
+
         TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
 
         if (radarWareBedZoneRequest.getRoomZoneId()!=null && !radarWareBedZoneRequest.getRoomZoneId().equals("")
@@ -295,25 +310,17 @@ public class RoomZoneController extends BaseController {
         TRoomZone troomZone = radarWaveDeviceSettings.getRoomZones().stream()
                 .filter(p-> radarWaveLeaveBedRulesRequest.getRoomZoneId().equals(""+p.getRoomZoneId().longValue()))
                 .findAny().orElse(null);
-
-        LeaveBedWarnParameter.SetRuleDate setRuleDate =null;
-
-
         if(radarWaveDeviceSettings.getRoomZones()!=null) {
-            setRuleDate.setDateType(radarWaveLeaveBedRulesRequest.getDateType());
+            troomZone.getLeaveBedWarnParameter().getSetRuleDate().setDateType(radarWaveLeaveBedRulesRequest.getDateType());
             if("1".equals(radarWaveLeaveBedRulesRequest.getDateType()))
             {
-                setRuleDate.setWeek(radarWaveLeaveBedRulesRequest.getWeek());
-
+                troomZone.getLeaveBedWarnParameter().getSetRuleDate().setWeek(radarWaveLeaveBedRulesRequest.getWeek());
             }   else
             {
-                setRuleDate.setEndDate(radarWaveLeaveBedRulesRequest.getEndDate());
-                setRuleDate.setStartDate(radarWaveLeaveBedRulesRequest.getStartDate());
+                troomZone.getLeaveBedWarnParameter().getSetRuleDate().setEndDate(radarWaveLeaveBedRulesRequest.getEndDate());
+                troomZone.getLeaveBedWarnParameter().getSetRuleDate().setStartDate(radarWaveLeaveBedRulesRequest.getStartDate());
             }
-
         }
-        troomZone.getLeaveBedWarnParameter().setSetRuleDate(setRuleDate);
-
         try {
             //设置时间规则
             if (device.getType().equals("0")){
@@ -334,7 +341,7 @@ public class RoomZoneController extends BaseController {
 
 
 
-    @ApiOperation("删除无人预警时间规则")
+    @ApiOperation("删除离床时间规则")
     @PostMapping("/delRadarWaveLeaveBedRulesDate")
     public AjaxResult delRadarWaveLeaveBedRulesDate(
             @RequestBody @Validated RadarWaveLeaveBedRulesRequest  radarWaveLeaveBedRulesRequest) {
@@ -342,12 +349,24 @@ public class RoomZoneController extends BaseController {
         if (radarWaveLeaveBedRulesRequest.getDeviceId()==null||radarWaveLeaveBedRulesRequest.getDeviceId().equals("")){
             return error("设备id不能为空！");
         }
+        if (radarWaveLeaveBedRulesRequest.getRoomZoneId()==null||radarWaveLeaveBedRulesRequest.getRoomZoneId().equals("")){
+            return error("房间子区域id不能为空！");
+        }
         Long deviceId = Long.valueOf(radarWaveLeaveBedRulesRequest.getDeviceId());
         //根据设备id获取参数信息
         TDevice.DeviceParameter parameter = iDeviceService.loadSettings(deviceId);
         if(!(parameter instanceof TDevice.RadarWaveDeviceSettings)){
             return error("设备不是雷达波设备！");
         }
+
+        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(radarWaveLeaveBedRulesRequest.getDeviceId()));
+        if (device==null){
+            return error("无法查找到设备信息！");
+        }
+        if(!device.getMemberId().toString().equals(String.valueOf(this.getLoginUser().getMemberId()))){
+            return  error("非创建者无权限操作！");
+        }
+
         //雷达波参数
         TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
         TRoomZone troomZone = radarWaveDeviceSettings.getRoomZones().stream()
@@ -362,11 +381,11 @@ public class RoomZoneController extends BaseController {
             // if (device.getType().equals("0")) {
                     int i = iDeviceService.setSettings(deviceId, radarWaveDeviceSettings);
                     if (i == 0) {
-                        return error("设置离床时间规则失败！");
+                        return error("置离床时间规则失败！");
                     }
             } catch (Exception e) {
-                log.error("设置离床时间规则失败！", e);
-                return error("设置离床时间规则失败！");
+                log.error("删除离床时间规则失败！", e);
+                return error("删除离床时间规则失败！");
             }
             return ajax;
         }
