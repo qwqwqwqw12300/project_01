@@ -21,13 +21,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_ACCESS_KEY;
+import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_LEAVE_BED_WARN_MARK_KEY;
 import static com.newlandnpt.varyar.system.job.VayyarDeviceAccessTask.TRIGGER_TIME;
 import static com.newlandnpt.varyar.system.job.VayyarDeviceAccessTask.YYYY_MM_DD_HH_MM;
 import static org.apache.rocketmq.spring.annotation.ConsumeMode.ORDERLY;
@@ -209,7 +208,7 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
                 }
             }
 
-            String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + device.getNo() + DateFormatUtils.format(calculateTime, "yyyy-MM-dd");
+            String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + device.getNo() + DateFormatUtils.format(calculateTime, ":yyyy-MM-dd");
 
             Calendar now = Calendar.getInstance();
             now.setTime(calculateTime);
@@ -264,8 +263,20 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
                 }
 
 
-                if (accessInfo != null && LEAVE_ROOM.equals(accessInfo.getType())) {
+                if (accessInfo != null && accessInfo.getType().startsWith("leave_zone_")) {
                     // 如果区间内最后一条是离开则证明监控时间范围内离开未回来
+                    // 判断当前时间点是否已触发过警告
+                    String markKey = T_DEVICE_VAYYAR_LEAVE_BED_WARN_MARK_KEY+device.getNo()+DateFormatUtils.format(calculateTime,":yyyy-MM-dd");
+                    List<AccessInfo> marks = redisCache.getCacheList(markKey);
+                    final AccessInfo finalAccessInfo = accessInfo;
+                    if(CollectionUtils.isNotEmpty(marks)&&marks.stream()
+                            .anyMatch(p->p.getTime()==finalAccessInfo.getTime()&&
+                                    finalAccessInfo.getZoneNo() == p.getZoneNo()&&
+                                    StringUtils.equals(finalAccessInfo.getType(),p.getType()))){
+                        log.debug(">>>>>> 已经触发过告警，忽略本次告警");
+                        return;
+                    }
+
                     boolean triggerWarn = false;
                     if (StringUtils.equals(DateUtils.parseDateToStr(YYYY_MM_DD_HH_MM, endTime.getTime()),
                             DateUtils.parseDateToStr(YYYY_MM_DD_HH_MM, calculateTime))) {
@@ -274,12 +285,17 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
                     } else {
                         // 否则计算是否离开超过间隔时间
                         if (calculateTime.getTime() >= accessInfo.getTime() + (roomZone.getLeaveBedWarnParameter().getIntervalTime() * 1000)) {
-
                             triggerWarn = true;
                         }
                     }
                     if (triggerWarn) {
-//                        deviceEventService.deviceAccessIssue(device.getNo(), roomZone.getName(), "leave_zone_" + zoneNo, (now.getTimeInMillis() - accessInfo.getTime()) / 1000);
+                        deviceEventService.deviceAccessIssue(device.getNo(), roomZone.getName(), "leave_zone_" + zoneNo, (now.getTimeInMillis() - accessInfo.getTime()) / 1000);
+                        boolean hasKey = redisCache.hasKey(markKey);
+                        redisCache.setCacheList(markKey, Arrays.asList(accessInfo));
+                        if(!hasKey){
+                            // 初次设值的时候设值过期时间二天
+                            redisCache.expire(redisKey,2, TimeUnit.DAYS);
+                        }
                     }
                 }
             }
@@ -352,7 +368,7 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
                 endCalendar.set(Calendar.MILLISECOND, 0);
                 rule.setEndTime(endCalendar.getTime());
             }
-            String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + device.getNo() + DateFormatUtils.format(calculateTime, "yyyy-MM-dd");
+            String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + device.getNo() + DateFormatUtils.format(calculateTime, ":yyyy-MM-dd");
 
             // 如果当前时间超过结束时间开始进行计算
 
@@ -390,7 +406,6 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
                             .findFirst()
                             // 如果没有记录
                             .orElse(null);
-
                 }
                 if (accessInfo != null && LEAVE_ROOM.equals(accessInfo.getType())) {
                     // 如果区间内最后一条是离开则证明监控时间范围内离开未回来，抛出警告
