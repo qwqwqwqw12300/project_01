@@ -73,7 +73,13 @@ public class RegMemberController extends BaseController {
         if (code == null) {
             throw new CaptchaExpireException();
         }
-        if (!code.equalsIgnoreCase(regMemberRequest.getCode())) {
+        String[] codes = code.split("_");
+        if(codes.length<2){
+            throw new CaptchaExpireException();
+        }
+        code = codes[1];
+        String phone = codes[0];
+        if (!code.equalsIgnoreCase(regMemberRequest.getCode()) || !phone.equalsIgnoreCase(regMemberRequest.getPhone())) {
             throw new CaptchaException();
         }
         //解密
