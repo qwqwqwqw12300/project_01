@@ -113,13 +113,13 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
                         SubRegion subRegion = new SubRegion();
                         subRegion.setEnterDuration(1);
                         subRegion.setExitDuration(1);
-                        if ("0".equals(roomZone.getZoneType())) {
-                            subRegion.setIsFallingDetection(true);
-                            subRegion.setIsPresenceDetection(true);
+                        if ("1".equals(roomZone.getZoneType())) {
 
-                        }else{
                             subRegion.setIsFallingDetection(false);
                             subRegion.setIsPresenceDetection(false);
+                        }else{
+                            subRegion.setIsFallingDetection(true);
+                            subRegion.setIsPresenceDetection(true);
                         }
                         subRegion.setName(roomZone.getName());
                         if("0".equals(settings.getInstallPosition())){
