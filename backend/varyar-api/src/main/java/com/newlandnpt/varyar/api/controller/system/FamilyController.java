@@ -183,7 +183,13 @@ public class FamilyController extends BaseController {
         if (code == null) {
             throw new CaptchaExpireException();
         }
-        if (!code.equalsIgnoreCase(shareFamilyRequest.getCode())) {
+        String[] codes = code.split("_");
+        if(codes.length<2){
+            throw new CaptchaExpireException();
+        }
+        code = codes[1];
+        String phone = codes[0];
+        if (!code.equalsIgnoreCase(shareFamilyRequest.getCode())|| !phone.equalsIgnoreCase(shareFamilyRequest.getPhone())) {
             throw new CaptchaException();
         }
         //查询我的家庭（需要修改的）

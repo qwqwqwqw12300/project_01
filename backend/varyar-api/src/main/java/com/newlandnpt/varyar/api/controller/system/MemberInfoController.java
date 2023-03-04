@@ -133,7 +133,12 @@ public class MemberInfoController extends BaseController
         if (code == null) {
             throw new CaptchaExpireException();
         }
-        if (!code.equalsIgnoreCase(memberInfoRequest.getNewCode())) {
+        String[] codes = code.split("_");
+        if(codes.length<2){
+            throw new CaptchaExpireException();
+        }
+        code = codes[1];
+        if (!code.equalsIgnoreCase(memberInfoRequest.getNewCode()) || !codes[0].equalsIgnoreCase(memberInfoRequest.getOldPhone())) {
             throw new CaptchaException();
         }
         //解密
@@ -185,7 +190,13 @@ public class MemberInfoController extends BaseController
         if (code == null) {
             throw new CaptchaExpireException();
         }
-        if (!code.equalsIgnoreCase(oldCode)) {
+        String[] codes = code.split("_");
+        if(codes.length<2){
+            throw new CaptchaExpireException();
+        }
+        code = codes[1];
+        String phone = codes[0];
+        if (!code.equalsIgnoreCase(oldCode) || !phone.equalsIgnoreCase(memberInfoRequest.getOldPhone())) {
             throw new CaptchaException();
         }
         try {
@@ -260,7 +271,13 @@ public class MemberInfoController extends BaseController
             if (code == null) {
                 throw new CaptchaExpireException();
             }
-            if (!code.equalsIgnoreCase(newCode)) {
+            String[] codes = code.split("_");
+            if(codes.length<2){
+                throw new CaptchaExpireException();
+            }
+            code = codes[1];
+            String phone = codes[0];
+            if (!code.equalsIgnoreCase(newCode) ||!phone.equalsIgnoreCase(memberInfoRequest.getNewPhone())) {
                 throw new CaptchaException();
             }
             //验证新手机号是否被其他用户注册

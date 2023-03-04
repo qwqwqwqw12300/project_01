@@ -139,7 +139,7 @@ public class MemberLoginController extends BaseController {
         }
         String code = randomSb.toString();
 //        String code = "1234";
-        redisCache.setCacheObject(smsVerifyKey, code, Constants.SMS_CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
+        redisCache.setCacheObject(smsVerifyKey, smsRequest.getPhone()+"_"+code, Constants.SMS_CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
 
         smsService.sendSms(code,smsRequest.getPhone());
 
@@ -155,12 +155,18 @@ public class MemberLoginController extends BaseController {
         AjaxResult ajax = AjaxResult.success();
         // check captcha
         String verifyKey = CacheConstants.SMS_CODE_KEY + memberLoginSmsRequest.getUuid();
-        String captcha = redisCache.getCacheObject(verifyKey);
+        String code = redisCache.getCacheObject(verifyKey);
         redisCache.deleteObject(verifyKey);
-        if (captcha == null) {
+        if (code == null) {
             throw new CaptchaExpireException();
         }
-        if (!captcha.equalsIgnoreCase(memberLoginSmsRequest.getCode())) {
+        String[] codes = code.split("_");
+        if(codes.length<2){
+            throw new CaptchaExpireException();
+        }
+        code = codes[1];
+        String phone = codes[0];
+        if (!code.equalsIgnoreCase(memberLoginSmsRequest.getCode()) ||!phone.equalsIgnoreCase(memberLoginSmsRequest.getCode())) {
             throw new CaptchaException();
         }
 
