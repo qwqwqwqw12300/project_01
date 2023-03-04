@@ -105,7 +105,7 @@ public class PresenceServiceImpl implements PresenceService {
 						TRoomZone roomZone = radarWaveDeviceSettings.getRoomZones().get(i);
 						if(filteredTargets.stream().anyMatch(p->targetInZoom(p,roomZone))){
 							// 任意目标在子区域内则将子区域存在标记置为1
-							regionMap.put(""+i,0);
+							regionMap.put(""+i,1);
 						}
 					}
 
