@@ -166,7 +166,7 @@ public class MemberLoginController extends BaseController {
         }
         code = codes[1];
         String phone = codes[0];
-        if (!code.equalsIgnoreCase(memberLoginSmsRequest.getCode()) ||!phone.equalsIgnoreCase(memberLoginSmsRequest.getCode())) {
+        if (!code.equalsIgnoreCase(memberLoginSmsRequest.getCode()) ||!phone.equalsIgnoreCase(memberLoginSmsRequest.getPhone())) {
             throw new CaptchaException();
         }
 
