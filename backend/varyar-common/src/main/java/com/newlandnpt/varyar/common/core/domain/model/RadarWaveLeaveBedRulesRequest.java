@@ -35,26 +35,26 @@ public class RadarWaveLeaveBedRulesRequest {
      * 开始日期 data yyyy-MM-dd
      */
     @ApiModelProperty("开始日期")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date startDate;
     /**
      * 结束日期 data yyyy-MM-dd
      */
     @ApiModelProperty("结束日期")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date endDate;
 
     /**
      * 结束时间 开始时间
      */
     @ApiModelProperty("开始时间")
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
     private Date startTime;
     /**
      * 结束时间 data HH:mm
      */
     @ApiModelProperty("结束时间")
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
     private Date endTime;
 
     public String getDeviceId() {

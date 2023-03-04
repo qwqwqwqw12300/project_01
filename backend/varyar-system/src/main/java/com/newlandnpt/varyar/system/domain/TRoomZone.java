@@ -98,11 +98,11 @@ public class TRoomZone extends BaseEntity
     private String outMonitorFlag;
     /** 开始时间 */
     @ApiModelProperty("开始时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date startTime;
     /** 结束时间 */
     @ApiModelProperty("结束时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date endTime;
     /** 设备id*/
     @ApiModelProperty("设备id")

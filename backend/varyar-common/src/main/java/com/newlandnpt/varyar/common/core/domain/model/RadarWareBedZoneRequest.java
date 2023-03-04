@@ -76,12 +76,12 @@ public class RadarWareBedZoneRequest {
     /**
      *开始时间 data HH:mm:ss
      * */
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
     private Date startTime;
     /**
      *结束时间 data HH:mm:ss
      * */
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
     private Date endTime;
 
 
