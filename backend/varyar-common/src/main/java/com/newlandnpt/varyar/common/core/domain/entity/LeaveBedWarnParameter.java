@@ -12,7 +12,7 @@ public class LeaveBedWarnParameter implements Serializable {
     /**
      * 离床间隔是否开启:0关闭 1开启
      */
-    private String leaveBedInterval = "1";
+    private String leaveBedInterval = "0";
     /**
      * 间隔时间 s
      */

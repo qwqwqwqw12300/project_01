@@ -1,6 +1,7 @@
 package com.newlandnpt.varyar.api.controller.business.rocketmq;
 
 import com.alibaba.fastjson2.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newlandnpt.varyar.common.core.domain.entity.AccessInfo;
 import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.utils.DateUtils;
@@ -43,7 +44,8 @@ import static org.apache.rocketmq.spring.annotation.ConsumeMode.ORDERLY;
 public class AccessCalculateListener implements RocketMQListener<MessageExt> {
 
     private static final Logger log = LoggerFactory.getLogger(AccessCalculateListener.class);
-
+    @Autowired(required = false)
+    private ObjectMapper jacksonObjectMapper = new ObjectMapper();
     @Value("${rocketmq.topic.accessDelay}")
     private String accessDelayTopic;
 
@@ -109,7 +111,7 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
         log.debug("----" + System.currentTimeMillis() + "----" + " 房间进出计算事件消息： " + new String(message.getBody()));
         TDevice device;
         try{
-            device = JSON.parseObject(message.getBody(),TDevice.class);
+            device = jacksonObjectMapper.readValue(message.getBody(),TDevice.class);
         }catch (Exception e){
             log.error(">>>>>> 房间进出计算事件消息处理 类型转换异常，忽略执行",e);
             return;
