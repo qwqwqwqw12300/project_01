@@ -82,7 +82,7 @@ public class PresenceServiceImpl implements PresenceService {
 			regionMap.put("2",0);
 			regionMap.put("3",0);
 
-			if(device.getParameter() != null && !(device.getParameter() instanceof TDevice.RadarWaveDeviceSettings)){
+			if(device.getParameter() != null && (device.getParameter() instanceof TDevice.RadarWaveDeviceSettings)){
 				log.warn(">>>> 设备号：{},获取不到设备雷达波配置信息，将使用设备提供的区域参数", t.getDeviceId());
 				TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings) device.getParameter();
 
