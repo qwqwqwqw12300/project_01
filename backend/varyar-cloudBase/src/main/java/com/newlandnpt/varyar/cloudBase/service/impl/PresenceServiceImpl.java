@@ -112,6 +112,7 @@ public class PresenceServiceImpl implements PresenceService {
 				}
 
 				t.setRegionMap(regionMap);
+				log.info(">>>>> 使用自定义规则计算子区域是否有对象后deviceId:{},子区域检测：{}",device.getNo(),regionMap);
 			}
 		}catch (Exception e){
 			log.error(">>>>> 自定义规则计算子区域是否有对象 失败,将使用设备提供的区域参数",e);
