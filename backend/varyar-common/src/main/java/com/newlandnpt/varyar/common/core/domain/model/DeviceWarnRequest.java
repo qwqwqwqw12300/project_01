@@ -40,16 +40,16 @@ public class DeviceWarnRequest{
     /** 跌倒预警开关 ：1开 0关  */
     private String fallWarn;
     /** 无人预警开关 ：1开 0关 */
-    private String noBody = "1";
+    private String noBody;
     /** 无人预警连续24小时开关 1开 0关 */
-    private String noBodyContinue = "1";
+    private String noBodyContinue;
 
     /**
      * 规则名称
      */
     private String warnRuleName;
 
-    private String  ruleSwitch="1";
+    private String  ruleSwitch;
     /**
      * 日期类型
      */
@@ -57,7 +57,7 @@ public class DeviceWarnRequest{
     /**
      * 星期
      */
-    private String[] week = {"0", "1", "2", "3", "4", "5", "6"};
+    private String[] week;
     /**
      * 开始日期 data yyyy-MM-dd
      */
