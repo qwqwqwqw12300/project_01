@@ -456,17 +456,20 @@ public class RoomZoneController extends BaseController {
         if (deviceId==null || deviceId.equals("")){
             throw new ServiceException("设备Id不能为空！");
         }
-        TDevice.DeviceParameter parameter = iDeviceService.loadSettings(Long.valueOf(deviceId));
-        TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
+
+        TDevice device = iDeviceService.selectDeviceByDeviceId(Long.valueOf(Long.valueOf(deviceId)));
+        TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)device.getParameter();
 
         List<TRoomZone> tRoomZones  = iRoomZoneService.selectTRoomZoneByDeviceId(Long.valueOf(deviceId));
         //查询接口离床时间规则给到前端
-        for (TRoomZone tRoomZone : tRoomZones ){
+        for (int i=0 ;i<tRoomZones.size();i++){
+            TRoomZone troomZones = tRoomZones.get(i);
             TRoomZone troomZone = radarWaveDeviceSettings.getRoomZones().stream()
-                    .filter(p-> tRoomZone.getRoomZoneId().equals(""+p.getRoomZoneId().longValue()))
+                    .filter(p-> troomZones.getRoomZoneId().longValue()==p.getRoomZoneId())
                     .findAny().orElse(null);
-            tRoomZone.setLeaveBedWarnParameter(troomZone.getLeaveBedWarnParameter());
+            tRoomZones.get(i).setLeaveBedWarnParameter(troomZone.getLeaveBedWarnParameter());
         }
+
 
 //        return getDataTable(iRoomZoneService.selectTRoomZoneByDeviceId(Long.valueOf(deviceId)));
         return getDataTable(tRoomZones);
