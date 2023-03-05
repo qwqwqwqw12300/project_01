@@ -37,6 +37,12 @@ public enum ExCodeEnum {
     LOCATION_GUARD_SET_FAIL("2004","位置守护设置失败"),
 
     FENCE_DELETE_FAIL("2005","电子围栏删除失败"),
+
+    ADDRESS_NUMBER_LIMIT("2006","通讯录最多添加20个白名单用户"),
+
+    ADDRESS_SET_FAIL("2007","通讯录设置失败"),
+
+    FAMILY_NUMBER_SET_FAIL("2008","亲情号码设置失败"),
     ;
 
 

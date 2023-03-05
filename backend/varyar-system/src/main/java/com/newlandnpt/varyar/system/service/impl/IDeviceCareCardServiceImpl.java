@@ -20,6 +20,7 @@ import com.newlandnpt.varyar.system.domain.req.DeleteFenceReq;
 import com.newlandnpt.varyar.system.service.IDeviceCareCardService;
 import com.newlandnpt.varyar.system.service.IDeviceService;
 import io.swagger.models.auth.In;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,78 +64,78 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public AjaxResult batchInsertOrUpdateAddressBook(BatchAddOrUpdateAddressBookReq req) {
-        try{
             // 入库
             TDevice device = iDeviceService.selectByDeviceNo(req.getDeviceNo());
             if(Objects.isNull(device)){
-                return AjaxResult.error("数据库中不存在此数据。");
+                throw new BusinessException(ExCodeEnum.DB_NOT_DEVICE);
             }
             if(DEVICE_TYPE.equals(device.getType())){
-                // 获取设备参数
-                TDevice.WatchSettings object = getParameter(device);
-                // 获取通讯录
-                List<DeviceIncomingCall> addressBook = object.addressBookList;
-                // 如果通讯录为空
-                if (Objects.isNull(addressBook)) {
-                    addressBook = new ArrayList<>();
-                }
-                // 需修改的通讯录
-                List<DeviceIncomingCall> waitUpdatedAddress = req.getAddressBooks().stream().filter(address->!Objects.isNull(address.getAddressBookId())).collect(Collectors.toList());
-                // 需新增的通讯录
-                List<DeviceIncomingCall> waitInsertAddress = req.getAddressBooks().stream().filter(address->Objects.isNull(address.getAddressBookId())).collect(Collectors.toList());
-                // 限制通讯录长度
-                if(waitInsertAddress.size()+addressBook.size()>20){
-                    return AjaxResult.error("通讯录最多添加20个白名单用户。");
-                }
-                // 修改通讯录
-                List<DeviceIncomingCall> finalAddressBook = addressBook;
-                waitUpdatedAddress.forEach(
-                        updateAddress->{
-                            // 流操作获取旧数据
-                            DeviceIncomingCall oldDeviceIncomingCall =
-                                    finalAddressBook.stream().filter(address -> address.getAddressBookId().equals(updateAddress.getAddressBookId())).findAny().orElse(null);
-                            int index = finalAddressBook.indexOf(oldDeviceIncomingCall);
-                            // 更新通讯录
-                            if(Objects.isNull(oldDeviceIncomingCall)){
-                                finalAddressBook.add(updateAddress);
-                            }else if(!oldDeviceIncomingCall.getPhoneNumber().equals(updateAddress.getPhoneNumber())) {
-                                SetIncomingCallReq setIncomingCallReq = new SetIncomingCallReq();
-                                List<String> deleteNumbers = new ArrayList<>();
-                                deleteNumbers.add(updateAddress.getPhoneNumber());
-                                setIncomingCallReq.setDeleteNumbers(deleteNumbers);
-                                setIncomingCallReq.setDeviceNo(req.getDeviceNo());
-                                setAddressBook(setIncomingCallReq);
-                                finalAddressBook.add(index,updateAddress);
-                                finalAddressBook.remove(oldDeviceIncomingCall);
-                            }else{
-                                finalAddressBook.add(index,updateAddress);
-                                finalAddressBook.remove(oldDeviceIncomingCall);
+                try {
+                    // 获取设备参数
+                    TDevice.WatchSettings object = getParameter(device);
+                    // 获取通讯录
+                    List<DeviceIncomingCall> addressBook = object.addressBookList;
+                    // 如果通讯录为空
+                    if (Objects.isNull(addressBook)) {
+                        addressBook = new ArrayList<>();
+                    }
+                    // 需修改的通讯录
+                    List<DeviceIncomingCall> waitUpdatedAddress = req.getAddressBooks().stream().filter(address -> !Objects.isNull(address.getAddressBookId())).collect(Collectors.toList());
+                    // 需新增的通讯录
+                    List<DeviceIncomingCall> waitInsertAddress = req.getAddressBooks().stream().filter(address -> Objects.isNull(address.getAddressBookId())).collect(Collectors.toList());
+                    // 限制通讯录长度
+                    if (waitInsertAddress.size() + addressBook.size() > 20) {
+                        throw new BusinessException(ExCodeEnum.ADDRESS_NUMBER_LIMIT);
+                    }
+                    // 修改通讯录
+                    List<DeviceIncomingCall> finalAddressBook = addressBook;
+                    waitUpdatedAddress.forEach(
+                            updateAddress -> {
+                                // 流操作获取旧数据
+                                DeviceIncomingCall oldDeviceIncomingCall =
+                                        finalAddressBook.stream().filter(address -> address.getAddressBookId().equals(updateAddress.getAddressBookId())).findAny().orElse(null);
+                                int index = finalAddressBook.indexOf(oldDeviceIncomingCall);
+                                // 更新通讯录
+                                if (Objects.isNull(oldDeviceIncomingCall)) {
+                                    finalAddressBook.add(updateAddress);
+                                } else if (!oldDeviceIncomingCall.getPhoneNumber().equals(updateAddress.getPhoneNumber())) {
+                                    SetIncomingCallReq setIncomingCallReq = new SetIncomingCallReq();
+                                    List<String> deleteNumbers = new ArrayList<>();
+                                    deleteNumbers.add(updateAddress.getPhoneNumber());
+                                    setIncomingCallReq.setDeleteNumbers(deleteNumbers);
+                                    setIncomingCallReq.setDeviceNo(req.getDeviceNo());
+                                    setAddressBook(setIncomingCallReq);
+                                    finalAddressBook.add(index, updateAddress);
+                                    finalAddressBook.remove(oldDeviceIncomingCall);
+                                } else {
+                                    finalAddressBook.add(index, updateAddress);
+                                    finalAddressBook.remove(oldDeviceIncomingCall);
+                                }
                             }
-                        }
-                );
-                // 给新增通讯录设置UUID
-                waitInsertAddress.forEach(address->address.setAddressBookId(IdUtil.simpleUUID()));
-                // 新增通讯录
-                finalAddressBook.addAll(waitInsertAddress);
-                // 更新通讯录
-                object.setAddressBookList(addressBook);
-                device.setParameter(object);
-                iDeviceService.updateDevice(device);
-                // 生成请求
-                SetIncomingCallReq setIncomingCallReq = new SetIncomingCallReq();
-                List<SetIncomingCallReq.IncomingCallPhone> addPhones = new ArrayList<>();
-                waitInsertAddress.forEach(phone->{
-                    addPhones.add(new SetIncomingCallReq.IncomingCallPhone(phone.getPhoneNumber()));
-                });
-                setIncomingCallReq.setAddPhones(addPhones);
-                setIncomingCallReq.setDeviceNo(req.getDeviceNo());
-                return setAddressBook(setIncomingCallReq);
+                    );
+                    // 给新增通讯录设置UUID
+                    waitInsertAddress.forEach(address -> address.setAddressBookId(IdUtil.simpleUUID()));
+                    // 新增通讯录
+                    finalAddressBook.addAll(waitInsertAddress);
+                    // 更新通讯录
+                    object.setAddressBookList(addressBook);
+                    device.setParameter(object);
+                    iDeviceService.updateDevice(device);
+                    // 生成请求
+                    SetIncomingCallReq setIncomingCallReq = new SetIncomingCallReq();
+                    List<SetIncomingCallReq.IncomingCallPhone> addPhones = new ArrayList<>();
+                    waitInsertAddress.forEach(phone -> {
+                        addPhones.add(new SetIncomingCallReq.IncomingCallPhone(phone.getPhoneNumber()));
+                    });
+                    setIncomingCallReq.setAddPhones(addPhones);
+                    setIncomingCallReq.setDeviceNo(req.getDeviceNo());
+                    return setAddressBook(setIncomingCallReq);
+                }catch (Exception e){
+                    throw new BusinessException(ExCodeEnum.ADDRESS_SET_FAIL);
+                }
             }else{
                 throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
             }
-        }catch (Exception e){
-            return AjaxResult.error(e.getMessage());
-        }
     }
 
     @Override
@@ -142,7 +143,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
         try{
             TDevice device = iDeviceService.selectByDeviceNo(deviceNo);
             if(Objects.isNull(device)){
-                return AjaxResult.error("数据库中不存在此数据。");
+                throw new BusinessException(ExCodeEnum.DB_NOT_DEVICE);
             }
             if(DEVICE_TYPE.equals(device.getType())){
                 // 获取设备参数
@@ -169,7 +170,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
         // 入库
         TDevice device = iDeviceService.selectByDeviceNo(req.getDeviceNo());
         if(Objects.isNull(device)){
-            return AjaxResult.error("数据库中不存在此数据。");
+            throw new BusinessException(ExCodeEnum.DB_NOT_DEVICE);
         }
         if(DEVICE_TYPE.equals(device.getType())){
             // 获取设备参数
@@ -199,10 +200,11 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public AjaxResult setAddressBook(SetIncomingCallReq req) {
-        // TODO: 设置通讯录搬过来
-        return null;
+            // 拼接url
+            String url = DEVICE_CARE_CARD_URL + "/incoming/call";
+            // http请求
+            return AjaxResult.success(httpRequest(url,req));
     }
 
     @Override
@@ -230,7 +232,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
                 throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
             }
         }catch (Exception e){
-            AjaxResult.error(e.getMessage());
+            throw new BusinessException(ExCodeEnum.FAMILY_NUMBER_SET_FAIL);
         }
         return AjaxResult.success();
     }
@@ -242,7 +244,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
         try {
             TDevice device = iDeviceService.selectByDeviceNo(req.getDeviceNo());
             if (Objects.isNull(device)) {
-                return AjaxResult.error("数据库中不存在此数据。");
+                throw new BusinessException(ExCodeEnum.DB_NOT_DEVICE);
             }
             if (DEVICE_TYPE.equals(device.getType())) {
                 // 获取设备参数
@@ -581,12 +583,53 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
 
     @Override
     public AjaxResult getPeriodDisable(String deviceNo, String uuid) {
-        return null;
+        try{
+            TDevice device = iDeviceService.selectByDeviceNo(deviceNo);
+            if (Objects.isNull(device)) {
+                throw new BusinessException(ExCodeEnum.DB_NOT_DEVICE);
+            }
+            if(DEVICE_TYPE.equals(device.getType())){
+                // 获取设备参数
+                TDevice.WatchSettings object = getParameter(device);
+                // 获取禁用时段
+                List<ClassTimePeriod> classTimePeriods = object.getClassTimePeriods();
+                if(CollectionUtils.isEmpty(classTimePeriods)){
+                    classTimePeriods = new ArrayList<>();
+                }
+                ClassTimePeriod classTimePeriod = classTimePeriods.stream().filter(job -> job.getUuid().equals(uuid)).findFirst().orElse(new ClassTimePeriod());
+                return AjaxResult.success(classTimePeriod);
+            }else{
+                throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
+            }
+        }catch (Exception e){
+            throw new BusinessException(e.getMessage());
+        }
     }
 
     @Override
     public AjaxResult getPeriodDisableList(String deviceNo) {
-        return null;
+        try{
+            TDevice device = iDeviceService.selectByDeviceNo(deviceNo);
+            if(Objects.isNull(device)){
+                throw new BusinessException(ExCodeEnum.DB_NOT_DEVICE);
+            }
+            if(DEVICE_TYPE.equals(device.getType())){
+                // 获取设备参数
+                TDevice.WatchSettings object = getParameter(device);
+                // 获取禁用时段
+                List<ClassTimePeriod> classTimePeriods = object.getClassTimePeriods();
+                // 如果通讯录为空
+                if (Objects.isNull(classTimePeriods)) {
+                    classTimePeriods = new ArrayList<>();
+                }
+                return AjaxResult.success(classTimePeriods);
+            }
+            else {
+                throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
+            }
+        }catch (Exception e){
+            throw new BusinessException(e.getMessage());
+        }
     }
 
     protected JSONObject httpRequest(String url, Object req){
