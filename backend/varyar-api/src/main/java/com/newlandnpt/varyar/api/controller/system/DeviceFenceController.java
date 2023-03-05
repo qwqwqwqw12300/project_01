@@ -173,4 +173,6 @@ public class DeviceFenceController extends BaseController
         }
         return ajax ;
     }
+
+
 }

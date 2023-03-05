@@ -316,13 +316,13 @@ public class DeviceCareCardController extends BaseController {
     @ApiOperation("获取时段禁用")
     @GetMapping("/getPeriodDisable")
     public AjaxResult getPeriodDisable(String deviceNo, String uuid){
-        return null;
+        return iDeviceCareCardService.getPeriodDisable(deviceNo,uuid);
     }
 
     @ApiOperation("获取时段禁用列表")
     @GetMapping("/getPeriodDisableList")
     public AjaxResult getPeriodDisableList(String deviceNo){
-        return null;
+        return iDeviceCareCardService.getPeriodDisableList(deviceNo);
     }
 
     @ApiOperation("重启设备")
