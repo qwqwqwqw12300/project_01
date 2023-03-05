@@ -40,7 +40,7 @@ public class ClassTimePeriod {
     /**
      * 是否生效
      */
-    private String enable;
+    private String enable = "1";
 
     public ClassTimePeriod() {
     }

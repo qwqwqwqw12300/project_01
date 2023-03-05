@@ -60,7 +60,7 @@ public interface IDeviceCareCardService {
      * @param locationJob
      * @return
      */
-    public AjaxResult setLocationGuard(@RequestBody @Validated LocationJob locationJob);
+    public AjaxResult setLocationGuard(@RequestBody @Validated LocationJob locationJob) throws Exception;
 
     /**
      * 获取位置守护信息
@@ -79,10 +79,9 @@ public interface IDeviceCareCardService {
 
     /**
      * 删除位置守护
-     * @param deviceNo
      * @return
      */
-    public AjaxResult deleteLocationGuard(String deviceNo);
+    public AjaxResult deleteLocationGuard(@RequestBody DeleteLocationGuardReq req);
 
     /**
      * 设置时段禁用

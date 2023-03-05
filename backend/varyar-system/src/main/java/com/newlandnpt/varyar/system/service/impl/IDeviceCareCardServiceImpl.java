@@ -7,6 +7,7 @@ import com.newlandnpt.varyar.common.core.domain.entity.ClassTimePeriod;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceIncomingCall;
 import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
 import com.newlandnpt.varyar.common.core.domain.entity.LocationJob;
+import com.newlandnpt.varyar.common.enums.BusinessStatus;
 import com.newlandnpt.varyar.common.enums.ExCodeEnum;
 import com.newlandnpt.varyar.common.exception.business.BusinessException;
 import com.newlandnpt.varyar.common.utils.HttpClientUtil;
@@ -129,7 +130,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
                 setIncomingCallReq.setDeviceNo(req.getDeviceNo());
                 return setAddressBook(setIncomingCallReq);
             }else{
-                return AjaxResult.error("该设备不是牵挂卡或设备不存在");
+                throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
             }
         }catch (Exception e){
             return AjaxResult.error(e.getMessage());
@@ -155,7 +156,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
                 return AjaxResult.success(addressBook);
             }
             else {
-                return AjaxResult.error("该设备不是牵挂卡或设备不存在");
+                throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
             }
         }catch (Exception e){
             return AjaxResult.error(e.getMessage());
@@ -187,7 +188,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
                 iDeviceService.updateDevice(device);
             }
         } else {
-            return AjaxResult.error("该设备不是牵挂卡或设备不存在");
+            throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
         }
         SetIncomingCallReq setIncomingCallReq = new SetIncomingCallReq();
         List<String> deleteNumbers = new ArrayList<>();
@@ -226,7 +227,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
                 device.setParameter(object);
                 iDeviceService.updateDevice(device);
             }else {
-                return AjaxResult.error("该设备不是牵挂卡或设备不存在");
+                throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
             }
         }catch (Exception e){
             AjaxResult.error(e.getMessage());
@@ -272,11 +273,11 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public AjaxResult setLocationGuard(LocationJob locationJob) {
+    public AjaxResult setLocationGuard(LocationJob locationJob) throws Exception {
         //获取设备id,存在则修改原记录
         TDevice device = iDeviceService.selectByDeviceNo(locationJob.getDeviceNo());
         if (Objects.isNull(device)) {
-            return AjaxResult.error("数据库中不存在此设备。");
+            throw new BusinessException(ExCodeEnum.DB_NOT_DEVICE);
         }
         if(DEVICE_TYPE.equals(device.getType())){
             // 获取设备参数
@@ -293,7 +294,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
                 if(!Objects.isNull(oldLocationJob)) {
                     // 被任务的index
                     int index = locationJobs.indexOf(oldLocationJob);
-                    // 新建地点列表
+                    // 已被持久化的地点列表
                     List<LocationJob.place> places = oldLocationJob.getPlaces();
                     // 待删除的地点下标
                     List<LocationJob.place> delPlaceIndexs = new ArrayList<>();
@@ -366,7 +367,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
             iDeviceService.updateDevice(device);
         }
         else {
-            return AjaxResult.error("该设备不是牵挂卡或设备不存在");
+            throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
         }
         return AjaxResult.success();
     }
@@ -377,7 +378,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
         //获取设备id,存在则修改原记录
         TDevice device = iDeviceService.selectByDeviceNo(deviceNo);
         if (Objects.isNull(device)) {
-            return AjaxResult.error("数据库中不存在此设备。");
+            throw new BusinessException(ExCodeEnum.DB_NOT_DEVICE);
         }
         if(DEVICE_TYPE.equals(device.getType())){
             // 获取设备参数
@@ -387,7 +388,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
             LocationJob locationJob = locationJobs.stream().filter(job -> job.getUuid().equals(uuid)).findFirst().orElse(new LocationJob());
             return AjaxResult.success(locationJob);
         }else{
-            return AjaxResult.error("该设备不是牵挂卡或设备不存在");
+            throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
         }
     }
 
@@ -396,7 +397,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
         //获取设备id,存在则修改原记录
         TDevice device = iDeviceService.selectByDeviceNo(deviceNo);
         if (Objects.isNull(device)) {
-            return AjaxResult.error("数据库中不存在此设备。");
+            throw new BusinessException(ExCodeEnum.DB_NOT_DEVICE);
         }
         if(DEVICE_TYPE.equals(device.getType())){
             // 获取设备参数
@@ -408,24 +409,54 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
             }
             return AjaxResult.success(locationJobs);
         }else{
-            return AjaxResult.error("该设备不是牵挂卡或设备不存在");
+            throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
         }
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public AjaxResult deleteLocationGuard(String deviceNo) {
+    public AjaxResult deleteLocationGuard(DeleteLocationGuardReq req) {
         //获取设备id,存在则修改原记录
-        TDevice device = iDeviceService.selectByDeviceNo(deviceNo);
+        TDevice device = iDeviceService.selectByDeviceNo(req.getDeviceNo());
         if (Objects.isNull(device)) {
-            return AjaxResult.error("数据库中不存在此设备。");
+            throw new BusinessException(ExCodeEnum.DB_NOT_DEVICE);
         }
-        if(DEVICE_TYPE.equals(device.getType())){
-
+        if(DEVICE_TYPE.equals(device.getType())) {
+            // 获取设备参数
+            TDevice.WatchSettings object = getParameter(device);
+            // 获取位置守护信息
+            List<LocationJob> locationJobs = object.getLocationJobs();
+            // 如果位置守护信息为空
+            if(Objects.isNull(locationJobs)){
+                return AjaxResult.success();
+            }
+            req.getUuidList().forEach(uuid->{
+                LocationJob oldLocationJob = locationJobs.stream().filter(job -> job.getUuid().equals(uuid)).findAny().orElse(null);
+                if(!Objects.isNull(oldLocationJob)){
+                    try {
+                        List<LocationJob.place> places = oldLocationJob.getPlaces();
+                        ArrayList<String> delList = new ArrayList<>();
+                        for (int i = 0; i < places.size(); i++) {
+                            delList.add(String.valueOf(places.get(i).getGeoFenceId()));
+                        }
+                        // 调用高德删除API
+                        DelLocationGuardReq delLocationGuardReq = new DelLocationGuardReq();
+                        delLocationGuardReq.setGeoLocationGuardId(delList);
+                        commonLocationGuardService.deleteLocationGuard(delLocationGuardReq);
+                        // 更新数据
+                        locationJobs.remove(oldLocationJob);
+                        object.setLocationJobs(locationJobs);
+                        device.setParameter(object);
+                        iDeviceService.updateDevice(device);
+                    }catch (Exception e){
+                        throw new BusinessException(ExCodeEnum.LOCATION_GUARD_DELETE_FAIL);
+                    }
+                }
+            });
         }else{
-            return AjaxResult.error("该设备不是牵挂卡或设备不存在");
+            throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
         }
-        return null;
+        return AjaxResult.success();
     }
 
     @Override
@@ -463,7 +494,8 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
                         classTimePeriods.add(req);
                     }
                 }
-            }else{
+            }
+            else{
                 if(classTimePeriods.size()>=10){
                     throw new BusinessException(ExCodeEnum.EXCEED_PERIOD_DISABLE_NUMBER_LIMIT);
                 }
@@ -481,10 +513,11 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
                     timePeriods.add(new SetClassModelReq.timePeriod(time,period));
                 }
                 object.setClassTimePeriods(classTimePeriods);
-
                 device.setParameter(object);
                 iDeviceService.updateDevice(device);
-                return AjaxResult.success(httpRequest(url,new SetClassModelReq(timePeriods)));
+                SetClassModelReq setClassModelReq = new SetClassModelReq(timePeriods);
+                setClassModelReq.setDeviceNo(req.getDeviceNo());
+                return AjaxResult.success(httpRequest(url,setClassModelReq));
             }catch (BusinessException bs){
                 throw new BusinessException(bs.getMsg());
             }
@@ -499,7 +532,51 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public AjaxResult deletePeriodDisable(DeletePeriodDisabledReq req) {
-        return null;
+        // 拼接url
+        String url = DEVICE_CARE_CARD_URL + "/setClassModel";
+        TDevice device = iDeviceService.selectByDeviceNo(req.getDeviceNo());
+        if(Objects.isNull(device)){
+             throw new BusinessException(ExCodeEnum.DB_NOT_DEVICE);
+        }
+        if(DEVICE_TYPE.equals(device.getType())){
+            // 获取设备参数
+            TDevice.WatchSettings object = getParameter(device);
+            // 获取禁用时间
+            List<ClassTimePeriod> classTimePeriods = object.getClassTimePeriods();
+            // 循环进行删除操作
+            for (String uuid : req.getUuidList()) {
+                // 流操作
+                ClassTimePeriod oldClassTimePeriod = classTimePeriods.stream().filter(period -> period.getUuid().equals(uuid)).findAny().orElse(null);
+                if(Objects.isNull(oldClassTimePeriod)){
+                    return AjaxResult.error("记录不存在");
+                }else {
+                    classTimePeriods.remove(oldClassTimePeriod);
+                }
+            }
+            // 平台下发数据并更新数据库
+            try{
+                List<SetClassModelReq.timePeriod> timePeriods = new ArrayList<>();
+                for(int i=1;i<=classTimePeriods.size();i++){
+                    ClassTimePeriod dataClassTimePeriod = classTimePeriods.get(i - 1);
+                    String time = i +"="+dataClassTimePeriod.getBeginTime()+"-"+dataClassTimePeriod.getEndTime();
+                    String period = dataClassTimePeriod.getPeriod();
+                    timePeriods.add(new SetClassModelReq.timePeriod(time,period));
+                }
+                object.setClassTimePeriods(classTimePeriods);
+                device.setParameter(object);
+                iDeviceService.updateDevice(device);
+                SetClassModelReq setClassModelReq = new SetClassModelReq(timePeriods);
+                setClassModelReq.setDeviceNo(req.getDeviceNo());
+                return AjaxResult.success(httpRequest(url,setClassModelReq));
+            }catch (BusinessException bs){
+                throw new BusinessException(bs.getMsg());
+            }
+            catch (Exception e){
+                throw new BusinessException(ExCodeEnum.SET_PERIOD_DISABLE_FAIL);
+            }
+        }else{
+            throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
+        }
     }
 
     @Override
@@ -513,11 +590,16 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
     }
 
     protected JSONObject httpRequest(String url, Object req){
-        JSONObject httpMsg = JSONObject.parseObject(HttpClientUtil.sendPost(url,req,""));
+        JSONObject httpMsg = new JSONObject();
+        try {
+            httpMsg = JSONObject.parseObject(HttpClientUtil.sendPost(url, req, ""));
+        }catch (Exception e){
+            throw new BusinessException(e.getMessage());
+        }
         if(REQUEST_SUCCESS_STATUS.equals(httpMsg.get(REQUEST_STATUS))){
             return httpMsg;
         }else{
-            throw new BusinessException(httpMsg.toJSONString());
+            throw new BusinessException(ExCodeEnum.TCP_SET_FAIL);
         }
     }
 
