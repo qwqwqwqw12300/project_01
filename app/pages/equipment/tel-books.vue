@@ -19,7 +19,7 @@
 		<view class="ui-content">
 			<u-swipe-action>
 				<u-swipe-action-item :options="item.options" v-for="(item, index) in options4" :key="index"
-					@click="handleDel(item.id)">
+					@click="handleDel(index,item)">
 					<view class="cell">
 						<view class="cell-box">
 							<view class="input">
@@ -48,57 +48,76 @@
 </template>
 
 <script>
+	import {
+		PostAddOrUpdateAddressBook,
+		GetAddressBook,
+		PostDeleteAddressBook
+	} from '@/common/http/api';
 	export default {
 		data() {
 			return {
-				options4: [{
-					id: 0,
-					name: '测试1',
-					phone: '13222222222',
-					options: [{
-						text: '删除',
-						style: {
-							backgroundColor: '#f56c6c'
-						}
-					}],
-				}, {
-					id: 1,
-					name: '测试2',
-					phone: '13333333333',
-					options: [{
-						text: '删除',
-						style: {
-							backgroundColor: '#f56c6c'
-						}
-					}],
-				}, {
-					id: 2,
-					name: '测试3',
-					phone: '13444444444',
-					options: [{
-						text: '删除',
-						style: {
-							backgroundColor: '#f56c6c'
-						}
-					}],
-				}],
+				options4: [],
 			}
 		},
 		methods: {
+			initData(){
+				this.options4 = []
+				GetAddressBook({
+					deviceNo:'867597011508550'
+				}).then(res=>{
+					console.log(res,'res')
+					res.data.map(item=>{
+						this.options4.push({
+							addressBookId:item.addressBookId,
+							name: item.phoneName,
+							phone: item.phoneNumber,
+							options: [{
+								text: '删除',
+								style: {
+									backgroundColor: '#f56c6c'
+								}
+							}],
+						})
+					})
+					
+				})
+			},
 			handleCancel() {
-
+				uni.navigateBack()
 			},
 			handleSave() {
-
+				console.log('保存')
+				console.log(this.options4)
+				let addressBooks = []
+				this.options4.map(item=>{
+					if(item.addressBookId!=undefined){
+						addressBooks.push({
+							addressBookId:item.addressBookId,
+							phoneNumber:item.phone,
+							phoneName:item.name
+						})
+					}else{
+						addressBooks.push({
+							phoneNumber:item.phone,
+							phoneName:item.name
+						})
+					}
+					
+				})
+				PostAddOrUpdateAddressBook({
+					deviceNo:"867977060000248",
+					addressBooks:addressBooks
+				}).then(res=>{
+					console.log(res,'res')
+					setTimeout(() => {
+						uni.navigateBack()
+					}, 1000);
+				})
 			},
 			handleAdd() {
-				let date = Date.now()
-				let rund = Math.ceil(Math.random() * 1000)
-				let id = date + '' + rund
 				this.options4.push({
-					id,
-					name: '测试' + (this.options4.length + 1),
-					phone: '13333333333',
+					name: '',
+					phone: '',
 					options: [{
 						text: '删除',
 						style: {
@@ -107,17 +126,26 @@
 					}],
 				})
 			},
-			handleDel(id) {
+			handleDel(index,list) {
 				uni.showModal({
 					title: '提示',
 					content: '是否确认删除？',
 					success: res => {
 						console.log(res, 'res')
 						if (res.confirm) {
-							this.options4.splice(this.options4.findIndex(item => item.id == id), 1)
-						} else {
-
-						}
+							if(list.addressBookId!=undefined){
+								PostDeleteAddressBook({
+									deviceNo:'867597011508550',
+									addressBookId:list.addressBookId,
+									phoneNumber:list.phone
+								}).then(res=>{
+									console.log(res)
+								})
+								this.initData()
+							}else{
+								this.options4.splice(this.options4.findIndex((item,index) => index == index), 1)
+							}
+						} 
 					}
 				});
 			},
@@ -126,7 +154,26 @@
 			},
 			phoneSelect(data) {
 				console.log(data)
+				let date = Date.now()
+				let rund = Math.ceil(Math.random() * 1000)
+				let id = date + '' + rund
+				data.map(item=>{
+					this.options4.push({
+						id,
+						name: item.name,
+						phone: item.phone,
+						options: [{
+							text: '删除',
+							style: {
+								backgroundColor: '#f56c6c'
+							}
+						}],
+					})
+				})
 			}
+		},
+		onShow(){
+			this.initData()
 		}
 
 	}

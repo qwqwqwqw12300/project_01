@@ -111,12 +111,12 @@ public class RadarRequest {
     /**
      *开始时间 data HH:mm:ss
      * */
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
     private Date startTime;
     /**
      *结束时间 data HH:mm:ss
      * */
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
     private Date endTime;
     /**
      *进入标识 （0是 1否）

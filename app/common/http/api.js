@@ -372,3 +372,36 @@ export const GetFamilyNumber = (params) => http.get('/api/careCard/getFamilyNumb
  *保存亲情号码*
  */
 export const PostSetFamilyNumber = (params) => http.post('/api/careCard/setFamilyNumber', params, {})
+
+/**
+ *保存通讯录白名单*
+ */
+export const PostAddOrUpdateAddressBook = (params) => http.post('/api/careCard/addOrUpdateAddressBook', params, {})
+
+/**
+ *获取通讯录白名单*
+ */
+export const GetAddressBook= (params) => http.get('/api/careCard/getAddressBook', params, {})
+
+
+/**
+ *删除通讯录白名单*
+ */
+export const PostDeleteAddressBook= (params) => http.post('/api/careCard/deleteAddressBook', params, {})
+
+
+/**
+ *开始远程监听*
+ */
+export const PostRemoteMonitor = (params) => http.post('/api/careCard/remoteMonitor', params, {});
+
+/**
+ * 添加/修改无人预警
+ */
+export const PostSetRadarWaveNobodyWarn = (params) => http.post('/api/device/setRadarWaveNobodyWarn', params, {});
+
+/**
+ * 删除无人预警
+ */
+export const PostDelRadarWaveNobodyWarn = (params) => http.post('/api/device/delRadarWaveNobodyWarn', params, {});
+

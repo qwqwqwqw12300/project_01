@@ -345,10 +345,15 @@ public class DeviceController extends BaseController {
                     .getDeviceWarnParameter().getNobodyWarn());
 
             device.setParameter(radarWaveDeviceSettings);
+            //修改设备名称
+            device.setName(radarWaveDeviceRequest.getDeviceName());
+            //同步更新location字段
+            device.setLocation("1".equals(radarWaveDeviceRequest.getInstallPosition())?"顶挂":"壁挂");
         }
         try {
             //设置雷达波设备
-            int i = iDeviceService.setSettings(Long.valueOf(radarWaveDeviceRequest.getDeviceId()),device.getParameter());
+//            int i = iDeviceService.setSettings(Long.valueOf(radarWaveDeviceRequest.getDeviceId()),device.getParameter());
+            int i = iDeviceService.setDevice(device);
             if (i==0){
                     return error("设置配置失败！");
             }
@@ -809,15 +814,14 @@ public class DeviceController extends BaseController {
             }
         }
 
-
+        DeviceWarnParameter.WarnRule warnRule = null;
         Long deviceId = Long.valueOf(deviceWarnRequest.getDeviceId());
         TDevice.RadarWaveDeviceSettings radarwave = (TDevice.RadarWaveDeviceSettings)device.getParameter();
         if(radarwave.getDeviceWarnParameter()!=null) {
             //        DeviceWarnParameter deviceWarnParameter=new DeviceWarnParameter();
-            radarwave.getDeviceWarnParameter().setFallWarn(deviceWarnRequest.getFallWarn());
-            radarwave.getDeviceWarnParameter().getNobodyWarn().setNoBodyContinue(deviceWarnRequest.getNoBodyContinue());
-            radarwave.getDeviceWarnParameter().getNobodyWarn().setNoBody(deviceWarnRequest.getNoBody());
-            DeviceWarnParameter.WarnRule warnRule = null;
+//            radarwave.getDeviceWarnParameter().setFallWarn(deviceWarnRequest.getFallWarn());
+//            radarwave.getDeviceWarnParameter().getNobodyWarn().setNoBodyContinue(deviceWarnRequest.getNoBodyContinue());
+//            radarwave.getDeviceWarnParameter().getNobodyWarn().setNoBody(deviceWarnRequest.getNoBody());
             //校验是否已有规则，已有取出规则否则为空
             if (deviceWarnRequest.getRuleNo() != null && !deviceWarnRequest.getRuleNo().equals("")
                     && CollectionUtils.isNotEmpty(radarwave.getDeviceWarnParameter().getNobodyWarn().getWarnRules())) {
@@ -836,7 +840,8 @@ public class DeviceController extends BaseController {
             if (warnRule == null) {
                 warnRule = new DeviceWarnParameter.WarnRule();
                 warnRule.setWarnRuleName(deviceWarnRequest.getWarnRuleName());
-                warnRule.setRuleSwitch(deviceWarnRequest.getRuleSwitch());
+                //开关默认开
+//                warnRule.setRuleSwitch(deviceWarnRequest.getRuleSwitch());
                 warnRule.setDateType(deviceWarnRequest.getDateType());
                 //规则编号用于规则列表删改操作
                 warnRule.setRuleNo(IdUtils.fastSimpleUUID());
@@ -886,7 +891,7 @@ public class DeviceController extends BaseController {
         }
         //查询
 //        return success(radarwave.getDeviceWarnParameter().getNobodyWarn().getWarnRules());
-        return success();
+        return success(warnRule);
     }
 
 

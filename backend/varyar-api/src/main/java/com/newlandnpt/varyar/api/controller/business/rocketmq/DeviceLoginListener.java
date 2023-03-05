@@ -25,8 +25,8 @@ import static com.newlandnpt.varyar.framework.datasource.DynamicDataSourceContex
  * @author lin.ju
  * @date 2023/2/28
  **/
-@Component
-@RocketMQMessageListener(topic = "${rocketmq.topic.deviceLogin}", consumerGroup = "${rocketmq.group.deviceLogin}")
+//@Component
+//@RocketMQMessageListener(topic = "${rocketmq.topic.deviceLogin}", consumerGroup = "${rocketmq.group.deviceLogin}")
 public class DeviceLoginListener implements RocketMQListener<DeviceLoginMqMsgEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(DeviceLoginListener.class);

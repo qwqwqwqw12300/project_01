@@ -62,7 +62,7 @@ public class SmsController {
         }
         String code = randomSb.toString();
 //        String code = "1234";
-        redisCache.setCacheObject(smsVerifyKey, code, Constants.SMS_CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
+        redisCache.setCacheObject(smsVerifyKey, smsRequest.getPhone()+"_"+code, Constants.SMS_CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
 
         smsService.sendSms(code,smsRequest.getPhone());
 
@@ -82,6 +82,11 @@ public class SmsController {
         if (code == null) {
             throw new CaptchaExpireException();
         }
+        String[] codes = code.split("_");
+        if(codes.length<2){
+            throw new CaptchaExpireException();
+        }
+        code = codes[1];
         if (!code.equalsIgnoreCase(smsRequest.getCaptcha())) {
             throw new CaptchaException();
         }

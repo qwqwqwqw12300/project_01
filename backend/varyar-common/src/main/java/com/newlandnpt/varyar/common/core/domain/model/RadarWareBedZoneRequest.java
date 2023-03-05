@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.common.core.domain.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.newlandnpt.varyar.common.core.domain.entity.LeaveBedWarnParameter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -32,7 +33,7 @@ public class RadarWareBedZoneRequest {
     @ApiModelProperty("子区域名称")
     @NotBlank(message = "子区域名称不能为空")
     @Size(min = 0, max = 50, message = "子区域名称不能超过20个字符")
-    private String BedName;
+    private String bedName;
 
 
     /**
@@ -75,12 +76,12 @@ public class RadarWareBedZoneRequest {
     /**
      *开始时间 data HH:mm:ss
      * */
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
     private Date startTime;
     /**
      *结束时间 data HH:mm:ss
      * */
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
     private Date endTime;
 
 
@@ -115,11 +116,11 @@ public class RadarWareBedZoneRequest {
     }
 
     public String getBedName() {
-        return BedName;
+        return bedName;
     }
 
     public void setBedName(String bedName) {
-        BedName = bedName;
+        this.bedName = bedName;
     }
 
     public BigDecimal getX1() {
