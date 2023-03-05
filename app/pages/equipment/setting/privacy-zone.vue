@@ -23,8 +23,8 @@
 								:style="cell"
 								v-for="(item, index) of area"
 								:key="index + 'c'"
-							></view>
-							<movable-view :x="sizeInfo.x - 10" :y="sizeInfo.y + 10">
+							>{{index}}</view>
+							<movable-view :x="sizeInfo.x - 10" :y="sizeInfo.y + (sizeInfo.installPosition ==0 ? 10 : -10)">
 								<view class="ui-device"><text class="ui-zone-name">设备</text></view>
 							</movable-view>
 						</movable-area>
@@ -34,25 +34,25 @@
 				</view>
 			</view>
 			<!-- 配置区域 -->
-			<view class="ui-set-box" v-if="roomZones[activeZone]">
+			<view class="ui-set-box" v-if="getTabList.length">
 				<view class="ui-list"><u-tabs lineWidth="108rpx" lineColor="#FEAE43" :list="getTabList" @click="acitve"></u-tabs></view>
 				<!-- 床区域设置 -->
 				<template>
 					<u-cell-group>
-						<u-cell title="区域名称"><u-input placeholder="请输入区域名称" clearable border="none" inputAlign="right" slot="right-icon"></u-input></u-cell>
+						<u-cell title="区域名称"><u-input placeholder="请输入区域名称" v-model="roomZones[activeZone].shadowZoneName" clearable border="none" inputAlign="right" slot="right-icon"></u-input></u-cell>
 						<u-cell title="屏蔽区域长x宽（米）">
 							<view class="ui-zooe-size" slot="right-icon">
-								<u-input border="none" placeholder="请输入" type="number" inputAlign="center" clearable></u-input>
+								<u-input border="none"  placeholder="请输入" type="number" inputAlign="left" v-model="roomZones[activeZone].height" clearable></u-input>
 								<text>×</text>
-								<u-input border="none" placeholder="请输入" type="number" inputAlign="center" clearable></u-input>
+								<u-input border="none"  placeholder="请输入" type="number" inputAlign="right" v-model="roomZones[activeZone].width" clearable></u-input>
 							</view>
 						</u-cell>
-						<u-cell title="物体离地高度（米）"><u-input type="number" placeholder="请输入离地高度" clearable border="none" inputAlign="right" slot="right-icon"></u-input></u-cell>
-						<u-cell title="物体高度（米）"><u-input type="number" placeholder="请输入物体高度" clearable border="none" inputAlign="right" slot="right-icon"></u-input></u-cell>
+						<u-cell title="物体离地高度（米）"><u-input  type="number" placeholder="请输入离地高度" v-model="roomZones[activeZone].above" clearable border="none" inputAlign="right" slot="right-icon"></u-input></u-cell>
+						<u-cell title="物体高度（米）"><u-input  type="number" placeholder="请输入物体高度"  v-model="roomZones[activeZone].stature" clearable border="none" inputAlign="right" slot="right-icon"></u-input></u-cell>
 					</u-cell-group>
 					<view class="ui-setting-btn wd-btn-group">
 						<button class="plain" @click="deleteZone">删除</button>
-						<button class="default" @click="radarDevice(roomZones[activeZone])">保存</button>
+						<button class="default" @click="updateZone(roomZones[activeZone])">保存</button>
 					</view>
 				</template>
 			</view>
@@ -64,23 +64,9 @@
 <script>
 import { assignDeep, getHoursTime, getMinute, minuteToTime } from '../../../common/utils/util';
 import { mapState } from 'vuex';
-import { GetRoomZone, PostRoomList, PostRadarDevice, PostRemRadarDevice } from '../../../common/http/api';
+import { GetRoomZone, PostRoomList, PostRadarDevice, PostRemRadarDevice, PostSetRadarWareShadowZone } from '../../../common/http/api';
 import { ZONE } from '../../../config/db';
 
-const ANIMATION_INIT = {
-	existFlag: {
-		class: '',
-		doing: false
-	},
-	inMonitorFlag: {
-		class: '',
-		doing: false
-	},
-	outMonitorFlag: {
-		class: '',
-		doing: false
-	}
-};
 
 export default {
 	data() {
@@ -118,7 +104,9 @@ export default {
 				scale: {
 					x: 10,
 					y: 10
-				}
+				},
+				// 悬挂方式 0 壁挂 1 顶挂
+				installPosition: '0'
 			},
 			/**网格信息**/
 			cell: {
@@ -140,12 +128,18 @@ export default {
 			},
 			/**页面宽度**/
 			windowWidth: uni.getSystemInfoSync().windowWidth,
-			/**动画样式**/
-			animation: {
-				...ANIMATION_INIT
-			},
 			/**时间列表**/
-			timeList: [1, 5, 10]
+			timeList: [1, 5, 10],
+			/**区域尺寸**/
+			roomSize: {
+				roomLeft: 0,
+				roomRight: 0,
+				roomHeight: 0,
+				roomLength: 0,
+				roomFront: 0,
+				roomBehind: 0 
+			}
+			
 		};
 	},
 	computed: {
@@ -172,8 +166,9 @@ export default {
 			if (this.roomZones.length) {
 				list = this.roomZones.map((ele, index) => ({
 					name: ele.name,
-					index
-				}));
+					index,
+					zoneType: ele.zoneType
+				})).filter(ele => ele.zoneType === '1');
 			}
 			return list;
 		}
@@ -191,31 +186,41 @@ export default {
 				const { width } = this.sizeInfo.box;
 				console.log(this.deviceInfo, '设备信息');
 				// 设备距离墙壁范围
-				const { parameter } = this.deviceInfo;
-				const location = parameter.installPosition === '0' ? parameter.deviceLocationWall : parameter.deviceLocationTop;
-				const { roomLeft, roomRight, roomHeight, roomLength = 0, roomFront= 0, roomBehind= 0 } = location;
+				const { parameter } = this.deviceInfo,
+				cellSize = this.cell.size;
 				if (parameter) {
-					const { roomLeft, roomRight, roomLength, roomHeight } = parameter.deviceLocation;
+					const location = parameter.installPosition === '0' ? parameter.deviceLocationWall : parameter.deviceLocationTop;
+					let { roomLeft, roomRight, roomHeight, roomLength = 0, roomFront= 0, roomBehind= 0 } = location;
+					this.roomSize = {
+						roomLeft, roomRight, roomHeight, roomLength, roomFront, roomBehind
+					}
+					// 按每格比例放大
+					roomLeft = roomLeft / cellSize;
+					roomRight = roomRight / cellSize;
 					
-					console.log(roomLeft, roomRight, roomLength, roomHeight, '设备范围');
+					roomHeight = roomHeight / cellSize;
+					roomLength = roomLength / cellSize;
+					roomFront = roomFront / cellSize;
+					roomBehind = roomBehind / cellSize;
+					
 					// 盒子比例
 					const scale = {
-							x: width / (roomLeft + roomRight) * this.cell.size ,
-							y: width / (roomLeft + roomRight) * this.cell.size // 以横向距离作为基准
+							x: width / (roomLeft + roomRight),
+							y: width / (roomLeft + roomRight)// 以横向距离作为基准
 						},
 						/**设备位置**/
 						x = roomLeft * scale.x ,
-						y =  (roomBehind || roomLength)  * scale.y ,
+						y =  parameter.installPosition === '0' ? roomLength  * scale.y : roomBehind  * scale.y,
 						/**父容器**/
 						box = {
 							width: 300,
-							height: (roomBehind || roomLength) * scale.y
+							height: parameter.installPosition === '0' ? roomLength  * scale.y : (roomBehind + roomFront)  * scale.y,
 						};
-						console.log(x, roomLeft, scale.x, '宽度距离');
 					/**网格**/
 					this.cell = {
 						width: 100 / (box.width / scale.x) + '%',
-						height: 100 / (box.height / scale.y) + '%'
+						height: 100 / (box.height / scale.y) + '%',
+						size: cellSize 
 					};
 					/**网格个数**/
 					let idx = 0;
@@ -233,10 +238,15 @@ export default {
 						x,
 						y,
 						scale,
-						box
+						box,
+						installPosition: parameter.installPosition
 					});
 					rows.forEach((ele, idx) => {
-						const { x1 = 0, x2 = 0, y1 = 0, y2 = 0, roomZoneId } = ele;
+						let { x1 = 0, x2 = 0, y1 = 0, y2 = 0, z1 = 0, z2 = 0, roomZoneId, name } = ele;
+						x1 = x1 / this.cell.size;
+						x2 = x2 / this.cell.size;
+						y1 = y1 / this.cell.size;
+						y2 = y2 / this.cell.size;
 						const activeList = this.getArrByAxis(x1, x2, y1, y2);
 						this.area.forEach(ele => {
 							if (activeList.includes(ele.index)) {
@@ -245,19 +255,21 @@ export default {
 							}
 						});
 						Object.assign(ele, {
-							height: Math.abs((y1 - y2) * scale.y),
-							width: Math.abs((x1 - x2) * scale.x),
-							departureTime: ele.departureTime / 60 || 0,
-							isDepartureTimeCus: [this.timeList.includes(ele.departureTime / 60)],
-							isEntryTimeCus: [this.timeList.includes(ele.entryTime / 60)],
-							entryTime: ele.entryTime / 60 || 0,
-							/**开始监控时间**/
-							startTime: uni.$u.timeFormat(ele.startTime, 'hh:MM'),
-							/**结束监控时间**/
-							endTime: uni.$u.timeFormat(ele.endTime, 'hh:MM')
+							height: Math.abs((y1 * this.cell.size )- (y2* this.cell.size)),
+							width: Math.abs((x1* this.cell.size ) - (x2* this.cell.size)),
+							// 离地高度
+							above: z1,
+							// 物体高度
+							stature: z2 - z1,
+							x1,
+							x2,
+							y1,
+							y2,
+							shadowZoneName: name
 						});
 					});
 					this.roomZones = rows;
+					
 				} else {
 					uni.showToast({
 						icon: 'none',
@@ -266,7 +278,12 @@ export default {
 				}
 			});
 		},
-		
+			
+		indexInit() {
+			const index =  this.roomZones.findIndex(ele => ele.zoneType === '1');
+			this.activeZone = index > -1 ? index : 0;
+		},
+			
 		/**
 		 * 选择子区域
 		 * @param {string} 下标
@@ -325,52 +342,34 @@ export default {
 				}
 			});
 		},
-
+		
+		
 		/**
-		 * 确认修改/添加
-		 * @param {Object} form
+		 * 修改区域
 		 */
-		confirm(form) {
-			// 根据保存的长宽做调整
-			const { roomZoneId, width, height } = form,
-				list = this.area.filter(ele => ele.status === 'hover').map(ele => ele.index),
-				newList = this.getArrBySize(Math.min(...list), width, height);
-			if (this.area.find(ele => ele.active && newList.includes(ele.index) && ele.roomZoneId !== roomZoneId)) {
-				this.clearCell();
-				return uni.$u.toast('监测区域重叠，请重新选择');
-			}
-			Object.assign(form, this.getAxisBySize(Math.min(...list), width, height));
-			if (roomZoneId) {
-				// 修改
-				const zone = this.roomZones.filter(ele => ele.roomZoneId === roomZoneId);
-				if (zone.length) Object.assign(zone[0], form);
-			} else {
-				// 添加
-				this.roomZones.push(form);
-			}
-			this.radarDevice(form);
+		updateZone(zone) { 
+			
+			let { x1 = 0, x2 = 0, y1 = 0, y2 = 0, height, width, above, stature} = zone;
+			if(x1 * this.cell.size + width  >  this.roomSize.roomLeft)return uni.$u.toast('宽度超出检测范围');
+						if((y1 * this.cell.size + height)  > (this.sizeInfo.installPosition === '0' ?  this.roomSize.roomLength :  this.roomSize.roomBehind) )return uni.$u.toast('长度超出检测范围');
+			const obj = Object.assign(assignDeep({} ,zone), {
+				x1: x1 * this.cell.size,
+				x2: x1 * this.cell.size + width,
+				y1: y1 * this.cell.size,
+				y2: y1 * this.cell.size + height,
+				z1: above,
+				z2: stature + above
+			}) 
+			this.radarDevice(obj);
 		},
-
+		
 		/**
 		 * 添加/修改区域
 		 */
 		radarDevice(form) {
-			const { x, y, scale } = this.sizeInfo;
-			console.log(form);
-			const { width, height, startTime, endTime, entryTime, departureTime } = form,
-				obj = assignDeep(
-					{},
-					{
-						...form,
-						startTime: startTime,
-						endTime: endTime,
-						entryTime: minuteToTime(entryTime),
-						departureTime: minuteToTime(departureTime)
-					}
-				);
-			delete obj.height;
-			delete obj.width;
-			PostRadarDevice(obj).then(
+			PostSetRadarWareShadowZone({
+				...form
+			}).then(
 				() => {
 					uni.showToast({
 						icon: 'none',
@@ -422,7 +421,6 @@ export default {
 				roomZoneId
 			});
 			this.init();
-			this.activeZone = 0;
 		},
 
 		/**
@@ -478,22 +476,24 @@ export default {
 				this.clearCell();
 				return uni.$u.toast('监测区域重叠，请重新选择');
 			}
-			if (this.roomZones.length > 4) {
-				this.clearCell();
-				return uni.$u.toast('子区域不能超过4个');
-			}
 			const list = this.area.filter(ele => ele.status === 'hover').map(item => item.index),
 				{ isAdd } = this.touchInfo;
 			const { width, height } = this.getZoneSize(list);
 			if (isAdd) {
+				if (this.roomZones.length === 4) {
+					this.clearCell();
+					return uni.$u.toast('子区域不能超过4个');
+				}
 				// 添加的话弹窗填写信息
 				console.log(width, height, 'width, height');
 				this.$refs.zonePopRef.open(
 					{
 						roomId: this.deviceInfo.roomId,
 						deviceId: this.deviceInfo.deviceId,
-						z1: 0,
-						z2: 1,
+						// 离地高度
+						above: 0,
+						// 物体高度
+						stature: this.roomSize.roomHeight,
 						width,
 						height
 					},
@@ -508,6 +508,42 @@ export default {
 					})
 				);
 			}
+		},
+		
+		
+		/**
+		 * 确认修改/添加
+		 * @param {Object} form
+		 */
+		confirm(form) {
+			console.log(form, '添加');
+			// 根据保存的长宽做调整
+			let { width, height, above, stature } = form;
+			console.log( width, height, '填写完成前的宽高');
+			width = width / this.cell.size;
+			height = height / this.cell.size;
+			console.log( width, height, '填写完成的宽高');
+			const { roomZoneId} = form,
+				list = this.area.filter(ele => ele.status === 'hover').map(ele => ele.index),
+				newList = this.getArrBySize(Math.min(...list), width, height);
+			if (this.area.find(ele => ele.active && newList.includes(ele.index) && ele.roomZoneId !== roomZoneId)) {
+				this.clearCell();
+				return uni.$u.toast('监测区域重叠，请重新选择');
+			}
+			Object.assign(form, {
+				z1: above,
+				z2: stature + above
+			}, this.getAxisBySize(Math.min(...list), width, height));
+			if (roomZoneId) {
+				// 修改
+				const zone = this.roomZones.filter(ele => ele.roomZoneId === roomZoneId);
+				if (zone.length) Object.assign(zone[0], form);
+			} else {
+				// 添加
+				this.roomZones.push(form);
+			}
+			console.log(form, '提交的数据');
+			this.radarDevice(form);
 		},
 
 		/**
@@ -595,9 +631,10 @@ export default {
 			console.log(min, max, 'min, max', Math.floor(max / line), Math.floor(min / line));
 			const zoneHeight = Math.floor(max / line) - Math.floor(min / line) + 1,
 				zongWidth = (max % line) - (min % line) + 1;
+				console.log(zongWidth, zoneHeight, this, 'zongWidth, zoneHeight,');
 			return {
-				height: zoneHeight,
-				width: zongWidth
+				height: zoneHeight * this.cell.size,
+				width: zongWidth * this.cell.size
 			};
 		},
 
@@ -644,26 +681,25 @@ export default {
 		 */
 		getAxisBySize(start, width, height) {
 			console.log(start, width, height, 'start, width, height');
-			const { scale, x, y } = this.sizeInfo,
+			const { scale, x, y, installPosition} = this.sizeInfo,
 				{ line, column, total } = this.getCellSize();
-			console.log(this.sizeInfo, 'sizeInfo');
 			// 起始点坐标
-			console.log(column - Math.floor(start / line) - 1, 'start % line * scale.x - x');
 			const x1 = ((start % line) * scale.x - x) / scale.x,
-				y2 = column - Math.floor(start / line);
+				y2 = column - Math.floor(start / line) - (installPosition === '1' ? this.roomSize.roomBehind / this.cell.size: 0);
+				// 起始点在第几列
 			const x2 = x1 + width,
 				y1 = y2 - height;
 			console.log({
-				x1: uni.$u.priceFormat(x1, 1),
-				x2: uni.$u.priceFormat(x2, 1),
-				y1: uni.$u.priceFormat(y1, 1),
-				y2: uni.$u.priceFormat(y2, 1)
+				x1: uni.$u.priceFormat(x1 * this.cell.size, 1),
+				x2: uni.$u.priceFormat(x2 * this.cell.size, 1),
+				y1: uni.$u.priceFormat(y1 * this.cell.size, 1),
+				y2: uni.$u.priceFormat(y2 * this.cell.size, 1)
 			});
 			return {
-				x1: uni.$u.priceFormat(x1, 1),
-				x2: uni.$u.priceFormat(x2, 1),
-				y1: uni.$u.priceFormat(y1, 1),
-				y2: uni.$u.priceFormat(y2, 1)
+				x1: uni.$u.priceFormat(x1 * this.cell.size, 1),
+				x2: uni.$u.priceFormat(x2 * this.cell.size, 1),
+				y1: uni.$u.priceFormat(y1 * this.cell.size, 1),
+				y2: uni.$u.priceFormat(y2 * this.cell.size, 1)
 			};
 		}
 	}
@@ -809,7 +845,7 @@ export default {
 	}
 	
 	.ui-zooe-size {
-		width: 300rpx;
+		width: 250rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;

@@ -2,7 +2,7 @@
 * @Author: zhanch
 * @Date: 2023-03-04 15:03:16
 * @LastEditors: zhanch
-* @LastEditTime: 2023-03-04 18:57:42
+* @LastEditTime: 2023-03-05 20:03:01
 * @FilePath: /pages/equipment/setting/select-week.vue
 * @Description: 选择星期
 -->
@@ -33,37 +33,37 @@
 				list: [
 					{
 						text: '星期一',
-						value: '1',
+						value: '0',
 						check: false
 					},
 					{
 						text: '星期二',
-						value: '2',
+						value: '1',
 						check: false
 					},
 					{
 						text: '星期三',
-						value: '3',
+						value: '2',
 						check: false
 					},
 					{
 						text: '星期四',
-						value: '4',
+						value: '3',
 						check: false
 					},
 					{
 						text: '星期五',
-						value: '5',
+						value: '4',
 						check: false
 					},
 					{
 						text: '星期六',
-						value: '6',
+						value: '5',
 						check: false
 					},
 					{
 						text: '星期日',
-						value: '7',
+						value: '6',
 						check: false
 					},
 				],

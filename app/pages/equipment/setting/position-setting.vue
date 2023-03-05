@@ -20,7 +20,7 @@
 								:class="{active: item.active, hover: item.status === 'hover', edit: roomZones.length&&roomZones[activeZone].roomZoneId === item.roomZoneId}"
 								:style="cell" v-for="(item, index) of area" :key="index + 'c'">
 							</view>
-							<movable-view :x="sizeInfo.x - 10" :y="sizeInfo.y + 10">
+							<movable-view :x="sizeInfo.x - 10" :y="sizeInfo.y + 10 ">
 								<view class="ui-device"><text class="ui-zone-name">设备</text></view>
 							</movable-view>
 						</movable-area>
