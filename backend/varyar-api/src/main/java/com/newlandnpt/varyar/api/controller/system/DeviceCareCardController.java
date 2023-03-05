@@ -291,6 +291,8 @@ public class DeviceCareCardController extends BaseController {
     }
 
 
+
+
     @ApiOperation("设置时段禁用")
     @PostMapping("/setPeriodDisable")
     public AjaxResult setPeriodDisable(@RequestBody ClassTimePeriod req) {
@@ -314,13 +316,13 @@ public class DeviceCareCardController extends BaseController {
     @ApiOperation("获取时段禁用")
     @GetMapping("/getPeriodDisable")
     public AjaxResult getPeriodDisable(String deviceNo, String uuid){
-        return iDeviceCareCardService.getPeriodDisable(deviceNo,uuid);
+        return null;
     }
 
     @ApiOperation("获取时段禁用列表")
     @GetMapping("/getPeriodDisableList")
     public AjaxResult getPeriodDisableList(String deviceNo){
-        return iDeviceCareCardService.getPeriodDisableList(deviceNo);
+        return null;
     }
 
     @ApiOperation("重启设备")

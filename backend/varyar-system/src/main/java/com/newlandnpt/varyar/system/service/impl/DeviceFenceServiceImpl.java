@@ -157,7 +157,6 @@ public class DeviceFenceServiceImpl implements IDeviceFenceService {
      */
     @Override
     public int deleteTDeviceFenceByDeviceFenceId(Long deviceFenceId) {
-        // TODO: 删除电子围栏API
         return deviceFenceMapper.deleteTDeviceFenceByDeviceFenceId(deviceFenceId);
     }
 }
