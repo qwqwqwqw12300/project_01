@@ -1,10 +1,15 @@
 package com.newlandnpt.varyar.system.service.impl;
 
 import cn.hutool.core.util.IdUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.newlandnpt.varyar.common.core.domain.AjaxResult;
+import com.newlandnpt.varyar.common.core.domain.entity.ClassTimePeriod;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceIncomingCall;
 import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
 import com.newlandnpt.varyar.common.core.domain.entity.LocationJob;
+import com.newlandnpt.varyar.common.enums.ExCodeEnum;
+import com.newlandnpt.varyar.common.exception.business.BusinessException;
+import com.newlandnpt.varyar.common.utils.HttpClientUtil;
 import com.newlandnpt.varyar.common.utils.tcp.req.*;
 import com.newlandnpt.varyar.system.domain.LocationGuard;
 import com.newlandnpt.varyar.system.domain.TDevice;
@@ -13,9 +18,11 @@ import com.newlandnpt.varyar.system.domain.req.DelLocationGuardReq;
 import com.newlandnpt.varyar.system.domain.req.DeleteFenceReq;
 import com.newlandnpt.varyar.system.service.IDeviceCareCardService;
 import com.newlandnpt.varyar.system.service.IDeviceService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -53,6 +60,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public AjaxResult batchInsertOrUpdateAddressBook(BatchAddOrUpdateAddressBookReq req) {
         try{
             // 入库
@@ -155,6 +163,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public AjaxResult deleteAddressBook(DeleteAddressBookReq req) {
         // 入库
         TDevice device = iDeviceService.selectByDeviceNo(req.getDeviceNo());
@@ -189,11 +198,14 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public AjaxResult setAddressBook(SetIncomingCallReq req) {
+        // TODO: 设置通讯录搬过来
         return null;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public AjaxResult setFamilyNumber(SetDeviceButtonReq req) {
         try{
             // 入庫
@@ -259,6 +271,7 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public AjaxResult setLocationGuard(LocationJob locationJob) {
         //获取设备id,存在则修改原记录
         TDevice device = iDeviceService.selectByDeviceNo(locationJob.getDeviceNo());
@@ -356,6 +369,156 @@ public class IDeviceCareCardServiceImpl implements IDeviceCareCardService {
             return AjaxResult.error("该设备不是牵挂卡或设备不存在");
         }
         return AjaxResult.success();
+    }
+
+
+    @Override
+    public AjaxResult getLocationGuard(String deviceNo, String uuid) {
+        //获取设备id,存在则修改原记录
+        TDevice device = iDeviceService.selectByDeviceNo(deviceNo);
+        if (Objects.isNull(device)) {
+            return AjaxResult.error("数据库中不存在此设备。");
+        }
+        if(DEVICE_TYPE.equals(device.getType())){
+            // 获取设备参数
+            TDevice.WatchSettings object = getParameter(device);
+            // 获取位置守护信息
+            List<LocationJob> locationJobs = object.getLocationJobs();
+            LocationJob locationJob = locationJobs.stream().filter(job -> job.getUuid().equals(uuid)).findFirst().orElse(new LocationJob());
+            return AjaxResult.success(locationJob);
+        }else{
+            return AjaxResult.error("该设备不是牵挂卡或设备不存在");
+        }
+    }
+
+    @Override
+    public AjaxResult getLocationGuardList(String deviceNo) {
+        //获取设备id,存在则修改原记录
+        TDevice device = iDeviceService.selectByDeviceNo(deviceNo);
+        if (Objects.isNull(device)) {
+            return AjaxResult.error("数据库中不存在此设备。");
+        }
+        if(DEVICE_TYPE.equals(device.getType())){
+            // 获取设备参数
+            TDevice.WatchSettings object = getParameter(device);
+            // 获取位置守护信息
+            List<LocationJob> locationJobs = object.getLocationJobs();
+            if(Objects.isNull(locationJobs)){
+                locationJobs = new ArrayList<LocationJob>();
+            }
+            return AjaxResult.success(locationJobs);
+        }else{
+            return AjaxResult.error("该设备不是牵挂卡或设备不存在");
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public AjaxResult deleteLocationGuard(String deviceNo) {
+        //获取设备id,存在则修改原记录
+        TDevice device = iDeviceService.selectByDeviceNo(deviceNo);
+        if (Objects.isNull(device)) {
+            return AjaxResult.error("数据库中不存在此设备。");
+        }
+        if(DEVICE_TYPE.equals(device.getType())){
+
+        }else{
+            return AjaxResult.error("该设备不是牵挂卡或设备不存在");
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public AjaxResult setPeriodDisable(ClassTimePeriod req) {
+        // 拼接url
+        String url = DEVICE_CARE_CARD_URL + "/setClassModel";
+        //获取设备id,存在则修改原记录
+        TDevice device = iDeviceService.selectByDeviceNo(req.getDeviceNo());
+        if (Objects.isNull(device)) {
+            throw new BusinessException(ExCodeEnum.DB_NOT_DEVICE);
+        }
+        if(DEVICE_TYPE.equals(device.getType())){
+            // 获取设备参数
+            TDevice.WatchSettings object = getParameter(device);
+            // 获取时段禁用信息
+            List<ClassTimePeriod> classTimePeriods = object.getClassTimePeriods();
+            // 如果时段禁用信息为空
+            if(Objects.isNull(classTimePeriods)){
+                classTimePeriods = new ArrayList<>();
+            }
+            // 如果请求的uuid不为空,则更新数据库
+            if( !Objects.isNull(req.getUuid())){
+                // 已被持久化的禁用时段
+                ClassTimePeriod oldClassTimePeriod = classTimePeriods.stream().filter(period -> period.getUuid().equals(req.getUuid())).findAny().orElse(null);
+                // 判断需要更新的数据是否存在
+                if(!Objects.isNull(oldClassTimePeriod)){
+                    // 待更新数据的下标
+                    int index = classTimePeriods.indexOf(oldClassTimePeriod);
+                    // 更新数据
+                    classTimePeriods.remove(oldClassTimePeriod);
+                    if(index!=classTimePeriods.size()) {
+                        classTimePeriods.set(index, req);
+                    }else{
+                        classTimePeriods.add(req);
+                    }
+                }
+            }else{
+                if(classTimePeriods.size()>=10){
+                    throw new BusinessException(ExCodeEnum.EXCEED_PERIOD_DISABLE_NUMBER_LIMIT);
+                }
+                // 给新的禁用时段一个uuid
+                req.setUuid(IdUtil.simpleUUID());
+                classTimePeriods.add(req);
+            }
+            // 平台下发数据并更新数据库
+            try{
+                List<SetClassModelReq.timePeriod> timePeriods = new ArrayList<>();
+                for(int i=1;i<=classTimePeriods.size();i++){
+                    ClassTimePeriod dataClassTimePeriod = classTimePeriods.get(i - 1);
+                    String time = i +"="+dataClassTimePeriod.getBeginTime()+"-"+dataClassTimePeriod.getEndTime();
+                    String period = dataClassTimePeriod.getPeriod();
+                    timePeriods.add(new SetClassModelReq.timePeriod(time,period));
+                }
+                object.setClassTimePeriods(classTimePeriods);
+
+                device.setParameter(object);
+                iDeviceService.updateDevice(device);
+                return AjaxResult.success(httpRequest(url,new SetClassModelReq(timePeriods)));
+            }catch (BusinessException bs){
+                throw new BusinessException(bs.getMsg());
+            }
+            catch (Exception e){
+                throw new BusinessException(ExCodeEnum.SET_PERIOD_DISABLE_FAIL);
+            }
+        }else {
+            throw new BusinessException(ExCodeEnum.DEVICE_NOT_CARE_CARD);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public AjaxResult deletePeriodDisable(DeletePeriodDisabledReq req) {
+        return null;
+    }
+
+    @Override
+    public AjaxResult getPeriodDisable(String deviceNo, String uuid) {
+        return null;
+    }
+
+    @Override
+    public AjaxResult getPeriodDisableList(String deviceNo) {
+        return null;
+    }
+
+    protected JSONObject httpRequest(String url, Object req){
+        JSONObject httpMsg = JSONObject.parseObject(HttpClientUtil.sendPost(url,req,""));
+        if(REQUEST_SUCCESS_STATUS.equals(httpMsg.get(REQUEST_STATUS))){
+            return httpMsg;
+        }else{
+            throw new BusinessException(httpMsg.toJSONString());
+        }
     }
 
     /**
