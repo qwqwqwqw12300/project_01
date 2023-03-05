@@ -456,6 +456,19 @@ public class RoomZoneController extends BaseController {
         if (deviceId==null || deviceId.equals("")){
             throw new ServiceException("设备Id不能为空！");
         }
-        return getDataTable(iRoomZoneService.selectTRoomZoneByDeviceId(Long.valueOf(deviceId)));
+        TDevice.DeviceParameter parameter = iDeviceService.loadSettings(Long.valueOf(deviceId));
+        TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings)parameter;
+
+        List<TRoomZone> tRoomZones  = iRoomZoneService.selectTRoomZoneByDeviceId(Long.valueOf(deviceId));
+        //查询接口离床时间规则给到前端
+        for (TRoomZone tRoomZone : tRoomZones ){
+            TRoomZone troomZone = radarWaveDeviceSettings.getRoomZones().stream()
+                    .filter(p-> tRoomZone.getRoomZoneId().equals(""+p.getRoomZoneId().longValue()))
+                    .findAny().orElse(null);
+            tRoomZone.setLeaveBedWarnParameter(troomZone.getLeaveBedWarnParameter());
+        }
+
+//        return getDataTable(iRoomZoneService.selectTRoomZoneByDeviceId(Long.valueOf(deviceId)));
+        return getDataTable(tRoomZones);
     }
 }
