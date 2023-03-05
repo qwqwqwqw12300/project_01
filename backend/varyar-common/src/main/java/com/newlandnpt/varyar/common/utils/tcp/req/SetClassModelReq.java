@@ -58,12 +58,6 @@ public class SetClassModelReq extends MessageHead{
             this.period = period;
         }
 
-        public timePeriod(String time, String period, String enable) {
-            this.time = time;
-            this.period = period;
-            this.enable = enable;
-        }
-
         public String getTime() {
             return time;
         }
