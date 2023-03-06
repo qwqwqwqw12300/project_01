@@ -1,4 +1,4 @@
-package com.newlandnpt.varyar.common.core.domain.model;
+package com.newlandnpt.varyar.common.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -7,7 +7,6 @@ import java.util.Date;
 
 public class LeaveBedWarnParameter implements Serializable {
     private static final long serialVersionUID = 1L;
-
 
     /**
      * 离床间隔是否开启:0关闭 1开启

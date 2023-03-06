@@ -404,9 +404,6 @@ public class DeviceServiceImpl implements IDeviceService {
             if(device.getParameter()==null){
                 device.setParameter(new TDevice.RadarWaveDeviceSettings());
             }
-            device.setParameter(radarWaveDeviceSettings);
-            //更新设备参数信息
-            deviceMapper.updateTDevice(device);
             TRoomZone roomZone = new TRoomZone();
             roomZone.setDeviceId(device.getDeviceId());
             List<TRoomZone> roomZones = roomZoneService.selectTRoomZoneList(roomZone);
@@ -437,6 +434,9 @@ public class DeviceServiceImpl implements IDeviceService {
                 roomZoneService.deleteTRoomZoneByRoomZoneIds(removeZones.stream()
                         .toArray(Long[]::new));
             }
+            device.setParameter(radarWaveDeviceSettings);
+            //更新设备参数信息
+            deviceMapper.updateTDevice(device);
 
         }else if(TYPE_WATCH.equals(device.getType())){
             TDevice.WatchSettings watchSettings = (TDevice.WatchSettings) settings;
@@ -499,6 +499,13 @@ public class DeviceServiceImpl implements IDeviceService {
                 DeviceOnlineInfo info = redisCache.getCacheObject(CacheConstants.DEVICE_ONLINE_INFO+ deviceNo);
                 if(!Objects.isNull(info)){
                     BeanUtils.copyProperties(info,device);
+                }
+                // 设备在线状态再去获取是否有人
+                Boolean roomPresence = redisCache.getCacheObject(CacheConstants.PRESENCE_ROOM_KEY+ deviceNo);
+                if (roomPresence!=null && roomPresence == true) {
+                    device.setHasPerson("1");
+                }else{
+                    device.setHasPerson("0");
                 }
             }
         return  device;
