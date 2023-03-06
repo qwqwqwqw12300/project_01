@@ -416,9 +416,14 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
             startTime.set(Calendar.MONTH, now.get(Calendar.MONTH));
             startTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
             if(startTime.getTimeInMillis()>endTime.getTimeInMillis()){
-                // 起始时间大于结束时间说明是设置跨天的夜间时段，开始时间减一天
-                startTime.add(Calendar.DAY_OF_MONTH,-1);
-                crossDay = true;
+                if(startTime.getTimeInMillis()<calculateTime.getTime()){
+                    // 开始时间比计算时间小，说明还在当天,结束时间设置为计算时间
+                    endTime.setTime(calculateTime);
+                }else{
+                    // 起始时间大于结束时间说明是设置跨天的夜间时段，开始时间减一天
+                    startTime.add(Calendar.DAY_OF_MONTH,-1);
+                    crossDay = true;
+                }
             }
 
             // 计算时间等于结束时间开始计算
