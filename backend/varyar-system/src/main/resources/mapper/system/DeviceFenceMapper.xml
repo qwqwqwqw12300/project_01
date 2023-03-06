@@ -20,7 +20,7 @@
     </resultMap>
 
     <sql id="selectTDeviceFenceVo">
-        select device_fence_id, geo_fence_id, device_id, device_no, address, longitude, latitude, radius, create_time, update_time from t_device_fence
+        select device_fence_id, geo_fence_id, device_id, device_no, address, longitude, latitude, radius,fence_type,points,create_time, update_time from t_device_fence
     </sql>
 
     <select id="selectTDeviceFenceList" parameterType="TDeviceFence" resultMap="TDeviceFenceResult">
@@ -33,8 +33,8 @@
             <if test="longitude != null  and longitude != ''"> and longitude = #{longitude}</if>
             <if test="latitude != null  and latitude != ''"> and latitude = #{latitude}</if>
             <if test="radius != null  and radius != ''"> and radius = #{radius}</if>
-            <if test="points != null">and points = #{points},</if>
-            <if test="fenceType != null">and fence_type = #{fenceType},</if>
+            <if test="points != null">and points = #{points}</if>
+            <if test="fenceType != null">and fence_type = #{fenceType}</if>
         </where>
     </select>
 

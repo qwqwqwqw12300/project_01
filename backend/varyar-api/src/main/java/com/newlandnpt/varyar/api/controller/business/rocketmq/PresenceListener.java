@@ -234,7 +234,7 @@ public class PresenceListener implements RocketMQListener<Presence> {
     	}
 
     	// 将进出消息存入redis
-		String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + accessInfo.getDeviceNo()+ DateFormatUtils.format(new Date(),"yyyy-MM-dd");
+		String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + accessInfo.getDeviceNo()+ DateFormatUtils.format(new Date(),":yyyy-MM-dd");
 		boolean hasKey = redisCache.hasKey(redisKey);
 		redisCache.setCacheList(redisKey, Arrays.asList(accessInfo));
 		if(!hasKey){

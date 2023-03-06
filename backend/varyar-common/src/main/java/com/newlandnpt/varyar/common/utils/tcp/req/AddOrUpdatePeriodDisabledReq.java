@@ -1,17 +1,16 @@
-package com.newlandnpt.varyar.common.core.domain.entity;
+package com.newlandnpt.varyar.common.utils.tcp.req;
 
 /**
- * 课堂模式周期
+ * 新增和修改时段禁用
  * @author ljx
- * @date 2023/3/1
+ * @date 2023/3/4
  */
-public class ClassTimePeriod {
+public class AddOrUpdatePeriodDisabledReq {
 
     /**
      * 设备号,设备唯一编号
      */
     private String deviceNo;
-
     /**
      * 时段禁用标签
      */
@@ -32,27 +31,16 @@ public class ClassTimePeriod {
      */
     private String endTime;
 
-    /**
-     * 周期
-     */
-    private String period;
 
-    /**
-     * 是否生效
-     */
-    private String enable = "1";
-
-    public ClassTimePeriod() {
+    public AddOrUpdatePeriodDisabledReq() {
     }
 
-    public ClassTimePeriod(String deviceNo, String periodDisableTag, String uuid, String beginTime, String endTime, String period, String enable) {
+    public AddOrUpdatePeriodDisabledReq(String deviceNo, String periodDisableTag, String uuid, String beginTime, String endTime) {
         this.deviceNo = deviceNo;
         this.periodDisableTag = periodDisableTag;
         this.uuid = uuid;
         this.beginTime = beginTime;
         this.endTime = endTime;
-        this.period = period;
-        this.enable = enable;
     }
 
     public String getDeviceNo() {
@@ -93,21 +81,5 @@ public class ClassTimePeriod {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
-    }
-
-    public String getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(String period) {
-        this.period = period;
-    }
-
-    public String getEnable() {
-        return enable;
-    }
-
-    public void setEnable(String enable) {
-        this.enable = enable;
     }
 }

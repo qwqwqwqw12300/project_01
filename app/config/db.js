@@ -81,3 +81,17 @@ export const INIT_SELECT = {
 	pageSize: 10,
 	pageNum: 1
 };
+
+
+/**
+ * 星期关系
+ */
+export const WEEKMAP = {
+	0: '星期一',
+	1: '星期二',
+	2: '星期三',
+	3: '星期四',
+	4: '星期五',
+	5: '星期六',
+	6: '星期日',
+}

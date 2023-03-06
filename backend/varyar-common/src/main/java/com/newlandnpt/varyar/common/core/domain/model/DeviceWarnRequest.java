@@ -40,16 +40,16 @@ public class DeviceWarnRequest{
     /** 跌倒预警开关 ：1开 0关  */
     private String fallWarn;
     /** 无人预警开关 ：1开 0关 */
-    private String noBody = "1";
+    private String noBody;
     /** 无人预警连续24小时开关 1开 0关 */
-    private String noBodyContinue = "1";
+    private String noBodyContinue;
 
     /**
      * 规则名称
      */
     private String warnRuleName;
 
-    private String  ruleSwitch="1";
+    private String  ruleSwitch;
     /**
      * 日期类型
      */
@@ -57,42 +57,28 @@ public class DeviceWarnRequest{
     /**
      * 星期
      */
-    private String[] week = {"0", "1", "2", "3", "4", "5", "6"};
+    private String[] week;
     /**
      * 开始日期 data yyyy-MM-dd
      */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date startDate;
     /**
      * 结束日期 data yyyy-MM-dd
      */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date endDate;
 
     /**
      * 结束时间 开始时间
      */
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
     private Date startTime;
     /**
      * 结束时间 data HH:mm
      */
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
     private Date endTime;
-
-
-    /**
-     * 离床间隔是否开启:0关闭 1开启
-     */
-    private  String leaveBedInterval="0";
-    /**
-     * 间隔时间 s
-     */
-    private long intervalTime;
-    /**
-     * 名称
-     */
-    private String bedName;
 
     public String getDeviceId() {
         return deviceId;
@@ -238,27 +224,4 @@ public class DeviceWarnRequest{
         this.endTime = endTime;
     }
 
-    public String getLeaveBedInterval() {
-        return leaveBedInterval;
-    }
-
-    public void setLeaveBedInterval(String leaveBedInterval) {
-        this.leaveBedInterval = leaveBedInterval;
-    }
-
-    public long getIntervalTime() {
-        return intervalTime;
-    }
-
-    public void setIntervalTime(long intervalTime) {
-        this.intervalTime = intervalTime;
-    }
-
-    public String getBedName() {
-        return bedName;
-    }
-
-    public void setBedName(String bedName) {
-        this.bedName = bedName;
-    }
 }

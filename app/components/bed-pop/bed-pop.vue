@@ -1,8 +1,8 @@
 <!--
 * @Author: zhanch
-* @Date: 2023-02-08 09:32:31
-* @FilePath: /components/zone-pop/zone-pop.vue
-* @Description: 区域设置
+* @Date: 2023-03-05 17:31:04
+* @FilePath: /components/bed-pop/bed-pop.vue
+* @Description: 离床设置弹窗
 -->
 
 <template>
@@ -13,25 +13,8 @@
 				<view class="ui-add-box">
 					<view>
 						<u-text size="30rpx" text="区域名称"></u-text>
-						<u-input placeholder="请输入区域名称" class="wd-input" :maxlength="6" v-model="form.shadowZoneName"  clearable></u-input>
+						<u-input placeholder="请输入区域名称" class="wd-input" :maxlength="6" v-model="form.bedName" clearable></u-input>
 					</view>
-					<view>
-						<u-text size="30rpx" text="物体离地高度"></u-text>
-						<u-input placeholder="请输入物体离地高度" class="wd-input"  :maxlength="6" v-model="form.above"  clearable>
-							<template slot="suffix">
-								<text>米</text>
-							</template>
-						</u-input>
-					</view>
-					<view>
-						<u-text size="30rpx" text="物体高度"></u-text>
-						<u-input placeholder="请输入物体高度" class="wd-input"  :maxlength="6" v-model="form.stature"  clearable>
-							<template slot="suffix">
-								<text>米</text>
-							</template>
-						</u-input>
-					</view>
-				
 					<view class="wd-size">
 						<u-text text="宽×高" color="#444" size="30rpx"></u-text>
 						<view class="ui-shape">
@@ -48,14 +31,13 @@
 							<view>
 								<text>宽</text>
 								<view class="ui-input">
-									<u-input type="number" v-model="form.width" placeholder="请输入宽度"  fontSize="28rpx">
+									<u-input type="number" v-model="form.width" placeholder="请输入宽度" fontSize="28rpx">
 										<template slot="suffix">
 											<text>米</text>
 										</template>
 									</u-input>
 								</view>
 							</view>
-							
 						</view>
 					</view>
 					<view class="wd-btn-group">
@@ -70,24 +52,38 @@
 
 <script>
 import { assignDeep } from '../../common/utils/util';
-import { ZONE } from '../../config/db';
+const DEFAULT_BED = {
+	leaveBedWarnParameter: {
+		leaveBedInterval: '1',
+		intervalTime: '300',
+		setRuleDate: {
+			//日期类型 ： 0 按日期  1 按星期
+			dateType: '1',
+			//星期 ： 日期类型为 1时使用
+			week: [0, 1, 2, 3, 4, 5, 6],
+			//开始日期 ：日期类型为 0时使用
+			startDate: '',
+			//结束日期 ：日期类型为 0时使用
+			endDate: '',
+			//开始时间：必传
+			startTime: '23:00',
+			//结束时间：必传
+			endTime: '7:00'
+		}
+	}
+};
 export default {
 	data() {
 		return {
 			mode: 'none',
 			form: {
-				//必传房间id
-				roomId: '',
-				//必传设备id
 				deviceId: '',
-				//必传区域名称
-				shadowZoneName: '',
-				height: '',
+				roomZoneId: '',
+				roomId: '',
+				bedName: '',
 				width: '',
-				// 离地高度
-				above: '',
-				// 物体高度
-				stature: ''
+				height: '',
+				...assignDeep({}, DEFAULT_BED)
 			},
 			dateHandle: {
 				type: '',
@@ -122,20 +118,18 @@ export default {
 		},
 
 		close() {
-			this.form = assignDeep({}, {
-				//必传房间id
-				roomId: '',
-				//必传设备id
-				deviceId: '',
-				//必传区域名称
-				shadowZoneName: '',
-				height: '',
-				width: '',
-				// 离地高度
-				above: '',
-				// 物体高度
-				stature: ''
-			});
+			this.form = assignDeep(
+				{},
+				{
+					deviceId: '',
+					roomZoneId: '',
+					roomId: '',
+					bedName: '',
+					width: '',
+					height: '',
+					...assignDeep({}, DEFAULT_BED)
+				}
+			);
 			this.mode = 'none';
 		},
 
@@ -151,7 +145,7 @@ export default {
 		 * 提交修改
 		 */
 		submit() {
-			if (!this.form.shadowZoneName) return uni.$u.toast('区域名称不能为空');
+			if (!this.form.bedName) return uni.$u.toast('区域名称不能为空');
 			if (this.form.width < 0 || this.form.height < 0) return uni.$u.toast('宽高不能小于0');
 			this.$emit('confirm', assignDeep({}, this.form));
 			this.close();
