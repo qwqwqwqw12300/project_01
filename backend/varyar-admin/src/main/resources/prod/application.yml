@@ -172,4 +172,4 @@ rocketmq:
     access-calculate: ${rocketmq.namespace}%GID_group_access_alculate
   topic:
     deviceConfig: ${rocketmq.namespace}%deviceConfigTopic
-    access-calculate: ${rocketmq.namespace}%daccessCalculateTopic
+    access-calculate: ${rocketmq.namespace}%accessCalculateTopic
