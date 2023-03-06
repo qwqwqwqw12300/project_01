@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.newlandnpt.varyar.common.exception.ServiceException;
+import com.newlandnpt.varyar.common.utils.spring.SpringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -26,7 +27,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedisCache
 {
-    public static RedisTemplate redisTemplate;
+    @Autowired
+    public RedisTemplate redisTemplate;
 
     /**
      * 缓存基本的对象，Integer、String、实体类等
@@ -308,7 +310,7 @@ public class RedisCache
      * @param time 设置的值
      * @return
      */
-    public static void set24HourTimeWheelValue(String key,long liveTime, LocalTime graduation,Date time){
+    public void set24HourTimeWheelValue(String key,long liveTime, LocalTime graduation,Date time){
         redisTemplate.opsForZSet().add(key,time,graduation.toSecondOfDay());
         redisTemplate.expire(key,liveTime,TimeUnit.SECONDS);
     }
@@ -320,7 +322,7 @@ public class RedisCache
      * @param graduation 刻度值 精确到秒
      * @return
      */
-    public static Date get24HourTimeWheelValue(String key, LocalTime graduation){
+    public Date get24HourTimeWheelValue(String key, LocalTime graduation){
         Set<Date> result = redisTemplate.opsForZSet().rangeByScore(key,graduation.toSecondOfDay(),graduation.toSecondOfDay()+1);
         return Optional
                 .ofNullable(result)
@@ -394,7 +396,7 @@ public class RedisCache
                     }
             }
 
-            RedisCache.set24HourTimeWheelValue(key,2*24*60*60,currentGraduation,time);
+            SpringUtils.getBean(RedisCache.class).set24HourTimeWheelValue(key,2*24*60*60,currentGraduation,time);
         }
 
         /**
@@ -409,7 +411,7 @@ public class RedisCache
             do {
                 // 回退一个刻度
                 LocalTime preGraduation = minus(graduation);
-                Date date = RedisCache.get24HourTimeWheelValue(key,preGraduation);
+                Date date = SpringUtils.getBean(RedisCache.class).get24HourTimeWheelValue(key,preGraduation);
                 if(date!=null){
                     calendar.setTime(date);
                     if(referenceDay.getYear() == calendar.get(Calendar.YEAR)&&
@@ -458,7 +460,7 @@ public class RedisCache
         }
 
         public Date getCurrentGraduationValue(){
-            return RedisCache.get24HourTimeWheelValue(key,currentGraduation);
+            return SpringUtils.getBean(RedisCache.class).get24HourTimeWheelValue(key,currentGraduation);
         }
 
         private LocalTime convertToLocalTime(Date time){
@@ -485,17 +487,6 @@ public class RedisCache
         HOUR,
         MINUTES,
         SECOND
-    }
-
-    @Component
-    public static class RedisCacheInjector implements BeanPostProcessor {
-        @Override
-        public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-            if(bean instanceof RedisTemplate){
-                RedisCache.redisTemplate = (RedisTemplate)bean;
-            }
-            return bean;
-        }
     }
 
 }
