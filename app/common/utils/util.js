@@ -5,8 +5,12 @@
  * @FilePath: /utils/util.js
  * @Description: 工具方法
  */
-import __config from '@/config/env';
-import { WEEKMAP } from '../../config/db';
+import {
+	env
+} from '@/config/env';
+import {
+	WEEKMAP
+} from '../../config/db';
 
 /**
  * formatTime 时间格式化
@@ -94,6 +98,14 @@ export const isApp = () => {
 	return false;
 };
 
+
+/**
+ * 是否是生产环境
+ * @returns {boolean}
+ */
+export const isProd = () => {
+	return env.mode !== 'dev';
+};
 
 /**
  * 对象合并深拷贝

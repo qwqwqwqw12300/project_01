@@ -48,7 +48,7 @@
 			<!-- 家庭tab -->
 			<view class="ui-tab" v-if="tabList.length">
 				<u-tabs @change="tabChange" :list="tabList" lineColor="unset"
-					:activeStyle="{color: '#353535', fontSize: '40rpx'}"
+					:activeStyle="{color: '#353535', fontSize: '45rpx'}"
 					:inactiveStyle="{color: '#888888', fontSize: '40rpx'}"></u-tabs>
 			</view>
 			<!-- /家庭tab -->
@@ -85,11 +85,13 @@
 										<view class="ui-device-name">
 											<view class="ui-list-static"
 												:class="{online: getDeives(room).onlineFlag === '1'}"></view>
-											<text class="ui-list-static-font" v-if="getDeives(room).onlineFlag === '在线'"></text>
+											<text class="ui-list-static-font"
+												v-if="getDeives(room).onlineFlag === '在线'"></text>
 											<text class="ui-list-static-font" v-else>离线</text>
 											<view class="ui-list-people"
 												:class="{online: getDeives(room).hasPerson === '1'}"></view>
-											<text class="ui-list-static-font" v-if="getDeives(room).hasPerson === '1'"></text>
+											<text class="ui-list-static-font"
+												v-if="getDeives(room).hasPerson === '1'"></text>
 											<text class="ui-list-static-font" v-else>无人</text>
 										</view>
 									</view>
