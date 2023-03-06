@@ -56,7 +56,7 @@
 			</view>
 		</view>
 		<view class="ui-btn">
-			<button class="default">提交</button>
+			<button class="default" @click="handleSubmit">提交</button>
 		</view>
 	</app-body>
 </template>
@@ -65,15 +65,20 @@
 	export default {
 		data() {
 			return {
-				latitude: 39.909,
-				longitude: 116.39742,
+				latitude: 26.08,
+				longitude: 119.18,
 				covers: [],
 				circles: [],
+				radius:''
 			}
 		},
 		methods: {
-			onSlider() {
-
+			handleSubmit(){
+				
+			},
+			onSlider(value){
+				console.log(value)
+				this.radius = value
 			}
 		}
 	}

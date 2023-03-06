@@ -13,13 +13,13 @@
 			<view class="ui-cell" v-for="(item,index) in list" :key="index" @click="toJump('/pages/equipment/info-guard')">
 				<view class="ui-cell-content">
 					<view class="ui-cell-style">
-						<view class="ui-cell-title">{{item.title}}</view>
+						<view class="ui-cell-title">{{item.jobName}}</view>
 						<view><u-icon name="arrow-right"></u-icon></view>
 					</view>
 					<view class="ui-cell-style">
 						<view class="ui-cell-font">
-							<view>2023/02/21 00:00 至 </view>
-							<view>2023/02/23 23:59</view>
+							<view>{{item.firstDate}} 至 </view>
+							<view>{{item.lastDate}}</view>
 						</view>
 						<u-switch @change="handleSwitch" v-model="flag" activeValue="1" inactiveValue="0"
 							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20"> >
@@ -34,6 +34,9 @@
 
 <script>
 	import CardTitle from '@/components/card-title/card-title.vue';
+	import {
+		GetLocationGuardList
+	} from '@/common/http/api';
 	export default {
 		components:{
 			CardTitle
@@ -51,11 +54,25 @@
 			
 		},
 		methods: {
+			initData(){
+				GetLocationGuardList({
+					deviceNo:'867977060000248'
+				}).then(res=>{
+					console.log(res,'res')
+					this.list = res.data
+				})
+			},
+			handleSwitch() {
+				
+			},
 			toJump(url){
 				uni.navigateTo({
 					url:url
 				})
 			}
+		},
+		onShow() {
+			this.initData()
 		}
 	};
 </script>
