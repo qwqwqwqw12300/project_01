@@ -27,6 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.newlandnpt.varyar.common.constant.MsgConstants.MSG_TYPE_APP;
+
 /**
  * 家庭
  * 
@@ -65,7 +67,7 @@ public class FamilyController extends BaseController {
                 for (TDevice it: devices){
                     TMsg tMsg = new TMsg();
                     tMsg.setDeviceId(it.getDeviceId());
-                    tMsg.setMsgType("2");
+                    tMsg.setMsgType(MSG_TYPE_APP);
                     tMsg.setOperateFlag("0");
                     tMsg.setFamilyId(item.getFamilyId());
                     tMsg.setEventLevel("urgent");

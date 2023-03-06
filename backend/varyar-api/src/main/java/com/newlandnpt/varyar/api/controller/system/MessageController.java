@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.newlandnpt.varyar.common.constant.MsgConstants.MSG_TYPE_APP;
+
 /**
  *
  * @author newlandnpt
@@ -89,7 +91,7 @@ public class MessageController extends BaseController {
         Long memberId = getLoginUser().getMemberId();
         tMsg.setMemberId(memberId);
         //限制查询app消息 ,过滤短信消息
-        tMsg.setMsgType("2");
+        tMsg.setMsgType(MSG_TYPE_APP);
         List<TMsg> list = itMsgService.selectTMsgList(tMsg);
         return getDataTable(list);
     }
