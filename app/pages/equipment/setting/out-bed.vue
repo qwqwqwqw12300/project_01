@@ -14,18 +14,19 @@
 				<view class="ui-movable">
 					<view class="mova-box">
 						<movable-area :style="getStyle">
-							<view
-								class="ui-cell"
-								@touchstart="touchstart($event, item, index)"
-								@touchmove.stop.prevent="touchMove($event, item, index)"
-								@touchend="touchend($event, item)"
-								:class="{ active: item.active, hover: item.status === 'hover', edit: roomZones.length && roomZones[activeZone].roomZoneId === item.roomZoneId }"
-								:style="cell"
-								v-for="(item, index) of area"
-								:key="index + 'c'"
-							>
-							</view>
-							<movable-view :x="sizeInfo.x - 10" :y="sizeInfo.y + (sizeInfo.installPosition == 0 ? 10 : -10)">
+							<template v-for="(item, index) of area">
+								<view :key="index + 'c'" class="ui-cell" @touchstart="touchstart($event, item, index)"
+									@touchmove.stop.prevent="touchMove($event, item, index)"
+									@touchend="touchend($event, item)"
+									:class="{ active: item.active, hover: item.status === 'hover', edit: roomZones.length && roomZones[activeZone].roomZoneId === item.roomZoneId }"
+									:style="cell" v-if="item.zoneType === '2'">
+								</view>
+								<view :key="index + 'ec'" v-else :style="cell" class="ui-cell disable">
+								</view>
+							</template>
+
+							<movable-view :x="sizeInfo.x - 10"
+								:y="sizeInfo.y + (sizeInfo.installPosition == 0 ? 10 : -10)">
 								<view class="ui-device"><text class="ui-zone-name">设备</text></view>
 							</movable-view>
 						</movable-area>
@@ -35,7 +36,10 @@
 			</view>
 			<!-- 配置区域 -->
 			<view class="ui-set-box" v-if="roomZones && roomZones[activeZone]">
-				<view class="ui-list"><u-tabs lineWidth="108rpx" lineColor="#FEAE43" :list="getTabList" @click="acitve"></u-tabs></view>
+				<view class="ui-list">
+					<u-tabs v-if="tabInit" lineWidth="108rpx" lineColor="#FEAE43" :list="getTabList" @click="acitve">
+					</u-tabs>
+				</view>
 				<!-- 床区域设置 -->
 				<template v-if="getParameter.setRuleDate">
 					<u-cell-group>
@@ -43,37 +47,26 @@
 							<view class="ui-time-box">
 								<text>时间设置</text>
 								<view class="ui-time-details" v-if="getParameter.setRuleDate.dateType == 0">
-									<text>{{ getParameter.setRuleDate.startDate }} 至 {{ getParameter.setRuleDate.endDate }}</text>
-									<text>{{ getParameter.setRuleDate.startTime }} 至 {{ getParameter.setRuleDate.endTime }}</text>
+									<text>{{ getParameter.setRuleDate.startDate +'至' + getParameter.setRuleDate.endDate}}</text>
+									<text>{{ getParameter.setRuleDate.startTime + '至' +  getParameter.setRuleDate.endTime}}
+									</text>
 								</view>
 								<text class="ui-week" v-else>{{ weekText(getParameter.setRuleDate.week) }}</text>
 							</view>
 							<u-icon name="arrow-right" color="#909193" size="36rpx"></u-icon>
 						</view>
 						<u-cell title="离床间隔">
-							<u-switch
-								space="2"
-								v-model="getParameter.leaveBedInterval"
-								activeValue="1"
-								inactiveValue="0"
-								size="20"
-								slot="right-icon"
-								activeColor="#FEAE43"
-								inactiveColor="rgb(230, 230, 230)"
-							></u-switch>
+							<u-switch space="2" v-model="getParameter.leaveBedInterval" activeValue="1"
+								inactiveValue="0" size="20" slot="right-icon" activeColor="#FEAE43"
+								inactiveColor="rgb(230, 230, 230)"></u-switch>
 						</u-cell>
 						<template v-if="getParameter.leaveBedInterval === '1'">
 							<u-cell>
 								<view slot="title" class="ui-slot-title">
 									<view class="ui-date-list">
-										<u-tag 	:key="item + 'time'"
-											v-for="item of timeList"
-											@click="onTimeBtn(item)"
-											:plain="!(getParameter.intervalTime === item)"
-											size="mini"
-											:text="item + '分钟'" type="warning" 
-											:name="item"
-											>
+										<u-tag :key="item + 'time'" v-for="item of timeList" @click="onTimeBtn(item)"
+											:plain="!(getParameter.intervalTime === item)" size="mini"
+											:text="item + '分钟'" type="warning" :name="item">
 										</u-tag>
 										<!-- <u-button
 											:key="item + 'time'"
@@ -87,14 +80,17 @@
 									</view>
 								</view>
 								<view slot="right-icon">
-									<u-checkbox-group shape="circle" placement="column" v-model="roomZones[activeZone].timeCus">
+									<u-checkbox-group shape="circle" placement="column"
+										v-model="roomZones[activeZone].timeCus">
 										<u-checkbox activeColor="#FEAE43" label="自定义时间" :name="true"></u-checkbox>
 									</u-checkbox-group>
 								</view>
 							</u-cell>
 							<u-cell v-if="roomZones[activeZone].timeCus[0]">
 								<view slot="title" class="ui-sub-title"><text>选择自定义时间</text></view>
-								<view slot="right-icon"><u-number-box v-model="getParameter.intervalTime"></u-number-box></view>
+								<view slot="right-icon">
+									<u-number-box v-model="getParameter.intervalTime"></u-number-box>
+								</view>
 							</u-cell>
 						</template>
 					</u-cell-group>
@@ -111,10 +107,27 @@
 </template>
 
 <script>
-import { assignDeep, getHoursTime, getMinute, minuteToTime, wddkAbbreviation } from '../../../common/utils/util';
-import { mapState } from 'vuex';
-import { GetRoomZone, PostRoomList, PostRadarDevice, PostRemRadarDevice, PostSetRadarWareShadowZone, PostSetRadarWareBedZone } from '../../../common/http/api';
-import { ZONE } from '../../../config/db';
+	import {
+		assignDeep,
+		getHoursTime,
+		getMinute,
+		minuteToTime,
+		wddkAbbreviation
+	} from '../../../common/utils/util';
+	import {
+		mapState
+	} from 'vuex';
+	import {
+		GetRoomZone,
+		PostRoomList,
+		PostRadarDevice,
+		PostRemRadarDevice,
+		PostSetRadarWareShadowZone,
+		PostSetRadarWareBedZone
+	} from '../../../common/http/api';
+	import {
+		ZONE
+	} from '../../../config/db';
 
 	export default {
 		data() {
@@ -186,8 +199,8 @@ import { ZONE } from '../../../config/db';
 					roomLength: 0,
 					roomFront: 0,
 					roomBehind: 0
-				}
-
+				},
+				tabInit: false
 			};
 		},
 		computed: {
@@ -214,7 +227,7 @@ import { ZONE } from '../../../config/db';
 				if (this.roomZones.length) {
 					list = this.roomZones.map((ele, index) => ({
 						name: ele.name,
-						index,
+						idx: index,
 						zoneType: ele.zoneType
 					})).filter(ele => ele.zoneType === '2');
 				}
@@ -241,27 +254,52 @@ import { ZONE } from '../../../config/db';
 			 * 设置规则
 			 */
 			setRule(rule) {
-				uni.$once('bedRule', ({ type, data }) => {
+				uni.$once('bedRule', ({
+					type,
+					data
+				}) => {
 					this.init();
 				});
-				this.$setCache('bedRuleCache', { deviceId: this.deviceInfo.deviceId, roomZoneId: this.roomZones[this.activeZone].roomZoneId, ...(rule || {}) });
+				this.$setCache('bedRuleCache', {
+					deviceId: this.deviceInfo.deviceId,
+					roomZoneId: this.roomZones[this.activeZone].roomZoneId,
+					...(rule || {})
+				});
 				uni.navigateTo({
 					url: `/pages/equipment/setting/bed-rules`
 				});
 			},
 			init() {
+				this.tabInit = false;
 				Promise.all([this.getRoomInfo(), this.getRoomZone()]).then(([roomInfo, rows]) => {
 					// 盒子容器信息
-					const { width } = this.sizeInfo.box;
+					const {
+						width
+					} = this.sizeInfo.box;
 					console.log(this.deviceInfo, '设备信息');
 					// 设备距离墙壁范围
-					const { parameter } = this.deviceInfo,
-					cellSize = this.cell.size;
+					const {
+						parameter
+					} = this.deviceInfo,
+						cellSize = this.cell.size;
 					if (parameter) {
-						const location = parameter.installPosition === '0' ? parameter.deviceLocationWall : parameter.deviceLocationTop;
-						let { roomLeft, roomRight, roomHeight, roomLength = 0, roomFront= 0, roomBehind= 0 } = location;
+						const location = parameter.installPosition === '0' ? parameter.deviceLocationWall :
+							parameter.deviceLocationTop;
+						let {
+							roomLeft,
+							roomRight,
+							roomHeight,
+							roomLength = 0,
+							roomFront = 0,
+							roomBehind = 0
+						} = location;
 						this.roomSize = {
-							roomLeft, roomRight, roomHeight, roomLength, roomFront, roomBehind
+							roomLeft,
+							roomRight,
+							roomHeight,
+							roomLength,
+							roomFront,
+							roomBehind
 						}
 						// 按每格比例放大
 						roomLeft = roomLeft / cellSize;
@@ -275,15 +313,16 @@ import { ZONE } from '../../../config/db';
 						// 盒子比例
 						const scale = {
 								x: width / (roomLeft + roomRight),
-								y: width / (roomLeft + roomRight)// 以横向距离作为基准
+								y: width / (roomLeft + roomRight) // 以横向距离作为基准
 							},
 							/**设备位置**/
-							x = roomLeft * scale.x ,
-							y =  parameter.installPosition === '0' ? roomLength  * scale.y : roomBehind  * scale.y,
+							x = roomLeft * scale.x,
+							y = parameter.installPosition === '0' ? roomLength * scale.y : roomBehind * scale.y,
 							/**父容器**/
 							box = {
 								width: 300,
-								height: parameter.installPosition === '0' ? roomLength  * scale.y : (roomBehind + roomFront)  * scale.y,
+								height: parameter.installPosition === '0' ? roomLength * scale.y : (roomBehind +
+									roomFront) * scale.y,
 							};
 						/**网格**/
 						this.cell = {
@@ -293,16 +332,18 @@ import { ZONE } from '../../../config/db';
 						};
 						/**网格个数**/
 						let idx = 0;
-						this.area = new Array((box.width / scale.x) * (box.height / scale.y)).fill('').map(ele => ({
-							status: 'none',
-							axis: {
-								x: 0,
-								y: 0
-							},
-							index: idx++,
-							roomZoneId: '',
-							active: false
-						}));
+						this.area = new Array((box.width / scale.x) * (box.height / scale.y)).fill('').map(ele =>
+							({
+								status: 'none',
+								axis: {
+									x: 0,
+									y: 0
+								},
+								index: idx++,
+								roomZoneId: '',
+								zoneType: '2',
+								active: false
+							}));
 						Object.assign(this.sizeInfo, {
 							x,
 							y,
@@ -311,21 +352,24 @@ import { ZONE } from '../../../config/db';
 							installPosition: parameter.installPosition
 						});
 						rows.forEach((ele, idx) => {
-							let { x1 = 0, x2 = 0, y1 = 0, y2 = 0, z1 = 0, z2 = 0, roomZoneId, name } = ele;
+							let {
+								x1 = 0, x2 = 0, y1 = 0, y2 = 0, z1 = 0, z2 = 0, roomZoneId, name
+							} = ele;
 							x1 = x1 / this.cell.size;
 							x2 = x2 / this.cell.size;
 							y1 = y1 / this.cell.size;
 							y2 = y2 / this.cell.size;
 							const activeList = this.getArrByAxis(x1, x2, y1, y2);
-							this.area.forEach(ele => {
-								if (activeList.includes(ele.index)) {
-									ele.active = true;
-									ele.roomZoneId = roomZoneId;
+							this.area.forEach(area => {
+								if (activeList.includes(area.index)) {
+									area.active = true;
+									area.zoneType = ele.zoneType;
+									area.roomZoneId = roomZoneId;
 								}
 							});
 							Object.assign(ele, {
-								height: Math.abs((y1 * this.cell.size )- (y2* this.cell.size)),
-								width: Math.abs((x1* this.cell.size ) - (x2* this.cell.size)),
+								height: Math.abs((y1 * this.cell.size) - (y2 * this.cell.size)),
+								width: Math.abs((x1 * this.cell.size) - (x2 * this.cell.size)),
 								// 离地高度
 								above: z1,
 								// 物体高度
@@ -335,17 +379,20 @@ import { ZONE } from '../../../config/db';
 								y1,
 								y2
 							});
-							if(ele.zoneType === '2') { // 床区域特殊处理
-								ele.leaveBedWarnParameter.intervalTime = ele.leaveBedWarnParameter.intervalTime / 60;
+							if (ele.zoneType === '2') { // 床区域特殊处理
+								ele.leaveBedWarnParameter.intervalTime = ele.leaveBedWarnParameter
+									.intervalTime / 60;
 								Object.assign(ele, {
-								bedName: name,
-								timeCus: [this.timeList.includes(ele.leaveBedWarnParameter.intervalTime)]
+									bedName: name,
+									timeCus: [!this.timeList.includes(ele.leaveBedWarnParameter
+										.intervalTime)]
 								})
 							}
 						});
 						this.roomZones = rows;
-						const index =  this.roomZones.findIndex(ele => ele.zoneType === '2');
-						if(index > -1 )  this.activeZone = index;
+						const index = this.roomZones.findIndex(ele => ele.zoneType === '2');
+						if (index > -1) this.activeZone = index;
+						this.tabInit = true;
 					} else {
 						uni.showToast({
 							icon: 'none',
@@ -360,7 +407,7 @@ import { ZONE } from '../../../config/db';
 			 * @param {string} 下标
 			 */
 			acitve(item) {
-				this.activeZone = item.index;
+				this.activeZone = item.idx;
 			},
 			del() {
 				this.roomZones.pop();
@@ -398,8 +445,11 @@ import { ZONE } from '../../../config/db';
 			/**
 			 * 选择时间完成
 			 */
-			dateConfirm({ value }) {
-				this.roomZones[this.activeZone][this.dateHandle.type] = typeof value === 'number' ? uni.$u.date(value, 'yyyy/mm/dd hh:MM:ss') : value;
+			dateConfirm({
+				value
+			}) {
+				this.roomZones[this.activeZone][this.dateHandle.type] = typeof value === 'number' ? uni.$u.date(value,
+					'yyyy/mm/dd hh:MM:ss') : value;
 				this.dateHandle.show = false;
 			},
 
@@ -419,10 +469,13 @@ import { ZONE } from '../../../config/db';
 			 * 修改区域
 			 */
 			updateZone(zone) {
-				let { x1 = 0, x2 = 0, y1 = 0, y2 = 0, height, width} = zone;
-				if(x1 * this.cell.size + width  >  this.roomSize.roomLeft)return uni.$u.toast('宽度超出检测范围');
-							if((y1 * this.cell.size + height)  > (this.sizeInfo.installPosition === '0' ?  this.roomSize.roomLength :  this.roomSize.roomBehind) )return uni.$u.toast('长度超出检测范围');
-				const obj = Object.assign(assignDeep({} ,zone), {
+				let {
+					x1 = 0, x2 = 0, y1 = 0, y2 = 0, height, width
+				} = zone;
+				if (x1 * this.cell.size + width > this.roomSize.roomLeft) return uni.$u.toast('宽度超出检测范围');
+				if ((y1 * this.cell.size + height) > (this.sizeInfo.installPosition === '0' ? this.roomSize.roomLength :
+						this.roomSize.roomBehind)) return uni.$u.toast('长度超出检测范围');
+				const obj = Object.assign(assignDeep({}, zone), {
 					x1: x1 * this.cell.size,
 					x2: x1 * this.cell.size + width,
 					y1: y1 * this.cell.size,
@@ -459,7 +512,10 @@ import { ZONE } from '../../../config/db';
 			 */
 			getRoomInfo() {
 				return new Promise(resolve => {
-					const { familyId, roomId } = this.deviceInfo;
+					const {
+						familyId,
+						roomId
+					} = this.deviceInfo;
 					PostRoomList({
 						familyId
 					}).then(res => {
@@ -474,7 +530,9 @@ import { ZONE } from '../../../config/db';
 			 */
 			getRoomZone() {
 				return new Promise(async resolve => {
-					const { rows = [] } = await GetRoomZone({
+					const {
+						rows = []
+					} = await GetRoomZone({
 						deviceId: this.deviceInfo.deviceId
 					});
 					resolve(rows);
@@ -484,7 +542,9 @@ import { ZONE } from '../../../config/db';
 			 * 删除子区域
 			 */
 			async deleteZone() {
-				const { roomZoneId } = this.roomZones[this.activeZone];
+				const {
+					roomZoneId
+				} = this.roomZones[this.activeZone];
 				// 已经保存过的
 				await PostRemRadarDevice({
 					roomZoneId
@@ -496,8 +556,13 @@ import { ZONE } from '../../../config/db';
 			 * 触摸开始
 			 */
 			touchstart(event, item, index) {
-				const { clientX, clientY } = event.touches[0];
-				const { roomZoneId } = item;
+				const {
+					clientX,
+					clientY
+				} = event.touches[0];
+				const {
+					roomZoneId
+				} = item;
 				Object.assign(this.touchInfo, {
 					x: clientX,
 					y: clientY,
@@ -517,7 +582,10 @@ import { ZONE } from '../../../config/db';
 			 * 拖拽事件
 			 */
 			touchMove(event, item, index) {
-				const { clientX, clientY } = event.touches[0];
+				const {
+					clientX,
+					clientY
+				} = event.touches[0];
 				if (clientX < (this.windowWidth - 300) / 2 || clientX > (this.windowWidth - 300) / 2 + 300) return;
 				this.touchInfo.invalid = false;
 				const arr = this.getCellArr(clientX, clientY);
@@ -546,15 +614,19 @@ import { ZONE } from '../../../config/db';
 					return uni.$u.toast('监测区域重叠，请重新选择');
 				}
 				const list = this.area.filter(ele => ele.status === 'hover').map(item => item.index),
-					{ isAdd } = this.touchInfo;
-				const { width, height } = this.getZoneSize(list);
+					{
+						isAdd
+					} = this.touchInfo;
+				const {
+					width,
+					height
+				} = this.getZoneSize(list);
 				if (isAdd) {
 					if (this.roomZones.length >= 4) {
 						this.clearCell();
 						return uni.$u.toast('子区域不能超过4个');
 					}
-					this.$refs.zonePopRef.open(
-						{
+					this.$refs.zonePopRef.open({
 							roomId: this.deviceInfo.roomId,
 							deviceId: this.deviceInfo.deviceId,
 							// // 离地高度
@@ -585,13 +657,18 @@ import { ZONE } from '../../../config/db';
 			confirm(form) {
 				console.log(form, '添加');
 				// 根据保存的长宽做调整
-				let { width, height } = form;
-				console.log( width, height, '填写完成前的宽高');
+				let {
+					width,
+					height
+				} = form;
+				console.log(width, height, '填写完成前的宽高');
 				width = width / this.cell.size;
 				height = height / this.cell.size;
-				console.log( width, height, '填写完成的宽高');
-				const { roomZoneId } = form,
-					list = this.area.filter(ele => ele.status === 'hover').map(ele => ele.index),
+				console.log(width, height, '填写完成的宽高');
+				const {
+					roomZoneId
+				} = form,
+				list = this.area.filter(ele => ele.status === 'hover').map(ele => ele.index),
 					newList = this.getArrBySize(Math.min(...list), width, height);
 				if (this.area.find(ele => ele.active && newList.includes(ele.index) && ele.roomZoneId !== roomZoneId)) {
 					this.clearCell();
@@ -640,9 +717,20 @@ import { ZONE } from '../../../config/db';
 			 */
 			getCellArr(endX, endY) {
 				const cellArr = [];
-				const { x, y } = this.touchInfo;
-				let { index } = this.touchInfo;
-				const { width, height, line, column, total } = this.getCellSize();
+				const {
+					x,
+					y
+				} = this.touchInfo;
+				let {
+					index
+				} = this.touchInfo;
+				const {
+					width,
+					height,
+					line,
+					column,
+					total
+				} = this.getCellSize();
 				// 触摸地址距离起始点几个格子
 				const countX = Math.ceil((endX - x) / width),
 					countY = Math.ceil((endY - y) / height);
@@ -656,7 +744,8 @@ import { ZONE } from '../../../config/db';
 					for (let j = 0; j <= Math.abs(countX); j++) {
 						if (countX >= 0) {
 							// 正向移动
-							if (currentLine === 0 || index + 1 <= (currentLine === 0 && countY >= 0) ? line : currentLine * line) {
+							if (currentLine === 0 || index + 1 <= (currentLine === 0 && countY >= 0) ? line : currentLine *
+								line) {
 								cellArr.push(index++);
 							} else {
 								break;
@@ -692,11 +781,14 @@ import { ZONE } from '../../../config/db';
 			getZoneSize(arr) {
 				const min = Math.min(...arr),
 					max = Math.max(...arr);
-				const { line, column } = this.getCellSize();
+				const {
+					line,
+					column
+				} = this.getCellSize();
 				console.log(min, max, 'min, max', Math.floor(max / line), Math.floor(min / line));
 				const zoneHeight = Math.floor(max / line) - Math.floor(min / line) + 1,
 					zongWidth = (max % line) - (min % line) + 1;
-					console.log(zongWidth, zoneHeight, this, 'zongWidth, zoneHeight,');
+				console.log(zongWidth, zoneHeight, this, 'zongWidth, zoneHeight,');
 				return {
 					height: zoneHeight * this.cell.size,
 					width: zongWidth * this.cell.size
@@ -708,9 +800,19 @@ import { ZONE } from '../../../config/db';
 			 */
 			getArrByAxis(x1, x2, y1, y2) {
 				// 格子参数
-				const { width, height, line, column, total } = this.getCellSize(),
+				const {
+					width,
+					height,
+					line,
+					column,
+					total
+				} = this.getCellSize(),
 					// 设备位置
-					{ x, y, scale } = this.sizeInfo;
+					{
+						x,
+						y,
+						scale
+					} = this.sizeInfo;
 				let pointY = Math.floor(y / scale.y - y2),
 					pointX;
 				if (x1 < 0) {
@@ -729,7 +831,9 @@ import { ZONE } from '../../../config/db';
 			 * 根据起始点和宽高计算区域
 			 */
 			getArrBySize(start, width, height) {
-				const { line } = this.getCellSize(),
+				const {
+					line
+				} = this.getCellSize(),
 					arr = [];
 				for (let i = height, count = start; i > 0; i--) {
 					for (let j = 0; j < width; j++) {
@@ -745,12 +849,21 @@ import { ZONE } from '../../../config/db';
 			 */
 			getAxisBySize(start, width, height) {
 				console.log(start, width, height, 'start, width, height');
-				const { scale, x, y, installPosition} = this.sizeInfo,
-					{ line, column, total } = this.getCellSize();
+				const {
+					scale,
+					x,
+					y,
+					installPosition
+				} = this.sizeInfo, {
+					line,
+					column,
+					total
+				} = this.getCellSize();
 				// 起始点坐标
 				const x1 = ((start % line) * scale.x - x) / scale.x,
-					y2 = column - Math.floor(start / line) - (installPosition === '1' ? this.roomSize.roomBehind / this.cell.size: 0);
-					// 起始点在第几列
+					y2 = column - Math.floor(start / line) - (installPosition === '1' ? this.roomSize.roomBehind / this
+						.cell.size : 0);
+				// 起始点在第几列
 				const x2 = x1 + width,
 					y1 = y2 - height;
 				console.log({
@@ -771,187 +884,198 @@ import { ZONE } from '../../../config/db';
 </script>
 
 <style lang="scss">
-#setting {
-	padding-bottom: 30rpx;
+	#setting {
+		padding-bottom: 30rpx;
 
-	.ui-title {
-		padding: 36rpx 32rpx;
-		font-size: 50rpx;
-		color: #353535;
-	}
+		.ui-title {
+			padding: 36rpx 32rpx;
+			font-size: 50rpx;
+			color: #353535;
+		}
 
-	.ui-movable {
-		// height: 300rpx;
-		width: 100%;
-		padding: 50rpx 20rpx;
-		box-sizing: border-box;
-	}
-
-	.mova-box {
-		box-sizing: border-box;
-		width: 100%;
-		border: 30rpx solid #f2f2f2;
-		border-radius: 15rpx;
-		background: #fff;
-		text-align: center;
-	}
-	.ui-tips {
-		font-size: 26rpx;
-		color: #353535;
-		margin: 32rpx 0;
-	}
-	movable-area {
-		display: inline-block;
-		box-sizing: border-box;
-		// height: 300px;
-		// width: 250px;
-		background-color: #fff;
-		border: 1rpx solid #4c65a4;
-		overflow: hidden;
-
-		.ui-cell {
+		.ui-movable {
+			// height: 300rpx;
+			width: 100%;
+			padding: 50rpx 20rpx;
 			box-sizing: border-box;
+		}
+
+		.mova-box {
+			box-sizing: border-box;
+			width: 100%;
+			border: 30rpx solid #f2f2f2;
+			border-radius: 15rpx;
+			background: #fff;
+			text-align: center;
+		}
+
+		.ui-tips {
+			font-size: 26rpx;
+			color: #353535;
+			margin: 32rpx 0;
+		}
+
+		movable-area {
 			display: inline-block;
-			float: left;
-			border-top: 1rpx solid #4c65a4;
-			border-left: 1rpx solid #4c65a4;
+			box-sizing: border-box;
+			// height: 300px;
+			// width: 250px;
+			background-color: #fff;
+			border: 1rpx solid #4c65a4;
+			overflow: hidden;
 
-			&.hover {
-				opacity: 0.3 !important;
-				background: #007aff;
-			}
+			.ui-cell {
+				box-sizing: border-box;
+				display: inline-block;
+				float: left;
+				border-top: 1rpx solid #4c65a4;
+				border-left: 1rpx solid #4c65a4;
 
-			&.active {
-				opacity: 1;
-				background: #007aff;
-			}
+				&.disable {
+					background: #e2e2e2 !important;
+				}
 
-			&.edit {
-				background: #f8b551;
+				&.hover {
+					opacity: 0.3 !important;
+					background: #007aff;
+				}
+
+				&.active {
+					opacity: 1;
+					background: #007aff;
+				}
+
+				&.edit {
+					background: #f8b551;
+				}
 			}
 		}
-	}
 
-	movable-view {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-direction: column;
-		min-height: 50px;
-		min-width: 50px;
-		background-color: #007aff;
-		color: #fff;
-		font-size: 16rpx;
-
-		.ui-zone-name {
-			font-size: 20rpx;
-		}
-
-		.ui-device {
-			height: 20px;
-			width: 20px;
+		movable-view {
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			flex-direction: column;
-			text-align: center;
-			background-color: #00eaff;
-			border-radius: 50% 50%;
-		}
+			min-height: 50px;
+			min-width: 50px;
+			background-color: #007aff;
+			color: #fff;
+			font-size: 16rpx;
 
-		@each $idx, $bg in (2: #f8b551, 3: #e5004f, 4: #ec6941, 5: #448aca) {
-			&:nth-child(#{$idx}) {
-				background-color: $bg;
+			.ui-zone-name {
+				font-size: 20rpx;
+			}
+
+			.ui-device {
+				height: 20px;
+				width: 20px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+				text-align: center;
+				background-color: #00eaff;
+				border-radius: 50% 50%;
+			}
+
+			@each $idx,
+			$bg in (2: #f8b551, 3: #e5004f, 4: #ec6941, 5: #448aca) {
+				&:nth-child(#{$idx}) {
+					background-color: $bg;
+				}
+			}
+
+			&:nth-last-child(1) {
+				min-height: 50rpx;
+				min-width: 50rpx;
+				background-color: unset;
 			}
 		}
 
-		&:nth-last-child(1) {
-			min-height: 50rpx;
-			min-width: 50rpx;
-			background-color: unset;
+		.ui-set-box {
+			background: #fff;
+			padding-bottom: 50rpx;
+
+			.ui-list {
+				padding: 0 32rpx;
+			}
+
+			.ui-date-list {
+				width: 300rpx;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+
+				button {
+					width: 106rpx;
+					height: 50rpx;
+				}
+			}
+
+			.ui-sub-title {
+				padding-left: 32rpx;
+			}
+
+			.ui-setting-btn {
+				margin-top: 40rpx;
+
+				button {
+					width: 320rpx;
+					border-radius: 44rpx;
+				}
+			}
+
+			.ui-delete {
+				border-top: 1rpx solid #e2e2e2;
+				padding: 104rpx 32rpx 40rpx 32rpx;
+			}
 		}
-	}
 
-	.ui-set-box {
-		background: #fff;
-		padding-bottom: 50rpx;
-
-		.ui-list {
-			padding: 0 32rpx;
-		}
-
-		.ui-date-list {
-			width: 300rpx;
+		.ui-time {
+			padding: 47rpx 32rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+			font-size: 34rpx;
+			color: #353535;
+			position: relative;
 
-			button {
-				width: 106rpx;
-				height: 50rpx;
+			&::after {
+				display: inline-block;
+				position: absolute;
+				content: '';
+				width: 100%;
+				bottom: 0;
+				height: 0.5px;
+				background: #e2e2e2;
 			}
-		}
 
-		.ui-sub-title {
-			padding-left: 32rpx;
-		}
+			.ui-time-box {
+				display: flex;
+				flex-direction: column;
 
-		.ui-setting-btn {
-			margin-top: 40rpx;
-
-			button {
-				width: 320rpx;
-				border-radius: 44rpx;
+				.ui-week {
+					margin-top: 36rpx;
+					font-size: 26rpx;
+					color: #888888;
+				}
 			}
-		}
 
-		.ui-delete {
-			border-top: 1rpx solid #e2e2e2;
-			padding: 104rpx 32rpx 40rpx 32rpx;
-		}
-	}
-
-	.ui-time {
-		padding: 47rpx 32rpx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		font-size: 34rpx;
-		color: #353535;
-		position: relative;
-
-		&::after {
-			display: inline-block;
-			position: absolute;
-			content: '';
-			width: 100%;
-			bottom: 0;
-			height: 1rpx;
-			background: #e2e2e2;
-		}
-		.ui-time-box {
-			display: flex;
-			flex-direction: column;
-			.ui-week {
+			.ui-time-details {
 				margin-top: 36rpx;
 				font-size: 26rpx;
 				color: #888888;
-			}
-		}
-		
-		.ui-time-details {
-			margin-top: 36rpx;
-			font-size: 26rpx;
-			color: #888888;
-			display: flex;
-			flex-direction: column;
-			& > text {
-				&:nth-child(1) {
-					margin-bottom: 10rpx;
+				display: flex;
+				width: 350rpx;
+				flex-direction: column;
+
+				&>text {
+					&:nth-child(1) {
+						margin-bottom: 10rpx;
+					}
 				}
 			}
 		}
-	}
 
-}
+	}
 </style>

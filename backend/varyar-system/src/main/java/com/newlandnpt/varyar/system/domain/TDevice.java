@@ -640,13 +640,13 @@ public class TDevice extends BaseEntity
         /**
          * 禁用时段
          */
-        public Map<Integer,ClassTimePeriod> classTimePeriods;
+        public List<ClassTimePeriod> classTimePeriods;
 
-        public Map<Integer, ClassTimePeriod> getClassTimePeriods() {
+        public List<ClassTimePeriod> getClassTimePeriods() {
             return classTimePeriods;
         }
 
-        public void setClassTimePeriods(Map<Integer, ClassTimePeriod> classTimePeriods) {
+        public void setClassTimePeriods(List<ClassTimePeriod> classTimePeriods) {
             this.classTimePeriods = classTimePeriods;
         }
 

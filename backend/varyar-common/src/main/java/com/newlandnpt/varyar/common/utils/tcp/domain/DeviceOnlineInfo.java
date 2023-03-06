@@ -1,5 +1,7 @@
 package com.newlandnpt.varyar.common.utils.tcp.domain;
 
+import java.util.List;
+
 /**
  * 设备在线信息
  * @author ljx
@@ -41,17 +43,17 @@ public class DeviceOnlineInfo {
     /**
      * gps数据
      */
-    private String gpsData;
+    private LocationInfoResponseMqMsgEntity.gpsDatas gpsData;
 
     /**
      * LBS数据
      */
-    private String lbsData;
+    private LocationInfoResponseMqMsgEntity.lbsData lbsData;
 
     /**
      * Wi-Fi数据
      */
-    private String wifiData;
+    private List<LocationInfoResponseMqMsgEntity.wifiData> wifiData;
 
     public String getDeviceNo() {
         return deviceNo;
@@ -101,27 +103,27 @@ public class DeviceOnlineInfo {
         this.currentSteps = currentSteps;
     }
 
-    public String getGpsData() {
+    public LocationInfoResponseMqMsgEntity.gpsDatas getGpsData() {
         return gpsData;
     }
 
-    public void setGpsData(String gpsData) {
+    public void setGpsData(LocationInfoResponseMqMsgEntity.gpsDatas gpsData) {
         this.gpsData = gpsData;
     }
 
-    public String getLbsData() {
+    public LocationInfoResponseMqMsgEntity.lbsData getLbsData() {
         return lbsData;
     }
 
-    public void setLbsData(String lbsData) {
+    public void setLbsData(LocationInfoResponseMqMsgEntity.lbsData lbsData) {
         this.lbsData = lbsData;
     }
 
-    public String getWifiData() {
+    public List<LocationInfoResponseMqMsgEntity.wifiData> getWifiData() {
         return wifiData;
     }
 
-    public void setWifiData(String wifiData) {
+    public void setWifiData(List<LocationInfoResponseMqMsgEntity.wifiData> wifiData) {
         this.wifiData = wifiData;
     }
 }

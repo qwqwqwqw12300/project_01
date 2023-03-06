@@ -16,8 +16,8 @@ public class LeaveBedWarnParameter implements Serializable {
     /**
      * 间隔时间 s
      */
-    private long intervalTime;
-    private SetRuleDate setRuleDate = null;
+    private long intervalTime =300;
+    private SetRuleDate setRuleDate = new SetRuleDate();
 
     public String getLeaveBedInterval() {
         return leaveBedInterval;
@@ -43,11 +43,11 @@ public class LeaveBedWarnParameter implements Serializable {
         this.setRuleDate = setRuleDate;
     }
 
-    public class SetRuleDate {
+    public static class SetRuleDate {
         /**
          * 日期类型
          */
-        private String dateType;
+        private String dateType="1";
         /**
          * 星期
          */
@@ -55,23 +55,23 @@ public class LeaveBedWarnParameter implements Serializable {
         /**
          * 开始日期 data yyyy-MM-dd
          */
-        @JsonFormat(pattern = "yyyy-MM-dd")
+        @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
         private Date startDate;
         /**
          * 结束日期 data yyyy-MM-dd
          */
-        @JsonFormat(pattern = "yyyy-MM-dd")
+        @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
         private Date endDate;
 
         /**
          * 结束时间 开始时间
          */
-        @JsonFormat(pattern = "HH:mm")
+        @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
         private Date startTime;
         /**
          * 结束时间 data HH:mm
          */
-        @JsonFormat(pattern = "HH:mm")
+        @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
         private Date endTime;
 
         public String getDateType() {

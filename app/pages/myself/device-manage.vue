@@ -62,24 +62,24 @@
 		relDevice,
 		getDeviceListState
 	} from '@/common/http/api.js';
-	import {	
+	import {
 		mapState,
 		mapActions
 	} from 'vuex';
 	import {
 		INIT_DEIVCE_SET
 	} from '../../config/db';
-	import 
-		AppHandle
-	 from '@/components/add-handle/add-handle.vue';
+	import
+	AppHandle
+	from '@/components/add-handle/add-handle.vue';
 	export default {
 		components: {
 			AppHandle
 		},
 		data() {
 			return {
-				show:false,
-				safeAreaShow:false,
+				show: false,
+				safeAreaShow: false,
 				bindForm: {
 					...INIT_DEIVCE_SET
 				},
@@ -142,7 +142,8 @@
 			 * 编辑浮层打开
 			 */
 			edit(item) {
-				this.$setCache('setDevice', item);
+				this.$store.commit('setDeviceInfo', item);
+				// this.$setCache('setDevice', item);
 				uni.navigateTo({
 					url: '/pages/equipment/setting/radar-setting'
 				})
@@ -344,6 +345,7 @@
 							margin-left: 10rpx;
 							display: inline-flex;
 							flex-direction: column;
+
 							text {
 								display: inline-block;
 							}
@@ -408,8 +410,4 @@
 			border-radius: 0rpx !important;
 		}
 	}
-
-	
-
-	
 </style>
