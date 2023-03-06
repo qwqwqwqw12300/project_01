@@ -34,7 +34,7 @@
 		methods: {
 			/**跳转设置页面**/
 			goSetting() {
-				this.$setCache('setDevice', this.record);
+				this.$store.commit('setDeviceInfo', this.record);
 				uni.navigateTo({
 					url: '/pages/equipment/setting/radar-setting'
 				})
@@ -73,12 +73,14 @@
 				font-weight: 500;
 				display: flex;
 				align-items: center;
-				.name{
+
+				.name {
 					max-width: 240rpx;
 					white-space: nowrap;
-					text-overflow:ellipsis;
+					text-overflow: ellipsis;
 					overflow: hidden;
 				}
+
 				.line {
 					margin-left: 30rpx;
 					color: #fff;

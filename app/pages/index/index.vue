@@ -159,8 +159,8 @@
 		mapGetters
 	} from 'vuex';
 	import
-		AppHandle
-	 from '@/components/add-handle/add-handle.vue';
+	AppHandle
+	from '@/components/add-handle/add-handle.vue';
 	export default {
 		components: {
 			AppHandle
@@ -362,9 +362,9 @@
 		.ui-select {
 			position: fixed;
 			left: 50%;
-			bottom:var(--window-bottom,0);
-			transform: translate(-50%,0%);
-			margin:0 auto;
+			bottom: var(--window-bottom, 0);
+			transform: translate(-50%, 0%);
+			margin: 0 auto;
 			// transform: translate(-50%,-50%);
 			width: 686rpx;
 			height: 392rpx;
@@ -372,6 +372,7 @@
 			// filter: drop-shadow(0 0 5px rgba(7, 5, 5, 0.34));
 			background: #fff;
 			border: 1px solid #e2e2e2;
+
 			.ui-select-item {
 				// margin-top: 16rpx;
 				width: 686rpx;
@@ -502,7 +503,8 @@
 						margin-top: 16rpx;
 						color: #888888;
 						font-size: 26rpx;
-						.ui-list-static-font{
+
+						.ui-list-static-font {
 							font-size: 26rpx;
 							margin-right: 10rpx;
 							color: #888888;
@@ -517,12 +519,14 @@
 						border-radius: 50% 50%;
 						background-image: url('@/static/images/index/off-line.png');
 						background-size: 100% 100%;
+
 						&.online {
 							background-image: url('@/static/images/index/online.png');
 							background-size: 100% 100%;
 						}
 					}
-					.ui-list-people{
+
+					.ui-list-people {
 						margin-right: 6rpx;
 						margin-bottom: 6rpx;
 						height: 36rpx;
@@ -530,6 +534,7 @@
 						border-radius: 50% 50%;
 						background-image: url('@/static/images/index/nobody.png');
 						background-size: 100% 100%;
+
 						&.online {
 							background-image: url('@/static/images/index/someone.png');
 							background-size: 100% 100%;
