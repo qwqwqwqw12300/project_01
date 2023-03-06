@@ -31,14 +31,12 @@ public class ClassTimePeriod {
      * 开始时间
      */
     @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy/MM/dd HH:mm")
-    @DateTimeFormat(pattern="yyyy/MM/dd HH:mm")
     private Date beginTime;
 
     /**
      * 结束时间
      */
     @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy/MM/dd HH:mm")
-    @DateTimeFormat(pattern="yyyy/MM/dd HH:mm")
     private Date endTime;
 
     /**
