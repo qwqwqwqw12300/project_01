@@ -393,7 +393,18 @@ export const PostDeleteAddressBook= (params) => http.post('/api/careCard/deleteA
 /**
  *开始远程监听*
  */
-export const PostRemoteMonitor = (params) => http.post('/api/careCard/remoteMonitor', params, {});
+export const PostRemoteMonitor = (params) => http.post('/api/careCard/remoteMonitor', params, {})
+
+/**
+ *获取时段禁用时段*
+ */
+export const GetPeriodDisableList = (params) => http.get('/api/careCard/getPeriodDisableList', params, {})
+
+/**
+ *设置时段禁用时段*
+ */
+export const PostSetPeriodDisable = (params) => http.post('/api/careCard/setPeriodDisable', params, {})
+
 
 /**
  * 添加/修改无人预警
@@ -429,5 +440,6 @@ export const PostSetRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roo
  * 删除预警规则
  */
 export const PostDelRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roomZone/delRadarWaveLeaveBedRulesDate', params, {});
+
 
 

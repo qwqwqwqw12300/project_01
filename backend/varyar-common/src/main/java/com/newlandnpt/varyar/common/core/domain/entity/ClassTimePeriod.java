@@ -1,9 +1,14 @@
 package com.newlandnpt.varyar.common.core.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.sql.Date;
+
 /**
  * 课堂模式周期
  * @author ljx
- * @date 2023/3/1
+ * @date 2023/3/1 3/6
  */
 public class ClassTimePeriod {
 
@@ -25,12 +30,14 @@ public class ClassTimePeriod {
     /**
      * 开始时间
      */
-    private String beginTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private Date beginTime;
 
     /**
      * 结束时间
      */
-    private String endTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private Date endTime;
 
     /**
      * 周期
@@ -45,7 +52,7 @@ public class ClassTimePeriod {
     public ClassTimePeriod() {
     }
 
-    public ClassTimePeriod(String deviceNo, String periodDisableTag, String uuid, String beginTime, String endTime, String period, String enable) {
+    public ClassTimePeriod(String deviceNo, String periodDisableTag, String uuid, Date beginTime, Date endTime, String period, String enable) {
         this.deviceNo = deviceNo;
         this.periodDisableTag = periodDisableTag;
         this.uuid = uuid;
@@ -79,19 +86,19 @@ public class ClassTimePeriod {
         this.uuid = uuid;
     }
 
-    public String getBeginTime() {
+    public Date getBeginTime() {
         return beginTime;
     }
 
-    public void setBeginTime(String beginTime) {
+    public void setBeginTime(Date beginTime) {
         this.beginTime = beginTime;
     }
 
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 

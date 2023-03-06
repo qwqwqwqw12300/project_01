@@ -16,7 +16,7 @@ public class Presence implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/** 报文:事件的时间 **/
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date timestamp;
 	
 	/** 报文:设备id **/

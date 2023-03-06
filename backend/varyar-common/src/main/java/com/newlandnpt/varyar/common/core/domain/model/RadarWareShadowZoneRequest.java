@@ -34,7 +34,7 @@ public class RadarWareShadowZoneRequest {
     @ApiModelProperty("屏蔽区域名称")
     @NotBlank(message = "子区域名称不能为空")
     @Size(min = 0, max = 50, message = "子区域名称不能超过20个字符")
-    private String shadowZoneName;
+    private String ShadowZoneName;
 
     /**
      * 最左侧的点
@@ -99,11 +99,11 @@ public class RadarWareShadowZoneRequest {
     }
 
     public String getShadowZoneName() {
-        return shadowZoneName;
+        return ShadowZoneName;
     }
 
     public void setShadowZoneName(String shadowZoneName) {
-        this.shadowZoneName = shadowZoneName;
+        ShadowZoneName = shadowZoneName;
     }
 
     public BigDecimal getX1() {

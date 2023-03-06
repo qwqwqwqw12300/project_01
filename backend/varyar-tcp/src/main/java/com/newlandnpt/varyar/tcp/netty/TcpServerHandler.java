@@ -20,6 +20,8 @@ import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.AttributeKey;
 import io.netty.util.ReferenceCountUtil;
 
+import java.util.Optional;
+
 public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 
 	private static final Logger log = LoggerFactory.getLogger(TcpServerHandler.class);
@@ -39,7 +41,8 @@ public class TcpServerHandler extends ChannelInboundHandlerAdapter {
 			Channel channel = ctx.channel();
 
 			log.debug(">>>>>>>>>>>>当前连接id:{}",channel.id());
-			log.debug(">>>>>>>>>>>>缓存连接id:{}",DeviceChannelCache.getChannelByDeviceNo(req.getDeviceNo()).id());
+			log.debug(">>>>>>>>>>>>缓存连接id:{}", Optional.ofNullable(DeviceChannelCache.getChannelByDeviceNo(req.getDeviceNo()))
+					.map(p->p.id()).orElse(null));
 			//System.out.println(str);
 			// 响应消息
 			String message = response.generateMessage();

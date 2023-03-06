@@ -1,7 +1,6 @@
 package com.newlandnpt.varyar.common.core.domain.model;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -9,23 +8,26 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.util.Date;
 
-@ApiModel(description = "雷达波床区域请求")
-public class RadarWareBedZoneRequest {
-    /**
-     *  房间子区域id 唯一标识
-     * */
-    @ApiModelProperty("房间子区域id")
-    @Size(min = 0, max = 20, message = "房间子区域id标识不能超过20个字符")
-    private String roomZoneId;
-    /**
-     *  房间Id 唯一标识
-     * */
+@ApiModel(description = "雷达波离床规则请求")
+public class RadarWaveLeaveBedWarnRequest {
+
+    /**设备id*/
+    @NotNull(message = "设备id不能为空")
+    @Size(min = 0, max = 20, message = "设备编号不能超过20个字符")
+    private String deviceId;
+
+    @ApiModelProperty("家庭Id")
+    @Size(min = 0, max = 20, message = "唯一标识不能超过20个字符")
+    private String familyId;
+
     @ApiModelProperty("房间Id")
-    @NotBlank(message = "房间Id不能为空")
     @Size(min = 0, max = 20, message = "房间Id标识不能超过20个字符")
     private String roomId;
+
+    @ApiModelProperty("区域Id")
+    @Size(min = 0, max = 20, message = "房间Id标识不能超过20个字符")
+    private String roomZoneId;
     /**
      *  子区域名称
      * */
@@ -33,8 +35,6 @@ public class RadarWareBedZoneRequest {
     @NotBlank(message = "子区域名称不能为空")
     @Size(min = 0, max = 50, message = "子区域名称不能超过20个字符")
     private String BedName;
-
-
     /**
      * 最左侧的点
      * */
@@ -71,39 +71,33 @@ public class RadarWareBedZoneRequest {
     @ApiModelProperty("最顶部的点")
     @NotNull(message = "最顶部的点不能为空")
     private BigDecimal z2;
-
     /**
-     *开始时间 data HH:mm:ss
+     * 0:普通区域  1：屏蔽区域  2：床
      * */
-    @JsonFormat(pattern = "HH:mm")
-    private Date startTime;
-    /**
-     *结束时间 data HH:mm:ss
-     * */
-    @JsonFormat(pattern = "HH:mm")
-    private Date endTime;
+    @ApiModelProperty("子区域类型：0:普通区域 1：屏蔽区域 2：床")
+    @Size(min = 0, max = 1, message = "子区域类型不能超过1个字符")
+    private String zoneType;
 
 
-    /**设备id*/
-    @NotNull(message = "设备id不能为空")
-    private String deviceId;
+    //离床规则对象
+    @ApiModelProperty("离床规则对象")
+    private LeaveBedWarnParameter leaveBedWarnParameter =new LeaveBedWarnParameter();
 
-    private LeaveBedWarnParameter leaveBedWarnParameter;
 
-    public LeaveBedWarnParameter getLeaveBedWarnParameter() {
-        return leaveBedWarnParameter;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public void setLeaveBedWarnParameter(LeaveBedWarnParameter leaveBedWarnParameter) {
-        this.leaveBedWarnParameter = leaveBedWarnParameter;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
-    public String getRoomZoneId() {
-        return roomZoneId;
+    public String getFamilyId() {
+        return familyId;
     }
 
-    public void setRoomZoneId(String roomZoneId) {
-        this.roomZoneId = roomZoneId;
+    public void setFamilyId(String familyId) {
+        this.familyId = familyId;
     }
 
     public String getRoomId() {
@@ -112,6 +106,14 @@ public class RadarWareBedZoneRequest {
 
     public void setRoomId(String roomId) {
         this.roomId = roomId;
+    }
+
+    public String getRoomZoneId() {
+        return roomZoneId;
+    }
+
+    public void setRoomZoneId(String roomZoneId) {
+        this.roomZoneId = roomZoneId;
     }
 
     public String getBedName() {
@@ -170,28 +172,19 @@ public class RadarWareBedZoneRequest {
         this.z2 = z2;
     }
 
-
-    public Date getStartTime() {
-        return startTime;
+    public String getZoneType() {
+        return zoneType;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setZoneType(String zoneType) {
+        this.zoneType = zoneType;
     }
 
-    public Date getEndTime() {
-        return endTime;
+    public LeaveBedWarnParameter getLeaveBedWarnParameter() {
+        return leaveBedWarnParameter;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setLeaveBedWarnParameter(LeaveBedWarnParameter leaveBedWarnParameter) {
+        this.leaveBedWarnParameter = leaveBedWarnParameter;
     }
 }

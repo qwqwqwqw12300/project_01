@@ -71,11 +71,11 @@ public class DeviceRequest extends PageRequest {
     private Long departureTime;
 
     @ApiModelProperty("开始时间 HH:mm")
-    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
+    @JsonFormat(pattern = "HH:mm")
     private Date startTime;
 
     @ApiModelProperty("结束时间")
-    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
+    @JsonFormat(pattern = "HH:mm")
     private Date endTime;
 
     @ApiModelProperty("进入标识 （0是 1否）")

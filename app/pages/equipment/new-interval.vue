@@ -6,33 +6,35 @@
 -->
 
 <template>
-	<app-body>
-		<app-logo color="#353535" text="新建禁用时段" ></app-logo>
-		<view class="ui-cell">
-			<u-cell-group>
-				<u-cell title="名称">
-					<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="right-icon"
-						v-model="name"></u-input>
-				</u-cell>
-				<u-cell @tap="handleSelect" title="日期"  arrow-direction="right" isLink>
-					<text slot="value" class="u-slot-value">
-						{{ startDate }} 至 {{endDate}}
-					</text>
-				</u-cell>
-				<u-cell @tap="handleTime" title="时间"  arrow-direction="right" isLink>
-					<text slot="value" class="u-slot-value">
-						{{ startTime }} 至 {{endTime}}
-					</text>
-				</u-cell>
-			</u-cell-group>
-		</view>
-		<view class="ui-btn">
-			<view class="btn-box">
-				<view class="cancel-btn" @click="handleCancel">
-					取消
-				</view>
-				<view class="save-btn" @tap="handleSave">
-					保存
+	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
+		<view>
+			<app-logo color="#353535" text="新建禁用时段" ></app-logo>
+			<view class="ui-cell">
+				<u-cell-group>
+					<u-cell title="名称">
+						<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="right-icon"
+							v-model="name"></u-input>
+					</u-cell>
+					<u-cell @tap="handleSelect" title="日期"  arrow-direction="right" isLink>
+						<text slot="value" class="u-slot-value">
+							{{ startDate }} 至 {{endDate}}
+						</text>
+					</u-cell>
+					<u-cell @tap="handleTime" title="时间"  arrow-direction="right" isLink>
+						<text slot="value" class="u-slot-value">
+							{{ startTime }} 至 {{endTime}}
+						</text>
+					</u-cell>
+				</u-cell-group>
+			</view>
+			<view class="ui-btn">
+				<view class="btn-box">
+					<view class="cancel-btn" @click="handleCancel">
+						取消
+					</view>
+					<view class="save-btn" @tap="handleSave">
+						保存
+					</view>
 				</view>
 			</view>
 		</view>
@@ -45,6 +47,9 @@
 
 <script>
 	import timePicker from '@/components/term-picker/term-picker.vue';
+	import {
+		PostSetPeriodDisable
+	} from '@/common/http/api';
 	export default {
 		components:{
 			timePicker
@@ -103,7 +108,15 @@
 				uni.navigateBack()
 			},
 			handleSave() {
-				
+				PostSetPeriodDisable({
+					deviceNo:'867597011508551',
+					periodDisableTag:'',
+					beginTime:'',
+					endTime:'',
+					period:''
+				}).then(res=>{
+					console.log(res,'res')
+				})
 			},
 		}
 	};

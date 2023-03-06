@@ -85,11 +85,12 @@
 										<view class="ui-device-name">
 											<view class="ui-list-static"
 												:class="{online: getDeives(room).onlineFlag === '1'}"></view>
-											<text
-												class="ui-list-static-font">{{getDeives(room).onlineFlag === '1' ? '在线': getDeives(room).onlineFlag === '0' ? '离线' : ''}}</text>
+											<text class="ui-list-static-font" v-if="getDeives(room).onlineFlag === '在线'"></text>
+											<text class="ui-list-static-font" v-else>离线</text>
 											<view class="ui-list-people"
 												:class="{online: getDeives(room).hasPerson === '1'}"></view>
-											{{getDeives(room).hasPerson === '1' ? '有人' : '无人'}}
+											<text class="ui-list-static-font" v-if="getDeives(room).hasPerson === '1'"></text>
+											<text class="ui-list-static-font" v-else>无人</text>
 										</view>
 									</view>
 									<u-badge v-if="getDeives(room).msgNum > 1" color="#fff" :offset="[-1, 0]"
@@ -484,6 +485,7 @@
 
 					.ui-device-info {
 						display: flex;
+						align-items: flex-start;
 						flex-direction: column;
 						margin-left: 10rpx;
 					}
@@ -498,7 +500,7 @@
 						display: flex;
 						align-items: center;
 						flex-direction: row;
-						margin-top: 10rpx;
+						margin-top: 16rpx;
 						color: #888888;
 						font-size: 26rpx;
 
@@ -510,7 +512,7 @@
 					}
 
 					.ui-list-static {
-						margin-right: 10rpx;
+						margin-right: 6rpx;
 						margin-bottom: 6rpx;
 						height: 36rpx;
 						width: 36rpx;
@@ -525,7 +527,7 @@
 					}
 
 					.ui-list-people {
-						margin-right: 10rpx;
+						margin-right: 6rpx;
 						margin-bottom: 6rpx;
 						height: 36rpx;
 						width: 36rpx;

@@ -38,15 +38,13 @@ public class LocationJob {
     /**
      * 最早时间
      */
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy/MM/dd HH:mm")
-    @DateTimeFormat(pattern="yyyy/MM/dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date firstDate;
 
     /**
      * 最迟时间
      */
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy/MM/dd HH:mm")
-    @DateTimeFormat(pattern="yyyy/MM/dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date lastDate;
 
     /**
@@ -97,8 +95,7 @@ public class LocationJob {
         /**
          * 预定时间
          */
-        @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy/MM/dd HH:mm")
-        @DateTimeFormat(pattern="yyyy/MM/dd HH:mm")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
         private Date estimatedTime;
 
         public String getGuardType() {
