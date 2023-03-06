@@ -205,6 +205,7 @@ const store = {
 				const family = this.state.familyList.find(ele => ele.familyId === familyId);
 				const device = family.devices.find(ele => ele.deviceId === deviceId);
 				if (device) {
+					console.log('设备信息修改', device);
 					ctx.commit('setDeviceInfo', device);
 				}
 

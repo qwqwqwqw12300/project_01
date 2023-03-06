@@ -10,7 +10,8 @@
 			<view class="ui-title">
 				<text>报告</text>
 				<!-- <u-icon size="40" name="https://cdn.uviewui.com/uview/example/button.png"></u-icon> -->
-				<text class="active" @click="readMsgAll">全部标记已处理</text>
+				<!-- <text class="active" @click="readMsgAll">全部标记已处理</text> -->
+				<u-icon name="/static/images/read-all.png" size="50rpx" @click="readMsgAll"></u-icon>
 			</view>
 			<view class="ui-screen">
 				<view class="ui-screen-icon ui-screen-family active" @click="familyShow = true">

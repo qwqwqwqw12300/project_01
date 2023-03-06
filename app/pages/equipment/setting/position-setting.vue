@@ -238,12 +238,6 @@
 			}),
 			getStyle() {
 				const minBox = 50;
-				// let width = Math.max(this.roomZones.map(ele => ele.width));
-				// let height = Math.max(this.roomZones.map(ele => ele.height));
-				// width = width > minBox ? width : minBox;
-				// height = height > minBox ? height : minBox;
-				// // 划分格子，1格子等于1平方米
-				// console.log(width, height, '距离', this.sizeInfo.box.width / x, y);
 				return {
 					width: this.sizeInfo.box.width + 'px',
 					height: this.sizeInfo.box.height + 'px'

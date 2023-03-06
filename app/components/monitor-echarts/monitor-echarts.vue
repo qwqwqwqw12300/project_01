@@ -129,17 +129,28 @@
 				this.handleInit(data)
 			},
 			async handleInit() {
+				console.log(this.deviceInfo.parameter, 'this.deviceInfo.parameter');
 				const data = await GetRoomZone({
 					deviceId: this.deviceInfo.deviceId
-				})
+				});
+
+				const {
+					installPosition,
+					deviceLocationWall,
+					deviceLocationTop
+				} = this.deviceInfo.parameter;
+				const deviceLocation = installPosition === '0' ? deviceLocationWall : deviceLocationTop;
 				const {
 					roomLeft,
 					roomRight,
-					roomLength
-				} = this.deviceInfo.parameter.deviceLocation
+					roomLength,
+					roomFront, // 正面
+					roomBehind, // 后面
+				} = deviceLocation;
 				this.option.xAxis.min = -roomLeft || -3
-				this.option.xAxis.max = roomRight || 3
-				this.option.yAxis.max = roomLength || 6
+				this.option.xAxis.max = roomRight || 0
+				this.option.yAxis.max = (installPosition === '0' ? roomLength : roomFront) || 6
+				this.option.yAxis.min = installPosition === '0' ? 0 : -roomBehind
 				this.roomZoneList = data.rows.map(n => {
 					const {
 						x1,
