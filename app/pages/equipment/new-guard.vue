@@ -76,7 +76,9 @@
 </template>
 
 <script>
-	
+	import {
+		PostSetLocationGuard
+	} from '@/common/http/api';
 	export default {
 		data() {
 
@@ -157,6 +159,16 @@
 			handleSave(){
 				console.log(this.name,'this.name')
 				console.log(this.contactList,'this.contactList')
+				// PostSetLocationGuard({
+				// 	deviceNo:'867977060000248',
+				// 	jobName:this.name,
+				// 	uuid:'',
+				// 	firstDate: "2023/1/1 08:00",
+				// 	lastDate:"2024/1/1 10:00",
+				// 	places:''
+				// }).then(res=>{
+				// 	console.log(res,'res')
+				// })
 			},
 			handleSwitch(){
 				
@@ -187,7 +199,7 @@
 						this.contactList.splice(this.contactList.findIndex(item=>item.orderNum==id),1)
 					}
 				});
-			}
+			},
 		},
 		onShow() {
 			

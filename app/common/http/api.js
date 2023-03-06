@@ -441,5 +441,15 @@ export const PostSetRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roo
  */
 export const PostDelRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roomZone/delRadarWaveLeaveBedRulesDate', params, {});
 
+/**
+ * 获取位置守护
+ */
+export const GetLocationGuardList = (params) => http.get('/api/careCard/getLocationGuardList', params, {});
+
+/**
+ * 设置位置守护
+ */
+export const PostSetLocationGuard = (params) => http.get('/api/careCard/setLocationGuard', params, {});
+
 
 
