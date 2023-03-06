@@ -7,7 +7,6 @@ import com.newlandnpt.varyar.common.constant.Constants;
 import com.newlandnpt.varyar.common.utils.DateUtils;
 import com.newlandnpt.varyar.system.domain.TDeviceFence;
 import com.newlandnpt.varyar.system.domain.req.CircleReq;
-import com.newlandnpt.varyar.system.domain.req.DeleteFenceReq;
 import com.newlandnpt.varyar.system.domain.vo.GeoResultVo;
 import com.newlandnpt.varyar.system.mapper.DeviceFenceMapper;
 import com.newlandnpt.varyar.system.service.GeoFenceService;
@@ -157,6 +156,7 @@ public class DeviceFenceServiceImpl implements IDeviceFenceService {
      */
     @Override
     public int deleteTDeviceFenceByDeviceFenceId(Long deviceFenceId) {
+        // TODO: 删除电子围栏API
         return deviceFenceMapper.deleteTDeviceFenceByDeviceFenceId(deviceFenceId);
     }
 }

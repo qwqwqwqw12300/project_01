@@ -99,7 +99,6 @@ public class DeviceFenceController extends BaseController
         }
         TDeviceFence cond = new TDeviceFence();
         cond.setDeviceId(Long.valueOf(tDeviceFence.getDeviceId()));
-        cond.setFenceType(tDeviceFence.getFenceType());
         List<TDeviceFence> TDeviceFences = deviceFenceService.selectTDeviceFenceList(cond);
         if (TDeviceFences.size()==0){
             int di = deviceFenceService.insertTDeviceFence(tDeviceFence);
@@ -132,7 +131,6 @@ public class DeviceFenceController extends BaseController
         }else if (tDeviceFences.size()>0){
             tDeviceFence.setGeoFenceId(tDeviceFences.get(0).getGeoFenceId());
             tDeviceFence.setDeviceNo(tDeviceFences.get(0).getDeviceNo());
-            tDeviceFence.setFenceType(tDeviceFences.get(0).getFenceType());
             tDeviceFence.setDeviceFenceId(tDeviceFences.get(0).getDeviceFenceId());
         }
         try {
@@ -147,7 +145,7 @@ public class DeviceFenceController extends BaseController
     }
 
     @ApiOperation("删除设备电子围栏")
-    @PostMapping("/rem")
+    @DeleteMapping("/rem")
     public AjaxResult remove( @RequestBody @Validated TDeviceFence tDeviceFence){
         AjaxResult ajax = AjaxResult.success();
         if(tDeviceFence.getDeviceId()==null||tDeviceFence.getDeviceId().equals("")){
@@ -165,7 +163,7 @@ public class DeviceFenceController extends BaseController
         }
         for (TDeviceFence item : TDeviceFences){
             try {
-                deviceFenceService.deleteTDeviceFence(item);
+                deviceFenceService.deleteTDeviceFenceByDeviceFenceId(item.getDeviceFenceId());
             }catch (Exception e){
                 ajax = ajax.error("设备删除失败！");
                 return ajax;
@@ -173,6 +171,4 @@ public class DeviceFenceController extends BaseController
         }
         return ajax ;
     }
-
-
 }

@@ -32,6 +32,9 @@
 
 <script>
 	import CardTitle from '@/components/card-title/card-title.vue';
+	import {
+		GetPeriodDisableList
+	} from '@/common/http/api';
 	export default {
 		components:{
 			CardTitle
@@ -45,6 +48,13 @@
 			
 		},
 		methods: {
+			initData(){
+				GetPeriodDisableList({
+					deviceNo:'867597011508551'
+				}).then(res=>{
+					console.log(res,'res')
+				})
+			},
 			handleSwitch() {
 				// PostUpdPushMsg({
 				// 	flag: this.flag
@@ -57,6 +67,9 @@
 					url:url
 				})
 			}
+		},
+		onShow() {
+			this.initData()
 		}
 	};
 </script>

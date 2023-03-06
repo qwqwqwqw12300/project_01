@@ -57,12 +57,6 @@ public class CacheConstants
     public static final String T_DEVICE_VAYYAR_ACCESS_24HOURS_OUT_ROOM_KEY = T_DEVICE_VAYYAR_ACCESS_24HOURS_KEY+"outRoom:";
 
     /**
-     * vayyar终端访问控制  cache key
-     */
-    public static final String T_DEVICE_VAYYAR_LEAVE_BED_WARN_MARK_KEY = T_DEVICE_VAYYAR_ACCESS_KEY+"leave_bed_warn_mark:";
-
-
-    /**
      * 终端离线列表 cache key
      */
     public static final String DEVICE_DISCONNECTION = "device_disconnection";

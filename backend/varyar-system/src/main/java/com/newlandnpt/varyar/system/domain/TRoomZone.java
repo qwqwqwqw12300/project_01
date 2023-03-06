@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.newlandnpt.varyar.common.core.domain.entity.LeaveBedWarnParameter;
+import com.newlandnpt.varyar.common.core.domain.model.LeaveBedWarnParameter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -98,11 +98,11 @@ public class TRoomZone extends BaseEntity
     private String outMonitorFlag;
     /** 开始时间 */
     @ApiModelProperty("开始时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
     /** 结束时间 */
     @ApiModelProperty("结束时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
     /** 设备id*/
     @ApiModelProperty("设备id")

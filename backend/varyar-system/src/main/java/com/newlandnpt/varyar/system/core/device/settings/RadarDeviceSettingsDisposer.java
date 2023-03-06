@@ -9,7 +9,6 @@ import com.newlandnpt.varyar.common.exception.base.BaseException;
 import com.newlandnpt.varyar.system.core.device.DeviceSettingsDisposer;
 import com.newlandnpt.varyar.system.domain.TDevice.RadarWaveDeviceSettings;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -20,11 +19,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Optional;
 
 import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_ACCESS_KEY;
-import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_LEAVE_BED_WARN_MARK_KEY;
 import static com.newlandnpt.varyar.system.domain.TRoomZone.FLAG_YES;
 
 /**
@@ -116,13 +113,13 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
                         SubRegion subRegion = new SubRegion();
                         subRegion.setEnterDuration(1);
                         subRegion.setExitDuration(1);
-                        if ("1".equals(roomZone.getZoneType())) {
-
-                            subRegion.setIsFallingDetection(false);
-                            subRegion.setIsPresenceDetection(false);
-                        }else{
+                        if ("0".equals(roomZone.getZoneType())) {
                             subRegion.setIsFallingDetection(true);
                             subRegion.setIsPresenceDetection(true);
+
+                        }else{
+                            subRegion.setIsFallingDetection(false);
+                            subRegion.setIsPresenceDetection(false);
                         }
                         subRegion.setName(roomZone.getName());
                         if("0".equals(settings.getInstallPosition())){
@@ -141,6 +138,10 @@ public class RadarDeviceSettingsDisposer extends DeviceSettingsDisposer<RadarWav
         }else{
             deviceConfig.getWalabotConfig().setTrackerSubRegions(new ArrayList<>(0));
         }
+
+        // 清除进出缓存key
+        String redisKey = T_DEVICE_VAYYAR_ACCESS_KEY + deviceNo;
+        redisCache.deleteObject(redisKey);
 
         SendResult result = rocketMQTemplate.syncSend(deviceConfigTopic+":vayyar",
                 MessageBuilder.withPayload(deviceConfig)

@@ -1,7 +1,6 @@
 package com.newlandnpt.varyar.common.utils;
 
 import com.newlandnpt.varyar.common.constant.Constants;
-import com.newlandnpt.varyar.common.exception.business.BusinessException;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -67,8 +66,7 @@ public class HttpClientUtil {
 			}
 		} catch (Exception e) {
 			log.error("httpclient post请求api错误,url=["+url+"]", e);
-            throw new BusinessException(e.getMessage());
-//			return null;
+			return null;
 		} finally {
 			// 关闭连接,释放资源
 			try {

@@ -404,6 +404,9 @@ public class DeviceServiceImpl implements IDeviceService {
             if(device.getParameter()==null){
                 device.setParameter(new TDevice.RadarWaveDeviceSettings());
             }
+            device.setParameter(radarWaveDeviceSettings);
+            //更新设备参数信息
+            deviceMapper.updateTDevice(device);
             TRoomZone roomZone = new TRoomZone();
             roomZone.setDeviceId(device.getDeviceId());
             List<TRoomZone> roomZones = roomZoneService.selectTRoomZoneList(roomZone);
@@ -434,9 +437,6 @@ public class DeviceServiceImpl implements IDeviceService {
                 roomZoneService.deleteTRoomZoneByRoomZoneIds(removeZones.stream()
                         .toArray(Long[]::new));
             }
-            device.setParameter(radarWaveDeviceSettings);
-            //更新设备参数信息
-            deviceMapper.updateTDevice(device);
 
         }else if(TYPE_WATCH.equals(device.getType())){
             TDevice.WatchSettings watchSettings = (TDevice.WatchSettings) settings;

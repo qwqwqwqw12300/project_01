@@ -27,10 +27,6 @@ public class SetClassModelReq extends MessageHead{
      */
     private List<timePeriod> timePeriodSetting;
 
-    public SetClassModelReq(List<timePeriod> timePeriodSetting) {
-        this.timePeriodSetting = timePeriodSetting;
-    }
-
     public SetClassModelReq(){
         setApiType("SET_CLASS_MODEL");
         setMsgType("1");
@@ -51,12 +47,8 @@ public class SetClassModelReq extends MessageHead{
         /**
          * 是否生效
          */
-        private String enable="1";
+        private String enable;
 
-        public timePeriod(String time, String period) {
-            this.time = time;
-            this.period = period;
-        }
 
         public String getTime() {
             return time;

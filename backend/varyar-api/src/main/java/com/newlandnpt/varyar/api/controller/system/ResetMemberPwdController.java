@@ -60,13 +60,7 @@ public class ResetMemberPwdController{
         if (code == null) {
             throw new CaptchaExpireException();
         }
-        String[] codes = code.split("_");
-        if(codes.length<2){
-            throw new CaptchaExpireException();
-        }
-        code = codes[1];
-        String phone = codes[0];
-        if (!code.equalsIgnoreCase(resetMemberPwdRequest.getCode()) || !phone.equalsIgnoreCase(resetMemberPwdRequest.getPhone())) {
+        if (!code.equalsIgnoreCase(resetMemberPwdRequest.getCode())) {
             throw new CaptchaException();
         }
         //解密

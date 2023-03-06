@@ -9,8 +9,6 @@ import com.newlandnpt.varyar.common.core.domain.entity.ClassTimePeriod;
 import com.newlandnpt.varyar.common.core.domain.entity.DeviceIncomingCall;
 import com.newlandnpt.varyar.common.core.domain.entity.DevicePhone;
 import com.newlandnpt.varyar.common.core.domain.entity.LocationJob;
-import com.newlandnpt.varyar.common.enums.ExCodeEnum;
-import com.newlandnpt.varyar.common.exception.business.BusinessException;
 import com.newlandnpt.varyar.common.utils.tcp.req.*;
 import com.newlandnpt.varyar.system.domain.LocationGuard;
 import com.newlandnpt.varyar.system.domain.TDevice;
@@ -266,61 +264,53 @@ public class DeviceCareCardController extends BaseController {
         try{
           iDeviceCareCardService.setLocationGuard(locationJob);
         }catch (Exception e){
-            log.error(e.getMessage());
-            throw new BusinessException(ExCodeEnum.LOCATION_GUARD_SET_FAIL);
+            return AjaxResult.error(e.getMessage());
         }
         return AjaxResult.success();
     }
 
-    @ApiOperation("删除位置守护")
-    @PostMapping("/deleteLocationGuard")
-    public AjaxResult deleteLocationGuard(@RequestBody DeleteLocationGuardReq req){
-        return iDeviceCareCardService.deleteLocationGuard(req);
-    }
-
-    @ApiOperation("获取位置守护")
-    @GetMapping("/getLocationGuard")
-    public AjaxResult getLocationGuard(String deviceNo, String uuid){
-       return iDeviceCareCardService.getLocationGuard(deviceNo, uuid);
-    }
-
-    @ApiOperation("获取位置守护列表")
-    @GetMapping("/getLocationGuardList")
-    public AjaxResult getLocationGuardList(String deviceNo){
-        return iDeviceCareCardService.getLocationGuardList(deviceNo);
-    }
 
 
     @ApiOperation("设置时段禁用")
     @PostMapping("/setPeriodDisable")
-    public AjaxResult setPeriodDisable(@RequestBody ClassTimePeriod req) {
+    public AjaxResult setPeriodDisable(SetClassModelReq req) {
         try{
-            return iDeviceCareCardService.setPeriodDisable(req);
+            // 拼接url
+            String url = DEVICE_CARE_CARD_URL + "/setClassModel";
+            // 入库
+            TDevice device = iDeviceService.selectByDeviceNo(req.getDeviceNo());
+//            if(DEVICE_TYPE.equals(device.getType())){
+//                // 获取设备参数
+//                TDevice.WatchSettings object = getParameter(device);
+//                // 获取禁用时段
+//                List<ClassTimePeriod> classTimePeriods = object.getClassTimePeriods();
+//                // 如果通讯录为空
+//                if(Objects.isNull(classTimePeriods)){
+//                    classTimePeriods = new ArrayList<>();
+//                }
+//
+//                // 删除应被删除的号码
+//                req.getDeleteNumbers().forEach(
+//                        finalAddressBook::remove
+//                );
+//                // 新增号码
+//                req.getAddPhones().forEach(
+//                        item->{
+//                            DeviceIncomingCall deviceIncomingCall = new DeviceIncomingCall(item.getPhone(),item.getTimePeriods(),req.getPeriod());
+//                            finalAddressBook.put(item.getPhone(), deviceIncomingCall);
+//                        }
+//                );
+//
+//                // 更新通讯录
+//                object.setAddressBookMap(finalAddressBook);
+//                device.setParameter(object);
+//                iDeviceService.updateDevice(device);
+//            }
+            // http请求发送
+          return  httpRequest(url,req);
         }catch (Exception e){
             return AjaxResult.error(e.getMessage());
         }
-    }
-
-    @ApiOperation("删除时段禁用")
-    @PostMapping("/deletePeriodDisable")
-    public AjaxResult deletePeriodDisable(@RequestBody DeletePeriodDisabledReq req){
-        try{
-            return iDeviceCareCardService.deletePeriodDisable(req);
-        }catch (Exception e){
-            return AjaxResult.error(e.getMessage());
-        }
-    }
-
-    @ApiOperation("获取时段禁用")
-    @GetMapping("/getPeriodDisable")
-    public AjaxResult getPeriodDisable(String deviceNo, String uuid){
-        return iDeviceCareCardService.getPeriodDisable(deviceNo,uuid);
-    }
-
-    @ApiOperation("获取时段禁用列表")
-    @GetMapping("/getPeriodDisableList")
-    public AjaxResult getPeriodDisableList(String deviceNo){
-        return iDeviceCareCardService.getPeriodDisableList(deviceNo);
     }
 
     @ApiOperation("重启设备")

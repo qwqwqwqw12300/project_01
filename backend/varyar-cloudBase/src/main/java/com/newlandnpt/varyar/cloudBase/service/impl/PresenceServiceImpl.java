@@ -1,13 +1,9 @@
 package com.newlandnpt.varyar.cloudBase.service.impl;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
-import com.newlandnpt.varyar.system.domain.TRoomZone;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
@@ -43,9 +39,6 @@ public class PresenceServiceImpl implements PresenceService {
 	 
 	 @Value("${rocketmq.topic.presence}")
 	 private String presenceTopic;
-
-	 @Value("${cloud.customCalculateRegionDetected:false}")
-	 private boolean customCalculateRegionDetected;
 	    
 	@Override
 	public void receve(Presence t) {
@@ -57,11 +50,6 @@ public class PresenceServiceImpl implements PresenceService {
 		if(device == null){
 			return ;
 		}
-
-		if(customCalculateRegionDetected){
-			customCalculateRegionDetected(t, device);
-		}
-
 		event(t);
 		//记录目标坐标
 		//如果redis开关开启，则记录
@@ -72,63 +60,7 @@ public class PresenceServiceImpl implements PresenceService {
 			SpringUtils.getBean(RedisCache.class).setCacheObject(com.newlandnpt.varyar.common.constant.CacheConstants.TARGET_LOCATION_PRESENCE_KEY + deviceId, trackerTargets, 1, TimeUnit.MINUTES);
 		}
 	}
-
-	private void customCalculateRegionDetected(Presence t, TDevice device) {
-		// 使用自定义规则计算子区域是否有对象
-		try{
-			Map<String, Integer> regionMap = t.getRegionMap();
-			regionMap.put("0",0);
-			regionMap.put("1",0);
-			regionMap.put("2",0);
-			regionMap.put("3",0);
-
-			if(device.getParameter() != null && (device.getParameter() instanceof TDevice.RadarWaveDeviceSettings)){
-				TDevice.RadarWaveDeviceSettings radarWaveDeviceSettings = (TDevice.RadarWaveDeviceSettings) device.getParameter();
-
-				if(CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getRoomZones())&&
-						CollectionUtils.isNotEmpty(t.getTrackerTargets())){
-					// 子区域不为空时计算
-					// 设备上报追踪对象不为空时计算
-					// 过滤出屏蔽区域
-					List<TRoomZone> banRoomZones = radarWaveDeviceSettings.getRoomZones()
-							.stream()
-							.filter(p->"1".equals(p.getZoneType()))
-							.collect(Collectors.toList());
-					//过滤掉在屏蔽区域内的对象
-					List<TrackerTargetVo> filteredTargets = t.getTrackerTargets()
-							.stream()
-							.filter(p-> banRoomZones.stream()
-									.noneMatch(banRoomZone->targetInZoom(p, banRoomZone)))
-							.collect(Collectors.toList());
-					for(int i=0;i<radarWaveDeviceSettings.getRoomZones().size();i++){
-						TRoomZone roomZone = radarWaveDeviceSettings.getRoomZones().get(i);
-						if(filteredTargets.stream().anyMatch(p->targetInZoom(p,roomZone))){
-							// 任意目标在子区域内则将子区域存在标记置为1
-							regionMap.put(""+i,1);
-						}
-					}
-
-				}
-
-				t.setRegionMap(regionMap);
-				log.info(">>>>> 使用自定义规则计算子区域是否有对象后deviceId:{},子区域检测：{}",device.getNo(),regionMap);
-			}else{
-				log.warn(">>>> 设备号：{},获取不到设备雷达波配置信息，将使用设备提供的区域参数", t.getDeviceId());
-			}
-		}catch (Exception e){
-			log.error(">>>>> 自定义规则计算子区域是否有对象 失败,将使用设备提供的区域参数",e);
-		}
-	}
-
-	private boolean targetInZoom(TrackerTargetVo p, TRoomZone banRoomZone) {
-		return banRoomZone.getX1().multiply(new BigDecimal(100)).compareTo(new BigDecimal(p.getxPosCm())) < 1 &&
-				banRoomZone.getX2().multiply(new BigDecimal(100)).compareTo(new BigDecimal(p.getxPosCm())) > -1 &&
-				banRoomZone.getY1().multiply(new BigDecimal(100)).compareTo(new BigDecimal(p.getyPosCm())) < 1 &&
-				banRoomZone.getY2().multiply(new BigDecimal(100)).compareTo(new BigDecimal(p.getyPosCm())) > -1 &&
-				banRoomZone.getZ1().multiply(new BigDecimal(100)).compareTo(new BigDecimal(p.getzPosCm())) < 1 &&
-				banRoomZone.getZ2().multiply(new BigDecimal(100)).compareTo(new BigDecimal(p.getzPosCm())) > -1;
-	}
-
+	
 	//事件处理
 	private void event(Presence t){
 		String deviceId = t.getDeviceId();

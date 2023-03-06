@@ -1,9 +1,7 @@
 package com.newlandnpt.varyar.common.core.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.newlandnpt.varyar.common.annotation.Excel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
 import java.util.List;
@@ -38,15 +36,11 @@ public class LocationJob {
     /**
      * 最早时间
      */
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy/MM/dd HH:mm")
-    @DateTimeFormat(pattern="yyyy/MM/dd HH:mm")
     private Date firstDate;
 
     /**
      * 最迟时间
      */
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy/MM/dd HH:mm")
-    @DateTimeFormat(pattern="yyyy/MM/dd HH:mm")
     private Date lastDate;
 
     /**
@@ -97,9 +91,7 @@ public class LocationJob {
         /**
          * 预定时间
          */
-        @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy/MM/dd HH:mm")
-        @DateTimeFormat(pattern="yyyy/MM/dd HH:mm")
-        private Date estimatedTime;
+        private String estimatedTime;
 
         public String getGuardType() {
             return guardType;
@@ -157,11 +149,11 @@ public class LocationJob {
             this.points = points;
         }
 
-        public Date getEstimatedTime() {
+        public String getEstimatedTime() {
             return estimatedTime;
         }
 
-        public void setEstimatedTime(Date estimatedTime) {
+        public void setEstimatedTime(String estimatedTime) {
             this.estimatedTime = estimatedTime;
         }
     }

@@ -17,7 +17,7 @@ public class StateVo implements Serializable {
     private String deviceId;
 
     /** 报文:状态事件的时间 **/
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date timestamp;
 
     /** 报文:自上次重新启动或激活后的时间(毫秒) **/

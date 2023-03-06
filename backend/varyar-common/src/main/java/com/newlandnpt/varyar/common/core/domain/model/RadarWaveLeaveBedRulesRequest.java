@@ -17,44 +17,63 @@ public class RadarWaveLeaveBedRulesRequest {
     @Size(min = 0, max = 20, message = "设备编号不能超过20个字符")
     private String deviceId;
 
+    @ApiModelProperty("家庭Id")
+    @Size(min = 0, max = 20, message = "唯一标识不能超过20个字符")
+    private String familyId;
+
+    @ApiModelProperty("房间Id")
+    @Size(min = 0, max = 20, message = "房间Id标识不能超过20个字符")
+    private String roomId;
+
     @ApiModelProperty("区域Id")
-    @Size(min = 0, max = 20, message = "区域Id标识不能超过20个字符")
+    @Size(min = 0, max = 20, message = "房间Id标识不能超过20个字符")
     private String roomZoneId;
 
     /**
-     * 日期类型：0 按日期 1 按星期
+     * 规则名称
      */
-    @ApiModelProperty("日期类型")
+    @ApiModelProperty("规则名称")
+    private String ruleName;
+    /** 规则编号 */
+    @ApiModelProperty("规则名称")
+    private String ruleNo;
+    /** 规则开关 */
+    @ApiModelProperty("规则开关")
+    private String  ruleSwitch="1";
+    /**
+     * 日期类型
+     */
+    @ApiModelProperty("规则开关")
     private String dateType="1";
     /**
      * 星期
      */
-    @ApiModelProperty("星期")
+    @ApiModelProperty("规则开关")
     private String[] week = {"0", "1", "2", "3", "4", "5", "6"};
     /**
      * 开始日期 data yyyy-MM-dd
      */
     @ApiModelProperty("开始日期")
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
     /**
      * 结束日期 data yyyy-MM-dd
      */
     @ApiModelProperty("结束日期")
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
     /**
      * 结束时间 开始时间
      */
     @ApiModelProperty("开始时间")
-    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
+    @JsonFormat(pattern = "HH:mm")
     private Date startTime;
     /**
      * 结束时间 data HH:mm
      */
     @ApiModelProperty("结束时间")
-    @JsonFormat(pattern = "HH:mm",timezone="GMT+8")
+    @JsonFormat(pattern = "HH:mm")
     private Date endTime;
 
     public String getDeviceId() {
@@ -65,6 +84,22 @@ public class RadarWaveLeaveBedRulesRequest {
         this.deviceId = deviceId;
     }
 
+    public String getFamilyId() {
+        return familyId;
+    }
+
+    public void setFamilyId(String familyId) {
+        this.familyId = familyId;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
+
     public String getRoomZoneId() {
         return roomZoneId;
     }
@@ -73,7 +108,29 @@ public class RadarWaveLeaveBedRulesRequest {
         this.roomZoneId = roomZoneId;
     }
 
+    public String getRuleName() {
+        return ruleName;
+    }
 
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
+    }
+
+    public String getRuleNo() {
+        return ruleNo;
+    }
+
+    public void setRuleNo(String ruleNo) {
+        this.ruleNo = ruleNo;
+    }
+
+    public String getRuleSwitch() {
+        return ruleSwitch;
+    }
+
+    public void setRuleSwitch(String ruleSwitch) {
+        this.ruleSwitch = ruleSwitch;
+    }
 
     public String getDateType() {
         return dateType;
