@@ -41,8 +41,13 @@ const ERROR_TEXT = {
  * @param {string} method 请求方法
  */
 const request = (url, options, process, method = 'POST') => {
-	let http;
-	const _url = env.basePath + url;
+	let _url;
+	// if(isApp()) {
+	// 	 _url = env.basePath + url;
+	// } else  {
+	// 	_url = url;
+	// }
+	 _url = env.basePath + url;
 	const showLoading = process.showLoading !== false, // 是否展示加载中
 		errorHandle = process.error !== false; // 是否使用统一报错
 	console.log('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));
@@ -80,7 +85,7 @@ const request = (url, options, process, method = 'POST') => {
 			});
 			if (errorHandle) uni.showModal({
 				title: '提示',
-				content: '网络请求错误' + error.errMsg
+				content: '当前网络不稳定，请重试'
 			});
 			if (showLoading) uni.hideLoading();
 			reject();

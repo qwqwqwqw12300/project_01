@@ -8,6 +8,7 @@ export const env = {
 	/**开发模式**/
 	mode: 'dev',
 	/**服务器地址**/
+	// http://www.agetech.cc:7766
 	basePath: uni.getStorageSync('appHost') || 'http://www.agetech.cc:7766',
 	// 林橘
 	// basePath: 'http://192.168.1.185:8081',
