@@ -2,6 +2,7 @@ package com.newlandnpt.varyar.system.job;
 
 import com.github.pagehelper.PageInfo;
 import com.newlandnpt.varyar.common.constant.DeviceConstants;
+import com.newlandnpt.varyar.common.core.redis.RedisCache;
 import com.newlandnpt.varyar.common.utils.PageUtils;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.service.IDeviceService;
@@ -13,8 +14,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_ACCESS_CALCULATE_TIME_WHEEL_KEY;
+import static com.newlandnpt.varyar.common.core.redis.RedisCache.TimeWheelUnit.MINUTES;
 
 /**
  * 雷达波进出监控 定时任务
@@ -41,9 +48,11 @@ public class VayyarDeviceAccessTask {
     public void check(){
         TDevice device = new TDevice();
         device.setType(DeviceConstants.TYPE_READER_WAVE);
-        int pageNo = 1,pageSize = 10;
+        int pageNo = 1,pageSize = 100;
         PageInfo pageInfo;
-        String triggerTime = DateFormatUtils.format(new Date(), YYYY_MM_DD_HH_MM);
+        Calendar triggerCalendar = Calendar.getInstance();
+        triggerCalendar.setTime(new Date());
+        String triggerTime = DateFormatUtils.format(triggerCalendar.getTime(), YYYY_MM_DD_HH_MM);
         do {
             PageUtils.startPage(pageNo++, pageSize);
             List<TDevice> list = deviceService.selectDeviceList(device);
@@ -73,6 +82,31 @@ public class VayyarDeviceAccessTask {
                 }
 
                 if(hasNobodyWarn==true || hasOutWarn == true){
+                    // 先补偿之前遗漏执行的任务
+                    RedisCache.TimeWheel timeWheel = new RedisCache.TimeWheel(T_DEVICE_VAYYAR_ACCESS_CALCULATE_TIME_WHEEL_KEY +p.getNo(),MINUTES);
+                    timeWheel.setCurrentGraduationValue(triggerCalendar.getTime());
+                    LocalTime triggerGraduation = timeWheel.getCurrentGraduation();
+                    timeWheel.homing(LocalDate.of(triggerCalendar.get(Calendar.YEAR),
+                            triggerCalendar.get(Calendar.MONTH)+1,triggerCalendar.get(Calendar.DAY_OF_MONTH)));
+                    Calendar calculateCalendar = Calendar.getInstance();
+                    while (triggerGraduation.compareTo(timeWheel.getCurrentGraduation())!=0){
+                        calculateCalendar.setTime(triggerCalendar.getTime());
+                        if(triggerGraduation.toSecondOfDay()<timeWheel.getCurrentGraduation().toSecondOfDay()){
+                            // 如果触发时间小，说明查了一天，这里减一天
+                            calculateCalendar.add(Calendar.DAY_OF_MONTH,-1);
+                        }
+                        // 回退差值
+                        calculateCalendar.add(Calendar.SECOND,-(triggerGraduation.toSecondOfDay()-timeWheel.getCurrentGraduation().toSecondOfDay()));
+                        String calculateTime =DateFormatUtils.format(calculateCalendar.getTime(), YYYY_MM_DD_HH_MM);
+                        // 无人预警 或离床预警开启时触发计算
+                        rocketMQTemplate.syncSend(accessTopic, MessageBuilder.withPayload(p)
+                                .setHeader("KEYS",p.getNo())
+                                .setHeader(TRIGGER_TIME,calculateTime)
+                                .build());
+                        timeWheel.setCurrentGraduationValue(calculateCalendar.getTime());
+                        timeWheel.next();
+                    }
+
                     // 无人预警 或离床预警开启时触发计算
                     rocketMQTemplate.syncSend(accessTopic, MessageBuilder.withPayload(p)
                             .setHeader("KEYS",p.getNo())

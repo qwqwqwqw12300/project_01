@@ -8,14 +8,19 @@ import com.newlandnpt.varyar.common.utils.PageUtils;
 import com.newlandnpt.varyar.system.domain.TDevice;
 import com.newlandnpt.varyar.system.service.DeviceEventService;
 import com.newlandnpt.varyar.system.service.IDeviceService;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_ACCESS_24HOURS_IN_ROOM_KEY;
-import static com.newlandnpt.varyar.common.constant.CacheConstants.T_DEVICE_VAYYAR_ACCESS_24HOURS_OUT_ROOM_KEY;
+import static com.newlandnpt.varyar.common.constant.CacheConstants.*;
+import static com.newlandnpt.varyar.common.core.redis.RedisCache.TimeWheelUnit.MINUTES;
 
 /**
  * vayyar 雷达波设备 24小时 无人预警
@@ -65,16 +70,31 @@ public class VayyarDevice24HoursExistTask {
                             return;
                         }
                     }
-                    long currentTimeMills = new Date().getTime();
-                    currentTimeMills -=outInfo.getTime()+
-                            24*60*60*1000;
-                    if(currentTimeMills>=0){
-                        // 触发24小时无人预警
-                        disconnectionService.device24HoursExistsIssue(p.getNo(), p);
-                        // 离开时间更新到当前时间，开始新一轮计算周期
-                        outInfo.setTime(new Date().getTime());
-                        redisCache.setCacheObject(outKey,outInfo);
+
+                    Calendar triggerCalendar = Calendar.getInstance();
+                    triggerCalendar.setTime(new Date());
+                    // 先补偿之前遗漏执行的任务
+                    RedisCache.TimeWheel timeWheel = new RedisCache.TimeWheel(T_DEVICE_VAYYAR_ACCESS_CALCULATE_TIME_WHEEL_KEY +p.getNo(),MINUTES);
+                    timeWheel.setCurrentGraduationValue(triggerCalendar.getTime());
+                    LocalTime triggerGraduation = timeWheel.getCurrentGraduation();
+                    timeWheel.homing(LocalDate.of(triggerCalendar.get(Calendar.YEAR),
+                            triggerCalendar.get(Calendar.MONTH)+1,triggerCalendar.get(Calendar.DAY_OF_MONTH)));
+                    Calendar calculateCalendar = Calendar.getInstance();
+                    while (triggerGraduation.compareTo(timeWheel.getCurrentGraduation())!=0){
+                        calculateCalendar.setTime(triggerCalendar.getTime());
+                        if(triggerGraduation.toSecondOfDay()<timeWheel.getCurrentGraduation().toSecondOfDay()){
+                            // 如果触发时间小，说明查了一天，这里减一天
+                            calculateCalendar.add(Calendar.DAY_OF_MONTH,-1);
+                        }
+                        // 回退差值
+                        calculateCalendar.add(Calendar.SECOND,-(triggerGraduation.toSecondOfDay()-timeWheel.getCurrentGraduation().toSecondOfDay()));
+
+                        triggerEvent(p, outKey, outInfo, calculateCalendar.getTimeInMillis());
+                        timeWheel.setCurrentGraduationValue(calculateCalendar.getTime());
+                        timeWheel.next();
                     }
+
+                    triggerEvent(p, outKey, outInfo, triggerCalendar.getTimeInMillis());
 
                 }
 
@@ -82,6 +102,18 @@ public class VayyarDevice24HoursExistTask {
             pageInfo = new PageInfo(list);
         }while (pageInfo.isHasNextPage());
 
+    }
+
+    private void triggerEvent(TDevice p, String outKey, AccessInfo outInfo, long currentTimeMills) {
+        currentTimeMills -= outInfo.getTime()+
+                24*60*60*1000;
+        if(currentTimeMills >=0){
+            // 触发24小时无人预警
+            disconnectionService.device24HoursExistsIssue(p.getNo(), p);
+            // 离开时间更新到当前时间，开始新一轮计算周期
+            outInfo.setTime(new Date().getTime());
+            redisCache.setCacheObject(outKey, outInfo);
+        }
     }
 
 }

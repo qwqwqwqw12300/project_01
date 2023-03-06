@@ -41,10 +41,19 @@ public class CacheConstants
      * vayyar终端访问控制  cache key
      */
     public static final String T_DEVICE_VAYYAR_ACCESS_KEY = "t_device_vayyar_access:";
+
+    /**
+     * vayyar终端访问控制 计算时间轮  cache key
+     */
+    public static final String T_DEVICE_VAYYAR_ACCESS_CALCULATE_TIME_WHEEL_KEY = T_DEVICE_VAYYAR_ACCESS_KEY+"calculate_time_wheel:";
     /**
      * vayyar终端访问控制 24小时无人检测  cache key
      */
     public static final String T_DEVICE_VAYYAR_ACCESS_24HOURS_KEY = T_DEVICE_VAYYAR_ACCESS_KEY+"24Hours:";
+    /**
+     * vayyar终端访问控制 24小时无人检测  计算时间轮 cache key
+     */
+    public static final String T_DEVICE_VAYYAR_ACCESS_24HOURS_CALCULATE_TIME_WHEEL_KEY = T_DEVICE_VAYYAR_ACCESS_24HOURS_KEY+"calculate_time_wheel:";
 
     /**
      * vayyar终端访问控制 24小时无人检测 进房间 cache key

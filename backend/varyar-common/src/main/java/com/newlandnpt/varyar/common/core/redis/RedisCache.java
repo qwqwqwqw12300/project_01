@@ -1,13 +1,15 @@
 package com.newlandnpt.varyar.common.core.redis;
 
 import java.text.DecimalFormat;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+
+import com.newlandnpt.varyar.common.exception.ServiceException;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,8 +26,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedisCache
 {
-    @Autowired
-    public RedisTemplate redisTemplate;
+    public static RedisTemplate redisTemplate;
 
     /**
      * 缓存基本的对象，Integer、String、实体类等
@@ -299,5 +300,202 @@ public class RedisCache
         return df.format(num);
     }
 
+    /**
+     * 设置24小时时间轮的值
+     * 时间轮单位秒，记录24小时 每一刻度的具体时间（年月日时分秒）
+     * @param key
+     * @param liveTime 存活时间 单位秒
+     * @param time 设置的值
+     * @return
+     */
+    public static void set24HourTimeWheelValue(String key,long liveTime, LocalTime graduation,Date time){
+        redisTemplate.opsForZSet().add(key,time,graduation.toSecondOfDay());
+        redisTemplate.expire(key,liveTime,TimeUnit.SECONDS);
+    }
+
+    /**
+     * 获取24小时时间轮的值
+     * 时间轮
+     * @param key
+     * @param graduation 刻度值 精确到秒
+     * @return
+     */
+    public static Date get24HourTimeWheelValue(String key, LocalTime graduation){
+        Set<Date> result = redisTemplate.opsForZSet().rangeByScore(key,graduation.toSecondOfDay(),graduation.toSecondOfDay()+1);
+        return Optional
+                .ofNullable(result)
+                .map(p->p.stream().findAny().orElse(null))
+                .orElse(null);
+    }
+
+    /**
+     * 时间轮
+     */
+    public static class TimeWheel {
+
+        /**
+         * 时间轮的key，唯一标识
+         */
+        private String key;
+
+        /**
+         * 时间轮的单位
+         */
+        private TimeWheelUnit unit;
+
+        /**
+         * 当前刻度
+         */
+        private LocalTime currentGraduation;
+
+        public TimeWheel(String key, TimeWheelUnit unit){
+            this.key = key;
+            this.unit = unit;
+            this.currentGraduation = convertToLocalTime(new Date());
+        }
+
+        public void setCurrentGraduation(Date time){
+            this.currentGraduation = convertToLocalTime(time);
+        }
+
+        public LocalTime getCurrentGraduation(){
+            return LocalTime.from(this.currentGraduation);
+        }
+
+        public void setCurrentGraduationValueWithFix(Date time){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(time);
+            switch (unit){
+                case SECOND:
+                    calendar.set(Calendar.SECOND,currentGraduation.getSecond());
+                case MINUTES:
+                    calendar.set(Calendar.MINUTE,currentGraduation.getMinute());
+                case HOUR:
+                    calendar.set(Calendar.HOUR_OF_DAY,currentGraduation.getHour());
+            }
+            setCurrentGraduation(calendar.getTime());
+        }
+
+        public void setCurrentGraduationValue(Date time){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(time);
+            switch (unit){
+                case SECOND:
+                    if(currentGraduation.getSecond()!=calendar.get(Calendar.SECOND)){
+                        throw new ServiceException("设置时间轮的秒数的值与当前刻度不符");
+                    }
+                case MINUTES:
+                    if(currentGraduation.getSecond()!=calendar.get(Calendar.MINUTE)){
+                        throw new ServiceException("设置时间轮的秒数的值与当前刻度不符");
+                    }
+                case HOUR:
+                    if(currentGraduation.getSecond()!=calendar.get(Calendar.HOUR_OF_DAY)){
+                        throw new ServiceException("设置时间轮的秒数的值与当前刻度不符");
+                    }
+            }
+
+            RedisCache.set24HourTimeWheelValue(key,2*24*60*60,currentGraduation,time);
+        }
+
+        /**
+         * 时针归位，回到最开始的地方
+         * @param referenceDay 参考日期，将结合当前刻度往前推到未设置正确值的初始位
+         */
+        public void homing(LocalDate referenceDay){
+            // 先默认为当前刻度
+            LocalTime graduation = LocalTime.from(this.currentGraduation);
+
+            Calendar calendar = Calendar.getInstance();
+            do {
+                // 回退一个刻度
+                LocalTime preGraduation = minus(graduation);
+                Date date = RedisCache.get24HourTimeWheelValue(key,preGraduation);
+                if(date!=null){
+                    calendar.setTime(date);
+                    if(referenceDay.getYear() == calendar.get(Calendar.YEAR)&&
+                            referenceDay.getMonthValue() == calendar.get(Calendar.MONTH)+1&&
+                            referenceDay.getDayOfMonth() == calendar.get(Calendar.DAY_OF_MONTH)){
+                        // 年月日相符说明当前刻度无误结束
+                        break;
+                    }
+                }
+                graduation = preGraduation;
+            }while (graduation.compareTo(this.currentGraduation)!=0);
+            this.currentGraduation = graduation;
+        }
+
+        public void next(){
+            switch (unit){
+                case HOUR:
+                    this.currentGraduation = this.currentGraduation.plusHours(1);
+                    break;
+                case MINUTES:
+                    this.currentGraduation = this.currentGraduation.plusMinutes(1);
+                    break;
+                case SECOND:
+                    this.currentGraduation = this.currentGraduation.plusSeconds(1);
+                    break;
+                default:
+                    throw new ServiceException("不支持的时间轮单位值："+unit);
+            }
+        }
+
+        public void previous(){
+            this.currentGraduation = minus(this.currentGraduation);
+        }
+
+        private LocalTime minus(LocalTime time){
+            switch (unit){
+                case HOUR:
+                    return time.minusHours(1);
+                case MINUTES:
+                    return time.minusMinutes(1);
+                case SECOND:
+                    return time.minusSeconds(1);
+                default:
+                    throw new ServiceException("不支持的时间轮单位值："+unit);
+            }
+        }
+
+        public Date getCurrentGraduationValue(){
+            return RedisCache.get24HourTimeWheelValue(key,currentGraduation);
+        }
+
+        private LocalTime convertToLocalTime(Date time){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(time);
+            switch (unit){
+                case HOUR:
+                    return LocalTime.of(calendar.get(Calendar.HOUR_OF_DAY),0);
+                case MINUTES:
+                    return LocalTime.of(calendar.get(Calendar.HOUR_OF_DAY),
+                            calendar.get(Calendar.MINUTE));
+                case SECOND:
+                    return LocalTime.of(calendar.get(Calendar.HOUR_OF_DAY),
+                            calendar.get(Calendar.MINUTE),
+                            calendar.get(Calendar.SECOND));
+                default:
+                    throw new ServiceException("不支持的时间轮单位值："+unit);
+            }
+        }
+
+    }
+
+    public enum TimeWheelUnit{
+        HOUR,
+        MINUTES,
+        SECOND
+    }
+
+    @Component
+    public static class RedisCacheInjector implements BeanPostProcessor {
+        @Override
+        public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+            if(bean instanceof RedisTemplate){
+                RedisCache.redisTemplate = (RedisTemplate)bean;
+            }
+            return bean;
+        }
+    }
 
 }
