@@ -68,6 +68,7 @@ public class FamilyController extends BaseController {
                     TMsg tMsg = new TMsg();
                     tMsg.setDeviceId(it.getDeviceId());
                     tMsg.setMsgType(MSG_TYPE_APP);
+                    tMsg.setMemberId(memberId);
                     tMsg.setOperateFlag("0");
                     tMsg.setFamilyId(item.getFamilyId());
                     tMsg.setEventLevel("urgent");
