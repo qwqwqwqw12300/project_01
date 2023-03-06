@@ -48,7 +48,7 @@
 			<!-- 家庭tab -->
 			<view class="ui-tab" v-if="tabList.length">
 				<u-tabs @change="tabChange" :list="tabList" lineColor="unset"
-					:activeStyle="{color: '#353535', fontSize: '40rpx'}"
+					:activeStyle="{color: '#353535', fontSize: '45rpx'}"
 					:inactiveStyle="{color: '#888888', fontSize: '40rpx'}"></u-tabs>
 			</view>
 			<!-- /家庭tab -->

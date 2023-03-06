@@ -4,8 +4,7 @@
 		<view>
 			<view @click="sheetSelect(item)" class="ui-sheet" v-for="(item, index) of addHandle.list"
 				:key="'sheet' + index">
-				<u-icon :name="'../../static/images/' + item.icon + '.png'" class="active" color="#fff"
-					size="48rpx">
+				<u-icon :name="'../../static/images/' + item.icon + '.png'" class="active" color="#fff" size="48rpx">
 				</u-icon>
 				<text>{{item.name}}</text>
 			</view>
@@ -15,11 +14,11 @@
 
 <script>
 	export default {
-		props:{
+		props: {
 			isShow: {
 				default: false
 			},
-			safeShow:{
+			safeShow: {
 				default: false
 			}
 		},
@@ -55,14 +54,14 @@
 				name
 			}) {
 				// if (name === '电子牵挂卡' || name === '监测手表') return uni.$u.toast('暂不支持添加该设备');
-			
+
 				this.$emit('cancle')
-			
+
 				uni.navigateTo({
 					url
 				});
 			},
-			closeHandle(){
+			closeHandle() {
 				this.$emit('cancle')
 			}
 		}
@@ -77,6 +76,7 @@
 		justify-content: center;
 		height: 120rpx;
 		width: 100%;
+
 		text {
 			margin-left: 20rpx;
 			font-size: 34rpx;
@@ -86,7 +86,8 @@
 			font-weight: 400;
 		}
 	}
-	::v-deep .u-action-sheet__cancel-text{
+
+	::v-deep .u-action-sheet__cancel-text {
 		font-size: 36rpx;
 		color: #599FFF;
 		line-height: 36rpx;
