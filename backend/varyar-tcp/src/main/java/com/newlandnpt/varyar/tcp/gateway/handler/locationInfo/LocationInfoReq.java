@@ -1,8 +1,14 @@
 package com.newlandnpt.varyar.tcp.gateway.handler.locationInfo;
 
 import com.newlandnpt.varyar.common.utils.StringUtils;
+import com.newlandnpt.varyar.common.utils.tcp.domain.LocationInfoResponseMqMsgEntity;
 import com.newlandnpt.varyar.tcp.base.MessageHead;
 import com.newlandnpt.varyar.tcp.base.Req;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 位置信息报文体
@@ -26,39 +32,48 @@ public class LocationInfoReq extends MessageHead implements Req {
     /**
      * gps数据
      */
-    private String gpsData="";
+    private LocationInfoResponseMqMsgEntity.gpsDatas gpsData;
 
     /**
      * LBS数据
      */
-    private String lbsData="";
+    private LocationInfoResponseMqMsgEntity.lbsData lbsData;
 
     /**
      * Wi-Fi数据
      */
-    private String wifiData="";
+    private List<LocationInfoResponseMqMsgEntity.wifiData> wifiData;
 
-    public String getGpsData() {
+    public LocationInfoReq() {
+    }
+
+    public LocationInfoReq(LocationInfoResponseMqMsgEntity.gpsDatas gpsData, LocationInfoResponseMqMsgEntity.lbsData lbsData, List<LocationInfoResponseMqMsgEntity.wifiData> wifiData) {
+        this.gpsData = gpsData;
+        this.lbsData = lbsData;
+        this.wifiData = wifiData;
+    }
+
+    public LocationInfoResponseMqMsgEntity.gpsDatas getGpsData() {
         return gpsData;
     }
 
-    public void setGpsData(String gpsData) {
+    public void setGpsData(LocationInfoResponseMqMsgEntity.gpsDatas gpsData) {
         this.gpsData = gpsData;
     }
 
-    public String getLbsData() {
+    public LocationInfoResponseMqMsgEntity.lbsData getLbsData() {
         return lbsData;
     }
 
-    public void setLbsData(String lbsData) {
+    public void setLbsData(LocationInfoResponseMqMsgEntity.lbsData lbsData) {
         this.lbsData = lbsData;
     }
 
-    public String getWifiData() {
+    public List<LocationInfoResponseMqMsgEntity.wifiData> getWifiData() {
         return wifiData;
     }
 
-    public void setWifiData(String wifiData) {
+    public void setWifiData(List<LocationInfoResponseMqMsgEntity.wifiData> wifiData) {
         this.wifiData = wifiData;
     }
 
@@ -68,8 +83,27 @@ public class LocationInfoReq extends MessageHead implements Req {
             return ;
         }
         String[] str = body.split("@");
-        setGpsData(str[0]);
-        setLbsData(str[1]);
-        setWifiData(str[2]);
+        // 设置gps
+        LocationInfoResponseMqMsgEntity.gpsDatas gpsData = new LocationInfoResponseMqMsgEntity.gpsDatas();
+        String temp = str[0].replaceAll("[A-Z]", "_$0");
+        String[] gpsDataSplit = temp.split("_");
+        gpsData.setLocationStatus(gpsDataSplit[0]);
+        gpsData.setLongitude(gpsDataSplit[1]);
+        gpsData.setLatitude(gpsDataSplit[2]);
+        gpsData.setLocationTime(gpsDataSplit[3]);
+        setGpsData(gpsData);
+        // 设置lbs
+        String[] lbsDataSplit = str[1].split("!");
+        LocationInfoResponseMqMsgEntity.lbsData lbsData =
+                new LocationInfoResponseMqMsgEntity.lbsData(lbsDataSplit[0],lbsDataSplit[1],lbsDataSplit[2],lbsDataSplit[3],Objects.isNull(lbsDataSplit[4]) ?"0":lbsDataSplit[4]);
+        setLbsData(lbsData);
+        // 设置wifi
+        List<String> allWifiData = Arrays.asList(str[2].split("#"));
+        List<LocationInfoResponseMqMsgEntity.wifiData> wifiData = new ArrayList<>();
+        allWifiData.forEach(wifi->{
+            String[] wifiDataSplit = wifi.split("!");
+            wifiData.add(new LocationInfoResponseMqMsgEntity.wifiData(wifiDataSplit[0],wifiDataSplit[1],wifiDataSplit[2]));
+        });
+        setWifiData(wifiData);
     }
 }
