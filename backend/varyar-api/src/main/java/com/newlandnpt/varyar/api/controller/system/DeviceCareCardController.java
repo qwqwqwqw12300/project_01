@@ -291,8 +291,6 @@ public class DeviceCareCardController extends BaseController {
     }
 
 
-
-
     @ApiOperation("设置时段禁用")
     @PostMapping("/setPeriodDisable")
     public AjaxResult setPeriodDisable(@RequestBody ClassTimePeriod req) {
