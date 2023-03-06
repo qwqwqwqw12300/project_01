@@ -214,6 +214,8 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
 
             Calendar now = Calendar.getInstance();
             now.setTime(calculateTime);
+            //是否跨天
+            boolean crossDay = false;
 
             // 结束时间
             Calendar endTime = Calendar.getInstance();
@@ -245,24 +247,40 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
             startTime.set(Calendar.YEAR, now.get(Calendar.YEAR));
             startTime.set(Calendar.MONTH, now.get(Calendar.MONTH));
             startTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+            if(startTime.getTimeInMillis()>endTime.getTimeInMillis()){
+                // 起始时间大于结束时间说明是设置跨天的夜间时段，开始时间减一天
+                startTime.add(Calendar.DAY_OF_MONTH,-1);
+                crossDay = true;
+            }
 
             if (now.getTimeInMillis() >= startTime.getTimeInMillis() &&
                     now.getTimeInMillis() <= endTime.getTimeInMillis()) {
                 // 在无人预警计算时间范围内则开始计算
                 // 获取计算当天的进出记录
-                List<AccessInfo> accessInfos = redisCache.getCacheList(redisKey);
-                AccessInfo accessInfo = null;
-                if (accessInfos != null) {
-                    // 计算周期内有进出记录则取周期内的最后一条
-                    accessInfo = accessInfos.stream()
-                            .filter(p -> (("enter_zone_"+finalZoneNo).equals(p.getType()) || ("leave_zone_"+finalZoneNo).equals(p.getType())) &&
-                                    p.getTime() > startTime.getTimeInMillis() && p.getTime() < endTime.getTimeInMillis())
-                            //按时间倒序排
-                            .sorted(Comparator.comparing(p -> -p.getTime()))
-                            .findFirst()
-                            // 如果没有记录
-                            .orElse(null);
+                // 获取计算当天的进出记录
+                List<AccessInfo> accessInfos = new ArrayList<>();
+                List<AccessInfo> cacheList = redisCache.getCacheList(redisKey);
+                if(cacheList!=null){
+                    accessInfos.addAll(cacheList);
                 }
+                if(crossDay){
+                    //跨天的情况还需获取前一天的数据
+                    String lastDayRedisKey = T_DEVICE_VAYYAR_ACCESS_KEY + device.getNo() + DateFormatUtils.format(startTime, ":yyyy-MM-dd");
+                    List<AccessInfo> lastDayCacheList = redisCache.getCacheList(lastDayRedisKey);
+                    if(lastDayCacheList!=null){
+                        accessInfos.addAll(lastDayCacheList);
+                    }
+                }
+                AccessInfo accessInfo = null;
+                // 计算周期内有进出记录则取周期内的最后一条
+                accessInfo = accessInfos.stream()
+                        .filter(p -> (("enter_zone_"+finalZoneNo).equals(p.getType()) || ("leave_zone_"+finalZoneNo).equals(p.getType())) &&
+                                p.getTime() > startTime.getTimeInMillis() && p.getTime() < endTime.getTimeInMillis())
+                        //按时间倒序排
+                        .sorted(Comparator.comparing(p -> -p.getTime()))
+                        .findFirst()
+                        // 如果没有记录
+                        .orElse(null);
 
 
                 if (accessInfo != null && accessInfo.getType().startsWith("leave_zone_")) {
@@ -384,31 +402,47 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
             endTime.set(Calendar.MONTH, now.get(Calendar.MONTH));
             endTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
 
-
+            //是否跨天
+            boolean crossDay = false;
             // 开始时间
             Calendar startTime = Calendar.getInstance();
             startTime.setTime(rule.getStartTime());
             startTime.set(Calendar.YEAR, now.get(Calendar.YEAR));
             startTime.set(Calendar.MONTH, now.get(Calendar.MONTH));
             startTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+            if(startTime.getTimeInMillis()>endTime.getTimeInMillis()){
+                // 起始时间大于结束时间说明是设置跨天的夜间时段，开始时间减一天
+                startTime.add(Calendar.DAY_OF_MONTH,-1);
+                crossDay = true;
+            }
 
             // 计算时间等于结束时间开始计算
             if (StringUtils.equals(DateUtils.parseDateToStr(YYYY_MM_DD_HH_MM, endTime.getTime()),
                     DateUtils.parseDateToStr(YYYY_MM_DD_HH_MM, calculateTime))) {
                 // 获取计算当天的进出记录
-                List<AccessInfo> accessInfos = redisCache.getCacheList(redisKey);
-                AccessInfo accessInfo = null;
-                if (accessInfos != null) {
-                    // 计算周期内有进出记录则取周期内的最后一条
-                    accessInfo = accessInfos.stream()
-                            .filter(p -> (ENTER_ROOM.equals(p.getType()) || LEAVE_ROOM.equals(p.getType())) &&
-                                    p.getTime() > startTime.getTimeInMillis() && p.getTime() < endTime.getTimeInMillis())
-                            //按时间倒序排
-                            .sorted(Comparator.comparing(p -> -p.getTime()))
-                            .findFirst()
-                            // 如果没有记录
-                            .orElse(null);
+                List<AccessInfo> accessInfos = new ArrayList<>();
+                List<AccessInfo> cacheList = redisCache.getCacheList(redisKey);
+                if(cacheList!=null){
+                    accessInfos.addAll(cacheList);
                 }
+                if(crossDay){
+                    //跨天的情况还需获取前一天的数据
+                    String lastDayRedisKey = T_DEVICE_VAYYAR_ACCESS_KEY + device.getNo() + DateFormatUtils.format(startTime, ":yyyy-MM-dd");
+                    List<AccessInfo> lastDayCacheList = redisCache.getCacheList(lastDayRedisKey);
+                    if(lastDayCacheList!=null){
+                        accessInfos.addAll(lastDayCacheList);
+                    }
+                }
+                AccessInfo accessInfo = null;
+                // 计算周期内有进出记录则取周期内的最后一条
+                accessInfo = accessInfos.stream()
+                        .filter(p -> (ENTER_ROOM.equals(p.getType()) || LEAVE_ROOM.equals(p.getType())) &&
+                                p.getTime() > startTime.getTimeInMillis() && p.getTime() < endTime.getTimeInMillis())
+                        //按时间倒序排
+                        .sorted(Comparator.comparing(p -> -p.getTime()))
+                        .findFirst()
+                        // 如果没有记录
+                        .orElse(null);
                 if (accessInfo != null && LEAVE_ROOM.equals(accessInfo.getType())) {
                     // 如果区间内最后一条是离开则证明监控时间范围内离开未回来，抛出警告
                     deviceEventService.deviceAccessIssue(device.getNo(), "房间", LEAVE_ROOM, (now.getTimeInMillis() - accessInfo.getTime()) / 1000);
