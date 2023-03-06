@@ -1,0 +1,199 @@
+<template>
+	<view class="ui-box">
+		<u-navbar @rightClick="handleBack" placeholder :autoBack="true" />
+		<view class="ui-logo">
+			<text class="logo-text">设置电子围栏</text>
+		</view>
+		<view class="ui-map">
+			<map id="map" ref="map" style="height: 563rpx;" :latitude="latitude" :longitude="longitude"
+				:markers="covers" :circles="circles">
+			</map>
+		</view>
+		<view class="ui-set">
+			<view class="address-set">
+				<text class="label">
+					地址
+				</text>
+				<view class="input">
+					<u--input placeholder="请输入地址" border="none" clearable></u--input>
+				</view>
+			</view>
+			<view class="radius-set">
+				<view class="radius-set-title">
+					<text class="title-text">
+						设置半径长度
+					</text>
+				</view>
+				<view class="slider">
+					<u-slider @change="onSlider" max="500" activeColor="#eeaa3d" blockColor="#eeaa3d"
+						inactiveColor="#c0c4cc" />
+				</view>
+			</view>
+		</view>
+		<view class="address-list">
+			<view class="address-list-title">
+				<text class="title-icon"></text>
+				地址列表
+			</view>
+			<view class="list-item">
+				<text class="list-item-label">
+					新大陆科技园
+				</text>
+				<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
+			</view>
+			<view class="list-item">
+				<text class="list-item-label">
+					新大陆科技园
+				</text>
+				<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
+			</view>
+			<view class="list-item">
+				<text class="list-item-label">
+					新大陆科技园
+				</text>
+				<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
+			</view>
+		</view>
+		<view class="ui-btn">
+			<button class="default">提交</button>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				latitude: 39.909,
+				longitude: 116.39742,
+				covers: [],
+				circles: [],
+			}
+		},
+		methods: {
+			handleBack() {
+
+			},
+			onSlider() {
+
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.ui-box {
+		background-color: rgb(247, 247, 247);
+	}
+
+	.ui-logo {
+		background-color: #fff;
+		padding: 10rpx 32rpx 30rpx 32rpx;
+
+		.logo-text {
+			font-size: 50rpx;
+			color: #353535;
+			font-weight: 600;
+		}
+	}
+
+	.ui-map {
+		background-color: #fff;
+		padding: 20rpx 32rpx;
+	}
+
+	.ui-set {
+		margin-top: 20rpx;
+		background-color: #fff;
+		padding: 0 32rpx;
+
+		.address-set {
+			height: 128rpx;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			border-bottom: solid 2px #f7f7f7;
+
+			.label {
+				font-size: 34rpx;
+				color: #353535;
+			}
+
+			.input {
+				width: 220rpx;
+			}
+		}
+
+		.radius-set {
+			.radius-set-title {
+				height: 128rpx;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				flex-direction: row;
+
+				.title-text {
+					font-size: 34rpx;
+					color: #353535;
+				}
+			}
+
+			.slider {
+				// margin-top: 20rpx;
+				box-sizing: border-box;
+				// height: 80rpx;
+			}
+		}
+	}
+
+	.address-list {
+		margin-top: 20rpx;
+		background-color: #fff;
+		padding: 0 32rpx;
+
+		.address-list-title {
+			height: 100rpx;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			font-size: 36rpx;
+			color: #FEAE43;
+			font-weight: 600;
+			border-bottom: solid 2px #f7f7f7;
+
+			.title-icon {
+				height: 50rpx;
+				border-left: solid 10rpx #FEAE43;
+				// border-radius: 4rpx;
+				margin-right: 20rpx;
+			}
+		}
+
+		.list-item {
+			// padding: 48rpx 32rpx;
+			height: 128rpx;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			border-bottom: solid 2px #f7f7f7;
+
+			.list-item-label {
+				font-size: 34rpx;
+				color: #353535;
+			}
+		}
+	}
+
+	.ui-btn {
+		padding: 32rpx;
+		margin-top: 50rpx;
+
+		.default {
+			color: #fff !important;
+			background-color: #FFB24D;
+			border-radius: 31px;
+		}
+	}
+</style>

@@ -13,6 +13,9 @@
 </template>
 
 <script>
+	import {
+		isProd
+	} from '@/common/utils/util.js'
 	export default {
 		props: {
 			isShow: {
@@ -53,10 +56,11 @@
 				url,
 				name
 			}) {
-				// if (name === '电子牵挂卡' || name === '监测手表') return uni.$u.toast('暂不支持添加该设备');
 
+				if (isProd()) {
+					if (name === '电子牵挂卡' || name === '监测手表') return uni.$u.toast('暂不支持添加该设备');
+				}
 				this.$emit('cancle')
-
 				uni.navigateTo({
 					url
 				});

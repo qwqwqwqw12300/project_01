@@ -26,7 +26,7 @@
 								activeColor="#FEAE43" :name="item.value" :label="item.text"></u-radio>
 						</u-radio-group>
 					</u-cell>
-					<view class="ui-box">
+					<view class="ui-box" v-if="deviceInfo.roomId">
 						<!-- 壁挂 -->
 						<template v-if="editFrom.installPosition == 0">
 							<view class="ui-slider-box">
@@ -70,8 +70,9 @@
 							<view class="ui-slider-box">
 								<view class="ui-slider-tit">检测高度</view>
 								<view class="ui-slider">
-									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationTop.roomHeight"
-										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<u-slider min="0" max="1.5z" step="0.1"
+										v-model="editFrom.deviceLocationTop.roomHeight" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 									<text>{{ $u.priceFormat(editFrom.deviceLocationTop.roomHeight, 2) + '米' }}</text>
 								</view>
 							</view>
@@ -110,12 +111,12 @@
 						</template>
 						<!-- /顶挂 -->
 					</view>
-					<u-cell isLink @click="setZone" title="隐私区域设置"></u-cell>
+					<u-cell v-if="deviceInfo.roomId" isLink @click="setZone" title="隐私区域设置"></u-cell>
 				</u-cell-group>
 			</view>
 		</view>
 		<!-- 区域设置 -->
-		<template v-if="editFrom.deviceWarnParameter.nobodyWarn">
+		<template v-if="deviceInfo.roomId && editFrom.deviceWarnParameter.nobodyWarn">
 			<view class="ui-form">
 				<u-cell-group>
 					<u-cell>
@@ -438,7 +439,7 @@
 	}
 
 	.ui-slider-tit {
-		padding: 20rpx 0;
+		padding: 20rpx 0 0 0;
 	}
 
 	.ui-slider {
@@ -502,7 +503,7 @@
 
 	.ui-slider-box {
 		font-size: 15px;
-		padding: 27rpx 20rpx 43rpx 0;
+		padding: 20rpx 20rpx 20rpx 0;
 		border-bottom: 2px solid #f2f2f2;
 	}
 

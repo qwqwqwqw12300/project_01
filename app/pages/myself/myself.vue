@@ -66,7 +66,7 @@
 		data() {
 			return {
 				magList: [{
-					title: '家庭组管理',
+					title: '家庭管理',
 					icon: '/static/images/home.png',
 					url: '/pages/myself/famliy-manage',
 				}, {
@@ -74,7 +74,7 @@
 					icon: '/static/images/device-mg.png',
 					url: '/pages/myself/device-manage'
 				}, {
-					title: '设置紧急电话',
+					title: '紧急电话',
 					icon: '/static/images/urgent-phone.png',
 					url: '/pages/myself/urgent-mobile'
 				}],
