@@ -437,7 +437,7 @@ public class RoomZoneController extends BaseController {
 
             if(CollectionUtils.isNotEmpty(radarWaveDeviceSettings.getRoomZones())){
                 radarWaveDeviceSettings.setRoomZones(radarWaveDeviceSettings.getRoomZones().stream()
-                        .filter(p->radarRequest.getRoomZoneId().longValue()!=p.getRoomZoneId())
+                        .filter(p->p.getRoomZoneId()!=null&&radarRequest.getRoomZoneId().longValue()!=p.getRoomZoneId())
                         .collect(Collectors.toList()));
             }
             iDeviceService.setSettings(deviceId,radarWaveDeviceSettings);
