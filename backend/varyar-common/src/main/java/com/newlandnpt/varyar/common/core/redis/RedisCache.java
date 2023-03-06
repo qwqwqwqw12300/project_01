@@ -423,7 +423,7 @@ public class RedisCache
                     }
                 }
                 graduation = preGraduation;
-            }while (graduation.compareTo(this.currentGraduation)!=0);
+            }while (minus(graduation).compareTo(this.currentGraduation)!=0);
             this.currentGraduation = graduation;
         }
 
