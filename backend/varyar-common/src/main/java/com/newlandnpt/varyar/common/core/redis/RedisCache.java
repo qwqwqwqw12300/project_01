@@ -311,7 +311,7 @@ public class RedisCache
      * @return
      */
     public void set24HourTimeWheelValue(String key,long liveTime, LocalTime graduation,Date time){
-        redisTemplate.opsForZSet().removeRangeByScore(key,graduation.toSecondOfDay(),graduation.toSecondOfDay()+1);
+        redisTemplate.opsForZSet().removeRangeByScore(key,graduation.toSecondOfDay(),graduation.toSecondOfDay());
         redisTemplate.opsForZSet().add(key,time,graduation.toSecondOfDay());
         redisTemplate.expire(key,liveTime,TimeUnit.SECONDS);
     }
@@ -327,7 +327,7 @@ public class RedisCache
         Set<Date> result = redisTemplate.opsForZSet().rangeByScore(key,graduation.toSecondOfDay(),graduation.toSecondOfDay());
         return Optional
                 .ofNullable(result)
-                .map(p->p.stream().findAny().orElse(null))
+                .map(p->p.stream().sorted(Comparator.comparing(t->-t.getTime())).findFirst().orElse(null))
                 .orElse(null);
     }
 
