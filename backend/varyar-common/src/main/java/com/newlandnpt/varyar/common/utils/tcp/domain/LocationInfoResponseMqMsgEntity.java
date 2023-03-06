@@ -1,5 +1,7 @@
 package com.newlandnpt.varyar.common.utils.tcp.domain;
 
+import java.util.List;
+
 /**
  * 位置信息响应 MQ消息实体类
  * @author ljx
@@ -31,22 +33,22 @@ public class LocationInfoResponseMqMsgEntity {
     /**
      * gps数据
      */
-    private String gpsData;
+    private  gpsDatas gpsData;
 
     /**
      * LBS数据
      */
-    private String lbsData;
+    private lbsData lbsData;
 
     /**
      * Wi-Fi数据
      */
-    private String wifiData;
+    private List<wifiData> wifiData;
 
     public LocationInfoResponseMqMsgEntity() {
     }
 
-    public LocationInfoResponseMqMsgEntity(String deviceNo, String iccid, String tranNo, String msgTime, String gpsData, String lbsData, String wifiData) {
+    public LocationInfoResponseMqMsgEntity(String deviceNo, String iccid, String tranNo, String msgTime, gpsDatas gpsData, LocationInfoResponseMqMsgEntity.lbsData lbsData, List<LocationInfoResponseMqMsgEntity.wifiData> wifiData) {
         this.deviceNo = deviceNo;
         this.iccid = iccid;
         this.tranNo = tranNo;
@@ -54,6 +56,195 @@ public class LocationInfoResponseMqMsgEntity {
         this.gpsData = gpsData;
         this.lbsData = lbsData;
         this.wifiData = wifiData;
+    }
+
+    /**
+     * gps数据封装
+     */
+    public static class gpsDatas {
+        /**
+         * 定位状态
+         */
+        private String locationStatus;
+
+        /**
+         * 经度
+         */
+        private String longitude;
+
+        /**
+         * 纬度
+         */
+        private String latitude;
+
+        /**
+         * 定位时间
+         */
+        private String locationTime;
+
+        public String getLocationStatus() {
+            return locationStatus;
+        }
+
+        public void setLocationStatus(String locationStatus) {
+            this.locationStatus = locationStatus;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(String longitude) {
+            this.longitude = longitude;
+        }
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
+        public String getLocationTime() {
+            return locationTime;
+        }
+
+        public void setLocationTime(String locationTime) {
+            this.locationTime = locationTime;
+        }
+    }
+
+    /**
+     * lbs数据封装
+     */
+    public static class lbsData {
+        /**
+         * 国家码
+         */
+        private String MCC;
+
+        /**
+         *
+         */
+        private String MNC;
+
+        /**
+         * 十进制数据
+         */
+        private String LAC;
+
+        private String CID;
+
+        /**
+         * 信号强度
+         */
+        private String signalIntensity;
+
+        public String getMCC() {
+            return MCC;
+        }
+
+        public void setMCC(String MCC) {
+            this.MCC = MCC;
+        }
+
+        public String getMNC() {
+            return MNC;
+        }
+
+        public void setMNC(String MNC) {
+            this.MNC = MNC;
+        }
+
+        public String getLAC() {
+            return LAC;
+        }
+
+        public void setLAC(String LAC) {
+            this.LAC = LAC;
+        }
+
+        public String getCID() {
+            return CID;
+        }
+
+        public void setCID(String CID) {
+            this.CID = CID;
+        }
+
+        public String getSignalIntensity() {
+            return signalIntensity;
+        }
+
+        public void setSignalIntensity(String signalIntensity) {
+            this.signalIntensity = signalIntensity;
+        }
+
+        public lbsData() {
+        }
+
+
+        public lbsData(String MCC, String MNC, String LAC, String CID, String signalIntensity) {
+            this.MCC = MCC;
+            this.MNC = MNC;
+            this.LAC = LAC;
+            this.CID = CID;
+            this.signalIntensity = signalIntensity;
+        }
+    }
+
+    /**
+     * wifi数据封装
+     */
+    public static class wifiData{
+        /**
+         * wifi ID
+         */
+        private String SSID;
+
+        /**
+         * mac地址
+         */
+        private String MAC;
+
+        /**
+         * 信号强度
+         */
+        private String signalIntensity;
+
+        public wifiData() {
+        }
+
+        public wifiData(String SSID, String MAC, String signalIntensity) {
+            this.SSID = SSID;
+            this.MAC = MAC;
+            this.signalIntensity = signalIntensity;
+        }
+
+        public String getSSID() {
+            return SSID;
+        }
+
+        public void setSSID(String SSID) {
+            this.SSID = SSID;
+        }
+
+        public String getMAC() {
+            return MAC;
+        }
+
+        public void setMAC(String MAC) {
+            this.MAC = MAC;
+        }
+
+        public String getSignalIntensity() {
+            return signalIntensity;
+        }
+
+        public void setSignalIntensity(String signalIntensity) {
+            this.signalIntensity = signalIntensity;
+        }
     }
 
     public String getDeviceNo() {
@@ -88,27 +279,27 @@ public class LocationInfoResponseMqMsgEntity {
         this.msgTime = msgTime;
     }
 
-    public String getGpsData() {
+    public gpsDatas getGpsData() {
         return gpsData;
     }
 
-    public void setGpsData(String gpsData) {
+    public void setGpsData(gpsDatas gpsData) {
         this.gpsData = gpsData;
     }
 
-    public String getLbsData() {
+    public LocationInfoResponseMqMsgEntity.lbsData getLbsData() {
         return lbsData;
     }
 
-    public void setLbsData(String lbsData) {
+    public void setLbsData(LocationInfoResponseMqMsgEntity.lbsData lbsData) {
         this.lbsData = lbsData;
     }
 
-    public String getWifiData() {
+    public List<LocationInfoResponseMqMsgEntity.wifiData> getWifiData() {
         return wifiData;
     }
 
-    public void setWifiData(String wifiData) {
+    public void setWifiData(List<LocationInfoResponseMqMsgEntity.wifiData> wifiData) {
         this.wifiData = wifiData;
     }
 }
