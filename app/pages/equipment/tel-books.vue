@@ -3,9 +3,9 @@
 		<view class="ui-navbar">
 			<view class="header">
 				<text class="title">通讯录白名单</text>
-				<view class="action">
+				<view class="action" @click="handleAdd">
 					<u-icon name="/static/images/add-contact.png" size="44rpx" style="margin-right: 6rpx;"
-						@click="handleAdd" />
+						 />
 					添加
 				</view>
 				<view class="action" @click="openTelBooks">
