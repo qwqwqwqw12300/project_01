@@ -8,7 +8,7 @@ import java.sql.Date;
 /**
  * 课堂模式周期
  * @author ljx
- * @date 2023/3/1
+ * @date 2023/3/1 3/6
  */
 public class ClassTimePeriod {
 
