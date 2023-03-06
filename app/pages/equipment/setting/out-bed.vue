@@ -68,15 +68,6 @@
 											:plain="!(getParameter.intervalTime === item)" size="mini"
 											:text="item + '分钟'" type="warning" :name="item">
 										</u-tag>
-										<!-- <u-button
-											:key="item + 'time'"
-											v-for="item of timeList"
-											@click="onTimeBtn(item)"
-											type="primary"
-											:plain="!(getParameter.intervalTime === item)"
-											size="mini"
-											:text="item + '分钟'"
-										></u-button> -->
 									</view>
 								</view>
 								<view slot="right-icon">
@@ -86,7 +77,7 @@
 									</u-checkbox-group>
 								</view>
 							</u-cell>
-							<u-cell v-if="roomZones[activeZone].timeCus[0]">
+							<u-cell v-if="roomZones[activeZone].timeCus && roomZones[activeZone].timeCus[0]">
 								<view slot="title" class="ui-sub-title"><text>选择自定义时间</text></view>
 								<view slot="right-icon">
 									<u-number-box v-model="getParameter.intervalTime"></u-number-box>
@@ -236,7 +227,12 @@
 			/**日期信息**/
 			weekText() {
 				return week => {
-					return wddkAbbreviation(week) || '请选择星期';
+					try {
+						return wddkAbbreviation(week) || '请选择星期';
+					} catch (err) {
+						console.log(err);
+					}
+
 				};
 			},
 			getParameter() {
@@ -1032,7 +1028,7 @@
 		}
 
 		.ui-time {
-			padding: 47rpx 32rpx;
+			padding: 20rpx 32rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;

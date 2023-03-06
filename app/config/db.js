@@ -1,26 +1,8 @@
 /**设备参数**/
 export const INIT_DEIVCE_SET = {
 	deviceId: '',
-	deviceName: '',
-	deviceType: '',
-	deviceNo: '',
 	familyId: '',
 	roomId: '',
-	roomLeft: 3,
-	roomHeight: 4,
-	roomRight: 3,
-	roomLength: 4,
-	existFlag: 0,
-	fallFlag: 1,
-	entryTime: 1,
-	departureTime: 0,
-	/**开始监控时间**/
-	startTime: '00:00',
-	/**结束监控时间**/
-	endTime: '23:59',
-
-	inMonitorFlag: 1,
-	outMonitorFlag: 1,
 };
 
 /**监控子区域**/

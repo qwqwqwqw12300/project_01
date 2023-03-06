@@ -155,16 +155,10 @@
 			 */
 			binding(item) {
 				const {
-					name,
 					deviceId,
-					type,
-					no
 				} = item;
 				Object.assign(this.bindForm, {
-					deviceName: name,
 					deviceId,
-					deviceType: type,
-					deviceNo: no
 				});
 				this.$refs.selectRef.open();
 				// this.bindRoomShow = true;
