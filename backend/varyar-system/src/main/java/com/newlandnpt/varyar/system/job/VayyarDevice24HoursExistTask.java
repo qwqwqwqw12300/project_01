@@ -75,7 +75,7 @@ public class VayyarDevice24HoursExistTask {
                     triggerCalendar.setTime(new Date());
                     // 先补偿之前遗漏执行的任务
                     RedisCache.TimeWheel timeWheel = new RedisCache.TimeWheel(T_DEVICE_VAYYAR_ACCESS_CALCULATE_TIME_WHEEL_KEY +p.getNo(),MINUTES);
-                    timeWheel.setCurrentGraduationValue(triggerCalendar.getTime());
+                    timeWheel.setCurrentGraduation(triggerCalendar.getTime());
                     LocalTime triggerGraduation = timeWheel.getCurrentGraduation();
                     timeWheel.homing(LocalDate.of(triggerCalendar.get(Calendar.YEAR),
                             triggerCalendar.get(Calendar.MONTH)+1,triggerCalendar.get(Calendar.DAY_OF_MONTH)));
@@ -95,6 +95,7 @@ public class VayyarDevice24HoursExistTask {
                     }
 
                     triggerEvent(p, outKey, outInfo, triggerCalendar.getTimeInMillis());
+                    timeWheel.setCurrentGraduationValue(triggerCalendar.getTime());
 
                 }
 
