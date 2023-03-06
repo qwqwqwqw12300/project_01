@@ -500,6 +500,13 @@ public class DeviceServiceImpl implements IDeviceService {
                 if(!Objects.isNull(info)){
                     BeanUtils.copyProperties(info,device);
                 }
+                // 设备在线状态再去获取是否有人
+                Boolean roomPresence = redisCache.getCacheObject(CacheConstants.PRESENCE_ROOM_KEY+ deviceNo);
+                if (roomPresence!=null && roomPresence == true) {
+                    device.setHasPerson("1");
+                }else{
+                    device.setHasPerson("0");
+                }
             }
         return  device;
     }
