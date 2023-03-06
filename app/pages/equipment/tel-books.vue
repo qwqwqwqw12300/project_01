@@ -60,10 +60,11 @@
 			}
 		},
 		methods: {
+			//初始化数据
 			initData(){
 				this.options4 = []
 				GetAddressBook({
-					deviceNo:'867597011508550'
+					deviceNo:'867977060000248'
 				}).then(res=>{
 					console.log(res,'res')
 					res.data.map(item=>{
@@ -85,9 +86,8 @@
 			handleCancel() {
 				uni.navigateBack()
 			},
+			//批量保存和修改
 			handleSave() {
-				console.log('保存')
-				console.log(this.options4)
 				let addressBooks = []
 				this.options4.map(item=>{
 					if(item.addressBookId!=undefined){
@@ -109,11 +109,16 @@
 					addressBooks:addressBooks
 				}).then(res=>{
 					console.log(res,'res')
+					uni.$u.toast(res.msg)
 					setTimeout(() => {
-						uni.navigateBack()
+						this.initData()
 					}, 1000);
+					// setTimeout(() => {
+					// 	uni.navigateBack()
+					// }, 1000);
 				})
 			},
+			//添加输入框
 			handleAdd() {
 				this.options4.push({
 					name: '',
@@ -126,7 +131,8 @@
 					}],
 				})
 			},
-			handleDel(index,list) {
+			//单个删除
+			handleDel(id,list) {
 				uni.showModal({
 					title: '提示',
 					content: '是否确认删除？',
@@ -135,15 +141,17 @@
 						if (res.confirm) {
 							if(list.addressBookId!=undefined){
 								PostDeleteAddressBook({
-									deviceNo:'867597011508550',
+									deviceNo:'867977060000248',
 									addressBookId:list.addressBookId,
 									phoneNumber:list.phone
 								}).then(res=>{
-									console.log(res)
+									uni.$u.toast(res.msg)
+									setTimeout(() => {
+										this.initData()
+									}, 1000);	
 								})
-								this.initData()
 							}else{
-								this.options4.splice(this.options4.findIndex((item,index) => index == index), 1)
+								this.options4.splice(this.options4.findIndex((item,index) => index == id), 1)
 							}
 						} 
 					}
@@ -152,14 +160,11 @@
 			openTelBooks() {
 				this.$refs.telBookRefs.show(false)
 			},
+			//通讯录导入
 			phoneSelect(data) {
-				console.log(data)
-				let date = Date.now()
-				let rund = Math.ceil(Math.random() * 1000)
-				let id = date + '' + rund
+				// console.log(data)
 				data.map(item=>{
 					this.options4.push({
-						id,
 						name: item.name,
 						phone: item.phone,
 						options: [{

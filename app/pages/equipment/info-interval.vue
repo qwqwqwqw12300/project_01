@@ -29,7 +29,7 @@
 		<view class="ui-btn">
 			<view class="btn-box">
 				<view class="cancel-btn" @click="handleCancel">
-					取消
+					删除
 				</view>
 				<view class="save-btn" @tap="handleSave">
 					保存
