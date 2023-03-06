@@ -279,7 +279,7 @@ export function phoneRemove(phone) {
 
 export function wddkAbbreviation(week) {
 	let text = '';
-	const weekend = ['6', '7'];
+	const weekend = ['5', '6'];
 	// 是否包含周末
 	const includeEnd = weekend.filter(ele => week.includes(ele)).length === 2;
 	if (week.length === 7) return '每天';

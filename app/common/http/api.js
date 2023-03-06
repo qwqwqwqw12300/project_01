@@ -405,3 +405,29 @@ export const PostSetRadarWaveNobodyWarn = (params) => http.post('/api/device/set
  */
 export const PostDelRadarWaveNobodyWarn = (params) => http.post('/api/device/delRadarWaveNobodyWarn', params, {});
 
+/**
+ * 设置雷达波
+ */
+export const PostSetRadarWaveDevice = (params) => http.post('/api/device/setRadarWaveDevice', params, {});
+
+/**
+ * 设置雷达波
+ */
+export const PostSetRadarWareShadowZone = (params) => http.post('/api/roomZone/setRadarWareShadowZone', params, {});
+
+/**
+ * 添加离床预警区域
+ */
+export const PostSetRadarWareBedZone = (params) => http.post('/api/roomZone/setRadarWareBedZone', params, {});
+
+/**
+ * 添加/修改预警规则
+ */
+export const PostSetRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roomZone/setRadarWaveLeaveBedRulesDate', params, {});
+
+/**
+ * 删除预警规则
+ */
+export const PostDelRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roomZone/delRadarWaveLeaveBedRulesDate', params, {});
+
+

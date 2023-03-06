@@ -44,7 +44,6 @@
 <script>
 import { PostDelRadarWaveNobodyWarn, PostSetRadarWaveNobodyWarn } from '../../../common/http/api';
 import { wddkAbbreviation } from '../../../common/utils/util';
-import { WEEKMAP } from '../../../config/db';
 export default {
 	data() {
 		return {
@@ -165,6 +164,9 @@ export default {
 				}, 2000);
 			});
 		}
+	},
+	onBackPress() {
+		uni.$off('alertRule');
 	}
 };
 </script>
