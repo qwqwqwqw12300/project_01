@@ -80,6 +80,9 @@
 				console.log(value)
 				this.radius = value
 			}
+		},
+		onBackPress(event) {
+			uni.$off('detailsScreenResult');
 		}
 	}
 </script>
