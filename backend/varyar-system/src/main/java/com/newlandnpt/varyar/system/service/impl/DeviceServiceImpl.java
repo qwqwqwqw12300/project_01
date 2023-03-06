@@ -373,7 +373,6 @@ public class DeviceServiceImpl implements IDeviceService {
                 //radarWaveDeviceSettings.setRoom(roomService.selectTRoomByRoomId(device.getRoomId()));
                 TRoomZone roomZone = new TRoomZone();
                 roomZone.setDeviceId(device.getDeviceId());
-                radarWaveDeviceSettings.setRoomZones(roomZoneService.selectTRoomZoneList(roomZone));
 //            }
         }else if(TYPE_WATCH.equals(device.getType())){
             settings = new TDevice.WatchSettings();
