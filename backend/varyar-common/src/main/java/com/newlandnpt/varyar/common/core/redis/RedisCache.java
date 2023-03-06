@@ -387,11 +387,11 @@ public class RedisCache
                         throw new ServiceException("设置时间轮的秒数的值与当前刻度不符");
                     }
                 case MINUTES:
-                    if(currentGraduation.getSecond()!=calendar.get(Calendar.MINUTE)){
+                    if(currentGraduation.getMinute()!=calendar.get(Calendar.MINUTE)){
                         throw new ServiceException("设置时间轮的秒数的值与当前刻度不符");
                     }
                 case HOUR:
-                    if(currentGraduation.getSecond()!=calendar.get(Calendar.HOUR_OF_DAY)){
+                    if(currentGraduation.getHour()!=calendar.get(Calendar.HOUR_OF_DAY)){
                         throw new ServiceException("设置时间轮的秒数的值与当前刻度不符");
                     }
             }
