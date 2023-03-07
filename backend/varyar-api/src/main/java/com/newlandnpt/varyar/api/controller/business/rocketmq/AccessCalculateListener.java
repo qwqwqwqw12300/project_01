@@ -319,7 +319,7 @@ public class AccessCalculateListener implements RocketMQListener<MessageExt> {
                         redisCache.setCacheList(markKey, Arrays.asList(accessInfo));
                         if(!hasKey){
                             // 初次设值的时候设值过期时间二天
-                            redisCache.expire(redisKey,2, TimeUnit.DAYS);
+                            redisCache.expire(markKey,2, TimeUnit.DAYS);
                         }
                     }
                 }

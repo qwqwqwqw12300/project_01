@@ -17,7 +17,7 @@
 						<text>剩余电量: 100%</text>
 					</view>
 				</view>
-				<view class="device-set">
+				<view class="device-set" @click="restart">
 					<u-icon name="/static/images/reStart.png" size="44rpx" style="margin-right: 6rpx;" />重启设备
 				</view>
 			</view>
@@ -42,6 +42,9 @@
 </template>
 
 <script>
+	import {
+		PostRebootDevice
+	} from '@/common/http/api';
 	export default {
 		data() {
 			return {
@@ -72,6 +75,22 @@
 					url
 				})
 			},
+			restart(){
+				uni.showModal({
+					title: '提示',
+					content: '是否确认重启设备',
+					success: res => {
+						if (res.confirm) {
+							PostRebootDevice({
+								deviceNo:'867977060000248',
+								initialization:"0"
+							}).then(res=>{
+								uni.$u.toast(res.msg)
+							})
+						} 
+					}
+				});
+			}
 		}
 	}
 </script>

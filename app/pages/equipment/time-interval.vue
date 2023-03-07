@@ -9,24 +9,26 @@
 	<app-body>
 		<app-logo color="#353535" text="时段禁止" ></app-logo>
 		<CardTitle :title="'禁用运行中'" :content="'禁用时间拒绝所有电话和短信，但可查看时间和定位'" :backGroundImg="'/static/images/prohibit-moving.png'"></CardTitle>
-		<view class="ui-cell" @click="toJump('/pages/equipment/info-interval')">
-			<view class="ui-cell-content">
-				<view class="ui-cell-style">
-					<view class="ui-cell-title">禁用时段</view>
-					<view><u-icon name="arrow-right"></u-icon></view>
-				</view>
-				<view class="ui-cell-style">
-					<view class="ui-cell-font">
-						<view>2023/02/21 00:00 至 </view>
-						<view>2023/02/23 23:59</view>
+		<view style="margin-top: 50rpx;">
+			<view class="ui-cell" @click="toJump(item)" v-for="(item,index) in list" :key="index">
+				<view class="ui-cell-content">
+					<view class="ui-cell-style">
+						<view class="ui-cell-title">{{item.periodDisableTag}}</view>
+						<view><u-icon name="arrow-right"></u-icon></view>
 					</view>
-					<u-switch @change="handleSwitch" v-model="flag" activeValue="1" inactiveValue="0"
-						activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20"> >
-					</u-switch>
+					<view class="ui-cell-style">
+						<view class="ui-cell-font">
+							<view>{{item.beginTime}} 至 </view>
+							<view>{{item.endTime}}</view>
+						</view>
+						<u-switch @change="handleSwitch" v-model="flag" activeValue="1" inactiveValue="0"
+							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20"> 
+						</u-switch>
+					</view>
 				</view>
 			</view>
 		</view>
-		<view class="ui-btn"><button class="default" @click="toJump('/pages/equipment/new-interval')">新增时间段</button></view>
+		<view class="ui-btn"><button class="default" @click="toJumpTime">新增时间段</button></view>
 	</app-body>
 </template>
 
@@ -42,6 +44,7 @@
 		data() {
 			return {
 				flag: '0', //0关闭，1开启
+				list:[]
 			};
 		},
 		mounted() {
@@ -50,9 +53,10 @@
 		methods: {
 			initData(){
 				GetPeriodDisableList({
-					deviceNo:'867597011508551'
+					deviceNo:'867977060000248'
 				}).then(res=>{
 					console.log(res,'res')
+					this.list = res.data
 				})
 			},
 			handleSwitch() {
@@ -62,9 +66,15 @@
 				// 	uni.$u.toast(res.msg)
 				// })
 			},
-			toJump(url){
+			toJump(item){
+				const list = JSON.stringify(item)
 				uni.navigateTo({
-					url:url
+					url:`/pages/equipment/info-interval?list=${list}`
+				})
+			},
+			toJumpTime(){
+				uni.navigateTo({
+					url:'/pages/equipment/new-interval'
 				})
 			}
 		},
@@ -77,7 +87,6 @@
 <style lang="scss">
 	
 	.ui-cell {
-		margin-top: 50rpx;
 		width: 100%;
 		height: 240rpx;
 		display: flex;

@@ -11,7 +11,7 @@
 			</view>
 		</view>
 		<view class="ui-set">
-			<view class="address-set">
+			<view class="address-set" @click="goMap">
 				<text class="label">
 					地址
 				</text>
@@ -69,16 +69,46 @@
 				longitude: 119.18,
 				covers: [],
 				circles: [],
-				radius:''
+				radius:'0',
+				address:''
 			}
 		},
 		methods: {
 			handleSubmit(){
-				
+				const val = {
+					guardType:"circle",
+					latitude:this.latitude,
+					longitude:this.longitude,
+					radius:this.radius,
+					address:this.address
+				}
+				console.log(val,'val')
+				uni.$emit('getData', val);
+				setTimeout(() => {
+					uni.navigateBack()
+				}, 500);
 			},
 			onSlider(value){
 				console.log(value)
 				this.radius = value
+			},
+			/**
+			 * 跳转选择地址
+			 */
+			goMap() {
+				uni.$once('searchData', res => {
+					const {
+						province,
+						city,
+						district,
+						address,
+						name
+					} = res
+					this.address = province + city + district + address + name;
+				});
+				uni.navigateTo({
+					url: '/pages/equipment/search'
+				});
 			}
 		},
 		onBackPress(event) {

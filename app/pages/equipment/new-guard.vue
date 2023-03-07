@@ -30,7 +30,7 @@
 				</view>
 				<view class="item-input">
 					<u-cell-group>
-						<u-cell title="地址" arrow-direction="right" isLink @tap="handleJump()"> 
+						<u-cell title="地址" arrow-direction="right" isLink @click="handleJump(index)"> 
 							<text slot="value" class="u-slot-value">
 								{{item.address}}
 							</text>
@@ -92,23 +92,7 @@
 				showTime:false,
 				time:'15:26',
 				id:0,
-				contactList: [{
-						orderNum: 1,
-						orderName: '地点1',
-						address:'新大陆科技园',
-						date:'2023-03-01',
-						time:'15:32',
-						flag:'1'
-					},
-					{
-						orderNum: 2,
-						orderName: '地点2',
-						address:'新大陆壹号',
-						date:'2023-03-01',
-						time:'15:32',
-						flag:'1'
-					},
-				],
+				contactList: [],
 			}
 		},
 		methods: {
@@ -148,7 +132,14 @@
 					}
 				})
 			},
-			handleJump(){
+			handleJump(index){
+				console.log(this.contactList,'this.contactList')
+				uni.$on('getData', res => {
+					console.log(res,'res')
+					this.contactList[index].address = res.address;
+					console.log(this.contactList[index],'this.contactList[index]')
+				});
+				
 				uni.navigateTo({
 					url:'/pages/equipment/new-address'
 				})
@@ -202,7 +193,7 @@
 			},
 		},
 		onShow() {
-			
+			console.log(this.contactList,'contactList')
 		}
 	}
 </script>
@@ -305,7 +296,8 @@
 	
 	.ui-btn {
 		width: 100%;
-
+		position: fixed;
+		bottom: 0;
 
 		.btn-box {
 			height: 100rpx;

@@ -6,7 +6,7 @@
 -->
 
 <template>
-	<app-body>
+	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<app-logo color="#353535" text="编辑禁用时段" ></app-logo>
 		<view class="ui-cell">
 			<u-cell-group>
@@ -28,7 +28,7 @@
 		</view>
 		<view class="ui-btn">
 			<view class="btn-box">
-				<view class="cancel-btn" @click="handleCancel">
+				<view class="cancel-btn" @click="handleDel">
 					删除
 				</view>
 				<view class="save-btn" @tap="handleSave">
@@ -45,6 +45,10 @@
 
 <script>
 	import timePicker from '@/components/term-picker/term-picker.vue';
+	import {
+		PostSetPeriodDisable,
+		PostDeletePeriodDisable
+	} from '@/common/http/api';
 	export default {
 		components:{
 			timePicker
@@ -60,7 +64,8 @@
 				startTime: "14:00",
 				endTime: "15:00",
 				timeShow:false,
-				defaultTime:[0, 0, 0, 23, 59]
+				defaultTime:[0, 0, 0, 23, 59],
+				id:''
 			};
 		},
 		computed:{
@@ -94,17 +99,55 @@
 				this.timeShow = false
 			},
 			onSelected(e){
-				console.log(e.value,'e')
-				this.startDate = e.value[0]
-				this.endDate = e.value[1]
+				this.startDate = e.value[0].replace(/\//g,"-")
+				this.endDate = e.value[1].replace(/\//g,"-")
 				this.showPicker = false
 			},
-			handleCancel() {
-				uni.navigateBack()
+			handleDel() {
+				const list = []
+				list.push(this.id)
+				uni.showModal({
+					title: '',
+					content: '是否确认删除？',
+					success: res => {
+						if (res.confirm) {
+							PostDeletePeriodDisable({
+								deviceNo:'867977060000248',
+								uuidList:list
+							}).then(res=>{
+								uni.$u.toast(res.msg)
+								setTimeout(() => {
+									uni.navigateBack()
+								}, 1000);
+							})
+						}
+					}
+				});
 			},
 			handleSave() {
-				
+				PostSetPeriodDisable({
+					deviceNo:'867977060000248',
+					periodDisableTag:this.name,
+					beginTime:this.startDate +' '+ this.startTime,
+					endTime:this.endDate +' '+ this.endTime
+				}).then(res=>{
+					console.log(res,'res')
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						uni.navigateBack()
+					}, 1000);
+				})
 			},
+		},
+		onLoad(option) {
+			console.log(JSON.parse(option.list),'list')
+			const list = JSON.parse(option.list)
+			this.name = list.periodDisableTag
+			this.startDate = list.beginTime.split(" ")[0]
+			this.endDate = list.endTime.split(" ")[0]
+			this.startTime = list.beginTime.split(" ")[1]
+			this.endTime = list.endTime.split(" ")[1]
+			this.id = list.uuid
 		}
 	};
 </script>
