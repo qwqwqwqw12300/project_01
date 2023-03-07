@@ -4,8 +4,7 @@
 			<view class="header">
 				<text class="title">通讯录白名单</text>
 				<view class="action" @click="handleAdd">
-					<u-icon name="/static/images/add-contact.png" size="44rpx" style="margin-right: 6rpx;"
-						 />
+					<u-icon name="/static/images/add-contact.png" size="44rpx" style="margin-right: 6rpx;" />
 					添加
 				</view>
 				<view class="action" @click="openTelBooks">
@@ -23,10 +22,14 @@
 					<view class="cell">
 						<view class="cell-box">
 							<view class="input">
-								<u--input v-model="item.name" placeholder="请输入姓名" border="none" clearable></u--input>
+								<u--input v-model="item.phoneName" maxlength="6" placeholder="请输入姓名" border="none"
+									clearable>
+								</u--input>
 							</view>
 							<view class="input">
-								<u--input v-model="item.phone" placeholder="请输入手机号" border="none" clearable></u--input>
+								<u--input v-model="item.phoneNumber" maxlength="11" type="number" placeholder="请输入手机号"
+									border="none" clearable>
+								</u--input>
 							</view>
 						</view>
 					</view>
@@ -53,6 +56,12 @@
 		GetAddressBook,
 		PostDeleteAddressBook
 	} from '@/common/http/api';
+	import {
+		phoneValidator
+	} from '../../common/utils/util';
+	import {
+		isApp
+	} from '@/common/utils/util.js';
 	export default {
 		data() {
 			return {
@@ -61,26 +70,21 @@
 		},
 		methods: {
 			//初始化数据
-			initData(){
+			initData() {
 				this.options4 = []
 				GetAddressBook({
-					deviceNo:'867977060000248'
-				}).then(res=>{
-					console.log(res,'res')
-					res.data.map(item=>{
-						this.options4.push({
-							addressBookId:item.addressBookId,
-							name: item.phoneName,
-							phone: item.phoneNumber,
-							options: [{
-								text: '删除',
-								style: {
-									backgroundColor: '#f56c6c'
-								}
-							}],
-						})
+					deviceNo: '867977060000248'
+				}).then(res => {
+					this.options4 = res.data.map(n => {
+						n.options = [{
+							text: '删除',
+							style: {
+								backgroundColor: '#f56c6c'
+							}
+						}]
+						return n
 					})
-					
+
 				})
 			},
 			handleCancel() {
@@ -88,27 +92,16 @@
 			},
 			//批量保存和修改
 			handleSave() {
-				let addressBooks = []
-				this.options4.map(item=>{
-					if(item.addressBookId!=undefined){
-						addressBooks.push({
-							addressBookId:item.addressBookId,
-							phoneNumber:item.phone,
-							phoneName:item.name
-						})
-					}else{
-						addressBooks.push({
-							phoneNumber:item.phone,
-							phoneName:item.name
-						})
-					}
-					
-				})
+				const list = uni.$u.deepClone(this.options4)
+				for (let i = 0; i < list.length; i++) {
+					if (!list[i].phoneName) return uni.$u.toast('请填写联系人姓名')
+					if (!phoneValidator(list[i].phoneNumber)) return uni.$u.toast('手机号不正确')
+				}
 				PostAddOrUpdateAddressBook({
-					deviceNo:"867977060000248",
-					addressBooks:addressBooks
-				}).then(res=>{
-					console.log(res,'res')
+					deviceNo: "867977060000248",
+					addressBooks: this.options4
+				}).then(res => {
+					console.log(res, 'res')
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
 						this.initData()
@@ -121,8 +114,8 @@
 			//添加输入框
 			handleAdd() {
 				this.options4.push({
-					name: '',
-					phone: '',
+					phoneName: '',
+					phoneNumber: '',
 					options: [{
 						text: '删除',
 						style: {
@@ -132,41 +125,43 @@
 				})
 			},
 			//单个删除
-			handleDel(id,list) {
+			handleDel(id, list) {
 				uni.showModal({
 					title: '提示',
 					content: '是否确认删除？',
 					success: res => {
 						console.log(res, 'res')
 						if (res.confirm) {
-							if(list.addressBookId!=undefined){
+							if (list.addressBookId != undefined) {
 								PostDeleteAddressBook({
-									deviceNo:'867977060000248',
-									addressBookId:list.addressBookId,
-									phoneNumber:list.phone
-								}).then(res=>{
+									deviceNo: '867977060000248',
+									addressBookId: list.addressBookId,
+									phoneNumber: list.phoneNumber
+								}).then(res => {
 									uni.$u.toast(res.msg)
 									setTimeout(() => {
 										this.initData()
-									}, 1000);	
+									}, 1000);
 								})
-							}else{
-								this.options4.splice(this.options4.findIndex((item,index) => index == id), 1)
+							} else {
+								this.options4.splice(this.options4.findIndex((item, index) => index == id), 1)
 							}
-						} 
+						}
 					}
 				});
 			},
 			openTelBooks() {
-				this.$refs.telBookRefs.show(false)
+				if (isApp()) {
+					this.$refs.telBookRefs.show(false)
+				}
 			},
 			//通讯录导入
 			phoneSelect(data) {
 				// console.log(data)
-				data.map(item=>{
+				data.map(item => {
 					this.options4.push({
-						name: item.name,
-						phone: item.phone,
+						phoneName: item.name,
+						phoneNumber: item.phone,
 						options: [{
 							text: '删除',
 							style: {
@@ -177,7 +172,7 @@
 				})
 			}
 		},
-		onShow(){
+		onShow() {
 			this.initData()
 		}
 

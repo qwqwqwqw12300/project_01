@@ -30,7 +30,7 @@
 				</view>
 				<view class="item-input">
 					<u-cell-group>
-						<u-cell title="地址" arrow-direction="right" isLink @tap="handleJump()"> 
+						<u-cell title="地址" arrow-direction="right" isLink @click="handleJump(index)"> 
 							<text slot="value" class="u-slot-value">
 								{{item.address}}
 							</text>
@@ -92,23 +92,7 @@
 				showTime:false,
 				time:'15:26',
 				id:0,
-				contactList: [{
-						orderNum: 1,
-						orderName: '地点1',
-						address:'新大陆科技园',
-						date:'2023-03-01',
-						time:'15:32',
-						flag:'1'
-					},
-					{
-						orderNum: 2,
-						orderName: '地点2',
-						address:'新大陆壹号',
-						date:'2023-03-01',
-						time:'15:32',
-						flag:'1'
-					},
-				],
+				contactList: [],
 			}
 		},
 		methods: {
@@ -148,9 +132,25 @@
 					}
 				})
 			},
-			handleJump(){
+			handleJump(index){
+				uni.$on('getMapData', res => {
+					console.log(res,'res')
+					// this.contactList[index].places = []
+					// console.log(res,'res')
+					// this.contactList[index].places.push({
+					// 	guardType:'circle',
+					// 	address:res.siteInfo,
+					// 	longitude:res.longitude,
+					// 	latitude:res.latitude,
+					// 	radius:res.sliderValue,
+					// })
+					this.contactList[index].address = res.siteInfo
+					
+					// console.log(this.contactList,'this.contactList')
+				});
+				
 				uni.navigateTo({
-					url:'/pages/equipment/new-address'
+					url:'/pages/equipment/enclosure'
 				})
 			},
 			handleCancel() {
@@ -174,17 +174,12 @@
 				
 			},
 			addPlace(){
-				let date = Date.now()
-				let rund = Math.ceil(Math.random()*1000)
-				let orderNum = date + '' + rund
-				console.log(date,'date')
 				this.contactList.push({
-					orderNum,
 					orderName: '地点' + (this.contactList.length+1),
 					address:'默认地址',
 					date:'2023-03-01',
 					time:'15:32',
-					flag:'1'
+					flag:'1',
 				})
 				console.log(this.contactList,'this.contactList')
 			},
@@ -202,7 +197,7 @@
 			},
 		},
 		onShow() {
-			
+			console.log(this.contactList,'this.contactList222222222')
 		}
 	}
 </script>
@@ -305,7 +300,8 @@
 	
 	.ui-btn {
 		width: 100%;
-
+		position: fixed;
+		bottom: 0;
 
 		.btn-box {
 			height: 100rpx;

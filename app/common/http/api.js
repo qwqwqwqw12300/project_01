@@ -405,6 +405,11 @@ export const GetPeriodDisableList = (params) => http.get('/api/careCard/getPerio
  */
 export const PostSetPeriodDisable = (params) => http.post('/api/careCard/setPeriodDisable', params, {})
 
+/**
+ *删除时段禁用时段*
+ */
+export const PostDeletePeriodDisable = (params) => http.post('/api/careCard/deletePeriodDisable', params, {})
+
 
 /**
  * 添加/修改无人预警
@@ -442,6 +447,11 @@ export const PostSetRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roo
 export const PostDelRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roomZone/delRadarWaveLeaveBedRulesDate', params, {});
 
 /**
+ * 重启设备
+ */
+export const PostRebootDevice = (params) => http.post('/api/careCard/rebootDevice', params, {});
+
+/**
  * 获取位置守护
  */
 export const GetLocationGuardList = (params) => http.get('/api/careCard/getLocationGuardList', params, {});
@@ -450,6 +460,8 @@ export const GetLocationGuardList = (params) => http.get('/api/careCard/getLocat
  * 设置位置守护
  */
 export const PostSetLocationGuard = (params) => http.get('/api/careCard/setLocationGuard', params, {});
+
+
 
 
 

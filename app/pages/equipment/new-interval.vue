@@ -60,8 +60,8 @@
 				//日期选择组件
 				showPicker: false,
 				defaultValue:['2023-02-27 14:00', '2023-03-05 13:59'],
-				startDate: "2023/02/27",
-				endDate: "2023/03/05",
+				startDate: "2023-02-27",
+				endDate: "2023-03-05",
 				startTime: "14:00",
 				endTime: "15:00",
 				timeShow:false,
@@ -99,9 +99,8 @@
 				this.timeShow = false
 			},
 			onSelected(e){
-				console.log(e.value,'e')
-				this.startDate = e.value[0]
-				this.endDate = e.value[1]
+				this.startDate = e.value[0].replace(/\//g,"-")
+				this.endDate = e.value[1].replace(/\//g,"-")
 				this.showPicker = false
 			},
 			handleCancel() {
@@ -109,13 +108,16 @@
 			},
 			handleSave() {
 				PostSetPeriodDisable({
-					deviceNo:'867597011508551',
-					periodDisableTag:'',
-					beginTime:'',
-					endTime:'',
-					period:''
+					deviceNo:'867977060000248',
+					periodDisableTag:this.name,
+					beginTime:this.startDate +' '+ this.startTime,
+					endTime:this.endDate +' '+ this.endTime
 				}).then(res=>{
 					console.log(res,'res')
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						uni.navigateBack()
+					}, 1000);
 				})
 			},
 		}

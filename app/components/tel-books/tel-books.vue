@@ -16,59 +16,59 @@
 			return {
 				visible: false,
 				isSingle: true,
-				// contactList: [],
-				contactList: [{
-						"name": '阿一',
-						"phone": '11554636343'
-					}, {
-						"name": '阿三',
-						"phone": '12554636343'
-					}, {
-						"name": '斌二',
-						"phone": '13654636340',
-					}, {
-						name: '陈三',
-						phone: '14344306340'
-					},
-					{
-						name: '陈三',
-						phone: '15344306340'
-					},
-					{
-						name: '陈三',
-						phone: '16344306340'
-					},
-					{
-						name: '陈三',
-						phone: '17344306340'
-					},
-					{
-						name: '在三',
-						phone: '18344306340'
-					},
-					{
-						name: '想三',
-						phone: '19344306340'
-					},
-					{
-						name: '哦三',
-						phone: '13344398340'
-					},
-					{
-						name: '无三',
-						phone: '13744306340'
-					}, {
-						name: '林三',
-						phone: '13144306340'
-					}
-				],
+				contactList: [],
+				// contactList: [{
+				// 		"name": '阿一',
+				// 		"phone": '11554636343'
+				// 	}, {
+				// 		"name": '阿三',
+				// 		"phone": '12554636343'
+				// 	}, {
+				// 		"name": '斌二',
+				// 		"phone": '13654636340',
+				// 	}, {
+				// 		name: '陈三',
+				// 		phone: '14344306340'
+				// 	},
+				// 	{
+				// 		name: '陈三',
+				// 		phone: '15344306340'
+				// 	},
+				// 	{
+				// 		name: '陈三',
+				// 		phone: '16344306340'
+				// 	},
+				// 	{
+				// 		name: '陈三',
+				// 		phone: '17344306340'
+				// 	},
+				// 	{
+				// 		name: '在三',
+				// 		phone: '18344306340'
+				// 	},
+				// 	{
+				// 		name: '想三',
+				// 		phone: '19344306340'
+				// 	},
+				// 	{
+				// 		name: '哦三',
+				// 		phone: '13344398340'
+				// 	},
+				// 	{
+				// 		name: '无三',
+				// 		phone: '13744306340'
+				// 	}, {
+				// 		name: '林三',
+				// 		phone: '13144306340'
+				// 	}
+				// ],
 			}
 		},
 		methods: {
 			show(params) {
 				this.isSingle = params
-				this.visible = true
-				// this.getContact()
+				// this.visible = true
+				this.getContact()
 			},
 			/**
 			 * 选择手机联系人

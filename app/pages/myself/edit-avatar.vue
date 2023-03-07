@@ -36,7 +36,7 @@
 				} = info.file[0]
 				console.log(info.file, 'llllllllllll')
 				const fileType = url.substring(url.lastIndexOf("."))
-				if (!['.png', '.jpeg', '.jpg'].includes(fileType)) return uni.$u.toast('不支持改格式图片')
+				if (!['.png', '.jpeg', '.jpg'].includes(fileType)) return uni.$u.toast('不支持该格式图片')
 				if (size / 1024 / 1024 > 5) return uni.$u.toast('图片大小不能超过5M')
 				console.log(fileType)
 				let fileList = [...info.file]
