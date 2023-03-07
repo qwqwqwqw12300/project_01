@@ -67,6 +67,7 @@
 	export default {
 		data() {
 			return {
+				type: 'set',
 				siteInfo: '', //地址信息
 				latitude: 39.909,
 				longitude: 116.39742,
@@ -78,8 +79,8 @@
 			}
 		},
 		created() {
-			this.handleGetLocation()
-			this.getRegistrationID()
+			// this.getRegistrationID()
+			// this.handleGetLocation()
 		},
 		methods: {
 			mapMarker(data) {
@@ -200,10 +201,8 @@
 			 * 获取登录设备注册号
 			 */
 			getRegistrationID() {
-				console.log('oooooooooo')
-				push.getRegistrationID().then(res => {
-					console.log(res, 'ppppppppppppppppppppppppppppp')
-					this.registrationId = res
+				isApp() && push.getRegistrationID().then(res => {
+					if (res) this.registrationId = res;
 				});
 			},
 			/**
@@ -218,6 +217,10 @@
 					sliderValue,
 					registrationId,
 				} = this
+				if (this.type !== 'set') {
+					uni.$emit('getMapData', val);
+					uni.navigateBack()
+				}
 				if (sliderValue === 0) {
 					return uni.$u.toast('半径长度大于0')
 				}
@@ -239,6 +242,10 @@
 			uni.$on('searchData', data => {
 				this.mapMarker(data)
 			})
+		},
+		onLoad(options) {
+			this.type = options.type
+			console.log(options)
 		}
 	}
 </script>
