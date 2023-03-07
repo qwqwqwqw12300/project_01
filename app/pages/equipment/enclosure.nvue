@@ -15,7 +15,7 @@
 					地址
 				</text>
 				<view class="input">
-					<u--input placeholder="请输入地址" border="none" clearable></u--input>
+					<text class="input-text" @click="goSearch">{{siteInfo || '请输入地址'}}</text>
 				</view>
 			</view>
 			<view class="radius-set">
@@ -23,10 +23,13 @@
 					<text class="title-text">
 						设置半径长度
 					</text>
+					<text class="radius-show">{{sliderValue}}米</text>
 				</view>
 				<view class="slider">
-					<u-slider @change="onSlider" max="500" activeColor="#eeaa3d" blockColor="#eeaa3d"
-						inactiveColor="#c0c4cc" />
+
+					<u-slider @change="onSlider" max="500" v-model="sliderValue" activeColor="#eeaa3d"
+						blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+					<!-- 			<text class="radius-show">{{sliderValue}}米</text> -->
 				</view>
 			</view>
 		</view>
@@ -35,48 +38,207 @@
 				<text class="title-icon"></text>
 				地址列表
 			</view>
-			<view class="list-item">
+			<view class="list-item" v-for="(n, index) in poiList" :key="index" @click="mapMarker(n)">
 				<text class="list-item-label">
-					新大陆科技园
-				</text>
-				<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
-			</view>
-			<view class="list-item">
-				<text class="list-item-label">
-					新大陆科技园
-				</text>
-				<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
-			</view>
-			<view class="list-item">
-				<text class="list-item-label">
-					新大陆科技园
+					{{ n.name }}
 				</text>
 				<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
 			</view>
 		</view>
 		<view class="ui-btn">
-			<button class="default">提交</button>
+			<text class="btn-default" @click="handleSubmit">提交</text>
+			<!-- <button class="default">提交</button> -->
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		push
+	} from '@/common/sdk/push.js';
+	import {
+		isApp
+	} from '../../common/utils/util';
+	import {
+		PostAddFence,
+	} from '@/common/http/api.js';
+	let mapSearch;
+	if (isApp()) mapSearch = weex.requireModule('mapSearch');
 	export default {
 		data() {
 			return {
+				siteInfo: '', //地址信息
 				latitude: 39.909,
 				longitude: 116.39742,
 				covers: [],
 				circles: [],
+				sliderValue: 200, //半径
+				poiList: [], //搜索地址
+				registrationId: '', //设备编码
 			}
 		},
+		created() {
+			this.handleGetLocation()
+			this.getRegistrationID()
+		},
 		methods: {
-			handleBack() {
-
+			mapMarker(data) {
+				const {
+					province,
+					city,
+					district,
+					address,
+					location: {
+						latitude,
+						longitude
+					}
+				} = data
+				this.siteInfo = province + city + district + address
+				this.latitude = latitude
+				this.longitude = longitude
+				this.covers[0] = {
+					latitude,
+					longitude,
+					iconPath: '@/static/location.png'
+				}
+				this.circles[0] = {
+					latitude,
+					longitude,
+					color: '#3B7AFF',
+					strokeWidth: 1,
+					radius: this.sliderValue,
+					fillColor: 'rgba(100,163,242,0.50)'
+				}
+				this.covers = [...this.covers]
+				this.circles = [...this.circles]
+				console.log(this.covers, '99999')
+				this.$forceUpdate()
 			},
-			onSlider() {
+			/**
+			 * 跳转搜索
+			 */
+			goSearch() {
+				uni.navigateTo({
+					url: '/pages/equipment/search'
+				})
+			},
 
-			}
+			/**
+			 * 半径滑动
+			 */
+			onSlider(e) {
+				if (this.circles.length) {
+					this.circles[0].radius = e
+					this.circles = [...this.circles]
+					this.circles = [...this.circles]
+				}
+			},
+			/**
+			 * 获取当前定位
+			 */
+			handleGetLocation() {
+				uni.showLoading({
+					title: '加载中'
+				})
+				uni.getLocation({
+					geocode: true,
+					type: 'gcj02',
+					success: (res) => {
+						mapSearch && mapSearch.poiSearchNearBy({
+							point: res,
+							key: '小区'
+						}, res => {
+							const {
+								poiList
+							} = res;
+							if (poiList && poiList.length) {
+								this.poiList = poiList.length > 4 ? poiList.slice(0, 4) : poiList
+								console.log(this.poiList, 'lll')
+							}
+						})
+						// console.log(res, 'ssssssssss')
+						// this.mapMarker(res)
+						const {
+							latitude,
+							longitude,
+							address: {
+								province,
+								city,
+								district,
+								street,
+								streetNum,
+								poiName
+							},
+						} = res
+						this.latitude = latitude
+						this.longitude = longitude
+						this.siteInfo = province + city + district + street + streetNum + poiName
+						this.covers[0] = {
+							latitude,
+							longitude,
+							iconPath: '@/static/location.png'
+						}
+						this.circles[0] = {
+							latitude,
+							longitude,
+							color: '#3B7AFF',
+							strokeWidth: 1,
+							radius: this.sliderValue,
+							fillColor: 'rgba(100,163,242,0.50)'
+						}
+						this.covers = [...this.covers]
+						this.circles = [...this.circles]
+						uni.hideLoading()
+					},
+					false: (res) => {
+						console.log(res, 'error')
+						uni.hideLoading()
+					}
+				})
+			},
+			/**
+			 * 获取登录设备注册号
+			 */
+			getRegistrationID() {
+				console.log('oooooooooo')
+				push.getRegistrationID().then(res => {
+					console.log(res, 'ppppppppppppppppppppppppppppp')
+					this.registrationId = res
+				});
+			},
+			/**
+			 * 保存
+			 */
+			handleSubmit() {
+				const {
+					// deviceId,
+					siteInfo: address,
+					longitude,
+					latitude,
+					sliderValue,
+					registrationId,
+				} = this
+				if (sliderValue === 0) {
+					return uni.$u.toast('半径长度大于0')
+				}
+				console.log(address, latitude, longitude, sliderValue, registrationId, 'hhhhhhhhhhhhhhhhh')
+				PostAddFence({
+					deviceId: '867977060000248',
+					address,
+					longitude,
+					latitude,
+					radius: sliderValue + '',
+					deviceNo: registrationId,
+				}).then(res => {
+					uni.navigateBack()
+					uni.$u.toast(res.msg)
+				})
+			},
+		},
+		onShow() {
+			uni.$on('searchData', data => {
+				this.mapMarker(data)
+			})
 		}
 	}
 </script>
@@ -117,11 +279,18 @@
 
 			.label {
 				font-size: 34rpx;
+				width: 150rpx;
 				color: #353535;
 			}
 
 			.input {
-				width: 220rpx;
+				flex: 1;
+				// width: 220rpx;
+
+				.input-text {
+					font-size: 30rpx;
+					color: #D4D4D4;
+				}
 			}
 		}
 
@@ -137,11 +306,20 @@
 					font-size: 34rpx;
 					color: #353535;
 				}
+
+				.radius-show {
+					font-size: 34rpx;
+					color: #353535;
+				}
 			}
 
 			.slider {
 				// margin-top: 20rpx;
 				box-sizing: border-box;
+				// display: flex;
+				// justify-content: space-between;
+				// align-items: center;
+				// flex-direction: row;
 				// height: 80rpx;
 			}
 		}
@@ -187,11 +365,18 @@
 	}
 
 	.ui-btn {
-		padding: 32rpx;
+		padding: 32rpx 0;
 		margin-top: 50rpx;
+		display: flex;
+		align-items: center;
 
-		.default {
-			color: #fff !important;
+		.btn-default {
+			width: 680rpx;
+			margin: 0 auto;
+			height: 88rpx;
+			line-height: 88rpx;
+			text-align: center;
+			color: #fff;
 			background-color: #FFB24D;
 			border-radius: 31px;
 		}
