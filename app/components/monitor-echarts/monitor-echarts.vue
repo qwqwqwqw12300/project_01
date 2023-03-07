@@ -106,20 +106,6 @@
 				}
 			}
 		},
-		// computed: {
-		// 	...mapState({
-		// 		deviceInfo: state => state.deviceInfo
-		// 	})
-		// },
-		// async onLoad() {
-		// 	console.log('455485865')
-
-		// },
-		// onUnload() {
-		// GetEndDevice({
-		// 	deviceId: this.deviceInfo.deviceId
-		// })
-		// },
 		mounted() {
 			// this.handleInit()
 		},
@@ -170,6 +156,7 @@
 				})
 				console.log(this.roomZoneList, '0999')
 				this.option.series[0].markArea.data = this.roomZoneList
+				this.handleQuery()
 				const timer = setInterval(() => {
 					this.handleQuery()
 				}, 4000);
