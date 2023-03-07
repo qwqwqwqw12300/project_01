@@ -134,11 +134,7 @@
 			},
 			handleJump(index){
 				console.log(this.contactList,'this.contactList')
-				uni.$on('getData', res => {
-					console.log(res,'res')
-					this.contactList[index].address = res.address;
-					console.log(this.contactList[index],'this.contactList[index]')
-				});
+				
 				
 				uni.navigateTo({
 					url:'/pages/equipment/new-address'
@@ -193,7 +189,9 @@
 			},
 		},
 		onShow() {
-			console.log(this.contactList,'contactList')
+			uni.$on('getMapData', res => {
+				console.log(res,'res')
+			});
 		}
 	}
 </script>
