@@ -55,9 +55,6 @@
 	import {
 		phoneValidator
 	} from '../../common/utils/util';
-	// import {
-	// 	phoneValidator
-	// } from '../../common/utils/util';
 	export default {
 		data() {
 
@@ -71,6 +68,8 @@
 				},
 				contactList: [],
 			}
+		},
+		mounted() {
 		},
 		methods: {
 			getContact(index) {

@@ -59,6 +59,9 @@
 	import {
 		phoneValidator
 	} from '../../common/utils/util';
+	import {
+		isApp
+	} from '@/common/utils/util.js';
 	export default {
 		data() {
 			return {
@@ -148,7 +151,9 @@
 				});
 			},
 			openTelBooks() {
-				this.$refs.telBookRefs.show(false)
+				if (isApp()) {
+					this.$refs.telBookRefs.show(false)
+				}
 			},
 			//通讯录导入
 			phoneSelect(data) {
