@@ -6,38 +6,66 @@
 -->
 
 <template>
-	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
-		<view class="wd-add">
-			<view class="wd-title">
-				<text class="wd-title-font">{{mode === 'add' ? '新建房间': '修改房间'}}</text>
-			</view>
-			<view class="wd-add-box">
-				<view class="wd-input">
-					<text class="wd-input-font">房间名称</text>
-					<u-input :maxlength="6" v-model="form.name" placeholder="请输入房间名称" border="surround" clearable>
-					</u-input>
+	<view>
+		<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
+			<!-- 房间 -->
+			<view class="wd-add" v-if="form.type === '0'">
+				<view class="wd-title">
+					<text class="wd-title-font">{{mode === 'add' ? '新建房间': '修改房间'}}</text>
 				</view>
-				<view class="wd-tags">
-					<view class="wd-tags-item active" v-for="(item, index) in tagsList" :key="index">
-						<u-tag :text="item.name" :plain="!item.checked" type="warning" :name="item.name"
-							@click="radioClick">
-						</u-tag>
+				<view class="wd-add-box">
+					<view class="wd-input">
+						<text class="wd-input-font">房间名称</text>
+						<u-input :maxlength="6" v-model="form.name" placeholder="请输入房间名称" border="surround" clearable>
+						</u-input>
+					</view>
+					<view class="wd-tags">
+						<view class="wd-tags-item active" v-for="(item, index) in tagsList" :key="index">
+							<u-tag :text="item.name" :plain="!item.checked" type="warning" :name="item.name"
+								@click="radioClick">
+							</u-tag>
+						</view>
 					</view>
 				</view>
-				<!-- <view v-if="mode === 'edit'">
-					<u-text size="28rpx" prefixIcon="plus-circle" iconStyle="font-size: 40rpx" text="绑定雷达波">
-					</u-text>
-					<view class="wd-select">
-						<uni-data-select v-model="deviceId" :clear="false" :localdata="devices"></uni-data-select>
+				<view class="wd-hr"></view>
+				<view class="wd-btn" @click="next">
+					<view>{{ subTitle }}</view>
+				</view>
+			</view>
+			<!-- /房间 -->
+			<!-- 人员 -->
+			<view class="wd-add wd-person" v-else>
+				<view class="wd-title">
+					<text class="wd-title-font">{{mode === 'add' ? '新建人员': '修改人员'}}</text>
+				</view>
+				<view class="wd-add-box">
+					<view class="wd-input">
+						<text class="wd-input-font">人员名称</text>
+						<u-input :maxlength="6" v-model="form.name" placeholder="请输入人员名称" border="surround" clearable>
+						</u-input>
 					</view>
-				</view> -->
+				</view>
+				<view class="wd-hr"></view>
+				<view class="wd-btn" @click="next">
+					<view>{{ subTitle }}</view>
+				</view>
 			</view>
-			<view class="wd-hr"></view>
-			<view class="wd-btn" @click="next">
-				<view>{{ subTitle }}</view>
+			<!-- /人员 -->
+		</u-popup>
+		<u-action-sheet :closeOnClickOverlay="true" :closeOnClickAction="true" :safeAreaInsetBottom="true"
+			@close="close" :show="sheetShow" cancelText="取消">
+			<view>
+				<view @click="sheetSelect(item)" class="ui-sheet" v-for="(item, index) of sheetList"
+					:key="'sheet' + index">
+					<u-icon :name="'../../static/images/' + item.icon + '.png'" class="active" color="#fff"
+						width="40rpx" height="40rpx">
+					</u-icon>
+					<text>{{item.name}}</text>
+				</view>
 			</view>
-		</view>
-	</u-popup>
+		</u-action-sheet>
+	</view>
+
 </template>
 
 <script>
@@ -62,7 +90,8 @@
 				form: {
 					name: '', //房间名称
 					familyId: '', // 家庭id
-					roomId: '' // 房间id
+					roomId: '', // 房间id
+					type: '0'
 				},
 				/**要绑定的跌倒检测器**/
 				deviceId: '',
@@ -94,6 +123,19 @@
 						checked: false
 					}
 				],
+				sheetList: [{
+						name: '房间',
+						icon: 'add-home',
+						value: '0'
+					},
+					{
+						name: '人员',
+						icon: 'add-person',
+						value: '1'
+					}
+				],
+				/**是否展示弹出层**/
+				sheetShow: false,
 			}
 		},
 		computed: {
@@ -121,12 +163,18 @@
 			close() {
 				this.form = {}
 				this.show = false;
+				this.sheetShow = false;
 			},
 			open(obj = {}) {
-				this.show = true;
+				if (this.mode === 'add') {
+					this.sheetShow = true;
+				} else {
+					this.show = true;
+				}
 				this.form = {
 					...obj
 				};
+
 			},
 			next() {
 				const {
@@ -155,6 +203,12 @@
 					}, 500);
 				})
 			},
+
+			sheetSelect(item) {
+				this.form.type = item.value;
+				this.show = true;
+				this.sheetShow = false;
+			}
 		}
 	};
 </script>
@@ -204,7 +258,7 @@
 				margin-top: 0 !important;
 				zoom: 1;
 				min-height: 60rpx;
-				
+
 				&:after {
 					content: '';
 					display: block;
@@ -311,5 +365,34 @@
 			justify-content: center;
 
 		}
+	}
+
+	.ui-sheet {
+		border-bottom: 1rpx solid #e2e2e2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 120rpx;
+		width: 100%;
+
+		text {
+			margin-left: 20rpx;
+			font-size: 34rpx;
+			color: #000000;
+			text-align: center;
+			line-height: 34rpx;
+			font-weight: 400;
+		}
+	}
+
+	::v-deep .u-action-sheet__cancel-text {
+		font-size: 36rpx;
+		color: #599FFF;
+		line-height: 36rpx;
+		font-weight: 500;
+	}
+
+	.wd-person {
+		min-height: 80rpx !important;
 	}
 </style>

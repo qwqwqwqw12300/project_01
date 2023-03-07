@@ -30,7 +30,7 @@
 				addHandle: {
 					show: false,
 					list: [{
-							name: '雷达波设备',
+							name: '跌倒检测器',
 							icon: 'leida-nm',
 							url: '/pages/equipment/add/radar'
 						},
@@ -40,7 +40,7 @@
 							url: '/pages/equipment/watch-detail/watch-detail'
 						},
 						{
-							name: '监测手表',
+							name: '4G健康手表',
 							icon: 'watch',
 							url: '/pages/equipment/add/monitor'
 						}
