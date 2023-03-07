@@ -133,11 +133,24 @@
 				})
 			},
 			handleJump(index){
-				console.log(this.contactList,'this.contactList')
-				
+				uni.$on('getMapData', res => {
+					console.log(res,'res')
+					// this.contactList[index].places = []
+					// console.log(res,'res')
+					// this.contactList[index].places.push({
+					// 	guardType:'circle',
+					// 	address:res.siteInfo,
+					// 	longitude:res.longitude,
+					// 	latitude:res.latitude,
+					// 	radius:res.sliderValue,
+					// })
+					this.contactList[index].address = res.siteInfo
+					
+					// console.log(this.contactList,'this.contactList')
+				});
 				
 				uni.navigateTo({
-					url:'/pages/equipment/new-address'
+					url:'/pages/equipment/enclosure'
 				})
 			},
 			handleCancel() {
@@ -161,17 +174,12 @@
 				
 			},
 			addPlace(){
-				let date = Date.now()
-				let rund = Math.ceil(Math.random()*1000)
-				let orderNum = date + '' + rund
-				console.log(date,'date')
 				this.contactList.push({
-					orderNum,
 					orderName: '地点' + (this.contactList.length+1),
 					address:'默认地址',
 					date:'2023-03-01',
 					time:'15:32',
-					flag:'1'
+					flag:'1',
 				})
 				console.log(this.contactList,'this.contactList')
 			},
@@ -189,9 +197,7 @@
 			},
 		},
 		onShow() {
-			uni.$on('getMapData', res => {
-				console.log(res,'res')
-			});
+			console.log(this.contactList,'this.contactList222222222')
 		}
 	}
 </script>

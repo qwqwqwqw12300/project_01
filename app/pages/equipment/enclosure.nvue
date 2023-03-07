@@ -218,8 +218,15 @@
 					registrationId,
 				} = this
 				if (this.type !== 'set') {
+					const val = {
+						siteInfo: address,
+						longitude,
+						latitude,
+						sliderValue
+					}
 					uni.$emit('getMapData', val);
 					uni.navigateBack()
+					return
 				}
 				if (sliderValue === 0) {
 					return uni.$u.toast('半径长度大于0')
