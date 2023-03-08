@@ -23,7 +23,7 @@
 							<view>{{item.firstDate}} 至 </view>
 							<view>{{item.lastDate}}</view>
 						</view>
-						<u-switch @change="handleSwitch" v-model="flag" activeValue="1" inactiveValue="0"
+						<u-switch @change="handleSwitch" v-model="item.disable" activeValue="1" inactiveValue="0"
 							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20"> >
 						</u-switch>
 					</view>
@@ -56,7 +56,7 @@
 			};
 		},
 		mounted() {
-
+			 
 		},
 		methods: {
 			initData() {

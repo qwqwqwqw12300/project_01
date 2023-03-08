@@ -232,6 +232,7 @@
 					jobName:this.name,
 					firstDate:this.startDate +' '+ this.startTime,
 					lastDate:this.endDate +' '+ this.endTime,
+					uuid:this.id,
 					places:list
 				}
 				console.log(obj,'obj')
@@ -299,7 +300,7 @@
 					latitude:item.latitude,
 					radius:item.radius,
 					orderName:'地点' + list.places.length,
-					flag:'1',
+					flag:item.disable,
 					estimatedTime:item.estimatedTime,
 					date:item.estimatedTime.split(" ")[0],
 					time:item.estimatedTime.split(" ")[1]

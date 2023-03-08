@@ -202,6 +202,7 @@
 						longitude:item.longitude,
 						latitude:item.latitude,
 						radius:item.radius,
+						disable:item.flag,
 						estimatedTime:item.estimatedTime
 					})
 					
@@ -212,6 +213,7 @@
 					jobName:this.name,
 					firstDate:this.startDate +' '+ this.startTime,
 					lastDate:this.endDate +' '+ this.endTime,
+					disable:'1',
 					places:list
 				}
 				console.log(obj,'obj')
