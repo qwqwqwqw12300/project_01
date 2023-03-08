@@ -1,6 +1,6 @@
 <!-- 手表设备详情 -->
 <template>
-	<app-body>
+	<app-body :needService="false">
 		<view class="ui-banner">
 			<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange"
 				:current="current">
@@ -72,9 +72,7 @@
 	}
 
 	.ui-banner {
-		margin-top: 30rpx;
 		padding: 0 20rpx;
-
 		.ui-swiper {
 			height: 320rpx;
 		}
