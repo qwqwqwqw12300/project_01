@@ -7,14 +7,17 @@
 
 <template>
 	<app-body>
-		<app-logo color="#353535" text="时段禁止" ></app-logo>
-		<CardTitle :title="'禁用运行中'" :content="'禁用时间拒绝所有电话和短信，但可查看时间和定位'" :backGroundImg="'/static/images/prohibit-moving.png'"></CardTitle>
-		<view style="margin-top: 50rpx;">
+		<app-logo color="#353535" text="时段禁止"></app-logo>
+		<CardTitle :title="'禁用运行中'" :content="'禁用时间拒绝所有电话和短信，但可查看时间和定位'"
+			:backGroundImg="'/static/images/prohibit-moving.png'"></CardTitle>
+		<view style="margin-top: 50rpx;padding-bottom: 50rpx;">
 			<view class="ui-cell" @click="toJump(item)" v-for="(item,index) in list" :key="index">
 				<view class="ui-cell-content">
 					<view class="ui-cell-style">
 						<view class="ui-cell-title">{{item.periodDisableTag}}</view>
-						<view><u-icon name="arrow-right"></u-icon></view>
+						<view>
+							<u-icon name="arrow-right"></u-icon>
+						</view>
 					</view>
 					<view class="ui-cell-style">
 						<view class="ui-cell-font">
@@ -22,13 +25,17 @@
 							<view>{{item.endTime}}</view>
 						</view>
 						<u-switch @change="handleSwitch" v-model="flag" activeValue="1" inactiveValue="0"
-							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20"> 
+							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20">
 						</u-switch>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="ui-btn"><button class="default" @click="toJumpTime">新增时间段</button></view>
+		<view class="ui-btn">
+			<view class="box">
+				<button class="default" @click="toJumpTime">新增时间段</button>
+			</view>
+		</view>
 	</app-body>
 </template>
 
@@ -38,24 +45,24 @@
 		GetPeriodDisableList
 	} from '@/common/http/api';
 	export default {
-		components:{
+		components: {
 			CardTitle
 		},
 		data() {
 			return {
 				flag: '0', //0关闭，1开启
-				list:[]
+				list: []
 			};
 		},
 		mounted() {
-			
+
 		},
 		methods: {
-			initData(){
+			initData() {
 				GetPeriodDisableList({
-					deviceNo:'867977060000248'
-				}).then(res=>{
-					console.log(res,'res')
+					deviceNo: '867977060000248'
+				}).then(res => {
+					console.log(res, 'res')
 					this.list = res.data
 				})
 			},
@@ -66,15 +73,15 @@
 				// 	uni.$u.toast(res.msg)
 				// })
 			},
-			toJump(item){
+			toJump(item) {
 				const list = JSON.stringify(item)
 				uni.navigateTo({
-					url:`/pages/equipment/info-interval?list=${list}`
+					url: `/pages/equipment/info-interval?list=${list}`
 				})
 			},
-			toJumpTime(){
+			toJumpTime() {
 				uni.navigateTo({
-					url:'/pages/equipment/new-interval'
+					url: '/pages/equipment/new-interval'
 				})
 			}
 		},
@@ -85,7 +92,6 @@
 </script>
 
 <style lang="scss">
-	
 	.ui-cell {
 		width: 100%;
 		height: 240rpx;
@@ -93,17 +99,20 @@
 		align-items: center;
 		justify-content: center;
 		background-color: #fff;
-		.ui-cell-content{
+
+		.ui-cell-content {
 			width: 91.4%;
 			height: 72%;
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
-			.ui-cell-style{
+
+			.ui-cell-style {
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				.ui-cell-font{
+
+				.ui-cell-font {
 					display: flex;
 					align-items: flex-start;
 					flex-direction: column;
@@ -113,7 +122,8 @@
 					line-height: 40rpx;
 					font-weight: 400;
 				}
-				.ui-cell-title{
+
+				.ui-cell-title {
 					font-size: 34rpx;
 					color: #353535;
 					line-height: 34rpx;
@@ -122,12 +132,18 @@
 			}
 		}
 	}
+
 	.ui-btn {
-		width: 100%;
-		position: fixed;
-		bottom: 0;
-		left: 0;
-	
+
+		.box {
+			width: 100%;
+			position: fixed;
+			z-index: 999;
+			bottom: 0;
+			left: 0;
+
+		}
+
 		button {
 			border-radius: 0rpx !important;
 		}

@@ -1,3 +1,9 @@
+<!--
+* @Author: zhanghaowei
+* @Date: 2023年3月1日14:43:51
+* @FilePath: 
+* @Description: 新建位置守护
+-->
 <!-- 添加联系人 -->
 <template>
 	<app-body :bg="false">
@@ -9,13 +15,22 @@
 					<text v-else>编辑</text>
 				</view>
 			</view>
-			<u-cell title="名称" class="u-cell-title">
-				<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="right-icon"
-					v-model="name"></u-input>
-			</u-cell>
+			<view style="margin-top:64rpx;">
+				<u-cell-group>
+					<u-cell title="名称">
+						<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="right-icon"
+							v-model="name"></u-input>
+					</u-cell>
+					<u-cell @tap="handleSelectStart" title="日期"  arrow-direction="right" isLink>
+						<text slot="value" class="u-slot-value">
+							{{ defaultValue.length ? `${defaultValue[0]}  至 ${defaultValue[1]}` : '请选择'}}
+						</text>
+					</u-cell>
+				</u-cell-group>
+			</view>
 		</view>
 		<view class="ui-form">
-			<view class="ui-form-item" v-for="(item,index) in contactList" :key="item.orderNum">
+			<view class="ui-form-item" v-for="(item,index) in contactList" :key="index">
 				<view class="item-title">
 					<view class="title-left">
 						<text></text>
@@ -35,12 +50,12 @@
 								{{item.address}}
 							</text>
 						</u-cell>
-						<u-cell @tap="handleSelect(item.orderNum)" title="到达日期" arrow-direction="right" isLink>
+						<u-cell @tap="handleSelect(index)" title="到达日期" arrow-direction="right" isLink>
 							<text slot="value" class="u-slot-value">
 								{{item.date}}
 							</text>
 						</u-cell>
-						<u-cell @tap="handleTime(item.orderNum)" title="到达时间" arrow-direction="right" isLink>
+						<u-cell @tap="handleTime(index)" title="到达时间" arrow-direction="right" isLink>
 							<text slot="value" class="u-slot-value">
 								{{item.time}}
 							</text>
@@ -72,14 +87,21 @@
 			@confirm="confirmTime"
 			@cancel="cancelTime"
 		></u-datetime-picker>
+		<time-picker :show="showPicker" format="yyyy-mm-dd hh:ii" type="rangetime" :value="defaultValue" :show-tips="true" :begin-text="'开始'"
+		    :end-text="'结束'" :show-seconds="false" @confirm="onSelected"  @cancel="showPicker=false">
+		</time-picker>
 	</app-body>
 </template>
 
 <script>
+	import timePicker from '@/components/term-picker/term-picker.vue';
 	import {
 		PostSetLocationGuard
 	} from '@/common/http/api';
 	export default {
+		components:{
+			timePicker
+		},
 		data() {
 
 			return {
@@ -93,60 +115,63 @@
 				time:'15:26',
 				id:0,
 				contactList: [],
+				showPicker: false,
+				defaultValue:[],
+				startDate: "2023-02-27",
+				endDate: "2023-03-05",
+				startTime: "14:00",
+				endTime: "15:00",
 			}
+		},
+		mounted() {
+			const newData = new Date()
+			let endTime = uni.$u.timeFormat(newData, 'yyyy-mm-dd hh:MM')
+			let startTime = uni.$u.timeFormat(new Date(newData.getTime() - 24 * 60 * 60 * 1000),
+				'yyyy-mm-dd hh:MM') //前一天
+			this.defaultValue = [startTime, endTime]
 		},
 		methods: {
 			// 日期
-			handleSelect(id){
-				this.id = id
+			handleSelectStart(){
+				this.showPicker = true
+			},
+			onSelected(e){
+				this.defaultValue = [...e.value]
+				this.showPicker = false
+			},
+			handleSelect(index){
+				this.index = index
 				this.showDate = true
 			},
 			confirm(e) {
 				console.log(e);
-				this.contactList.map(item=>{
-					if(item.orderNum == this.id){
-						item.date = e[0]
-					}
-				})
+				this.contactList[this.index].date = e[0] 
 				this.showDate = false
 			},
 			close() {
 				this.showDate = false
 			},
 			//时间
-			handleTime(id){
-				this.id = id
+			handleTime(index){
+				this.index = index
 				this.showTime = true
 			},
 			confirmTime(e) {
 				this.showTime = false
-				this.result(e.value, e.mode)
+				console.log(e.value)
+				this.contactList[this.index].time = e.value
 			},
 			cancelTime(){
 				this.showTime = false
 			},
-			result(time, mode) {
-				this.contactList.map(item=>{
-					if(item.orderNum == this.id){
-						item.time = time
-					}
-				})
-			},
 			handleJump(index){
-				uni.$on('getMapData', res => {
+				this.index = index
+				uni.$on('getMapData', res => {	
 					console.log(res,'res')
-					// this.contactList[index].places = []
-					// console.log(res,'res')
-					// this.contactList[index].places.push({
-					// 	guardType:'circle',
-					// 	address:res.siteInfo,
-					// 	longitude:res.longitude,
-					// 	latitude:res.latitude,
-					// 	radius:res.sliderValue,
-					// })
-					this.contactList[index].address = res.siteInfo
-					
-					// console.log(this.contactList,'this.contactList')
+					this.contactList[this.index].address = res.siteInfo
+					this.contactList[this.index].longitude = res.longitude
+					this.contactList[this.index].latitude = res.latitude
+					this.contactList[this.index].radius = res.sliderValue
 				});
 				
 				uni.navigateTo({
@@ -157,31 +182,63 @@
 				uni.navigateBack()
 			},
 			handleSave(){
-				console.log(this.name,'this.name')
-				console.log(this.contactList,'this.contactList')
-				// PostSetLocationGuard({
-				// 	deviceNo:'867977060000248',
-				// 	jobName:this.name,
-				// 	uuid:'',
-				// 	firstDate: "2023/1/1 08:00",
-				// 	lastDate:"2024/1/1 10:00",
-				// 	places:''
-				// }).then(res=>{
-				// 	console.log(res,'res')
-				// })
+				if (!this.name) return uni.$u.toast('名称不能为空')
+				const list = []
+				this.contactList.map(item=>{
+					console.log(item,'item')
+					item.estimatedTime = item.date +' '+ item.time
+					list.push({
+						guardType:'circle',
+						address:item.address,
+						longitude:item.longitude,
+						latitude:item.latitude,
+						radius:item.radius,
+						disable:item.flag,
+						estimatedTime:item.estimatedTime
+					})
+					
+					return item
+				})
+				const obj = {
+					deviceNo:'867977060000248',
+					jobName:this.name,
+					firstDate:this.defaultValue[0],
+					lastDate:this.defaultValue[1],
+					disable:'1',
+					places:list
+				}
+				console.log(obj,'obj')
+				PostSetLocationGuard({
+					...obj
+				}).then(res=>{
+					console.log(res,'res')
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						uni.navigateBack()
+					}, 1000);
+				})
 			},
 			handleSwitch(){
 				
 			},
 			addPlace(){
 				this.contactList.push({
-					orderName: '地点' + (this.contactList.length+1),
-					address:'默认地址',
-					date:'2023-03-01',
-					time:'15:32',
+					guardType:'circle',
+					address:'',
+					longitude:'',
+					latitude:'',
+					radius:'',
+					orderName:'',
 					flag:'1',
+					estimatedTime:'',
+					date:'',
+					time:''
 				})
-				console.log(this.contactList,'this.contactList')
+				this.contactList.map((item,index)=>{
+					item.orderName = `地点${(index+1)}`
+					return item
+				})
+				console.log(this.contactList)
 			},
 			handleEdit(){
 				this.editBtn =! this.editBtn
@@ -191,13 +248,15 @@
 					title: '提示',
 					content: `是否确认删除${orderName}？`,
 					success: res => {
-						this.contactList.splice(this.contactList.findIndex(item=>item.orderNum==id),1)
+						if(res.confirm){
+							this.contactList.splice(this.contactList.findIndex((item, index) => index == id), 1)
+						}
 					}
 				});
 			},
 		},
 		onShow() {
-			console.log(this.contactList,'this.contactList222222222')
+			
 		}
 	}
 </script>
@@ -302,7 +361,7 @@
 		width: 100%;
 		position: fixed;
 		bottom: 0;
-
+		z-index: 999;
 		.btn-box {
 			height: 100rpx;
 			line-height: 100rpx;

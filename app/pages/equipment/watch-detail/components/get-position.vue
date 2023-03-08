@@ -1,35 +1,12 @@
 <template>
-	<view class="ui-map">
+	<view class="ui-map" id="ui-map">
 		<view class="map-box">
-			<map id="map" ref="map" style=" width: 100%; height: 560rpx;border-radius: 20rpx;" :latitude="latitude"
-				:longitude="longitude" />
+			<map id="map" ref="map" style="width: 100%; height: 480rpx" :latitude="latitude" :longitude="longitude" />
 		</view>
 		<view class="map-position">
 			<text class="label">当前位置:</text>
 			<view class="content">
 				福州市马尾区儒江西路1号新大陆科技园B座
-			</view>
-		</view>
-		<view class="map-address">
-			<view class="address-box">
-				<view class="list-item">
-					<text class="label">
-						新大陆科技园
-					</text>
-					<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
-				</view>
-				<view class="list-item">
-					<text class="label">
-						新大陆科技园
-					</text>
-					<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
-				</view>
-				<view class="list-item">
-					<text class="label">
-						新大陆科技园
-					</text>
-					<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
-				</view>
 			</view>
 		</view>
 		<view class="ui-btn">
@@ -46,10 +23,23 @@
 				longitude: 116.39742,
 			}
 		},
+		mounted(){
+			const query = uni.createSelectorQuery().in(this)
+			query
+				.select('#ui-map')
+				.boundingClientRect(data => {
+					console.log(data.height, '3333')
+					// if (data.height > 52) {
+					// 	this.isOpen = false;
+					// 	this.isShowMoreBtn = true;
+					// }
+				})
+				.exec();
+		},
 		methods: {
-			toJump(){
+			toJump() {
 				uni.navigateTo({
-					url:'/pages/equipment/historical-location'
+					url: '/pages/equipment/historical-location'
 				})
 			}
 		}
@@ -60,12 +50,7 @@
 	.ui-map {
 		padding: 32rpx;
 
-		.map-box {
-			width: 100%;
-			height: 560rpx;
-			border: 2rpx solid black;
-			border-radius: 16rpx;
-		}
+		.map-box {}
 
 		.map-position {
 			margin-top: 30rpx;
@@ -107,8 +92,8 @@
 				}
 			}
 		}
-		
-		.ui-btn{
+
+		.ui-btn {
 			margin-top: 50rpx;
 		}
 	}

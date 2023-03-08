@@ -208,9 +208,7 @@
 
 	.ui-content {
 		margin-top: 30rpx;
-
 		background-color: #fff;
-
 		.cell {
 			padding: 0rpx 32rpx;
 
@@ -233,6 +231,7 @@
 		position: fixed;
 		bottom: 0;
 		left: 0;
+		z-index: 999;
 
 		.btn-box {
 			height: 100rpx;

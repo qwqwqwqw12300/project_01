@@ -461,12 +461,16 @@ export const GetLocationGuardList = (params) => http.get('/api/careCard/getLocat
 /**
  * 设置位置守护
  */
-export const PostSetLocationGuard = (params) => http.get('/api/careCard/setLocationGuard', params, {});
+export const PostSetLocationGuard = (params) => http.post('/api/careCard/setLocationGuard', params, {});
 
 /**
  * 添加家庭成员
  */
 export const PostinsertTHuman = (params) => http.post('/api/tHuman/insertTHuman', params, {});
+/**
+ * 删除位置守护
+ */
+export const PostDeleteLocationGuard = (params) => http.post('/api/careCard/deleteLocationGuard', params, {});
 
 /**
  * 电子牵挂卡绑定
@@ -498,3 +502,9 @@ export const PostUpdateTHuman = (params) => http.post('/api/tHuman/updateTHuman'
  */
 export const PostDeleteTHumanByHumanIds = (params) => http.post('/api/tHuman/deleteTHumanByHumanIds',
 	params, {});
+/**
+ * 获取位置追踪
+ */
+export const GetsetAddressBook = (params) => http.get('/api/careCard/track/points', params, {
+	showLoading: false
+});
