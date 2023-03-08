@@ -80,7 +80,7 @@
 		},
 		created() {
 			// this.getRegistrationID()
-			// this.handleGetLocation()
+			this.handleGetLocation()
 		},
 		methods: {
 			mapMarker(data) {
@@ -154,7 +154,7 @@
 							} = res;
 							if (poiList && poiList.length) {
 								this.poiList = poiList.length > 4 ? poiList.slice(0, 4) : poiList
-								console.log(this.poiList, 'lll')
+								console.log(this.poiList, 'lll00000000000000000000000000000000000000')
 							}
 						})
 						// console.log(res, 'ssssssssss')
@@ -231,7 +231,6 @@
 				if (sliderValue === 0) {
 					return uni.$u.toast('半径长度大于0')
 				}
-				console.log(address, latitude, longitude, sliderValue, registrationId, 'hhhhhhhhhhhhhhhhh')
 				PostAddFence({
 					deviceId: '867977060000248',
 					address,
@@ -252,7 +251,6 @@
 		},
 		onLoad(options) {
 			this.type = options.type
-			console.log(options)
 		}
 	}
 </script>

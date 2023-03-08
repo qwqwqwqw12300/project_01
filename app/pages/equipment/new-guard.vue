@@ -10,8 +10,8 @@
 				</view>
 			</view>
 			<u-cell title="名称" class="u-cell-title">
-				<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="right-icon"
-					v-model="name"></u-input>
+				<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="right-icon" v-model="name">
+				</u-input>
 			</u-cell>
 		</view>
 		<view class="ui-form">
@@ -21,16 +21,17 @@
 						<text></text>
 						{{ item.orderName }}
 					</view>
-					<view  >
-						<text  v-if="editBtn" class="ui-form-del" @click="handleDel(item.orderNum,item.orderName)">删除</text>
+					<view>
+						<text v-if="editBtn" class="ui-form-del"
+							@click="handleDel(item.orderNum,item.orderName)">删除</text>
 						<u-switch v-else @change="handleSwitch" v-model="item.flag" activeValue="1" inactiveValue="0"
-							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20"> 
+							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20">
 						</u-switch>
 					</view>
 				</view>
 				<view class="item-input">
 					<u-cell-group>
-						<u-cell title="地址" arrow-direction="right" isLink @click="handleJump(index)"> 
+						<u-cell title="地址" arrow-direction="right" isLink @click="handleJump(index)">
 							<text slot="value" class="u-slot-value">
 								{{item.address}}
 							</text>
@@ -64,14 +65,8 @@
 			</view>
 		</view>
 		<u-calendar :show="showDate" :mode="mode" @confirm="confirm" @close="close" closeOnClickOverlay></u-calendar>
-		<u-datetime-picker
-			:show="showTime"
-			v-model="time"
-			mode="time"
-			closeOnClickOverlay
-			@confirm="confirmTime"
-			@cancel="cancelTime"
-		></u-datetime-picker>
+		<u-datetime-picker :show="showTime" v-model="time" mode="time" closeOnClickOverlay @confirm="confirmTime"
+			@cancel="cancelTime"></u-datetime-picker>
 	</app-body>
 </template>
 
@@ -84,27 +79,27 @@
 
 			return {
 				index: 0,
-				name:'',
-				flag:'0',
-				editBtn:false,
-				showDate:false,
-				mode:'single',
-				showTime:false,
-				time:'15:26',
-				id:0,
+				name: '',
+				flag: '0',
+				editBtn: false,
+				showDate: false,
+				mode: 'single',
+				showTime: false,
+				time: '15:26',
+				id: 0,
 				contactList: [],
 			}
 		},
 		methods: {
 			// 日期
-			handleSelect(id){
+			handleSelect(id) {
 				this.id = id
 				this.showDate = true
 			},
 			confirm(e) {
 				console.log(e);
-				this.contactList.map(item=>{
-					if(item.orderNum == this.id){
+				this.contactList.map(item => {
+					if (item.orderNum == this.id) {
 						item.date = e[0]
 					}
 				})
@@ -114,7 +109,7 @@
 				this.showDate = false
 			},
 			//时间
-			handleTime(id){
+			handleTime(id) {
 				this.id = id
 				this.showTime = true
 			},
@@ -122,19 +117,21 @@
 				this.showTime = false
 				this.result(e.value, e.mode)
 			},
-			cancelTime(){
+			cancelTime() {
 				this.showTime = false
 			},
 			result(time, mode) {
-				this.contactList.map(item=>{
-					if(item.orderNum == this.id){
+				this.contactList.map(item => {
+					if (item.orderNum == this.id) {
 						item.time = time
 					}
 				})
 			},
-			handleJump(index){
+			handleJump(index) {
+				console.log(33333333333339999999)
+				this.index = index
 				uni.$on('getMapData', res => {
-					console.log(res,'res')
+					console.log(res, 'res')
 					// this.contactList[index].places = []
 					// console.log(res,'res')
 					// this.contactList[index].places.push({
@@ -144,21 +141,22 @@
 					// 	latitude:res.latitude,
 					// 	radius:res.sliderValue,
 					// })
-					this.contactList[index].address = res.siteInfo
-					
+					console.log(index, 'indexkkkkkk')
+					this.contactList[this.index].address = res.siteInfo
+
 					// console.log(this.contactList,'this.contactList')
 				});
-				
+
 				uni.navigateTo({
-					url:'/pages/equipment/enclosure'
+					url: '/pages/equipment/enclosure'
 				})
 			},
 			handleCancel() {
 				uni.navigateBack()
 			},
-			handleSave(){
-				console.log(this.name,'this.name')
-				console.log(this.contactList,'this.contactList')
+			handleSave() {
+				console.log(this.name, 'this.name')
+				console.log(this.contactList, 'this.contactList')
 				// PostSetLocationGuard({
 				// 	deviceNo:'867977060000248',
 				// 	jobName:this.name,
@@ -170,34 +168,38 @@
 				// 	console.log(res,'res')
 				// })
 			},
-			handleSwitch(){
-				
+			handleSwitch() {
+
 			},
-			addPlace(){
+			addPlace() {
 				this.contactList.push({
-					orderName: '地点' + (this.contactList.length+1),
-					address:'默认地址',
-					date:'2023-03-01',
-					time:'15:32',
-					flag:'1',
+					orderName: '',
+					address: '默认地址',
+					date: '2023-03-01',
+					time: '15:32',
+					flag: '1',
 				})
-				console.log(this.contactList,'this.contactList')
+				this.contactList.map((n, i) => {
+					n.orderName = `地点${i+1}`
+					return n
+				})
+				console.log(this.contactList, 'this.contactList')
 			},
-			handleEdit(){
-				this.editBtn =! this.editBtn
+			handleEdit() {
+				this.editBtn = !this.editBtn
 			},
-			handleDel(id,orderName){
+			handleDel(id, orderName) {
 				uni.showModal({
 					title: '提示',
 					content: `是否确认删除${orderName}？`,
 					success: res => {
-						this.contactList.splice(this.contactList.findIndex(item=>item.orderNum==id),1)
+						this.contactList.splice(this.contactList.findIndex(item => item.orderNum == id), 1)
 					}
 				});
 			},
 		},
 		onShow() {
-			console.log(this.contactList,'this.contactList222222222')
+			// console.log(this.contactList,'this.contactList222222222')
 		}
 	}
 </script>
@@ -205,11 +207,13 @@
 <style lang="scss">
 	.ui-logo {
 		background: #ffffff;
-		.ui-edit{
+
+		.ui-edit {
 			display: flex;
 			align-items: flex-end;
 			justify-content: space-between;
-			.ui-edit-right{
+
+			.ui-edit-right {
 				margin-right: 34rpx;
 				font-size: 30rpx;
 				color: #353535;
@@ -217,23 +221,26 @@
 				font-weight: 400;
 			}
 		}
-		.u-cell-title{
+
+		.u-cell-title {
 			margin-top: 64rpx;
 		}
 	}
-	
-	.ui-add{
+
+	.ui-add {
 		width: 100%;
 		margin-top: 64rpx;
 		margin-bottom: 64rpx;
-		display:flex;
+		display: flex;
 		align-items: center;
 		justify-content: center;
-		.ui-add-icon{
+
+		.ui-add-icon {
 			width: 36rpx;
 			height: 36rpx;
 		}
-		text{
+
+		text {
 			margin-left: 10rpx;
 			font-size: 36rpx;
 			color: #599FFF;
@@ -242,9 +249,11 @@
 			font-weight: 400;
 		}
 	}
+
 	.ui-form {
 		// padding: 0 44rpx;
 		margin-top: 40rpx;
+		margin-bottom: 40rpx;
 
 		.ui-form-item {
 			background-color: #ffffff;
@@ -276,12 +285,14 @@
 					}
 				}
 			}
-			.ui-form-del{
+
+			.ui-form-del {
 				font-size: 30rpx;
 				color: #E95656;
 				line-height: 30rpx;
 				font-weight: 400;
 			}
+
 			.item-input {
 				min-height: 128rpx;
 				border-bottom: solid 2px #f7f7f7;
@@ -297,7 +308,7 @@
 			}
 		}
 	}
-	
+
 	.ui-btn {
 		width: 100%;
 		position: fixed;
@@ -308,6 +319,7 @@
 			line-height: 100rpx;
 			display: flex;
 			font-size: 36rpx;
+
 			.cancel-btn {
 				flex: 1;
 				background-color: #fff;
