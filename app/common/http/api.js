@@ -459,7 +459,12 @@ export const GetLocationGuardList = (params) => http.get('/api/careCard/getLocat
 /**
  * 设置位置守护
  */
-export const PostSetLocationGuard = (params) => http.get('/api/careCard/setLocationGuard', params, {});
+export const PostSetLocationGuard = (params) => http.post('/api/careCard/setLocationGuard', params, {});
+
+/**
+ * 删除位置守护
+ */
+export const PostDeleteLocationGuard = (params) => http.post('/api/careCard/deleteLocationGuard', params, {});
 
 
 

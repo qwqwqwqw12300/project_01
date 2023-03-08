@@ -10,7 +10,7 @@
 		<app-logo color="#353535" text="位置守护" ></app-logo>
 		<CardTitle :title="'到达提醒'" :content="'迟到APP有报警'" :backGroundImg="'/static/images/arrive-guard.png'"></CardTitle>
 		<view style="margin-top: 50rpx;">
-			<view class="ui-cell" v-for="(item,index) in list" :key="index" @click="toJump('/pages/equipment/info-guard')">
+			<view class="ui-cell" v-for="(item,index) in list" :key="index" @click="toJump(item)">
 				<view class="ui-cell-content">
 					<view class="ui-cell-style">
 						<view class="ui-cell-title">{{item.jobName}}</view>
@@ -28,7 +28,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="ui-btn"><button class="default"  @click="toJump('/pages/equipment/new-guard')">新增守护位置</button></view>
+		<view class="ui-btn"><button class="default"  @click="toJumpTime">新增守护位置</button></view>
 	</app-body>
 </template>
 
@@ -65,9 +65,15 @@
 			handleSwitch() {
 				
 			},
-			toJump(url){
+			toJump(item){
+				const list = JSON.stringify(item)
 				uni.navigateTo({
-					url:url
+					url:`/pages/equipment/info-guard?list=${list}`
+				})
+			},
+			toJumpTime(){
+				uni.navigateTo({
+					url:'/pages/equipment/new-guard'
 				})
 			}
 		},
