@@ -75,6 +75,9 @@
 		PostinsertTHuman,
 		PostUpdateTHuman
 	} from '@/common/http/api.js';
+	import {
+		isProd
+	} from '../../common/utils/util';
 	export default {
 		props: {
 			/**模式add-添加 edit-修改**/
@@ -246,6 +249,8 @@
 			},
 
 			sheetSelect(item) {
+				console.log(item, 'item');
+				if (item.value === 'human' && isProd()) return uni.$u.toast('暂不支持添加');
 				this.type = item.value;
 				this.show = true;
 				this.sheetShow = false;
