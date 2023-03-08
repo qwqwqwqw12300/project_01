@@ -19,10 +19,10 @@
 			}
 		},
 		{
-			"path": "pages/equipment/add/monitor",
+			"path": "pages/equipment/add/add-card",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTitleText": "添加监护设备"
+				"navigationBarTitleText": "添加电子牵挂卡设备"
 			}
 		},
 		{
