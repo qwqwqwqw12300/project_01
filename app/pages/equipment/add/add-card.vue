@@ -53,7 +53,7 @@
 		methods: {
 			handleScan() {
 				uni.scanCode({
-					scanType: ['barCode', 'qrCode'],
+					// scanType: ['barCode', 'qrCode'],
 					success: res => {
 						console.log(res)
 						const {
@@ -63,25 +63,37 @@
 						this.cardInfo.deviceNo = result
 					},
 					false: res => {
-						console.log(res)
+						console.log(res, '00000000000000000000000')
 					}
 				});
 			},
 			handleSubmit() {
-				const {
-					deviceNo,
-					deviceName
-				} = this.cardInfo
-				if (!deviceNo) return uni.$u.toast('设备码不能为空')
-				if (!deviceName) return uni.$u.toast('设备名称不能为空')
-				PostcreDevice({
-					...this.cardInfo
-				}).then(res => {
-					uni.$u.toast(res.msg)
-					setTimeout(() => {
-						uni.navigateBack()
-					}, 1000)
-				})
+				uni.getLocation({
+					geocode: true,
+					type: 'gcj02',
+					latitude: '119.406043',
+					longitude: '26.0185753',
+					// type: 'wgs84',
+					success: function(res) {
+						console.log(res, '0099')
+						console.log('当前位置的经度：' + res.longitude);
+						console.log('当前位置的纬度：' + res.latitude);
+					}
+				});
+				// const {
+				// 	deviceNo,
+				// 	deviceName
+				// } = this.cardInfo
+				// if (!deviceNo) return uni.$u.toast('设备码不能为空')
+				// if (!deviceName) return uni.$u.toast('设备名称不能为空')
+				// PostcreDevice({
+				// 	...this.cardInfo
+				// }).then(res => {
+				// 	uni.$u.toast(res.msg)
+				// 	setTimeout(() => {
+				// 		uni.navigateBack()
+				// 	}, 1000)
+				// })
 			}
 		}
 	}
@@ -93,8 +105,6 @@
 		padding: 0 32rpx;
 		box-sizing: border-box;
 
-		// background: #F2F2F2;
-		// border-radius: 16px;
 		.scan-box {
 			height: 200rpx;
 			background: #F2F2F2;
