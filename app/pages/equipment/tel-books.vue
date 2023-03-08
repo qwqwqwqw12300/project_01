@@ -208,9 +208,7 @@
 
 	.ui-content {
 		margin-top: 30rpx;
-
 		background-color: #fff;
-
 		.cell {
 			padding: 0rpx 32rpx;
 

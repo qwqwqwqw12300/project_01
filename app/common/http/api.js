@@ -381,13 +381,13 @@ export const PostAddOrUpdateAddressBook = (params) => http.post('/api/careCard/a
 /**
  *获取通讯录白名单*
  */
-export const GetAddressBook= (params) => http.get('/api/careCard/getAddressBook', params, {})
+export const GetAddressBook = (params) => http.get('/api/careCard/getAddressBook', params, {})
 
 
 /**
  *删除通讯录白名单*
  */
-export const PostDeleteAddressBook= (params) => http.post('/api/careCard/deleteAddressBook', params, {})
+export const PostDeleteAddressBook = (params) => http.post('/api/careCard/deleteAddressBook', params, {})
 
 
 /**
@@ -439,12 +439,14 @@ export const PostSetRadarWareBedZone = (params) => http.post('/api/roomZone/setR
 /**
  * 添加/修改预警规则
  */
-export const PostSetRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roomZone/setRadarWaveLeaveBedRulesDate', params, {});
+export const PostSetRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roomZone/setRadarWaveLeaveBedRulesDate',
+	params, {});
 
 /**
  * 删除预警规则
  */
-export const PostDelRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roomZone/delRadarWaveLeaveBedRulesDate', params, {});
+export const PostDelRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roomZone/delRadarWaveLeaveBedRulesDate',
+	params, {});
 
 /**
  * 重启设备
@@ -466,7 +468,9 @@ export const PostSetLocationGuard = (params) => http.post('/api/careCard/setLoca
  */
 export const PostDeleteLocationGuard = (params) => http.post('/api/careCard/deleteLocationGuard', params, {});
 
-
-
-
-
+/**
+ * 获取位置追踪
+ */
+export const GetsetAddressBook = (params) => http.get('/api/careCard/track/points', params, {
+	showLoading: false
+});
