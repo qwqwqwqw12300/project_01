@@ -180,7 +180,7 @@
 
 		},
 		{
-			"path": "pages/myself/device-manage",
+			"path": "pages/myself/device-manage/device-manage",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {

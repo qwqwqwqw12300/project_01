@@ -2,7 +2,7 @@
 	<view>
 		<family-pop ref="addFamily" mode="add" @update="familyNext" />
 		<room-pop ref="addRoom" @update="roomNext" />
-		<bind-device :payload="{familyId, roomId}" @next="deviceNext" ref="bindDev" />
+		<bind-device :payload="{familyId, ...roomInfo}" @next="deviceNext" ref="bindDev" />
 	</view>
 </template>
 
@@ -14,7 +14,7 @@
 		data() {
 			return {
 				familyId: '',
-				roomId: '',
+				roomInfo: {},
 				deviceList: []
 			};
 		},
@@ -42,9 +42,9 @@
 			/**
 			 * 添加房间下一步
 			 */
-			roomNext(roomId) {
+			roomNext(info) {
 				this.getAllFamily();
-				this.roomId = roomId;
+				this.roomInfo = info;
 				this.$refs.bindDev.open();
 			},
 			/**

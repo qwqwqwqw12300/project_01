@@ -381,13 +381,13 @@ export const PostAddOrUpdateAddressBook = (params) => http.post('/api/careCard/a
 /**
  *获取通讯录白名单*
  */
-export const GetAddressBook= (params) => http.get('/api/careCard/getAddressBook', params, {})
+export const GetAddressBook = (params) => http.get('/api/careCard/getAddressBook', params, {})
 
 
 /**
  *删除通讯录白名单*
  */
-export const PostDeleteAddressBook= (params) => http.post('/api/careCard/deleteAddressBook', params, {})
+export const PostDeleteAddressBook = (params) => http.post('/api/careCard/deleteAddressBook', params, {})
 
 
 /**
@@ -439,12 +439,14 @@ export const PostSetRadarWareBedZone = (params) => http.post('/api/roomZone/setR
 /**
  * 添加/修改预警规则
  */
-export const PostSetRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roomZone/setRadarWaveLeaveBedRulesDate', params, {});
+export const PostSetRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roomZone/setRadarWaveLeaveBedRulesDate',
+	params, {});
 
 /**
  * 删除预警规则
  */
-export const PostDelRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roomZone/delRadarWaveLeaveBedRulesDate', params, {});
+export const PostDelRadarWaveLeaveBedRulesDate = (params) => http.post('/api/roomZone/delRadarWaveLeaveBedRulesDate',
+	params, {});
 
 /**
  * 重启设备
@@ -461,7 +463,38 @@ export const GetLocationGuardList = (params) => http.get('/api/careCard/getLocat
  */
 export const PostSetLocationGuard = (params) => http.get('/api/careCard/setLocationGuard', params, {});
 
+/**
+ * 添加家庭成员
+ */
+export const PostinsertTHuman = (params) => http.post('/api/tHuman/insertTHuman', params, {});
+
+/**
+ * 电子牵挂卡绑定
+ */
+export const PostUpdateCareCardBind = (params) => http.post('/api/careCard/updateCareCardBind', params, {});
 
 
+/**
+ * 根据家庭id查询电子牵挂卡
+ */
+export const PostSelectTHumanListByFamilyId = (params) => http.get('/api/tHuman/selectTHumanListByFamilyId',
+	params, {});
+
+/**
+ * 电子牵挂卡解绑
+ */
+export const PostCareCardUnBind = (params) => http.post('/api/careCard/careCardUnBind',
+	params, {});
+
+/**
+ * 修改人员信息
+ */
+export const PostUpdateTHuman = (params) => http.post('/api/tHuman/updateTHuman',
+	params, {});
 
 
+/**
+ * 删除人员信息
+ */
+export const PostDeleteTHumanByHumanIds = (params) => http.post('/api/tHuman/deleteTHumanByHumanIds',
+	params, {});

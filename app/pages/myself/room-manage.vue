@@ -18,7 +18,8 @@
 				</view>
 			</view>
 			<view class="ui-menu">
-				<view class="ui-menu-item" v-for="(item, index) in list" :key="index">
+				<!-- 房间 -->
+				<view class="ui-menu-item" v-for="(item, index) in list" :key="'room' + index">
 					<view class="item-box" @click="openRoomEdit(item)">
 						<template v-if="item.devices.length">
 							<view class="device-status">
@@ -48,11 +49,48 @@
 
 						<view class="device-action">
 							<text class="danger" @click.stop="onDelete(item.roomId)">删除</text>
-							<text class="warn" v-if="!item.devices.length" @click.stop="binding(item)">绑定</text>
+							<text class="warn" v-if="!item.devices.length" @click.stop="binding(item, 'room')">绑定</text>
 							<text class="orange" v-else @click.stop="unbinding(item.devices)">解绑</text>
 						</view>
 					</view>
 				</view>
+				<!-- /房间 -->
+				<!-- 人员 -->
+				<view class="ui-menu-item" v-for="(item, index) in humanList" :key="'human' + index">
+					<view class="item-box" @click="openRoomEdit(item)">
+						<template v-if="item.devices">
+							<view class="device-status">
+								<text class="online" v-if="getDevices(item).onlineFlag == 1">在线</text>
+								<text class="offline" v-else>离线</text>
+							</view>
+							<view class="device-info">
+								<image src="/static/images/dzqgk.png"></image>
+								<view class="detail">
+									<text class="name">{{ item.name }}</text>
+									<text class="position" v-if="item.devices.length">
+										{{ item.devices[0].roomName + ' | ' + item.devices[0].location}}
+									</text>
+									<text class="position" v-else>
+										未绑定设备
+									</text>
+								</view>
+							</view>
+						</template>
+						<template v-else>
+							<view class="device-info">
+								<u-text :text="item.name || '未命名人员'" prefixIcon="../../static/images/add-person.png"
+									size="40rpx" :iconStyle="{height: '70rpx', width: '70rpx'}"></u-text>
+							</view>
+						</template>
+						<view class="device-action">
+							<text class="danger" @click.stop="deleteHuman(item.humanId)">删除</text>
+							<text class="warn" v-if="!item.devices || !item.devices.length"
+								@click.stop="binding(item, 'human')">绑定</text>
+							<text class="orange" v-else @click.stop="unbinding(item.devices)">解绑</text>
+						</view>
+					</view>
+				</view>
+				<!-- /人员 -->
 			</view>
 			<view class="ui-btn"><button class="default" @click="add">添加</button></view>
 			<room-pop ref="addRoom" :mode="roomMode" @update="handleInitList" />
@@ -68,7 +106,9 @@
 		PostDelRoom,
 		PostRoomList,
 		PostEditRoom,
-		relDevice
+		relDevice,
+		PostSelectTHumanListByFamilyId,
+		PostDeleteTHumanByHumanIds
 	} from '@/common/http/api.js';
 	import {
 		assignDeep
@@ -77,7 +117,10 @@
 		data() {
 			return {
 				roomMode: 'add',
+				/**房间列表**/
 				list: [],
+				/**人员列表**/
+				humanList: [],
 				/**家庭信息**/
 				familyInfo: {},
 				bindPayload: {}
@@ -121,9 +164,12 @@
 			 */
 			openRoomEdit(item) {
 				this.roomMode = 'edit';
-				this.$refs.addRoom.open({
-					...item
+				this.$nextTick(() => {
+					this.$refs.addRoom.open({
+						...item
+					});
 				});
+
 			},
 
 			/**
@@ -149,14 +195,40 @@
 					}
 				});
 			},
+
+			/**
+			 * 删除人员
+			 */
+			deleteHuman(id) {
+				uni.showModal({
+					title: '提示',
+					content: '是否确认删除人员',
+					success: res => {
+						if (res.confirm) {
+							PostDeleteTHumanByHumanIds({
+								humanIds: [id]
+							}).then(res => {
+								uni.$u.toast(res.msg)
+								setTimeout(() => {
+									this.handleInitList()
+								}, 1000)
+							})
+						}
+					}
+				});
+			},
+
 			/**
 			 * 添加房间
 			 */
 			add() {
 				this.roomMode = 'add';
-				this.$refs.addRoom.open({
-					familyId: this.familyInfo.familyId,
+				this.$nextTick(() => {
+					this.$refs.addRoom.open({
+						familyId: this.familyInfo.familyId,
+					});
 				});
+
 			},
 
 
@@ -165,10 +237,16 @@
 			 */
 			handleInitList() {
 				this.$store.dispatch('getAllDevices');
-				PostRoomList({
-					familyId: this.familyInfo.familyId,
-				}).then(res => {
-					this.list = res.rows
+				Promise.all([
+					PostRoomList({ // 房间列表
+						familyId: this.familyInfo.familyId,
+					}),
+					PostSelectTHumanListByFamilyId({ // 人员列表
+						familyId: this.familyInfo.familyId,
+					})
+				]).then(res => {
+					this.list = res[0].rows;
+					this.humanList = res[1].data;
 				})
 			},
 
@@ -194,13 +272,11 @@
 			/**
 			 * 绑定设备
 			 */
-			binding({
-				familyId,
-				roomId
-			}) {
+			binding(item, type) {
 				this.bindPayload = {
-					familyId,
-					roomId
+					familyId: item,
+					id: type === 'room' ? item.roomId : item.humanId,
+					type
 				};
 				this.$refs.bindDev.open();
 			},
@@ -316,6 +392,7 @@
 						margin-left: 10rpx;
 						display: inline-flex;
 						flex-direction: column;
+
 						text {
 							display: inline-block;
 						}

@@ -31,11 +31,9 @@
 		mapState
 	} from 'vuex';
 	import {
+		PostUpdateCareCardBind,
 		setDevice
 	} from '../../common/http/api';
-	import {
-		INIT_DEIVCE_SET
-	} from '../../config/db';
 	export default {
 		props: {
 			payload: {
@@ -50,10 +48,24 @@
 		},
 		computed: {
 			...mapState({
-				devices: state => {
-					return state.devicesList.filter(ele => !ele.roomId).map(ele => ({
+				devices: function(state) {
+					let devices = [];
+					console.log(this.payload.type, 'state.devicesList');
+					switch (this.payload.type) {
+						case 'room': // 绑定房间
+							console.log('room查询列表')
+							devices = state.devicesList.filter(ele => (!ele.roomId) && ele.type === '0'); // 跌倒设备
+							break;
+						case 'human': // 绑定房间
+							devices = state.devicesList.filter(ele => (!ele.humanId) && ele.type === '1'); // 跌倒设备
+							break;
+						default:
+							break;
+					}
+					console.log(devices, 'devices');
+					return devices.map(ele => ({
 						text: ele.name,
-						value: ele.deviceId
+						value: this.payload.type === 'room' ? ele.deviceId : ele.deviceNo
 					}));
 				}
 			})
@@ -68,25 +80,39 @@
 				this.show = true;
 			},
 			next() {
-				if (this.deviceId) {
-					setDevice({
-						...INIT_DEIVCE_SET,
-						...this.payload,
-						deviceName: this.payload.name,
-						deviceId: this.deviceId,
-						flag: '1'
-					}).then(res => {
-						uni.showToast({
-							title: '绑定成功',
-							icon: 'none'
-						});
-						this.close();
-						this.$emit('next')
-					});
-				} else {
-					uni.$u.toast('请选择设备');
+				if (!this.deviceId) return uni.$u.toast('请选择设备');
+				const {
+					familyId,
+					id,
+					type
+				} = this.payload;
+				let handle;
+				switch (type) {
+					case 'room':
+						handle = setDevice({
+							familyId,
+							roomId: id,
+							deviceId: this.deviceId,
+							flag: '1'
+						})
+						break;
+					case 'human':
+						handle = PostUpdateCareCardBind({
+							deviceNo: this.deviceId,
+							humanId: id
+						})
+						break;
+					default:
+						break;
 				}
-
+				handle && handle.then(res => {
+					uni.showToast({
+						title: '绑定成功',
+						icon: 'none'
+					});
+					this.close();
+					this.$emit('next')
+				});
 			},
 			/**
 			 * 跳转管理

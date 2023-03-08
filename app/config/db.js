@@ -1,10 +1,3 @@
-/**设备参数**/
-export const INIT_DEIVCE_SET = {
-	deviceId: '',
-	familyId: '',
-	roomId: '',
-};
-
 /**监控子区域**/
 export const ZONE = {
 	zoneType: '1',
