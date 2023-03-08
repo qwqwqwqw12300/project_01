@@ -1,3 +1,9 @@
+<!--
+* @Author: zhanghaowei
+* @Date: 2023年3月1日14:43:51
+* @FilePath: 
+* @Description: 新建位置守护
+-->
 <!-- 添加联系人 -->
 <template>
 	<app-body :bg="false">
@@ -17,12 +23,7 @@
 					</u-cell>
 					<u-cell @tap="handleSelectStart" title="日期"  arrow-direction="right" isLink>
 						<text slot="value" class="u-slot-value">
-							{{ startDate }} 至 {{endDate}}
-						</text>
-					</u-cell>
-					<u-cell @tap="handleStartTime" title="时间"  arrow-direction="right" isLink>
-						<text slot="value" class="u-slot-value">
-							{{ startTime }} 至 {{endTime}}
+							{{ defaultValue.length ? `${defaultValue[0]}  至 ${defaultValue[1]}` : '请选择'}}
 						</text>
 					</u-cell>
 				</u-cell-group>
@@ -86,10 +87,9 @@
 			@confirm="confirmTime"
 			@cancel="cancelTime"
 		></u-datetime-picker>
-		<time-picker :show="showPicker" type="range" :value="defaultValue" :show-tips="true" :begin-text="'开始'"
-		    :end-text="'结束'" :show-seconds="true" @confirm="onSelected"  @cancel="showPicker=false">
+		<time-picker :show="showPicker" format="yyyy-mm-dd hh:ii" type="rangetime" :value="defaultValue" :show-tips="true" :begin-text="'开始'"
+		    :end-text="'结束'" :show-seconds="false" @confirm="onSelected"  @cancel="showPicker=false">
 		</time-picker>
-		<smh-time-range :isUnder="timeShow" :time="defaultTime" @confrim="handleConfirm" @cancel="timeShow = false"></smh-time-range>
 	</app-body>
 </template>
 
@@ -116,38 +116,28 @@
 				id:0,
 				contactList: [],
 				showPicker: false,
-				defaultValue:['2023-02-27 14:00', '2023-03-05 13:59'],
-				timeShow:false,
-				defaultTime:[0, 0, 0, 23, 59],
+				defaultValue:[],
 				startDate: "2023-02-27",
 				endDate: "2023-03-05",
 				startTime: "14:00",
 				endTime: "15:00",
 			}
 		},
+		mounted() {
+			const newData = new Date()
+			let endTime = uni.$u.timeFormat(newData, 'yyyy-mm-dd hh:MM')
+			let startTime = uni.$u.timeFormat(new Date(newData.getTime() - 24 * 60 * 60 * 1000),
+				'yyyy-mm-dd hh:MM') //前一天
+			this.defaultValue = [startTime, endTime]
+		},
 		methods: {
 			// 日期
 			handleSelectStart(){
 				this.showPicker = true
 			},
-			handleStartTime(){
-				this.timeShow = true
-			},
 			onSelected(e){
-				this.startDate = e.value[0].replace(/\//g,"-")
-				this.endDate = e.value[1].replace(/\//g,"-")
+				this.defaultValue = [...e.value]
 				this.showPicker = false
-			},
-			handleConfirm(e){
-				console.log(e)//确定事件 =>12:30-17:30
-				this.startTime = e.aboveTime
-				this.endTime = e.underTime
-				this.timeShow = false
-				
-				// this.defaultTime = this.defaultTime.forEach(item=>{
-				// 	item = parseInt(item)
-				// })
-				console.log(this.defaultTime)
 			},
 			handleSelect(index){
 				this.index = index
@@ -192,6 +182,7 @@
 				uni.navigateBack()
 			},
 			handleSave(){
+				if (!this.name) return uni.$u.toast('名称不能为空')
 				const list = []
 				this.contactList.map(item=>{
 					console.log(item,'item')
@@ -211,8 +202,8 @@
 				const obj = {
 					deviceNo:'867977060000248',
 					jobName:this.name,
-					firstDate:this.startDate +' '+ this.startTime,
-					lastDate:this.endDate +' '+ this.endTime,
+					firstDate:this.defaultValue[0],
+					lastDate:this.defaultValue[1],
 					disable:'1',
 					places:list
 				}

@@ -1,3 +1,9 @@
+<!--
+* @Author: zhanghaowei
+* @Date: 2023年3月1日14:43:51
+* @FilePath: 
+* @Description: 位置守护-选择地址
+-->
 <template>
 	<app-body :bodyStyle="{background: 'rgb(247,247,247)' }" :bg="false">
 		<view class="ui-logo">

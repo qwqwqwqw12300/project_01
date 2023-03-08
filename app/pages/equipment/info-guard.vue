@@ -1,3 +1,9 @@
+<!--
+* @Author: zhanghaowei
+* @Date: 2023年3月1日14:43:51
+* @FilePath: 
+* @Description: 查看位置守护
+-->
 <!-- 添加联系人 -->
 <template>
 	<app-body :bg="false">
@@ -17,12 +23,7 @@
 					</u-cell>
 					<u-cell @tap="handleSelectStart" title="日期"  arrow-direction="right" isLink>
 						<text slot="value" class="u-slot-value">
-							{{ startDate }} 至 {{endDate}}
-						</text>
-					</u-cell>
-					<u-cell @tap="handleStartTime" title="时间"  arrow-direction="right" isLink>
-						<text slot="value" class="u-slot-value">
-							{{ startTime }} 至 {{endTime}}
+							{{ defaultValue.length ? `${defaultValue[0]}  至 ${defaultValue[1]}` : '请选择'}}
 						</text>
 					</u-cell>
 				</u-cell-group>
@@ -86,10 +87,9 @@
 			@confirm="confirmTime"
 			@cancel="cancelTime"
 		></u-datetime-picker>
-		<time-picker :show="showPicker" type="range" :value="defaultValue" :show-tips="true" :begin-text="'开始'"
-		    :end-text="'结束'" :show-seconds="true" @confirm="onSelected"  @cancel="showPicker=false">
+		<time-picker :show="showPicker" format="yyyy-mm-dd hh:ii" type="rangetime" :value="defaultValue" :show-tips="true" :begin-text="'开始'"
+		    :end-text="'结束'" :show-seconds="false" @confirm="onSelected"  @cancel="showPicker=false">
 		</time-picker>
-		<smh-time-range :isUnder="timeShow" :time="defaultTime" @confrim="handleConfirm" @cancel="timeShow = false"></smh-time-range>
 	</app-body>
 </template>
 
@@ -131,12 +131,8 @@
 			handleSelectStart(){
 				this.showPicker = true
 			},
-			handleStartTime(){
-				this.timeShow = true
-			},
 			onSelected(e){
-				this.startDate = e.value[0].replace(/\//g,"-")
-				this.endDate = e.value[1].replace(/\//g,"-")
+				this.defaultValue = [...e.value]
 				this.showPicker = false
 			},
 			handleConfirm(e){
@@ -222,6 +218,7 @@
 						longitude:item.longitude,
 						latitude:item.latitude,
 						radius:item.radius,
+						disable:item.flag,
 						estimatedTime:item.estimatedTime
 					})
 					
@@ -230,8 +227,8 @@
 				const obj = {
 					deviceNo:'867977060000248',
 					jobName:this.name,
-					firstDate:this.startDate +' '+ this.startTime,
-					lastDate:this.endDate +' '+ this.endTime,
+					firstDate:this.defaultValue[0],
+					lastDate:this.defaultValue[1],
 					uuid:this.id,
 					places:list
 				}
@@ -287,10 +284,8 @@
 			console.log(JSON.parse(option.list),'list')
 			const list = JSON.parse(option.list)
 			this.name = list.jobName
-			this.startDate = list.firstDate.split(" ")[0]
-			this.endDate = list.lastDate.split(" ")[0]
-			this.startTime = list.firstDate.split(" ")[1]
-			this.endTime = list.lastDate.split(" ")[1]
+			this.defaultValue[0] = list.firstDate
+			this.defaultValue[1] = list.lastDate
 			this.id = list.uuid
 			list.places.map(item=>{
 				this.contactList.push({
