@@ -12,7 +12,7 @@
 			</view>
 		</view>
 		<view class="ui-button">
-			<button @click="loginOut">
+			<button @click="unBind">
 				解绑
 			</button>
 		</view>
@@ -24,6 +24,9 @@
 	import {
 		mapState,
 	} from 'vuex';
+	import {
+		PostCareCardUnBind
+	} from '@/common/http/api';
 	import DeviceSwiper from '@/pages/equipment/watch-detail/components/device-swiper.vue'
 	export default {
 		components: {
@@ -64,6 +67,23 @@
 					url
 				})
 			},
+			unBind() {
+				const {
+					humanId,
+					no: deviceNo
+				} = this.deviceInfo
+				PostCareCardUnBind({
+					humanId,
+					deviceNo
+				}).then(res => {
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						uni.switchTab({
+							url: '/pages/index/index'
+						})
+					}, 1000)
+				})
+			}
 		}
 	}
 </script>

@@ -54,6 +54,9 @@
 
 <script>
 	import {
+		mapState,
+	} from 'vuex';
+	import {
 		push
 	} from '@/common/sdk/push.js';
 	import {
@@ -79,8 +82,13 @@
 			}
 		},
 		created() {
-			// this.getRegistrationID()
+			this.getRegistrationID()
 			this.handleGetLocation()
+		},
+		computed: {
+			...mapState({
+				deviceInfo: state => state.deviceInfo
+			}, ),
 		},
 		methods: {
 			mapMarker(data) {
@@ -100,7 +108,7 @@
 				this.covers[0] = {
 					latitude,
 					longitude,
-					iconPath: '@/static/location.png'
+					iconPath: '../../static/images/mapSite.png'
 				}
 				this.circles[0] = {
 					latitude,
@@ -154,7 +162,6 @@
 							} = res;
 							if (poiList && poiList.length) {
 								this.poiList = poiList.length > 4 ? poiList.slice(0, 4) : poiList
-								console.log(this.poiList, 'lll00000000000000000000000000000000000000')
 							}
 						})
 						// console.log(res, 'ssssssssss')
@@ -177,7 +184,7 @@
 						this.covers[0] = {
 							latitude,
 							longitude,
-							iconPath: '@/static/location.png'
+							iconPath: '../../static/images/mapSite.png'
 						}
 						this.circles[0] = {
 							latitude,
@@ -215,7 +222,6 @@
 					longitude,
 					latitude,
 					sliderValue,
-					registrationId,
 				} = this
 				if (this.type !== 'set') {
 					const val = {
@@ -232,12 +238,13 @@
 					return uni.$u.toast('半径长度大于0')
 				}
 				PostAddFence({
-					deviceId: '867977060000248',
+					fenceType: 'circle',
+					deviceId: this.deviceInfo.deviceId,
+					deviceNo: this.deviceInfo.no,
 					address,
 					longitude,
 					latitude,
 					radius: sliderValue + '',
-					deviceNo: registrationId,
 				}).then(res => {
 					uni.navigateBack()
 					uni.$u.toast(res.msg)
