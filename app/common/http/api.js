@@ -508,3 +508,10 @@ export const PostDeleteTHumanByHumanIds = (params) => http.post('/api/tHuman/del
 export const GetsetAddressBook = (params) => http.get('/api/careCard/track/points', params, {
 	showLoading: false
 });
+
+/**
+ * 获取位置追踪（最后一次）
+ */
+export const GetLastPoint = (params) => http.get('/api/careCard/track/lastPoint', params, {
+	showLoading: false
+});

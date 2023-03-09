@@ -4,8 +4,8 @@
 		<view class="ui-banner">
 			<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange"
 				:current="current">
-				<swiper-item>
-					<device-swiper></device-swiper>
+				<swiper-item v-for="item in deviceList" :key="item.deviceId">
+					<device-swiper :record="item"></device-swiper>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -17,7 +17,7 @@
 			</view>
 		</view>
 		<view class="ui-content">
-			<component ref="comRef" :is="tabKey" :key="tabKey"></component>
+			<component ref="comRef" :is="tabKey" :key="tabKey" :deviceInfo="swiperData"></component>
 		</view>
 	</app-body>
 </template>
@@ -25,7 +25,10 @@
 <script>
 	import DeviceSwiper from './components/device-swiper.vue'
 	import GetPosition from './components/get-position.vue'
-	import MsgList from './components/msg-list.vue'
+	import MsgList from '@/pages/equipment/radar-detail/components/msg-list.vue'
+	import {
+		mapState,
+	} from 'vuex';
 	// import {
 	// 	getMessage,
 	// 	PostMessageDeatil
@@ -40,6 +43,8 @@
 			return {
 				current: 0,
 				tabKey: 'MsgList',
+				deviceList: [],
+				swiperData: {},
 				tabList: [{
 					key: 'MsgList',
 					name: '未处理预警'
@@ -49,13 +54,30 @@
 				}],
 			}
 		},
-		computed: {},
-		mounted() {
-
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				familyList: state => state.familyList,
+				deviceInfo: state => state.deviceInfo
+			}, ),
+		},
+		onShow() {
+			const familyId = this.deviceInfo.familyId
+			const allDevice = this.familyList.find(n => {
+				return familyId === n.familyId
+			}).devices
+			this.deviceList = allDevice.filter(n => {
+				return n.type === '1'
+			})
+			this.current = this.deviceList.indexOf(this.deviceInfo)
+			this.swiperData = this.deviceList[this.current]
+			console.log(this.deviceList, '999')
+			// console.log(familyId, 'gg')
 		},
 		methods: {
-			swiperChange() {
-
+			swiperChange(val) {
+				this.swiperData = this.deviceList[val.detail.current]
+				this.tabKey = 'MsgList'
 			},
 			handleTab(index) {
 				this.tabKey = index
@@ -72,10 +94,18 @@
 	}
 
 	.ui-banner {
-		padding: 0 20rpx;
+		// padding: 0 0rpx;
+
 		.ui-swiper {
 			height: 320rpx;
 		}
+	}
+
+	.ui-content {
+		padding: 0 30rpx;
+		margin-top: 20rpx;
+		overflow: hidden;
+		height: calc(100vh - 580rpx - var(--status-bar-height));
 	}
 
 	.ui-tab {

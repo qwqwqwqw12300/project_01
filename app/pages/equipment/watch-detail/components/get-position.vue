@@ -1,12 +1,13 @@
 <template>
 	<view class="ui-map" id="ui-map">
 		<view class="map-box">
-			<map id="map" ref="map" style="width: 100%; height: 480rpx" :latitude="latitude" :longitude="longitude" />
+			<map id="map" ref="map" style="width: 100%; height: 480rpx" :markers="covers" :latitude="latitude"
+				:longitude="longitude" />
 		</view>
 		<view class="map-position">
 			<text class="label">当前位置:</text>
 			<view class="content">
-				福州市马尾区儒江西路1号新大陆科技园B座
+				{{ siteInfo }}
 			</view>
 		</view>
 		<view class="ui-btn">
@@ -16,30 +17,86 @@
 </template>
 
 <script>
+	import {
+		GetLastPoint
+	} from '@/common/http/api';
 	export default {
-		data() {
-			return {
-				latitude: 39.909,
-				longitude: 116.39742,
+		props: {
+			deviceInfo: {
+				type: Object,
+				default: () => {},
 			}
 		},
-		mounted(){
-			const query = uni.createSelectorQuery().in(this)
-			query
-				.select('#ui-map')
-				.boundingClientRect(data => {
-					console.log(data.height, '3333')
-					// if (data.height > 52) {
-					// 	this.isOpen = false;
-					// 	this.isShowMoreBtn = true;
-					// }
-				})
-				.exec();
+		data() {
+			return {
+				siteInfo: '',
+				latitude: 39.909,
+				longitude: 116.39742,
+				covers: [],
+			}
+		},
+		mounted() {
+			this.getDeviceLocation()
+			// const query = uni.createSelectorQuery().in(this)
+			// query
+			// 	.select('#ui-map')
+			// 	.boundingClientRect(data => {
+			// 		console.log(data.height, '3333')
+			// 		// if (data.height > 52) {
+			// 		// 	this.isOpen = false;
+			// 		// 	this.isShowMoreBtn = true;
+			// 		// }
+			// 	})
+			// 	.exec();
 		},
 		methods: {
 			toJump() {
 				uni.navigateTo({
 					url: '/pages/equipment/historical-location'
+				})
+			},
+			getLocation(latitude, longitude) {
+				uni.getLocation({
+					geocode: true,
+					type: 'gcj02',
+					latitude,
+					longitude,
+					success: (res) => {
+						const {
+							address: {
+								province,
+								city,
+								district,
+								street,
+								streetNum,
+								poiName
+							},
+						} = res
+						this.siteInfo = province + city + district + street + streetNum + poiName
+					},
+					false: (res) => {
+						console.log(res, 'error')
+						uni.hideLoading()
+					}
+				})
+			},
+			getDeviceLocation() {
+				GetLastPoint({
+					deviceNo: this.deviceInfo.no
+				}).then(res => {
+					const {
+						latitude,
+						longitude
+					} = res.data.location
+					this.latitude = latitude
+					this.longitude = longitude
+					this.getLocation(latitude, longitude)
+					this.covers[0] = {
+						latitude,
+						longitude,
+						iconPath: '../../../static/images/mapSite.png'
+					}
+					this.covers = [...this.covers]
 				})
 			}
 		}
