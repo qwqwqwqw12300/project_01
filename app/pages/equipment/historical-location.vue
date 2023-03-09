@@ -2,28 +2,14 @@
 	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<app-logo color="#353535" text="历史位置"></app-logo>
 		<view class="ui-box">
-			<!-- 	<u-cell @tap="handleSelect" title="日期" arrow-direction="right" isLink>
-				<text slot="value" class="u-slot-value">
-					{{ startDate }} 至 {{endDate}}
-				</text>
-			</u-cell> -->
-			<view class="time-picker">
+			<view class="time-picker" @tap="handleSelect">
 				<text class="label">
 					日期
 				</text>
-				<text class="value" @tap="handleSelect">
-					{{ defaultValue.length ? `${defaultValue[0]}  至 ${defaultValue[1]}` : '请选择'}}
+				<text class="value">
+					{{ dateData }}
 				</text>
 			</view>
-			<!-- <view class="map-address">
-				<view class="title-cell">
-					<text></text>地址列表
-				</view>
-				<view class="address-cell" v-for="(n,i) in list" :key="i">
-					<text class="label">{{ n.name }}</text>
-					<text class="value">{{ n.dateTime }}</text>
-				</view>
-			</view> -->
 		</view>
 		<!-- 	<u-cell-group> -->
 		<u-cell icon="setting-fill" title="地址列表"></u-cell>
@@ -32,11 +18,9 @@
 				{{item.locateTime}}
 			</text>
 		</u-cell>
-		<!-- 	</u-cell-group> -->
-		<time-picker :show="showPicker" format="yyyy-mm-dd hh:ii" type="rangetime" :value="defaultValue"
-			:show-tips="true" :begin-text="'开始'" :end-text="'结束'" :show-seconds="false" @confirm="onSelected"
-			@cancel="showPicker=false">
-		</time-picker>
+		<u-calendar ref="calendar" :defaultDate="dateData" :show="show" mode="single" @confirm="onSelected"
+			@close="show = false" closeOnClickOverlay>
+		</u-calendar>
 	</app-body>
 </template>
 
@@ -45,53 +29,39 @@
 		GetsetAddressBook,
 	} from '@/common/http/api';
 	import timePicker from '@/components/term-picker/term-picker.vue';
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
 		components: {
 			timePicker
 		},
 		data() {
 			return {
-				defaultValue: [],
-				showPicker: false,
-				list: [{
-						name: '新大陆科技园',
-						dateTime: '2023/02/28 13:00'
-					},
-					{
-						name: '新大陆壹号',
-						dateTime: '2023/02/28 13:30'
-					},
-					{
-						name: '中国移动',
-						dateTime: '2023/02/28 14:00'
-					},
-					{
-						name: '中国海关',
-						dateTime: '2023/02/28 14:20'
-					},
-					{
-						name: '名城国际',
-						dateTime: '2023/02/28 15:38'
-					},
-				],
+				show: false,
+				dateData: '',
 				dataList: [],
 			}
 		},
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				deviceInfo: state => state.deviceInfo
+			}),
+		},
 		mounted() {
-			const newData = new Date()
-			const endTime = uni.$u.timeFormat(newData, 'yyyy-mm-dd hh:MM')
-			const startTime = uni.$u.timeFormat(new Date(newData.getTime() - 24 * 60 * 60 * 1000),
-				'yyyy-mm-dd hh:MM') //前一天
-			this.defaultValue = [startTime, endTime]
-			this.queryData(startTime, endTime)
+			this.dateData = uni.$u.timeFormat(new Date(), 'yyyy-mm-dd')
+			console.log(this.$refs.calendar,'calendar')
+			console.log(this.dateData, '44')
+			this.queryData()
 		},
 		methods: {
 			handleSelect() {
-				this.showPicker = true
+				this.show = true
 			},
 			onSelected(e) {
-				this.defaultValue = [...e.value]
-				this.showPicker = false
+				this.dateData = e[0]
+				this.show = false
 				this.queryData()
 			},
 			getAddress(n) {
@@ -129,12 +99,10 @@
 			},
 			queryData() {
 				// uni.showLoading()
-				const startTime = this.defaultValue[0]
-				const endTime = this.defaultValue[1]
 				GetsetAddressBook({
-					startTime,
-					endTime,
-					deviceNo: "867977060000248"
+					startTime: this.dateData + " " + '00:00:00',
+					endTime: this.dateData + " " + '23:59:59',
+					deviceNo: this.deviceInfo.no
 				}).then(res => {
 					const list = res.data.map(n => {
 						n.locateTime = uni.$u.timeFormat(n.locateTime, 'yyyy-mm-dd hh:MM')
@@ -144,10 +112,9 @@
 						return this.getAddress(n)
 					})
 					Promise.all(promises).then(res => {
-						console.log(res, 'sssssssssss')
 						this.dataList = res
 					}).catch(res => {}).finally(() => {
-						uni.hideLoading()
+						// uni.hideLoading()
 					})
 				})
 			}

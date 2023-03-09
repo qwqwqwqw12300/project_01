@@ -64,10 +64,8 @@
 				/**所有家庭列表**/
 				deviceInfo: state => state.deviceInfo
 			}),
-		
 		},
 		data() {
-
 			return {
 				index: 0,
 				contactDict: {

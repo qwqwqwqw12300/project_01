@@ -64,7 +64,8 @@
 				timeShow:false,
 				defaultTime:[0, 0, 0, 23, 59],
 				id:'',
-				deviceInfo:''
+				deviceInfo:'',
+				enable:''
 			};
 		},
 		computed:{
@@ -132,6 +133,8 @@
 					periodDisableTag:this.name,
 					beginTime:this.defaultValue[0],
 					endTime:this.defaultValue[1],
+					uuid:this.id,
+					enable:this.enable
 				}).then(res=>{
 					console.log(res,'res')
 					uni.$u.toast(res.msg)
@@ -149,6 +152,7 @@
 			this.defaultValue[0] = list.beginTime
 			this.defaultValue[1] = list.endTime
 			this.id = list.uuid
+			this.enable = list.enable
 		}
 	};
 </script>

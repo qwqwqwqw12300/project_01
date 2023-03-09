@@ -69,7 +69,7 @@
 						success: res => {
 							if (res.confirm) {
 								PostRebootDevice({
-									deviceNo: record.no,
+									deviceNo: this.record.no,
 									initialization: "0"
 								}).then(res => {
 									uni.$u.toast(res.msg)

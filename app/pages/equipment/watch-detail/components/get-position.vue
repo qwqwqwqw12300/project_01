@@ -1,7 +1,7 @@
 <template>
 	<view class="ui-map" id="ui-map">
 		<view class="map-box">
-			<map id="map" ref="map" style="width: 100%; height: 480rpx" :markers="covers" :latitude="latitude"
+			<map id="map" ref="map" :style="{height: mapHeight}" :markers="covers" :latitude="latitude"
 				:longitude="longitude" />
 		</view>
 		<view class="map-position">
@@ -33,21 +33,20 @@
 				latitude: 39.909,
 				longitude: 116.39742,
 				covers: [],
+				mapHeight: 0,
 			}
+		},
+		created() {
+			const sysHeight = uni.getSystemInfoSync().windowHeight
+			const saveHeight = uni.getSystemInfoSync().statusBarHeight
+			//44 + 167 + 47 + 130
+			this.mapHeight = sysHeight - saveHeight - 400
+			console.log(this.mapHeight, 'pppp')
+			// console.log(height, 'oooo')
 		},
 		mounted() {
 			this.getDeviceLocation()
-			// const query = uni.createSelectorQuery().in(this)
-			// query
-			// 	.select('#ui-map')
-			// 	.boundingClientRect(data => {
-			// 		console.log(data.height, '3333')
-			// 		// if (data.height > 52) {
-			// 		// 	this.isOpen = false;
-			// 		// 	this.isShowMoreBtn = true;
-			// 		// }
-			// 	})
-			// 	.exec();
+
 		},
 		methods: {
 			toJump() {

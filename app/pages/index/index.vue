@@ -64,14 +64,10 @@
 										<view class="ui-device-name">
 											<view class="ui-list-static"
 												:class="{online: getDeives(room).onlineFlag === '1'}"></view>
-											<text class="ui-list-static-font"
-												v-if="getDeives(room).onlineFlag === '1'">在线</text>
-											<text class="ui-list-static-font" v-else>离线</text>
+											<text class="ui-list-static-font">{{getDeives(room).hasPerson==='1' ? '在线':'离线'}}</text>
 											<view class="ui-list-people"
 												:class="{online: getDeives(room).hasPerson === '1'}"></view>
-											<text class="ui-list-static-font"
-												v-if="getDeives(room).hasPerson === '1'">有人</text>
-											<text class="ui-list-static-font" v-else>无人</text>
+											<text class="ui-list-static-font">{{getDeives(room).hasPerson==='1' ? '有人':'无人'}}</text>
 										</view>
 									</view>
 									<u-badge v-if="getDeives(room).msgNum > 1" color="#fff" :offset="[-1, 0]"
@@ -83,10 +79,10 @@
 							<template v-else>
 								<view class="ui-list-box ui-list-room active"
 									@click="bindDevice(room,familyItem.shareFlag)">
-									<view>
+									<view >
 										<u-text :block="false" :text="room.name || '未命名房间'"
 											:prefixIcon="getRoomIcon(room.roomType)" size="36rpx"
-											:iconStyle="{height: '48rpx', width: '48rpx'}"></u-text>
+											:iconStyle="{height: '48rpx', width: '48rpx',marginRight:'20rpx'}"></u-text>
 									</view>
 									<text v-if="familyItem.shareFlag == '2'" class="ui-link">点击绑定设备</text>
 									<text v-else>暂无设备</text>
@@ -120,10 +116,10 @@
 							<template v-else>
 								<view class="ui-list-box ui-list-room active"
 									@click="bindDevice(human, familyItem.shareFlag)">
-									<view>
+									<view >
 										<u-text :block="false" :text="human.name"
 											prefixIcon="../../static/images/add-person.png" size="36rpx"
-											:iconStyle="{height: '48rpx', width: '48rpx'}"></u-text>
+											:iconStyle="{height: '48rpx', width: '48rpx',marginRight:'20rpx'}"></u-text>
 									</view>
 									<text v-if="familyItem.shareFlag == '2'" class="ui-link">点击绑定设备</text>
 									<text v-else>暂无设备</text>
@@ -605,7 +601,6 @@
 						justify-content: center;
 						flex-direction: column;
 						padding: 0;
-
 						text {
 							margin-top: 20rpx;
 							font-size: 24rpx !important;
