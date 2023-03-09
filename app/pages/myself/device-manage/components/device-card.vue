@@ -133,7 +133,7 @@
 		position: relative;
 
 		.item-box {
-			padding: 30rpx 20rpx;
+			padding: 20rpx 10rpx;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -179,6 +179,9 @@
 						color: #353535;
 						font-weight: 500;
 						width: 150rpx;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						overflow: hidden;
 					}
 
 					.position {
