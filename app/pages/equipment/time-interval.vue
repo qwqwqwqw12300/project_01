@@ -24,7 +24,7 @@
 							<view>{{item.beginTime}} 至 </view>
 							<view>{{item.endTime}}</view>
 						</view>
-						<u-switch @change="handleSwitch" v-model="item.enable" activeValue="1" inactiveValue="0"
+						<u-switch @click.native.stop="handleSwitch" v-model="item.enable" activeValue="1" inactiveValue="0"
 							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20">
 						</u-switch>
 					</view>
