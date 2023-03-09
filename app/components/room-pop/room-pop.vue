@@ -9,7 +9,7 @@
 	<view>
 		<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
 			<!-- 房间 -->
-			<view class="wd-add" v-if="form.type === '0'">
+			<view class="wd-add" v-if="type === 'room'">
 				<view class="wd-title">
 					<text class="wd-title-font">{{mode === 'add' ? '新建房间': '修改房间'}}</text>
 				</view>
@@ -46,7 +46,7 @@
 					</view>
 				</view>
 				<view class="wd-hr"></view>
-				<view class="wd-btn" @click="next">
+				<view class="wd-btn" @click="personNext">
 					<view>{{ subTitle }}</view>
 				</view>
 			</view>
@@ -72,10 +72,15 @@
 	import {
 		PostAddRoom,
 		PostEditRoom,
+		PostinsertTHuman,
+		PostUpdateTHuman
 	} from '@/common/http/api.js';
+	import {
+		isProd
+	} from '../../common/utils/util';
 	export default {
 		props: {
-			/**模式add-添加家庭 edit-修改家庭**/
+			/**模式add-添加 edit-修改**/
 			mode: {
 				default: 'add'
 			},
@@ -91,8 +96,10 @@
 					name: '', //房间名称
 					familyId: '', // 家庭id
 					roomId: '', // 房间id
-					type: '0'
+
 				},
+				/**添加人员 -human  添加房间-room**/
+				type: 'room',
 				/**要绑定的跌倒检测器**/
 				deviceId: '',
 				// 0:其他、1:书房、2:客厅、3:卧室、4:浴室、5:厨房、6:餐厅
@@ -126,12 +133,12 @@
 				sheetList: [{
 						name: '房间',
 						icon: 'add-home',
-						value: '0'
+						value: 'room'
 					},
 					{
 						name: '人员',
 						icon: 'add-person',
-						value: '1'
+						value: 'human'
 					}
 				],
 				/**是否展示弹出层**/
@@ -166,9 +173,11 @@
 				this.sheetShow = false;
 			},
 			open(obj = {}) {
+				console.log('mode', this.mode);
 				if (this.mode === 'add') {
 					this.sheetShow = true;
 				} else {
+					this.type = obj.humanId ? 'human' : 'room';
 					this.show = true;
 				}
 				this.form = {
@@ -199,16 +208,55 @@
 					uni.$u.toast('操作成功')
 					this.close();
 					setTimeout(() => {
-						this.$emit('update', res.data && res.data.roomId)
+						this.$emit('update', {
+							type: 'room',
+							data: res.data && res.data.roomId
+						})
+					}, 500);
+				})
+			},
+
+			/**
+			 * 添加人员点击下一步
+			 */
+			personNext() {
+				const {
+					name,
+					familyId,
+					humanId
+				} = this.form;
+				if (!name) {
+					return uni.$u.toast('请完善人员信息');
+				}
+				const handle = this.mode === 'add' ? PostinsertTHuman({
+					name,
+					familyId
+				}) : PostUpdateTHuman({
+					humanId,
+					name,
+					familyId
+				});
+				handle.then(res => {
+					uni.$u.toast('操作成功')
+					this.close();
+					setTimeout(() => {
+						this.$emit('update', {
+							type: 'human',
+							data: res.data
+						})
 					}, 500);
 				})
 			},
 
 			sheetSelect(item) {
-				this.form.type = item.value;
+				console.log(item, 'item');
+				if (item.value === 'human' && isProd()) return uni.$u.toast('暂不支持添加');
+				this.type = item.value;
 				this.show = true;
 				this.sheetShow = false;
-			}
+			},
+
+
 		}
 	};
 </script>

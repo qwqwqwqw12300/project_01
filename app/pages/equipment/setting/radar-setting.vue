@@ -30,7 +30,7 @@
 						<!-- 壁挂 -->
 						<template v-if="editFrom.installPosition == 0">
 							<view class="ui-slider-box">
-								<view class="ui-slider-tit">检测高度</view>
+								<view class="ui-slider-tit">高度</view>
 								<view class="ui-slider">
 									<u-slider min="0" max="4" step="0.1"
 										v-model="editFrom.deviceLocationWall.roomHeight" activeColor="#eeaa3d"
@@ -39,7 +39,7 @@
 								</view>
 							</view>
 							<view class="ui-slider-box">
-								<view class="ui-slider-tit">检测前距离</view>
+								<view class="ui-slider-tit">前距离</view>
 								<view class="ui-slider">
 									<u-slider min="0" max="4" step="0.1"
 										v-model="editFrom.deviceLocationWall.roomLength" activeColor="#eeaa3d"
@@ -48,7 +48,7 @@
 								</view>
 							</view>
 							<view class="ui-slider-box">
-								<view class="ui-slider-tit">检测左距离</view>
+								<view class="ui-slider-tit">左距离</view>
 								<view class="ui-slider">
 									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationWall.roomLeft"
 										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
@@ -56,7 +56,7 @@
 								</view>
 							</view>
 							<view class="ui-slider-box">
-								<view class="ui-slider-tit">检测右长度</view>
+								<view class="ui-slider-tit">右长度</view>
 								<view class="ui-slider">
 									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationWall.roomRight"
 										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
@@ -68,7 +68,7 @@
 						<!-- 顶挂 -->
 						<template v-if="editFrom.installPosition == 1">
 							<view class="ui-slider-box">
-								<view class="ui-slider-tit">检测高度</view>
+								<view class="ui-slider-tit">高度</view>
 								<view class="ui-slider">
 									<u-slider min="0" max="1.5z" step="0.1"
 										v-model="editFrom.deviceLocationTop.roomHeight" activeColor="#eeaa3d"
@@ -77,7 +77,7 @@
 								</view>
 							</view>
 							<view class="ui-slider-box">
-								<view class="ui-slider-tit">检测前距离</view>
+								<view class="ui-slider-tit">前距离</view>
 								<view class="ui-slider">
 									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationTop.roomFront"
 										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
@@ -85,7 +85,7 @@
 								</view>
 							</view>
 							<view class="ui-slider-box">
-								<view class="ui-slider-tit">检测后距离</view>
+								<view class="ui-slider-tit">后距离</view>
 								<view class="ui-slider">
 									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationTop.roomBehind"
 										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
@@ -93,7 +93,7 @@
 								</view>
 							</view>
 							<view class="ui-slider-box">
-								<view class="ui-slider-tit">检测左距离</view>
+								<view class="ui-slider-tit">左距离</view>
 								<view class="ui-slider">
 									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationTop.roomLeft"
 										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
@@ -101,7 +101,7 @@
 								</view>
 							</view>
 							<view class="ui-slider-box">
-								<view class="ui-slider-tit">检测右长度</view>
+								<view class="ui-slider-tit">右长度</view>
 								<view class="ui-slider">
 									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationTop.roomRight"
 										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
@@ -438,12 +438,20 @@
 		padding: 54rpx 32rpx 80rpx 32rpx;
 	}
 
+	.ui-slider-box {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 15px;
+		padding: 25rpx 20rpx 25rpx 0;
+		border-bottom: 2px solid #f2f2f2;
+	}
+
 	.ui-slider-tit {
-		padding: 20rpx 0 0 0;
+		min-width: 100rpx;
 	}
 
 	.ui-slider {
-		width: 100%;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -453,7 +461,7 @@
 
 		&>* {
 			:nth-child(1) {
-				width: 430rpx;
+				width: 400rpx;
 			}
 		}
 	}
@@ -501,11 +509,7 @@
 		padding-left: 30rpx;
 	}
 
-	.ui-slider-box {
-		font-size: 15px;
-		padding: 20rpx 20rpx 20rpx 0;
-		border-bottom: 2px solid #f2f2f2;
-	}
+
 
 	.ui-right-icon {
 		width: 300rpx;

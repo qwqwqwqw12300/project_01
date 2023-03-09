@@ -4,7 +4,7 @@
 		<view>
 			<view @click="sheetSelect(item)" class="ui-sheet" v-for="(item, index) of addHandle.list"
 				:key="'sheet' + index">
-				<u-icon :name="'../../static/images/' + item.icon + '.png'" class="active" color="#fff" size="48rpx">
+				<u-icon :name="item.icon" class="active" color="#fff" size="48rpx">
 				</u-icon>
 				<text>{{item.name}}</text>
 			</view>
@@ -31,18 +31,18 @@
 					show: false,
 					list: [{
 							name: '跌倒检测器',
-							icon: 'leida-nm',
+							icon: '/static/images/leida-nm.png',
 							url: '/pages/equipment/add/radar'
 						},
 						{
 							name: '电子牵挂卡',
-							icon: 'dzqgk',
+							icon: '/static/images/dzqgk.png',
 							// url: '/pages/equipment/add/add-card',
 							url: '/pages/equipment/watch-detail/watch-detail',
 						},
 						{
 							name: '4G健康手表',
-							icon: 'watch',
+							icon: '/static/images/watch.png',
 							url: '/pages/equipment/add/monitor'
 						}
 					]

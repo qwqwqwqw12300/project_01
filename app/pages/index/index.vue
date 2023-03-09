@@ -16,29 +16,6 @@
 				</view>
 				<u-icon name="plus-circle" @click="addDevice" :stop="true" class="active" color="#000" size="45rpx">
 				</u-icon>
-				<!-- 下拉框 -->
-				<!-- <view class="ui-select" v-if="isAddShow">
-					<view class="ui-select-item active" @click="goPage('/pages/equipment/add/radar')">
-						<u-icon name="../../static/images/leida-nm.png" class="active" color="#fff" size="48rpx">
-						</u-icon>
-						<text>雷达波设备</text>
-					</view>
-					<view class="ui-select-item active" @click="goPage('/pages/equipment/add/monitor')">
-						<u-icon name="../../static/images/dzqgk.png" class="active" color="#fff" size="48rpx">
-						</u-icon>
-						<text>电子牵挂卡</text>
-					</view>
-					<view class="ui-select-item active" @click="goPage('/pages/equipment/add/monitor')">
-						<u-icon name="../../static/images/watch.png" class="active" color="#fff" size="48rpx">
-						</u-icon>
-						<text>监测手表</text>
-					</view>
-					<view class="ui-select-item active" @click="isAddShow=false"> 
-						<text>取消</text>
-					</view>
-				</view> -->
-				<AppHandle :isShow="isAddShow" @cancle="isAddShow = false"></AppHandle>
-				<!-- /下拉框 -->
 			</view>
 			<view class="ui-logo">
 				<image src="../../static/images/index/logo.png"></image>
@@ -76,8 +53,10 @@
 
 					</view>
 					<view class="ui-device">
-						<view class="ui-list" v-for="room of familyItem.rooms" :key="room.roomId">
+						<!-- 房间 -->
+						<view class="ui-list" v-for="room of familyItem.rooms" :key="'r' + room.roomId">
 							<template v-if="getDeives(room).deviceId">
+								<!-- 雷达波设备 -->
 								<view class="ui-list-box active" @click="goDeciveDetails(getDeives(room))">
 									<image src="../../static/images/leida-nm.png"></image>
 									<view class="ui-device-info">
@@ -85,11 +64,13 @@
 										<view class="ui-device-name">
 											<view class="ui-list-static"
 												:class="{online: getDeives(room).onlineFlag === '1'}"></view>
-											<text class="ui-list-static-font" v-if="getDeives(room).onlineFlag === '1'">在线</text>
+											<text class="ui-list-static-font"
+												v-if="getDeives(room).onlineFlag === '1'">在线</text>
 											<text class="ui-list-static-font" v-else>离线</text>
 											<view class="ui-list-people"
 												:class="{online: getDeives(room).hasPerson === '1'}"></view>
-											<text class="ui-list-static-font" v-if="getDeives(room).hasPerson === '1'">有人</text>
+											<text class="ui-list-static-font"
+												v-if="getDeives(room).hasPerson === '1'">有人</text>
 											<text class="ui-list-static-font" v-else>无人</text>
 										</view>
 									</view>
@@ -113,6 +94,45 @@
 							</template>
 							<!-- /空房间 -->
 						</view>
+						<!-- 房间 -->
+						<!-- 人员 -->
+						<view class="ui-list" v-for="human of familyItem.humans" :key="'human' + human.humanId">
+							<template v-if="getDeives(human).deviceId">
+								<view class="ui-list-box active" v-if="getDeives(human).type === '1'"
+									@click="goDeciveDetails(getDeives(human))">
+									<image src="../../static/images/dzqgk.png"></image>
+									<view class="ui-device-info">
+										<text>{{human.name || '未命名人员'}}</text>
+										<view class="ui-device-name">
+											<view class="ui-list-static"
+												:class="{online: getDeives(human).onlineFlag === '1'}"></view>
+											<text class="ui-list-static-font"
+												v-if="getDeives(human).onlineFlag === '1'">在线</text>
+											<text class="ui-list-static-font" v-else>离线</text>
+										</view>
+									</view>
+									<u-badge v-if="getDeives(human).msgNum > 1" color="#fff" :offset="[-1, 0]"
+										:value="getDeives(human).msgNum" absolute>
+									</u-badge>
+								</view>
+							</template>
+							<!-- 空人员 -->
+							<template v-else>
+								<view class="ui-list-box ui-list-room active"
+									@click="bindDevice(human, familyItem.shareFlag)">
+									<view>
+										<u-text :block="false" :text="human.name"
+											prefixIcon="../../static/images/add-person.png" size="36rpx"
+											:iconStyle="{height: '48rpx', width: '48rpx'}"></u-text>
+									</view>
+									<text v-if="familyItem.shareFlag == '2'" class="ui-link">点击绑定设备</text>
+									<text v-else>暂无设备</text>
+								</view>
+							</template>
+							<!-- /空人员 -->
+						</view>
+						<!-- 人员 -->
+
 						<!-- 新增房间 -->
 						<view class="ui-list ui-list-add" v-if="familyItem.shareFlag == '2'">
 							<view class="ui-list-box" @click="addRoom(familyItem)">
@@ -142,6 +162,9 @@
 			<add-step ref="addStepRef"></add-step>
 			<bind-device :payload="bindPayload" @next="handleInitList" ref="indexBindDev" />
 			<room-pop ref="indexAddRoom" @update="handleInitList" />
+			<!-- 下拉框 -->
+			<AppHandle :isShow="isAddShow" @cancle="isAddShow = false"></AppHandle>
+			<!-- /下拉框 -->
 		</app-body>
 	</view>
 
@@ -198,14 +221,19 @@
 					}, ...list];
 				},
 				getDeives: state => {
-					return room => {
-						let obj = {};
+					return item => {
+						let arr = [];
 						if (state.familyList.length) {
-							const devices = state.familyList.find(ele => ele.familyId === room.familyId)
-								.devices.filter(ele => ele.roomId === room.roomId);
-							obj = devices[0] || {};
+							const devices = state.familyList.find(ele => ele.familyId === item.familyId)
+								.devices;
+							if (item.roomId) { // 查询房间下的设备
+								arr = devices.filter(ele => ele.roomId === item.roomId)
+							} else {
+								arr = devices.filter(ele => ele.humanId === item.humanId)
+							}
+							arr.filter(ele => ele.roomId === item.roomId);
 						}
-						return obj;
+						return arr[0] || {};;
 
 					}
 				},
@@ -322,13 +350,23 @@
 			 */
 			bindDevice({
 				familyId,
-				roomId
+				roomId,
+				humanId
 			}, shareFlag) {
 				if (shareFlag !== '2') return;
-				this.bindPayload = {
-					familyId,
-					roomId
-				};
+				if (humanId) {
+					this.bindPayload = {
+						familyId,
+						id: humanId,
+						type: 'human'
+					};
+				} else {
+					this.bindPayload = {
+						familyId,
+						id: roomId,
+						type: 'room'
+					};
+				}
 				this.$refs.indexBindDev.open();
 			},
 
@@ -488,13 +526,15 @@
 						align-items: flex-start;
 						flex-direction: column;
 						margin-left: 10rpx;
+
+						text {
+							display: inline-block;
+							font-size: 36rpx;
+							color: #353535;
+						}
 					}
 
-					text {
-						display: inline-block;
-						font-size: 36rpx;
-						color: #353535;
-					}
+
 
 					.ui-device-name {
 						display: flex;

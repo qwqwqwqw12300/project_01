@@ -1,5 +1,5 @@
 <template>
-	<app-body :hideTitle="true" :needService="false">
+	<app-body :hideTitle="true">
 		<view class="ui-body">
 			<view class="ui-header">
 				<u-avatar size="60" :src="userInfo.avatar"></u-avatar>
@@ -72,7 +72,7 @@
 				}, {
 					title: '设备管理',
 					icon: '/static/images/device-mg.png',
-					url: '/pages/myself/device-manage'
+					url: '/pages/myself/device-manage/device-manage'
 				}, {
 					title: '紧急电话',
 					icon: '/static/images/urgent-phone.png',
