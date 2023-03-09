@@ -36,6 +36,7 @@
 				</u-swipe-action-item>
 			</u-swipe-action>
 		</view>
+		<view class="ui-div"></view>
 		<view class="ui-btn">
 			<view class="btn-box">
 				<view class="cancel-btn" @click="handleCancel">
@@ -241,7 +242,9 @@
 			}
 		}
 	}
-
+	.ui-div{
+		height: 90rpx;
+	}
 	.ui-btn {
 		width: 100%;
 		position: fixed;

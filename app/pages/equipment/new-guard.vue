@@ -46,7 +46,7 @@
 				<view class="item-input">
 					<u-cell-group>
 						<u-cell title="地址" arrow-direction="right" isLink @click="handleJump(index)"> 
-							<text slot="value" class="u-slot-value">
+							<text slot="value" class="u-slot-value ui-cell">
 								{{item.address}}
 							</text>
 						</u-cell>
@@ -68,6 +68,7 @@
 			<image class="ui-add-icon" src="@/static/images/add-guard.png"></image>
 			<text>添加地点</text>
 		</view>
+		<view class="ui-div"></view>
 		<view class="ui-btn" v-if="editBtn==false">
 			<view class="btn-box">
 				<view class="cancel-btn" @click="handleCancel">
@@ -184,7 +185,7 @@
 			handleSave(){
 				if (!this.name) return uni.$u.toast('名称不能为空')
 				const list = []
-				this.contactList.map(item=>{
+				this.contactList.forEach(item=>{
 					console.log(item,'item')
 					item.estimatedTime = item.date +' '+ item.time
 					list.push({
@@ -193,7 +194,7 @@
 						longitude:item.longitude,
 						latitude:item.latitude,
 						radius:item.radius,
-						disable:item.flag,
+						enable:item.flag,
 						estimatedTime:item.estimatedTime
 					})
 					
@@ -204,7 +205,7 @@
 					jobName:this.name,
 					firstDate:this.defaultValue[0],
 					lastDate:this.defaultValue[1],
-					disable:'1',
+					enable:'1',
 					places:list
 				}
 				console.log(obj,'obj')
@@ -356,7 +357,16 @@
 			}
 		}
 	}
-	
+	.ui-div{
+		height: 90rpx;
+	}
+	.ui-cell{
+		width: 80%;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		flex-wrap: wrap;
+	}
 	.ui-btn {
 		width: 100%;
 		position: fixed;

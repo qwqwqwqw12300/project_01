@@ -46,16 +46,16 @@
 				<view class="item-input">
 					<u-cell-group>
 						<u-cell title="地址" arrow-direction="right" isLink @click="handleJump(index)"> 
-							<text slot="value" class="u-slot-value">
+							<text slot="value" class="u-slot-value ui-cell" >
 								{{item.address}}
 							</text>
 						</u-cell>
-						<u-cell @tap="handleSelect(index)" title="到达日期" arrow-direction="right" isLink>
+						<u-cell @tap="handleSelect(index,item.date)" title="到达日期" arrow-direction="right" isLink>
 							<text slot="value" class="u-slot-value">
 								{{item.date}}
 							</text>
 						</u-cell>
-						<u-cell @tap="handleTime(index)" title="到达时间" arrow-direction="right" isLink>
+						<u-cell @tap="handleTime(index,item.time)" title="到达时间" arrow-direction="right" isLink>
 							<text slot="value" class="u-slot-value">
 								{{item.time}}
 							</text>
@@ -68,6 +68,7 @@
 			<image class="ui-add-icon" src="@/static/images/add-guard.png"></image>
 			<text>添加地点</text>
 		</view>
+		<view class="ui-div"></view>
 		<view class="ui-btn" v-if="editBtn==false">
 			<view class="btn-box">
 				<view class="cancel-btn" @click="handleCancel">
@@ -78,13 +79,15 @@
 				</view>
 			</view>
 		</view>
-		<u-calendar :show="showDate" :mode="mode" @confirm="confirm" @close="close" closeOnClickOverlay></u-calendar>
+		<u-calendar :show="showDate" :defaultDate="defaultDate" :mode="mode" @confirm="confirm" @close="close" closeOnClickOverlay></u-calendar>
 		<u-datetime-picker
+			ref="datetimePicker"
 			:show="showTime"
 			v-model="time"
 			mode="time"
 			closeOnClickOverlay
 			@confirm="confirmTime"
+			@close="showTime=false"
 			@cancel="cancelTime"
 		></u-datetime-picker>
 		<time-picker :show="showPicker" format="yyyy-mm-dd hh:ii" type="rangetime" :value="defaultValue" :show-tips="true" :begin-text="'开始'"
@@ -113,7 +116,8 @@
 				showDate:false,
 				mode:'single',
 				showTime:false,
-				time:'15:26',
+				time:'00:00',
+				defaultDate:'',
 				id:0,
 				contactList: [],
 				showPicker: false,
@@ -146,8 +150,9 @@
 				// })
 				console.log(this.defaultTime)
 			},
-			handleSelect(index){
+			handleSelect(index,date){
 				this.index = index
+				this.defaultDate = date
 				this.showDate = true
 			},
 			confirm(e) {
@@ -159,8 +164,12 @@
 				this.showDate = false
 			},
 			//时间
-			handleTime(index){
+			handleTime(index,time){
+				console.log(time,'time')
+				this.$refs.datetimePicker.innerValue = time
 				this.index = index
+				this.time = time
+				console.log(this.time,'this.time')
 				this.showTime = true
 			},
 			confirmTime(e) {
@@ -209,7 +218,7 @@
 			},
 			handleSave(){
 				const list = []
-				this.contactList.map(item=>{
+				this.contactList.forEach(item=>{
 					console.log(item,'item')
 					item.estimatedTime = item.date +' '+ item.time
 					list.push({
@@ -218,7 +227,7 @@
 						longitude:item.longitude,
 						latitude:item.latitude,
 						radius:item.radius,
-						disable:item.flag,
+						enable:item.flag,
 						estimatedTime:item.estimatedTime
 					})
 					
@@ -287,19 +296,23 @@
 			this.defaultValue[0] = list.firstDate
 			this.defaultValue[1] = list.lastDate
 			this.id = list.uuid
-			list.places.map(item=>{
+			list.places.forEach(item=>{
 				this.contactList.push({
 					guardType:'circle',
 					address:item.address,
 					longitude:item.longitude,
 					latitude:item.latitude,
 					radius:item.radius,
-					orderName:'地点' + list.places.length,
-					flag:item.disable,
+					orderName:'',
+					flag:item.enable,
 					estimatedTime:item.estimatedTime,
 					date:item.estimatedTime.split(" ")[0],
 					time:item.estimatedTime.split(" ")[1]
 				})
+			})
+			this.contactList.map((item,index)=>{
+				item.orderName = `地点${(index+1)}`
+				return item
 			})
 		}
 	}
@@ -344,6 +357,13 @@
 			line-height: 36rpx;
 			font-weight: 400;
 		}
+	}
+	.ui-cell{
+		width: 80%;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		flex-wrap: wrap;
 	}
 	.ui-form {
 		// padding: 0 44rpx;
@@ -400,7 +420,9 @@
 			}
 		}
 	}
-	
+	.ui-div{
+		height: 90rpx;
+	}
 	.ui-btn {
 		width: 100%;
 		position: fixed;

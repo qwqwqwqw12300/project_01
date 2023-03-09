@@ -24,13 +24,14 @@
 							<view>{{item.beginTime}} 至 </view>
 							<view>{{item.endTime}}</view>
 						</view>
-						<u-switch @change="handleSwitch" v-model="flag" activeValue="1" inactiveValue="0"
+						<u-switch @change="handleSwitch" v-model="item.enable" activeValue="1" inactiveValue="0"
 							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20">
 						</u-switch>
 					</view>
 				</view>
 			</view>
 		</view>
+		<view class="ui-div"></view>
 		<view class="ui-btn">
 			<view class="box">
 				<button class="default" @click="toJumpTime">新增时间段</button>
@@ -132,7 +133,9 @@
 			}
 		}
 	}
-
+	.ui-div{
+		height: 90rpx;
+	}
 	.ui-btn {
 
 		.box {
