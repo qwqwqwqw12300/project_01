@@ -75,8 +75,9 @@
 			// console.log(familyId, 'gg')
 		},
 		methods: {
-			swiperChange() {
-
+			swiperChange(val) {
+				this.swiperData = this.deviceList[val.detail.current]
+				this.tabKey = 'MsgList'
 			},
 			handleTab(index) {
 				this.tabKey = index
@@ -93,7 +94,7 @@
 	}
 
 	.ui-banner {
-		padding: 0 20rpx;
+		// padding: 0 0rpx;
 
 		.ui-swiper {
 			height: 320rpx;

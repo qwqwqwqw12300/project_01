@@ -1,27 +1,6 @@
 <template>
 	<app-body>
-		<view class="ui-detail">
-			<view class="detail-box">
-				<image class="device-img" src="/static/images/electron-card.png"></image>
-				<view class="device-info">
-					<view class="title">
-						<text class="name">艾吉通</text>
-						<text class="line online">在线</text>
-					</view>
-					<view class="status">
-						<u-icon name="/static/images/run-status.png" size="44rpx" style="margin-right: 6rpx;" />
-						<text>运行状态: 正常</text>
-					</view>
-					<view class="status">
-						<u-icon name="/static/images/card-power.png" size="44rpx" style="margin-right: 6rpx;" />
-						<text>剩余电量: 100%</text>
-					</view>
-				</view>
-				<view class="device-set" @click="restart">
-					<u-icon name="/static/images/reStart.png" size="44rpx" style="margin-right: 6rpx;" />重启设备
-				</view>
-			</view>
-		</view>
+		<DeviceSwiper :record="deviceInfo" type="reset"></DeviceSwiper>
 		<view class="ui-cell">
 			<view class="cell-box">
 				<u-cell-group>
@@ -43,9 +22,13 @@
 
 <script>
 	import {
-		PostRebootDevice
-	} from '@/common/http/api';
+		mapState,
+	} from 'vuex';
+	import DeviceSwiper from '@/pages/equipment/watch-detail/components/device-swiper.vue'
 	export default {
+		components: {
+			DeviceSwiper,
+		},
 		data() {
 			return {
 				cellList: [{
@@ -69,28 +52,18 @@
 				}]
 			}
 		},
+		computed: {
+			...mapState({
+				deviceInfo: state => state.deviceInfo
+			}, ),
+		},
+		mounted() {},
 		methods: {
 			handleJump(url) {
 				uni.navigateTo({
 					url
 				})
 			},
-			restart(){
-				uni.showModal({
-					title: '提示',
-					content: '是否确认重启设备',
-					success: res => {
-						if (res.confirm) {
-							PostRebootDevice({
-								deviceNo:'867977060000248',
-								initialization:"0"
-							}).then(res=>{
-								uni.$u.toast(res.msg)
-							})
-						} 
-					}
-				});
-			}
 		}
 	}
 </script>
@@ -186,6 +159,7 @@
 	.ui-button {
 		margin-top: 30rpx;
 		padding: 0 32rpx;
+
 		button {
 			border-radius: 18rpx;
 			color: #FF4645;
