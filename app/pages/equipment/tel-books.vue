@@ -97,9 +97,25 @@
 					if (!list[i].phoneName) return uni.$u.toast('请填写联系人姓名')
 					if (!phoneValidator(list[i].phoneNumber)) return uni.$u.toast('手机号不正确')
 				}
+				const addressBooks = []
+				this.options4.filter(item=>{
+					console.log(item,'item')
+					if(item.addressBookId!=undefined){
+						addressBooks.push({
+							phoneName:item.phoneName,
+							phoneNumber:item.phoneNumber,
+							addressBookId:item.addressBookId
+						})
+					}else{
+						addressBooks.push({
+							phoneName:item.phoneName,
+							phoneNumber:item.phoneNumber,
+						})
+					}
+				})
 				PostAddOrUpdateAddressBook({
 					deviceNo: "867977060000248",
-					addressBooks: this.options4
+					addressBooks: addressBooks
 				}).then(res => {
 					console.log(res, 'res')
 					uni.$u.toast(res.msg)
