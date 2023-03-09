@@ -126,7 +126,9 @@ const store = {
 		 */
 		getAllDevices(ctx) {
 			return new Promise(resolve => {
-				getDeviceListState({}).then(({
+				getDeviceListState({
+					pageSize: 10000
+				}).then(({
 					rows = []
 				}) => {
 					ctx.commit('setDevicesList', rows);

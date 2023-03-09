@@ -121,7 +121,9 @@
 			...mapActions(['getAllFamily']),
 
 			getList() {
-				getDeviceListState({}).then(res => {
+				getDeviceListState({
+					pageSize: 10000
+				}).then(res => {
 					this.list = res.rows || [];
 				});
 			},
