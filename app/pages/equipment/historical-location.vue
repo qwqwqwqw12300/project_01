@@ -18,7 +18,7 @@
 				{{item.locateTime}}
 			</text>
 		</u-cell>
-		<u-calendar ref="calendar" :defaultDate="dateData" :show="show" mode="'single" @confirm="onSelected"
+		<u-calendar ref="calendar" :defaultDate="dateData" :show="show" mode="single" @confirm="onSelected"
 			@close="show = false" closeOnClickOverlay>
 		</u-calendar>
 	</app-body>
@@ -51,6 +51,7 @@
 		},
 		mounted() {
 			this.dateData = uni.$u.timeFormat(new Date(), 'yyyy-mm-dd')
+			console.log(this.$refs.calendar,'calendar')
 			console.log(this.dateData, '44')
 			this.queryData()
 		},
