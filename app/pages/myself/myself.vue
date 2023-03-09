@@ -98,7 +98,7 @@
 		},
 		computed: {
 			userInfo() {
-				const obj = uni.$u.deepClone(this.$store.getters.userInfo)
+				const obj = uni.$u.deepClone(this.$store.getters.userInfo);
 				obj.avatar = `${env.basePath}${obj.avatar}`
 				obj.phone = phoneHide(obj.phone || '')
 				return obj

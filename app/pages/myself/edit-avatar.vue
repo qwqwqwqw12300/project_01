@@ -32,10 +32,10 @@
 			afterRead(info) {
 				const {
 					url,
-					size
+					size,
+					name
 				} = info.file[0]
-				console.log(info.file, 'llllllllllll')
-				const fileType = url.substring(url.lastIndexOf("."))
+				const fileType = name.substring(name.lastIndexOf("."))
 				if (!['.png', '.jpeg', '.jpg'].includes(fileType)) return uni.$u.toast('不支持该格式图片')
 				if (size / 1024 / 1024 > 5) return uni.$u.toast('图片大小不能超过5M')
 				console.log(fileType)

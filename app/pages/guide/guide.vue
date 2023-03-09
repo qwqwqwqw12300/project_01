@@ -1,5 +1,6 @@
 <template>
 	<view class="ui-container">
+		<app-map />
 		<view class="ui-host">
 			<u--input placeholder="请输入服务器地址" v-model="host" border="surround" @change="change">
 			</u--input>
