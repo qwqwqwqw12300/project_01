@@ -304,7 +304,7 @@
 				if (info.type === '0') { // 雷达波
 					url = '/pages/equipment/radar-detail/radar-detail';
 				} else { // 监控设备
-					url = '/pages/equipment/watch-detail';
+					url = '/pages/equipment/watch-detail/watch-detail';
 				}
 				this.$setCache('familyId', info.familyId);
 				this.goPage(url);
