@@ -63,7 +63,17 @@
 	import {
 		isApp
 	} from '@/common/utils/util.js';
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				deviceInfo: state => state.deviceInfo
+			}),
+		
+		},
 		data() {
 			return {
 				options4: [],
@@ -74,7 +84,7 @@
 			initData() {
 				this.options4 = []
 				GetAddressBook({
-					deviceNo: '867977060000248'
+					deviceNo: this.deviceInfo.no
 				}).then(res => {
 					this.options4 = res.data.map(n => {
 						n.options = [{
@@ -115,7 +125,7 @@
 					}
 				})
 				PostAddOrUpdateAddressBook({
-					deviceNo: "867977060000248",
+					deviceNo: this.deviceInfo.no,
 					addressBooks: addressBooks
 				}).then(res => {
 					console.log(res, 'res')
@@ -151,7 +161,7 @@
 						if (res.confirm) {
 							if (list.addressBookId != undefined) {
 								PostDeleteAddressBook({
-									deviceNo: '867977060000248',
+									deviceNo: this.deviceInfo.no,
 									addressBookId: list.addressBookId,
 									phoneNumber: list.phoneNumber
 								}).then(res => {

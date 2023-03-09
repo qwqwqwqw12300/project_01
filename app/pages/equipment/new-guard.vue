@@ -99,9 +99,18 @@
 	import {
 		PostSetLocationGuard
 	} from '@/common/http/api';
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
 		components:{
 			timePicker
+		},
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				deviceInfo: state => state.deviceInfo
+			}),
 		},
 		data() {
 
@@ -201,7 +210,7 @@
 					return item
 				})
 				const obj = {
-					deviceNo:'867977060000248',
+					deviceNo:this.deviceInfo.no,
 					jobName:this.name,
 					firstDate:this.defaultValue[0],
 					lastDate:this.defaultValue[1],

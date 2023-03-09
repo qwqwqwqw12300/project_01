@@ -15,14 +15,9 @@
 						<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="right-icon"
 							v-model="name"></u-input>
 					</u-cell>
-					<u-cell @tap="handleSelect" title="日期"  arrow-direction="right" isLink>
+					<u-cell @tap="handleSelectStart" title="日期"  arrow-direction="right" isLink>
 						<text slot="value" class="u-slot-value">
-							{{ startDate }} 至 {{endDate}}
-						</text>
-					</u-cell>
-					<u-cell @tap="handleTime" title="时间"  arrow-direction="right" isLink>
-						<text slot="value" class="u-slot-value">
-							{{ startTime }} 至 {{endTime}}
+							{{ defaultValue.length ? `${defaultValue[0]}  至 ${defaultValue[1]}` : '请选择'}}
 						</text>
 					</u-cell>
 				</u-cell-group>
@@ -38,10 +33,14 @@
 				</view>
 			</view>
 		</view>
-		<time-picker :show="showPicker" type="range" :value="defaultValue" :show-tips="true" :begin-text="'开始'"
+		<!-- <time-picker :show="showPicker" type="range" :value="defaultValue" :show-tips="true" :begin-text="'开始'"
 		    :end-text="'结束'" :show-seconds="true" @confirm="onSelected"  @cancel="showPicker=false">
 		</time-picker>
-		<smh-time-range :isUnder="timeShow" :time="defaultTime" @confrim="confrim" @cancel="cancel"></smh-time-range>
+		<smh-time-range :isUnder="timeShow" :time="defaultTime" @confrim="confrim" @cancel="cancel"></smh-time-range> -->
+		<time-picker :show="showPicker" format="yyyy-mm-dd hh:ii" type="rangetime" :value="defaultValue"
+			:show-tips="true" :begin-text="'开始'" :end-text="'结束'" :show-seconds="false" @confirm="onSelected"
+			@cancel="showPicker=false">
+		</time-picker>
 	</app-body>
 </template>
 
@@ -50,6 +49,9 @@
 	import {
 		PostSetPeriodDisable
 	} from '@/common/http/api';
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
 		components:{
 			timePicker
@@ -65,7 +67,8 @@
 				startTime: "14:00",
 				endTime: "15:00",
 				timeShow:false,
-				defaultTime:[0, 0, 0, 23, 59]
+				defaultTime:[0, 0, 0, 23, 59],
+				deviceInfo:''
 			};
 		},
 		computed:{
@@ -75,10 +78,14 @@
 			}
 		},
 		mounted() {
-			
+			const newData = new Date()
+			const endTime = uni.$u.timeFormat(newData, 'yyyy-mm-dd hh:MM')
+			const startTime = uni.$u.timeFormat(new Date(newData.getTime() - 24 * 60 * 60 * 1000),
+				'yyyy-mm-dd hh:MM') //前一天
+			this.defaultValue = [startTime, endTime]
 		},
 		methods: {
-			handleSelect() {
+			handleSelectStart(){
 				this.showPicker = true
 			},
 			handleTime(){
@@ -99,8 +106,7 @@
 				this.timeShow = false
 			},
 			onSelected(e){
-				this.startDate = e.value[0].replace(/\//g,"-")
-				this.endDate = e.value[1].replace(/\//g,"-")
+				this.defaultValue = [...e.value]
 				this.showPicker = false
 			},
 			handleCancel() {
@@ -108,10 +114,10 @@
 			},
 			handleSave() {
 				PostSetPeriodDisable({
-					deviceNo:'867977060000248',
+					deviceNo:this.deviceInfo.no,
 					periodDisableTag:this.name,
-					beginTime:this.startDate +' '+ this.startTime,
-					endTime:this.endDate +' '+ this.endTime
+					beginTime:this.defaultValue[0],
+					endTime:this.defaultValue[1],
 				}).then(res=>{
 					console.log(res,'res')
 					uni.$u.toast(res.msg)
@@ -120,6 +126,9 @@
 					}, 1000);
 				})
 			},
+		},
+		onShow() {
+			this.deviceInfo = this.$store.state.deviceInfo 
 		}
 	};
 </script>

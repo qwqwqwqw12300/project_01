@@ -45,9 +45,19 @@
 	import {
 		GetPeriodDisableList
 	} from '@/common/http/api';
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
 		components: {
 			CardTitle
+		},
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				deviceInfo: state => state.deviceInfo
+			}),
+		
 		},
 		data() {
 			return {
@@ -61,7 +71,7 @@
 		methods: {
 			initData() {
 				GetPeriodDisableList({
-					deviceNo: '867977060000248'
+					deviceNo: this.deviceInfo.no
 				}).then(res => {
 					console.log(res, 'res')
 					this.list = res.data

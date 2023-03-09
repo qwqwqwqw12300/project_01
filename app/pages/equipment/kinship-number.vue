@@ -55,7 +55,17 @@
 	import {
 		phoneValidator
 	} from '../../common/utils/util';
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				deviceInfo: state => state.deviceInfo
+			}),
+		
+		},
 		data() {
 
 			return {
@@ -90,7 +100,7 @@
 			},
 			handleInit() {
 				GetFamilyNumber({
-					deviceNo: "867977060000248"
+					deviceNo: this.deviceInfo.no
 				}).then(res => {
 					this.contactList = res.data.map(n => {
 						n.buttonName = this.contactDict[n.button]
@@ -107,7 +117,7 @@
 					}
 				}
 				PostSetFamilyNumber({
-					deviceNo: '867977060000248',
+					deviceNo: this.deviceInfo.no,
 					buttonFroms: this.contactList,
 				}).then(res => {
 					uni.$u.toast('保存成功')

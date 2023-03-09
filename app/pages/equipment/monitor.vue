@@ -19,9 +19,19 @@
 		PostRemoteMonitor
 	} from '@/common/http/api.js';
 	import CardTitle from '@/components/card-title/card-title.vue';
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
 		components:{
 			CardTitle
+		},
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				deviceInfo: state => state.deviceInfo
+			}),
+		
 		},
 		data() {
 			return {
@@ -34,7 +44,7 @@
 		methods: {
 			handleStart(){
 				PostRemoteMonitor({
-					deviceNo:"867977060000248", 
+					deviceNo:this.deviceInfo.no, 
 					requestCall:"1"
 				}).then(res=>{
 					console.log(res,'res')
