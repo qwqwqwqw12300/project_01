@@ -65,7 +65,7 @@
 					console.log(devices, 'devices');
 					return devices.map(ele => ({
 						text: ele.name,
-						value: this.payload.type === 'room' ? ele.deviceId : ele.deviceNo
+						value: this.payload.type === 'room' ? ele.deviceId : ele.no
 					}));
 				}
 			})
@@ -87,8 +87,10 @@
 					type
 				} = this.payload;
 				let handle;
+				console.log(type, 'type');
 				switch (type) {
 					case 'room':
+						console.log('绑定到房间');
 						handle = setDevice({
 							familyId,
 							roomId: id,
@@ -97,6 +99,7 @@
 						})
 						break;
 					case 'human':
+						console.log('绑定到人');
 						handle = PostUpdateCareCardBind({
 							deviceNo: this.deviceId,
 							humanId: id

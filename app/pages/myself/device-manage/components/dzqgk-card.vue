@@ -24,7 +24,7 @@
 			</view>
 			<view class="device-action">
 				<text class="danger" @tap.stop="onDelete(device.deviceId)">删除</text>
-				<text class="warn" v-if="!device.roomId" @click.stop="binding(device)">绑定</text>
+				<text class="warn" v-if="!device.humanId" @click.stop="binding(device)">绑定</text>
 				<text class="orange" v-else @click.stop="unbinding(device)">解绑</text>
 			</view>
 		</view>
@@ -74,16 +74,16 @@
 			 */
 			binding(item) {
 				const {
-					deviceNo,
+					no,
 				} = item;
-				this.$emit('bind', deviceNo)
+				this.$emit('bind', no)
 			},
 
 			/**
 			 * 解绑
 			 */
 			unbinding({
-				deviceNo,
+				no,
 				humanId
 			}) {
 				uni.showModal({
@@ -92,7 +92,7 @@
 					success: res => {
 						if (res.confirm) {
 							PostCareCardUnBind({
-								deviceNo,
+								deviceNo: no,
 								humanId
 							}).then(res => {
 								uni.$u.toast(res.msg);
