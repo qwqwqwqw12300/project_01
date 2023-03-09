@@ -98,7 +98,7 @@
 					if (!phoneValidator(list[i].phoneNumber)) return uni.$u.toast('手机号不正确')
 				}
 				const addressBooks = []
-				this.options4.filter(item=>{
+				this.options4.forEach(item=>{
 					console.log(item,'item')
 					if(item.addressBookId!=undefined){
 						addressBooks.push({
