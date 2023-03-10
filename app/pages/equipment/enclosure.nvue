@@ -42,7 +42,7 @@
 				<text class="list-item-label">
 					{{ n.name }}
 				</text>
-				<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
+				<u-icon :name="getMapIcon(n)" size="44rpx" style="margin-right: 6rpx;" />
 			</view>
 		</view>
 		<view class="ui-btn">
@@ -60,6 +60,7 @@
 		push
 	} from '@/common/sdk/push.js';
 	import {
+		isIos,
 		isApp
 	} from '../../common/utils/util';
 	import {
@@ -79,16 +80,23 @@
 				sliderValue: 200, //半径
 				poiList: [], //搜索地址
 				registrationId: '', //设备编码
+				currentSelect: '',
 			}
 		},
 		created() {
-			this.getRegistrationID()
 			this.handleGetLocation()
 		},
 		computed: {
 			...mapState({
 				deviceInfo: state => state.deviceInfo
 			}, ),
+			getMapIcon() {
+				return function(item) {
+					console.log(item, this.currentSelect, '000999')
+					return this.currentSelect === item.index ? '/static/images/map-select.png' :
+						'/static/images/position.png'
+				}
+			},
 		},
 		methods: {
 			mapMarker(data) {
@@ -97,11 +105,13 @@
 					city,
 					district,
 					address,
+					index,
 					location: {
 						latitude,
 						longitude
 					}
 				} = data
+				this.currentSelect = index
 				this.siteInfo = province + city + district + address
 				this.latitude = latitude
 				this.longitude = longitude
@@ -151,21 +161,10 @@
 				})
 				uni.getLocation({
 					geocode: true,
-					type: 'gcj02',
+					type: isIos() ? 'wgs84' : 'gcj02',
 					success: (res) => {
-						mapSearch && mapSearch.poiSearchNearBy({
-							point: res,
-							key: '小区'
-						}, res => {
-							const {
-								poiList
-							} = res;
-							if (poiList && poiList.length) {
-								this.poiList = poiList.length > 4 ? poiList.slice(0, 4) : poiList
-							}
-						})
-						// console.log(res, 'ssssssssss')
-						// this.mapMarker(res)
+						console.log(res, 'ssssssssss')
+						this.getSiteInfo(res)
 						const {
 							latitude,
 							longitude,
@@ -205,12 +204,30 @@
 				})
 			},
 			/**
-			 * 获取登录设备注册号
+			 * 获取周围位置信息
 			 */
-			getRegistrationID() {
-				isApp() && push.getRegistrationID().then(res => {
-					if (res) this.registrationId = res;
-				});
+			getSiteInfo(data) {
+				const {
+					latitude,
+					longitude
+				} = data
+				mapSearch && mapSearch.poiSearchNearBy({
+					point: {
+						latitude,
+						longitude
+					},
+					key: '小区'
+				}, res => {
+					const {
+						poiList
+					} = res;
+					if (poiList && poiList.length) {
+						this.poiList = (poiList.length > 4 ? poiList.slice(0, 4) : poiList).map((n, i) => {
+							n.index = i
+							return n
+						})
+					}
+				})
 			},
 			/**
 			 * 保存
@@ -223,6 +240,9 @@
 					latitude,
 					sliderValue,
 				} = this
+				if (sliderValue === 0) {
+					return uni.$u.toast('半径长度大于0')
+				}
 				if (this.type !== 'set') {
 					const val = {
 						siteInfo: address,
@@ -233,9 +253,6 @@
 					uni.$emit('getMapData', val);
 					uni.navigateBack()
 					return
-				}
-				if (sliderValue === 0) {
-					return uni.$u.toast('半径长度大于0')
 				}
 				PostAddFence({
 					fenceType: 'circle',
