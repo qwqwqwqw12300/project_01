@@ -18,9 +18,12 @@
 				{{item.locateTime}}
 			</text>
 		</u-cell>
-		<u-calendar ref="calendar" :defaultDate="dateData" :show="show" mode="single" @confirm="onSelected"
-			@close="show = false" closeOnClickOverlay>
-		</u-calendar>
+		<!-- <u-calendar ref="calendar" minDate="2020-12-12" :maxDate="dateData" :defaultDate="dateData" :show="show" mode="single"
+			@confirm="onSelected" @close="show = false" closeOnClickOverlay>
+		</u-calendar> -->
+		<time-picker :show="show" type="date" format="yyyy-mm-dd" :value="dateData" :show-tips="true" :begin-text="'开始'"
+			:end-text="'结束'" :show-seconds="true" @confirm="onSelected" @cancel="show=false">
+		</time-picker>
 	</app-body>
 </template>
 
@@ -51,8 +54,6 @@
 		},
 		mounted() {
 			this.dateData = uni.$u.timeFormat(new Date(), 'yyyy-mm-dd')
-			console.log(this.$refs.calendar,'calendar')
-			console.log(this.dateData, '44')
 			this.queryData()
 		},
 		methods: {
@@ -60,7 +61,8 @@
 				this.show = true
 			},
 			onSelected(e) {
-				this.dateData = e[0]
+				console.log(e, 'ppp')
+				this.dateData = e.value
 				this.show = false
 				this.queryData()
 			},
