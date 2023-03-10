@@ -91,14 +91,14 @@
 		.detail-box {
 			background-color: #fff;
 			border-radius: 16rpx;
-			padding: 32rpx;
+			padding: 26rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 
 			.device-img {
-				width: 150rpx;
-				height: 150rpx;
+				width: 140rpx;
+				height: 140rpx;
 			}
 
 			.device-info {
@@ -109,14 +109,14 @@
 
 				.title {
 					color: #353535;
-					font-size: 34rpx;
+					font-size: 32rpx;
 					font-weight: 500;
 					padding-left: 4rpx;
 					display: flex;
 					align-items: center;
 
 					.name {
-						max-width: 220rpx;
+						max-width: 200rpx;
 						white-space: nowrap;
 						text-overflow: ellipsis;
 						overflow: hidden;
