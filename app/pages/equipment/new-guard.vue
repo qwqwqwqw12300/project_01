@@ -18,10 +18,10 @@
 			<view style="margin-top:64rpx;">
 				<u-cell-group>
 					<u-cell title="名称">
-						<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="right-icon"
-							v-model="name"></u-input>
+						<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="right-icon" v-model="name">
+						</u-input>
 					</u-cell>
-					<u-cell @tap="handleSelectStart" title="日期"  arrow-direction="right" isLink>
+					<u-cell @tap="handleSelectStart" title="日期" arrow-direction="right" isLink>
 						<text slot="value" class="u-slot-value">
 							{{ defaultValue.length ? `${defaultValue[0]}  至 ${defaultValue[1]}` : '请选择'}}
 						</text>
@@ -36,16 +36,17 @@
 						<text></text>
 						{{ item.orderName }}
 					</view>
-					<view  >
-						<text  v-if="editBtn" class="ui-form-del" @click="handleDel(item.orderNum,item.orderName)">删除</text>
+					<view>
+						<text v-if="editBtn" class="ui-form-del"
+							@click="handleDel(item.orderNum,item.orderName)">删除</text>
 						<u-switch v-else @change="handleSwitch" v-model="item.flag" activeValue="1" inactiveValue="0"
-							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20"> 
+							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20">
 						</u-switch>
 					</view>
 				</view>
 				<view class="item-input">
 					<u-cell-group>
-						<u-cell title="地址" arrow-direction="right" isLink @click="handleJump(index)"> 
+						<u-cell title="地址" arrow-direction="right" isLink @click="handleJump(index)">
 							<text slot="value" class="u-slot-value ui-cell">
 								{{item.address}}
 							</text>
@@ -80,17 +81,11 @@
 			</view>
 		</view>
 		<u-calendar :show="showDate" :mode="mode" @confirm="confirm" @close="close" closeOnClickOverlay></u-calendar>
-		<u-datetime-picker
-			:show="showTime"
-			v-model="time"
-			mode="time"
-			closeOnClickOverlay
-			@confirm="confirmTime"
-			@close="showTime=false"
-			@cancel="showTime=false"
-		></u-datetime-picker>
-		<time-picker :show="showPicker" format="yyyy-mm-dd hh:ii" type="rangetime" :value="defaultValue" :show-tips="true" :begin-text="'开始'"
-		    :end-text="'结束'" :show-seconds="false" @confirm="onSelected"  @cancel="showPicker=false">
+		<u-datetime-picker :show="showTime" v-model="time" mode="time" closeOnClickOverlay @confirm="confirmTime"
+			@close="showTime=false" @cancel="showTime=false"></u-datetime-picker>
+		<time-picker :show="showPicker" format="yyyy-mm-dd hh:ii" type="rangetime" :value="defaultValue"
+			:show-tips="true" :begin-text="'开始'" :end-text="'结束'" :show-seconds="false" @confirm="onSelected"
+			@cancel="showPicker=false">
 		</time-picker>
 	</app-body>
 </template>
@@ -104,7 +99,7 @@
 		mapState,
 	} from 'vuex';
 	export default {
-		components:{
+		components: {
 			timePicker
 		},
 		computed: {
@@ -117,17 +112,17 @@
 
 			return {
 				index: 0,
-				name:'',
-				flag:'0',
-				editBtn:false,
-				showDate:false,
-				mode:'single',
-				showTime:false,
-				time:'15:26',
-				id:0,
+				name: '',
+				flag: '0',
+				editBtn: false,
+				showDate: false,
+				mode: 'single',
+				showTime: false,
+				time: '15:26',
+				id: 0,
 				contactList: [],
 				showPicker: false,
-				defaultValue:[],
+				defaultValue: [],
 				startDate: "2023-02-27",
 				endDate: "2023-03-05",
 				startTime: "14:00",
@@ -143,27 +138,27 @@
 		},
 		methods: {
 			// 日期
-			handleSelectStart(){
+			handleSelectStart() {
 				this.showPicker = true
 			},
-			onSelected(e){
+			onSelected(e) {
 				this.defaultValue = [...e.value]
 				this.showPicker = false
 			},
-			handleSelect(index){
+			handleSelect(index) {
 				this.index = index
 				this.showDate = true
 			},
 			confirm(e) {
 				console.log(e);
-				this.contactList[this.index].date = e[0] 
+				this.contactList[this.index].date = e[0]
 				this.showDate = false
 			},
 			close() {
 				this.showDate = false
 			},
 			//时间
-			handleTime(index){
+			handleTime(index) {
 				this.index = index
 				this.showTime = true
 			},
@@ -172,104 +167,105 @@
 				console.log(e.value)
 				this.contactList[this.index].time = e.value
 			},
-			handleJump(index){
+			handleJump(index) {
 				this.index = index
-				uni.$on('getMapData', res => {	
-					console.log(res,'res')
+				uni.$on('getMapData', res => {
+					console.log(res, 'res')
 					this.contactList[this.index].address = res.siteInfo
 					this.contactList[this.index].longitude = res.longitude
 					this.contactList[this.index].latitude = res.latitude
 					this.contactList[this.index].radius = res.sliderValue
 				});
-				
+
 				uni.navigateTo({
-					url:'/pages/equipment/enclosure'
+					url: '/pages/equipment/enclosure'
 				})
 			},
 			handleCancel() {
 				uni.navigateBack()
 			},
-			handleSave(){
+			handleSave() {
 				if (!this.name) return uni.$u.toast('名称不能为空')
 				const list = []
 				let toast = ''
-				this.contactList.forEach(item=>{
-					item.estimatedTime = item.date +' '+ item.time
+				this.contactList.forEach(item => {
+					item.estimatedTime = item.date + ' ' + item.time
 					list.push({
-						guardType:'circle',
-						address:item.address,
-						longitude:item.longitude,
-						latitude:item.latitude,
-						radius:item.radius,
-						enable:item.flag,
-						estimatedTime:item.estimatedTime
+						guardType: 'circle',
+						address: item.address,
+						longitude: item.longitude,
+						latitude: item.latitude,
+						radius: item.radius,
+						enable: item.flag,
+						estimatedTime: item.estimatedTime,
 					})
-					
+
 				})
-				list.forEach(item=>{
+				this.contactList.forEach(item => {
 					if (!item.address) return toast = '请填写地址'
 					if (!item.date) return toast = '请填写日期'
 					if (!item.time) return toast = '请填写时间'
 				})
-				if(toast) return uni.$u.toast(toast)
+				if (toast) return uni.$u.toast(toast)
 				const obj = {
-					deviceNo:this.deviceInfo.no,
-					jobName:this.name,
-					firstDate:this.defaultValue[0],
-					lastDate:this.defaultValue[1],
-					enable:'1',
-					places:list
+					deviceNo: this.deviceInfo.no,
+					jobName: this.name,
+					firstDate: this.defaultValue[0],
+					lastDate: this.defaultValue[1],
+					enable: '1',
+					places: list
 				}
-				console.log(obj,'obj')
+				console.log(obj, 'obj')
 				PostSetLocationGuard({
 					...obj
-				}).then(res=>{
-					console.log(res,'res')
+				}).then(res => {
+					console.log(res, 'res')
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
 						uni.navigateBack()
 					}, 1000);
 				})
 			},
-			handleSwitch(){
-				
+			handleSwitch() {
+
 			},
-			addPlace(){
+			addPlace() {
 				this.contactList.push({
-					guardType:'circle',
-					address:'',
-					longitude:'',
-					latitude:'',
-					radius:'',
-					orderName:'',
-					flag:'1',
-					estimatedTime:'',
-					date:'',
-					time:''
+					guardType: 'circle',
+					address: '',
+					longitude: '',
+					latitude: '',
+					radius: '',
+					orderName: '',
+					flag: '1',
+					estimatedTime: '',
+					date: '',
+					time: ''
 				})
-				this.contactList.map((item,index)=>{
+				this.contactList.map((item, index) => {
 					item.orderName = `地点${(index+1)}`
 					return item
 				})
 				console.log(this.contactList)
 			},
-			handleEdit(){
-				this.editBtn =! this.editBtn
+			handleEdit() {
+				this.editBtn = !this.editBtn
 			},
-			handleDel(id,orderName){
+			handleDel(id, orderName) {
 				uni.showModal({
 					title: '提示',
 					content: `是否确认删除${orderName}？`,
 					success: res => {
-						if(res.confirm){
-							this.contactList.splice(this.contactList.findIndex((item, index) => index == id), 1)
+						if (res.confirm) {
+							this.contactList.splice(this.contactList.findIndex((item, index) => index == id),
+								1)
 						}
 					}
 				});
 			},
 		},
 		onShow() {
-			
+
 		}
 	}
 </script>
@@ -277,11 +273,13 @@
 <style lang="scss">
 	.ui-logo {
 		background: #ffffff;
-		.ui-edit{
+
+		.ui-edit {
 			display: flex;
 			align-items: flex-end;
 			justify-content: space-between;
-			.ui-edit-right{
+
+			.ui-edit-right {
 				margin-right: 34rpx;
 				font-size: 30rpx;
 				color: #353535;
@@ -289,23 +287,26 @@
 				font-weight: 400;
 			}
 		}
-		.u-cell-title{
+
+		.u-cell-title {
 			margin-top: 64rpx;
 		}
 	}
-	
-	.ui-add{
+
+	.ui-add {
 		width: 100%;
 		margin-top: 64rpx;
 		margin-bottom: 64rpx;
-		display:flex;
+		display: flex;
 		align-items: center;
 		justify-content: center;
-		.ui-add-icon{
+
+		.ui-add-icon {
 			width: 36rpx;
 			height: 36rpx;
 		}
-		text{
+
+		text {
 			margin-left: 10rpx;
 			font-size: 36rpx;
 			color: #599FFF;
@@ -314,6 +315,7 @@
 			font-weight: 400;
 		}
 	}
+
 	.ui-form {
 		// padding: 0 44rpx;
 		margin-top: 40rpx;
@@ -348,12 +350,14 @@
 					}
 				}
 			}
-			.ui-form-del{
+
+			.ui-form-del {
 				font-size: 30rpx;
 				color: #E95656;
 				line-height: 30rpx;
 				font-weight: 400;
 			}
+
 			.item-input {
 				min-height: 128rpx;
 				border-bottom: solid 2px #f7f7f7;
@@ -369,26 +373,31 @@
 			}
 		}
 	}
-	.ui-div{
+
+	.ui-div {
 		height: 90rpx;
 	}
-	.ui-cell{
+
+	.ui-cell {
 		width: 80%;
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
 		flex-wrap: wrap;
 	}
+
 	.ui-btn {
 		width: 100%;
 		position: fixed;
 		bottom: 0;
 		z-index: 999;
+
 		.btn-box {
 			height: 100rpx;
 			line-height: 100rpx;
 			display: flex;
 			font-size: 36rpx;
+
 			.cancel-btn {
 				flex: 1;
 				background-color: #fff;

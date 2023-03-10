@@ -17,7 +17,7 @@
 			</view>
 		</view>
 		<view class="ui-content">
-			<component ref="comRef" :is="tabKey" :key="tabKey" :deviceInfo="swiperData"></component>
+			<component ref="comRef" :is="tabKey" :key="`${tabKey}${current}`" :deviceInfo="swiperData"></component>
 		</view>
 	</app-body>
 </template>

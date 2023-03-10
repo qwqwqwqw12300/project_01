@@ -1,7 +1,7 @@
 <template>
 	<view class="ui-map" id="ui-map">
 		<view class="map-box">
-			<map id="map" ref="map" :style="{height: mapHeight}" :markers="covers" :latitude="latitude"
+			<map id="map" ref="map" :style="{height: mapHeight,width: '686rpx'}" :markers="covers" :latitude="latitude"
 				:longitude="longitude" />
 		</view>
 		<view class="map-position">
@@ -104,7 +104,7 @@
 
 <style lang="scss" scoped>
 	.ui-map {
-		padding: 32rpx;
+		// padding: 32rpx;
 
 		.map-box {}
 

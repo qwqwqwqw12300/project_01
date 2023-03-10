@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-	<!-- 	<view class="ui-action">
+		<!-- 	<view class="ui-action">
 			<u-icon name="list" size="18"></u-icon>
 			<text @click="readMsgAll">
 				全部标记已处理
@@ -49,7 +49,13 @@
 		watch: {
 			deviceInfo: {
 				handler(val) {
+					console.log(val, 'data----------')
 					if (val.deviceId) {
+						this.msgList = []
+						this.pageOptions = {
+							pageSize: 10,
+							pageNum: 1,
+						}
 						this.handleInit()
 					}
 				},
