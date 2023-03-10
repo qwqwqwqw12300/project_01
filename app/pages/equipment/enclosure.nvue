@@ -153,10 +153,18 @@
 					geocode: true,
 					type: 'gcj02',
 					success: (res) => {
+						this.$apm({
+							name: 'getLocation',
+							res
+						})
 						mapSearch && mapSearch.poiSearchNearBy({
 							point: res,
 							key: '小区'
 						}, res => {
+							this.$apm({
+								name: 'poiSearchNearBy',
+								res
+							})
 							const {
 								poiList
 							} = res;

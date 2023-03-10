@@ -179,8 +179,8 @@
 		z-index: 9999;
 		position: fixed;
 		right: 0;
-		height: 80rpx;
-		width: 80rpx;
+		height: 120rpx;
+		width: 120rpx;
 		background: url('../../static/images/service.png') no-repeat;
 		background-size: cover;
 		display: inline-block;

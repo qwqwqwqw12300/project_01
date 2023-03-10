@@ -57,10 +57,7 @@
 				url,
 				name
 			}) {
-
-				if (isProd()) {
-					if (name === '电子牵挂卡' || name === '监测手表') return uni.$u.toast('暂不支持添加该设备');
-				}
+				if (name === '监测手表') return uni.$u.toast('暂不支持添加该设备');
 				this.$emit('cancle')
 				uni.navigateTo({
 					url

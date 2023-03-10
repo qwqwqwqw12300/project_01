@@ -249,8 +249,6 @@
 			},
 
 			sheetSelect(item) {
-				console.log(item, 'item');
-				if (item.value === 'human' && isProd()) return uni.$u.toast('暂不支持添加');
 				this.type = item.value;
 				this.show = true;
 				this.sheetShow = false;
