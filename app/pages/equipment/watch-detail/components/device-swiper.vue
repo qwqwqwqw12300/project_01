@@ -18,7 +18,8 @@
 				</view>
 			</view>
 			<view class="device-set" :style="{width: type === 'set' ? '130rpx': '170rpx'}" @click="handleSet">
-				<u-icon name="/static/images/reStart.png" size="44rpx" style="margin-right: 6rpx;" />
+				<u-icon :name="type === 'set' ? '/static/images/device-set.png': '/static/images/reStart.png'"
+					size="44rpx" style="margin-right: 6rpx;" />
 				{{ type === 'set'? '设置':'重启设备' }}
 			</view>
 		</view>
