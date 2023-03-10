@@ -101,6 +101,7 @@
 					case 'human':
 						console.log('绑定到人');
 						handle = PostUpdateCareCardBind({
+							familyId,
 							deviceNo: this.deviceId,
 							humanId: id
 						})
