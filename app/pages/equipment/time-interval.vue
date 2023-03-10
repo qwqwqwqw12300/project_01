@@ -24,7 +24,7 @@
 							<view>{{item.beginTime}} 至 </view>
 							<view>{{item.endTime}}</view>
 						</view>
-						<u-switch @click.native.stop="handleSwitch" v-model="item.enable" activeValue="1" inactiveValue="0"
+						<u-switch @click.native.stop="handleSwitch(item)" v-model="item.enable" activeValue="1" inactiveValue="0"
 							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20">
 						</u-switch>
 					</view>
@@ -43,7 +43,8 @@
 <script>
 	import CardTitle from '@/components/card-title/card-title.vue';
 	import {
-		GetPeriodDisableList
+		GetPeriodDisableList,
+		PostSetPeriodDisable
 	} from '@/common/http/api';
 	import {
 		mapState,
@@ -77,12 +78,15 @@
 					this.list = res.data
 				})
 			},
-			handleSwitch() {
-				// PostUpdPushMsg({
-				// 	flag: this.flag
-				// }).then(res => {
-				// 	uni.$u.toast(res.msg)
-				// })
+			handleSwitch(item) {
+				PostSetPeriodDisable({
+					...item
+				}).then(res => {
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						this.initData()
+					}, 1000);
+				})
 			},
 			toJump(item) {
 				const list = JSON.stringify(item)

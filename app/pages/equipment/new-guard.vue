@@ -194,8 +194,12 @@
 			handleSave(){
 				if (!this.name) return uni.$u.toast('名称不能为空')
 				const list = []
+				let toast = ''
 				this.contactList.forEach(item=>{
 					console.log(item,'item')
+					if (!item.address) return toast = '请填写地址'
+					if (!item.date) return toast = '请填写日期'
+					if (!item.time) return toast = '请填写时间'
 					item.estimatedTime = item.date +' '+ item.time
 					list.push({
 						guardType:'circle',
@@ -207,8 +211,8 @@
 						estimatedTime:item.estimatedTime
 					})
 					
-					return item
 				})
+				if(toast) return uni.$u.toast(toast)
 				const obj = {
 					deviceNo:this.deviceInfo.no,
 					jobName:this.name,

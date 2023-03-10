@@ -23,7 +23,7 @@
 							<view>{{item.firstDate}} 至 </view>
 							<view>{{item.lastDate}}</view>
 						</view>
-						<u-switch @click.native.stop="handleSwitch" v-model="item.enable" activeValue="1" inactiveValue="0"
+						<u-switch @click.native.stop="handleSwitch(item)" v-model="item.enable" activeValue="1" inactiveValue="0"
 							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20"> >
 						</u-switch>
 					</view>
@@ -37,7 +37,8 @@
 <script>
 	import CardTitle from '@/components/card-title/card-title.vue';
 	import {
-		GetLocationGuardList
+		GetLocationGuardList,
+		PostSetLocationGuard
 	} from '@/common/http/api';
 	import {
 		mapState,
@@ -73,12 +74,19 @@
 				GetLocationGuardList({
 					deviceNo: this.deviceInfo.no
 				}).then(res => {
-					console.log(res, 'res')
 					this.list = res.data
 				})
 			},
-			handleSwitch() {
-
+			handleSwitch(item) {
+				PostSetLocationGuard({
+					...item
+				}).then(res=>{
+					console.log(res,'res')
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						this.initData()
+					}, 1000);
+				})
 			},
 			toJump(item){
 				const list = JSON.stringify(item)

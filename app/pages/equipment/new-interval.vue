@@ -113,6 +113,7 @@
 				uni.navigateBack()
 			},
 			handleSave() {
+				if (!this.name) return uni.$u.toast('名称不能为空')
 				PostSetPeriodDisable({
 					deviceNo:this.deviceInfo.no,
 					periodDisableTag:this.name,
