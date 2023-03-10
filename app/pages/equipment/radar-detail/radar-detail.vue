@@ -82,8 +82,15 @@
 			},
 			readMsgAll() {
 				if (this.$refs.comRef?.readMsgAll) {
-					console.log(99999999999)
-					this.$ref.comRef.readMsgAll()
+					uni.showModal({
+						title: '提示',
+						content: `是否全部标记已读？`,
+						success: res => {
+							if (res.confirm) {
+								this.$refs.comRef.readMsgAll()
+							}
+						}
+					})
 				}
 			}
 		}

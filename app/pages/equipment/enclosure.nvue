@@ -2,10 +2,10 @@
 	<view class="ui-box">
 		<u-navbar @rightClick="handleBack" placeholder :autoBack="true" />
 		<view class="ui-logo">
-			<text class="logo-text">设置电子围栏</text>
+			<text class="logo-text">{{ type === 'set' ?  '设置电子围栏' : '获取位置信息' }}</text>
 		</view>
 		<view class="ui-map">
-			<map id="map" ref="map" style="height: 563rpx;" :latitude="latitude" :longitude="longitude"
+			<map id="map" ref="map" style="height: 563rpx;width: 100%;" :latitude="latitude" :longitude="longitude"
 				:markers="covers" :circles="circles">
 			</map>
 		</view>
@@ -258,6 +258,9 @@
 					uni.$u.toast(res.msg)
 				})
 			},
+		},
+		handleBack() {
+			uni.navigateBack()
 		},
 		onShow() {
 			uni.$on('searchData', data => {

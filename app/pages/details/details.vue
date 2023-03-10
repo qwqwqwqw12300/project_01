@@ -119,26 +119,34 @@
 			 * 全部已读
 			 */
 			readMsgAll() {
-				const {
-					deviceType,
-					eventlevel,
-					familyId,
-					startDate,
-					endDate,
-				} = this.eventInfo
-				PostSetBatchMsgInfo({
-					deviceType,
-					eventlevel,
-					familyId,
-					readFlag: '1',
-					startDate,
-					endDate
-				}).then(res => {
-					uni.$u.toast('已处理登记成功');
-					setTimeout(() => {
-						this.getMsgList();
-					}, 1000);
+				uni.showModal({
+					title: '提示',
+					content: `是否全部标记已读？`,
+					success: res => {
+						if (res.confirm) {
+							const {
+								deviceType,
+								eventlevel,
+								familyId,
+								startDate,
+								endDate,
+							} = this.eventInfo
+							PostSetBatchMsgInfo({
+								deviceType,
+								eventlevel,
+								familyId,
+								readFlag: '1',
+								startDate,
+								endDate
+							}).then(res => {
+								uni.$u.toast('已处理登记成功');
+								setTimeout(() => {
+									this.getMsgList();
+								}, 1000);
 
+							})
+						}
+					}
 				})
 			},
 			/**

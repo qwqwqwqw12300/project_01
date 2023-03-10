@@ -16,7 +16,8 @@
 			<view class="code-box">
 				<text class="label">设备IMEI码</text>
 				<view class="input">
-					<u--input v-model="cardInfo.deviceNo" placeholder="请输入设备IMEI码" border="none" clearable>
+					<u--input v-model="cardInfo.deviceNo" type="number" placeholder="请输入设备IMEI码" border="none"
+						clearable>
 					</u--input>
 				</view>
 			</view>
