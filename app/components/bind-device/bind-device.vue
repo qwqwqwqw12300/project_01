@@ -124,7 +124,7 @@
 			goManager() {
 				this.close();
 				uni.navigateTo({
-					url: '/pages/myself/device-manage'
+					url: '/pages/myself/device-manage/device-manage'
 				});
 			}
 		}

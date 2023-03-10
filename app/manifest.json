@@ -28,7 +28,8 @@
             "Contacts" : {},
             "Push" : {},
             "Camera" : {},
-            "Barcode" : {}
+            "Barcode" : {},
+            "LivePusher" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -56,6 +57,7 @@
                     "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
@@ -79,14 +81,14 @@
                     },
                     "amap" : {
                         "__platform__" : [ "ios", "android" ],
-                        "appkey_ios" : "5286159940e05dde7757a3a894959348",
-                        "appkey_android" : "5286159940e05dde7757a3a894959348"
+                        "appkey_ios" : "7921b56b1c3a4c0fce170ce8221afedf",
+                        "appkey_android" : "90fc6dc080c94bfeafb0405f712daa13"
                     }
                 },
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "5286159940e05dde7757a3a894959348",
-                        "appkey_android" : "5286159940e05dde7757a3a894959348"
+                        "appkey_ios" : "7921b56b1c3a4c0fce170ce8221afedf",
+                        "appkey_android" : "90fc6dc080c94bfeafb0405f712daa13"
                     }
                 },
                 "push" : {
