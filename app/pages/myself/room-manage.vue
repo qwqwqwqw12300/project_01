@@ -58,7 +58,7 @@
 				<!-- 人员 -->
 				<view class="ui-menu-item" v-for="(item, index) in humanList" :key="'human' + index">
 					<view class="item-box" @click="openRoomEdit(item)">
-						<template v-if="item.devices">
+						<template v-if="item.devices && item.devices.length">
 							<view class="device-status">
 								<text class="online" v-if="getDevices(item).onlineFlag == 1">在线</text>
 								<text class="offline" v-else>离线</text>
@@ -68,7 +68,7 @@
 								<view class="detail">
 									<text class="name">{{ item.name }}</text>
 									<text class="position" v-if="item.devices.length">
-										{{ item.devices[0].roomName + ' | ' + item.devices[0].location}}
+										{{ getDevices(item).name}}
 									</text>
 									<text class="position" v-else>
 										未绑定设备
@@ -86,7 +86,7 @@
 							<text class="danger" @click.stop="deleteHuman(item.humanId)">删除</text>
 							<text class="warn" v-if="!item.devices || !item.devices.length"
 								@click.stop="binding(item, 'human')">绑定</text>
-							<text class="orange" v-else @click.stop="unbinding(item.devices)">解绑</text>
+							<text class="orange" v-else @click.stop="unbinding(getDevices(item))">解绑</text>
 						</view>
 					</view>
 				</view>
@@ -108,7 +108,8 @@
 		PostEditRoom,
 		relDevice,
 		PostSelectTHumanListByFamilyId,
-		PostDeleteTHumanByHumanIds
+		PostDeleteTHumanByHumanIds,
+		PostCareCardUnBind
 	} from '@/common/http/api.js';
 	import {
 		assignDeep
@@ -274,7 +275,7 @@
 			 */
 			binding(item, type) {
 				this.bindPayload = {
-					familyId: item,
+					familyId: item.familyId,
 					id: type === 'room' ? item.roomId : item.humanId,
 					type
 				};
@@ -285,23 +286,44 @@
 			 * 解绑
 			 */
 			unbinding(devices) {
-				uni.showModal({
-					title: '提示',
-					content: '是否和房间解除绑定',
-					success: res => {
-						if (res.confirm) {
-							relDevice({
-								deviceId: devices[0].deviceId,
-								flag: '3'
-							}).then(res => {
-								uni.$u.toast(res.msg);
-								setTimeout(() => {
-									this.handleInitList();
-								}, 500);
-							})
+				if (devices.humanId) {
+					uni.showModal({
+						title: '提示',
+						content: '是否和房间解除绑定',
+						success: res => {
+							if (res.confirm) {
+								PostCareCardUnBind({
+									deviceNo: devices.no,
+									humanId: devices.humanId
+								}).then(res => {
+									uni.$u.toast(res.msg);
+									setTimeout(() => {
+										this.handleInitList();
+									}, 500);
+								})
+							}
 						}
-					}
-				});
+					});
+				} else {
+					uni.showModal({
+						title: '提示',
+						content: '是否和房间解除绑定',
+						success: res => {
+							if (res.confirm) {
+								relDevice({
+									deviceId: devices[0].deviceId,
+									flag: '3'
+								}).then(res => {
+									uni.$u.toast(res.msg);
+									setTimeout(() => {
+										this.handleInitList();
+									}, 500);
+								})
+							}
+						}
+					});
+				}
+
 			},
 		}
 

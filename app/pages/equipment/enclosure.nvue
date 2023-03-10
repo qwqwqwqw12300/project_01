@@ -5,7 +5,7 @@
 			<text class="logo-text">{{ type === 'set' ?  '设置电子围栏' : '获取位置信息' }}</text>
 		</view>
 		<view class="ui-map">
-			<map id="map" ref="map" style="height: 563rpx;width: 100%;" :latitude="latitude" :longitude="longitude"
+			<map id="map" ref="map" style="height: 563rpx;width:686rpx;" :latitude="latitude" :longitude="longitude"
 				:markers="covers" :circles="circles">
 			</map>
 		</view>

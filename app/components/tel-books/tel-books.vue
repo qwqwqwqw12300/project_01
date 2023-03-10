@@ -17,51 +17,6 @@
 				visible: false,
 				isSingle: true,
 				contactList: [],
-				// contactList: [{
-				// 		"name": '阿一',
-				// 		"phone": '11554636343'
-				// 	}, {
-				// 		"name": '阿三',
-				// 		"phone": '12554636343'
-				// 	}, {
-				// 		"name": '斌二',
-				// 		"phone": '13654636340',
-				// 	}, {
-				// 		name: '陈三',
-				// 		phone: '14344306340'
-				// 	},
-				// 	{
-				// 		name: '陈三',
-				// 		phone: '15344306340'
-				// 	},
-				// 	{
-				// 		name: '陈三',
-				// 		phone: '16344306340'
-				// 	},
-				// 	{
-				// 		name: '陈三',
-				// 		phone: '17344306340'
-				// 	},
-				// 	{
-				// 		name: '在三',
-				// 		phone: '18344306340'
-				// 	},
-				// 	{
-				// 		name: '想三',
-				// 		phone: '19344306340'
-				// 	},
-				// 	{
-				// 		name: '哦三',
-				// 		phone: '13344398340'
-				// 	},
-				// 	{
-				// 		name: '无三',
-				// 		phone: '13744306340'
-				// 	}, {
-				// 		name: '林三',
-				// 		phone: '13144306340'
-				// 	}
-				// ],
 			}
 		},
 		methods: {
@@ -84,7 +39,6 @@
 				this.contactList = [];
 				Promise.all([this.getTypeContact(plus.contacts.ADDRESSBOOK_PHONE), this.getTypeContact(plus.contacts
 					.ADDRESSBOOK_SIM)]).then(res => {
-					console.log(res, 'rerere')
 					const data = [...res[0], ...res[1]];
 					const obj = {};
 					this.contactList = data.reduce(function(item, next) {
@@ -102,7 +56,6 @@
 				return new Promise((resolve, reject) => {
 					plus.contacts.getAddressBook(type, res => {
 						res.find([], data => {
-							console.log(data, 'ddddddd')
 							const list = data.map(n => {
 								const {
 									displayName: name,

@@ -222,6 +222,9 @@
 					const unicode = this.getLetter(this.contactList[i][this.formatName]).unicode;
 
 					const index = this.cityIndexPosition(cityLetter);
+					if (index === undefined) {
+						continue;
+					}
 					if (this.telIndexs.indexOf(cityLetter) === -1) {
 						this.handleTels[index].isCity = true;
 						this.telIndexs.push(cityLetter);
@@ -253,7 +256,7 @@
 			 */
 			cityIndexPosition(letter) {
 				if (!letter) {
-					return '';
+					return undefined;
 				}
 				const ACode = 65;
 				return letter === '#' ? 26 : letter.charCodeAt(0) - ACode;
