@@ -86,7 +86,8 @@
 			mode="time"
 			closeOnClickOverlay
 			@confirm="confirmTime"
-			@cancel="cancelTime"
+			@close="showTime=false"
+			@cancel="showTime=false"
 		></u-datetime-picker>
 		<time-picker :show="showPicker" format="yyyy-mm-dd hh:ii" type="rangetime" :value="defaultValue" :show-tips="true" :begin-text="'开始'"
 		    :end-text="'结束'" :show-seconds="false" @confirm="onSelected"  @cancel="showPicker=false">
@@ -171,9 +172,6 @@
 				console.log(e.value)
 				this.contactList[this.index].time = e.value
 			},
-			cancelTime(){
-				this.showTime = false
-			},
 			handleJump(index){
 				this.index = index
 				uni.$on('getMapData', res => {	
@@ -196,10 +194,6 @@
 				const list = []
 				let toast = ''
 				this.contactList.forEach(item=>{
-					console.log(item,'item')
-					if (!item.address) return toast = '请填写地址'
-					if (!item.date) return toast = '请填写日期'
-					if (!item.time) return toast = '请填写时间'
 					item.estimatedTime = item.date +' '+ item.time
 					list.push({
 						guardType:'circle',
@@ -211,6 +205,11 @@
 						estimatedTime:item.estimatedTime
 					})
 					
+				})
+				list.forEach(item=>{
+					if (!item.address) return toast = '请填写地址'
+					if (!item.date) return toast = '请填写日期'
+					if (!item.time) return toast = '请填写时间'
 				})
 				if(toast) return uni.$u.toast(toast)
 				const obj = {
