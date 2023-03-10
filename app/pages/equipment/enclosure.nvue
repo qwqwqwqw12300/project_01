@@ -84,6 +84,7 @@
 			}
 		},
 		created() {
+			console.log('初始化');
 			this.handleGetLocation()
 		},
 		computed: {
@@ -159,49 +160,54 @@
 				uni.showLoading({
 					title: '加载中'
 				})
-				uni.getLocation({
-					geocode: true,
-					type: isIos() ? 'wgs84' : 'gcj02',
-					success: (res) => {
-						console.log(res, 'ssssssssss')
-						this.getSiteInfo(res)
-						const {
-							latitude,
-							longitude,
-							address: {
-								province,
-								city,
-								district,
-								street,
-								streetNum,
-								poiName
-							},
-						} = res
-						this.latitude = latitude
-						this.longitude = longitude
-						this.siteInfo = province + city + district + street + streetNum + poiName
-						this.covers[0] = {
-							latitude,
-							longitude,
-							iconPath: '../../static/images/mapSite.png'
+				console.log('getLocation开始------');
+				try {
+					uni.getLocation({
+						geocode: true,
+						type: isIos() ? 'wgs84' : 'gcj02',
+						success: (res) => {
+							console.log(res, 'ssssssssss')
+							this.getSiteInfo(res)
+							const {
+								latitude,
+								longitude,
+								address: {
+									province,
+									city,
+									district,
+									street
+								},
+							} = res
+							this.latitude = latitude
+							this.longitude = longitude
+							this.siteInfo = province + city + district + street
+							this.covers[0] = {
+								latitude,
+								longitude,
+								iconPath: '../../static/images/mapSite.png'
+							}
+							this.circles[0] = {
+								latitude,
+								longitude,
+								color: '#3B7AFF',
+								strokeWidth: 1,
+								radius: this.sliderValue,
+								fillColor: 'rgba(100,163,242,0.50)'
+							}
+							this.covers = [...this.covers]
+							this.circles = [...this.circles]
+							uni.hideLoading()
+						},
+						false: (res) => {
+							console.log(res, 'error')
+							uni.hideLoading()
 						}
-						this.circles[0] = {
-							latitude,
-							longitude,
-							color: '#3B7AFF',
-							strokeWidth: 1,
-							radius: this.sliderValue,
-							fillColor: 'rgba(100,163,242,0.50)'
-						}
-						this.covers = [...this.covers]
-						this.circles = [...this.circles]
-						uni.hideLoading()
-					},
-					false: (res) => {
-						console.log(res, 'error')
-						uni.hideLoading()
-					}
-				})
+					})
+				} catch (e) {
+					console.log(e, '代码报错--------');
+					//TODO handle the exception
+				}
+
 			},
 			/**
 			 * 获取周围位置信息
