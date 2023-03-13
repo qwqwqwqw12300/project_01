@@ -70,11 +70,11 @@
 			unBind() {
 				const {
 					humanId,
-					no: deviceNo
+					deviceId: deviceId
 				} = this.deviceInfo
 				PostCareCardUnBind({
 					humanId,
-					deviceNo
+					deviceId
 				}).then(res => {
 					uni.$u.toast(res.msg)
 					setTimeout(() => {

@@ -115,7 +115,7 @@
 			handleSave() {
 				if (!this.name) return uni.$u.toast('名称不能为空')
 				PostSetPeriodDisable({
-					deviceNo:this.deviceInfo.no,
+					deviceId:this.deviceInfo.deviceId,
 					periodDisableTag:this.name,
 					beginTime:this.defaultValue[0],
 					endTime:this.defaultValue[1],

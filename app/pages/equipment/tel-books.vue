@@ -84,7 +84,7 @@
 			initData() {
 				this.options4 = []
 				GetAddressBook({
-					deviceNo: this.deviceInfo.no
+					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					this.options4 = res.data.map(n => {
 						n.options = [{
@@ -125,7 +125,7 @@
 					}
 				})
 				PostAddOrUpdateAddressBook({
-					deviceNo: this.deviceInfo.no,
+					deviceId: this.deviceInfo.deviceId,
 					addressBooks: addressBooks
 				}).then(res => {
 					console.log(res, 'res')
@@ -161,7 +161,7 @@
 						if (res.confirm) {
 							if (list.addressBookId != undefined) {
 								PostDeleteAddressBook({
-									deviceNo: this.deviceInfo.no,
+									deviceId: this.deviceInfo.deviceId,
 									addressBookId: list.addressBookId,
 									phoneNumber: list.phoneNumber
 								}).then(res => {

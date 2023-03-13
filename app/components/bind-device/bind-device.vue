@@ -65,7 +65,7 @@
 					console.log(devices, 'devices');
 					return devices.map(ele => ({
 						text: ele.name,
-						value: this.payload.type === 'room' ? ele.deviceId : ele.no
+						value: ele.deviceId
 					}));
 				}
 			})
@@ -102,7 +102,7 @@
 						console.log('绑定到人');
 						handle = PostUpdateCareCardBind({
 							familyId,
-							deviceNo: this.deviceId,
+							deviceId: this.deviceId,
 							humanId: id
 						})
 						break;

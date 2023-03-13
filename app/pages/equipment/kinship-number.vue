@@ -98,7 +98,7 @@
 			},
 			handleInit() {
 				GetFamilyNumber({
-					deviceNo: this.deviceInfo.no
+					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					this.contactList = res.data.map(n => {
 						n.buttonName = this.contactDict[n.button]
@@ -115,7 +115,7 @@
 					}
 				}
 				PostSetFamilyNumber({
-					deviceNo: this.deviceInfo.no,
+					deviceId: this.deviceInfo.deviceId,
 					buttonFroms: this.contactList,
 				}).then(res => {
 					uni.$u.toast('保存成功')

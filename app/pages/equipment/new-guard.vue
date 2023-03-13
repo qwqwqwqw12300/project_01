@@ -208,7 +208,7 @@
 				})
 				if (toast) return uni.$u.toast(toast)
 				const obj = {
-					deviceNo: this.deviceInfo.no,
+					deviceId: this.deviceInfo.deviceId,
 					jobName: this.name,
 					firstDate: this.defaultValue[0],
 					lastDate: this.defaultValue[1],
