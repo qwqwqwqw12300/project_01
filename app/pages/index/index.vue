@@ -64,7 +64,7 @@
 										<view class="ui-device-name">
 											<view class="ui-list-static"
 												:class="{online: getDeives(room).onlineFlag === '1'}"></view>
-											<text class="ui-list-static-font">{{getDeives(room).hasPerson==='1' ? '在线':'离线'}}</text>
+											<text class="ui-list-static-font">{{getDeives(room).onlineFlag==='1' ? '在线':'离线'}}</text>
 											<view class="ui-list-people"
 												:class="{online: getDeives(room).hasPerson === '1'}"></view>
 											<text class="ui-list-static-font">{{getDeives(room).hasPerson==='1' ? '有人':'无人'}}</text>
