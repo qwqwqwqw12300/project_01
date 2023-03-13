@@ -37,11 +37,20 @@
 			}
 		},
 		mounted() {
-			const script = document.createElement('script')
+			const script = document.createElement('script');
 			script.src =
-				'http://webapi.amap.com/maps?v=1.3&key=3a2d950c2fc2774b4b1ee6da9a8d93dc&plugin=AMap.PolyEditor'
-			script.onload = this.init.bind(this)
-			document.head.appendChild(script)
+				'http://webapi.amap.com/maps?v=1.3&key=3a2d950c2fc2774b4b1ee6da9a8d93dc&plugin=AMap.PolyEditor&callback=mapInit'
+			window.mapInit = () => { // 依靠脚本的回调执行初始化
+				this.init();
+			}
+			script.onerror = (error) => {
+				this.$apm({
+					name: '地图脚本加载错误',
+					error
+				});
+			}
+			document.head.appendChild(script);
+
 		},
 
 		methods: {
@@ -53,10 +62,10 @@
 					zoom: 13 //地图显示的缩放级别
 				});
 				this.clickListener = AMap.event.addListener(this.map, "click", this.mapOnClick.bind(this));
-				const str =
-					'[{"J":39.91789947393269,"G":116.36744477221691,"lng":116.367445,"lat":39.917899},{"J":39.91184292800211,"G":116.40658356616223,"lng":116.406584,"lat":39.911843},{"J":39.88616249265181,"G":116.37963272998047,"lng":116.379633,"lat":39.886162}]',
-					arr = this.json2arr(str);
-				this.createPolygon(arr);
+				// const str =
+				// 	'[{"J":39.91789947393269,"G":116.36744477221691,"lng":116.367445,"lat":39.917899},{"J":39.91184292800211,"G":116.40658356616223,"lng":116.406584,"lat":39.911843},{"J":39.88616249265181,"G":116.37963272998047,"lng":116.379633,"lat":39.886162}]',
+				// 	arr = this.json2arr(str);
+				// this.createPolygon(arr);
 			},
 
 			mapOnClick(e) {
@@ -122,7 +131,8 @@
 					strokeOpacity: 1,
 					strokeWeight: 3,
 					fillColor: "#f5deb3",
-					fillOpacity: 0.35
+					fillOpacity: 0.35,
+
 				});
 				return polygon;
 			},

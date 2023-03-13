@@ -94,10 +94,7 @@
                 "push" : {
                     "unipush" : null
                 },
-                "ad" : {
-                    "360" : {},
-                    "ks" : {}
-                }
+                "ad" : {}
             },
             "splashscreen" : {
                 "androidStyle" : "common",
