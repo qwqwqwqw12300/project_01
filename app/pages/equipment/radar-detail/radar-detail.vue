@@ -64,9 +64,12 @@
 		onShow() {
 			const familyId = this.deviceInfo.familyId
 			const deviceId = this.deviceInfo.deviceId
-			this.deviceList = this.familyList.find(n => {
+			const allDevices = this.familyList.find(n => {
 				return familyId === n.familyId
 			}).devices
+			this.deviceList = allDevices.filter(n => {
+				return n.type === '0'
+			})
 			this.current = this.deviceList.indexOf(this.deviceInfo)
 			this.swiperData = this.deviceList[this.current]
 
