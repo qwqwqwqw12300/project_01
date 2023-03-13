@@ -29,117 +29,124 @@
 					:inactiveStyle="{color: '#888888', fontSize: '40rpx'}"></u-tabs>
 			</view>
 			<!-- /家庭tab -->
+			
 			<!-- 家庭列表 -->
 			<template v-if="familyList.length">
-				<view class="ui-group" v-for="(familyItem, index) of familyList" :key="'family' + index">
-					<view class="ui-title">
-						<view>
-							<u-text :text="familyItem.name" size="32rpx" :iconStyle="{height: '40rpx', width: '40rpx'}"
-								prefixIcon="../../static/images/index/home.png"></u-text>
-						</view>
-						<view class="ui-share-box">
-							<u-text @click="goPage('/pages/myself/famliy-manage')"
-								prefixIcon="../../static/images/index/edit.png" size="32rpx" :align="'right'"
-								:block="false" :iconStyle="{
-								height: '40rpx', width: '40rpx'
-							}" text="编辑" v-if="familyItem.shareFlag === '2'"></u-text>
-							<u-text
-								@click="goPage('/pages/share/share?familyId='+ familyItem.familyId + '&name='+ familyItem.name)"
-								prefixIcon="../../static/images/index/share.png" size="32rpx" :align="'right'"
-								:block="false" :iconStyle="{
-								height: '40rpx', width: '40rpx'
-							}" text="分享" v-if="familyItem.shareFlag === '2'"></u-text>
-						</view>
-
-					</view>
-					<view class="ui-device">
-						<!-- 房间 -->
-						<view class="ui-list" v-for="room of familyItem.rooms" :key="'r' + room.roomId">
-							<template v-if="getDeives(room).deviceId">
-								<!-- 雷达波设备 -->
-								<view class="ui-list-box active" @click="goDeciveDetails(getDeives(room))">
-									<image src="../../static/images/leida-nm.png"></image>
-									<view class="ui-device-info">
-										<text>{{room.name || '未命名房间'}}</text>
-										<view class="ui-device-name">
-											<view class="ui-list-static"
-												:class="{online: getDeives(room).onlineFlag === '1'}"></view>
-											<text class="ui-list-static-font">{{getDeives(room).onlineFlag==='1' ? '在线':'离线'}}</text>
-											<view class="ui-list-people"
-												:class="{online: getDeives(room).hasPerson === '1'}"></view>
-											<text class="ui-list-static-font">{{getDeives(room).hasPerson==='1' ? '有人':'无人'}}</text>
-										</view>
-									</view>
-									<u-badge v-if="getDeives(room).msgNum > 1" color="#fff" :offset="[-1, 0]"
-										:value="getDeives(room).msgNum" absolute>
-									</u-badge>
-								</view>
-							</template>
-							<!-- 空房间 -->
-							<template v-else>
-								<view class="ui-list-box ui-list-room active"
-									@click="bindDevice(room,familyItem.shareFlag)">
-									<view >
-										<u-text :block="false" :text="room.name || '未命名房间'"
-											:prefixIcon="getRoomIcon(room.roomType)" size="36rpx"
-											:iconStyle="{height: '48rpx', width: '48rpx',marginRight:'20rpx'}"></u-text>
-									</view>
-									<text v-if="familyItem.shareFlag == '2'" class="ui-link">点击绑定设备</text>
-									<text v-else>暂无设备</text>
-								</view>
-							</template>
-							<!-- /空房间 -->
-						</view>
-						<!-- 房间 -->
-						<!-- 人员 -->
-						<view class="ui-list" v-for="human of familyItem.humans" :key="'human' + human.humanId">
-							<template v-if="getDeives(human).deviceId">
-								<view class="ui-list-box active" v-if="getDeives(human).type === '1'"
-									@click="goDeciveDetails(getDeives(human))">
-									<image src="../../static/images/dzqgk.png"></image>
-									<view class="ui-device-info">
-										<text>{{human.name || '未命名人员'}}</text>
-										<view class="ui-device-name">
-											<view class="ui-list-static"
-												:class="{online: getDeives(human).onlineFlag === '1'}"></view>
-											<text class="ui-list-static-font"
-												v-if="getDeives(human).onlineFlag === '1'">在线</text>
-											<text class="ui-list-static-font" v-else>离线</text>
-										</view>
-									</view>
-									<u-badge v-if="getDeives(human).msgNum > 1" color="#fff" :offset="[-1, 0]"
-										:value="getDeives(human).msgNum" absolute>
-									</u-badge>
-								</view>
-							</template>
-							<!-- 空人员 -->
-							<template v-else>
-								<view class="ui-list-box ui-list-room active"
-									@click="bindDevice(human, familyItem.shareFlag)">
-									<view >
-										<u-text :block="false" :text="human.name"
-											prefixIcon="../../static/images/add-person.png" size="36rpx"
-											:iconStyle="{height: '48rpx', width: '48rpx',marginRight:'20rpx'}"></u-text>
-									</view>
-									<text v-if="familyItem.shareFlag == '2'" class="ui-link">点击绑定设备</text>
-									<text v-else>暂无设备</text>
-								</view>
-							</template>
-							<!-- /空人员 -->
-						</view>
-						<!-- 人员 -->
-
-						<!-- 新增房间 -->
-						<view class="ui-list ui-list-add" v-if="familyItem.shareFlag == '2'">
-							<view class="ui-list-box" @click="addRoom(familyItem)">
-								<u-icon name="../../static/images/index/add.png" size="56rpx"></u-icon>
-								<text>添加</text>
+				<scroll-view :scroll-y="true" class="ui-scroll">
+					<view class="ui-group" v-for="(familyItem, index) of familyList" :key="'family' + index">
+						<view class="ui-title">
+							<view>
+								<u-text :text="familyItem.name" size="32rpx" :iconStyle="{height: '40rpx', width: '40rpx'}"
+									prefixIcon="../../static/images/index/home.png"></u-text>
 							</view>
+							<view class="ui-share-box">
+								<u-text @click="goPage('/pages/myself/famliy-manage')"
+									prefixIcon="../../static/images/index/edit.png" size="32rpx" :align="'right'"
+									:block="false" :iconStyle="{
+									height: '40rpx', width: '40rpx'
+								}" text="编辑" v-if="familyItem.shareFlag === '2'"></u-text>
+								<u-text
+									@click="goPage('/pages/share/share?familyId='+ familyItem.familyId + '&name='+ familyItem.name)"
+									prefixIcon="../../static/images/index/share.png" size="32rpx" :align="'right'"
+									:block="false" :iconStyle="{
+									height: '40rpx', width: '40rpx'
+								}" text="分享" v-if="familyItem.shareFlag === '2'"></u-text>
+							</view>
+					
 						</view>
-						<!-- /新增房间 -->
+						<view class="ui-device">
+							<!-- 房间 -->
+							<view class="ui-list" v-for="room of familyItem.rooms" :key="'r' + room.roomId">
+								<template v-if="getDeives(room).deviceId">
+									<!-- 雷达波设备 -->
+									<view class="ui-list-box active" @click="goDeciveDetails(getDeives(room))">
+										<image src="../../static/images/leida-nm.png"></image>
+										<view class="ui-device-info">
+											<text>{{room.name || '未命名房间'}}</text>
+											<view class="ui-device-name">
+												<view class="ui-list-static"
+													:class="{online: getDeives(room).onlineFlag === '1'}"></view>
+												<text class="ui-list-static-font">{{getDeives(room).onlineFlag==='1' ? '在线':'离线'}}</text>
+												<view class="ui-list-people"
+													:class="{online: getDeives(room).hasPerson === '1'}"></view>
+												<text class="ui-list-static-font">{{getDeives(room).hasPerson==='1' ? '有人':'无人'}}</text>
+											</view>
+										</view>
+										<u-badge v-if="getDeives(room).msgNum > 1" color="#fff" :offset="[-1, 0]"
+											:value="getDeives(room).msgNum" absolute>
+										</u-badge>
+									</view>
+								</template>
+								<!-- 空房间 -->
+								<template v-else>
+									<view class="ui-list-box ui-list-room active"
+										@click="bindDevice(room,familyItem.shareFlag)">
+										<view >
+											<u-text :block="false" :text="room.name || '未命名房间'"
+												:prefixIcon="getRoomIcon(room.roomType)" size="36rpx"
+												:iconStyle="{height: '48rpx', width: '48rpx',marginRight:'20rpx'}"></u-text>
+										</view>
+										<text v-if="familyItem.shareFlag == '2'" class="ui-link">点击绑定设备</text>
+										<text v-else>暂无设备</text>
+									</view>
+								</template>
+								<!-- /空房间 -->
+							</view>
+							<!-- 房间 -->
+							<!-- 人员 -->
+							<view class="ui-list" v-for="human of familyItem.humans" :key="'human' + human.humanId">
+								<template v-if="getDeives(human).deviceId">
+									<view class="ui-list-box active" v-if="getDeives(human).type === '1'"
+										@click="goDeciveDetails(getDeives(human))">
+										<image src="../../static/images/dzqgk.png"></image>
+										<view class="ui-device-info">
+											<text>{{human.name || '未命名人员'}}</text>
+											<view class="ui-device-name">
+												<view class="ui-list-static"
+													:class="{online: getDeives(human).onlineFlag === '1'}"></view>
+												<text class="ui-list-static-font"
+													v-if="getDeives(human).onlineFlag === '1'">在线</text>
+												<text class="ui-list-static-font" v-else>离线</text>
+											</view>
+										</view>
+										<u-badge v-if="getDeives(human).msgNum > 1" color="#fff" :offset="[-1, 0]"
+											:value="getDeives(human).msgNum" absolute>
+										</u-badge>
+									</view>
+								</template>
+								<!-- 空人员 -->
+								<template v-else>
+									<view class="ui-list-box ui-list-room active"
+										@click="bindDevice(human, familyItem.shareFlag)">
+										<view >
+											<u-text :block="false" :text="human.name"
+												prefixIcon="../../static/images/add-person.png" size="36rpx"
+												:iconStyle="{height: '48rpx', width: '48rpx',marginRight:'20rpx'}"></u-text>
+										</view>
+										<text v-if="familyItem.shareFlag == '2'" class="ui-link">点击绑定设备</text>
+										<text v-else>暂无设备</text>
+									</view>
+								</template>
+								<!-- /空人员 -->
+							</view>
+							<!-- 人员 -->
+					
+							<!-- 新增房间 -->
+							<view class="ui-list ui-list-add" v-if="familyItem.shareFlag == '2'">
+								<view class="ui-list-box" @click="addRoom(familyItem)">
+									<u-icon name="../../static/images/index/add.png" size="56rpx"></u-icon>
+									<text>添加</text>
+								</view>
+							</view>
+							<!-- /新增房间 -->
+						</view>
 					</view>
-				</view>
-
+					<!-- 添加 -->
+					<view class="ui-add-btn">
+						<image @click="addStep" src="../../static/images/index/add-family.png" mode=""></image>
+						<text>新建家庭</text>
+					</view>
+				</scroll-view>
 			</template>
 			<!-- /家庭列表 -->
 			<!-- 空户 -->
@@ -150,11 +157,7 @@
 				</view>
 			</template>
 			<!-- /空户 -->
-			<!-- 添加 -->
-			<view class="ui-add-btn">
-				<image @click="addStep" src="../../static/images/index/add-family.png" mode=""></image>
-				<text>新建家庭</text>
-			</view>
+			
 			<add-step ref="addStepRef"></add-step>
 			<bind-device :payload="bindPayload" @next="handleInitList" ref="indexBindDev" />
 			<room-pop ref="indexAddRoom" @update="handleInitList" />
@@ -377,6 +380,9 @@
 </script>
 
 <style lang="scss">
+	.ui-scroll{
+		height: calc(100vh - (var(--window-bottom) + 315rpx + var(--status-bar-height)))
+	}
 	.ui-scan {
 		display: flex;
 		position: absolute;
