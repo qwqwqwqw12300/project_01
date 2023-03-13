@@ -104,7 +104,7 @@
 				GetsetAddressBook({
 					startTime: this.dateData + " " + '00:00:00',
 					endTime: this.dateData + " " + '23:59:59',
-					deviceNo: this.deviceInfo.no
+					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					const list = res.data.map(n => {
 						n.locateTime = uni.$u.timeFormat(n.locateTime, 'yyyy-mm-dd hh:MM')

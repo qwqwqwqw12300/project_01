@@ -72,7 +72,7 @@
 		methods: {
 			initData() {
 				GetLocationGuardList({
-					deviceNo: this.deviceInfo.no
+					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					this.list = res.data
 				})

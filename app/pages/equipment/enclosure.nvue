@@ -262,8 +262,8 @@
 				}
 				PostAddFence({
 					fenceType: 'circle',
-					deviceId: this.deviceInfo.deviceId,
 					deviceNo: this.deviceInfo.no,
+					deviceId: this.deviceInfo.deviceId,
 					address,
 					longitude,
 					latitude,

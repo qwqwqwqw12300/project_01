@@ -115,7 +115,7 @@
 					success: res => {
 						if (res.confirm) {
 							PostDeletePeriodDisable({
-								deviceNo:this.deviceInfo.no,
+								deviceId:this.deviceInfo.deviceId,
 								uuidList:list
 							}).then(res=>{
 								uni.$u.toast(res.msg)
@@ -129,7 +129,7 @@
 			},
 			handleSave() {
 				PostSetPeriodDisable({
-					deviceNo:this.deviceInfo.no,
+					deviceId:this.deviceInfo.deviceId,
 					periodDisableTag:this.name,
 					beginTime:this.defaultValue[0],
 					endTime:this.defaultValue[1],

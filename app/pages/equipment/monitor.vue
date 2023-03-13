@@ -44,7 +44,7 @@
 		methods: {
 			handleStart(){
 				PostRemoteMonitor({
-					deviceNo:this.deviceInfo.no, 
+					deviceId:this.deviceInfo.deviceId, 
 					requestCall:"1"
 				}).then(res=>{
 					console.log(res,'res')

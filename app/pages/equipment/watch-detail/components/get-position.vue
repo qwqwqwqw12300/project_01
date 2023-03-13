@@ -81,7 +81,7 @@
 			},
 			getDeviceLocation() {
 				GetLastPoint({
-					deviceNo: this.deviceInfo.no
+					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					const {
 						latitude,

@@ -212,7 +212,7 @@
 					success: res => {
 						if(res.confirm){
 							PostDeleteLocationGuard({
-								deviceNo: this.deviceInfo.no,
+								deviceId: this.deviceInfo.deviceId,
 								uuidList:list
 							}).then(res => {
 								uni.$u.toast(res.msg)
@@ -243,7 +243,7 @@
 					return item
 				})
 				const obj = {
-					deviceNo:this.deviceInfo.no,
+					deviceId:this.deviceInfo.deviceId,
 					jobName:this.name,
 					firstDate:this.defaultValue[0],
 					lastDate:this.defaultValue[1],

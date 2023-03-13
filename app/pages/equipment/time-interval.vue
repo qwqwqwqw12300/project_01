@@ -67,12 +67,12 @@
 			};
 		},
 		mounted() {
-
+			console.log(this.deviceInfo,'this.deviceInfo')
 		},
 		methods: {
 			initData() {
 				GetPeriodDisableList({
-					deviceNo: this.deviceInfo.no
+					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					console.log(res, 'res')
 					this.list = res.data
