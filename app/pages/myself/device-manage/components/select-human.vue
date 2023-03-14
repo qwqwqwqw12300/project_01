@@ -62,7 +62,7 @@
 				form: {
 					familyId: '',
 					humanId: '',
-					deviceNo: ''
+					deviceId: ''
 
 				}
 			};
@@ -90,11 +90,11 @@
 			}
 		},
 		methods: {
-			open(deviceNo) {
+			open(deviceId) {
 				this.form = {
 					familyId: '',
 					humanId: '',
-					deviceNo
+					deviceId
 				};
 				this.familyName = this.name = '';
 				this.bindHumanShow = true;

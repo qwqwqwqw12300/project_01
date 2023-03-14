@@ -138,8 +138,8 @@
 			/**
 			 * 绑定人员
 			 */
-			bindingHuman(deviceNo) {
-				this.$refs.selectHumanRef.open(deviceNo);
+			bindingHuman(deviceId) {
+				this.$refs.selectHumanRef.open(deviceId);
 			},
 
 			/**

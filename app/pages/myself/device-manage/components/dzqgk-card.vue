@@ -74,16 +74,16 @@
 			 */
 			binding(item) {
 				const {
-					no,
+					deviceId
 				} = item;
-				this.$emit('bind', no)
+				this.$emit('bind', deviceId)
 			},
 
 			/**
 			 * 解绑
 			 */
 			unbinding({
-				no,
+				deviceId,
 				humanId
 			}) {
 				uni.showModal({
@@ -92,7 +92,7 @@
 					success: res => {
 						if (res.confirm) {
 							PostCareCardUnBind({
-								deviceNo: no,
+								deviceId,
 								humanId
 							}).then(res => {
 								uni.$u.toast(res.msg);

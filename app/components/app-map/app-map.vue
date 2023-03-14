@@ -7,8 +7,7 @@
 
 <template>
 	<view>
-		<view id="container" class="container">
-		</view>
+		<view id="container" class="container"></view>
 	</view>
 </template>
 
@@ -19,12 +18,24 @@
 			return {
 
 			};
+		},
+		methods: {
+			/**
+			 * 接收地图信息
+			 */
+			onMsg(info) {
+				console.log(info, 'Polygon');
+			}
 		}
 	}
 </script>
 
 <script module="map" lang="renderjs">
+	import {
+		mapMixin
+	} from '../../common/mixin/map.mixin';
 	export default {
+		mixins: [mapMixin],
 		data() {
 			return {
 				beginPoints: [],
@@ -37,37 +48,30 @@
 			}
 		},
 		mounted() {
-			const script = document.createElement('script');
-			script.src =
-				'http://webapi.amap.com/maps?v=1.3&key=3a2d950c2fc2774b4b1ee6da9a8d93dc&plugin=AMap.PolyEditor&callback=mapInit'
-			window.mapInit = () => { // 依靠脚本的回调执行初始化
-				this.init();
-			}
-			script.onerror = (error) => {
-				this.$apm({
-					name: '地图脚本加载错误',
-					error
-				});
-			}
-			document.head.appendChild(script);
-
+			this.loadMap(this.init);
 		},
 
 		methods: {
+			/**
+			 * 初始化
+			 */
 			init() {
 				this.AMap = AMap;
 				this.map = new AMap.Map('container', {
 					resizeEnable: true,
-					center: [119.406043, 26.0185753], //地图中心点
 					zoom: 13 //地图显示的缩放级别
 				});
+				// 挂载点击事件
 				this.clickListener = AMap.event.addListener(this.map, "click", this.mapOnClick.bind(this));
-				// const str =
-				// 	'[{"J":39.91789947393269,"G":116.36744477221691,"lng":116.367445,"lat":39.917899},{"J":39.91184292800211,"G":116.40658356616223,"lng":116.406584,"lat":39.911843},{"J":39.88616249265181,"G":116.37963272998047,"lng":116.379633,"lat":39.886162}]',
-				// 	arr = this.json2arr(str);
-				// this.createPolygon(arr);
+				this.$ownerInstance.callMethod('onMsg', {
+					AMap,
+					map: this.map
+				});
 			},
 
+			/**
+			 * @param {Object}地图点击，生成坐标点
+			 */
 			mapOnClick(e) {
 				this.beginMarks.push(this.addMarker(e.lnglat));
 				this.beginPoints.push(e.lnglat);
@@ -81,6 +85,10 @@
 				}
 			},
 
+			/**
+			 * 创建触摸节点
+			 * @param {Object} polygon
+			 */
 			createEditor(polygon) {
 				const polygonEditor = new this.AMap.PolyEditor(this.map, polygon);
 				polygonEditor.open();
@@ -88,10 +96,17 @@
 				return polygonEditor;
 			},
 
+			/**
+			 * 关闭触摸节点
+			 */
 			closeEditPolygon() {
 				this.polygonEditor.close();
 			},
 
+			/**
+			 * 操作结束
+			 * @param {Object} res
+			 */
 			polygonEnd(res) {
 				this.resPolygon.push(res.target);
 				// alert(resPolygon[resNum].contains([116.386328, 39.913818]));

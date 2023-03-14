@@ -238,7 +238,7 @@
 						});
 						setTimeout(() => {
 							uni.navigateTo({
-								url: '/pages/myself/device-manage'
+								url: '/pages/myself/device-manage/device-manage'
 							});
 						}, 1000);
 

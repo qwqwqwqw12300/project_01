@@ -293,7 +293,7 @@
 						success: res => {
 							if (res.confirm) {
 								PostCareCardUnBind({
-									deviceNo: devices.no,
+									deviceId: devices.deviceId,
 									humanId: devices.humanId
 								}).then(res => {
 									uni.$u.toast(res.msg);
