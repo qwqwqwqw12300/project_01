@@ -8,7 +8,7 @@
 <template>
 	<view>
 		<view id="container" class="container"></view>
-		<view :operation="operation" :change:operation="maps.loadOperation"></view>
+		<!-- <view :operation="operation" :change:operation="maps.loadOperation"></view> -->
 	</view>
 </template>
 
@@ -40,6 +40,8 @@
 		mixins: [mapMixin],
 		data() {
 			return {
+				map:null,
+				AMap:null
 			}
 		},
 		mounted() {
@@ -54,45 +56,34 @@
 				this.AMap = AMap;
 				this.map = new AMap.Map('container', {
 					resizeEnable: true,
-					center:[this.operation.longitude,this.operation.latitude],
+					center: [119.39139, 26.03001],
 					zoom: 13 //地图显示的缩放级别
 				});
-				var marker, lineArr = [[119.39139,26.03001],[119.39138,26.03001],[119.39139,26.03001]];
-				marker = new AMap.Marker({
-					map: map,
-					position: [this.operation.longitude,this.operation.latitude],
-					icon: "https://webapi.amap.com/images/car.png",
-					offset: new AMap.Pixel(-26, -13),
-					autoRotation: true,
-					angle:-90,
-				});
-				 // 绘制轨迹
-				let polyline = new AMap.Polyline({
-					map: map,
-					path: lineArr,
-					showDir:true,
-					strokeColor: "#28F",  //线颜色
-					// strokeOpacity: 1,     //线透明度
-					strokeWeight: 6,      //线宽
-					// strokeStyle: "solid"  //线样式
-				});
-				let passedPolyline = new AMap.Polyline({
-					map: map,
-					// path: lineArr,
-					strokeColor: "#AF5",  //线颜色
-					// strokeOpacity: 1,     //线透明度
-					strokeWeight: 6,      //线宽
-					// strokeStyle: "solid"  //线样式
-				});
+				var path = [
+					 [119.39139,  26.04001],
+					 [119.38139,  26.03001],
+					 [119.37139,  26.02001],
+					 [119.36139,  26.01001]
+				 ];
+				 
+				 var polyline = new AMap.Polyline({
+					 path: path,
+					 isOutline: true,
+					 outlineColor: '#ffeeff',
+					 borderWeight: 3,
+					 strokeColor: "#3366FF", 
+					 strokeOpacity: 1,
+					 strokeWeight: 6,
+					 // 折线样式还支持 'dashed'
+					 strokeStyle: "solid",
+					 // strokeStyle是dashed时有效
+					 strokeDasharray: [10, 5],
+					 lineJoin: 'round',
+					 lineCap: 'round',
+					 zIndex: 50,
+				 })
 				
-				
-				marker.on('moving', function (e) {
-					console.log(e,'e')
-					passedPolyline.setPath(e.passedPath);
-				});
-				
-				map.setFitView(); 
-			
+				polyline.setMap(this.map)
 				
 				
 			},
