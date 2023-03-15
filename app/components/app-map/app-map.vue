@@ -55,7 +55,7 @@
 			/**
 			 * 初始化
 			 */
-			init() {
+			init(AMap) {
 				this.AMap = AMap;
 				this.map = new AMap.Map('container', {
 					resizeEnable: true,
@@ -63,10 +63,10 @@
 				});
 				// 挂载点击事件
 				this.clickListener = AMap.event.addListener(this.map, "click", this.mapOnClick.bind(this));
-				this.$ownerInstance.callMethod('onMsg', {
-					AMap,
-					map: this.map
-				});
+				// this.$ownerInstance.callMethod('onMsg', {
+				// 	AMap,
+				// 	map: this.map
+				// });
 			},
 
 			/**
