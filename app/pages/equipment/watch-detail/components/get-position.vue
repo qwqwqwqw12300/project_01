@@ -1,18 +1,6 @@
 <template>
-	<view class="ui-map" id="ui-map">
-		<view class="map-box">
-			<map id="map" ref="map" :style="{height: mapHeight,width: '686rpx'}" :markers="covers" :latitude="latitude"
-				:longitude="longitude" />
-		</view>
-		<view class="map-position">
-			<text class="label">当前位置:</text>
-			<view class="content">
-				{{ siteInfo }}
-			</view>
-		</view>
-		<view class="ui-btn">
-			<button class="default" @click="toJump">历史位置</button>
-		</view>
+	<view class="ui-map">
+		<point-map :latitude="latitude" :longitude="longitude" :record="addressInfo"></point-map>
 	</view>
 </template>
 
@@ -34,6 +22,12 @@
 				longitude: 116.39742,
 				covers: [],
 				mapHeight: 0,
+				addressInfo: {
+					latitude: 26.03001,
+					longitude: 119.39139,
+					address: '福建省福州市新大陆科技园',
+				}
+
 			}
 		},
 		created() {
@@ -41,11 +35,9 @@
 			const saveHeight = uni.getSystemInfoSync().statusBarHeight
 			//44 + 167 + 47 + 130
 			this.mapHeight = sysHeight - saveHeight - 400
-			console.log(this.mapHeight, 'pppp')
-			// console.log(height, 'oooo')
 		},
 		mounted() {
-			this.getDeviceLocation()
+			// this.getDeviceLocation()
 
 		},
 		methods: {
@@ -71,7 +63,9 @@
 								poiName
 							},
 						} = res
-						this.siteInfo = province + city + district + street + streetNum + poiName
+						this.addressInfo.latitude = latitude
+						this.addressInfo.longitude = longitude
+						this.addressInfo.address = province + city + district + street + streetNum + poiName
 					},
 					false: (res) => {
 						console.log(res, 'error')
@@ -90,12 +84,6 @@
 					this.latitude = latitude
 					this.longitude = longitude
 					this.getLocation(latitude, longitude)
-					this.covers[0] = {
-						latitude,
-						longitude,
-						iconPath: '../../../static/images/mapSite.png'
-					}
-					this.covers = [...this.covers]
 				})
 			}
 		}

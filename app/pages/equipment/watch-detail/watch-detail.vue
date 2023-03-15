@@ -105,7 +105,7 @@
 		padding: 0 30rpx;
 		margin-top: 20rpx;
 		overflow: hidden;
-		height: calc(100vh - 580rpx - var(--status-bar-height));
+		height: calc(100vh - 530rpx - var(--status-bar-height));
 	}
 
 	.ui-tab {
