@@ -1,7 +1,7 @@
 <template>
 	<view class="ui-map">
-		<point-map :latitude="latitude" :longitude="longitude" :record="addressInfo"></point-map>
-		<touch-popup :minHeight="0.1" :maxHeight="0.7" :touchHeight="64" currentHeight="setScrollHeight" radius="30rpx">
+		<point-map  :record="addressInfo"></point-map>
+		<touch-popup :minHeight="0.1" :maxHeight="0.7" :touchHeight="64" radius="30rpx">
 			<view class="map-position">
 				<text class="label">当前位置:</text>
 				<view class="content">
@@ -16,11 +16,9 @@
 					<u-icon :name="getMapIcon(n)" size="44rpx" style="margin-right: 6rpx;" />
 				</view>
 			</view>
-			<!-- 	<u-cell v-for="(item,index) in historyList" :title="item.address" :label="item.subAddress" :key="index">
-				<text slot="value" class="u-slot-value">
-					{{item.locateTime}}
-				</text>
-			</u-cell> -->
+			<view class="ui-btn">
+				<button class="default" @click="toJump">历史位置</button>
+			</view>
 		</touch-popup>
 	</view>
 </template>
@@ -146,7 +144,7 @@
 						return this.getLocation(n)
 					})
 					Promise.all(promises).then(res => {
-						console.log(res, '9999-----------------')
+						// console.log(res, '9999-----------------')
 						this.historyList = res.map((n, i) => {
 							n.index = i
 							return n
@@ -177,7 +175,7 @@
 							address
 						}
 						this.getHistoryLocation()
-						console.log(res, 'ddiididi')
+						// console.log(res, 'ddiididi')
 						uni.hideLoading()
 					})
 				})

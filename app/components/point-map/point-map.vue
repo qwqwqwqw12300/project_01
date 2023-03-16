@@ -19,6 +19,7 @@
 			record: {
 				handler(val) {
 					if (val.latitude && val.longitude) {
+						console.log(val, '0000999=--------')
 						this.mapInfo = uni.$u.deepClone(val)
 					}
 				},
@@ -54,12 +55,13 @@
 		},
 		methods: {
 			loadData(data) {
+				if (!data.latitude || !data.longitude) return
 				console.log(data, '4444')
 				this.mapData = data
 				const {
 					latitude,
 					longitude
-				} = this.data
+				} = data
 				if (this.map) {
 					this.map.setCenter([longitude, latitude])
 					this.mapMarker(longitude, latitude)
@@ -76,7 +78,8 @@
 					latitude,
 					longitude
 				} = this.mapData
-				// console.log(latitude, longitude, '----------------------------')
+
+				console.log(latitude, longitude, '----------------------------')
 				this.map = new AMap.Map('container', {
 					resizeEnable: true,
 					center: [longitude, latitude],
