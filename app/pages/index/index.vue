@@ -155,6 +155,11 @@
 					<image src="../../static/images/index/empty.png" mode=""></image>
 					<text>未添加任何家庭</text>
 				</view>
+				<!-- 添加 -->
+				<view class="ui-add-btn">
+					<image @click="addStep" src="../../static/images/index/add-family.png" mode=""></image>
+					<text>新建家庭</text>
+				</view>
 			</template>
 			<!-- /空户 -->
 			
