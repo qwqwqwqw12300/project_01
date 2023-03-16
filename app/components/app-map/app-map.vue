@@ -166,7 +166,7 @@
 </script>
 <style lang="scss">
 	.container {
-		height: 600rpx;
+		height: calc(100vh - 300rpx);
 		width: 100%;
 	}
 </style>
