@@ -80,6 +80,7 @@
 				console.log(this.lineArr, 'llllllll')
 				let polyline = new AMap.Polyline({
 					path: this.lineArr,
+					showDir:true,
 					isOutline: true,
 					outlineColor: '#ffeeff',
 					borderWeight: 3,
