@@ -3,7 +3,7 @@
 <template>
 	<view>
 		<view id="container" class="container"></view>
-		<view :sliderData="sliderData" :change:sliderData="maps.loadData"></view>
+		<view :slider="slider" :change:slider="maps.loadData"></view>
 	</view>
 </template>
 
@@ -12,23 +12,24 @@
 		name: "app-map",
 		props: {
 			record: {
-				type: Number,
-				default: 0,
+				type: Object,
+				default: () => {},
 			},
 		},
 		watch: {
 			record: {
 				handler(val) {
 					if (val) {
-						this.sliderData = uni.$u.deepClone(val)
+						this.slider = uni.$u.deepClone(val)
 					}
 				},
+				deep: true,
 				immediate: true,
 			}
 		},
 		data() {
 			return {
-				sliderData: 0,
+				slider: 0,
 			};
 		},
 		methods: {
@@ -45,11 +46,13 @@
 		mixins: [mapMixin],
 		data() {
 			return {
-				operation: {
-					longitude: 119.39139,
-					latitude: 26.03001
+				mapInfo: {
+					sliderValue: 200,
+					latitude: '',
+					longitude: '',
 				},
-				radius: 0,
+				circle: null,
+				marker: null,
 				AMap: null,
 				map: null,
 			}
@@ -57,36 +60,78 @@
 		mounted() {
 			// this.loadMap(this.init);
 		},
-
 		methods: {
 			loadData(val) {
 				// 数据变更
-				this.radius = val
-				console.log(val, 'radsddsdsd')
-				this.init()
+				const {
+					latitude,
+					longitude
+				} = val
+				this.mapInfo = val
+				if (this.map) {
+					this.map.remove(this.circle)
+					this.drawCircle()
+					this.map.remove(this.marker)
+					this.mapMarker()
+				} else {
+					if (longitude && longitude) {
+						this.loadMap(this.init);
+					}
+				}
 			},
 			/**
 			 * 初始化
 			 */
 			init(AMap) {
+				// const {
+				// 	latitude,
+				// 	longitude
+				// } = this.mapInfo
 				this.AMap = AMap;
 				this.map = new AMap.Map('container', {
 					resizeEnable: true,
-					center: [this.operation.longitude, this.operation.latitude],
+					center: [119.39139, 26.03001],
 					zoom: 13 //地图显示的缩放级别
 				});
-				let circle = new AMap.Circle({
-					center: new AMap.LngLat(this.operation.longitude, this.operation.latitude), // 圆心位置
-					radius: this.radius, // 圆半径
-					fillColor: 'pink', // 圆形填充颜色
+				this.drawCircle()
+				this.mapMarker()
+			},
+			drawCircle() {
+				const {
+					latitude,
+					longitude,
+					sliderValue
+				} = this.mapInfo
+				this.circle = new AMap.Circle({
+					center: new AMap.LngLat(longitude, latitude), // 圆心位置
+					radius: sliderValue, // 圆半径
+					fillColor: 'rgba(100,163,242,0.50)', // 圆形填充颜色
 					fillOpacity: 0.4, // 圆形填充透明度
-					strokeColor: '#fff', // 描边颜色
+					strokeColor: '#3B7AFF', // 描边颜色
 					strokeWeight: 2, // 描边宽度
 				});
-				this.map.add(circle)
+				this.circle.setMap(this.map)
+				// 缩放地图到合适的视野级别
+				this.map.setFitView([this.circle])
 			},
-
-
+			mapMarker() {
+				const {
+					latitude,
+					longitude,
+				} = this.mapInfo
+				const icon  = new this.AMap.Icon({
+					size: new AMap.Size(40, 40), // 图标尺寸
+					image: 'static/images/mapSite.png', // Icon的图像
+					// imageOffset: new AMap.Pixel(0, -60), // 图像相对展示区域的偏移量，适于雪碧图等
+					imageSize: new AMap.Size(40, 40) // 根据所设置的大小拉伸或压缩图片
+				})
+				this.marker = new AMap.Marker({
+					position: new AMap.LngLat(longitude, latitude),
+					offset: new AMap.Pixel(-18, -40),
+					icon,
+				})
+				this.map.add(this.marker)
+			}
 		}
 	}
 </script>
