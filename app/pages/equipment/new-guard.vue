@@ -171,14 +171,14 @@
 				this.index = index
 				uni.$on('getMapData', res => {
 					console.log(res, 'res')
-					this.contactList[this.index].address = res.siteInfo
+					this.contactList[this.index].address = res.address
 					this.contactList[this.index].longitude = res.longitude
 					this.contactList[this.index].latitude = res.latitude
 					this.contactList[this.index].radius = res.sliderValue
 				});
 
 				uni.navigateTo({
-					url: '/pages/equipment/enclosure'
+					url: '/pages/equipment/new-address'
 				})
 			},
 			handleCancel() {

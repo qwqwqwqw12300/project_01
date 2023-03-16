@@ -1,216 +1,296 @@
-<!--
-* @Author: zhanghaowei
-* @Date: 2023年3月1日14:43:51
-* @FilePath: 
-* @Description: 位置守护-选择地址
--->
 <template>
-	<app-body :bodyStyle="{background: 'rgb(247,247,247)' }" :bg="false">
-		<view class="ui-logo">
-			<app-logo color="#353535" text="设置电子围栏"></app-logo>
-		</view>
-		<view class="ui-map">
-			<view class="ui-map-box">
-				<map id="map" ref="map" style=" width: 100%; height: 563rpx; border-radius: 20rpx;" :latitude="latitude"
-					:longitude="longitude" :markers="covers" :circles="circles">
-				</map>
+	<view>
+		<circle-map :record="mapInfo"></circle-map>
+		<touch-popup :minHeight="0.1" :maxHeight="0.75" :touchHeight="64" radius="30rpx">
+			<view class="title">
+				获取位置详情
 			</view>
-		</view>
-		<view class="ui-set">
-			<view class="address-set" @click="goMap">
+			<view class="address">
 				<text class="label">
 					地址
 				</text>
 				<view class="input">
-					<u--input placeholder="请输入地址" border="none" clearable></u--input>
+					<text class="input-text" @click="goSearch">{{siteInfo || '请输入地址'}}</text>
 				</view>
 			</view>
-			<view class="radius-set">
-				<view class="label">
-					<text>
-						设置半径长度
-					</text>
-				</view>
+			<view class="radius">
+				<text class="label">
+					半径
+				</text>
 				<view class="slider">
-					<u-slider @change="onSlider" max="500" activeColor="#eeaa3d" blockColor="#eeaa3d"
-						inactiveColor="#c0c4cc" />
+					<u-slider @change="onSlider" max="500" v-model="mapInfo.sliderValue" activeColor="#eeaa3d"
+						blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+				</view>
+				<text class="value" style="text-align: center;">
+					{{mapInfo.sliderValue}}米
+				</text>
+			</view>
+			<view class="address-list">
+				<view class="address-list-title">
+					<text class="title-icon"></text>
+					地址列表
+				</view>
+				<view class="list-item" v-for="(n, index) in poiList" :key="index" @click="mapMarker(n)">
+					<text class="list-item-label">
+						{{ n.name }}
+					</text>
+					<u-icon :name="getMapIcon(n)" size="44rpx" style="margin-right: 6rpx;" />
 				</view>
 			</view>
-		</view>
-		<view class="address-list">
-			<view class="title">
-				<text></text>
-				地址列表
+			<view class="ui-btn">
+				<button class="default" @click="handleSubmit">提交</button>
 			</view>
-			<view class="list-item">
-				<text class="label">
-					新大陆科技园
-				</text>
-				<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
-			</view>
-			<view class="list-item">
-				<text class="label">
-					新大陆科技园
-				</text>
-				<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
-			</view>
-			<view class="list-item">
-				<text class="label">
-					新大陆科技园
-				</text>
-				<u-icon name="/static/images/position.png" size="44rpx" style="margin-right: 6rpx;" />
-			</view>
-		</view>
-		<view class="ui-btn">
-			<button class="default" @click="handleSubmit">提交</button>
-		</view>
-	</app-body>
+		</touch-popup>
+	</view>
 </template>
 
 <script>
+	import {
+		mapState,
+	} from 'vuex';
+	import {
+		isIos,
+		isApp
+	} from '@/common/utils/util';
+	let mapSearch;
+	if (isApp()) mapSearch = weex.requireModule('mapSearch');
+	import {
+		PostAddFence,
+	} from '@/common/http/api.js';
 	export default {
 		data() {
 			return {
-				latitude: 26.08,
-				longitude: 119.18,
-				covers: [],
-				circles: [],
-				radius:'0',
-				address:''
+				siteInfo: '',
+				currentSelect: '',
+				poiList: [], //搜索地址
+				mapInfo: {
+					sliderValue: 200,
+					latitude: '',
+					longitude: '',
+				}
 			}
+		},
+		computed: {
+			...mapState({
+				deviceInfo: state => state.deviceInfo
+			}, ),
+			getMapIcon() {
+				return function(item) {
+					return this.currentSelect === item.index ? '/static/images/map-select.png' :
+						'/static/images/position.png'
+				}
+			},
+		},
+		created() {
+			uni.$on('searchData', data => {
+				console.log(data, 'dddddd----------')
+				this.mapMarker(data)
+			})
+			this.handleGetLocation()
 		},
 		methods: {
-			handleSubmit(){
-				const val = {
-					guardType:"circle",
-					latitude:this.latitude,
-					longitude:this.longitude,
-					radius:this.radius,
-					address:this.address
+			mapMarker(data) {
+				const {
+					province,
+					city,
+					district,
+					address,
+					index,
+					location: {
+						latitude,
+						longitude
+					}
+				} = data
+				this.currentSelect = index
+				this.siteInfo = province + city + district + address
+				this.mapInfo = {
+					sliderValue: 200,
+					latitude,
+					longitude,
 				}
-				console.log(val,'val')
-				uni.$emit('getData', val);
-				setTimeout(() => {
-					uni.navigateBack()
-				}, 500);
-			},
-			onSlider(value){
-				console.log(value)
-				this.radius = value
 			},
 			/**
-			 * 跳转选择地址
+			 * 跳转搜索
 			 */
-			goMap() {
-				uni.$once('searchData', res => {
-					const {
-						province,
-						city,
-						district,
-						address,
-						name
-					} = res
-					this.address = province + city + district + address + name;
-				});
+			goSearch() {
 				uni.navigateTo({
 					url: '/pages/equipment/search'
-				});
-			}
-		},
-		onBackPress(event) {
-			uni.$off('detailsScreenResult');
+				})
+			},
+			onSlider() {
+
+			},
+			/**
+			 * 获取当前定位
+			 */
+			handleGetLocation() {
+				uni.showLoading({
+					title: '加载中'
+				})
+				try {
+					uni.getLocation({
+						geocode: true,
+						type: isIos() ? 'wgs84' : 'gcj02',
+						success: (res) => {
+							this.getSiteInfo(res)
+							const {
+								latitude,
+								longitude,
+								address: {
+									province,
+									city,
+									district,
+									street
+								},
+							} = res
+							this.latitude = latitude
+							this.longitude = longitude
+							this.siteInfo = province + city + district + street
+							this.mapInfo = {
+								sliderValue: 200,
+								latitude,
+								longitude,
+							}
+							uni.hideLoading()
+						},
+						false: (res) => {
+							console.log(res, 'error')
+							uni.hideLoading()
+						}
+					})
+				} catch (e) {
+					console.log(e, '代码报错--------');
+					//TODO handle the exception
+				}
+
+			},
+			/**
+			 * 获取周围位置信息
+			 */
+			getSiteInfo(data) {
+				const {
+					latitude,
+					longitude
+				} = data
+				mapSearch && mapSearch.poiSearchNearBy({
+					point: {
+						latitude,
+						longitude
+					},
+					key: '小区'
+				}, res => {
+					const {
+						poiList
+					} = res;
+					if (poiList && poiList.length) {
+						this.poiList = (poiList.length > 4 ? poiList.slice(0, 4) : poiList).map((n, i) => {
+							n.index = i
+							return n
+						})
+					}
+				})
+			},
+			/**
+			 * 保存
+			 */
+			handleSubmit() {
+				const {
+					// deviceId,
+					siteInfo: address,
+					mapInfo: {
+						longitude,
+						latitude,
+						sliderValue,
+					}
+				} = this
+				const obj = {
+					address,
+					longitude,
+					latitude,
+					sliderValue
+				}
+				if (sliderValue === 0) {
+					return uni.$u.toast('半径长度大于0')
+				}
+				uni.$emit('getMapData',obj)
+				uni.navigateBack()
+			},
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	::v-deep {
-		uni-slider {
-			margin: 10rpx 18rpx !important;
+	.title {
+		height: 120rpx;
+		display: flex;
+		align-items: center;
+		border-bottom: solid 2px #f7f7f7;
+		font-size: 34rpx;
+		color: #353535;
+		font-weight: 550;
+	}
+
+	.address {
+		height: 128rpx;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: solid 2px #f7f7f7;
+
+		.label {
+			font-size: 34rpx;
+			width: 150rpx;
+			color: #353535;
+		}
+
+		.input {
+			flex: 1;
+
+			// width: 220rpx;
+			.input-text {
+				font-size: 30rpx;
+				color: #D4D4D4;
+			}
 		}
 	}
 
-	.ui-logo {
-		background-color: #fff;
-		padding-bottom: 30rpx;
-	}
+	.radius {
+		height: 128rpx;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: solid 2px #f7f7f7;
 
-	.ui-map {
-		background-color: #fff;
-		padding: 32rpx;
-
-		.ui-map-box {
-			width: 100%;
-			height: 563rpx;
-			overflow: hidden;
-			border-radius: 30rpx;
-		}
-	}
-
-	.ui-set {
-		margin-top: 20rpx;
-		background-color: #fff;
-		padding: 0 32rpx;
-
-		.address-set {
-			height: 128rpx;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			border-bottom: solid 2px #f7f7f7;
-
-			.label {
-				font-size: 34rpx;
-				color: #353535;
-			}
-
-			.input {
-				width: 240rpx;
-			}
+		.label,
+		.value {
+			font-size: 34rpx;
+			width: 120rpx;
+			color: #353535;
 		}
 
-		.radius-set {
-			.label {
-				height: 128rpx;
-				line-height: 128rpx;
-
-				text {
-					font-size: 34rpx;
-					color: #353535;
-				}
-			}
-
-			.slider {
-				margin-top: 20rpx;
-				box-sizing: border-box;
-				height: 80rpx;
-				// padding-top: 20rpx;
-				// display: flex;
-				// align-items: center;
-			}
+		.slider {
+			flex: 1;
 		}
 	}
 
 	.address-list {
 		margin-top: 20rpx;
 		background-color: #fff;
-		padding: 0 32rpx;
 
-		.title {
+		.address-list-title {
 			height: 100rpx;
 			display: flex;
+			flex-direction: row;
 			align-items: center;
 			font-size: 36rpx;
 			color: #FEAE43;
 			font-weight: 600;
 			border-bottom: solid 2px #f7f7f7;
 
-			text {
+			.title-icon {
 				height: 50rpx;
-				border-left: solid 14rpx #FEAE43;
-				border-radius: 4rpx;
+				border-left: solid 10rpx #FEAE43;
 				margin-right: 20rpx;
-
 			}
 		}
 
@@ -218,14 +298,18 @@
 			// padding: 48rpx 32rpx;
 			height: 128rpx;
 			display: flex;
+			flex-direction: row;
 			align-items: center;
 			justify-content: space-between;
 			border-bottom: solid 2px #f7f7f7;
+
+			.list-item-label {
+				font-size: 34rpx;
+				color: #353535;
+			}
 		}
 	}
-
-	.ui-btn {
-		padding: 32rpx;
-		margin-top: 50rpx;
+	.ui-btn{
+		margin-top: 20rpx;
 	}
 </style>
