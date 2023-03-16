@@ -289,7 +289,10 @@ export const postSetNoticeFlag = (params) => http.post('/api/notice/setNoticeFla
  */
 export const PostAddFence = (params) => http.post('/api/fence/addFence', params);
 
-
+/**
+ * 设置电子围栏2
+ */
+export const PostAddFence2 = (params) => http.post('/api/careCard/setDeviceFence', params);
 /**
  * 添加设备
  */

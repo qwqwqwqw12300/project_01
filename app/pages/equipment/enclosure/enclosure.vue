@@ -48,7 +48,7 @@
 		position: absolute;
 		left: 32rpx;
 		// top: 800rpx;
-		bottom: 200rpx;
+		bottom: 250rpx;
 		z-index: 9999;
 
 		.tab-box {

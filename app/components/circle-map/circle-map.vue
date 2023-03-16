@@ -83,14 +83,14 @@
 			 * 初始化
 			 */
 			init(AMap) {
-				// const {
-				// 	latitude,
-				// 	longitude
-				// } = this.mapInfo
+				const {
+					latitude,
+					longitude
+				} = this.mapInfo
 				this.AMap = AMap;
 				this.map = new AMap.Map('container', {
 					resizeEnable: true,
-					center: [119.39139, 26.03001],
+					center: [longitude, latitude],
 					zoom: 13 //地图显示的缩放级别
 				});
 				this.drawCircle()
