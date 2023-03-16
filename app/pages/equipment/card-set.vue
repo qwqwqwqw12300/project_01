@@ -42,7 +42,7 @@
 					url: '/pages/equipment/kinship-number'
 				}, {
 					title: '设置电子围栏',
-					url: '/pages/equipment/enclosure?type=set'
+					url: '/pages/equipment/enclosure/enclosure?type=set'
 				}, {
 					title: '位置守护',
 					url: '/pages/equipment/guard'
