@@ -67,8 +67,7 @@
 					sliderValue: 200,
 					latitude: '',
 					longitude: '',
-				},
-				mapList:{}
+				}
 			}
 		},
 		computed: {
@@ -87,16 +86,7 @@
 				console.log(data, 'dddddd----------')
 				this.mapMarker(data)
 			})
-			const {
-				longitude,
-				latitude,
-				sliderValue
-			} = this.mapList
-			if( longitude && latitude){
-				this.mapInfo = this.mapList
-			}else{
-				this.handleGetLocation()
-			}
+			
 		},
 		methods: {
 			mapMarker(data) {
@@ -229,7 +219,18 @@
 		onLoad(option){
 			const obj = JSON.parse(option.obj)
 			console.log(obj,'obj')
-			this.mapList = obj
+			const {
+				siteInfo,
+				longitude,
+				latitude,
+				sliderValue
+			} = obj
+			if( longitude && latitude && siteInfo){
+				this.mapInfo = obj
+				this.siteInfo = siteInfo
+			}else{
+				this.handleGetLocation()
+			}
 		}
 	}
 </script>

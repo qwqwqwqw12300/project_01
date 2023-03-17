@@ -199,6 +199,7 @@
 					this.contactList[this.index].radius = res.sliderValue
 				});
 				const obj = JSON.stringify({
+					siteInfo:this.contactList[this.index].address,
 					longitude:this.contactList[this.index].longitude,
 					latitude:this.contactList[this.index].latitude,
 					sliderValue:this.contactList[this.index].radius
