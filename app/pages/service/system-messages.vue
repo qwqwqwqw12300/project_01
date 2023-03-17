@@ -31,7 +31,7 @@
 			@close="showVisible = false">
 			<view class="wd-content">
 				<scroll-view scroll-y class="uni-scroll">
-					<text>{{ readInfo }}</text>
+					<view v-html="readInfo"></view>
 				</scroll-view>
 				<button @click="showVisible = false" class="default">我知道了</button>
 
@@ -182,20 +182,21 @@
 
 	.wd-content {
 		width: 600rpx;
-		min-height: 900rpx;
+		height: 900rpx;
 		border-radius: 20rpx;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: #fff;
 		padding: 100rpx 31rpx 53rpx 31rpx;
 
 		.uni-scroll {
-			min-height: 800rpx;
+			height: 800rpx;
 			word-wrap: break-word;
 			word-break: normal;
 			text-indent: 1em;
 		}
 
 		button {
+			margin-top: 32rpx;
 			width: 300rpx;
 		}
 	}

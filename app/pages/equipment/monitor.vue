@@ -7,10 +7,10 @@
 
 <template>
 	<app-body>
-		<app-logo color="#353535" text="远程监听" ></app-logo>
-		<CardTitle :title="'远程监听'" :content="'您可以实时获取设备环境声音'" :backGroundImg="'/static/images/long-range-monitor.png'"></CardTitle>
+		<app-logo color="#353535" text="远程监听"></app-logo>
+		<CardTitle :title="'远程监听'" :content="'您可以实时获取设备环境声音'" :backGroundImg="'/static/images/long-range-monitor.png'">
+		</CardTitle>
 		<view class="ui-btn"><button class="default" @click="handleStart">开始监听</button></view>
-		
 	</app-body>
 </template>
 
@@ -23,7 +23,7 @@
 		mapState,
 	} from 'vuex';
 	export default {
-		components:{
+		components: {
 			CardTitle
 		},
 		computed: {
@@ -31,7 +31,7 @@
 				/**所有家庭列表**/
 				deviceInfo: state => state.deviceInfo
 			}),
-		
+
 		},
 		data() {
 			return {
@@ -39,15 +39,15 @@
 			};
 		},
 		mounted() {
-			
+
 		},
 		methods: {
-			handleStart(){
+			handleStart() {
 				PostRemoteMonitor({
-					deviceId:this.deviceInfo.deviceId, 
-					requestCall:"1"
-				}).then(res=>{
-					console.log(res,'res')
+					deviceId: this.deviceInfo.deviceId,
+					requestCall: "1"
+				}).then(res => {
+					console.log(res, 'res')
 					uni.$u.toast(res.msg)
 				})
 			}
@@ -56,11 +56,11 @@
 </script>
 
 <style lang="scss">
-	
 	.ui-btn {
 		width: 686rpx;
 		margin: 0 auto;
 		margin-top: 104rpx;
+
 		button {
 			border-radius: 44rpx !important;
 		}

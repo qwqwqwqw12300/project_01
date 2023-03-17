@@ -39,9 +39,47 @@ class Vpsdk {
 	}
 
 	constructor() {
-		if (isApp()) this.vpModule = uni.requireNativePlugin("VPairSDKModule");
+		if (isApp()) this.vpModule = uni.requireNativePlugin("vpsdk-module-VPairSDKModule");
 	}
 
+	/**
+	 * 配网成功回调
+	 */
+	fairFinish = e => {
+		console.log(e, 'onPairFinish');
+		if (e.isSuccess === 'fail') {
+			this.stopPairing(); // 失败强制结束sdk
+		}
+		this.callBack({
+			type: e.isSuccess ? 'success' : 'fail',
+			data: e.deviceId
+		});
+	};
+
+
+	/**
+	 * 配网事件
+	 */
+	pairEvent = e => {
+		this.pageEventCall(e.eventType);
+	}
+
+	/**
+	 * 选择wifi
+	 */
+	selectWifi = e => {
+		console.log(e.wifiList, 'wifi信息');
+		this.pageEventCall(104);
+		cb({
+			type: 'wifi',
+			data: e.wifiList
+		});
+	}
+
+	/**
+	 * 设备连接
+	 * @param {Object} cb
+	 */
 	async connect(cb) {
 		this.callBack = n => cb(n); // 设置回调
 		// 获取token
@@ -58,32 +96,11 @@ class Vpsdk {
 		console.log(this.vpModule, 'vpModule');
 		try {
 			// 配网成功监听
-			plus.globalEvent.addEventListener('onPairFinish', e => {
-				console.log(e, 'onPairFinish');
-				if (e.isSuccess === 'fail') {
-					this.stopPairing(); // 失败强制结束sdk
-				}
-				cb({
-					type: e.isSuccess ? 'success' : 'fail',
-					data: e.deviceId
-				});
-			});
-
+			plus.globalEvent.addEventListener('onPairFinish', this.fairFinish);
 			// 配网事件监听
-			plus.globalEvent.addEventListener('onPairEvent', e => {
-				console.log('配网事件' + e.eventType);
-				this.pageEventCall(e.eventType);
-			});
-
+			plus.globalEvent.addEventListener('onPairEvent', this.pairEvent);
 			// 选择wifi监听
-			plus.globalEvent.addEventListener('onWifiShouldSelect', e => {
-				console.log(e.wifiList, 'wifi信息');
-				this.pageEventCall(104);
-				cb({
-					type: 'wifi',
-					data: e.wifiList
-				});
-			});
+			plus.globalEvent.addEventListener('onWifiShouldSelect', this.selectWifi);
 			// 注册事件
 			cb({
 				type: 'event',
@@ -117,7 +134,14 @@ class Vpsdk {
 	 * 结束配网
 	 */
 	stopPairing() {
-		this.vpModule.startPairing && this.vpModule.startPairing();
+		this.vpModule.stopPairing && this.vpModule.stopPairing();
+		console.log(typeof plus.globalEvent.removeEventListener, '结束配网');
+		// 配网成功监听
+		plus.globalEvent.removeEventListener('onPairFinish', this.fairFinish);
+		// 配网事件监听
+		plus.globalEvent.removeEventListener('onPairEvent', this.pairEvent);
+		// 选择wifi监听
+		plus.globalEvent.removeEventListener('onWifiShouldSelect', this.selectWifi);
 	}
 
 	/**

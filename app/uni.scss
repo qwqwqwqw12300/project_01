@@ -227,6 +227,13 @@ button {
 	}
 }
 
+/**
+ * 模态框文字居中
+ */
+.u-modal__content__text {
+	text-align: center;
+}
+
 button:after {
 	border: unset;
 }
