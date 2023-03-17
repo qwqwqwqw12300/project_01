@@ -198,9 +198,13 @@
 					this.contactList[this.index].latitude = res.latitude
 					this.contactList[this.index].radius = res.sliderValue
 				});
-				
+				const obj = JSON.stringify({
+					longitude:this.contactList[this.index].longitude,
+					latitude:this.contactList[this.index].latitude,
+					sliderValue:this.contactList[this.index].radius
+				})
 				uni.navigateTo({
-					url:'/pages/equipment/new-address'
+					url:`/pages/equipment/new-address?obj=${obj}`
 				})
 			},
 			handleCancel() {
