@@ -17,6 +17,7 @@
 		mapState,
 	} from 'vuex';
 	import {
+		GetFenceInfo,
 		PostAddFence2,
 	} from '@/common/http/api.js';
 	export default {
@@ -30,9 +31,19 @@
 				deviceInfo: state => state.deviceInfo
 			}, ),
 		},
+		mounted() {
+			this.handleInit()
+		},
 		methods: {
 			savepPoints(data) {
 				this.points = data
+			},
+			handleInit() {
+				GetFenceInfo({
+					deviceId: this.deviceInfo.deviceId,
+				}).then(res => {
+					console.log(res, 'eeee')
+				})
 			},
 			handleSubmit() {
 				console.log(this.points, '--------')
