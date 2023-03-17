@@ -1,7 +1,7 @@
 <template>
 	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<locus-map :record="mapData"></locus-map>
-		<touch-popup :minHeight="0.1" :maxHeight="0.7" :touchHeight="64" radius="30rpx">
+		<touch-popup :minHeight="0.1" :maxHeight="0.6" :touchHeight="64" radius="30rpx">
 			<!-- 	<view class="ui-search">
 				<u-search placeholder="请输入您想搜索的内容" :showAction="false"></u-search>
 			</view> -->
@@ -10,8 +10,8 @@
 					<text>选择时间</text>
 				</view>
 				<view class="value" @click="handleSelect">
-					<u-input disabled type="text" /><text style="margin: 0 20rpx;">至</text>
-					<u-input disabled type="text" />
+					<u-input disabled type="text" :value="`${dateData} 00:00`" /><text style="margin: 0 20rpx;">至</text>
+					<u-input disabled type="text" :value="`${dateData} 23:59`" />
 				</view>
 			</view>
 			<view class="address-list">
@@ -26,7 +26,7 @@
 				</view>
 			</view>
 		</touch-popup>
-		<u-calendar :show="show" mode="range" monthNum="4" :minDate="minDate" :maxDate="maxDate" @confirm="onSelected"
+		<u-calendar :show="show" mode="single" monthNum="4" :minDate="minDate" :maxDate="maxDate" @confirm="onSelected"
 			@close="show=false"></u-calendar>
 	</app-body>
 </template>
@@ -80,9 +80,10 @@
 				this.show = true
 			},
 			onSelected(e) {
+				this.dateData = e[0]
 				// this.dateData = e.value
 				this.show = false
-				// this.queryData()
+				this.queryData()
 			},
 			getAddress(n) {
 				const {
