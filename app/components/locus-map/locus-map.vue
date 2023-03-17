@@ -45,6 +45,9 @@
 
 <script module="maps" lang="renderjs">
 	import {
+		deepClone,
+	} from '@/common/utils/util';
+	import {
 		mapMixin
 	} from '../../common/mixin/map.mixin';
 	export default {
@@ -63,8 +66,7 @@
 		methods: {
 			loadData(data) {
 				if (!data.length) return
-				this.lineArr = data
-				console.log(data, 'dddddddddllllll')
+				this.lineArr = deepClone(data)
 				this.loadMap(this.init)
 			},
 			/**
@@ -80,7 +82,7 @@
 				console.log(this.lineArr, 'llllllll')
 				let polyline = new AMap.Polyline({
 					path: this.lineArr,
-					showDir:true,
+					showDir: true,
 					isOutline: true,
 					outlineColor: '#ffeeff',
 					borderWeight: 3,

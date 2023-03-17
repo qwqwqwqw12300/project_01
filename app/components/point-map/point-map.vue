@@ -41,6 +41,9 @@
 	import {
 		mapMixin
 	} from '../../common/mixin/map.mixin';
+	import {
+		deepClone,
+	} from '@/common/utils/util';
 	export default {
 		mixins: [mapMixin],
 		data() {
@@ -48,6 +51,7 @@
 				AMap: null,
 				map: null,
 				mapData: {},
+				marker: null,
 			}
 		},
 		mounted() {
@@ -57,13 +61,13 @@
 			loadData(data) {
 				if (!data.latitude || !data.longitude) return
 				console.log(data, '4444')
-				this.mapData = data
+				this.mapData = deepClone(data)
 				const {
 					latitude,
 					longitude
 				} = data
 				if (this.map) {
-					this.map.setCenter([longitude, latitude])
+					this.map.remove(this.marker)
 					this.mapMarker(longitude, latitude)
 				} else {
 					this.loadMap(this.init);
@@ -94,12 +98,12 @@
 				// this.map.add(marker)
 			},
 			mapMarker(longitude, latitude) {
-				let marker = new AMap.Marker({
+				this.marker = new AMap.Marker({
 					position: new AMap.LngLat(longitude, latitude),
 					offset: new AMap.Pixel(-13, -30),
 					icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png'
 				})
-				this.map.add(marker)
+				this.map.add(this.marker)
 			}
 		},
 	}

@@ -56,6 +56,7 @@
 	if (isApp()) mapSearch = weex.requireModule('mapSearch');
 	import {
 		PostAddFence,
+		GetFenceInfo,
 	} from '@/common/http/api.js';
 	export default {
 		data() {
@@ -83,12 +84,34 @@
 		},
 		created() {
 			uni.$on('searchData', data => {
-				console.log(data, 'dddddd----------')
 				this.mapMarker(data)
 			})
-			this.handleGetLocation()
+			this.handleInit()
 		},
 		methods: {
+			handleInit() {
+				GetFenceInfo({
+					deviceId: this.deviceInfo.deviceId,
+				}).then(res => {
+					console.log(res, 'rrrr----------------------')
+					if (!res.data.length) return this.handleGetLocation()
+					const data = res.data[0]
+					if (data.fenceType === 'circle') {
+						const {
+							longitude,
+							latitude,
+							radius
+						} = data
+						this.mapInfo = {
+							sliderValue: radius,
+							longitude,
+							latitude,
+						}
+					} else {
+						this.handleGetLocation()
+					}
+				})
+			},
 			mapMarker(data) {
 				const {
 					province,
@@ -313,7 +336,8 @@
 			}
 		}
 	}
-	.ui-btn{
+
+	.ui-btn {
 		margin-top: 20rpx;
 	}
 </style>

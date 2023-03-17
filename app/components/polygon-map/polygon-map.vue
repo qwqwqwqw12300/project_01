@@ -2,16 +2,36 @@
 <template>
 	<view>
 		<view id="container" class="container"></view>
+		<view :mapData="mapData" :change:mapData="maps.loadData"></view>
 	</view>
 </template>
 
 <script>
 	export default {
-		name: "app-map",
+		name: "polygon-map",
+		props: {
+			record: {
+				type: Object,
+				default: () => {},
+			},
+		},
 		data() {
 			return {
+				mapData: {
 
+				},
 			};
+		},
+		watch: {
+			record: {
+				handler(val) {
+					if (val) {
+						this.mapData = uni.$u.deepClone(val)
+					}
+				},
+				deep: true,
+				immediate: true,
+			}
 		},
 		methods: {
 			/**
@@ -24,10 +44,13 @@
 	}
 </script>
 
-<script module="map" lang="renderjs">
+<script module="maps" lang="renderjs">
 	import {
 		mapMixin
 	} from '../../common/mixin/map.mixin';
+	import {
+		deepClone,
+	} from '@/common/utils/util';
 	export default {
 		mixins: [mapMixin],
 		data() {
@@ -39,25 +62,50 @@
 				polygonEditor: '',
 				AMap: null,
 				map: null,
-				clickListener: null
+				clickListener: null,
+				mapInfo: {},
 			}
 		},
 		mounted() {
-			this.loadMap(this.init);
+			// this.loadMap(this.init);
 		},
 
 		methods: {
+			loadData(val) {
+				console.log(val, '0000000000000000000000-------')
+				this.mapInfo = deepClone(val)
+				const {
+					latitude,
+					longitude,
+					points
+				} = val
+				if (latitude && longitude) {
+					this.loadMap(this.init);
+				}
+			},
 			/**
 			 * 初始化
 			 */
 			init(AMap) {
+				const {
+					latitude,
+					longitude,
+					points,
+				} = this.mapInfo
 				this.AMap = AMap;
 				this.map = new AMap.Map('container', {
 					resizeEnable: true,
+					center: [longitude, latitude],
 					zoom: 13 //地图显示的缩放级别
 				});
-				// 挂载点击事件
-				this.clickListener = AMap.event.addListener(this.map, "click", this.mapOnClick.bind(this));
+				if (points.length) {
+					this.polygon = this.createPolygon(points);
+					this.polygonEditor = this.createEditor(this.polygon);
+					this.sendMsg(this.beginPoints)
+				} else {
+					// 挂载点击事件
+					this.clickListener = AMap.event.addListener(this.map, "click", this.mapOnClick.bind(this));
+				}
 				// this.$ownerInstance.callMethod('onMsg', {
 				// 	AMap,
 				// 	map: this.map
@@ -151,13 +199,14 @@
 				});
 				marker.setMap(this.map);
 				return marker;
-			}
+			},
+			
 		}
 	}
 </script>
 <style lang="scss">
 	.container {
-		height: calc(100vh - 300rpx);
+		height: calc(100vh - 400rpx);
 		width: 100%;
 	}
 </style>
