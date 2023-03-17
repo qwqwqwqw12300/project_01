@@ -8,7 +8,7 @@
 <template>
 	<view>
 		<u-modal :show="modal.show" :title="modal.title" :content="modal.content" :showCancelButton="modal.showCancel"
-			@confirm="modal.confirm" @cancel="modal.cancel" @close="modal.close">
+			@confirm="modal.confirm" @cancel="modal.cancel" @close="modal.cancel">
 		</u-modal>
 		<scroll-view :scroll-y="true" :class="{'wd-body-bg': bg}" class="wd-body" :style="bodyStyle">
 			<template v-if="!hideTitle">

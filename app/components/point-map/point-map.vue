@@ -41,9 +41,6 @@
 	import {
 		mapMixin
 	} from '../../common/mixin/map.mixin';
-	import {
-		deepClone,
-	} from '@/common/utils/util';
 	export default {
 		mixins: [mapMixin],
 		data() {
@@ -61,7 +58,7 @@
 			loadData(data) {
 				if (!data.latitude || !data.longitude) return
 				console.log(data, '4444')
-				this.mapData = deepClone(data)
+				this.mapData = this.deepClone(data)
 				const {
 					latitude,
 					longitude
@@ -104,7 +101,38 @@
 					icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png'
 				})
 				this.map.add(this.marker)
+			},
+			deepClone(target) {
+				let copy_obj = [];
+
+				function _deepCopy(target) {
+					if ((typeof target !== 'object') || !target) {
+						return target;
+					}
+					for (let i = 0; i < copy_obj.length; i++) {
+						if (copy_obj[i].target === target) {
+							return copy_obj[i].copyTarget;
+						}
+					}
+					let obj = {};
+					if (Array.isArray(target)) {
+						obj = []; //处理target是数组的情况 
+					}
+					copy_obj.push({
+						target: target,
+						copyTarget: obj
+					})
+					Object.keys(target).forEach(key => {
+						if (obj[key]) {
+							return;
+						}
+						obj[key] = _deepCopy(target[key]);
+					});
+					return obj;
+				}
+				return _deepCopy(target);
 			}
+
 		},
 	}
 </script>
