@@ -2,7 +2,7 @@
 	<app-body :hideTitle="true">
 		<view class="ui-body">
 			<view class="ui-header">
-				<u-avatar size="60" :src="userInfo.avatar"></u-avatar>
+				<u-avatar size="60" :src="userInfo.avatar || '/static/images/logo.png'"></u-avatar>
 				<view class="info">
 					<view class="name">{{ userInfo.nickname || '暂无昵称' }}</view>
 					<view class="phone">{{ userInfo.phone }}</view>

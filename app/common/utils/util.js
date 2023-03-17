@@ -302,3 +302,34 @@ export function wddkAbbreviation(week) {
 	});
 	return text;
 }
+
+export function deepClone(target) {
+	let copy_obj = [];
+
+	function _deepCopy(target) {
+		if ((typeof target !== 'object') || !target) {
+			return target;
+		}
+		for (let i = 0; i < copy_obj.length; i++) {
+			if (copy_obj[i].target === target) {
+				return copy_obj[i].copyTarget;
+			}
+		}
+		let obj = {};
+		if (Array.isArray(target)) {
+			obj = []; //处理target是数组的情况 
+		}
+		copy_obj.push({
+			target: target,
+			copyTarget: obj
+		})
+		Object.keys(target).forEach(key => {
+			if (obj[key]) {
+				return;
+			}
+			obj[key] = _deepCopy(target[key]);
+		});
+		return obj;
+	}
+	return _deepCopy(target);
+}

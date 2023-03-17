@@ -270,7 +270,7 @@
 			}
 
 		}, {
-			"path": "pages/equipment/enclosure",
+			"path": "pages/equipment/enclosure/enclosure",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {

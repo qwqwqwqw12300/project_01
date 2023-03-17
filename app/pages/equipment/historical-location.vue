@@ -1,29 +1,33 @@
 <template>
 	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
-		<app-logo color="#353535" text="历史位置"></app-logo>
-		<view class="ui-box">
-			<view class="time-picker" @tap="handleSelect">
-				<text class="label">
-					日期
-				</text>
-				<text class="value">
-					{{ dateData }}
-				</text>
+		<locus-map :record="mapData"></locus-map>
+		<touch-popup :minHeight="0.1" :maxHeight="0.6" :touchHeight="64" radius="30rpx">
+			<!-- 	<view class="ui-search">
+				<u-search placeholder="请输入您想搜索的内容" :showAction="false"></u-search>
+			</view> -->
+			<view class="ui-select">
+				<view class="label">
+					<text>选择时间</text>
+				</view>
+				<view class="value" @click="handleSelect">
+					<u-input disabled type="text" :value="`${dateData} 00:00`" /><text style="margin: 0 20rpx;">至</text>
+					<u-input disabled type="text" :value="`${dateData} 23:59`" />
+				</view>
 			</view>
-		</view>
-		<!-- 	<u-cell-group> -->
-		<u-cell icon="setting-fill" title="地址列表"></u-cell>
-		<u-cell :title="item.address" :label="item.subAddress" v-for="(item,index) in dataList" :key="index">
-			<text slot="value" class="u-slot-value">
-				{{item.locateTime}}
-			</text>
-		</u-cell>
-		<!-- <u-calendar ref="calendar" minDate="2020-12-12" :maxDate="dateData" :defaultDate="dateData" :show="show" mode="single"
-			@confirm="onSelected" @close="show = false" closeOnClickOverlay>
-		</u-calendar> -->
-		<time-picker :show="show" type="date" format="yyyy-mm-dd" :value="dateData" :show-tips="true" :begin-text="'开始'"
-			:end-text="'结束'" :show-seconds="true" @confirm="onSelected" @cancel="show=false">
-		</time-picker>
+			<view class="address-list">
+				<view class="address-cell" v-for="(item,index) in dataList" :key="index">
+					<view class="label">
+						<text>{{ item.address }}</text>
+						<text class="sub">{{ item.subAddress }}</text>
+					</view>
+					<text class="value">
+						{{item.locateTime}}
+					</text>
+				</view>
+			</view>
+		</touch-popup>
+		<u-calendar :show="show" mode="single" monthNum="4" :minDate="minDate" :maxDate="maxDate" @confirm="onSelected"
+			@close="show=false"></u-calendar>
 	</app-body>
 </template>
 
@@ -43,7 +47,10 @@
 			return {
 				show: false,
 				dateData: '',
+				maxDate: '',
+				minDate: '',
 				dataList: [],
+				currentSelect: '',
 			}
 		},
 		computed: {
@@ -51,9 +58,21 @@
 				/**所有家庭列表**/
 				deviceInfo: state => state.deviceInfo
 			}),
+			mapData() {
+				return this.dataList.map(n => {
+					const {
+						longitude,
+						latitude
+					} = n.location
+					return [longitude, latitude]
+				})
+			}
 		},
 		mounted() {
-			this.dateData = uni.$u.timeFormat(new Date(), 'yyyy-mm-dd')
+			const today = new Date()
+			this.dateData = uni.$u.timeFormat(today, 'yyyy-mm-dd')
+			this.maxDate = uni.$u.timeFormat(today, 'yyyy-mm-dd')
+			this.minDate = uni.$u.timeFormat((today.setMonth(today.getMonth() - 3)), 'yyyy-mm-dd')
 			this.queryData()
 		},
 		methods: {
@@ -61,8 +80,8 @@
 				this.show = true
 			},
 			onSelected(e) {
-				console.log(e, 'ppp')
-				this.dateData = e.value
+				this.dateData = e[0]
+				// this.dateData = e.value
 				this.show = false
 				this.queryData()
 			},
@@ -125,6 +144,74 @@
 </script>
 
 <style lang="scss" scoped>
+	.ui-search {
+		margin: 20rpx 0;
+	}
+
+	.ui-select {
+		.label {
+			height: 80rpx;
+			display: flex;
+			align-items: center;
+			font-size: 26rpx;
+			color: #353535;
+			border-bottom: solid 2px #f7f7f7;
+		}
+
+		.value {
+			height: 120rpx;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+	}
+
+	.address-list {
+		margin-top: 30rpx;
+		background-color: #fff;
+
+		.address-cell {
+			height: 128rpx;
+			border-bottom: solid 2px #f7f7f7;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			.label {
+				display: flex;
+				flex-direction: column;
+				font-size: 32rpx;
+				color: #353535;
+
+				.sub {
+					margin-top: 5px;
+					font-size: 12px;
+					color: #909193;
+				}
+			}
+
+			.value {
+				font-size: 30rpx;
+				color: #888888;
+			}
+		}
+
+		// .address-box {
+		// 	display: flex;
+		// 	flex-direction: column;
+
+
+		// 	.list-item {
+		// 		// padding: 48rpx 32rpx;
+		// 		height: 128rpx;
+		// 		display: flex;
+		// 		align-items: center;
+		// 		justify-content: space-between;
+		// 		border-bottom: solid 2px #f7f7f7;
+		// 	}
+		// }
+	}
+
 	.ui-box {
 		padding: 32rpx;
 

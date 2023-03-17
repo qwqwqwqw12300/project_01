@@ -3,7 +3,7 @@
 		<circle-map :record="mapInfo"></circle-map>
 		<touch-popup :minHeight="0.1" :maxHeight="0.75" :touchHeight="64" radius="30rpx">
 			<view class="title">
-				获取位置详情
+				电子围栏设置
 			</view>
 			<view class="address">
 				<text class="label">
@@ -56,6 +56,7 @@
 	if (isApp()) mapSearch = weex.requireModule('mapSearch');
 	import {
 		PostAddFence,
+		GetFenceInfo,
 	} from '@/common/http/api.js';
 	export default {
 		data() {
@@ -83,12 +84,34 @@
 		},
 		created() {
 			uni.$on('searchData', data => {
-				console.log(data, 'dddddd----------')
 				this.mapMarker(data)
 			})
-			
+			this.handleInit()
 		},
 		methods: {
+			handleInit() {
+				GetFenceInfo({
+					deviceId: this.deviceInfo.deviceId,
+				}).then(res => {
+					console.log(res, 'rrrr----------------------')
+					if (!res.data.length) return this.handleGetLocation()
+					const data = res.data[0]
+					if (data.fenceType === 'circle') {
+						const {
+							longitude,
+							latitude,
+							radius
+						} = data
+						this.mapInfo = {
+							sliderValue: radius,
+							longitude,
+							latitude,
+						}
+					} else {
+						this.handleGetLocation()
+					}
+				})
+			},
 			mapMarker(data) {
 				const {
 					province,
@@ -203,34 +226,22 @@
 						sliderValue,
 					}
 				} = this
-				const obj = {
-					address,
-					longitude,
-					latitude,
-					sliderValue
-				}
 				if (sliderValue === 0) {
 					return uni.$u.toast('半径长度大于0')
 				}
-				uni.$emit('getMapData',obj)
-				uni.navigateBack()
+				PostAddFence({
+					fenceType: 'circle',
+					deviceNo: this.deviceInfo.no,
+					deviceId: this.deviceInfo.deviceId,
+					address,
+					longitude,
+					latitude,
+					radius: sliderValue + '',
+				}).then(res => {
+					uni.navigateBack()
+					uni.$u.toast(res.msg)
+				})
 			},
-		},
-		onLoad(option){
-			const obj = JSON.parse(option.obj)
-			console.log(obj,'obj')
-			const {
-				siteInfo,
-				longitude,
-				latitude,
-				sliderValue
-			} = obj
-			if( longitude && latitude && siteInfo){
-				this.mapInfo = obj
-				this.siteInfo = siteInfo
-			}else{
-				this.handleGetLocation()
-			}
 		}
 	}
 </script>
@@ -325,7 +336,8 @@
 			}
 		}
 	}
-	.ui-btn{
+
+	.ui-btn {
 		margin-top: 20rpx;
 	}
 </style>
