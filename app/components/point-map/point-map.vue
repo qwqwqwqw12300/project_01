@@ -41,6 +41,9 @@
 	import {
 		mapMixin
 	} from '../../common/mixin/map.mixin';
+	import {
+		deepClone,
+	} from '@/common/utils/util';
 	export default {
 		mixins: [mapMixin],
 		data() {
@@ -58,7 +61,7 @@
 			loadData(data) {
 				if (!data.latitude || !data.longitude) return
 				console.log(data, '4444')
-				this.mapData = data
+				this.mapData = deepClone(data)
 				const {
 					latitude,
 					longitude

@@ -19,6 +19,7 @@
 		watch: {
 			record: {
 				handler(val) {
+					console.log(val, '333333333')
 					if (val) {
 						this.slider = uni.$u.deepClone(val)
 					}
@@ -42,6 +43,9 @@
 	import {
 		mapMixin
 	} from '../../common/mixin/map.mixin';
+	import {
+		deepClone,
+	} from '@/common/utils/util';
 	export default {
 		mixins: [mapMixin],
 		data() {
@@ -62,19 +66,20 @@
 		},
 		methods: {
 			loadData(val) {
+				console.log(val, '9-------------------------')
 				// 数据变更
 				const {
 					latitude,
 					longitude
 				} = val
-				this.mapInfo = val
+				this.mapInfo = deepClone(val)
 				if (this.map) {
 					this.map.remove(this.circle)
 					this.drawCircle()
 					this.map.remove(this.marker)
 					this.mapMarker()
 				} else {
-					if (longitude && longitude) {
+					if (longitude && latitude) {
 						this.loadMap(this.init);
 					}
 				}
@@ -83,6 +88,7 @@
 			 * 初始化
 			 */
 			init(AMap) {
+				console.log('098765')
 				const {
 					latitude,
 					longitude
@@ -119,7 +125,7 @@
 					latitude,
 					longitude,
 				} = this.mapInfo
-				const icon  = new this.AMap.Icon({
+				const icon = new this.AMap.Icon({
 					size: new AMap.Size(40, 40), // 图标尺寸
 					image: 'static/images/mapSite.png', // Icon的图像
 					// imageOffset: new AMap.Pixel(0, -60), // 图像相对展示区域的偏移量，适于雪碧图等
