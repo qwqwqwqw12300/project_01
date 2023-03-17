@@ -101,6 +101,7 @@
 				if (points.length) {
 					this.polygon = this.createPolygon(points);
 					this.polygonEditor = this.createEditor(this.polygon);
+					this.map.setFitView()
 					this.sendMsg(this.beginPoints)
 				} else {
 					// 挂载点击事件
@@ -200,7 +201,7 @@
 				marker.setMap(this.map);
 				return marker;
 			},
-			
+
 		}
 	}
 </script>

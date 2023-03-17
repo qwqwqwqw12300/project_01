@@ -76,7 +76,7 @@
 				this.AMap = AMap;
 				this.map = new AMap.Map('container', {
 					resizeEnable: true,
-					center: [119.39139, 26.03001],
+					center: [this.lineArr[0][0], this.lineArr[0][1]],
 					zoom: 13 //地图显示的缩放级别
 				})
 				console.log(this.lineArr, 'llllllll')

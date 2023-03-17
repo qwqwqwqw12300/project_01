@@ -2,9 +2,9 @@
 	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<locus-map :record="mapData"></locus-map>
 		<touch-popup :minHeight="0.1" :maxHeight="0.7" :touchHeight="64" radius="30rpx">
-			<view class="ui-search">
+			<!-- 	<view class="ui-search">
 				<u-search placeholder="请输入您想搜索的内容" :showAction="false"></u-search>
-			</view>
+			</view> -->
 			<view class="ui-select">
 				<view class="label">
 					<text>选择时间</text>
