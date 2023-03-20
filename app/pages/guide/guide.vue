@@ -15,6 +15,7 @@
 		<button @click="requestPermission">获取权限</button>
 		<button @click="getDemo">get请求测试</button>
 		<button @click="postDemo">post请求测试</button>
+		<button @click="mergeDemo">merge请求测试</button>
 		<button @click="getToken">token获取</button>
 		<button @click="goExt">设备连接</button>
 		<button @click="log">日志测试</button>
@@ -29,8 +30,12 @@
 		push
 	} from '@/common/sdk/push.js';
 	import {
+		ifError
+	} from 'assert';
+	import {
 		getDemo,
-		postDemo
+		postDemo,
+		mergeDemo
 	} from '../../common/http/api';
 	import {
 		vpsdk
@@ -96,6 +101,16 @@
 					"captcha": "6d23"
 				}).then(res => {
 					console.log(res, 'postDemo');
+				}, error => {
+					console.log(error, 'postDemoError');
+				})
+			},
+
+			mergeDemo() {
+				mergeDemo().then(res => {
+					console.log(res, 'mergeDemo');
+				}, error => {
+					console.log(error, 'postDError');
 				})
 			},
 
