@@ -276,14 +276,14 @@
 					this.getAllDevices(),
 					this.getReadInfo(),
 					this.getPushMsgState()
-				]);
+				]).then(res=>{
+					this.isRefresh = false;
+				})
+				
 			},
 			pullDownRefresh(){
 				this.isRefresh = true;
 				this.handleInitList();
-				setTimeout(()=>{
-					this.isRefresh = false;
-				},500)
 			},
 			/**
 			 * 打开添加按钮
