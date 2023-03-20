@@ -32,7 +32,7 @@
 			
 			<!-- 家庭列表 -->
 			<template v-if="familyList.length">
-				<scroll-view :scroll-y="true" class="ui-scroll">
+				<scroll-view :scroll-y="true" class="ui-scroll" refresher-enabled :refresher-triggered="isRefresh" @refresherrefresh="pullDownRefresh" refresher-background="transparent" lower-threshold="10">
 					<view class="ui-group" v-for="(familyItem, index) of familyList" :key="'family' + index">
 						<view class="ui-title">
 							<view>
@@ -201,7 +201,9 @@
 				/**绑定信息**/
 				bindPayload: {},
 				/**当前选中的家庭**/
-				currentTab: ''
+				currentTab: '',
+				/**下拉刷新状态**/
+				isRefresh:false
 			}
 		},
 		computed: {
@@ -275,6 +277,13 @@
 					this.getReadInfo(),
 					this.getPushMsgState()
 				]);
+			},
+			pullDownRefresh(){
+				this.isRefresh = true;
+				this.handleInitList();
+				setTimeout(()=>{
+					this.isRefresh = false;
+				},500)
 			},
 			/**
 			 * 打开添加按钮
