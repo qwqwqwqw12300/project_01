@@ -30,15 +30,6 @@
 						<!-- 壁挂 -->
 						<template v-if="editFrom.installPosition == 0">
 							<view class="ui-slider-box">
-								<view class="ui-slider-tit">高度</view>
-								<view class="ui-slider">
-									<u-slider min="0" max="4" step="0.1"
-										v-model="editFrom.deviceLocationWall.roomHeight" activeColor="#eeaa3d"
-										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
-									<text>{{ $u.priceFormat(editFrom.deviceLocationWall.roomHeight, 2) + '米' }}</text>
-								</view>
-							</view>
-							<view class="ui-slider-box">
 								<view class="ui-slider-tit">前距离</view>
 								<view class="ui-slider">
 									<u-slider min="0" max="4" step="0.1"
@@ -50,16 +41,18 @@
 							<view class="ui-slider-box">
 								<view class="ui-slider-tit">左距离</view>
 								<view class="ui-slider">
-									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationWall.roomLeft"
-										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<u-slider min="0" max="4" @changing="levelChanging($event, 'left')" step="0.1"
+										v-model="editFrom.deviceLocationWall.roomLeft" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 									<text>{{ $u.priceFormat(editFrom.deviceLocationWall.roomLeft, 2) + '米' }}</text>
 								</view>
 							</view>
 							<view class="ui-slider-box">
 								<view class="ui-slider-tit">右长度</view>
 								<view class="ui-slider">
-									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationWall.roomRight"
-										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<u-slider min="0" max="4" step="0.1" @changing="levelChanging($event, 'right')"
+										v-model="editFrom.deviceLocationWall.roomRight" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 									<text>{{ $u.priceFormat(editFrom.deviceLocationWall.roomRight, 2) + '米' }}</text>
 								</view>
 							</view>
@@ -70,7 +63,7 @@
 							<view class="ui-slider-box">
 								<view class="ui-slider-tit">高度</view>
 								<view class="ui-slider">
-									<u-slider min="0" max="1.5z" step="0.1"
+									<u-slider min="0" max="1.5" step="0.1"
 										v-model="editFrom.deviceLocationTop.roomHeight" activeColor="#eeaa3d"
 										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 									<text>{{ $u.priceFormat(editFrom.deviceLocationTop.roomHeight, 2) + '米' }}</text>
@@ -79,32 +72,36 @@
 							<view class="ui-slider-box">
 								<view class="ui-slider-tit">前距离</view>
 								<view class="ui-slider">
-									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationTop.roomFront"
-										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<u-slider min="0" max="4" @changing="aroundChanging($event, 'front')" step="0.1"
+										v-model="editFrom.deviceLocationTop.roomFront" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 									<text>{{ $u.priceFormat(editFrom.deviceLocationTop.roomFront, 2) + '米' }}</text>
 								</view>
 							</view>
 							<view class="ui-slider-box">
 								<view class="ui-slider-tit">后距离</view>
 								<view class="ui-slider">
-									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationTop.roomBehind"
-										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<u-slider min="0" max="4" step="0.1" @changing="aroundChanging($event, 'behind')"
+										v-model="editFrom.deviceLocationTop.roomBehind" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 									<text>{{ $u.priceFormat(editFrom.deviceLocationTop.roomBehind, 2) + '米' }}</text>
 								</view>
 							</view>
 							<view class="ui-slider-box">
 								<view class="ui-slider-tit">左距离</view>
 								<view class="ui-slider">
-									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationTop.roomLeft"
-										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<u-slider min="0" max="4" step="0.1" @changing="levelChanging($event, 'left')"
+										v-model="editFrom.deviceLocationTop.roomLeft" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 									<text>{{ $u.priceFormat(editFrom.deviceLocationTop.roomLeft, 2) + '米' }}</text>
 								</view>
 							</view>
 							<view class="ui-slider-box">
 								<view class="ui-slider-tit">右长度</view>
 								<view class="ui-slider">
-									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationTop.roomRight"
-										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<u-slider min="0" max="4" step="0.1" @changing="levelChanging($event, 'right')"
+										v-model="editFrom.deviceLocationTop.roomRight" activeColor="#eeaa3d"
+										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 									<text>{{ $u.priceFormat(editFrom.deviceLocationTop.roomRight, 2) + '米' }}</text>
 								</view>
 							</view>
@@ -372,6 +369,43 @@
 					// 	}
 					// });
 				})
+
+			},
+
+			/**
+			 * 水平距离移动
+			 */
+			levelChanging(num, type) {
+				uni.$u.throttle(() => {
+					const location = this.editFrom.installPosition === '0' ? this.editFrom.deviceLocationWall :
+						this
+						.editFrom
+						.deviceLocationTop;
+					if (type == 'left') { // 壁挂
+						if (num + location.roomRight < 4) return;
+						location.roomRight = 4 - num;
+					} else {
+						if (num + location.roomLeft < 4) return;
+						location.roomLeft = 4 - num;
+					}
+				}, 100, false);
+
+			},
+
+			/**
+			 * 前后距离移动
+			 */
+			aroundChanging(num, type) {
+				uni.$u.throttle(() => {
+					const location = this.editFrom.deviceLocationTop;
+					if (type == 'front') { // 钱距离
+						if (num + location.roomBehind < 4) return;
+						location.roomBehind = 4 - num;
+					} else {
+						if (num + location.roomFront < 4) return;
+						location.roomFront = 4 - num;
+					}
+				}, 100, false);
 
 			}
 		}

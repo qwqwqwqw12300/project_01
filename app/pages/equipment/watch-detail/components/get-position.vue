@@ -1,6 +1,6 @@
 <template>
 	<view class="ui-map">
-		<point-map  :record="addressInfo"></point-map>
+		<point-map :record="addressInfo"></point-map>
 		<touch-popup :minHeight="0.1" :maxHeight="0.7" :touchHeight="64" radius="30rpx">
 			<view class="map-position">
 				<text class="label">当前位置:</text>
@@ -46,7 +46,7 @@
 				addressInfo: {
 					latitude: '',
 					longitude: '',
-					address: '福建省福州市新大陆科技园',
+					address: '',
 				},
 				currentSelect: '',
 				historyList: [],
@@ -161,14 +161,14 @@
 				GetLastPoint({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
-					this.getLocation(res.data).then(res => {
+					this.getLocation(res.data).then(data => {
 						const {
 							location: {
 								latitude,
 								longitude
 							},
 							address
-						} = res
+						} = data
 						this.addressInfo = {
 							latitude,
 							longitude,

@@ -218,6 +218,8 @@
 			 */
 			permissionCheck() {
 				return new Promise(resolve => {
+					resolve(true);
+					return;
 					console.log('开始验证蓝牙');
 					// 验证蓝牙权限
 					uni.openBluetoothAdapter();

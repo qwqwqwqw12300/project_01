@@ -6,16 +6,31 @@
 -->
 
 <template>
-	<scroll-view :scroll-y="true" :class="{'wd-body-bg': bg}" class="wd-body" :style="bodyStyle">
-		<view class="wd-bg" :class="{ 'wd-fixed': !hideTitle && !bg, }">
-			<u-navbar v-if="!hideTitle" :leftText="leftText" :safeAreaInsetTop="!bg" :autoBack="!back"
-				:bgColor="bg ? 'transparent': '#fff'" :fixed="!bg" :leftIconColor="'#000'" @leftClick="leftClick" />
-			<slot></slot>
-		</view>
-		<view class="wd-service" v-if="needService" @touchmove="onMove" @click="goService" @touchstart="onStart"
-			:style="{top: serviceTop + 'px'}">
-		</view>
-	</scroll-view>
+	<view>
+		<u-modal :show="modal.show" :title="modal.title" :content="modal.content" :showCancelButton="modal.showCancel"
+			@confirm="modal.confirm" @cancel="modal.cancel" @close="modal.cancel">
+		</u-modal>
+		<scroll-view :scroll-y="true" :class="{'wd-body-bg': bg}" class="wd-body" :style="bodyStyle">
+			<template v-if="!hideTitle">
+				<!-- 需要返回头 -->
+				<view class="wd-bg" :class="{ 'wd-fixed': !bg}">
+					<u-navbar :leftText="leftText" :safeAreaInsetTop="!bg" :autoBack="!back"
+						:bgColor="bg ? 'transparent': '#fff'" :fixed="!bg" :leftIconColor="'#000'"
+						@leftClick="leftClick" />
+					<slot></slot>
+				</view>
+			</template>
+			<template v-else>
+				<!-- 不需要返回头 -->
+				<view class="wd-bg">
+					<slot></slot>
+				</view>
+			</template>
+			<view class="wd-service" v-if="needService" @touchmove="onMove" @click="goService" @touchstart="onStart"
+				:style="{top: serviceTop + 'px'}">
+			</view>
+		</scroll-view>
+	</view>
 </template>
 
 <script>
@@ -76,13 +91,49 @@
 			};
 		},
 		computed: {
-			//使用对象展开运算符将此对象混入到外部对象中
 			...mapState({
 				serviceTop: state => state.serviceAxisY,
+				// 模态框处理
+				modal: function(state) {
+					if (state.modal) {
+						const handle = (config) => {
+							state.modal.success && state.modal.success(config)
+							this.$store.commit('setModal', {
+								...state.modal,
+								show: false
+							});
+						};
+						const init = {
+							showCancel: true,
+							cancelText: '取消',
+							confirm: () => handle({
+								confirm: true
+							}),
+							cancel: () => handle({
+								cancel: false
+							})
+						};
+						return {
+							show: true,
+							...init,
+							...state.modal,
+
+						}
+					}
+					return {
+						show: false
+					}
+				}
 			})
 		},
 		mounted(options) {
 
+		},
+		beforeDestroy() {
+			// 页面离开时需要销毁弹窗
+			this.$store.commit('setModal', {
+				show: false
+			});
 		},
 		methods: {
 			/**
@@ -164,7 +215,7 @@
 
 	.wd-fixed {
 		box-sizing: border-box;
-		padding-top: 85rpx;
+		padding-top: 60rpx;
 	}
 
 	.wd-bg {
@@ -178,7 +229,7 @@
 	.wd-service {
 		z-index: 9999;
 		position: fixed;
-		right: 0;
+		right: 10rpx;
 		height: 120rpx;
 		width: 120rpx;
 		background: url('../../static/images/service.png') no-repeat;

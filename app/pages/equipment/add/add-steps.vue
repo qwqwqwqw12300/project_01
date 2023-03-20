@@ -164,6 +164,7 @@
 								};
 							});
 							this.list[this.current].desc = msg;
+							console.log(this.list[this.current].desc, 'this.list[this.current].desc');
 							break;
 						case 'wifi': // 选择wifi
 							console.log(data, 'wifi信息');
@@ -250,8 +251,12 @@
 					})
 				}
 
-			}
+			},
 		},
+
+		onBackPress() {
+			vpsdk.stopPairing(); //  退出时强制停止sdk
+		}
 	}
 </script>
 

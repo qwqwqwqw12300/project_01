@@ -15,10 +15,10 @@ export const mapMixin = {
 				callBack(window.AMap);
 			}
 			script.onerror = (error) => {
-				this.$apm({
-					name: '地图脚本加载错误',
-					error
-				});
+				// this.$apm({
+				// 	name: '地图脚本加载错误',
+				// 	error
+				// });
 			}
 			document.head.appendChild(script);
 		}

@@ -27,7 +27,7 @@
 
 							<movable-view :x="sizeInfo.x - 10"
 								:y="sizeInfo.y + (sizeInfo.installPosition == 0 ? 10 : -10)">
-								<view class="ui-device"><text class="ui-zone-name">设备</text></view>
+								<view class="ui-device"><text class="ui-zone-name"></text></view>
 							</movable-view>
 						</movable-area>
 						<view class="ui-tips">每个方块区域大小为 0.5米 x 0.5米</view>

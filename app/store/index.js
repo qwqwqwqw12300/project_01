@@ -32,6 +32,8 @@ const store = {
 		userInfo: {},
 		/**紧急联系人列表**/
 		contactList: [],
+		/**模态框管理**/
+		modal: null
 	},
 	mutations: {
 
@@ -116,8 +118,12 @@ const store = {
 			state.contactList = info;
 		},
 
-
-
+		/**
+		 * 设置模态框
+		 */
+		setModal(state, info) {
+			state.modal = info;
+		}
 	},
 	actions: {
 

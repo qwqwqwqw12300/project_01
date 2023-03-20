@@ -252,15 +252,6 @@
 				}
 			}
 		}, {
-			"path": "pages/equipment/setting/position-setting",
-			"style": {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-
-		}, {
 			"path": "pages/equipment/mobile-book",
 			"style": {
 				"navigationStyle": "custom",

@@ -48,9 +48,6 @@
 	import {
 		mapMixin
 	} from '../../common/mixin/map.mixin';
-	import {
-		deepClone,
-	} from '@/common/utils/util';
 	export default {
 		mixins: [mapMixin],
 		data() {
@@ -72,8 +69,8 @@
 
 		methods: {
 			loadData(val) {
-				console.log(val, '0000000000000000000000-------')
-				this.mapInfo = deepClone(val)
+				this.mapInfo = this.deepClone(val)
+
 				const {
 					latitude,
 					longitude,
@@ -101,6 +98,7 @@
 				if (points.length) {
 					this.polygon = this.createPolygon(points);
 					this.polygonEditor = this.createEditor(this.polygon);
+					this.map.setFitView()
 					this.sendMsg(this.beginPoints)
 				} else {
 					// 挂载点击事件
@@ -128,6 +126,37 @@
 					// this.$ownerInstance.callMethod('onMsg', data);
 					this.clearMarks();
 				}
+			},
+
+			deepClone(target) {
+				let copy_obj = [];
+
+				function _deepCopy(target) {
+					if ((typeof target !== 'object') || !target) {
+						return target;
+					}
+					for (let i = 0; i < copy_obj.length; i++) {
+						if (copy_obj[i].target === target) {
+							return copy_obj[i].copyTarget;
+						}
+					}
+					let obj = {};
+					if (Array.isArray(target)) {
+						obj = []; //处理target是数组的情况 
+					}
+					copy_obj.push({
+						target: target,
+						copyTarget: obj
+					})
+					Object.keys(target).forEach(key => {
+						if (obj[key]) {
+							return;
+						}
+						obj[key] = _deepCopy(target[key]);
+					});
+					return obj;
+				}
+				return _deepCopy(target);
 			},
 
 			/**
@@ -200,7 +229,7 @@
 				marker.setMap(this.map);
 				return marker;
 			},
-			
+
 		}
 	}
 </script>
