@@ -19,7 +19,6 @@
 			record: {
 				handler(val) {
 					if (val.latitude && val.longitude) {
-						console.log(val, '0000999=--------')
 						this.mapInfo = uni.$u.deepClone(val)
 					}
 				},
@@ -101,6 +100,7 @@
 					icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png'
 				})
 				this.map.add(this.marker)
+				this.map.setFitView()
 			},
 			deepClone(target) {
 				let copy_obj = [];

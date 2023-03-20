@@ -11,7 +11,7 @@
 			<view class="ui-edit">
 				<app-logo color="#353535" text="编辑守护位置"></app-logo>
 				<view class="ui-edit-right" @click="handleEdit">
-					<text v-if="editBtn">删除</text>
+					<text v-if="editBtn">完成</text>
 					<text v-else>编辑</text>
 				</view>
 			</view>
