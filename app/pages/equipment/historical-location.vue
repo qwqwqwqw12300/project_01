@@ -10,8 +10,9 @@
 					<text>选择时间</text>
 				</view>
 				<view class="value" @click="handleSelect">
-					<u-input disabled type="text" :value="`${dateData} 00:00`" /><text style="margin: 0 20rpx;">至</text>
-					<u-input disabled type="text" :value="`${dateData} 23:59`" />
+					<u-input disabled type="text" :value="`${dateData[0]} 00:00`" /><text
+						style="margin: 0 20rpx;">至</text>
+					<u-input disabled type="text" :value="`${dateData[1]} 23:59`" />
 				</view>
 			</view>
 			<view class="address-list">
@@ -26,8 +27,8 @@
 				</view>
 			</view>
 		</touch-popup>
-		<u-calendar :show="show" mode="single" monthNum="4" :minDate="minDate" :maxDate="maxDate" @confirm="onSelected"
-			@close="show=false"></u-calendar>
+		<u-calendar :show="show" mode="range" monthNum="4" :minDate="minDate" :maxDate="maxDate" @confirm="onSelected"
+			@close="show=false" maxRange="3" :allowSameDay="true"></u-calendar>
 	</app-body>
 </template>
 
@@ -70,18 +71,19 @@
 		},
 		mounted() {
 			const today = new Date()
-			this.dateData = uni.$u.timeFormat(today, 'yyyy-mm-dd')
+			this.dateData = [uni.$u.timeFormat((new Date().setDate(today.getDay() -
+				2)), 'yyyy-mm-dd'), uni.$u.timeFormat(today, 'yyyy-mm-dd')]
+			console.log(this.dateData, '098882222---------')
 			this.maxDate = uni.$u.timeFormat(today, 'yyyy-mm-dd')
-			this.minDate = uni.$u.timeFormat((today.setMonth(today.getMonth() - 3)), 'yyyy-mm-dd')
-			this.queryData()
+			this.minDate = uni.$u.timeFormat((today.setMonth(today.getMonth() - 2)), 'yyyy-mm-dd')
+			// this.queryData()
 		},
 		methods: {
 			handleSelect() {
 				this.show = true
 			},
 			onSelected(e) {
-				this.dateData = e[0]
-				// this.dateData = e.value
+				this.dateData = [e[0], e.at(-1)]
 				this.show = false
 				this.queryData()
 			},
@@ -121,8 +123,8 @@
 			queryData() {
 				// uni.showLoading()
 				GetsetAddressBook({
-					startTime: this.dateData + " " + '00:00:00',
-					endTime: this.dateData + " " + '23:59:59',
+					startTime: this.dateData[0] + " " + '00:00:00',
+					endTime: this.dateData[1] + " " + '23:59:59',
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					const list = res.data.map(n => {
