@@ -16,7 +16,8 @@
 			</text>
 			<view class="content">
 				<!-- {{item.content || '--'}} -->
-				<u-read-more :showHeight="60" :toggle="true" closeText="展开" openText="关闭" @open="handleRead(msgDetail.msgId)">
+				<u-read-more :showHeight="60" :toggle="true" closeText="展开" openText="关闭"
+					@open="handleRead(msgDetail.msgId)">
 					<rich-text :nodes="$u.trim(msgDetail.content, 'all') || '--'"></rich-text>
 				</u-read-more>
 				<!-- 设备张三的雷达监测到有人摔倒、请及时处理 -->
@@ -28,14 +29,15 @@
 				</view>
 				<view class="detail disabled" v-else>我已处理</view>
 				<view class="phone" @click="handleCall(msgDetail.phone)" v-if="msgDetail.operateFlag == '0'">
-					<u-icon name="phone" color="white" size="22"></u-icon><text style="margin-left: 8rpx;">亲人处理</text>
+					<u-icon name="phone" color="white" size="22"></u-icon><text style="margin-left: 8rpx;">他人处理</text>
 				</view>
 				<view class="phone opacity" v-else>
-					<u-icon name="phone" color="white" size="22"></u-icon><text style="margin-left: 8rpx;">亲人处理</text>
+					<u-icon name="phone" color="white" size="22"></u-icon><text style="margin-left: 8rpx;">他人处理</text>
 				</view>
 			</template>
 			<template v-else>
-				<view class="detail" v-if="msgDetail.operateFlag == '0'" @click="handleRead(msgDetail.msgId)">我已阅读</view>
+				<view class="detail" v-if="msgDetail.operateFlag == '0'" @click="handleRead(msgDetail.msgId)">我已阅读
+				</view>
 				<view class="detail disabled" v-else>我已阅读</view>
 			</template>
 
@@ -217,11 +219,11 @@
 					color: #888888;
 				}
 			}
-			
-			.opacity{
+
+			.opacity {
 				opacity: 0.4
 			}
-			
+
 			.phone {
 				flex: 1;
 				display: flex;
