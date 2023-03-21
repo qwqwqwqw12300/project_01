@@ -17,17 +17,7 @@
 	} from '@/common/utils/util.js';
 
 	export default {
-		data() {
-			return {
-				showModal: null
-			}
-		},
 		onLaunch: function() {
-			console.log(this, 'this');
-			this.showModal = uni.showModal;
-			// uni.showModal = params => {
-			// 	this.
-			// }
 			if (isApp()) {
 				push.init(); // 推送服务初始化
 			}

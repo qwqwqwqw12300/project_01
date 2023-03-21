@@ -167,7 +167,7 @@
 							console.log(this.list[this.current].desc, 'this.list[this.current].desc');
 							break;
 						case 'wifi': // 选择wifi
-							console.log(data, 'wifi信息');
+							console.log(data, 'wifi信息回调');
 							this.openWifi(data);
 							break;
 						case 'success': // 连接成功
@@ -253,8 +253,7 @@
 
 			},
 		},
-
-		onBackPress() {
+		beforeDestroy() {
 			vpsdk.stopPairing(); //  退出时强制停止sdk
 		}
 	}
