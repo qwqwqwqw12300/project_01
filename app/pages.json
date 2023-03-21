@@ -626,6 +626,36 @@
 				}
 			}
 		
+		},
+		{
+			"path": "pages/watch/watch-set/contacts",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		
+		},
+		{
+			"path": "pages/watch/watch-set/position-auto",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		
+		},
+		{
+			"path": "pages/watch/watch-set/watchInfo",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		
 		}
 	],
 	"globalStyle": {
