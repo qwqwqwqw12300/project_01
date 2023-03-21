@@ -70,7 +70,7 @@ class Vpsdk {
 	selectWifi = e => {
 		console.log(e.wifiList, 'wifi信息');
 		this.pageEventCall(104);
-		cb({
+		this.callBack({
 			type: 'wifi',
 			data: e.wifiList
 		});

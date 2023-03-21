@@ -91,12 +91,12 @@
 			toJump(item){
 				const list = JSON.stringify(item)
 				uni.navigateTo({
-					url:`/pages/equipment/info-guard?list=${list}`
+					url:`/pages/card/info-guard?list=${list}`
 				})
 			},
 			toJumpTime(){
 				uni.navigateTo({
-					url:'/pages/equipment/new-guard'
+					url:'/pages/card/new-guard'
 				})
 			}
 		},

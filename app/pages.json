@@ -19,7 +19,7 @@
 			}
 		},
 		{
-			"path": "pages/equipment/add/add-card",
+			"path": "pages/card/add-card",
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "添加电子牵挂卡设备"
@@ -34,15 +34,6 @@
 		},
 		{
 			"path": "pages/equipment/radar-detail/radar-detail",
-			"style": {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
-		{
-			"path": "pages/equipment/watch-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -270,7 +261,7 @@
 			}
 
 		}, {
-			"path": "pages/equipment/enclosure/enclosure",
+			"path": "pages/card/enclosure/enclosure",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -405,7 +396,7 @@
 
 		},
 		{
-			"path": "pages/equipment/time-interval",
+			"path": "pages/card/time-interval",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -449,15 +440,7 @@
 			}
 
 		}, {
-			"path": "pages/equipment/monitor",
-			"style": {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		}, {
-			"path": "pages/equipment/tel-books",
+			"path": "pages/card/tel-books",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -484,7 +467,7 @@
 			}
 
 		}, {
-			"path": "pages/equipment/monitor",
+			"path": "pages/card/monitor",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -493,7 +476,7 @@
 			}
 
 		}, {
-			"path": "pages/equipment/guard",
+			"path": "pages/card/guard",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -502,7 +485,7 @@
 			}
 
 		}, {
-			"path": "pages/equipment/new-guard",
+			"path": "pages/card/new-guard",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -511,7 +494,7 @@
 			}
 
 		}, {
-			"path": "pages/equipment/watch-detail/watch-detail",
+			"path": "pages/card/watch-detail/watch-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -519,7 +502,7 @@
 				}
 			}
 		}, {
-			"path": "pages/equipment/card-set",
+			"path": "pages/card/card-set",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -527,7 +510,7 @@
 				}
 			}
 		}, {
-			"path": "pages/equipment/kinship-number",
+			"path": "pages/card/kinship-number",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -535,7 +518,7 @@
 				}
 			}
 		}, {
-			"path": "pages/equipment/info-guard",
+			"path": "pages/card/info-guard",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -551,7 +534,7 @@
 				}
 			}
 		}, {
-			"path": "pages/equipment/historical-location",
+			"path": "pages/card/historical-location",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -605,7 +588,7 @@
 					"titleNView": false
 				}
 			}
-		
+
 		},
 		{
 			"path": "pages/watch/watch-set/watch-set",
@@ -615,7 +598,7 @@
 					"titleNView": false
 				}
 			}
-		
+
 		},
 		{
 			"path": "pages/watch/watch-detail/watch-detail",
@@ -625,7 +608,7 @@
 					"titleNView": false
 				}
 			}
-		
+
 		},
 		{
 			"path": "pages/watch/watch-set/contacts",
@@ -655,7 +638,6 @@
 					"titleNView": false
 				}
 			}
-		
 		}
 	],
 	"globalStyle": {

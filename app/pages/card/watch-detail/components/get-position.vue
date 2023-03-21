@@ -79,7 +79,7 @@
 		methods: {
 			toJump() {
 				uni.navigateTo({
-					url: '/pages/equipment/historical-location'
+					url: '/pages/card/historical-location'
 				})
 			},
 			mapMarker(data) {

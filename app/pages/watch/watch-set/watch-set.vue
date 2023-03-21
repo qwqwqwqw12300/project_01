@@ -49,7 +49,7 @@
 					url: '/pages/watch/watch-set/contacts',
 				}, {
 					title: '一键同步',
-					url: '/pages/equipment/kinship-number'
+					url: '/pages/card/kinship-number'
 				}, {
 					title: '自动定位',
 					value:'30分钟',
@@ -57,13 +57,13 @@
 				}, {
 					title: '跌倒检测',
 					type:'1',
-					url: '/pages/equipment/guard'
+					url: '/pages/card/guard'
 				}, {
 					title: '活动设定',
-					url: '/pages/equipment/time-interval'
+					url: '/pages/card/time-interval'
 				}, {
 					title: '地理围栏',
-					url: '/pages/equipment/monitor'
+					url: '/pages/card/monitor'
 				}, {
 					title: '设备信息',
 					url: '/pages/watch/watch-set/watchInfo'

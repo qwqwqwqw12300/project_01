@@ -111,7 +111,7 @@
 				this.$store.commit('setDeviceInfo', item);
 				// this.$setCache('setDevice', item);
 				uni.navigateTo({
-					url: '/pages/equipment/card-set'
+					url: '/pages/card/card-set'
 				})
 			},
 		},
