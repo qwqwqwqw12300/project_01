@@ -40,14 +40,12 @@
 						}
 					}
 				},
-				immediate: true,
+				// immediate: true,
 				deep: true,
 
 			}
 		},
-		mounted() {
-			// console.log(this.$store.getters.positionInfo, 'ccccc------------------------------')
-		},
+		mounted() {},
 		data() {
 			return {
 				mapInfo: {
@@ -74,10 +72,7 @@
 				marker: null,
 			}
 		},
-		mounted() {
-			// console.log(store, '33999999999--------------------------------')
-			// this.loadMap(this.init);
-		},
+		mounted() {},
 		methods: {
 			loadData(data) {
 				const {
@@ -88,11 +83,11 @@
 				if (!latitude || !longitude) return
 				this.mapData = this.deepClone(data)
 				if (this.map) {
-					this.map.remove(this.marker)
+					this.marker && this.map.remove(this.marker)
 					if (type === 'add') {
 						this.mapMarker()
 					} else {
-						this.map.setCenter([latitude, longitude]); //设置地图中心点
+						this.map.setCenter([longitude, latitude]); //设置地图中心点
 					}
 				} else {
 					this.loadMap(this.init);
@@ -112,7 +107,7 @@
 					resizeEnable: true,
 					center: [longitude, latitude],
 					zoom: 13 //地图显示的缩放级别
-				});
+				})
 				type === 'add' && this.mapMarker()
 			},
 			mapMarker() {
