@@ -31,6 +31,7 @@ const ERROR_TEXT = {
 	504: '请求超时'
 };
 
+
 /**
  * 网络请求
  * @param {string} url 请求地址
@@ -42,40 +43,15 @@ const ERROR_TEXT = {
  */
 const request = (url, options, process, method = 'POST') => {
 	let _url;
-	// if(isApp()) {
-	// 	 _url = env.basePath + url;
-	// } else  {
-	// 	_url = url;
-	// }
-	 _url = env.basePath + url;
+	_url = env.basePath + url;
 	const showLoading = process.showLoading !== false, // 是否展示加载中
-		errorHandle = process.error !== false; // 是否使用统一报错
+		isError = process.error !== false; // 是否使用统一报错
 	console.log('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));
 	return new Promise((resolve, reject) => {
 		if (showLoading) uni.showLoading();
 		requestMethod(_url, options, method).then(result => {
-			const {
-				statusCode,
-				data
-			} = result;
-			console.log(result, '请求结果' + url);
-			if (statusCode == 200 && data.code === 200) {
-				resolve(data);
-			} else {
-				if (errorHandle) {
-					if (data.code === 401) { // 未登录
-						uni.redirectTo({
-							url: '/pages/login/login'
-						});
-					} else {
-						uni.showModal({
-							title: '提示',
-							content: data.msg || ERROR_TEXT[statusCode] || '系统错误'
-						});
-					}
-				}
-				reject(data);
-			}
+			const handleData = resultHandle(result, isError);
+			handleData.type === 'success' ? resolve(result.data) : reject(result.data);
 			if (showLoading) uni.hideLoading();
 		}, error => {
 			log.apm({
@@ -83,15 +59,55 @@ const request = (url, options, process, method = 'POST') => {
 				options,
 				error
 			});
-			if (errorHandle) uni.showModal({
+			if (isError) uni.showModal({
 				title: '提示',
 				content: '当前网络不稳定，请重试'
 			});
+			reject(error);
 			if (showLoading) uni.hideLoading();
-			reject();
+
 		})
 	});
 };
+
+/**
+ * 请求合并
+ * @param { Array: {data, url} } requests 请求合集
+ * @param { string } 请求参数
+ */
+const mergeRequest = (requests, process = {}) => {
+	const showLoading = process.showLoading !== false, // 是否展示加载中
+		isError = process.error !== false; // 是否使用统一报错
+	return new Promise(async (resolve, reject) => {
+		if (showLoading) uni.showLoading();
+		Promise.all(requests.map(req => requestMethod(env.basePath + req.url, req.data, req
+				.method || 'POST')))
+			.then(data => {
+				const res = [];
+				for (let i = 0, len = data.length; i < len; i++) {
+					const handleData = resultHandle(data[i], isError);
+					if (handleData.type === 'success') {
+						res.push(data[i]);
+					} else {
+						reject(data[i]);
+						return;
+					}
+				}
+				resolve(res);
+			}, error => {
+				log.apm({
+					requests,
+					error
+				});
+				if (isError) uni.showModal({
+					title: '提示',
+					content: '当前网络不稳定，请重试'
+				});
+				reject(error);
+				if (showLoading) uni.hideLoading();
+			})
+	})
+}
 
 
 /**
@@ -160,6 +176,52 @@ function httpUploadFile(url, params) {
 	})
 }
 
+
+/**
+ * 返回结果处理
+ * @param {Object} result
+ * @param {Object} isError
+ * @param {Object} resolve
+ */
+function resultHandle(result, isError) {
+	const {
+		statusCode,
+		data
+	} = result;
+	if (statusCode == 200 && data.code === 200) {
+		return {
+			type: 'success',
+			data
+		};
+	} else {
+		if (isError) {
+			if (data.code === 401) { // 未登录
+				uni.redirectTo({
+					url: '/pages/login/login'
+				});
+			} else {
+				uni.showModal({
+					title: '提示',
+					content: data.msg || ERROR_TEXT[statusCode] || '系统错误'
+				});
+			}
+		}
+		return {
+			type: 'error',
+			data
+		};
+	}
+}
+
+
+
+
+/**
+ * 合并请求
+ */
+const merge = (requests, process = {}) => mergeRequest(requests, process);
+
+
 /**
  * post请求
  */
@@ -178,5 +240,6 @@ const upload = (url, options = {}) => request(url, options, process = {}, 'UPLOA
 module.exports = {
 	post,
 	get,
-	upload
+	upload,
+	merge
 };
