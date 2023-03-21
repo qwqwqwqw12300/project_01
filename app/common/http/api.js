@@ -16,6 +16,36 @@ export const postDemo = () => http.post('/api/sendSms', {
 	"captcha": "6d23"
 });
 
+export const mergeDemo = () => http.merge([{
+		url: '/api/captchaImage',
+		method: 'GET',
+		data: {},
+	},
+	{
+		url: '/api/sendSms',
+		data: {
+			"uuid": "c8916a767204456fa970c675c71048e5",
+			"captcha": "6d23"
+		},
+	}
+], {
+	showLoading: false
+});
+
+export const forIndex = () => http.merge([
+	{
+		url: '/api/family/list',
+		method: 'GET',
+		data: {pageSize: 10000},
+	},
+	{
+		url: '/api/device/listState',
+		method: 'post',
+		data: {pageSize: 10000},
+	}
+], {
+	showLoading: false,
+});
 /* 
  *获取图形验证码 *
  */

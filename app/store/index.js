@@ -3,6 +3,9 @@ import Vuex from 'vuex';
 import sdk from './sdk/sdk.js';
 import service from './service/service.js';
 import {
+	isIos
+} from '../common/utils/util';
+import {
 	getFamilyList,
 	getRoomList,
 	PostGetPushMsgState,
@@ -33,7 +36,9 @@ const store = {
 		/**紧急联系人列表**/
 		contactList: [],
 		/**模态框管理**/
-		modal: null
+		modal: null,
+		/**当前定位信息**/
+		positionInfo: {},
 	},
 	mutations: {
 
@@ -123,10 +128,47 @@ const store = {
 		 */
 		setModal(state, info) {
 			state.modal = info;
+		},
+
+		/**
+		 * 设置当前定位信息
+		 */
+		setPositionInfo(state, info) {
+			state.positionInfo = info;
 		}
 	},
 	actions: {
-
+		/**
+		 * 获取当前位置
+		 */
+		setLocation(ctx) {
+			return new Promise(resolve => {
+				uni.getLocation({
+					geocode: true,
+					type: isIos() ? 'wgs84' : 'gcj02',
+					success: (res) => {
+						const {
+							latitude,
+							longitude,
+							address: {
+								province,
+								city,
+								district,
+								street
+							},
+						} = res
+						const info = {
+							latitude,
+							longitude,
+							address: province + city + district + street
+						}
+						ctx.commit('setPositionInfo', info);
+						resolve(info);
+					},
+					false: (res) => {}
+				})
+			})
+		},
 		/**
 		 * 查询所有设备
 		 */
@@ -252,6 +294,10 @@ const store = {
 		 * 获取紧急联系人列表
 		 */
 		contactList: state => state.contactList,
+		/**
+		 * 当前定位信息
+		 */
+		positionInfo: state => state.positionInfo,
 	}
 }
 

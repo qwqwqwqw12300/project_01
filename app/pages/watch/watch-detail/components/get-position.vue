@@ -8,13 +8,18 @@
 					{{ addressInfo.address }}
 				</view>
 			</view>
-			<view class="address-list">
-				<view class="list-item" v-for="(n, index) in historyList" :key="index" @click="mapMarker(n)">
-					<text class="list-item-label">
-						{{ n.address }}
-					</text>
-					<u-icon :name="getMapIcon(n)" size="44rpx" style="margin-right: 6rpx;" />
+			<template v-if="historyList.length">
+				<view class="address-list">
+					<view class="list-item" v-for="(n, index) in historyList" :key="index" @click="mapMarker(n)">
+						<text class="list-item-label">
+							{{ n.address }}
+						</text>
+						<u-icon :name="getMapIcon(n)" size="44rpx" style="margin-right: 6rpx;" />
+					</view>
 				</view>
+			</template>
+			<view class="list-empty" v-else>
+				<u-empty mode="list" text="暂无数据"></u-empty>
 			</view>
 			<view class="ui-btn">
 				<button class="default" @click="toJump">历史位置</button>
@@ -144,14 +149,11 @@
 						return this.getLocation(n)
 					})
 					Promise.all(promises).then(res => {
-						// console.log(res, '9999-----------------')
 						this.historyList = res.map((n, i) => {
 							n.index = i
 							return n
 						})
-					}).catch(res => {}).finally(() => {
-						// uni.hideLoading()
-					})
+					}).catch(res => {}).finally(() => {})
 				})
 			},
 			getDeviceLocation() {
@@ -161,22 +163,30 @@
 				GetLastPoint({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
-					this.getLocation(res.data).then(data => {
+					if (!res.data.location?.latitude) {
+						this.addressInfo = {
+							latitude: '',
+							longitude: '',
+							address: '暂无数据'
+						}
+						return uni.hideLoading()
+					}
+					this.getLocation(res.data).then(info => {
 						const {
 							location: {
 								latitude,
 								longitude
 							},
 							address
-						} = data
+						} = info
 						this.addressInfo = {
 							latitude,
 							longitude,
 							address
 						}
 						this.getHistoryLocation()
-						// console.log(res, 'ddiididi')
 						uni.hideLoading()
+						// console.log(res, 'ddiididi')
 					})
 				})
 			}
@@ -186,7 +196,14 @@
 
 <style lang="scss" scoped>
 	.ui-map {
+
 		// padding: 32rpx;
+		.list-empty {
+			height: 600rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 
 		.map-box {}
 

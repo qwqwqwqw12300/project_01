@@ -10,7 +10,9 @@
 					地址
 				</text>
 				<view class="input">
-					<text class="input-text" @click="goSearch">{{siteInfo || '请输入地址'}}</text>
+					<view class="input-text" @click="goSearch">{{siteInfo || '请输入地址'}}
+						<u-icon name="arrow-right" color="#D4D4D4" size="32rpx"></u-icon>
+					</view>
 				</view>
 			</view>
 			<view class="radius">
@@ -275,8 +277,12 @@
 
 			// width: 220rpx;
 			.input-text {
+				margin-right: 10rpx;
 				font-size: 30rpx;
 				color: #D4D4D4;
+				display: flex;
+				align-items: flex-end;
+				justify-content: flex-end;
 			}
 		}
 	}

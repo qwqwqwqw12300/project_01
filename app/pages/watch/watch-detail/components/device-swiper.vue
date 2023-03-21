@@ -1,7 +1,7 @@
 <template>
 	<view class="ui-detail">
 		<view class="detail-box">
-			<image class="device-img" src="/static/images/electron-card.png"></image>
+			<image class="device-img" src="/static/images/4gWatch@3x.png"></image>
 			<view class="device-info">
 				<view class="title">
 					<text class="name">{{record.name || '未命名设备'}}</text>
@@ -9,8 +9,8 @@
 						:class="[record.onlineFlag === '1' ? 'online' : 'offline']">{{record.onlineFlag === '1' ? '在线' : '离线'}}</text>
 				</view>
 				<view class="status">
-					<u-icon name="/static/images/run-status.png" size="44rpx" style="margin-right: 6rpx;" />
-					<text>运行状态: {{ getStatus }}</text>
+					<u-icon name="/static/images/watch-success@3x.png" size="44rpx" style="margin-right: 6rpx;" />
+					<text>{{ getStatus||'未连接' }}</text>
 				</view>
 				<view class="status">
 					<u-icon name="/static/images/card-power.png" size="44rpx" style="margin-right: 6rpx;" />
@@ -20,7 +20,7 @@
 			<view class="device-set" :style="{width: type === 'set' ? '130rpx': '170rpx'}" @click="handleSet">
 				<u-icon :name="type === 'set' ? '/static/images/device-set.png': '/static/images/reStart.png'"
 					size="44rpx" style="margin-right: 6rpx;" />
-				{{ type === 'set'? '设置':'重启设备' }}
+				{{ type === 'set'? '配置':'重启设备' }}
 			</view>
 		</view>
 	</view>

@@ -9,6 +9,9 @@
 				<image class="ui-main-imageSec" src="@/static/images/H&V@3x.png" mode=""></image>
 			</view>
 			<view class="ui-main-font">
+				福建易联智慧科技有限公司
+			</view>
+			<view class="ui-main-font" style="margin-top: 32rpx;">
 				Version {{appVersion}}
 			</view>
 			<view class="ui-main-button">

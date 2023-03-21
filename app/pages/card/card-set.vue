@@ -27,7 +27,7 @@
 	import {
 		PostCareCardUnBind
 	} from '@/common/http/api';
-	import DeviceSwiper from '@/pages/equipment/watch-detail/components/device-swiper.vue'
+	import DeviceSwiper from '@/pages/card/card-detail/components/device-swiper.vue'
 	export default {
 		components: {
 			DeviceSwiper,
@@ -36,22 +36,22 @@
 			return {
 				cellList: [{
 					title: '通讯录白名单',
-					url: '/pages/equipment/tel-books',
+					url: '/pages/card/tel-books',
 				}, {
 					title: '亲情号码',
-					url: '/pages/equipment/kinship-number'
+					url: '/pages/card/kinship-number'
 				}, {
 					title: '设置电子围栏',
-					url: '/pages/equipment/enclosure/enclosure?type=set'
+					url: '/pages/card/enclosure/enclosure?type=set'
 				}, {
 					title: '位置守护',
-					url: '/pages/equipment/guard'
+					url: '/pages/card/guard'
 				}, {
 					title: '时段禁用',
-					url: '/pages/equipment/time-interval'
+					url: '/pages/card/time-interval'
 				}, {
 					title: '远程监听',
-					url: '/pages/equipment/monitor'
+					url: '/pages/card/monitor'
 				}]
 			}
 		},
