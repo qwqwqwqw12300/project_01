@@ -338,7 +338,7 @@
 				} else if(info.type === '1'){ // 监控设备
 					url = '/pages/card/watch-detail/watch-detail';
 				} else {// 电子手表
-					url = '/pages/watch/watch-detail/watch-detail';
+					url = '/pages/watch/card-detail/card-detail';
 				}
 				this.$setCache('familyId', info.familyId);
 				this.goPage(url);

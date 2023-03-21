@@ -601,7 +601,7 @@
 
 		},
 		{
-			"path": "pages/watch/watch-detail/watch-detail",
+			"path": "pages/watch/card-detail/card-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
