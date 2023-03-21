@@ -178,7 +178,8 @@
 	import {
 		getDeviceList,
 		getFamilyList,
-		GetReadInfo
+		GetReadInfo,
+		forIndex
 	} from '../../common/http/api';
 	import {
 		mapState,
@@ -203,7 +204,9 @@
 				/**当前选中的家庭**/
 				currentTab: '',
 				/**下拉刷新状态**/
-				isRefresh:false
+				isRefresh:false,
+				/**轮询定时器**/
+				timer:null
 			}
 		},
 		computed: {
@@ -266,20 +269,36 @@
 		},
 		onShow() {
 			this.handleInitList();
+			this.timer = setInterval(()=>{
+				this.forIndexFun()
+			},1000*60)
+		},
+		destroyed() {
+			clearInterval(this.timer)
+			this.timer = null
 		},
 		methods: {
-			...mapActions(['getAllFamily', 'getAllDevices', 'getPushMsgState', 'getAllRoom']),
+			...mapActions(['getPushMsgState', 'getAllRoom']),
 
 			handleInitList() {
 				Promise.all([
-					this.getAllFamily(),
-					this.getAllDevices(),
+					this.forIndexFun(),
 					this.getReadInfo(),
 					this.getPushMsgState()
 				]).then(res=>{
 					this.isRefresh = false;
 				})
 				
+			},
+			forIndexFun(){
+				return new Promise(resolve => {
+					forIndex().then(res=>{
+						console.log(res,'res')
+						this.$store.commit('setFamilyList', res[0].data.rows);
+						this.$store.commit('setDevicesList', res[1].data.rows);
+						this.isRefresh = false;
+					})
+				})
 			},
 			pullDownRefresh(){
 				this.isRefresh = true;
@@ -316,8 +335,10 @@
 				let url;
 				if (info.type === '0') { // 雷达波
 					url = '/pages/equipment/radar-detail/radar-detail';
-				} else { // 监控设备
+				} else if(info.type === '1'){ // 监控设备
 					url = '/pages/equipment/watch-detail/watch-detail';
+				} else {// 电子手表
+					url = '/pages/watch/watch-detail/watch-detail';
 				}
 				this.$setCache('familyId', info.familyId);
 				this.goPage(url);

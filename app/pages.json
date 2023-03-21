@@ -596,6 +596,36 @@
 				}
 			}
 
+		},
+		{
+			"path": "pages/watch/add/add-watch",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		
+		},
+		{
+			"path": "pages/watch/watch-set/watch-set",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		
+		},
+		{
+			"path": "pages/watch/watch-detail/watch-detail",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		
 		}
 	],
 	"globalStyle": {
