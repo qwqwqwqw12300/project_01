@@ -596,6 +596,16 @@
 				}
 			}
 
+		},
+		{
+			"path": "pages/watch/add/add-watch",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		
 		}
 	],
 	"globalStyle": {
