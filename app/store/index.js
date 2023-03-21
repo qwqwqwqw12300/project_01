@@ -294,6 +294,10 @@ const store = {
 		 * 获取紧急联系人列表
 		 */
 		contactList: state => state.contactList,
+		/**
+		 * 当前定位信息
+		 */
+		positionInfo: state => state.positionInfo,
 	}
 }
 

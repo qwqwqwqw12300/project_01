@@ -19,17 +19,39 @@
 			record: {
 				handler(val) {
 					if (val.latitude && val.longitude) {
-						this.mapInfo = uni.$u.deepClone(val)
+						const {
+							latitude,
+							longitude
+						} = uni.$u.deepClone(val)
+						this.mapInfo = {
+							type: 'add',
+							latitude,
+							longitude
+						}
+					} else {
+						const {
+							latitude,
+							longitude
+						} = uni.$u.deepClone(this.$store.getters.positionInfo || {})
+						this.mapInfo = {
+							type: 'cur',
+							latitude,
+							longitude
+						}
 					}
 				},
-				immediate: true,
+				// immediate: true,
 				deep: true,
+
 			}
 		},
+		mounted() {},
 		data() {
 			return {
 				mapInfo: {
-
+					type: 'add', //cur: 当前定位,add: '地图定位'
+					latitude: '',
+					longitude: '',
 				}
 			}
 		},
@@ -50,21 +72,23 @@
 				marker: null,
 			}
 		},
-		mounted() {
-			// this.loadMap(this.init);
-		},
+		mounted() {},
 		methods: {
 			loadData(data) {
-				if (!data.latitude || !data.longitude) return
-				console.log(data, '4444')
-				this.mapData = this.deepClone(data)
 				const {
+					type,
 					latitude,
 					longitude
 				} = data
+				if (!latitude || !longitude) return
+				this.mapData = this.deepClone(data)
 				if (this.map) {
-					this.map.remove(this.marker)
-					this.mapMarker(longitude, latitude)
+					this.marker && this.map.remove(this.marker)
+					if (type === 'add') {
+						this.mapMarker()
+					} else {
+						this.map.setCenter([longitude, latitude]); //设置地图中心点
+					}
 				} else {
 					this.loadMap(this.init);
 				}
@@ -76,24 +100,22 @@
 				this.AMap = AMap;
 				const {
 					latitude,
-					longitude
+					longitude,
+					type
 				} = this.mapData
-
-				console.log(latitude, longitude, '----------------------------')
 				this.map = new AMap.Map('container', {
 					resizeEnable: true,
 					center: [longitude, latitude],
 					zoom: 13 //地图显示的缩放级别
-				});
-				this.mapMarker(longitude, latitude)
-				// let marker = new AMap.Marker({
-				// 	position: new AMap.LngLat(longitude, latitude),
-				// 	offset: new AMap.Pixel(-13, -30),
-				// 	icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png'
-				// })
-				// this.map.add(marker)
+				})
+				type === 'add' && this.mapMarker()
 			},
-			mapMarker(longitude, latitude) {
+			mapMarker() {
+				const {
+					latitude,
+					longitude
+				} = this.mapData
+				console.log(this.AMap, '00000000--------------')
 				this.marker = new AMap.Marker({
 					position: new AMap.LngLat(longitude, latitude),
 					offset: new AMap.Pixel(-13, -30),
