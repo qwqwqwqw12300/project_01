@@ -27,7 +27,7 @@
 	import {
 		PostCareCardUnBind
 	} from '@/common/http/api';
-	import DeviceSwiper from '@/pages/card/watch-detail/components/device-swiper.vue'
+	import DeviceSwiper from '@/pages/card/card-detail/components/device-swiper.vue'
 	export default {
 		components: {
 			DeviceSwiper,

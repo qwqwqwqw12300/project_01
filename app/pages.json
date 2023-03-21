@@ -494,7 +494,7 @@
 			}
 
 		}, {
-			"path": "pages/card/watch-detail/watch-detail",
+			"path": "pages/card/card-detail/card-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -601,7 +601,7 @@
 
 		},
 		{
-			"path": "pages/watch/card-detail/card-detail",
+			"path": "pages/card/card-detail/card-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -618,7 +618,7 @@
 					"titleNView": false
 				}
 			}
-		
+
 		},
 		{
 			"path": "pages/watch/watch-set/position-auto",
@@ -628,10 +628,19 @@
 					"titleNView": false
 				}
 			}
-		
+
 		},
 		{
 			"path": "pages/watch/watch-set/watchInfo",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/card/ceshi",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
