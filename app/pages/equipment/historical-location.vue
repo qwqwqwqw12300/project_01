@@ -76,14 +76,15 @@
 			console.log(this.dateData, '098882222---------')
 			this.maxDate = uni.$u.timeFormat(today, 'yyyy-mm-dd')
 			this.minDate = uni.$u.timeFormat((today.setMonth(today.getMonth() - 2)), 'yyyy-mm-dd')
-			// this.queryData()
+			this.queryData()
 		},
 		methods: {
 			handleSelect() {
 				this.show = true
 			},
 			onSelected(e) {
-				this.dateData = [e[0], e.at(-1)]
+				console.log(e, 'eeeeeee-----------')
+				this.dateData = [e[0], e[e.length - 1]]
 				this.show = false
 				this.queryData()
 			},
