@@ -54,7 +54,7 @@
 	} from '@/common/http/api.js';
 	import {
 		phoneValidator
-	} from '../../common/utils/util';
+	} from '@/common/utils/util';
 	import {
 		mapState,
 	} from 'vuex';

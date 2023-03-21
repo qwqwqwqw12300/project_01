@@ -60,7 +60,7 @@
 				if (this.type === 'set') {
 					this.$store.commit('setDeviceInfo', this.record);
 					uni.navigateTo({
-						url: '/pages/equipment/card-set'
+						url: '/pages/card/card-set'
 					})
 					return
 				} else {

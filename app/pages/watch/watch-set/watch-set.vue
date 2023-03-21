@@ -46,27 +46,27 @@
 			return {
 				cellList: [{
 					title: '常用联系人',
-					url: '/pages/equipment/tel-books',
+					url: '/pages/card/tel-books',
 				}, {
 					title: '一键同步',
-					url: '/pages/equipment/kinship-number'
+					url: '/pages/card/kinship-number'
 				}, {
 					title: '自动定位',
 					value:'30分钟',
-					url: '/pages/equipment/enclosure/enclosure?type=set'
+					url: '/pages/card/enclosure/enclosure?type=set'
 				}, {
 					title: '跌倒检测',
 					type:'1',
-					url: '/pages/equipment/guard'
+					url: '/pages/card/guard'
 				}, {
 					title: '活动设定',
-					url: '/pages/equipment/time-interval'
+					url: '/pages/card/time-interval'
 				}, {
 					title: '地理围栏',
-					url: '/pages/equipment/monitor'
+					url: '/pages/card/monitor'
 				}, {
 					title: '设备信息',
-					url: '/pages/equipment/monitor'
+					url: '/pages/card/monitor'
 				}]
 			}
 		},

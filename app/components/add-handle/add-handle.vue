@@ -37,7 +37,7 @@
 						{
 							name: '电子牵挂卡',
 							icon: '/static/images/dzqgk.png',
-							url: '/pages/equipment/add/add-card',
+							url: '/pages/card/add-card',
 							// url: '/pages/equipment/watch-detail/watch-detail',
 						},
 						{
