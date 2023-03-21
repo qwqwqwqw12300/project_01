@@ -32,7 +32,20 @@ export const mergeDemo = () => http.merge([{
 	showLoading: false
 });
 
-
+export const forIndex = () => http.merge([
+	{
+		url: '/api/family/list',
+		method: 'GET',
+		data: {pageSize: 10000},
+	},
+	{
+		url: '/api/device/listState',
+		method: 'post',
+		data: {pageSize: 10000},
+	}
+], {
+	showLoading: false,
+});
 /* 
  *获取图形验证码 *
  */
