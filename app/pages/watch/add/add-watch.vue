@@ -9,7 +9,7 @@
 				</view>
 			</view>
 			<view class="scan-tip">
-				<text>请扫描设备上的条形码或在下方手动输入设备IMEI码进行绑定</text>
+				<text>请扫描手表-设置-绑定二维码进行绑定</text>
 			</view>
 		</view>
 		<view class="ui-code">
@@ -94,12 +94,14 @@
 		box-sizing: border-box;
 
 		.scan-box {
-			height: 200rpx;
+			width: 360rpx;
+			height: 360rpx;
+			margin: 0 auto;
 			background: #F2F2F2;
 			border-radius: 16px;
 			box-sizing: border-box;
-			padding: 28rpx 63rpx;
-
+			padding: 20rpx;
+			
 			.box-bg {
 				width: 100%;
 				height: 100%;
@@ -108,7 +110,6 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
-
 				.img {
 					width: 100rpx;
 					height: 100rpx;
