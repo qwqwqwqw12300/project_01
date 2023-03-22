@@ -8,13 +8,10 @@
 
 import {
 	env
-} from '../../config/env';
-import {
-	isApp
-} from '../utils/util';
+} from '@/config/env.js';
 import {
 	log
-} from '../utils/log';
+} from '@/common/utils/log.js';
 
 import {
 	getToken
@@ -30,6 +27,14 @@ const ERROR_TEXT = {
 	503: '服务不可用',
 	504: '请求超时'
 };
+
+/**重试配置**/
+const RETRYCONFIG = {
+	// 最大重试次数
+	COUNT: 3,
+	// 单次重试时间
+	RETRYTIME: 1500
+}
 
 
 /**
@@ -123,7 +128,7 @@ function requestMethod(url, options, method) {
 			http = httpUploadFile(url, options);
 			break;
 		default:
-			http = httpRequest(url, options, method);
+			http = httpRequest(url, options, method, 0);
 			break;
 	}
 	return http;
@@ -131,11 +136,17 @@ function requestMethod(url, options, method) {
 
 /**
  * post、get方法
- * @param {Object} url
- * @param {Object} data
- * @param {Object} method
+ * @param {Object} url 请求地址
+ * @param {Object} data 请求数据
+ * @param {Object} method 请求方法
+ * @param {Object} count 报错重发尝试次数
  */
-function httpRequest(url, data, method) {
+function httpRequest(...arg) {
+	const [url,
+		data,
+		method,
+		count
+	] = arg;
 	return new Promise((resolve, reject) => {
 		uni.request({
 			url,
@@ -148,7 +159,23 @@ function httpRequest(url, data, method) {
 			},
 			withCredentials: true,
 			success: res => resolve(res),
-			fail: error => reject(error)
+			fail: error => {
+				console.log('重试次数', count);
+				if (count <= RETRYCONFIG.COUNT) { // 请求重试
+					setTimeout(() => {
+						const payload = [...arg];
+						payload.splice(arg.length - 1, 1, count +
+							1);
+						httpRequest.call(this, ...payload).then(res => {
+							resolve(res)
+						}, callErr => {
+							reject(callErr);
+						})
+					}, RETRYCONFIG.RETRYTIME)
+				} else {
+					reject(error);
+				}
+			}
 		})
 	})
 }
@@ -175,7 +202,6 @@ function httpUploadFile(url, params) {
 		});
 	})
 }
-
 
 /**
  * 返回结果处理
@@ -214,13 +240,10 @@ function resultHandle(result, isError) {
 }
 
 
-
-
 /**
  * 合并请求
  */
 const merge = (requests, process = {}) => mergeRequest(requests, process);
-
 
 /**
  * post请求
