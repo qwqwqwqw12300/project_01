@@ -16,6 +16,9 @@ import {
 import {
 	getToken
 } from '@/common/utils/auth.js'
+import {
+	isApp
+} from '../../utils/util';
 
 /**错误处理文案**/
 const ERROR_TEXT = {
@@ -49,6 +52,11 @@ const RETRYCONFIG = {
 const request = (url, options, process, method = 'POST') => {
 	let _url;
 	_url = env.basePath + url;
+	// if (isApp()) {
+	// 	_url = env.basePath + url;
+	// } else {
+	// 	_url = url;
+	// }
 	const showLoading = process.showLoading !== false, // 是否展示加载中
 		isError = process.error !== false; // 是否使用统一报错
 	console.log('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));
