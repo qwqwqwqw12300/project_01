@@ -336,9 +336,9 @@
 				if (info.type === '0') { // 雷达波
 					url = '/pages/equipment/radar-detail/radar-detail';
 				} else if(info.type === '1'){ // 监控设备
-					url = '/pages/card/watch-detail/watch-detail';
+					url = '/pages/card/card-detail/card-detail';
 				} else {// 电子手表
-					url = '/pages/watch/card-detail/card-detail';
+					url = '/pages/watch/watch-detail/watch-detail';
 				}
 				this.$setCache('familyId', info.familyId);
 				this.goPage(url);
