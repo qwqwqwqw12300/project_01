@@ -1,6 +1,6 @@
 <template>
 	<view class="box">
-		<date-picker></date-picker>
+		<date-picker @onSelect="onSelect"></date-picker>
 	</view>
 </template>
 
@@ -12,7 +12,9 @@
 			}
 		},
 		methods: {
-
+			onSelect(val) {
+				console.log(val, '000')
+			}
 		}
 	}
 </script>

@@ -26,6 +26,12 @@
 				dateTime: '',
 			}
 		},
+		props: {
+			init: {
+				type: Boolean,
+				default: true
+			}
+		},
 		computed: {
 			dateFormat() {
 				// const date = this.dateTime

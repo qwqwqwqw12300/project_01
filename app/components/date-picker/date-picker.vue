@@ -8,7 +8,7 @@
 				</text>
 			</view>
 		</view>
-		<component @change="change" ref="comRef" :is="tabKey"></component>
+		<component @change="change" v-bind="$attrs" ref="comRef" :is="tabKey"></component>
 	</view>
 </template>
 
@@ -37,8 +37,11 @@
 			handleTab(key) {
 				this.tabKey = key
 			},
-			change(value) {
-				console.log(value, 'vvvvvv')
+			change(val) {
+				this.$emit('onSelect', {
+					type: this.tabKey,
+					value: val.value
+				})
 			}
 		}
 	}
