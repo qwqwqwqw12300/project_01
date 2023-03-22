@@ -46,24 +46,25 @@
 							</view>
 						</view>
 					</view>
-					<view class="ui-f-between ui-mar-t-20">
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20" @click="jumpUrl('/pages/health/sleep/sleep')">
-							<view class="ui-f-start ui-f-wrap">
-								<image class="ui-img-size3" src="../../static/images/yueliang.png"></image>
-								<text class="ui-font-32 ui-mar-l-10">睡眠</text>
-								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-									2月16日
-								</view>
-								<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
-									<view class="ui-color-block1 ui-color-block1-width"></view>
-									<view class="ui-color-block2 ui-color-block1-width"></view>
-									<view class="ui-color-block3 ui-color-block1-width"></view>
-									<view class="ui-color-block4 ui-color-block1-width"></view>
-								</view>
-								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
-									<text class="ui-font-22 ui-font-c-888">差</text>
-									<text class="ui-font-22 ui-font-c-888">很好</text>
-								</view>
+				</view>
+				<view class="ui-f-between ui-mar-t-20">
+					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+						@click="jumpUrl('/pages/health/sleep/sleep')">
+						<view class="ui-f-start ui-f-wrap">
+							<image class="ui-img-size3" src="../../static/images/yueliang.png"></image>
+							<text class="ui-font-32 ui-mar-l-10">睡眠</text>
+							<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
+								2月16日
+							</view>
+							<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
+								<view class="ui-color-block1 ui-color-block1-width"></view>
+								<view class="ui-color-block2 ui-color-block1-width"></view>
+								<view class="ui-color-block3 ui-color-block1-width"></view>
+								<view class="ui-color-block4 ui-color-block1-width"></view>
+							</view>
+							<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+								<text class="ui-font-22 ui-font-c-888">差</text>
+								<text class="ui-font-22 ui-font-c-888">很好</text>
 							</view>
 						</view>
 					</view>
@@ -169,10 +170,11 @@
 			}
 		},
 		methods: {
-			jumpUrl(url){
+			jumpUrl(url) {
 				uni.navigateTo({
-					url:url
-				})	},
+					url: url
+				})
+			},
 			swiperChange(val) {
 
 			}
