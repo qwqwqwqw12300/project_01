@@ -638,15 +638,6 @@
 					"titleNView": false
 				}
 			}
-		},
-		{
-			"path": "pages/card/ceshi",
-			"style": {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
 		}
 	],
 	"globalStyle": {

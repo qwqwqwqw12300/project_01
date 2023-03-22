@@ -6,7 +6,7 @@
  * @Description: 请求接口
  */
 
-import http from './request.js';
+import http from './requset/request.js';
 /**
  * 获取请求验证码
  */
@@ -32,16 +32,19 @@ export const mergeDemo = () => http.merge([{
 	showLoading: false
 });
 
-export const forIndex = () => http.merge([
-	{
+export const forIndex = () => http.merge([{
 		url: '/api/family/list',
 		method: 'GET',
-		data: {pageSize: 10000},
+		data: {
+			pageSize: 10000
+		},
 	},
 	{
 		url: '/api/device/listState',
 		method: 'post',
-		data: {pageSize: 10000},
+		data: {
+			pageSize: 10000
+		},
 	}
 ], {
 	showLoading: false,
