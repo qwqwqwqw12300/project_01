@@ -1,214 +1,197 @@
-<!--
-* @Author: zhanghaowei
-* @Date: 2023年2月27日15:59:21
-* @FilePath: /pages/health/index
-* @Description: 健康首页
--->
-
 <template>
-
-	<view>
-		<app-echarts :option="option" id="myChart" style="height: 110vw;margin-left: 2vw;width: 100%;padding: 4vw 0 0 0;"></app-echarts>
-			<app-echarts :option="option" id="myChart2" style="height: 110vw;margin-left: 2vw;width: 100%;padding: 4vw 0 0 0;">
-		</app-echarts>
-		<app-body :bg="true">
-			<view class="ui-body">
-				<view class="ui-w-h-100">
-					<view class="ui-f-center ui-box ui-white-bg ui-br-16">
-						<image class="ui-img-size1" src="@/static/images/caihong.png"></image>
-						<view class="ui-f-center ui-f-wrap ui-w-70 ui-mar-l-32">
-							<view class="ui-w-60 ui-f-start ui-f-wrap">
-								<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
-								<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
-								<view class="ui-text-box ui-mar-t-15">
-									<text class="ui-font-1">300</text>
-									<text class="ui-font-2">/1000</text>
-								</view>
+	<app-body :hideTitle="true">
+		<view class="ui-banner">
+			<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange"
+				:current="current">
+				<swiper-item>
+					<swiper-device></swiper-device>
+				</swiper-item>
+			</swiper>
+		</view>
+		<view class="ui-body">
+			<view class="ui-w-h-100">
+				<view class="ui-f-center ui-box ui-white-bg ui-br-16">
+					<image class="ui-img-size1" src="@/static/images/caihong.png"></image>
+					<view class="ui-f-center ui-f-wrap ui-w-70 ui-mar-l-32">
+						<view class="ui-w-60 ui-f-start ui-f-wrap">
+							<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
+							<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
+							<view class="ui-text-box ui-mar-t-15">
+								<text class="ui-font-1">300</text>
+								<text class="ui-font-2">/1000</text>
 							</view>
-							<view class="ui-w-40 ui-f-start ui-f-wrap">
-								<image class="ui-img-size2" src="@/static/images/timeclock.png"></image>
-								<text class="ui-font-24 ui-mar-l-10">活动(分)</text>
-								<view class="ui-text-box ui-mar-t-15">
-									<text class="ui-font-1">16</text>
-									<text class="ui-font-2">/30</text>
-								</view>
+						</view>
+						<view class="ui-w-40 ui-f-start ui-f-wrap">
+							<image class="ui-img-size2" src="@/static/images/timeclock.png"></image>
+							<text class="ui-font-24 ui-mar-l-10">活动(分)</text>
+							<view class="ui-text-box ui-mar-t-15">
+								<text class="ui-font-1">16</text>
+								<text class="ui-font-2">/30</text>
 							</view>
-							<view class="ui-w-60 ui-f-start ui-mar-t-45 ui-f-wrap">
-								<image class="ui-img-size2" src="@/static/images/walk.png"></image>
-								<text class="ui-font-24 ui-mar-l-10">行走<步></text>
-								<view class="ui-text-box ui-mar-t-15">
-									<text class="ui-font-1">2000</text>
-									<text class="ui-font-2">/10000</text>
-								</view>
+						</view>
+						<view class="ui-w-60 ui-f-start ui-mar-t-45 ui-f-wrap">
+							<image class="ui-img-size2" src="@/static/images/walk.png"></image>
+							<text class="ui-font-24 ui-mar-l-10">行走<步></text>
+							<view class="ui-text-box ui-mar-t-15">
+								<text class="ui-font-1">2000</text>
+								<text class="ui-font-2">/10000</text>
 							</view>
-							<view class="ui-w-40 ui-f-start ui-mar-t-45 ui-f-wrap">
-								<image class="ui-img-size2" src="@/static/images/stand.png"></image>
-								<text class="ui-font-24 ui-mar-l-10">站立<分></text>
-								<view class="ui-text-box ui-mar-t-15">
-									<text class="ui-font-1">20</text>
-									<text class="ui-font-2">/30</text>
-								</view>
+						</view>
+						<view class="ui-w-40 ui-f-start ui-mar-t-45 ui-f-wrap">
+							<image class="ui-img-size2" src="@/static/images/stand.png"></image>
+							<text class="ui-font-24 ui-mar-l-10">站立<分></text>
+							<view class="ui-text-box ui-mar-t-15">
+								<text class="ui-font-1">20</text>
+								<text class="ui-font-2">/30</text>
 							</view>
 						</view>
 					</view>
-					<view class="ui-f-between ui-mar-t-20">
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
-							<view class="ui-f-start ui-f-wrap">
-								<image class="ui-img-size3" src="../../static/images/yueliang.png"></image>
-								<text class="ui-font-32 ui-mar-l-10">睡眠</text>
-								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-									2月16日
-								</view>
-								<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
-									<view class="ui-color-block1 ui-color-block1-width"></view>
-									<view class="ui-color-block2 ui-color-block1-width"></view>
-									<view class="ui-color-block3 ui-color-block1-width"></view>
-									<view class="ui-color-block4 ui-color-block1-width"></view>
-								</view>
-								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
-									<text class="ui-font-22 ui-font-c-888">差</text>
-									<text class="ui-font-22 ui-font-c-888">很好</text>
-								</view>
+				</view>
+				<view class="ui-f-between ui-mar-t-20">
+					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+						@click="jumpUrl('/pages/health/sleep/sleep')">
+						<view class="ui-f-start ui-f-wrap">
+							<image class="ui-img-size3" src="../../static/images/yueliang.png"></image>
+							<text class="ui-font-32 ui-mar-l-10">睡眠</text>
+							<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
+								2月16日
 							</view>
-						</view>
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
-							<view class="ui-f-start ui-f-wrap">
-								<image class="ui-img-size3" src="../../static/images/xinlv.png"></image>
-								<text class="ui-font-32 ui-mar-l-10">心率76次/分</text>
-								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-									2月16日
-								</view>
-								<view class="ui-w-h-100 ui-mar-t-20">
-									<image class="ui-img-size4" src="../../static/images/xinlvLine.png"></image>
-								</view>
-								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
-									<text class="ui-font-22 ui-font-c-888">00:00</text>
-									<text class="ui-font-22 ui-font-c-888">24:00</text>
-								</view>
+							<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
+								<view class="ui-color-block1 ui-color-block1-width"></view>
+								<view class="ui-color-block2 ui-color-block1-width"></view>
+								<view class="ui-color-block3 ui-color-block1-width"></view>
+								<view class="ui-color-block4 ui-color-block1-width"></view>
+							</view>
+							<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+								<text class="ui-font-22 ui-font-c-888">差</text>
+								<text class="ui-font-22 ui-font-c-888">很好</text>
 							</view>
 						</view>
 					</view>
-					<view class="ui-f-between ui-mar-t-20">
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
-							<view class="ui-f-start ui-f-wrap">
-								<image class="ui-img-size3" src="../../static/images/xueya.png"></image>
-								<text class="ui-font-32 ui-mar-l-10">血压</text>
-								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-									2月16日
-								</view>
-								<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
-									<image class="ui-img-size4" src="../../static/images/xueyaLine.png"></image>
-								</view>
-								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
-									<text class="ui-font-22 ui-font-c-888">00:00</text>
-									<text class="ui-font-22 ui-font-c-888">24:00</text>
-								</view>
+					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
+						<view class="ui-f-start ui-f-wrap">
+							<image class="ui-img-size3" src="../../static/images/xinlv.png"></image>
+							<text class="ui-font-32 ui-mar-l-10">心率76次/分</text>
+							<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
+								2月16日
 							</view>
-						</view>
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
-							<view class="ui-f-start ui-f-wrap">
-								<image class="ui-img-size3" src="../../static/images/xueyang.png"></image>
-								<text class="ui-font-32 ui-mar-l-10">血氧</text>
-								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-									2月16日
-								</view>
-								<view class="ui-w-h-100 ui-mar-t-20">
-									<image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image>
-								</view>
-								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
-									<text class="ui-font-22 ui-font-c-888">00:00</text>
-									<text class="ui-font-22 ui-font-c-888">24:00</text>
-								</view>
+							<view class="ui-w-h-100 ui-mar-t-20">
+								<image class="ui-img-size4" src="../../static/images/xinlvLine.png"></image>
+							</view>
+							<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+								<text class="ui-font-22 ui-font-c-888">00:00</text>
+								<text class="ui-font-22 ui-font-c-888">24:00</text>
 							</view>
 						</view>
 					</view>
-					<view class="ui-f-between ui-mar-t-20">
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
-							<view class="ui-f-start ui-f-wrap">
-								<image class="ui-img-size3" src="../../static/images/xindian.png"></image>
-								<text class="ui-font-32 ui-mar-l-10">心电</text>
-								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-									2月16日
-								</view>
-								<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
-									<image class="ui-img-size4" src="../../static/images/xindianLine.png"></image>
-								</view>
-								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
-									<text class="ui-font-22 ui-font-c-888">00:00</text>
-									<text class="ui-font-22 ui-font-c-888">24:00</text>
-								</view>
+				</view>
+				<view class="ui-f-between ui-mar-t-20">
+					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
+						<view class="ui-f-start ui-f-wrap">
+							<image class="ui-img-size3" src="../../static/images/xueya.png"></image>
+							<text class="ui-font-32 ui-mar-l-10">血压</text>
+							<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
+								2月16日
+							</view>
+							<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
+								<image class="ui-img-size4" src="../../static/images/xueyaLine.png"></image>
+							</view>
+							<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+								<text class="ui-font-22 ui-font-c-888">00:00</text>
+								<text class="ui-font-22 ui-font-c-888">24:00</text>
 							</view>
 						</view>
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
-							<view class="ui-f-start ui-f-wrap">
-								<image class="ui-img-size3" src="../../static/images/xinzang.png"></image>
-								<text class="ui-font-32 ui-mar-l-10">心脏</text>
-								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-									2月16日
-								</view>
-								<view class="ui-w-h-100 ui-mar-t-20">
-									<image class="ui-img-size4" src="../../static/images/xinzangLine.png"></image>
-								</view>
-								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
-									<text class="ui-font-22 ui-font-c-888">00:00</text>
-									<text class="ui-font-22 ui-font-c-888">24:00</text>
-								</view>
+					</view>
+					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
+						<view class="ui-f-start ui-f-wrap">
+							<image class="ui-img-size3" src="../../static/images/xueyang.png"></image>
+							<text class="ui-font-32 ui-mar-l-10">血氧</text>
+							<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
+								2月16日
+							</view>
+							<view class="ui-w-h-100 ui-mar-t-20">
+								<image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image>
+							</view>
+							<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+								<text class="ui-font-22 ui-font-c-888">00:00</text>
+								<text class="ui-font-22 ui-font-c-888">24:00</text>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="ui-f-between ui-mar-t-20">
+					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
+						<view class="ui-f-start ui-f-wrap">
+							<image class="ui-img-size3" src="../../static/images/xindian.png"></image>
+							<text class="ui-font-32 ui-mar-l-10">心电</text>
+							<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
+								2月16日
+							</view>
+							<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
+								<image class="ui-img-size4" src="../../static/images/xindianLine.png"></image>
+							</view>
+							<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+								<text class="ui-font-22 ui-font-c-888">00:00</text>
+								<text class="ui-font-22 ui-font-c-888">24:00</text>
+							</view>
+						</view>
+					</view>
+					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
+						<view class="ui-f-start ui-f-wrap">
+							<image class="ui-img-size3" src="../../static/images/xinzang.png"></image>
+							<text class="ui-font-32 ui-mar-l-10">心脏</text>
+							<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
+								2月16日
+							</view>
+							<view class="ui-w-h-100 ui-mar-t-20">
+								<image class="ui-img-size4" src="../../static/images/xinzangLine.png"></image>
+							</view>
+							<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+								<text class="ui-font-22 ui-font-c-888">00:00</text>
+								<text class="ui-font-22 ui-font-c-888">24:00</text>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
-
-		</app-body>
-	</view>
+		</view>
+	</app-body>
 </template>
 
 <script>
-	import {
-		echarts
-	} from '@/components/app-echarts/app-echarts.vue';
+	import SwiperDevice from './components/swiper-device.vue';
 	export default {
 		components: {
-			echarts
+			SwiperDevice
 		},
 		data() {
 			return {
-				option: {}
-			};
-		},
-		created() {
-			this.logstatrt();
-		},
-		mounted() {
-
+				current: 0,
+			}
 		},
 		methods: {
-			logstatrt() {
-				// console.log('初次调用');
-				this.option= {
-					title: {
-						text: 'ECharts 入门示例'
-					},
-					tooltip: {},
-					legend: {
-						data: ['销量']
-					},
-					xAxis: {
-						data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
-					},
-					yAxis: {},
-					series: [{
-						name: '销量',
-						type: 'bar',
-						data: [5, 20, 36, 10, 10, 20]
-					}]
-				}
+			jumpUrl(url) {
+				uni.navigateTo({
+					url: url
+				})
+			},
+			swiperChange(val) {
+
 			}
 		}
-	};
+	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+	.ui-banner {
+		margin-top: 60rpx;
+		padding: 0 20rpx;
+	}
+
+	.ui-swiper {
+		height: 320rpx;
+	}
+
 	.ui-body {
 		padding: 32rpx;
 

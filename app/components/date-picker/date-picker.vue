@@ -8,7 +8,7 @@
 				</text>
 			</view>
 		</view>
-		<component @change="change" v-bind="$attrs" ref="comRef" :is="tabKey"></component>
+		<component @change="change" v-on="$listeners" v-bind="$attrs" ref="comRef" :is="tabKey"></component>
 	</view>
 </template>
 
