@@ -10,14 +10,21 @@
 				<u-icon name="/static/images/room-edit.png" size="25" @tap="handleSelect"></u-icon>
 			</view>
 		</view>
-		<u-calendar :show="show" :defaultDate="dateTime" monthNum="4" :mode="'single'" :maxDate="maxDate"
+		<!-- 		<u-calendar :show="show" :defaultDate="dateTime" monthNum="4" :mode="'single'" :maxDate="maxDate"
 			:minDate="minDate" @confirm="confirm" @close="show = false">
-		</u-calendar>
+		</u-calendar> -->
+		<term-date-picker :value="dateFormat1" :showHoliday="false" :show="show" @confirm="confirm" @cancel="show=false"
+			type="date" v-bind="$attrs" @monthChange="monthChange">
+		</term-date-picker>
 	</view>
 </template>
 
 <script>
+	import TermDatePicker from './term-date-picker.vue'
 	export default {
+		components: {
+			TermDatePicker
+		},
 		data() {
 			return {
 				show: false,
@@ -36,6 +43,9 @@
 			dateFormat() {
 				// const date = this.dateTime
 				return uni.$u.timeFormat(this.dateTime, 'mm/dd')
+			},
+			dateFormat1() {
+				return uni.$u.timeFormat(this.dateTime, 'yyyy/mm/dd')
 			}
 		},
 		mounted() {
@@ -63,9 +73,13 @@
 				this.show = true
 			},
 			confirm(e) {
-				this.dateTime = new Date(e[0])
+				// console.log(e, 'eee')
+				this.dateTime = e.date
 				this.show = false
-				console.log(e, 'eee')
+				// console.log(e, 'eee')
+			},
+			monthChange(val) {
+				this.$emit('month', val)
 			}
 		}
 	}
