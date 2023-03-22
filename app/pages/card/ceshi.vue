@@ -8,7 +8,7 @@
 	export default {
 		data() {
 			return {
-					dotArr: ['2023-03-01', '2023-03-05']
+				dotArr: ['2023-03-01', '2023-03-05']
 			}
 		},
 		methods: {
