@@ -52,7 +52,7 @@
 						</view>
 					</view>
 					<view class="ui-f-between ui-mar-t-20">
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
+						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20" @click="jumpUrl('/pages/health/sleep/sleep')">
 							<view class="ui-f-start ui-f-wrap">
 								<image class="ui-img-size3" src="../../static/images/yueliang.png"></image>
 								<text class="ui-font-32 ui-mar-l-10">睡眠</text>
@@ -203,6 +203,11 @@
 						data: [5, 20, 36, 10, 10, 20]
 					}]
 				}
+			},
+			jumpUrl(url){
+				uni.navigateTo({
+					url:url
+				})
 			}
 		}
 	};

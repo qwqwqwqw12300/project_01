@@ -273,6 +273,10 @@
 				this.forIndexFun()
 			},1000*60)
 		},
+		onHide() {
+			clearInterval(this.timer)
+			this.timer = null
+		},
 		destroyed() {
 			clearInterval(this.timer)
 			this.timer = null
