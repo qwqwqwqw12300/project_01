@@ -10,7 +10,7 @@ export const mapMixin = {
 		loadMap(callBack) {
 			const script = document.createElement('script');
 			script.src =
-				'http://webapi.amap.com/maps?v=1.3&key=3a2d950c2fc2774b4b1ee6da9a8d93dc&plugin=AMap.PolyEditor&callback=mapInit'
+				'http://webapi.amap.com/maps?v=2.0&key=3a2d950c2fc2774b4b1ee6da9a8d93dc&plugin=AMap.PolygonEditor&callback=mapInit'
 			window.mapInit = () => { // 依靠脚本的回调执行初始化
 				callBack(window.AMap);
 			}

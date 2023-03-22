@@ -71,8 +71,8 @@
 		},
 		mounted() {
 			const today = new Date()
-			this.dateData = [uni.$u.timeFormat((new Date().setDate(today.getDay() -
-				2)), 'yyyy-mm-dd'), uni.$u.timeFormat(today, 'yyyy-mm-dd')]
+			this.dateData = [uni.$u.timeFormat((new Date().setDate(today.getDate() -
+				1)), 'yyyy-mm-dd'), uni.$u.timeFormat(today, 'yyyy-mm-dd')]
 			console.log(this.dateData, '098882222---------')
 			this.maxDate = uni.$u.timeFormat(today, 'yyyy-mm-dd')
 			this.minDate = uni.$u.timeFormat((today.setMonth(today.getMonth() - 2)), 'yyyy-mm-dd')
