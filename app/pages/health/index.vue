@@ -126,7 +126,7 @@
 						</view>
 					</view>
 					<view class="ui-f-between ui-mar-t-20">
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
+						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20" @click="jumpUrl('/pages/health/electrocardiograph/electrocardiograph')">
 							<view class="ui-f-start ui-f-wrap">
 								<image class="ui-img-size3" src="../../static/images/xindian.png"></image>
 								<text class="ui-font-32 ui-mar-l-10">心电</text>

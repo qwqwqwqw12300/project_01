@@ -117,13 +117,31 @@
 							name: 'Email',
 							type: 'line',
 							stack: 'Total',
-							data: ['0', '60', '120', '180', '240']
+							data: ['0', '60', '120', '180', '240'],
+							showSymbol: false,
+							itemStyle: {
+								normal: {
+									lineStyle: {
+										color: "#FF7E23",
+										width: 1
+									}
+								}
+							},
 						},
 						{
 							name: 'Union Ads',
 							type: 'line',
 							stack: 'Total',
-							data: ['240', '180', '60', '120', '120']
+							data: ['240', '180', '60', '120', '120'],
+							showSymbol: false,
+							itemStyle: {
+								normal: {
+									lineStyle: {
+										color: "#63DDBA",
+										width: 1
+									}
+								}
+							},
 						}
 					]
 				};

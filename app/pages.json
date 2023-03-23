@@ -656,6 +656,15 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/health/electrocardiograph/electrocardiograph",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 	"globalStyle": {
