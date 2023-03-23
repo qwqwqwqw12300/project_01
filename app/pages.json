@@ -640,7 +640,16 @@
 			}
 		},
 		{
-			"path": "pages/card/ceshi",
+			"path": "pages/health/sleep/sleep",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/health/blood-pressure/blood-pressure",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {

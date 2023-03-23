@@ -49,7 +49,7 @@
 					url: '/pages/watch/watch-set/contacts',
 				}, {
 					title: '一键同步',
-					url: '/pages/card/kinship-number'
+					url: 'synchronization'
 				}, {
 					title: '自动定位',
 					value:'30分钟',
@@ -63,7 +63,7 @@
 					url: '/pages/card/time-interval'
 				}, {
 					title: '地理围栏',
-					url: '/pages/card/monitor'
+					url: '/pages/card/enclosure/enclosure'
 				}, {
 					title: '设备信息',
 					url: '/pages/watch/watch-set/watchInfo'
@@ -78,9 +78,22 @@
 		mounted() {},
 		methods: {
 			handleJump(url) {
-				uni.navigateTo({
-					url
-				})
+				if(url=='synchronization'){
+					uni.showModal({
+						title: '提示',
+						content: '是否确认一键同步手表的运动、计步、睡眠、心率等',
+						success: res => {
+							if (res.confirm) {
+								console.log('确认')
+							}
+						}
+					});
+				}else{
+					uni.navigateTo({
+						url
+					})
+				}
+				
 			},
 			handleSwitch(){
 				

@@ -102,7 +102,8 @@
 					this.sendMsg(this.beginPoints)
 				} else {
 					// 挂载点击事件
-					this.clickListener = AMap.event.addListener(this.map, "click", this.mapOnClick.bind(this));
+					this.clickListener = this.map.on('click', this.mapOnClick.bind(this));
+					// AMap.event.addListener(this.map, "click", this.mapOnClick.bind(this));
 				}
 				// this.$ownerInstance.callMethod('onMsg', {
 				// 	AMap,
@@ -118,7 +119,8 @@
 				this.beginPoints.push(e.lnglat);
 				this.beginNum++;
 				if (this.beginNum === 3) {
-					this.AMap.event.removeListener(this.clickListener); // 移除地图点击事件
+					this.map.off('click', this.clickListener); // 移除地图点击事件
+					// this.AMap.event.removeListener(this.clickListener); 
 					this.polygon = this.createPolygon(this.beginPoints);
 					this.polygonEditor = this.createEditor(this.polygon);
 					console.log(this.beginPoints, '99988')
@@ -164,16 +166,18 @@
 			 * @param {Object} polygon
 			 */
 			createEditor(polygon) {
-				const polygonEditor = new this.AMap.PolyEditor(this.map, polygon);
-				// this.AMap.event.addListener(polygonEditor, 'addnode', this.polygonOpen);
-				this.AMap.event.addListener(polygonEditor, 'end', this.polygonEnd);
-				this.AMap.event.addListener(polygonEditor, 'adjust', this.polygonJust);
+				const polygonEditor = new this.AMap.PolygonEditor(this.map, polygon);
+				const events = ['end', 'adjust', 'addnode', 'removenode', 'add'];
+				events.forEach(ele => { // 所有变化事件都需要监听
+					polygonEditor.on(ele, (e) => {
+						this.polygonJust(e);
+					});
+				})
 				polygonEditor.open();
 				return polygonEditor;
 			},
 
 			polygonJust(res) {
-				console.log(res.target.getPath(), 'res')
 				this.sendMsg(res.target.getPath())
 			},
 			sendMsg(data) {
@@ -207,14 +211,16 @@
 			 * @param {Object} res
 			 */
 			createPolygon(arr) {
+				this.map.add([arr])
 				const polygon = new AMap.Polygon({
 					map: this.map,
 					path: arr,
 					strokeColor: " rgba(59,122,255,1)",
 					strokeOpacity: 1,
-					strokeWeight: 2,
+					strokeWeight: 3,
 					fillColor: "rgba(100,163,242,0.50)",
 					fillOpacity: 0.35,
+					zIndex: 50
 
 				});
 				return polygon;
