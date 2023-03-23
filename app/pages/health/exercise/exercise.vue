@@ -1,31 +1,29 @@
 <template>
-	<view>
-		<app-body :bodyStyle="{background: '#F7F7F7' }">
-			<app-logo text="心率" top="36rpx" iconUrl="/static/images/question.png"></app-logo>
-			<view class="ui-date">
-				<date-picker @onSelect="onSelect"></date-picker>
-			</view>
-			<view class="ui-echart">
-				<exexcise-echart></exexcise-echart>
-			</view>
-			<view class="ui-tab">
-				<scroll-view class="scroll" scroll-x>
-					<block v-for="(item,index) in list" :key="index">
-						<view class="scroll-item" @click="handleTab(item.key)"
-							:style="{ 'background': key === item.key ? item.selectedBg : '#FFFFFF'}">
-							<view class="icon">
-								<u-icon size="40rpx" :name="key === item.key ? item.selectedIconPath : item.iconPath ">
-								</u-icon>
-							</view>
-							<view class="num" :style="{ 'color': key === item.key ?  '#FFFFFF':'#353535'}">
-								{{ item.num }}
-							</view>
+	<app-body :bodyStyle="{background: '#F7F7F7' }">
+		<app-logo text="心率" top="36rpx" iconUrl="/static/images/question.png"></app-logo>
+		<view class="ui-date">
+			<date-picker @onSelect="onSelect"></date-picker>
+		</view>
+		<view class="ui-echart">
+			<exexcise-echart></exexcise-echart>
+		</view>
+		<view class="ui-tab">
+			<scroll-view class="scroll" scroll-x>
+				<block v-for="(item,index) in list" :key="index">
+					<view class="scroll-item" @click="handleTab(item.key)"
+						:style="{ 'background': key === item.key ? item.selectedBg : '#FFFFFF'}">
+						<view class="icon">
+							<u-icon size="40rpx" :name="key === item.key ? item.selectedIconPath : item.iconPath ">
+							</u-icon>
 						</view>
-					</block>
-				</scroll-view>
-			</view>
-		</app-body>
-	</view>
+						<view class="num" :style="{ 'color': key === item.key ?  '#FFFFFF':'#353535'}">
+							{{ item.num }}
+						</view>
+					</view>
+				</block>
+			</scroll-view>
+		</view>
+	</app-body>
 </template>
 
 <script>
