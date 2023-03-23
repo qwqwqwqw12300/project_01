@@ -47,7 +47,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="ui-f-between ui-mar-t-20">
+				<view class="ui-f-between ui-mar-t-20  ui-f-wrap">
 					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
 						@click="jumpUrl('/pages/health/sleep/sleep')">
 						<view class="ui-f-start ui-f-wrap">
@@ -67,26 +67,27 @@
 								<text class="ui-font-22 ui-font-c-888">很好</text>
 							</view>
 						</view>
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
-							<view class="ui-f-start ui-f-wrap">
-								<image class="ui-img-size3" src="../../static/images/xinlv.png"></image>
-								<text class="ui-font-32 ui-mar-l-10">心率76次/分</text>
-								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-									2月16日
-								</view>
-								<view class="ui-w-h-100 ui-mar-t-20">
-									<app-echarts class="ui-echarts-size" :option="xinLvOption" id="xinLvChart">
-									</app-echarts>
-									<!-- <image class="ui-img-size4" src="../../static/images/xinlvLine.png"></image> -->
-								</view>
-								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
-									<text class="ui-font-22 ui-font-c-888">00:00</text>
-									<text class="ui-font-22 ui-font-c-888">24:00</text>
-								</view>
+						
+					</view>
+					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
+						<view class="ui-f-start ui-f-wrap">
+							<image class="ui-img-size3" src="../../static/images/xinlv.png"></image>
+							<text class="ui-font-32 ui-mar-l-10">心率76次/分</text>
+							<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
+								2月16日
+							</view>
+							<view class="ui-w-h-100 ui-mar-t-20">
+								<app-echarts class="ui-echarts-size" :option="xinLvOption" id="xinLvChart">
+								</app-echarts>
+								<!-- <image class="ui-img-size4" src="../../static/images/xinlvLine.png"></image> -->
+							</view>
+							<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+								<text class="ui-font-22 ui-font-c-888">00:00</text>
+								<text class="ui-font-22 ui-font-c-888">24:00</text>
 							</view>
 						</view>
 					</view>
-					<view class="ui-f-between ui-mar-t-20">
+					<view class="ui-f-between ui-mar-t-20 ">
 						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20" @click="jumpUrl('/pages/health/blood-pressure/blood-pressure')">
 							<view class="ui-f-start ui-f-wrap">
 								<image class="ui-img-size3" src="../../static/images/xueya.png"></image>
