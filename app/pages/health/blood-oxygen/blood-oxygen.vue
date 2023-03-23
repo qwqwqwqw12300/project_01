@@ -1,7 +1,7 @@
 <!-- 血氧 -->
 <template>
 	<app-body :bodyStyle="{background: '#F7F7F7' }">
-		<app-logo text="血氧" top="36rpx" :isShare="true"></app-logo>
+		<app-logo text="血氧" top="36rpx" iconUrl="/static/images/share@3x.png"></app-logo>
 		<view class="ui-tab">
 			<date-picker @onSelect="onSelect"></date-picker>
 		</view>
