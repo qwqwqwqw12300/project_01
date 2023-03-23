@@ -656,6 +656,15 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/health/exercise/exercise",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 	"globalStyle": {

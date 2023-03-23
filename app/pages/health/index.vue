@@ -1,5 +1,5 @@
 <template>
-	<app-body :hideTitle="true">
+	<app-body :hideTitle="true" :bg="true">
 		<view class="ui-banner">
 			<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange"
 				:current="current">
@@ -10,8 +10,9 @@
 		</view>
 		<view class="ui-body">
 			<view class="ui-w-h-100">
-				<view class="ui-f-center ui-box ui-white-bg ui-br-16">
-					<image class="ui-img-size1" src="@/static/images/caihong.png"></image>
+				<view class="ui-f-center ui-box ui-white-bg ui-br-16" @click="jumpUrl('/pages/health/exercise/exercise')">
+					<!-- <image class="ui-img-size1" src="@/static/images/caihong.png"></image> -->
+					<app-echarts style="height: 200rpx;width:200rpx" id="caiHongChart" :option="caiHongOption"></app-echarts>
 					<view class="ui-f-center ui-f-wrap ui-w-70 ui-mar-l-32">
 						<view class="ui-w-60 ui-f-start ui-f-wrap">
 							<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
@@ -30,7 +31,7 @@
 							</view>
 						</view>
 						<view class="ui-w-60 ui-f-start ui-mar-t-45 ui-f-wrap">
-							<image class="ui-img-size2" src="@/static/images/walk.png"></image>
+							<image class="ui-img-size2" src="@/static/images/walk2.png"></image>
 							<text class="ui-font-24 ui-mar-l-10">行走<步></text>
 							<view class="ui-text-box ui-mar-t-15">
 								<text class="ui-font-1">2000</text>
@@ -173,9 +174,9 @@
 	import  * as echarts from '@/static/js/echarts.js';
 	import SwiperDevice from './components/swiper-device.vue';
 	export default {
-		// components: {
-		// 	echarts
-		// },
+		components: {
+			SwiperDevice
+		},
 		data() {
 			return {
 				caiHongOption: {},
@@ -184,12 +185,10 @@
 				xueYangOption: {},
 				xinDianOption: {},
 				xinZangOption: {},
+				current:0
 			}
 		},
 		created() {
-			window.onload=function(){
-				console.log(this)
-			}
 			this.logstatrt();
 		},
 		mounted() {
