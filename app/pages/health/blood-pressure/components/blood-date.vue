@@ -1,14 +1,16 @@
 <template>
 	<view >
 		<!-- <app-echarts :option="option" id="myChart" class="myChart"></app-echarts> -->
-		<view class="ui-title" v-for="(item,index) in list" :key="index">
-			<view class="ui-title-content">
-				<view class="ui-circle" :style="{backgroundColor:item.color}"></view>
-				<view class="ui-title-font">{{item.title}}</view>
-			</view>
-			<view>
-				<text class="ui-font">{{item.value}}</text>
-				<text class="ui-content-font">mmHg</text>
+		<view class="ui-content">
+			<view class="ui-title" v-for="(item,index) in list" :key="index">
+				<view class="ui-title-content">
+					<view class="ui-circle" :style="{backgroundColor:item.color}"></view>
+					<view class="ui-title-font">{{item.title}}</view>
+				</view>
+				<view>
+					<text class="ui-font">{{item.value}}</text>
+					<text class="ui-content-font">mmHg</text>
+				</view>
 			</view>
 		</view>
 		
@@ -177,39 +179,47 @@
 </script>
 
 <style lang="scss" scoped>
-	.ui-title{
+	.ui-content{
+		width: 80%;
+		margin: 0 auto;
 		display: flex;
-		flex-direction: column;
 		align-items: center;
-		justify-content: center;
-		.ui-title-content{
+		justify-content: space-between;
+		.ui-title{
 			display: flex;
+			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			.ui-circle{
-				width: 30rpx;
-				height: 30rpx;
-				margin-right: 10rpx;
-				border-radius: 50rpx;
-			}
-			.ui-title-font{
-				font-size: 26rpx;
-				color: #353535;
-				letter-spacing: 0;
-				font-weight: 400;
+			.ui-title-content{
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				background-color: red;
+				.ui-circle{
+					width: 30rpx;
+					height: 30rpx;
+					margin-right: 10rpx;
+					border-radius: 50rpx;
+				}
+				.ui-title-font{
+					font-size: 26rpx;
+					color: #353535;
+					letter-spacing: 0;
+					font-weight: 400;
+				}
 			}
 		}
-	}
-	.ui-font{
-		font-size: 72rpx;
-		color: #353535;
-		letter-spacing: 0;
-		font-weight: 700;
-	}
-	.ui-content-font{
-		font-size: 26rpx;
-		color: #888888;
-		letter-spacing: 0;
-		font-weight: 400;
+		.ui-font{
+			font-size: 72rpx;
+			color: #353535;
+			letter-spacing: 0;
+			font-weight: 700;
+		}
+		.ui-content-font{
+			font-size: 26rpx;
+			color: #888888;
+			letter-spacing: 0;
+			font-weight: 400;
+		}
 	}
 </style>
