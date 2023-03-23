@@ -52,7 +52,7 @@
 					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
 						@click="jumpUrl('/pages/health/sleep/sleep')">
 						<view class="ui-f-start ui-f-wrap">
-							<image class="ui-img-size3" src="../../static/images/yueliang.png"></image>
+							<image class="ui-img-size3" src="/static/images/yueliang.png"></image>
 							<text class="ui-font-32 ui-mar-l-10">睡眠</text>
 							<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 								2月16日
@@ -72,7 +72,7 @@
 					</view>
 					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
 						<view class="ui-f-start ui-f-wrap">
-							<image class="ui-img-size3" src="../../static/images/xinlv.png"></image>
+							<image class="ui-img-size3" src="/static/images/xinlv.png"></image>
 							<text class="ui-font-32 ui-mar-l-10">心率76次/分</text>
 							<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 								2月16日
@@ -91,7 +91,7 @@
 					<view class="ui-f-between ui-mar-t-20 ">
 						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20" @click="jumpUrl('/pages/health/blood-pressure/blood-pressure')">
 							<view class="ui-f-start ui-f-wrap">
-								<image class="ui-img-size3" src="../../static/images/xueya.png"></image>
+								<image class="ui-img-size3" src="/static/images/xueya.png"></image>
 								<text class="ui-font-32 ui-mar-l-10">血压</text>
 								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 									2月16日
@@ -109,7 +109,7 @@
 						</view>
 						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
 							<view class="ui-f-start ui-f-wrap">
-								<image class="ui-img-size3" src="../../static/images/xueyang.png"></image>
+								<image class="ui-img-size3" src="/static/images/xueyang.png"></image>
 								<text class="ui-font-32 ui-mar-l-10">血氧</text>
 								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 									2月16日
@@ -129,7 +129,7 @@
 					<view class="ui-f-between ui-mar-t-20">
 						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20" @click="jumpUrl('/pages/health/electrocardiograph/electrocardiograph')">
 							<view class="ui-f-start ui-f-wrap">
-								<image class="ui-img-size3" src="../../static/images/xindian.png"></image>
+								<image class="ui-img-size3" src="/static/images/xindian.png"></image>
 								<text class="ui-font-32 ui-mar-l-10">心电</text>
 								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 									2月16日
@@ -147,7 +147,7 @@
 						</view>
 						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
 							<view class="ui-f-start ui-f-wrap">
-								<image class="ui-img-size3" src="../../static/images/xinzang.png"></image>
+								<image class="ui-img-size3" src="/static/images/xinzang.png"></image>
 								<text class="ui-font-32 ui-mar-l-10">心脏</text>
 								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 									2月16日
