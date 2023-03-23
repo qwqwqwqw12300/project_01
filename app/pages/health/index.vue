@@ -6,16 +6,14 @@
 -->
 
 <template>
-
 	<view>
-		<app-echarts :option="option" id="myChart" style="height: 110vw;margin-left: 2vw;width: 100%;padding: 4vw 0 0 0;"></app-echarts>
-			<app-echarts :option="option" id="myChart2" style="height: 110vw;margin-left: 2vw;width: 100%;padding: 4vw 0 0 0;">
-		</app-echarts>
+		<app-echarts style="width:400px;height: 400px;" :option="xinLvOption" id="xinLvChart2"></app-echarts>
 		<app-body :bg="true">
 			<view class="ui-body">
 				<view class="ui-w-h-100">
 					<view class="ui-f-center ui-box ui-white-bg ui-br-16">
-						<image class="ui-img-size1" src="@/static/images/caihong.png"></image>
+						<app-echarts :option="caiHongOption" id="myChart" style="height: 200rpx;width:200rpx">
+						</app-echarts>
 						<view class="ui-f-center ui-f-wrap ui-w-70 ui-mar-l-32">
 							<view class="ui-w-60 ui-f-start ui-f-wrap">
 								<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
@@ -79,7 +77,9 @@
 									2月16日
 								</view>
 								<view class="ui-w-h-100 ui-mar-t-20">
-									<image class="ui-img-size4" src="../../static/images/xinlvLine.png"></image>
+									<app-echarts class="ui-echarts-size" :option="xinLvOption" id="xinLvChart">
+									</app-echarts>
+									<!-- <image class="ui-img-size4" src="../../static/images/xinlvLine.png"></image> -->
 								</view>
 								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
 									<text class="ui-font-22 ui-font-c-888">00:00</text>
@@ -97,7 +97,9 @@
 									2月16日
 								</view>
 								<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
-									<image class="ui-img-size4" src="../../static/images/xueyaLine.png"></image>
+									<app-echarts class="ui-echarts-size" :option="xueYaOption" id="xueYaChart">
+									</app-echarts>
+									<!-- <image class="ui-img-size4" src="../../static/images/xueyaLine.png"></image> -->
 								</view>
 								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
 									<text class="ui-font-22 ui-font-c-888">00:00</text>
@@ -113,7 +115,9 @@
 									2月16日
 								</view>
 								<view class="ui-w-h-100 ui-mar-t-20">
-									<image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image>
+									<app-echarts class="ui-echarts-size" :option="xueYangOption" id="xueYangChart">
+									</app-echarts>
+									<!-- <image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image> -->
 								</view>
 								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
 									<text class="ui-font-22 ui-font-c-888">00:00</text>
@@ -131,7 +135,9 @@
 									2月16日
 								</view>
 								<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
-									<image class="ui-img-size4" src="../../static/images/xindianLine.png"></image>
+									<app-echarts class="ui-echarts-size" :option="xinDianOption" id="xueYangChart">
+									</app-echarts>
+									<!-- <image class="ui-img-size4" src="../../static/images/xindianLine.png"></image> -->
 								</view>
 								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
 									<text class="ui-font-22 ui-font-c-888">00:00</text>
@@ -147,7 +153,9 @@
 									2月16日
 								</view>
 								<view class="ui-w-h-100 ui-mar-t-20">
-									<image class="ui-img-size4" src="../../static/images/xinzangLine.png"></image>
+									<app-echarts class="ui-echarts-size" :option="xinZangOption" id="xueYangChart">
+									</app-echarts>
+									<!-- <image class="ui-img-size4" src="../../static/images/xinzangLine.png"></image> -->
 								</view>
 								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
 									<text class="ui-font-22 ui-font-c-888">00:00</text>
@@ -164,46 +172,516 @@
 </template>
 
 <script>
-	import {
-		echarts
-	} from '@/components/app-echarts/app-echarts.vue';
+	import  * as echarts from '@/static/js/echarts.js';
 	export default {
-		components: {
-			echarts
-		},
+		// components: {
+		// 	echarts
+		// },
 		data() {
 			return {
-				option: {}
-			};
+				caiHongOption: {},
+				xinLvOption: {},
+				xueYaOption: {},
+				xueYangOption: {},
+				xinDianOption: {},
+				xinZangOption: {},
+			}
 		},
 		created() {
+			window.onload=function(){
+				console.log(this)
+			}
 			this.logstatrt();
 		},
 		mounted() {
-
+			
 		},
 		methods: {
 			logstatrt() {
-				// console.log('初次调用');
-				this.option= {
-					title: {
-						text: 'ECharts 入门示例'
+				this.caiHongOptionHandle();
+				this.xinLvOptionHandle();
+				this.xueYaOptionHandle();
+				this.xueYangOptionHandle();
+				this.xinDianOptionHandle();
+				this.xinZangOptionHandle();
+			},
+			caiHongOptionHandle() {
+					var test_data = [{
+							"name": "22",
+							"value": 1,
+							"maxValue":20
+						},
+						{
+							"name": "33",
+							"value": 5,
+							"maxValue":20
+						},
+						{
+							"name": "25",
+							"value": 3,
+							"maxValue":20
+						},
+						{
+							"name": "26",
+							"value": 4,
+							"maxValue":20
+						}
+				];
+				var maxData = 5,
+					seriesd = [],
+					legend = [];
+
+				for (var j in test_data) {
+					if (legend.indexOf(test_data[j]["name"] == -1)) {
+						legend.push({
+							'icon': 'rect',
+							"name": test_data[j]["name"]
+						});
+					}
+					var ra = test_data.length - 1 - j;
+					seriesd.push({
+						name: test_data[j]["name"],
+						type: 'pie',
+						radius: [(ra * 20 + 15) + "%", (30 + ra * 20) + "%"],
+						itemStyle: {
+							normal: {
+								label: {
+									show: false
+								}
+							}
+				  },
+						hoverAnimation: false,
+						startAngle: 180,
+						center: ["45%", "75%"],
+						data: [{
+								value: test_data[j]["value"],
+								name: test_data[j]["name"],
+								label: {
+									normal: {
+										postion: "center"
+									}
+								},
+							},
+							{
+								value: maxData - test_data[j]["value"],
+								itemStyle: {
+									normal: {
+										color: 'rgba(203,203,203,0.5)',
+
+									},
+									emphasis: {
+										color: 'rgba(203,203,203,1)'
+									}
+								},
+								name: 'showtip_' + test_data[j]["value"]
+							},
+							{
+								value: maxData,
+								itemStyle: {
+									normal: {
+										color: 'rgba(0,0,0,0)',
+										label: {
+											show: true
+										},
+										labelLine: {
+											show: true
+										}
+									},
+									emphasis: {
+										color: 'rgba(0,0,0,0)'
+									}
+								},
+								name: 'hide'
+							}
+						]
+					})
+				}
+				seriesd.push({
+					type: 'gauge',
+					z: 3,
+					min: 0,
+					max: 100,
+					splitNumber: 5,
+					center: ['45%', '75%'], // 默认全局居中
+					radius: '0%',
+					endAngle: 0,
+					startAngle: 180,
+					axisLabel: {
+						show: false,
+						formatter: "{value}%"
 					},
-					tooltip: {},
+					axisLine: { // 坐标轴线 
+						show: false,
+						lineStyle: {
+							color: [
+								[1, "rgba(203,203,203,1)"]
+							], //仪表盘颜色
+							width: 2, //仪表盘宽度
+						}
+					},
+					axisTick: { // 坐标轴小标记
+						show: false,
+						length: 5, // 属性length控制线长
+						lineStyle: { // 属性lineStyle控制线条样式
+							color: 'auto'
+						}
+					},
+					splitLabel: {
+						show: false
+					},
+					pointer: {
+						show: false
+					},
+					splitLine: { // 分隔线
+						show: false,
+
+					},
+					title: {
+						show: false
+					},
+					detail: { //显示数据
+						show: false,
+					},
+					itemStyle: {
+						normal: {
+							color: "#676767", //仪表盘颜色
+						}
+					}
+
+				})
+				this.caiHongOption = {
+					tooltip: {
+						show: true,
+						formatter: function(params) {
+							if (params.name == "hide") {
+								return null
+							} else {
+				   	if (params.name.indexOf("showtip_") != -1) {
+									var num = Number(params.name.split("_")[1]);
+								} else {
+									var num = params.value;
+								}
+								if (Number(num) == 0) return params.seriesName + ":" + Number(num) + "";
+								return params.seriesName + ":" + parseFloat(num * 100 / maxData).toFixed(2) + "%";
+				 		}
+						}
+					},
+					grid: {
+						top: 0,
+						height: 0,
+						left: "0%",
+						right: '0%',
+					},
+					series: seriesd,
+					color: ["rgba(255,97,97,1)", "rgba(142,230,130,1)", "rgba(115,227,255,1)", "rgba(112,150,255,1)"]
+				};
+			},
+			xinLvOptionHandle() {
+				// var data = [Math.random() * 30];
+				// for (var i = 1; i < 20; i++) {
+				// 	data.push(Math.round((Math.random() - 0.5) * 200 + data[i - 1]));
+				// }
+
+				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27,28];
+				this.xinLvOption = {
+					tooltip: {
+						trigger: 'axis',
+						position: function(pt) {
+							return [pt[0], '10%'];
+						}
+					},
 					legend: {
-						data: ['销量']
+						top: 'bottom',
+						data: ['意向']
+					},
+					grid: {
+						top:-20,
+						left:0,
+						right:0,
+						bottom:0
 					},
 					xAxis: {
-						data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+						type: 'category',
+						boundaryGap: false,
+						show:false
 					},
-					yAxis: {},
+					yAxis: {
+						type: 'value',
+						show:false,
+						boundaryGap: [0, '100%']
+					},
+
 					series: [{
-						name: '销量',
-						type: 'bar',
-						data: [5, 20, 36, 10, 10, 20]
+						name: '折线数据',
+						type: 'line',
+						smooth: false,
+						// symbolSize:1,
+						symbol: 'none',
+						sampling: 'average',
+						itemStyle: {
+							normal: {
+								color: 'rgb(255,92,92)' //折线颜色
+							}
+						},
+						lineStyle:{
+							width: 1
+						},
+						areaStyle: {
+							normal: {
+							    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+							        offset: 0,
+							        color: 'rgba(255,92,92,0.5)' //渐变起始颜色
+				 		    }, {
+							        offset: 1,
+							        color: 'rgba(255,92,92,0.1)' //渐变结束颜色
+							    }])
+							}
+						},
+						data: data
 					}]
-				}
-			}
+				};
+
+			},
+			xueYaOptionHandle() {
+				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27,28];
+				this.xueYaOption = {
+					tooltip: {
+						trigger: 'axis',
+						position: function(pt) {
+							return [pt[0], '10%'];
+						}
+					},
+					legend: {
+						top: 'bottom',
+						data: ['意向']
+					},
+					grid: {
+						top:-20,
+						left:0,
+						right:0,
+						bottom:0
+					},
+					xAxis: {
+						type: 'category',
+						boundaryGap: false,
+						show:false
+					},
+					yAxis: {
+						type: 'value',
+						show:false,
+						boundaryGap: [0, '100%']
+					},
+				
+					series: [{
+						name: '折线数据',
+						type: 'line',
+						smooth: false,
+						// symbolSize:1,
+						symbol: 'none',
+						sampling: 'average',
+						itemStyle: {
+							normal: {
+								color: 'rgb(255,148,72)'
+							}
+						},
+						lineStyle:{
+							width: 1
+						},
+						areaStyle: {
+							normal: {
+							    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+							        offset: 0,
+							        color: 'rgba(255,148,72,0.5)'
+				 		    }, {
+							        offset: 1,
+							        color: 'rgba(255,148,72,0.1)'
+							    }])
+							}
+						},
+						data: data
+					}]
+				};
+			},
+			xueYangOptionHandle() {
+				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27,28];
+				this.xueYangOption = {
+					tooltip: {
+						trigger: 'axis',
+						position: function(pt) {
+							return [pt[0], '10%'];
+						}
+					},
+					legend: {
+						top: 'bottom',
+						data: ['意向']
+					},
+					grid: {
+						top:-20,
+						left:0,
+						right:0,
+						bottom:0
+					},
+					xAxis: {
+						type: 'category',
+						boundaryGap: false,
+						show:false
+					},
+					yAxis: {
+						type: 'value',
+						show:false,
+						boundaryGap: [0, '100%']
+					},
+				
+					series: [{
+						name: '折线数据',
+						type: 'line',
+						smooth: false,
+						// symbolSize:1,
+						symbol: 'none',
+						sampling: 'average',
+						itemStyle: {
+							normal: {
+								color: 'rgb(54,191,255)'
+							}
+						},
+						lineStyle:{
+							width: 1
+						},
+						areaStyle: {
+							normal: {
+							    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+							        offset: 0,
+							        color: 'rgba(54,191,255,0.5)'
+				 		    }, {
+							        offset: 1,
+							        color: 'rgba(54,191,255,0.1)'
+							    }])
+							}
+						},
+						data: data
+					}]
+				};
+			},
+			xinDianOptionHandle() {
+				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27,28];
+				this.xinDianOption = {
+					tooltip: {
+						trigger: 'axis',
+						position: function(pt) {
+							return [pt[0], '10%'];
+						}
+					},
+					legend: {
+						top: 'bottom',
+						data: ['意向']
+					},
+					grid: {
+						top:-20,
+						left:0,
+						right:0,
+						bottom:0
+					},
+					xAxis: {
+						type: 'category',
+						boundaryGap: false,
+						show:false
+					},
+					yAxis: {
+						type: 'value',
+						show:false,
+						boundaryGap: [0, '100%']
+					},
+				
+					series: [{
+						name: '折线数据',
+						type: 'line',
+						smooth: false,
+						// symbolSize:1,
+						symbol: 'none',
+						sampling: 'average',
+						itemStyle: {
+							normal: {
+								color: 'rgb(112,203,136)'
+							}
+						},
+						lineStyle:{
+							width: 1
+						},
+						areaStyle: {
+							normal: {
+							    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+							        offset: 0,
+							        color: 'rgba(112,203,136,0.5)'
+				 		    }, {
+							        offset: 1,
+							        color: 'rgba(112,203,136,0.1)'
+							    }])
+							}
+						},
+						data: data
+					}]
+				};
+			},
+			xinZangOptionHandle() {
+				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27,28];
+				this.xinZangOption = {
+					tooltip: {
+						trigger: 'axis',
+						position: function(pt) {
+							return [pt[0], '10%'];
+						}
+					},
+					legend: {
+						top: 'bottom',
+						data: ['意向']
+					},
+					grid: {
+						top:-20,
+						left:0,
+						right:0,
+						bottom:0
+					},
+					xAxis: {
+						type: 'category',
+						boundaryGap: false,
+						show:false
+					},
+					yAxis: {
+						type: 'value',
+						show:false,
+						boundaryGap: [0, '100%']
+					},
+				
+					series: [{
+						name: '折线数据',
+						type: 'line',
+						smooth: false,
+						// symbolSize:1,
+						symbol: 'none',
+						sampling: 'average',
+						itemStyle: {
+							normal: {
+								color: 'rgb(255,58,58)'
+							}
+						},
+						lineStyle:{
+							width: 1
+						},
+						areaStyle: {
+							normal: {
+							    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+							        offset: 0,
+							        color: 'rgba(255,58,58,0.5)'
+				 		    }, {
+							        offset: 1,
+							        color: 'rgba(255,58,58,0.1)'
+							    }])
+							}
+						},
+						data: data
+					}]
+				};
+			},
 		}
 	};
 </script>
@@ -350,7 +828,10 @@
 			width: 100%;
 			height: 64rpx;
 		}
-
+		.ui-echarts-size{
+			width:100%;
+			height:72rpx;
+		}
 		.ui-padding-20 {
 			padding: 20rpx;
 		}
