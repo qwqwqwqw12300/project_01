@@ -4,21 +4,9 @@
 			<view class="ui-body">
 				<scroll-view :scroll-x="true" class="scrollview-box">
 					<view class="ui-scroll-block">
-						<view class="ui-block">
-							<u-icon size="40rpx" name="/static/images/bushu.png"></u-icon>
+						<view class="ui-block" v-for="(item,index) in iconList" :key="index" @click="tabIndex = index" :style="{ 'background': tabIndex === index ? item.selectedBg : '#FFFFFF'}">
+							<u-icon size="40rpx" :name="tabIndex === index ? item.selectedIconPath : item.iconPath "></u-icon>
 							<view class="ui-font-50 ui-mar-l-10">5000</view>
-						</view>
-						<view class="ui-block">
-							<u-icon size="40rpx" name="/static/images/xiaohao.png"></u-icon>
-							<view class="ui-font-50 ui-mar-l-10">300</view>
-						</view>
-						<view class="ui-block">
-							<u-icon size="40rpx" name="/static/images/timeclock.png"></u-icon>
-							<view class="ui-font-50 ui-mar-l-10">30</view>
-						</view>
-						<view class="ui-block">
-							<u-icon size="40rpx" name="/static/images/stand.png"></u-icon>
-							<view class="ui-font-50 ui-mar-l-10">10</view>
 						</view>
 					</view>
 				</scroll-view>
@@ -31,6 +19,32 @@
 	export default {
 		data() {
 			return {
+				tabIndex:0,
+				iconList: [{
+						"iconPath": "/static/images/bushu.png",
+						"selectedIconPath": "/static/images/bushu_white.png",
+						"selectedBg":"#61AAF7",
+						"text": "5000"
+					},
+					{
+						"iconPath": "/static/images/xiaohao.png",
+						"selectedIconPath": "/static/images/xiaohao_white.png",
+						"selectedBg":"#E43552",
+						"text": "300"
+					},
+					{
+						"iconPath": "/static/images/timeclock.png",
+						"selectedIconPath": "/static/images/timeclock_white.png",
+						"selectedBg":"#69CA5F",
+						"text": "30"
+					},
+					{
+						"iconPath": "/static/images/stand2.png",
+						"selectedIconPath": "/static/images/stand2_white.png",
+						"selectedBg":"#60D2C9",
+						"text": "10"
+					}
+				]
 			}
 		},
 		created() {
