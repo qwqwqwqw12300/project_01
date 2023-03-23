@@ -88,7 +88,6 @@
 				console.log(data, 'dddddd----------')
 				this.mapMarker(data)
 			})
-			
 		},
 		methods: {
 			mapMarker(data) {
@@ -214,25 +213,26 @@
 				if (sliderValue === 0) {
 					return uni.$u.toast('半径长度大于0')
 				}
-				uni.$emit('getMapData',obj)
+				uni.$emit('getMapData', obj)
 				uni.navigateBack()
 			},
 		},
-		onLoad(option){
-			const obj = JSON.parse(option.obj)
-			console.log(obj,'obj')
-			const {
-				siteInfo,
-				longitude,
-				latitude,
-				sliderValue
-			} = obj
-			if( longitude && latitude && siteInfo){
-				this.mapInfo = obj
-				this.siteInfo = siteInfo
-			}else{
-				this.handleGetLocation()
+		onLoad(option) {
+			const obj = option.obj && JSON.parse(option.obj);
+			if (obj) {
+				const {
+					siteInfo,
+					longitude,
+					latitude,
+					sliderValue
+				} = obj;
+				if (longitude && latitude && siteInfo) {
+					this.mapInfo = obj
+					this.siteInfo = siteInfo
+				}
+				return;
 			}
+			this.handleGetLocation()
 		}
 	}
 </script>
@@ -331,7 +331,8 @@
 			}
 		}
 	}
-	.ui-btn{
+
+	.ui-btn {
 		margin-top: 20rpx;
 	}
 </style>
