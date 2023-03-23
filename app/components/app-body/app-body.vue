@@ -121,7 +121,9 @@
 						}
 					}
 					return {
-						show: false
+						show: false,
+						confirm: n => n,
+						cancel: n => n
 					}
 				}
 			})

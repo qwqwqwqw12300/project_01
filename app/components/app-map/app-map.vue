@@ -62,37 +62,36 @@
 					zoom: 13 //地图显示的缩放级别
 				});
 				// 挂载点击事件
-				this.clickListener = AMap.event.addListener(this.map, "click", this.mapOnClick.bind(this));
-				// this.$ownerInstance.callMethod('onMsg', {
-				// 	AMap,
-				// 	map: this.map
-				// });
+				const onclick = ({
+					lnglat
+				}) => {
+					console.log(lnglat, 'lnglat');
+					this.beginMarks.push(this.addMarker(lnglat));
+					this.beginPoints.push([lnglat.getLng(), lnglat.getLat()]);
+					this.beginNum++;
+					if (this.beginNum == 3) {
+						console.log('三个');
+						this.map.off('click', onclick);
+						const polygon = this.createPolygon(this.beginPoints); // 创建不规则图形
+						const polygonEditor = this.createEditor(polygon);
+						polygonEditor.on('end', ($e) => {
+							console.log($e, 'end');
+						})
+						this.clearMarks();
+					}
+				}
+				this.map.on('click', onclick);
 			},
 
-			/**
-			 * @param {Object}地图点击，生成坐标点
-			 */
-			mapOnClick(e) {
-				this.beginMarks.push(this.addMarker(e.lnglat));
-				this.beginPoints.push(e.lnglat);
-				this.beginNum++;
-				if (this.beginNum == 3) {
-					console.log('三个');
-					this.AMap.event.removeListener(this.clickListener); // 移除地图点击事件
-					const polygon = this.createPolygon(this.beginPoints);
-					const polygonEditor = this.createEditor(polygon);
-					this.clearMarks();
-				}
-			},
 
 			/**
 			 * 创建触摸节点
 			 * @param {Object} polygon
 			 */
 			createEditor(polygon) {
-				const polygonEditor = new this.AMap.PolyEditor(this.map, polygon);
+				const polygonEditor = new this.AMap.PolygonEditor(this.map, polygon);
 				polygonEditor.open();
-				this.AMap.event.addListener(polygonEditor, 'end', this.polygonEnd);
+
 				return polygonEditor;
 			},
 
@@ -126,19 +125,8 @@
 				this.map.remove(this.beginMarks);
 			},
 
-			json2arr(json) {
-				const arr = JSON.parse(json),
-					res = [];
-				for (let i = 0; i < arr.length; i++) {
-					const line = [];
-					line.push(arr[i].lng);
-					line.push(arr[i].lat);
-					res.push(line);
-				};
-				return res;
-			},
-
 			createPolygon(arr) {
+				this.map.add([arr])
 				const polygon = new AMap.Polygon({
 					map: this.map,
 					path: arr,
@@ -146,7 +134,8 @@
 					strokeOpacity: 1,
 					strokeWeight: 3,
 					fillColor: "#f5deb3",
-					fillOpacity: 0.35,
+					zIndex: 50,
+					fillOpacity: 0.35
 
 				});
 				return polygon;
