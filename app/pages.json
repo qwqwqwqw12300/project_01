@@ -648,6 +648,26 @@
 				}
 			}
 		},
+		//心率
+		{
+			"path": "pages/health/heart-rate/heart-rate",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		//心率
+		{
+			"path": "pages/health/blood-oxygen/blood-oxygen",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
 		{
 			"path": "pages/health/blood-pressure/blood-pressure",
 			"style": {
@@ -659,6 +679,24 @@
 		},
 		{
 			"path": "pages/health/exercise/exercise",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/health/electrocardiograph/electrocardiograph",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/card/ceshi",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {

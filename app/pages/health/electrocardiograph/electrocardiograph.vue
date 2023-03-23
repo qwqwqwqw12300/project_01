@@ -1,6 +1,6 @@
 <template>
 	<app-body :bg="false" >
-		<app-logo text="血压" :isShare="true"></app-logo>
+		<app-logo text="心电" :isShare="true"></app-logo>
 		<view class="box">
 			<date-picker @onSelect="onSelect"></date-picker>
 		</view>
@@ -9,8 +9,8 @@
 </template>
 
 <script>
-	import date from './components/blood-date.vue'
-	import week from './components/blood-week.vue'
+	import date from './components/electrocardiograph-date.vue'
+	import week from './components/electrocardiograph-week.vue'
 	export default {
 		components: {
 			week,
