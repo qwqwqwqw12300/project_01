@@ -1,28 +1,16 @@
 <template>
 	<view>
-		<!-- <app-echarts :option="option" id="myChart" class="myChart"></app-echarts> -->
-		<view class="ui-content">
-			<view class="ui-title" v-for="(item,index) in list" :key="index">
-				<view class="ui-title-content">
-					<view class="ui-circle" :style="{backgroundColor:item.color}"></view>
-					<view class="ui-title-font">{{item.title}}</view>
-				</view>
-				<view style="margin-top: 8rpx;">
-					<text class="ui-font">{{item.value}}</text>
-					<text class="ui-content-font">mmHg</text>
-				</view>
-			</view>
-		</view>
 		<app-echarts :option="option" id="myChart" class="myChart"></app-echarts>
-		<view class="ui-statistics">
-			<view class="ui-date-title">周统计</view> 
-			<view class="ui-window">
-				<view v-for="(item,index) in dateList" :key="index" class="ui-statistics-content">
-					<view class="ui-statistics-title">{{item.title}}</view>
-					<view style="margin-top: 8rpx;">
-						<text class="ui-statistics-font">{{item.value}}</text>
-						<text class="ui-statistics-fonts">mmHg</text>
-					</view>
+		<WatchDiv :text="'静息心率'" :content="'60'"></WatchDiv>
+		<view class="ui-total">
+			<view class="total-box">
+				<view class="cell">
+					<text class="title">运动心率</text>
+					<text class="value"></text>
+				</view>
+				<view class="cell" v-for="(item,index) in totalList" :key="index">
+					<text class="text">{{ item.title }}</text>
+					<text class="value">{{ item.num }}</text>
 				</view>
 			</view>
 		</view>
@@ -30,31 +18,27 @@
 </template>
 
 <script>
+	import WatchDiv from '@/components/watch-div/watch-div.vue'
 	import * as echarts from '@/static/js/echarts.js';
 	export default {
+		components: {
+			WatchDiv
+		},
 		data() {
 			return {
-				option: {},
-				list: [{
-						color: '#FF7E23',
-						title: '收缩压',
-						value: '126'
+				totalList: [{
+						num: 80,
+						title: '平均心率'
 					},
 					{
-						color: '#63DDBA',
-						title: '舒张压',
-						value: '88'
+						num: 100,
+						title: '最高心率'
+					},
+					{
+						num: 60,
+						title: '最低心率'
 					}
 				],
-				dateList: [{
-						title: '平均收缩压',
-						value: '126'
-					},
-					{
-						title: '平均舒张压',
-						value: '88'
-					}
-				]
 			}
 		},
 		created() {
@@ -76,7 +60,7 @@
 						data: []
 					},
 					grid: {
-						left: '0',
+						left: '20',
 						right: '20',
 						bottom: '5',
 						top:'0',
@@ -87,7 +71,7 @@
 					xAxis: {
 						type: 'category',
 						boundaryGap: false,
-						data: ['00:00', '06:00', '12:00', '18:00', '23:59'],
+						data: ['周日','周一','周二','周三','周四','周五','周六'],
 						axisTick: {
 							show: false
 						},
@@ -98,6 +82,12 @@
 						axisTick: {
 							show: false
 						},
+						axisLabel: {
+							show: false
+						},
+						axisLine: {
+							show: false
+						},
 						splitLine: {
 							show: true,
 							lineStyle:{
@@ -105,26 +95,12 @@
 							}
 						},
 					},
-					series: [{
-							name: 'Email',
-							type: 'line',
-							stack: 'Total',
-							data: ['0', '60', '120', '180', '240'],
-							showSymbol: false,
-							itemStyle: {
-								normal: {
-									lineStyle: {
-										color: "#FF7E23",
-										width: 1
-									}
-								}
-							},
-						},
+					series: [
 						{
 							name: 'Union Ads',
 							type: 'line',
 							stack: 'Total',
-							data: ['240', '180', '60', '120', '120'],
+							data: ['240', '180', '60', '120', '120','60','60'],
 							showSymbol: false,
 							itemStyle: {
 								normal: {
@@ -143,101 +119,41 @@
 </script>
 
 <style lang="scss" scoped>
-	.ui-content {
-		width: 80%;
-		margin: 0 auto;
-		margin-top: 32rpx !important;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-
-		.ui-title {
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
-
-			.ui-title-content {
-				width: 90%;
-				display: flex;
-
-				.ui-circle {
-					width: 30rpx;
-					height: 30rpx;
-					margin-right: 10rpx;
-					border-radius: 50rpx;
-				}
-
-				.ui-title-font {
-					font-size: 26rpx;
-					color: #353535;
-					letter-spacing: 0;
-					font-weight: 400;
-				}
-			}
-		}
-
-		.ui-font {
-			font-size: 72rpx;
-			color: #353535;
-			letter-spacing: 0;
-			font-weight: 700;
-		}
-
-		.ui-content-font {
-			font-size: 26rpx;
-			color: #888888;
-			letter-spacing: 0;
-			font-weight: 400;
-		}
-	}
 	.myChart{
 		width: 90%;
 		height: 400rpx;
-		margin: 64rpx 32rpx 20rpx;
+		margin: 64rpx 32rpx 32rpx;
 	}
-	.ui-statistics{
-		margin-top: 32rpx;
-		display: flex;
-		flex-direction: column;
-		border-radius: 16rpx;
-		background-color: #FFF;
-		.ui-date-title{
-			margin-top: 32rpx;
-			margin-left: 20rpx;
-			font-size: 36rpx;
-			color: #353535;
-			letter-spacing: 0;
-			font-weight: 500;
-		}
-		.ui-window{
-			margin-bottom: 84rpx;
-			display: flex;
-			align-items: center;
-			flex-wrap: wrap;
-			.ui-statistics-content{
-				width: 50%;
-				margin-top: 48rpx;
+	.ui-total {
+		padding: 0 32rpx;
+		margin-top: 50rpx;
+	
+		.total-box {
+			background: #FFFFFF;
+			border-radius: 16rpx;
+	
+			.cell {
+				height: 110rpx;
+				padding: 0 20rpx;
 				display: flex;
-				flex-direction: column;
 				align-items: center;
-				.ui-content-title{
-					font-size: 26rpx;
+				justify-content: space-between;
+	
+				.title {
+					font-size: 36rpx;
 					color: #353535;
-					letter-spacing: 0;
-					font-weight: 400;
+					font-weight: 550;
 				}
-				.ui-statistics-font{
-					font-size: 72rpx;
-					margin-right: 10rpx;
+	
+				.text {
+					font-size: 34rpx;
 					color: #353535;
-					letter-spacing: 0;
+				}
+	
+				.value {
+					font-size: 56rpx;
+					color: #353535;
 					font-weight: 700;
-				}
-				.ui-statistics-fonts{
-					font-size: 26rpx;
-					color: #888888;
-					letter-spacing: 0;
-					font-weight: 400;
 				}
 			}
 		}

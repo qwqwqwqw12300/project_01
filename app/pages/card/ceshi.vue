@@ -1,6 +1,7 @@
 <template>
 	<view class="box">
 		<date-picker :lightDot="dotArr" @onSelect="onSelect" @month="onMonth"></date-picker>
+		<app-echarts :option="option" id="myChart" class="myChart"></app-echarts>
 	</view>
 </template>
 
@@ -28,5 +29,10 @@
 		width: 100vw;
 		height: 100vh;
 		background-color: #F7F7F7;
+	}
+	.myChart{
+		width: 90%;
+		height: 400rpx;
+		margin: 64rpx 32rpx 32rpx;
 	}
 </style>
