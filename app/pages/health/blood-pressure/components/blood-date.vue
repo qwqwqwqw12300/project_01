@@ -1,7 +1,16 @@
 <template>
 	<view >
 		<!-- <app-echarts :option="option" id="myChart" class="myChart"></app-echarts> -->
-		
+		<view class="ui-title" v-for="(item,index) in list" :key="index">
+			<view class="ui-title-content">
+				<view class="ui-circle" :style="{backgroundColor:item.color}"></view>
+				<view class="ui-title-font">{{item.title}}</view>
+			</view>
+			<view>
+				<text class="ui-font">{{item.value}}</text>
+				<text class="ui-content-font">mmHg</text>
+			</view>
+		</view>
 		
 	</view>
 </template>
@@ -11,7 +20,17 @@
 		data() {
 			return {
 				option: {},
-				sleepList:[{
+				list:[{
+					color:'#FF7E23',
+					title:'收缩压',
+					value:'126'
+				},
+				{
+					color:'#63DDBA',
+					title:'舒张压',
+					value:'88'
+				}],
+				dateList:[{
 					color:'#68D688',
 					title:'总睡眠时长',
 					value:'6-10h'
@@ -158,96 +177,39 @@
 </script>
 
 <style lang="scss" scoped>
-	.box {
-		margin-top: 68rpx;
-	}
-	.ui-icon{
-		margin-left: 546rpx;
-	}
-	.myChart{
-		width: 90%;
-		height: 200rpx;
-		margin: 64rpx 32rpx 20rpx;
-	}
-	.ui-time{
-		width: 90%;
-		margin: 0 auto;
-		margin-bottom: 32rpx;
+	.ui-title{
 		display: flex;
+		flex-direction: column;
 		align-items: center;
-		justify-content: space-between;
-		font-size: 32rpx;
-		color: #353535;
-		letter-spacing: 0;
-		font-weight: 400;
-	}
-	.ui-content{
-		width: 90%;
-		height: 728rpx;
-		margin: 0 auto;
-		margin-top: 20rpx !important;
-		background-color: #FFFFFF;
-		border-radius: 16rpx;
-		.ui-title{
-			width:92%;
-			height: 136rpx;
-			margin: 0rpx 20rpx;
-			margin-bottom: 48rpx !important;
+		justify-content: center;
+		.ui-title-content{
 			display: flex;
 			align-items: center;
-			flex-direction: column;
-			justify-content: space-between;
-			.ui-title-content{
-				width: 100%;
-				margin-top: 32rpx;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				.ui-left{
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					.ui-circle{
-						width: 30rpx;
-						height: 30rpx;
-						margin-right: 10rpx;
-						border-radius: 50rpx;
-					}
-					.ui-left-title{
-						font-size: 34rpx;
-						color: #353535;
-						letter-spacing: 0;
-						font-weight: 400;
-					}
-				}
-				.ui-right{
-					font-size: 34rpx;
-					color: #888888;
-					font-weight: 400;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-				}
+			justify-content: center;
+			.ui-circle{
+				width: 30rpx;
+				height: 30rpx;
+				margin-right: 10rpx;
+				border-radius: 50rpx;
 			}
-			.ui-time{
-				margin-top: 20rpx;
-				// background-color: pink;
-				display: flex;
-				align-items: center;
-				justify-content: flex-start;
-				.ui-font{
-					font-size: 56rpx;
-					color: #353535;
-					letter-spacing: 0;
-					font-weight: 700;
-				}
-				.ui-time-font{
-					font-size: 26rpx;
-					color: #888888;
-					letter-spacing: 0;
-					font-weight: 400;
-				}
+			.ui-title-font{
+				font-size: 26rpx;
+				color: #353535;
+				letter-spacing: 0;
+				font-weight: 400;
 			}
 		}
+	}
+	.ui-font{
+		font-size: 72rpx;
+		color: #353535;
+		letter-spacing: 0;
+		font-weight: 700;
+	}
+	.ui-content-font{
+		font-size: 26rpx;
+		color: #888888;
+		letter-spacing: 0;
+		font-weight: 400;
 	}
 </style>
