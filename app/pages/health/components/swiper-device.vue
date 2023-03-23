@@ -22,7 +22,7 @@
 					最近更新时间：2023年2月16日
 				</view>
 			</view>
-			<view class="device-set">
+			<view class="device-set" @click="jumpUrl">
 				<u-icon name="/static/images/device-set.png" size="44rpx" style="margin-right: 4rpx;">
 				</u-icon>配置
 			</view>
@@ -45,11 +45,15 @@
 		},
 		data() {
 			return {
-
+				
 			}
 		},
 		methods: {
-
+			jumpUrl(){
+				uni.navigateTo({
+					url:'/pages/watch/watch-set/watch-set'
+				})
+			}
 		}
 	}
 </script>
