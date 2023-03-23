@@ -1,8 +1,6 @@
 <template>
 	<app-body :bg="false" >
-		<app-logo text="睡眠">
-			<u-icon class="ui-icon" :name="'../../../static/images/share@3x.png'" size="40rpx"></u-icon>
-		</app-logo>
+		<app-logo text="睡眠" :isShare="true"></app-logo>
 		<view class="box">
 			<date-picker @onSelect="onSelect"></date-picker>
 		</view>
