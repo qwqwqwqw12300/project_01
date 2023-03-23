@@ -1,44 +1,53 @@
 <template>
 	<view>
 		<app-echarts :option="option" id="myChart" class="myChart"></app-echarts>
-		<WatchDiv :text="'静息心率'" :content="'60'"></WatchDiv>
-		<view class="ui-total">
-			<view class="total-box">
-				<view class="cell">
-					<text class="title">运动心率</text>
-					<text class="value"></text>
+		<view class="ui-content">
+			<view class="ui-content-left">增长</view>
+			<view class="ui-content-right">
+				10mm/mv
+				<u-icon name="arrow-right" size="28rpx" ></u-icon>
+			</view>
+		</view>
+		<view class="ui-content" style="margin-top: 48rpx;">
+			<view class="ui-content-left">移动速度</view>
+			<view class="ui-content-right">
+				25mm/s
+				<u-icon name="arrow-right" size="28rpx" ></u-icon>
+			</view>
+		</view>
+		<view class="ui-window" v-for="(item,index) in cellList" :key="index">
+			<view class="ui-window-content">
+				<view class="ui-circle"></view>
+				<view class="ui-window-font">{{item.time}}</view>
+			</view>
+			<view class="ui-row">
+				<view>
+					<text class="ui-row-num">{{item.num || '--'}}</text>
+					<text>bpm</text>
 				</view>
-				<view class="cell" v-for="(item,index) in totalList" :key="index">
-					<text class="text">{{ item.title }}</text>
-					<text class="value">{{ item.num }}</text>
+				<view class="ui-row-right" @click="item.input = true">
+					备注
 				</view>
+			</view>
+			<view style="height: 150rpx;" v-if="item.input">
+				<view class="ui-input-font">心电信号弱，请重新测量</view>
+				<u-input v-model="item.vlaue" border="none" class="ui-input"></u-input>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import WatchDiv from '@/components/watch-div/watch-div.vue'
 	import * as echarts from '@/static/js/echarts.js';
 	export default {
-		components: {
-			WatchDiv
-		},
 		data() {
 			return {
-				totalList: [{
-						num: 80,
-						title: '平均心率'
-					},
-					{
-						num: 100,
-						title: '最高心率'
-					},
-					{
-						num: 60,
-						title: '最低心率'
-					}
-				],
+				cellList:[{
+					time:'21:31',
+					num:'90',
+					value:'',
+					input:false
+				}]
 			}
 		},
 		created() {
@@ -122,40 +131,75 @@
 	.myChart{
 		width: 90%;
 		height: 400rpx;
-		margin: 64rpx 32rpx 32rpx;
+		margin: 64rpx 32rpx 48rpx;
 	}
-	.ui-total {
-		padding: 0 32rpx;
-		margin-top: 50rpx;
-	
-		.total-box {
-			background: #FFFFFF;
-			border-radius: 16rpx;
-	
-			.cell {
-				height: 110rpx;
-				padding: 0 20rpx;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-	
-				.title {
-					font-size: 36rpx;
-					color: #353535;
-					font-weight: 550;
-				}
-	
-				.text {
-					font-size: 34rpx;
-					color: #353535;
-				}
-	
-				.value {
-					font-size: 56rpx;
-					color: #353535;
-					font-weight: 700;
-				}
-			}
+	.ui-content{
+		display: flex;
+		align-items: center;
+		.ui-content-left{
+			margin-left: 48rpx;
+		}
+		.ui-content-right{
+			margin-left:100rpx;
+			display: flex;
+			align-items: center;
+			font-weight: bold;
 		}
 	}
+	.ui-window{
+		width: 90%;
+		// height: 200rpx;
+		margin: 0 auto;
+		border-radius: 20rpx;
+		margin-top: 48rpx !important;
+		display: flex;
+		flex-direction: column;
+		background-color: #FFF;
+		.ui-window-content {
+			display: flex;
+			margin-left: 20rpx;
+			margin-top: 32rpx;
+			.ui-circle {
+				width: 30rpx;
+				height: 30rpx;
+				margin-right: 10rpx;
+				border-radius: 50rpx;
+				background-color: #fd993f;
+			}
+		
+			.ui-window-font {
+				font-size: 26rpx;
+				color: #353535;
+				letter-spacing: 0;
+				font-weight: 400;
+			}
+		}
+		.ui-row{
+			margin: 32rpx 20rpx;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			.ui-row-num{
+				font-size: 50rpx;
+				font-weight: bold;
+				margin-right: 10rpx;
+			}
+			.ui-row-right{
+				font-size: 32rpx;
+				padding: 5rpx 20rpx;
+				border: 1px black solid;
+				border-radius: 50rpx;
+			}
+		}
+		.ui-input-font{
+			margin-left: 20rpx;
+			margin-bottom: 20rpx;
+			font-size: 30rpx;
+		}
+		.ui-input{
+			width: 90%;
+			margin: 0 auto;
+		}
+	}
+	
 </style>
