@@ -582,3 +582,10 @@ export const GetAutoLocationInfo = (params) => http.get('/api/tWatch/getAutoLoca
  * 设置手表自动定位的状态
  */
 export const PostUpdateAutoLocation = (params) => http.post('/api/tWatch/updateAutoLocation', params, {});
+
+
+/**
+ * 查询日血压数据
+ */
+export const GetListBloodPressureByDay = (params) => http.get('/api/tWatch/listBloodPressureByDay', params, {});
+

@@ -31,7 +31,15 @@
 
 <script>
 	import * as echarts from '@/static/js/echarts.js';
+	import {
+		GetListBloodPressureByDay
+	} from '@/common/http/api';
 	export default {
+		props:{
+			time:{
+				default:'2023-03-23'
+			}
+		},
 		data() {
 			return {
 				option: {},
@@ -65,14 +73,28 @@
 				]
 			}
 		},
-		created() {
-			this.logstatrt();
+		mounted() {
+			
+		},
+		watch: {
+			time: {
+				handler(val) {
+					console.log(val, '333333333')
+					if (val) {
+						this.logstatrt();
+					}
+				},
+			}
 		},
 		methods: {
-			onSelect(val) {
-				console.log(val, '000')
-			},
 			logstatrt() {
+				GetListBloodPressureByDay({
+					deviceId:240,
+					dayTime:this.time,
+					humanId:'00000000000000000001'
+				}).then(res=>{
+					console.log(res,'res')
+				})
 				this.option = {
 					title: {
 						text: ''

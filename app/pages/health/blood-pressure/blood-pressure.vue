@@ -4,7 +4,7 @@
 		<view class="box">
 			<date-picker @onSelect="onSelect"></date-picker>
 		</view>
-		<component ref="comRef" :is="tabKey"></component>
+		<component ref="comRef" :is="tabKey" :time="time"></component>
 	</app-body>
 </template>
 
@@ -18,7 +18,8 @@
 		},
 		data() {
 			return {
-				tabKey:'date'
+				tabKey:'date',
+				time:''
 			}
 		},
 		created() {
@@ -28,6 +29,8 @@
 			onSelect(val) {
 				console.log(val, '000')
 				this.tabKey = val.type
+				// this.time = val.value
+				this.time = '2023-03-23'
 			},
 			
 		}
