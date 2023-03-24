@@ -1,11 +1,11 @@
 <template>
 	<app-body :bodyStyle="{background: '#F7F7F7' }">
-		<app-logo text="心率" top="36rpx" iconUrl="/static/images/question.png"></app-logo>
+		<app-logo text="活动" top="36rpx" iconUrl="/static/images/question.png"></app-logo>
 		<view class="ui-date">
 			<date-picker @onSelect="onSelect"></date-picker>
 		</view>
 		<view class="ui-echart">
-			<exexcise-echart></exexcise-echart>
+			<exexcise-echart :type="type"></exexcise-echart>
 		</view>
 		<view class="day-title">
 			<text>日平均数据</text>
@@ -63,6 +63,7 @@
 		data() {
 			return {
 				key: 'step',
+				type:'date',
 				list: [{
 					key: 'step',
 					iconPath: "/static/images/bushu.png",
@@ -94,8 +95,8 @@
 
 		},
 		methods: {
-			onSelect() {
-
+			onSelect(val) {
+				this.type = val.type
 			},
 			handleTab(key) {
 				console.log(key, 'kkkkkkkk')

@@ -47,6 +47,18 @@
 					num:'90',
 					value:'',
 					input:false
+				},
+				{
+					time:'21:30',
+					num:'90',
+					value:'',
+					input:false
+				},
+				{
+					time:'21:29',
+					num:'90',
+					value:'',
+					input:false
 				}]
 			}
 		},
@@ -151,7 +163,7 @@
 		// height: 200rpx;
 		margin: 0 auto;
 		border-radius: 20rpx;
-		margin-top: 48rpx !important;
+		margin-top: 20rpx !important;
 		display: flex;
 		flex-direction: column;
 		background-color: #FFF;
