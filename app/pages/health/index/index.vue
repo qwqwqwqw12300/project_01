@@ -10,9 +10,11 @@
 		</view>
 		<view class="ui-body">
 			<view class="ui-w-h-100">
-				<view class="ui-f-center ui-box ui-white-bg ui-br-16" @click="jumpUrl('/pages/health/exercise/exercise')">
+				<view class="ui-f-center ui-box ui-white-bg ui-br-16"
+					@click="jumpUrl('/pages/health/exercise/exercise')">
 					<!-- <image class="ui-img-size1" src="@/static/images/caihong.png"></image> -->
-					<app-echarts style="height: 200rpx;width:200rpx" id="caiHongChart" :option="caiHongOption"></app-echarts>
+					<app-echarts style="height: 200rpx;width:200rpx" id="caiHongChart"
+						:option="caiHongOption"></app-echarts>
 					<view class="ui-f-center ui-f-wrap ui-w-70 ui-mar-l-32">
 						<view class="ui-w-60 ui-f-start ui-f-wrap">
 							<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
@@ -68,9 +70,10 @@
 								<text class="ui-font-22 ui-font-c-888">很好</text>
 							</view>
 						</view>
-						
+
 					</view>
-					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
+					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+						@click="jumpUrl('/pages/health/heart-rate/heart-rate')">>
 						<view class="ui-f-start ui-f-wrap">
 							<image class="ui-img-size3" src="/static/images/xinlv.png"></image>
 							<text class="ui-font-32 ui-mar-l-10">心率76次/分</text>
@@ -89,7 +92,8 @@
 						</view>
 					</view>
 					<view class="ui-f-between ui-mar-t-20 ">
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20" @click="jumpUrl('/pages/health/blood-pressure/blood-pressure')">
+						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+							@click="jumpUrl('/pages/health/blood-pressure/blood-pressure')">
 							<view class="ui-f-start ui-f-wrap">
 								<image class="ui-img-size3" src="/static/images/xueya.png"></image>
 								<text class="ui-font-32 ui-mar-l-10">血压</text>
@@ -107,7 +111,8 @@
 								</view>
 							</view>
 						</view>
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
+						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+							@click="jumpUrl('/pages/health/blood-oxygen/blood-oxygen')">
 							<view class="ui-f-start ui-f-wrap">
 								<image class="ui-img-size3" src="/static/images/xueyang.png"></image>
 								<text class="ui-font-32 ui-mar-l-10">血氧</text>
@@ -127,7 +132,8 @@
 						</view>
 					</view>
 					<view class="ui-f-between ui-mar-t-20">
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20" @click="jumpUrl('/pages/health/electrocardiograph/electrocardiograph')">
+						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+							@click="jumpUrl('/pages/health/electrocardiograph/electrocardiograph')">
 							<view class="ui-f-start ui-f-wrap">
 								<image class="ui-img-size3" src="/static/images/xindian.png"></image>
 								<text class="ui-font-32 ui-mar-l-10">心电</text>
@@ -171,8 +177,8 @@
 </template>
 
 <script>
-	import  * as echarts from '@/static/js/echarts.js';
-	import SwiperDevice from './components/swiper-device.vue';
+	import * as echarts from '@/static/js/echarts.js';
+	import SwiperDevice from '@/pages/watch/watch-detail/components/device-swiper.vue';
 	export default {
 		components: {
 			SwiperDevice
@@ -185,14 +191,14 @@
 				xueYangOption: {},
 				xinDianOption: {},
 				xinZangOption: {},
-				current:0
+				current: 0
 			}
 		},
 		created() {
 			this.logstatrt();
 		},
 		mounted() {
-			
+
 		},
 		methods: {
 			jumpUrl(url) {
@@ -212,26 +218,26 @@
 				this.xinZangOptionHandle();
 			},
 			caiHongOptionHandle() {
-					var test_data = [{
-							"name": "22",
-							"value": 1,
-							"maxValue":20
-						},
-						{
-							"name": "33",
-							"value": 5,
-							"maxValue":20
-						},
-						{
-							"name": "25",
-							"value": 3,
-							"maxValue":20
-						},
-						{
-							"name": "26",
-							"value": 4,
-							"maxValue":20
-						}
+				var test_data = [{
+						"name": "22",
+						"value": 1,
+						"maxValue": 20
+					},
+					{
+						"name": "33",
+						"value": 5,
+						"maxValue": 20
+					},
+					{
+						"name": "25",
+						"value": 3,
+						"maxValue": 20
+					},
+					{
+						"name": "26",
+						"value": 4,
+						"maxValue": 20
+					}
 				];
 				var maxData = 5,
 					seriesd = [],
@@ -255,7 +261,7 @@
 									show: false
 								}
 							}
-				  },
+						},
 						hoverAnimation: false,
 						startAngle: 180,
 						center: ["45%", "75%"],
@@ -362,14 +368,14 @@
 							if (params.name == "hide") {
 								return null
 							} else {
-				   	if (params.name.indexOf("showtip_") != -1) {
+								if (params.name.indexOf("showtip_") != -1) {
 									var num = Number(params.name.split("_")[1]);
 								} else {
 									var num = params.value;
 								}
 								if (Number(num) == 0) return params.seriesName + ":" + Number(num) + "";
 								return params.seriesName + ":" + parseFloat(num * 100 / maxData).toFixed(2) + "%";
-				 		}
+							}
 						}
 					},
 					grid: {
@@ -388,7 +394,7 @@
 				// 	data.push(Math.round((Math.random() - 0.5) * 200 + data[i - 1]));
 				// }
 
-				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27,28];
+				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
 				this.xinLvOption = {
 					tooltip: {
 						trigger: 'axis',
@@ -401,19 +407,19 @@
 						data: ['意向']
 					},
 					grid: {
-						top:-20,
-						left:0,
-						right:0,
-						bottom:0
+						top: -20,
+						left: 0,
+						right: 0,
+						bottom: 0
 					},
 					xAxis: {
 						type: 'category',
 						boundaryGap: false,
-						show:false
+						show: false
 					},
 					yAxis: {
 						type: 'value',
-						show:false,
+						show: false,
 						boundaryGap: [0, '100%']
 					},
 
@@ -429,18 +435,18 @@
 								color: 'rgb(255,92,92)' //折线颜色
 							}
 						},
-						lineStyle:{
+						lineStyle: {
 							width: 1
 						},
 						areaStyle: {
 							normal: {
-							    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-							        offset: 0,
-							        color: 'rgba(255,92,92,0.5)' //渐变起始颜色
-				 		    }, {
-							        offset: 1,
-							        color: 'rgba(255,92,92,0.1)' //渐变结束颜色
-							    }])
+								color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+									offset: 0,
+									color: 'rgba(255,92,92,0.5)' //渐变起始颜色
+								}, {
+									offset: 1,
+									color: 'rgba(255,92,92,0.1)' //渐变结束颜色
+								}])
 							}
 						},
 						data: data
@@ -449,7 +455,7 @@
 
 			},
 			xueYaOptionHandle() {
-				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27,28];
+				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
 				this.xueYaOption = {
 					tooltip: {
 						trigger: 'axis',
@@ -462,22 +468,22 @@
 						data: ['意向']
 					},
 					grid: {
-						top:-20,
-						left:0,
-						right:0,
-						bottom:0
+						top: -20,
+						left: 0,
+						right: 0,
+						bottom: 0
 					},
 					xAxis: {
 						type: 'category',
 						boundaryGap: false,
-						show:false
+						show: false
 					},
 					yAxis: {
 						type: 'value',
-						show:false,
+						show: false,
 						boundaryGap: [0, '100%']
 					},
-				
+
 					series: [{
 						name: '折线数据',
 						type: 'line',
@@ -490,18 +496,18 @@
 								color: 'rgb(255,148,72)'
 							}
 						},
-						lineStyle:{
+						lineStyle: {
 							width: 1
 						},
 						areaStyle: {
 							normal: {
-							    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-							        offset: 0,
-							        color: 'rgba(255,148,72,0.5)'
-				 		    }, {
-							        offset: 1,
-							        color: 'rgba(255,148,72,0.1)'
-							    }])
+								color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+									offset: 0,
+									color: 'rgba(255,148,72,0.5)'
+								}, {
+									offset: 1,
+									color: 'rgba(255,148,72,0.1)'
+								}])
 							}
 						},
 						data: data
@@ -509,7 +515,7 @@
 				};
 			},
 			xueYangOptionHandle() {
-				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27,28];
+				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
 				this.xueYangOption = {
 					tooltip: {
 						trigger: 'axis',
@@ -522,22 +528,22 @@
 						data: ['意向']
 					},
 					grid: {
-						top:-20,
-						left:0,
-						right:0,
-						bottom:0
+						top: -20,
+						left: 0,
+						right: 0,
+						bottom: 0
 					},
 					xAxis: {
 						type: 'category',
 						boundaryGap: false,
-						show:false
+						show: false
 					},
 					yAxis: {
 						type: 'value',
-						show:false,
+						show: false,
 						boundaryGap: [0, '100%']
 					},
-				
+
 					series: [{
 						name: '折线数据',
 						type: 'line',
@@ -550,18 +556,18 @@
 								color: 'rgb(54,191,255)'
 							}
 						},
-						lineStyle:{
+						lineStyle: {
 							width: 1
 						},
 						areaStyle: {
 							normal: {
-							    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-							        offset: 0,
-							        color: 'rgba(54,191,255,0.5)'
-				 		    }, {
-							        offset: 1,
-							        color: 'rgba(54,191,255,0.1)'
-							    }])
+								color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+									offset: 0,
+									color: 'rgba(54,191,255,0.5)'
+								}, {
+									offset: 1,
+									color: 'rgba(54,191,255,0.1)'
+								}])
 							}
 						},
 						data: data
@@ -569,7 +575,7 @@
 				};
 			},
 			xinDianOptionHandle() {
-				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27,28];
+				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
 				this.xinDianOption = {
 					tooltip: {
 						trigger: 'axis',
@@ -582,22 +588,22 @@
 						data: ['意向']
 					},
 					grid: {
-						top:-20,
-						left:0,
-						right:0,
-						bottom:0
+						top: -20,
+						left: 0,
+						right: 0,
+						bottom: 0
 					},
 					xAxis: {
 						type: 'category',
 						boundaryGap: false,
-						show:false
+						show: false
 					},
 					yAxis: {
 						type: 'value',
-						show:false,
+						show: false,
 						boundaryGap: [0, '100%']
 					},
-				
+
 					series: [{
 						name: '折线数据',
 						type: 'line',
@@ -610,18 +616,18 @@
 								color: 'rgb(112,203,136)'
 							}
 						},
-						lineStyle:{
+						lineStyle: {
 							width: 1
 						},
 						areaStyle: {
 							normal: {
-							    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-							        offset: 0,
-							        color: 'rgba(112,203,136,0.5)'
-				 		    }, {
-							        offset: 1,
-							        color: 'rgba(112,203,136,0.1)'
-							    }])
+								color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+									offset: 0,
+									color: 'rgba(112,203,136,0.5)'
+								}, {
+									offset: 1,
+									color: 'rgba(112,203,136,0.1)'
+								}])
 							}
 						},
 						data: data
@@ -629,7 +635,7 @@
 				};
 			},
 			xinZangOptionHandle() {
-				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27,28];
+				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
 				this.xinZangOption = {
 					tooltip: {
 						trigger: 'axis',
@@ -642,22 +648,22 @@
 						data: ['意向']
 					},
 					grid: {
-						top:-20,
-						left:0,
-						right:0,
-						bottom:0
+						top: -20,
+						left: 0,
+						right: 0,
+						bottom: 0
 					},
 					xAxis: {
 						type: 'category',
 						boundaryGap: false,
-						show:false
+						show: false
 					},
 					yAxis: {
 						type: 'value',
-						show:false,
+						show: false,
 						boundaryGap: [0, '100%']
 					},
-				
+
 					series: [{
 						name: '折线数据',
 						type: 'line',
@@ -670,18 +676,18 @@
 								color: 'rgb(255,58,58)'
 							}
 						},
-						lineStyle:{
+						lineStyle: {
 							width: 1
 						},
 						areaStyle: {
 							normal: {
-							    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-							        offset: 0,
-							        color: 'rgba(255,58,58,0.5)'
-				 		    }, {
-							        offset: 1,
-							        color: 'rgba(255,58,58,0.1)'
-							    }])
+								color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+									offset: 0,
+									color: 'rgba(255,58,58,0.5)'
+								}, {
+									offset: 1,
+									color: 'rgba(255,58,58,0.1)'
+								}])
 							}
 						},
 						data: data
@@ -843,10 +849,12 @@
 			width: 100%;
 			height: 64rpx;
 		}
-		.ui-echarts-size{
-			width:100%;
-			height:72rpx;
+
+		.ui-echarts-size {
+			width: 100%;
+			height: 72rpx;
 		}
+
 		.ui-padding-20 {
 			padding: 20rpx;
 		}

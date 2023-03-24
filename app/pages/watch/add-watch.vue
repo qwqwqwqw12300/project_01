@@ -1,4 +1,4 @@
-<!-- 增加监护设备 -->
+<!-- 增加手表设备 -->
 <template>
 	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<app-logo color="#353535" text="绑定4G手表"></app-logo>
@@ -101,7 +101,7 @@
 			border-radius: 16px;
 			box-sizing: border-box;
 			padding: 20rpx;
-			
+
 			.box-bg {
 				width: 100%;
 				height: 100%;
@@ -110,6 +110,7 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
+
 				.img {
 					width: 100rpx;
 					height: 100rpx;
