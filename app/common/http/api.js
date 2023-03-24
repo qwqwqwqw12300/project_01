@@ -589,3 +589,12 @@ export const PostUpdateAutoLocation = (params) => http.post('/api/tWatch/updateA
  */
 export const GetListBloodPressureByDay = (params) => http.get('/api/tWatch/listBloodPressureByDay', params, {});
 
+/**
+ * 查询日心率数据
+ */
+export const GetListHeartRateByDay = (params) => http.get('/api/tWatch/listHeartRateByDay', params, {});
+
+/**
+ * 查询周心率数据
+ */
+export const GetListHeartRateByWeek = (params) => http.get('/api/tWatch/listHeartRateByWeek', params, {});
