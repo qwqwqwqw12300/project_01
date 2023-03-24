@@ -557,3 +557,28 @@ export const GetsetAddressBook = (params) => http.get('/api/careCard/track/point
 export const GetLastPoint = (params) => http.get('/api/careCard/track/lastPoint', params, {
 	showLoading: false
 });
+
+
+
+//-----------------------------------------------------------------------健康手表-----------------------------------------------------------------------
+
+/**
+ * 获取手表跌倒检测开关的状态
+ */
+export const GetFallCheckInfo = (params) => http.get('/api/tWatch/getFallCheckInfo', params, {});
+
+/**
+ * 设置手表跌倒检测开关
+ */
+export const PostUpdateFallCheck = (params) => http.post('/api/tWatch/updateFallCheck', params, {});
+
+
+/**
+ * 获取手表自动定位的状态
+ */
+export const GetAutoLocationInfo = (params) => http.get('/api/tWatch/getAutoLocationInfo', params, {});
+
+/**
+ * 设置手表自动定位的状态
+ */
+export const PostUpdateAutoLocation = (params) => http.post('/api/tWatch/updateAutoLocation', params, {});

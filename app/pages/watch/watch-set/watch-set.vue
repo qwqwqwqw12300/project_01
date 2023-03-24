@@ -15,10 +15,9 @@
 					</u-cell> -->
 					<u-cell :title="item.title" v-for="(item,index) in cellList" :key="index" arrow-direction="right"
 						isLink titleStyle="font-size: 15px;color: #303133;" @tap="handleJump(item.url)">
-						
 						<view slot="value" class="u-slot-value">
 							<text>{{item.value}}</text>
-							<u-switch space="2" v-model="item.type" activeValue="1" inactiveValue="0" v-if="item.type" @click.native.stop="handleSwitch"
+							<u-switch space="2" v-model="item.type" activeValue="1" inactiveValue="0" v-if="item.type" @click.native.stop="handleSwitch(item.type)"
 								size="20" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)"></u-switch>
 						</view>
 					</u-cell>
@@ -39,11 +38,15 @@
 		mapState,
 	} from 'vuex';
 	import {
-		PostCareCardUnBind
+		PostCareCardUnBind,
+		GetFallCheckInfo,
+		GetAutoLocationInfo,
+		PostUpdateFallCheck
 	} from '@/common/http/api';
 	export default {
 		data() {
 			return {
+				obj:{},
 				cellList: [{
 					title: '常用联系人',
 					url: '/pages/watch/watch-set/contacts',
@@ -52,15 +55,15 @@
 					url: 'synchronization'
 				}, {
 					title: '自动定位',
-					value:'30分钟',
-					url: '/pages/watch/watch-set/position-auto'
+					value:'未开启',
+					url: 'position-auto'
 				}, {
 					title: '跌倒检测',
 					type:'1',
 					url: '/pages/card/guard'
 				}, {
 					title: '活动设定',
-					url: '/pages/card/time-interval'
+					url: 'active'
 				}, {
 					title: '地理围栏',
 					url: '/pages/card/enclosure/enclosure'
@@ -77,6 +80,32 @@
 		},
 		mounted() {},
 		methods: {
+			initData(){
+				GetFallCheckInfo({
+					deviceId:240
+				}).then(res=>{
+					this.cellList.forEach(item=>{
+						if(item.type!=undefined){
+							if(res.data){
+								item.type = '1'
+							}else{
+								item.type = '0'
+							}
+						}
+					})
+				})
+				GetAutoLocationInfo({
+					deviceId:240
+				}).then(res=>{
+					console.log(res,'res')
+					this.obj = res.data
+					this.cellList.forEach(item=>{
+						if(item.value!=undefined){
+							item.value = res.data.gpsIntervalTime + '分钟'
+						}
+					})
+				})
+			},
 			handleJump(url) {
 				if(url=='synchronization'){
 					uni.showModal({
@@ -88,6 +117,13 @@
 							}
 						}
 					});
+				}else if(url=='position-auto'){
+					const obj = JSON.stringify(this.obj)
+					uni.navigateTo({
+						url:`/pages/watch/watch-set/position-auto?obj=${obj}`
+					})
+				}else if (url=='active'){
+					uni.$u.toast('暂未开放')
 				}else{
 					uni.navigateTo({
 						url
@@ -95,8 +131,17 @@
 				}
 				
 			},
-			handleSwitch(){
-				
+			handleSwitch(type){
+				let fallCheck = type=='1' ? true : false
+				PostUpdateFallCheck({
+					deviceId:240,
+					fallCheck:fallCheck
+				}).then(res=>{
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						this.initData()
+					}, 1000)
+				})
 			},
 			unBind() {
 				const {
@@ -115,6 +160,9 @@
 					}, 1000)
 				})
 			}
+		},
+		onShow() {
+			this.initData()
 		}
 	}
 </script>
