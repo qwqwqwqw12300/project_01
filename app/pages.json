@@ -580,16 +580,27 @@
 			}
 
 		},
+		//新增手表设备
 		{
-			"path": "pages/watch/add/add-watch",
+			"path": "pages/watch/add-watch",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
 					"titleNView": false
 				}
 			}
-
 		},
+		//手表设备详情
+		{
+			"path": "pages/watch/watch-detail/watch-detail",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		//手表设备设置
 		{
 			"path": "pages/watch/watch-set/watch-set",
 			"style": {
@@ -658,7 +669,7 @@
 				}
 			}
 		},
-		//心率
+		//血氧
 		{
 			"path": "pages/health/blood-oxygen/blood-oxygen",
 			"style": {
@@ -668,6 +679,7 @@
 				}
 			}
 		},
+		//
 		{
 			"path": "pages/health/blood-pressure/blood-pressure",
 			"style": {

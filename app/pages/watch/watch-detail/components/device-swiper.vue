@@ -1,7 +1,8 @@
+<!--  手表设备设置 -->
 <template>
-	<view class="ui-detail">
-		<view class="detail-box">
-			<image class="device-img" src="/static/images/4gWatch@3x.png"></image>
+	<view class="swiper-item">
+		<view class="item-box">
+			<image class="img" src="/static/images/watch-device.png"></image>
 			<view class="device-info">
 				<view class="title">
 					<text class="name">{{record.name || '未命名设备'}}</text>
@@ -9,168 +10,140 @@
 						:class="[record.onlineFlag === '1' ? 'online' : 'offline']">{{record.onlineFlag === '1' ? '在线' : '离线'}}</text>
 				</view>
 				<view class="status">
-					<u-icon name="/static/images/watch-success@3x.png" size="44rpx" style="margin-right: 6rpx;" />
-					<text>{{ getStatus||'未连接' }}</text>
+					<view class="status-block">
+						<u-icon name="/static/images/link-sucess.png" size="20" style="margin-right: 6rpx;" />
+						<text>已连接</text>
+					</view>
+					<view class="status-block" style="margin-left:14rpx">
+						<u-icon name="/static/images/electricity.png" size="20" style="margin-right: 4rpx;" />
+						<text>电量:100%</text>
+					</view>
 				</view>
-				<view class="status">
-					<u-icon name="/static/images/card-power.png" size="44rpx" style="margin-right: 6rpx;" />
-					<text>剩余电量: {{ record.currentPower || '暂无信息'}}</text>
+				<view class="time">
+					最近更新时间：2023年2月16日
 				</view>
 			</view>
-			<view class="device-set" :style="{width: type === 'set' ? '130rpx': '170rpx'}" @click="handleSet">
-				<u-icon :name="type === 'set' ? '/static/images/device-set.png': '/static/images/reStart.png'"
-					size="44rpx" style="margin-right: 6rpx;" />
-				{{ type === 'set'? '配置':'重启设备' }}
+			<view class="device-set" @click="jumpUrl">
+				<u-icon name="/static/images/device-set.png" size="44rpx" style="margin-right: 4rpx;">
+				</u-icon>配置
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import {
-		PostRebootDevice
-	} from '@/common/http/api';
 	export default {
 		props: {
 			record: {
 				type: Object,
-				default: () => {},
+				default: () => {
+					return {
+						name: '张三的手环',
+						onlineFlag: '1',
+					}
+				},
 			},
-			type: {
-				type: String,
-				default: 'set', //set: '配置',reset: '重置设备'
-			}
 		},
 		data() {
 			return {
 
 			}
 		},
-		computed: {
-			getStatus() {
-				return {
-					0: '正常',
-					1: '低电量',
-					2: '关机',
-				} [this.record.currentStatus]
-			}
-		},
 		methods: {
-			handleSet() {
-				if (this.type === 'set') {
-					this.$store.commit('setDeviceInfo', this.record);
-					uni.navigateTo({
-						url: '/pages/equipment/card-set'
-					})
-					return
-				} else {
-					uni.showModal({
-						title: '提示',
-						content: '是否确认重启设备',
-						success: res => {
-							if (res.confirm) {
-								PostRebootDevice({
-									deviceId: this.record.deviceId,
-									initialization: "0"
-								}).then(res => {
-									uni.$u.toast(res.msg)
-								})
-							}
-						}
-					});
-				}
+			jumpUrl() {
+				uni.navigateTo({
+					url: '/pages/watch/watch-set/watch-set'
+				})
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.ui-detail {
-		margin-top: 52rpx;
-		padding: 0 32rpx;
+	.swiper-item {
+		display: block;
+		height: 250rpx;
+		margin: 0 6rpx;
+		background-color: #fff;
+		padding: 30rpx 20rpx;
+		border-radius: 20rpx;
+		box-sizing: border-box;
 
-		.detail-box {
-			background-color: #fff;
-			border-radius: 16rpx;
-			padding: 26rpx;
+		.item-box {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 
-			.device-img {
-				width: 140rpx;
-				height: 140rpx;
+			.img {
+				width: 190rpx;
+				height: 190rpx;
 			}
 
 			.device-info {
 				flex: 1;
 				align-self: flex-start !important;
 				padding-left: 10rpx;
-				padding-top: 10rpx;
+				padding-top: 18rpx;
 
 				.title {
 					color: #353535;
-					font-size: 32rpx;
-					font-weight: 500;
-					padding-left: 4rpx;
+					font-size: 36rpx;
+					font-weight: 550;
 					display: flex;
 					align-items: center;
 
 					.name {
-						max-width: 200rpx;
+						max-width: 240rpx;
 						white-space: nowrap;
 						text-overflow: ellipsis;
 						overflow: hidden;
 					}
 
 					.line {
-						margin-left: 20rpx;
+						margin-left: 30rpx;
 						color: #fff;
 						font-size: 22rpx;
 						padding: 6rpx 12rpx;
-						// background-image: linear-gradient(90deg, #1EC862 0%, #13B98F 100%);
 						border-radius: 4px;
+					}
+
+					.online {
+						background-image: linear-gradient(90deg, #1EC862 0%, #13B98F 100%);
+					}
+
+					.offline {
+						background-image: linear-gradient(90deg, #ff4800 0%, #FF7E00 100%);
 					}
 				}
 
 				.status {
 					// height: 60rpx;
-					margin-top: 4rpx;
+					margin-top: 14rpx;
 					display: flex;
-					align-items: center;
+					// align-items: center;
+					font-size: 26rpx;
+					color: #888888;
 
-					text {
-						font-size: 26rpx;
-						color: #888888;
+					.status-block {
+						display: flex;
+						align-items: center;
 					}
+				}
+
+				.time {
+					margin-top: 14rpx;
+					font-size: 24rpx;
+					color: #888888;
 				}
 			}
 
 			.device-set {
-				white-space: nowrap;
-				text-overflow: ellipsis;
-				overflow: hidden;
+				width: 120rpx;
 				display: flex;
 				color: #FEAE43;
 				font-size: 30rpx;
 				font-weight: 400;
 			}
-
-			.set-width {
-				width: 130rpx;
-			}
-
-			.reset-width {
-				width: 170rpx;
-			}
 		}
-	}
-
-	.online {
-		background-image: linear-gradient(90deg, #1EC862 0%, #13B98F 100%);
-	}
-
-	.offline {
-		background-image: linear-gradient(90deg, #ff4800 0%, #FF7E00 100%);
 	}
 </style>
