@@ -37,7 +37,7 @@
 	export default {
 		props:{
 			time:{
-				default:'2023-03-23'
+				default:''
 			}
 		},
 		data() {
@@ -70,7 +70,9 @@
 						title: '最高舒张压',
 						value: '88'
 					}
-				]
+				],
+				spMapList:[],//收缩压
+				dpMapList:[],//舒张压
 			}
 		},
 		mounted() {
@@ -84,23 +86,45 @@
 						this.logstatrt();
 					}
 				},
+				immediate:true //监听到数据立即执行
 			}
 		},
 		methods: {
 			logstatrt() {
+				this.spMapList = []
+				this.dpMapList = []
 				GetListBloodPressureByDay({
 					deviceId:240,
-					dayTime:this.time,
+					dayTime:'2023-03-23',
 					humanId:'00000000000000000001'
 				}).then(res=>{
 					console.log(res,'res')
+					this.list[0].value = res.data.spAvg
+					this.list[1].value = res.data.dpAvg
+					this.dateList[0].value = res.data.spAvg
+					this.dateList[1].value = res.data.dpAvg
+					this.dateList[2].value = res.data.maxSp
+					this.dateList[3].value = res.data.maxDp
+					for(let i =0;i<res.data.spMapList.length;i++){
+						this.spMapList.push([
+							res.data.spMapList[i].time,
+							res.data.spMapList[i].value
+						])
+					}
+					for(let i =0;i<res.data.dpMapList.length;i++){
+						this.dpMapList.push([
+							res.data.dpMapList[i].time,
+							res.data.dpMapList[i].value
+						])
+					}
 				})
 				this.option = {
 					title: {
 						text: ''
 					},
 					tooltip: {
-						trigger: 'axis'
+						positionStatus:true,
+						trigger: 'axis',
 					},
 					legend: {
 						data: []
@@ -109,22 +133,23 @@
 						left: '0',
 						right: '20',
 						bottom: '5',
-						top:'0',
+						top:'20',
 						containLabel: true
 					},
 					toolbox: {
 					},
 					xAxis: {
-						type: 'category',
+						type: 'time',
+						interval: 6 * 3600 * 1000, // 间隔为6小时
+						min: new Date(`${this.time + ' 00:00:00'}`), // x轴起始时间
+						max: new Date(`${this.time + ' 23:59:59'}`), // x轴结束时间
 						boundaryGap: false,
-						data: ['00:00', '06:00', '12:00', '18:00', '23:59'],
 						axisTick: {
 							show: false
 						},
 					},
 					yAxis: {
-						type: 'category',
-						data: ['0', '60', '120', '180', '240'],
+						type: 'value',
 						axisTick: {
 							show: false
 						},
@@ -133,13 +158,13 @@
 							lineStyle:{
 								type:'disable'
 							}
-						},
+						}
 					},
 					series: [{
-							name: 'Email',
+							name: '收缩压',
 							type: 'line',
 							stack: 'Total',
-							data: ['0', '60', '120', '180', '240'],
+							data:this.spMapList,
 							showSymbol: false,
 							itemStyle: {
 								normal: {
@@ -151,10 +176,10 @@
 							},
 						},
 						{
-							name: 'Union Ads',
+							name: '舒张压',
 							type: 'line',
 							stack: 'Total',
-							data: ['240', '180', '60', '120', '120'],
+							data: this.dpMapList,
 							showSymbol: false,
 							itemStyle: {
 								normal: {
