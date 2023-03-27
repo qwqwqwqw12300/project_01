@@ -61,7 +61,7 @@
 					containLabel: true
 				},
 				xAxis: [{
-					type: 'category',
+					type: 'time',
 					boundaryGap: false,
 					axisTick: { //坐标轴刻度相关设置。
 						show: false,
@@ -69,6 +69,12 @@
 					axisLabel: {
 						textStyle: {
 							color: "#666"
+						},
+						formatter: function(val) {
+							console.log(val, 'dddd----------')
+							const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+							return weekArr[new Date(val).getDay()]
+							// return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
 						}
 					},
 					axisLine: {
@@ -77,7 +83,10 @@
 							width: 1
 						}
 					},
-					data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+					interval: 24 * 3600 * 1000,
+					min: '',
+					max: '',
+					// data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
 				}, ],
 				yAxis: [{
 					type: "value",
@@ -134,7 +143,13 @@
 							}
 						}
 					},
-					data: [1, 2, 3, 3, 5, 6, 5, 3, 6, 5, 5, 4]
+					data: [
+						[new Date('2023-3-22 00:00:00'), '4'],
+						[new Date('2023-3-23 06:00:00'), '2'],
+						[new Date('2023-3-24 12:00:00'), '3'],
+						[new Date('2023-3-25 18:00:00'), '6'],
+						[new Date('2023-3-26 23:50:59'), '5'],
+					]
 				}]
 			}
 			const dayOptions = {
@@ -232,11 +247,11 @@
 						}
 					},
 					data: [
-						[new Date('2023-3-27 00:00:00'), '1'],
-						[new Date('2023-3-27 06:00:00'), '2'],
-						[new Date('2023-3-27 12:00:00'), '3'],
-						[new Date('2023-3-27 18:00:00'), '4'],
-						[new Date('2023-3-27 23:59:59'), '5'],
+						// [new Date('2023-3-27 00:00:00'), '1'],
+						// [new Date('2023-3-27 06:00:00'), '2'],
+						// [new Date('2023-3-27 12:00:00'), '3'],
+						// [new Date('2023-3-27 18:00:00'), '4'],
+						// [new Date('2023-3-27 23:59:59'), '5'],
 					]
 				}]
 			}
@@ -255,46 +270,46 @@
 					}
 				],
 				dataList: [{
-						value: 30,
+						value: 0,
 						title: '常规心率',
-						time: '80',
-						unit: '35-95',
+						time: '0',
+						unit: '0',
 						activeColor: '#cccccc',
 						inactiveColor: "#F2F2F2"
 					}, {
-						value: 40,
+						value: 0,
 						title: '热身运动',
-						time: '80',
-						unit: '96-144',
+						time: '0',
+						unit: '0',
 						activeColor: '#63CDA9',
 						inactiveColor: "#A3EED4"
 					}, {
-						value: 50,
+						value: 0,
 						title: '脂肪燃烧',
-						time: '80',
-						unit: '96-144',
+						time: '0',
+						unit: '0',
 						activeColor: '#75B2FF',
 						inactiveColor: "#DDECFF"
 					}, {
-						value: 60,
+						value: 0,
 						title: '有氧运动',
-						time: '80',
-						unit: '96-144',
+						time: '0',
+						unit: '0',
 						activeColor: '#F8DA68',
 						inactiveColor: "#FFF5D0"
 					}, {
-						value: 70,
+						value: 0,
 						title: '无氧运动',
-						time: '80',
-						unit: '96-144',
+						time: '0',
+						unit: '0',
 						activeColor: '#FF7DCB',
 						inactiveColor: "#FFDCF1"
 					},
 					{
-						value: 80,
+						value: 0,
 						title: '极限心率',
-						time: '80',
-						unit: '96-144',
+						time: '0',
+						unit: '0',
 						activeColor: '#FF5A5A',
 						inactiveColor: "#FFD5D5"
 					}
@@ -312,13 +327,21 @@
 				val.type === 'date' ? this.handleDate(val) : this.handleWeek(val)
 			},
 			handleWeek(options) {
+				console
 				GetListHeartRateByWeek({
 					deviceId: 240,
 					beginDate: options.value[0],
 					endDate: options.value[6],
 					humanId: '1',
 				}).then(res => {
+					this.weekOptions.xAxis[0].min = new Date(uni.$u.timeFormat(new Date(options.value[0]),
+							'yyyy-mm-dd') +
+						' 00:00:00')
+					this.weekOptions.xAxis[0].max = new Date(uni.$u.timeFormat(new Date(options.value[6]),
+							'yyyy-mm-dd') +
+						' 23:59:59')
 					this.options = this.weekOptions
+					console.log(this.options, 'oooooo------------')
 				})
 			},
 			handleDate(options) {
