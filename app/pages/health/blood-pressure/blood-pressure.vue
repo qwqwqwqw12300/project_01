@@ -29,8 +29,7 @@
 			onSelect(val) {
 				console.log(val, '000')
 				this.tabKey = val.type
-				// this.time = val.value
-				this.time = '2023-03-23'
+				this.time = val.value
 			},
 			
 		}

@@ -29,7 +29,8 @@
 <script>
 	import * as echarts from '@/static/js/echarts.js';
 	import {
-		GetListBloodOxygenByDay
+		GetListBloodOxygenByDay,
+		GetListBloodOxygenByWeek
 	} from '@/common/http/api';
 	export default {
 		data() {
@@ -48,27 +49,11 @@
 					}
 				],
 				options:{},
-				dataList:[],
+				dataList:[]
 			}
 		},
 		methods: {
-			logstatrt(){
-				GetListBloodOxygenByDay({
-					deviceId:240,
-					queryDate:'2023-03-24',
-					humanId:'101'
-				}).then(res=>{
-					console.log(res,'res')
-					this.totalList[0].num = res.data.oxMap.avgOx
-					this.totalList[1].num = res.data.oxMap.maxOx
-					this.totalList[2].num = res.data.oxMap.minOx
-					for(let i =0;i<res.data.oxMap.dataList.length;i++){
-						this.dataList.push([
-							`2023-03-24 ${res.data.oxMap.dataList[i].time}`,
-							res.data.oxMap.dataList[i].value
-						])
-					}
-				})
+			dateFun(){
 				this.options = {
 					tooltip: {
 						trigger: 'axis'
@@ -141,13 +126,132 @@
 					}]
 				}
 			},
-			onSelect(){
-				
-			}
+			weekFun(){
+				this.options = {
+					tooltip: {
+						trigger: 'axis'
+					},
+					grid: {
+						left: '5%',
+						right: '5%',
+						bottom: '3%',
+						containLabel: true
+					},
+					xAxis: [{
+						type: 'category',
+						boundaryGap: false,
+						axisTick: { //坐标轴刻度相关设置。
+							show: false,
+						},
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							}
+						},
+						axisLine: {
+							lineStyle: {
+								color: 'rgb(238,238,238)',
+								width: 1
+							}
+						},
+						data:['周一','周二','周三','周四','周五','周六','周日'],
+					}, ],
+					yAxis: [{
+						type: "value",
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							}
+						},
+						nameTextStyle: {
+							color: "#666",
+							fontSize: 12,
+							lineHeight: 40
+						},
+						// 分割线
+						splitLine: {
+							lineStyle: {
+								type: "dashed",
+								color: "#E9E9E9"
+							}
+						},
+						axisLine: {
+							show: false
+						},
+						axisTick: {
+							show: false
+						}
+					}],
+					series: [{
+						type: 'line',
+						showSymbol: false,
+						itemStyle: {
+							normal: {
+								lineStyle: {
+									color: "#36BFFF",
+									width: 2
+								},
+							}
+						},
+						data: [
+							['周一','10'],
+							['周二','10'],
+							['周三','10'],
+							['周四','10'],
+							['周五','10'],
+							['周六','10'],
+							['周日','10'],
+						]
+					}]
+				}
+			},
+			handleDate(option){
+				this.dataList = []
+				GetListBloodOxygenByDay({
+					deviceId:240,
+					queryDate:option.value,
+					humanId:'101'
+				}).then(res=>{
+					console.log(res,'res')
+					this.totalList[0].num = res.data.oxMap.avgOx
+					this.totalList[1].num = res.data.oxMap.maxOx
+					this.totalList[2].num = res.data.oxMap.minOx
+					for(let i =0;i<res.data.oxMap.dataList.length;i++){
+						this.dataList.push([
+							`${option.value} ${res.data.oxMap.dataList[i].time}`,
+							res.data.oxMap.dataList[i].value
+						])
+					}
+				})
+				this.dateFun()
+			},
+			handleWeek(option){
+				this.dataList = []
+				GetListBloodOxygenByWeek({
+					deviceId:240,
+					beginDate:option.value[0],
+					endDate:option.value[6],
+					humanId:'101'
+				}).then(res=>{
+					console.log(res,'res')
+					this.totalList[0].num = res.data.oxMap.avgOx
+					this.totalList[1].num = res.data.oxMap.maxOx
+					this.totalList[2].num = res.data.oxMap.minOx
+					for(let i =0;i<res.data.oxMap.dataList.length;i++){
+						this.dataList.push([
+							`${option.value} ${res.data.oxMap.dataList[i].time}`,
+							res.data.oxMap.dataList[i].value
+						])
+					}
+					console.log(this.dataList,'this.dataList')
+				})
+				this.weekFun()
+			},
+			onSelect(val) {
+				console.log(val, '000')
+				val.type === 'date' ? this.handleDate(val) : this.handleWeek(val)
+			},
 		},
-		onShow() {
-			this.logstatrt()
-		}
 	}
 </script>
 

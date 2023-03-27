@@ -83,8 +83,8 @@
 				this.spMapList = []
 				this.dpMapList = []
 				GetListBloodPressureByWeek({
-					beginDate:'2023-03-21',
-					endDate:'2023-03-25',
+					beginDate:this.time[0],
+					endDate:this.time[6],
 					deviceId:240,
 					humanId:'00000000000000000001'
 				}).then(res=>{

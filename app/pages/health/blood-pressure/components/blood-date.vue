@@ -95,7 +95,7 @@
 				this.dpMapList = []
 				GetListBloodPressureByDay({
 					deviceId:240,
-					dayTime:'2023-03-23',
+					dayTime:this.time,
 					humanId:'00000000000000000001'
 				}).then(res=>{
 					console.log(res,'res')
