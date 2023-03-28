@@ -82,12 +82,6 @@
 					selectedIconPath: "/static/images/timeclock_white.png",
 					selectedBg: "#69CA5F",
 					num: 303
-				}, {
-					key: 'stand',
-					iconPath: "/static/images/stand2.png",
-					selectedIconPath: "/static/images/stand2_white.png",
-					selectedBg: "#60D2C9",
-					num: 30
 				}]
 			}
 		},
@@ -96,6 +90,7 @@
 		},
 		methods: {
 			onSelect(val) {
+				console.log(val,111)
 				this.type = val.type
 			},
 			handleTab(key) {

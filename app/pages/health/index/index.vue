@@ -10,47 +10,41 @@
 		</view>
 		<view class="ui-body">
 			<view class="ui-w-h-100">
-				<view class="ui-f-center ui-box ui-white-bg ui-br-16"
+				<view class="ui-f-center ui-white-bg ui-br-16 ui-padding-r-40"
 					@click="jumpUrl('/pages/health/exercise/exercise')">
 					<!-- <image class="ui-img-size1" src="@/static/images/caihong.png"></image> -->
-					<app-echarts style="height: 200rpx;width:200rpx" id="caiHongChart"
+					<app-echarts style="height: 300rpx;width:300rpx" id="caiHongChart"
 						:option="caiHongOption"></app-echarts>
-					<view class="ui-f-center ui-f-wrap ui-w-70 ui-mar-l-32">
+					<view class="ui-f-start ui-f-wrap ui-w-70">
 						<view class="ui-w-60 ui-f-start ui-f-wrap">
 							<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
 							<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
 							<view class="ui-text-box ui-mar-t-15">
-								<text class="ui-font-1">300</text>
-								<text class="ui-font-2">/1000</text>
+								<text class="ui-font-1">{{caiHongData[0]}}</text>
+								<text class="ui-font-2">/{{maxDataArr[0]}}</text>
 							</view>
 						</view>
 						<view class="ui-w-40 ui-f-start ui-f-wrap">
 							<image class="ui-img-size2" src="@/static/images/timeclock.png"></image>
 							<text class="ui-font-24 ui-mar-l-10">活动(分)</text>
 							<view class="ui-text-box ui-mar-t-15">
-								<text class="ui-font-1">16</text>
-								<text class="ui-font-2">/30</text>
+								<text class="ui-font-1">{{caiHongData[1]}}</text>
+								<text class="ui-font-2">/{{maxDataArr[0]}}</text>
 							</view>
 						</view>
-						<view class="ui-w-60 ui-f-start ui-mar-t-45 ui-f-wrap">
-							<image class="ui-img-size2" src="@/static/images/walk2.png"></image>
-							<text class="ui-font-24 ui-mar-l-10">行走<步></text>
-							<view class="ui-text-box ui-mar-t-15">
-								<text class="ui-font-1">2000</text>
-								<text class="ui-font-2">/10000</text>
-							</view>
-						</view>
-						<view class="ui-w-40 ui-f-start ui-mar-t-45 ui-f-wrap">
-							<image class="ui-img-size2" src="@/static/images/stand.png"></image>
-							<text class="ui-font-24 ui-mar-l-10">站立<分></text>
-							<view class="ui-text-box ui-mar-t-15">
-								<text class="ui-font-1">20</text>
-								<text class="ui-font-2">/30</text>
+						<view class="ui-f-start">
+							<view class="ui-w-60 ui-f-start ui-mar-t-45 ui-f-wrap">
+								<image class="ui-img-size2" src="@/static/images/walk2.png"></image>
+								<text class="ui-font-24 ui-mar-l-10">行走<步></text>
+								<view class="ui-text-box ui-mar-t-15">
+									<text class="ui-font-1">{{caiHongData[2]}}</text>
+									<text class="ui-font-2">/{{maxDataArr[2]}}</text>
+								</view>
 							</view>
 						</view>
 					</view>
 				</view>
-				<view class="ui-f-between ui-mar-t-20  ui-f-wrap">
+				<view class="ui-f-between ui-mar-t-20  ui-f-wrap ui-w-h-100">
 					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
 						@click="jumpUrl('/pages/health/sleep/sleep')">
 						<view class="ui-f-start ui-f-wrap">
@@ -73,10 +67,10 @@
 
 					</view>
 					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
-						@click="jumpUrl('/pages/health/heart-rate/heart-rate')">>
+						@click="jumpUrl('/pages/health/heart-rate/heart-rate')">
 						<view class="ui-f-start ui-f-wrap">
 							<image class="ui-img-size3" src="/static/images/xinlv.png"></image>
-							<text class="ui-font-32 ui-mar-l-10">心率76次/分</text>
+							<text class="ui-font-32 ui-mar-l-10">心率</text>
 							<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 								2月16日
 							</view>
@@ -91,7 +85,7 @@
 							</view>
 						</view>
 					</view>
-					<view class="ui-f-between ui-mar-t-20 ">
+					<view class="ui-f-between ui-mar-t-20 ui-w-h-100">
 						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
 							@click="jumpUrl('/pages/health/blood-pressure/blood-pressure')">
 							<view class="ui-f-start ui-f-wrap">
@@ -131,7 +125,7 @@
 							</view>
 						</view>
 					</view>
-					<view class="ui-f-between ui-mar-t-20">
+					<view class="ui-f-between ui-mar-t-20 ui-w-h-100">
 						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
 							@click="jumpUrl('/pages/health/electrocardiograph/electrocardiograph')">
 							<view class="ui-f-start ui-f-wrap">
@@ -140,28 +134,10 @@
 								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 									2月16日
 								</view>
-								<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
-									<app-echarts class="ui-echarts-size" :option="xinDianOption" id="xueYangChart">
-									</app-echarts>
-									<!-- <image class="ui-img-size4" src="../../static/images/xindianLine.png"></image> -->
-								</view>
-								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
-									<text class="ui-font-22 ui-font-c-888">00:00</text>
-									<text class="ui-font-22 ui-font-c-888">24:00</text>
-								</view>
-							</view>
-						</view>
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20">
-							<view class="ui-f-start ui-f-wrap">
-								<image class="ui-img-size3" src="/static/images/xinzang.png"></image>
-								<text class="ui-font-32 ui-mar-l-10">心脏</text>
-								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-									2月16日
-								</view>
 								<view class="ui-w-h-100 ui-mar-t-20">
-									<app-echarts class="ui-echarts-size" :option="xinZangOption" id="xueYangChart">
+									<app-echarts class="ui-echarts-size" :option="xinDianOption" id="xinDianChart">
 									</app-echarts>
-									<!-- <image class="ui-img-size4" src="../../static/images/xinzangLine.png"></image> -->
+									
 								</view>
 								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
 									<text class="ui-font-22 ui-font-c-888">00:00</text>
@@ -179,6 +155,7 @@
 <script>
 	import * as echarts from '@/static/js/echarts.js';
 	import SwiperDevice from '@/pages/watch/watch-detail/components/device-swiper.vue';
+	import { GetCaiHongData } from '@/common/http/api.js'
 	export default {
 		components: {
 			SwiperDevice
@@ -186,6 +163,8 @@
 		data() {
 			return {
 				caiHongOption: {},
+				caiHongData: [],
+				maxDataArr: [],
 				xinLvOption: {},
 				xueYaOption: {},
 				xueYangOption: {},
@@ -195,12 +174,23 @@
 			}
 		},
 		created() {
-			this.logstatrt();
+			this.fetchData();
 		},
 		mounted() {
 
 		},
 		methods: {
+			fetchData() {
+				const params = {
+					deviceId:'240',
+					dayTime:'2023-03-23',
+					humanId:'00000000000000000001'
+				}
+				GetCaiHongData(params).then(res=>{
+					this.logstatrt(res);
+					console.log(22,res)
+				})
+			},
 			jumpUrl(url) {
 				uni.navigateTo({
 					url: url
@@ -209,50 +199,68 @@
 			swiperChange(val) {
 
 			},
-			logstatrt() {
-				this.caiHongOptionHandle();
-				this.xinLvOptionHandle();
-				this.xueYaOptionHandle();
-				this.xueYangOptionHandle();
-				this.xinDianOptionHandle();
-				this.xinZangOptionHandle();
+			logstatrt(res) {
+				this.caiHongOptionHandle(res);
+				this.xinLvOptionHandle(res);
+				this.xueYaOptionHandle(res);
+				this.xueYangOptionHandle(res);
+				this.xinDianOptionHandle(res);
+				// this.xinZangOptionHandle(res);
 			},
-			caiHongOptionHandle() {
-				var test_data = [{
-						"name": "22",
-						"value": 1,
+			caiHongOptionHandle(res) {
+				var data = [{
+						"name": "StepNum",
+						"value": 111,
 						"maxValue": 20
 					},
 					{
-						"name": "33",
-						"value": 5,
+						"name": "calorie",
+						"value": 511,
 						"maxValue": 20
 					},
 					{
-						"name": "25",
+						"name": "DurationNum",
 						"value": 3,
-						"maxValue": 20
-					},
-					{
-						"name": "26",
-						"value": 4,
 						"maxValue": 20
 					}
 				];
-				var maxData = 5,
-					seriesd = [],
+				
+				// let data = res.data.rainbowDiagram;
+				let caiHongData = [];
+				let maxDataArr = []; 
+				
+				for(let i = 0; i < data.length; i++){
+					if( data[i]['name'] === 'calorie' ){ //卡路里
+						this.maxDataArr[0] = data[i].maxValue;
+						this.caiHongData[0] = data[i].value;
+					}
+					if( data[i]['name'] === 'StepNum' ){//步数
+						this.maxDataArr[1] = data[i].maxValue;
+						this.caiHongData[1] = data[i].value;
+					}
+					if( data[i]['name'] === 'DurationNum' ){//活动时间
+						this.maxDataArr[2] = data[i].maxValue;
+						this.caiHongData[2] = data[i].value;
+					}
+				}
+				console.log(this.caiHongData)
+				console.log(this.maxDataArr)
+				// data.foreach((item)=>{
+				// 	console.log(item)
+				// })
+				var seriesd = [],
 					legend = [];
 
-				for (var j in test_data) {
-					if (legend.indexOf(test_data[j]["name"] == -1)) {
+				for (var j in data) {
+					if (legend.indexOf(data[j]["name"] == -1)) {
 						legend.push({
 							'icon': 'rect',
-							"name": test_data[j]["name"]
+							"name": data[j]["name"]
 						});
 					}
-					var ra = test_data.length - 1 - j;
+					var ra = data.length - 1 - j;
 					seriesd.push({
-						name: test_data[j]["name"],
+						name: data[j]["name"],
 						type: 'pie',
 						radius: [(ra * 20 + 15) + "%", (30 + ra * 20) + "%"],
 						itemStyle: {
@@ -264,10 +272,11 @@
 						},
 						hoverAnimation: false,
 						startAngle: 180,
-						center: ["45%", "75%"],
-						data: [{
-								value: test_data[j]["value"],
-								name: test_data[j]["name"],
+						center: ["50%", "60%"],
+						data: [
+							{
+								value: this.maxDataArr[j] - data[j]["value"] > 0 ? data[j]["value"] : this.maxDataArr[j],
+								name: data[j]["name"],
 								label: {
 									normal: {
 										postion: "center"
@@ -275,7 +284,7 @@
 								},
 							},
 							{
-								value: maxData - test_data[j]["value"],
+								value: this.maxDataArr[j] - data[j]["value"] > 0 ? this.maxDataArr[j] - data[j]["value"] : 0,
 								itemStyle: {
 									normal: {
 										color: 'rgba(203,203,203,0.5)',
@@ -285,10 +294,10 @@
 										color: 'rgba(203,203,203,1)'
 									}
 								},
-								name: 'showtip_' + test_data[j]["value"]
+								name: 'showtip_' + data[j]["value"]
 							},
 							{
-								value: maxData,
+								value: this.maxDataArr[j],
 								itemStyle: {
 									normal: {
 										color: 'rgba(0,0,0,0)',
@@ -308,16 +317,17 @@
 						]
 					})
 				}
+
 				seriesd.push({
 					type: 'gauge',
 					z: 3,
 					min: 0,
-					max: 100,
+					max: 20,
 					splitNumber: 5,
-					center: ['45%', '75%'], // 默认全局居中
+					center: ['50%', '50%'], // 默认全局居中
 					radius: '0%',
 					endAngle: 0,
-					startAngle: 180,
+					startAngle: 90,
 					axisLabel: {
 						show: false,
 						formatter: "{value}%"
@@ -362,39 +372,21 @@
 
 				})
 				this.caiHongOption = {
-					tooltip: {
-						show: true,
-						formatter: function(params) {
-							if (params.name == "hide") {
-								return null
-							} else {
-								if (params.name.indexOf("showtip_") != -1) {
-									var num = Number(params.name.split("_")[1]);
-								} else {
-									var num = params.value;
-								}
-								if (Number(num) == 0) return params.seriesName + ":" + Number(num) + "";
-								return params.seriesName + ":" + parseFloat(num * 100 / maxData).toFixed(2) + "%";
-							}
-						}
-					},
 					grid: {
-						top: 0,
-						height: 0,
-						left: "0%",
-						right: '0%',
+						top:0,
+						left:0
 					},
 					series: seriesd,
-					color: ["rgba(255,97,97,1)", "rgba(142,230,130,1)", "rgba(115,227,255,1)", "rgba(112,150,255,1)"]
+					color: ["rgba(255,97,97,1)", "rgba(142,230,130,1)", "rgba(115,227,255,1)"]
 				};
 			},
-			xinLvOptionHandle() {
-				// var data = [Math.random() * 30];
-				// for (var i = 1; i < 20; i++) {
-				// 	data.push(Math.round((Math.random() - 0.5) * 200 + data[i - 1]));
-				// }
-
-				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
+			xinLvOptionHandle(res) {
+				// var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
+				var arr = res.data.HeartRateList;
+				let resArr = [];
+				arr.forEach((item)=>{
+					resArr.push(item.value)
+				})
 				this.xinLvOption = {
 					tooltip: {
 						trigger: 'axis',
@@ -402,12 +394,8 @@
 							return [pt[0], '10%'];
 						}
 					},
-					legend: {
-						top: 'bottom',
-						data: ['意向']
-					},
 					grid: {
-						top: -20,
+						top: 0,
 						left: 0,
 						right: 0,
 						bottom: 0
@@ -449,13 +437,18 @@
 								}])
 							}
 						},
-						data: data
+						data: resArr
 					}]
 				};
 
 			},
-			xueYaOptionHandle() {
-				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
+			xueYaOptionHandle(res) {
+				// var data = [20, 22];
+				var arr = res.data.spMapList;
+				let resArr = [];
+				arr.forEach((item)=>{
+					resArr.push(item.value)
+				})
 				this.xueYaOption = {
 					tooltip: {
 						trigger: 'axis',
@@ -463,12 +456,8 @@
 							return [pt[0], '10%'];
 						}
 					},
-					legend: {
-						top: 'bottom',
-						data: ['意向']
-					},
 					grid: {
-						top: -20,
+						top: 0,
 						left: 0,
 						right: 0,
 						bottom: 0
@@ -510,7 +499,7 @@
 								}])
 							}
 						},
-						data: data
+						data: resArr
 					}]
 				};
 			},
@@ -523,12 +512,8 @@
 							return [pt[0], '10%'];
 						}
 					},
-					legend: {
-						top: 'bottom',
-						data: ['意向']
-					},
 					grid: {
-						top: -20,
+						top: 0,
 						left: 0,
 						right: 0,
 						bottom: 0
@@ -575,6 +560,7 @@
 				};
 			},
 			xinDianOptionHandle() {
+				
 				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
 				this.xinDianOption = {
 					tooltip: {
@@ -583,12 +569,8 @@
 							return [pt[0], '10%'];
 						}
 					},
-					legend: {
-						top: 'bottom',
-						data: ['意向']
-					},
 					grid: {
-						top: -20,
+						top: 0,
 						left: 0,
 						right: 0,
 						bottom: 0
@@ -643,12 +625,8 @@
 							return [pt[0], '10%'];
 						}
 					},
-					legend: {
-						top: 'bottom',
-						data: ['意向']
-					},
 					grid: {
-						top: -20,
+						top: 0,
 						left: 0,
 						right: 0,
 						bottom: 0
@@ -858,6 +836,10 @@
 		.ui-padding-20 {
 			padding: 20rpx;
 		}
+		
+		.ui-padding-r-40{
+			padding-right: 40rpx;
+		}
 
 		.ui-font-32 {
 			font-size: 32rpx;
@@ -906,6 +888,5 @@
 	.ui-img {
 		width: 100%;
 		height: calc(100vh - var(--window-bottom) - var(--status-bar-height));
-
 	}
 </style>

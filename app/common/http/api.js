@@ -598,3 +598,8 @@ export const GetListHeartRateByDay = (params) => http.get('/api/tWatch/listHeart
  * 查询周心率数据
  */
 export const GetListHeartRateByWeek = (params) => http.get('/api/tWatch/listHeartRateByWeek', params, {});
+
+/* 
+ *查询彩虹图数据 *
+ */
+export const GetCaiHongData = (params) => http.get('/api/tWatch/rainbowDiagram', params, {});
