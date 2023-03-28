@@ -231,7 +231,7 @@
 			handleDate(options) {
 				console.log(options, 'op')
 				GetListHeartRateByDay({
-					deviceId: 240,
+					deviceId: 243,
 					dayTime: options.value,
 					humanId: '1',
 				}).then(res => {

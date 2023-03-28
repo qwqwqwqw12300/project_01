@@ -13,8 +13,8 @@
 				<view class="ui-f-center ui-white-bg ui-br-16 ui-padding-r-40"
 					@click="jumpUrl('/pages/health/exercise/exercise')">
 					<!-- <image class="ui-img-size1" src="@/static/images/caihong.png"></image> -->
-					<app-echarts style="height: 300rpx;width:300rpx" id="caiHongChart"
-						:option="caiHongOption"></app-echarts>
+					<app-echarts style="height: 300rpx;width:300rpx" id="caiHongChart" :option="caiHongOption">
+					</app-echarts>
 					<view class="ui-f-start ui-f-wrap ui-w-70">
 						<view class="ui-w-60 ui-f-start ui-f-wrap">
 							<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
@@ -53,20 +53,23 @@
 							<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 								2月16日
 							</view>
-							<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
+							<view class="ui-w-h-100 ui-f-between ui-mar-t-20" v-if="fetchRes.sleepMap">
 								<view class="ui-color-block1 ui-color-block1-width"></view>
 								<view class="ui-color-block2 ui-color-block1-width"></view>
 								<view class="ui-color-block3 ui-color-block1-width"></view>
 								<view class="ui-color-block4 ui-color-block1-width"></view>
 							</view>
-							<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+							<view class="ui-w-h-100 ui-f-between ui-mar-t-20" v-if="!fetchRes.sleepMap">
+								<view class="ui-noData-font" style="height: 114rpx;">无数据</view>
+							</view>
+							<view class="ui-f-between ui-w-h-100 ui-mar-t-10" v-if="fetchRes.sleepMap">
 								<text class="ui-font-22 ui-font-c-888">差</text>
 								<text class="ui-font-22 ui-font-c-888">很好</text>
 							</view>
 						</view>
 
 					</view>
-					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100"
 						@click="jumpUrl('/pages/health/heart-rate/heart-rate')">
 						<view class="ui-f-start ui-f-wrap">
 							<image class="ui-img-size3" src="/static/images/xinlv.png"></image>
@@ -74,18 +77,21 @@
 							<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 								2月16日
 							</view>
-							<view class="ui-w-h-100 ui-mar-t-20">
+							<view class="ui-w-h-100 ui-mar-t-20" v-if="fetchRes.HeartRateList.length">
 								<app-echarts class="ui-echarts-size" :option="xinLvOption" id="xinLvChart">
 								</app-echarts>
 								<!-- <image class="ui-img-size4" src="../../static/images/xinlvLine.png"></image> -->
 							</view>
-							<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+							<view class="ui-w-h-100 ui-mar-t-20" v-if="!fetchRes.HeartRateList.length">
+								<view class="ui-noData-font">无数据</view>
+							</view>
+							<view class="ui-f-between ui-w-h-100 ui-mar-t-10" v-if="fetchRes.HeartRateList.length">
 								<text class="ui-font-22 ui-font-c-888">00:00</text>
 								<text class="ui-font-22 ui-font-c-888">24:00</text>
 							</view>
 						</view>
 					</view>
-					<view class="ui-f-between ui-mar-t-20 ui-w-h-100">
+					<view class="ui-f-between ui-mar-t-20 ">
 						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
 							@click="jumpUrl('/pages/health/blood-pressure/blood-pressure')">
 							<view class="ui-f-start ui-f-wrap">
@@ -94,18 +100,21 @@
 								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 									2月16日
 								</view>
-								<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
+								<view class="ui-w-h-100 ui-f-between ui-mar-t-20" v-if="fetchRes.spMapList.length">
 									<app-echarts class="ui-echarts-size" :option="xueYaOption" id="xueYaChart">
 									</app-echarts>
 									<!-- <image class="ui-img-size4" src="../../static/images/xueyaLine.png"></image> -->
 								</view>
-								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+								<view class="ui-w-h-100 ui-mar-t-20" v-if="!fetchRes.spMapList.length">
+									<view class="ui-noData-font">无数据</view>
+								</view>
+								<view class="ui-f-between ui-w-h-100 ui-mar-t-10" v-if="fetchRes.spMapList.length">
 									<text class="ui-font-22 ui-font-c-888">00:00</text>
 									<text class="ui-font-22 ui-font-c-888">24:00</text>
 								</view>
 							</view>
 						</view>
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100"
 							@click="jumpUrl('/pages/health/blood-oxygen/blood-oxygen')">
 							<view class="ui-f-start ui-f-wrap">
 								<image class="ui-img-size3" src="/static/images/xueyang.png"></image>
@@ -113,12 +122,17 @@
 								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 									2月16日
 								</view>
-								<view class="ui-w-h-100 ui-mar-t-20">
+								<view class="ui-w-h-100 ui-mar-t-20" v-if="fetchRes.tWatchBloodOxygen.length">
 									<app-echarts class="ui-echarts-size" :option="xueYangOption" id="xueYangChart">
 									</app-echarts>
 									<!-- <image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image> -->
 								</view>
-								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+								<view class="ui-noData-font"
+									v-if="!fetchRes.tWatchBloodOxygen.length">
+									无数据
+								</view>
+								<view class="ui-f-between ui-w-h-100 ui-mar-t-10"
+									v-if="fetchRes.tWatchBloodOxygen.length">
 									<text class="ui-font-22 ui-font-c-888">00:00</text>
 									<text class="ui-font-22 ui-font-c-888">24:00</text>
 								</view>
@@ -134,12 +148,15 @@
 								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 									2月16日
 								</view>
-								<view class="ui-w-h-100 ui-mar-t-20">
+								<view class="ui-w-h-100 ui-mar-t-20" v-if="fetchRes.electrocardiogramMapList && fetchRes.electrocardiogramMapList.length">
 									<app-echarts class="ui-echarts-size" :option="xinDianOption" id="xinDianChart">
 									</app-echarts>
-									
 								</view>
-								<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+								<view class="ui-noData-font"
+									v-if="!fetchRes.electrocardiogramMapList || !fetchRes.electrocardiogramMapList.length">
+									无数据
+								</view>
+								<view class="ui-f-between ui-w-h-100 ui-mar-t-10" v-if="fetchRes.electrocardiogramMapList && fetchRes.electrocardiogramMapList.length">
 									<text class="ui-font-22 ui-font-c-888">00:00</text>
 									<text class="ui-font-22 ui-font-c-888">24:00</text>
 								</view>
@@ -155,13 +172,22 @@
 <script>
 	import * as echarts from '@/static/js/echarts.js';
 	import SwiperDevice from '@/pages/watch/watch-detail/components/device-swiper.vue';
-	import { GetCaiHongData } from '@/common/http/api.js'
+	import {
+		GetCaiHongData
+	} from '@/common/http/api.js'
 	export default {
 		components: {
 			SwiperDevice
 		},
 		data() {
 			return {
+				fetchRes: {
+					spMapList: [],
+					tWatchBloodOxygen: [],
+					HeartRateList: [],
+					electrocardiogramMapList:[],
+					sleepMap:''
+				},
 				caiHongOption: {},
 				caiHongData: [],
 				maxDataArr: [],
@@ -182,13 +208,14 @@
 		methods: {
 			fetchData() {
 				const params = {
-					deviceId:'240',
-					dayTime:'2023-03-23',
-					humanId:'00000000000000000001'
+					deviceId: '240',
+					dayTime: '2023-03-23',
+					humanId: '00000000000000000001'
 				}
-				GetCaiHongData(params).then(res=>{
+				GetCaiHongData(params).then(res => {
 					this.logstatrt(res);
-					console.log(22,res)
+					this.fetchRes = res.data;
+					console.log(22, this.fetchRes)
 				})
 			},
 			jumpUrl(url) {
@@ -224,21 +251,21 @@
 						"maxValue": 20
 					}
 				];
-				
+
 				// let data = res.data.rainbowDiagram;
 				let caiHongData = [];
-				let maxDataArr = []; 
-				
-				for(let i = 0; i < data.length; i++){
-					if( data[i]['name'] === 'calorie' ){ //卡路里
+				let maxDataArr = [];
+
+				for (let i = 0; i < data.length; i++) {
+					if (data[i]['name'] === 'calorie') { //卡路里
 						this.maxDataArr[0] = data[i].maxValue;
 						this.caiHongData[0] = data[i].value;
 					}
-					if( data[i]['name'] === 'StepNum' ){//步数
+					if (data[i]['name'] === 'StepNum') { //步数
 						this.maxDataArr[1] = data[i].maxValue;
 						this.caiHongData[1] = data[i].value;
 					}
-					if( data[i]['name'] === 'DurationNum' ){//活动时间
+					if (data[i]['name'] === 'DurationNum') { //活动时间
 						this.maxDataArr[2] = data[i].maxValue;
 						this.caiHongData[2] = data[i].value;
 					}
@@ -273,9 +300,9 @@
 						hoverAnimation: false,
 						startAngle: 180,
 						center: ["50%", "60%"],
-						data: [
-							{
-								value: this.maxDataArr[j] - data[j]["value"] > 0 ? data[j]["value"] : this.maxDataArr[j],
+						data: [{
+								value: this.maxDataArr[j] - data[j]["value"] > 0 ? data[j]["value"] : this
+									.maxDataArr[j],
 								name: data[j]["name"],
 								label: {
 									normal: {
@@ -284,7 +311,8 @@
 								},
 							},
 							{
-								value: this.maxDataArr[j] - data[j]["value"] > 0 ? this.maxDataArr[j] - data[j]["value"] : 0,
+								value: this.maxDataArr[j] - data[j]["value"] > 0 ? this.maxDataArr[j] - data[j]
+									["value"] : 0,
 								itemStyle: {
 									normal: {
 										color: 'rgba(203,203,203,0.5)',
@@ -373,8 +401,8 @@
 				})
 				this.caiHongOption = {
 					grid: {
-						top:0,
-						left:0
+						top: 0,
+						left: 0
 					},
 					series: seriesd,
 					color: ["rgba(255,97,97,1)", "rgba(142,230,130,1)", "rgba(115,227,255,1)"]
@@ -384,7 +412,7 @@
 				// var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
 				var arr = res.data.HeartRateList;
 				let resArr = [];
-				arr.forEach((item)=>{
+				arr.forEach((item) => {
 					resArr.push(item.value)
 				})
 				this.xinLvOption = {
@@ -446,7 +474,7 @@
 				// var data = [20, 22];
 				var arr = res.data.spMapList;
 				let resArr = [];
-				arr.forEach((item)=>{
+				arr.forEach((item) => {
 					resArr.push(item.value)
 				})
 				this.xueYaOption = {
@@ -503,8 +531,13 @@
 					}]
 				};
 			},
-			xueYangOptionHandle() {
-				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
+			xueYangOptionHandle(res) {
+				// var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
+				var arr = res.data.tWatchBloodOxygen;
+				let resArr = [];
+				arr.forEach((item) => {
+					resArr.push(item.value)
+				})
 				this.xueYangOption = {
 					tooltip: {
 						trigger: 'axis',
@@ -555,12 +588,12 @@
 								}])
 							}
 						},
-						data: data
+						data: resArr
 					}]
 				};
 			},
 			xinDianOptionHandle() {
-				
+
 				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
 				this.xinDianOption = {
 					tooltip: {
@@ -836,8 +869,8 @@
 		.ui-padding-20 {
 			padding: 20rpx;
 		}
-		
-		.ui-padding-r-40{
+
+		.ui-padding-r-40 {
 			padding-right: 40rpx;
 		}
 
@@ -888,5 +921,13 @@
 	.ui-img {
 		width: 100%;
 		height: calc(100vh - var(--window-bottom) - var(--status-bar-height));
+	}
+
+	.ui-noData-font {
+		width: 100%;
+		height: 134rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center
 	}
 </style>

@@ -632,3 +632,38 @@ export const PostUpdateWatchBind = (params) => http.post('/api/tWatch/updateWatc
  * 解绑手表
  */
 export const PostWatchUnBind = (params) => http.post('/api/tWatch/watchUnBind', params, {});
+
+/**
+ * 查询日步数数据
+ */
+export const GetListStepNumByDay = (params) => http.get('/api/tWatch/listStepNumByDay', params, {});
+
+/**
+ * 查询周步数数据
+ */
+export const GetListStepNumByWeek = (params) => http.get('/api/tWatch/listStepNumByWeek', params, {});
+
+/**
+ * 查询日卡路里数据
+ */
+export const GetListCalorieByDay = (params) => http.get('/api/tWatch/listCalorieByDay', params, {});
+
+/**
+ * 查询周卡路里数据
+ */
+export const GetListCalorieByWeek = (params) => http.get('/api/tWatch/listCalorieByWeek', params, {});
+
+/**
+ * 查询日时长数据
+ */
+export const GetListExerciseDurationByDay = (params) => http.get('/api/tWatch/listExerciseDurationByDay', params, {});
+
+/**
+ * 查询周时长数据
+ */
+export const GetListExerciseDurationByWeek = (params) => http.get('/api/tWatch/listSExerciseDurationByWeek', params, {});
+
+/*
+ * 获取手表信息
+ */
+export const GetWatchInfo = (params) => http.get('/api/tWatch/getWatchInfo', params, {});
