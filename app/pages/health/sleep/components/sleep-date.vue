@@ -13,7 +13,7 @@
 						<view class="ui-circle" :style="{backgroundColor:item.color}"></view>
 						<view class="ui-left-title">{{item.title}}</view>
 					</view>
-					<view class="ui-right">
+					<view class="ui-right" @click="jumpUrl(item.text)">
 						<view style="margin-right: 20rpx;">参考值:{{item.value}}</view>
 						<u-icon name="arrow-right" size="22rpx"></u-icon>
 					</view>
@@ -45,21 +45,25 @@
 				sleepList:[{
 					color:'#68D688',
 					title:'总睡眠时长',
+					text:'总睡眠时长',
 					value:'6-10h'
 				},
 				{
 					color:'#8437DA',
 					title:'深睡 0%',
+					text:'深睡',
 					value:'10-40%'
 				},
 				{
 					color:'#C145C9',
 					title:'浅睡 0%',
+					text:'浅睡',
 					value:'45-80%'
 				},
 				{
 					color:'#EFC356',
 					title:'清醒时长 0%',
+					text:'清醒时长',
 					value:'<10%'
 				}]
 			}
@@ -68,8 +72,10 @@
 			this.logstatrt();
 		},
 		methods: {
-			onSelect(val) {
-				console.log(val, '000')
+			jumpUrl(name) {
+				uni.navigateTo({
+					url:`/pages/health/sleep/info?name=${name}`
+				})
 			},
 			logstatrt(){
 				const types = ['任务一', '任务二', '任务三']
