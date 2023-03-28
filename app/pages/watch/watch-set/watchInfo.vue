@@ -3,28 +3,29 @@
 		<app-logo text="设备信息"></app-logo>
 		<view class="ui-scan">
 			<view class="scan-box">
-				<view class="box-bg" @click="handleScan">
-					
+				<view class="box-bg">
+					<view class="ui-code"><canvas id="qrcode" canvas-id="qrcode"
+							:style="{ width: `${size}px`, height: `${size}px` }"></canvas></view>
+					<!-- <image src="@/static/images/QRcode.svg"></image> -->
 				</view>
 			</view>
 		</view>
 		<view class="ui-cell">
 			<view class="cell-box">
 				<u-cell-group>
-					<u-cell title="定位频率"  arrow-direction="right"
-						isLink titleStyle="font-size: 15px;color: #303133;" >
+					<u-cell title="设置手机号码" arrow-direction="right" isLink titleStyle="font-size: 15px;color: #303133;">
 						<view slot="value" class="u-slot-value">
-							133300001111
+							{{ deviceData.simPhone }}
 						</view>
 					</u-cell>
-					<u-cell title="IMEI号" titleStyle="font-size: 15px;color: #303133;" >
+					<u-cell title="IMEI号" titleStyle="font-size: 15px;color: #303133;">
 						<view slot="value" class="u-slot-value">
-							89283492342
+							{{ deviceData.deviceNo }}
 						</view>
 					</u-cell>
-					<u-cell title="固件版本"  titleStyle="font-size: 15px;color: #303133;" >
+					<u-cell title="固件版本" titleStyle="font-size: 15px;color: #303133;">
 						<view slot="value" class="u-slot-value">
-							3.5.1
+							{{ deviceData.firmWareVs }}
 						</view>
 					</u-cell>
 				</u-cell-group>
@@ -41,16 +42,18 @@
 </template>
 
 <script>
+	import UQRCode from '@/uni_modules/Sansnn-uQRCode/js_sdk/uqrcode/uqrcode.js';
 	import {
 		mapState,
 	} from 'vuex';
 	import {
-		PostCareCardUnBind
+		GetWatchInfo
 	} from '@/common/http/api';
 	export default {
 		data() {
 			return {
-				
+				deviceData: {},
+				size: 200,
 			}
 		},
 		computed: {
@@ -58,12 +61,39 @@
 				deviceInfo: state => state.deviceInfo
 			}, ),
 		},
-		mounted() {},
+		mounted() {
+			this.handleInit()
+		},
 		methods: {
-			handleSwitch(){
-				
+			handleInit() {
+				GetWatchInfo({
+					deviceId: '243'
+				}).then(res => {
+					console.log(res, 'ffff')
+					this.deviceData = res.data
+					this.$nextTick(() => {
+						const qr = new UQRCode();
+						/* 设置二维码内容 */
+						qr.data = this.deviceData.deviceNo;
+						/* 设置二维码大小，必须与canvas设置的宽高一致 */
+						qr.size = this.size;
+						/* 设置二维码前景图 */
+						// qr.foregroundImageSrc = '/static/images/tb.png';
+						qr.foregroundImagePadding = 4;
+						qr.foregroundImageBorderRadius = 4;
+						qr.foregroundImageShadowOffsetX = 0;
+						qr.foregroundImageShadowOffsetY = 0;
+						/* 调用制作二维码方法 */
+						qr.make();
+						const canvasContext = uni.createCanvasContext('qrcode');
+						/* 设置uQRCode实例的canvas上下文 */
+						qr.canvasContext = canvasContext;
+						/* 调用绘制方法将二维码图案绘制到canvas上 */
+						qr.drawCanvas();
+					})
+				})
 			},
-			
+
 		}
 	}
 </script>
@@ -74,11 +104,12 @@
 			margin: 0px !important;
 		}
 	}
+
 	.ui-scan {
 		margin-top: 80rpx;
 		padding: 0 32rpx;
 		box-sizing: border-box;
-	
+
 		.scan-box {
 			width: 360rpx;
 			height: 360rpx;
@@ -87,18 +118,19 @@
 			border-radius: 16px;
 			box-sizing: border-box;
 			padding: 20rpx;
-			
+
 			.box-bg {
 				width: 100%;
 				height: 100%;
-				background-image: url('@/static/images/QRcode.svg');
-				background-size: 100% 100%;
+				// background-image: url('@/static/images/QRcode.svg');
+				// background-size: 100% 100%;
 				display: flex;
 				align-items: center;
 				justify-content: center;
 			}
 		}
 	}
+
 	.ui-cell {
 		margin-top: 64rpx;
 		padding: 0 32rpx;
@@ -108,8 +140,9 @@
 			border-radius: 16rpx;
 		}
 	}
-	.ui-tips{
-		width:686rpx;
+
+	.ui-tips {
+		width: 686rpx;
 		padding: 32rpx 32rpx;
 		// margin-top: 32rpx;
 		display: flex;
@@ -123,5 +156,4 @@
 		line-height: 40rpx;
 		font-weight: 400;
 	}
-
 </style>

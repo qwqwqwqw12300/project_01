@@ -17,8 +17,9 @@
 						isLink titleStyle="font-size: 15px;color: #303133;" @tap="handleJump(item.url)">
 						<view slot="value" class="u-slot-value">
 							<text>{{item.value}}</text>
-							<u-switch space="2" v-model="item.type" activeValue="1" inactiveValue="0" v-if="item.type" @click.native.stop="handleSwitch(item.type)"
-								size="20" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)"></u-switch>
+							<u-switch space="2" v-model="item.type" activeValue="1" inactiveValue="0" v-if="item.type"
+								@click.native.stop="handleSwitch(item.type)" size="20" activeColor="#FEAE43"
+								inactiveColor="rgb(230, 230, 230)"></u-switch>
 						</view>
 					</u-cell>
 				</u-cell-group>
@@ -46,7 +47,7 @@
 	export default {
 		data() {
 			return {
-				obj:{},
+				obj: {},
 				cellList: [{
 					title: '常用联系人',
 					url: '/pages/watch/watch-set/contacts',
@@ -55,18 +56,18 @@
 					url: 'synchronization'
 				}, {
 					title: '自动定位',
-					value:'未开启',
+					value: '未开启',
 					url: 'position-auto'
 				}, {
 					title: '跌倒检测',
-					type:'1',
+					type: '1',
 					url: '/pages/card/guard'
 				}, {
 					title: '活动设定',
 					url: 'active'
 				}, {
 					title: '地理围栏',
-					url: '/pages/card/enclosure/enclosure'
+					url: '/pages/watch/enclosure/enclosure'
 				}, {
 					title: '设备信息',
 					url: '/pages/watch/watch-set/watchInfo'
@@ -80,34 +81,34 @@
 		},
 		mounted() {},
 		methods: {
-			initData(){
+			initData() {
 				GetFallCheckInfo({
-					deviceId:240
-				}).then(res=>{
-					this.cellList.forEach(item=>{
-						if(item.type!=undefined){
-							if(res.data){
+					deviceId: 240
+				}).then(res => {
+					this.cellList.forEach(item => {
+						if (item.type != undefined) {
+							if (res.data) {
 								item.type = '1'
-							}else{
+							} else {
 								item.type = '0'
 							}
 						}
 					})
 				})
 				GetAutoLocationInfo({
-					deviceId:240
-				}).then(res=>{
-					console.log(res,'res')
+					deviceId: 240
+				}).then(res => {
+					console.log(res, 'res')
 					this.obj = res.data
-					this.cellList.forEach(item=>{
-						if(item.value!=undefined){
+					this.cellList.forEach(item => {
+						if (item.value != undefined) {
 							item.value = res.data.gpsIntervalTime + '分钟'
 						}
 					})
 				})
 			},
 			handleJump(url) {
-				if(url=='synchronization'){
+				if (url == 'synchronization') {
 					uni.showModal({
 						title: '提示',
 						content: '是否确认一键同步手表的运动、计步、睡眠、心率等',
@@ -117,26 +118,26 @@
 							}
 						}
 					});
-				}else if(url=='position-auto'){
+				} else if (url == 'position-auto') {
 					const obj = JSON.stringify(this.obj)
 					uni.navigateTo({
-						url:`/pages/watch/watch-set/position-auto?obj=${obj}`
+						url: `/pages/watch/watch-set/position-auto?obj=${obj}`
 					})
-				}else if (url=='active'){
+				} else if (url == 'active') {
 					uni.$u.toast('暂未开放')
-				}else{
+				} else {
 					uni.navigateTo({
 						url
 					})
 				}
-				
+
 			},
-			handleSwitch(type){
-				let fallCheck = type=='1' ? true : false
+			handleSwitch(type) {
+				let fallCheck = type == '1' ? true : false
 				PostUpdateFallCheck({
-					deviceId:240,
-					fallCheck:fallCheck
-				}).then(res=>{
+					deviceId: 240,
+					fallCheck: fallCheck
+				}).then(res => {
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
 						this.initData()
@@ -173,13 +174,15 @@
 			margin: 0px !important;
 		}
 	}
-	.ui-title{
+
+	.ui-title {
 		margin-top: 40rpx;
-		width:100%;
+		width: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		.ui-title-left{
+
+		.ui-title-left {
 			margin-left: 32rpx;
 			font-size: 50rpx;
 			color: #353535;
@@ -188,13 +191,15 @@
 			line-height: 50rpx;
 			font-weight: 600;
 		}
-		.ui-title-right{
+
+		.ui-title-right {
 			margin-right: 32rpx;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 		}
 	}
+
 	.ui-detail {
 		margin-top: 52rpx;
 		padding: 0 32rpx;
@@ -284,7 +289,7 @@
 			color: #FF4645;
 			font-size: 32rpx;
 			background: #FFFFFF;
-			border: 1px solid rgba(233,86,86,1);
+			border: 1px solid rgba(233, 86, 86, 1);
 			border-radius: 44rpx;
 		}
 	}
