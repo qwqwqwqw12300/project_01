@@ -166,9 +166,10 @@ function httpRequest(...arg) {
 				'Authorization': getToken(),
 			},
 			withCredentials: true,
-			success: res => resolve(res),
+			success: res => {
+				resolve(res)
+			},
 			fail: error => {
-				console.log('重试次数', count);
 				if (count <= RETRYCONFIG.COUNT) { // 请求重试
 					setTimeout(() => {
 						const payload = [...arg];
