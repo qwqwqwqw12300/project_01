@@ -93,7 +93,7 @@
 		methods: {
 			handleInit() {
 				GetFenceInfo({
-					deviceId: '240',
+					deviceId: '243',
 				}).then(res => {
 					console.log(res, 'rrrr----------------------')
 					if (!res.data.length) return this.handleGetLocation()
@@ -235,7 +235,7 @@
 				PostAddFence({
 					fenceType: 'circle',
 					deviceNo: '869389030355280',
-					deviceId: '240',
+					deviceId: '243',
 					address,
 					longitude,
 					latitude,

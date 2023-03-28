@@ -83,7 +83,7 @@
 		methods: {
 			initData() {
 				GetFallCheckInfo({
-					deviceId: 240
+					deviceId: 243
 				}).then(res => {
 					this.cellList.forEach(item => {
 						if (item.type != undefined) {
@@ -96,7 +96,7 @@
 					})
 				})
 				GetAutoLocationInfo({
-					deviceId: 240
+					deviceId: 243
 				}).then(res => {
 					console.log(res, 'res')
 					this.obj = res.data
@@ -135,7 +135,7 @@
 			handleSwitch(type) {
 				let fallCheck = type == '1' ? true : false
 				PostUpdateFallCheck({
-					deviceId: 240,
+					deviceId: 243,
 					fallCheck: fallCheck
 				}).then(res => {
 					uni.$u.toast(res.msg)
