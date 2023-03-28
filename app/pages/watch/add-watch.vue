@@ -47,7 +47,7 @@
 				cardInfo: {
 					deviceNo: '',
 					deviceName: '',
-					deviceType: "1"
+					deviceType: '2'
 				}
 			}
 		},
@@ -56,11 +56,8 @@
 				uni.scanCode({
 					// scanType: ['barCode', 'qrCode'],
 					success: res => {
-						const {
-							scanType,
-							result
-						} = res
-						this.cardInfo.deviceNo = result
+						const result = JSON.parse(res.result)
+						this.cardInfo.deviceNo = result.dev_info.imei
 					},
 					false: res => {
 						console.log(res, '00000000000000000000000')

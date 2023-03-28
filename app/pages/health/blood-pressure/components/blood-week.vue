@@ -31,7 +31,15 @@
 
 <script>
 	import * as echarts from '@/static/js/echarts.js';
+	import {
+		GetListBloodPressureByWeek
+	} from '@/common/http/api';
 	export default {
+		props:{
+			time:{
+				default:''
+			}
+		},
 		data() {
 			return {
 				option: {},
@@ -54,62 +62,120 @@
 						title: '平均舒张压',
 						value: '88'
 					}
-				]
+				],
+				spMapList:[],//收缩压
+				dpMapList:[],//舒张压
 			}
 		},
-		created() {
-			this.logstatrt();
+		watch: {
+			time: {
+				handler(val) {
+					console.log(val, '44444444444')
+					if (val) {
+						this.logstatrt();
+					}
+				},
+				immediate:true //监听到数据立即执行
+			}
 		},
 		methods: {
-			onSelect(val) {
-				console.log(val, '000')
-			},
 			logstatrt() {
+				this.spMapList = []
+				this.dpMapList = []
+				GetListBloodPressureByWeek({
+					beginDate:this.time[0],
+					endDate:this.time[6],
+					deviceId:240,
+					humanId:'00000000000000000001'
+				}).then(res=>{
+					console.log(res,'res')
+					this.list[0].value = res.data.spAvg
+					this.list[1].value = res.data.dpAvg
+					this.dateList[0].value = res.data.spAvg
+					this.dateList[1].value = res.data.dpAvg
+					for(let i =0;i<res.data.spMapList.length;i++){
+						this.spMapList.push([
+							res.data.spMapList[i].time,
+							res.data.spMapList[i].value
+						])
+					}
+					for(let i =0;i<res.data.dpMapList.length;i++){
+						this.dpMapList.push([
+							res.data.dpMapList[i].time,
+							res.data.dpMapList[i].value
+						])
+					}
+				})
 				this.option = {
 					title: {
 						text: ''
 					},
 					tooltip: {
-						trigger: 'axis'
+						positionStatus:true,
+						trigger: 'axis',
 					},
 					legend: {
 						data: []
 					},
 					grid: {
-						left: '0',
+						left: '20',
 						right: '20',
 						bottom: '5',
-						top:'0',
+						top:'20',
 						containLabel: true
 					},
 					toolbox: {
 					},
 					xAxis: {
-						type: 'category',
+						type: 'time',
 						boundaryGap: false,
-						data: ['00:00', '06:00', '12:00', '18:00', '23:59'],
+						interval: 24 * 3600 * 1000,
+						min: new Date(`${this.time[0] + ' 00:00:00'}`), // x轴起始时间
+						max: new Date(`${this.time[6] + ' 00:00:00'}`), // x轴结束时间
 						axisTick: {
 							show: false
 						},
-					},
-					yAxis: {
-						type: 'category',
-						data: ['0', '60', '120', '180', '240'],
-						axisTick: {
-							show: false
-						},
-						splitLine: {
-							show: true,
-							lineStyle:{
-								type:'disable'
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							},
+							formatter: function(val,index) {
+								const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+								return index == 7 ? '' : weekArr[new Date(val).getDay()]
 							}
 						},
 					},
+					yAxis: {
+						type: "value",
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							}
+						},
+						nameTextStyle: {
+							color: "#666",
+							fontSize: 12,
+							lineHeight: 40
+						},
+						// 分割线
+						splitLine: {
+							lineStyle: {
+								type: "dashed",
+								color: "#E9E9E9"
+							}
+						},
+						axisLine: {
+							show: false
+						},
+						axisTick: {
+							show: false
+						}
+					},
 					series: [{
-							name: 'Email',
+							name: '收缩压',
 							type: 'line',
 							stack: 'Total',
-							data: ['0', '60', '120', '180', '240'],
+							data:this.spMapList,
 							showSymbol: false,
 							itemStyle: {
 								normal: {
@@ -121,10 +187,10 @@
 							},
 						},
 						{
-							name: 'Union Ads',
+							name: '舒张压',
 							type: 'line',
 							stack: 'Total',
-							data: ['240', '180', '60', '120', '120'],
+							data: this.dpMapList,
 							showSymbol: false,
 							itemStyle: {
 								normal: {

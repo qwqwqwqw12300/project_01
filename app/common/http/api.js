@@ -588,6 +588,10 @@ export const PostUpdateAutoLocation = (params) => http.post('/api/tWatch/updateA
  * 查询日血压数据
  */
 export const GetListBloodPressureByDay = (params) => http.get('/api/tWatch/listBloodPressureByDay', params, {});
+/**
+ * 查询周血压数据
+ */
+export const GetListBloodPressureByWeek = (params) => http.get('/api/tWatch/listBloodPressureByWeek', params, {});
 
 /**
  * 查询日心率数据
@@ -603,3 +607,18 @@ export const GetListHeartRateByWeek = (params) => http.get('/api/tWatch/listHear
  *查询彩虹图数据 *
  */
 export const GetCaiHongData = (params) => http.get('/api/tWatch/rainbowDiagram', params, {});
+
+/**
+ * 查询日血氧数据
+ */
+export const GetListBloodOxygenByDay = (params) => http.get('/api/tWatch/listBloodOxygenByDay', params, {});
+
+/**
+ * 查询周血氧数据
+ */
+export const GetListBloodOxygenByWeek = (params) => http.get('/api/tWatch/listBloodOxygenByWeek', params, {});
+
+/**
+ * 查询心电数据
+ */
+export const GetListElectrocardiogramByDay = (params) => http.get('/api/tWatch/listElectrocardiogramByDay', params, {});
