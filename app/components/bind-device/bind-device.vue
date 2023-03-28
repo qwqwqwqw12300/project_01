@@ -50,10 +50,8 @@
 			...mapState({
 				devices: function(state) {
 					let devices = [];
-					console.log(this.payload.type, 'state.devicesList');
 					switch (this.payload.type) {
 						case 'room': // 绑定房间
-							console.log('room查询列表')
 							devices = state.devicesList.filter(ele => (!ele.roomId) && ele.type === '0'); // 跌倒设备
 							break;
 						case 'human': // 绑定房间
@@ -62,7 +60,6 @@
 						default:
 							break;
 					}
-					console.log(devices, 'devices');
 					return devices.map(ele => ({
 						text: ele.name,
 						value: ele.deviceId

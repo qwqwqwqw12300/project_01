@@ -653,3 +653,7 @@ export const GetListExerciseDurationByDay = (params) => http.get('/api/tWatch/li
  */
 export const GetListExerciseDurationByWeek = (params) => http.get('/api/tWatch/listSExerciseDurationByWeek', params, {});
 
+/*
+ * 获取手表信息
+ */
+export const GetWatchInfo = (params) => http.get('/api/tWatch/getWatchInfo', params, {});

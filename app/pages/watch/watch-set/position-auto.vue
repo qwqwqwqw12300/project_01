@@ -71,7 +71,7 @@
 		methods: {
 			initData(){
 				GetAutoLocationInfo({
-					deviceId:240
+					deviceId:243
 				}).then(res=>{
 					this.gpsAutoCheck = res.data.gpsAutoCheck
 					if(this.gpsAutoCheck){
@@ -100,7 +100,7 @@
 			},
 			handlePost(gpsAutoCheck,gpsIntervalTime){
 				PostUpdateAutoLocation({
-					deviceId:240,
+					deviceId:243,
 					gpsAutoCheck:gpsAutoCheck,
 					gpsIntervalTime:gpsIntervalTime
 				}).then(res=>{

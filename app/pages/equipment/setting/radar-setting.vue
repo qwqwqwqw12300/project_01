@@ -48,7 +48,7 @@
 								</view>
 							</view>
 							<view class="ui-slider-box">
-								<view class="ui-slider-tit">右长度</view>
+								<view class="ui-slider-tit">右距离</view>
 								<view class="ui-slider">
 									<u-slider min="0" max="4" step="0.1" @changing="levelChanging($event, 'right')"
 										v-model="editFrom.deviceLocationWall.roomRight" activeColor="#eeaa3d"
@@ -97,7 +97,7 @@
 								</view>
 							</view>
 							<view class="ui-slider-box">
-								<view class="ui-slider-tit">右长度</view>
+								<view class="ui-slider-tit">右距离</view>
 								<view class="ui-slider">
 									<u-slider min="0" max="4" step="0.1" @changing="levelChanging($event, 'right')"
 										v-model="editFrom.deviceLocationTop.roomRight" activeColor="#eeaa3d"

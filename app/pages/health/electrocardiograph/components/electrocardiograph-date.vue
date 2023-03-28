@@ -15,7 +15,7 @@
 				<u-icon name="arrow-right" size="28rpx" ></u-icon>
 			</view>
 		</view>
-		<view class="ui-window" v-for="(item,index) in cellList" :key="index">
+		<view class="ui-window" v-for="(item,index) in cellList" :key="index" @click="handleChange(item)">
 			<view class="ui-window-content">
 				<view class="ui-circle"></view>
 				<view class="ui-window-font">{{item.time}}</view>
@@ -62,8 +62,12 @@
 					value:'',
 					input:false
 				}],
-				option:{},
-				mapList:[]
+				option:{},//echart配置
+				mapList:[],//echart series数组
+				dataList:[],//erchart x轴数组
+				lenList:[],//定时器处理数组
+				count:90,//计数器
+				allCount:0//总数组长度
 			}
 		},
 		watch: {
@@ -86,16 +90,147 @@
 				}).then(res=>{
 					console.log(res,'res')
 					let list = []
-					this.mapList = res.data.MapList.map(item=>{
-						console.log(item,'item')
-						return [item.time,item.value.split(",")]
-					}).forEach(item=>{
-						list = [...list,item[1]]
+					this.cellList = res.data.MapList.map(item=>{
+						return {
+							time:uni.$u.timeFormat(item.time, 'hh:MM'),
+							list:item.value.split(","),
+							num:0,
+							value:'',
+							input:false
+						}
 					})
-					console.log(list,'list')
-					console.log(this.mapList,'mapList')
+
+					console.log(this.cellList,'cellList')
+					this.cellList[0].list.forEach(item=>{
+						list.push(item)
+					})
+					// console.log(list.slice(90,list.length),'list')
+					this.allCount = list.length
+					for(let i =0;i<this.count;i++){
+						this.mapList.push(list[i])
+					}
+					this.lenList = list.slice(this.count,list.length)
+					let len = this.lenList.length
+					// setInterval(()=>{
+					// 	console.log('定时器----------------------')
+					// 	if(this.count == this.allCount){
+					// 		return
+					// 	}else{
+					// 		for(let i =0;i<this.lenList.length;i++){
+					// 			this.count++
+					// 			this.mapList.push(this.lenList[i])
+					// 			this.mapList.shift()
+					// 			return
+					// 		}
+					// 	}
+					// 	this.dataList.push(len++)
+					// 	this.dataList.shift()
+					// },100)
+					this.option = {
+						title: {
+							text: ''
+						},
+						tooltip: {
+							trigger: 'axis'
+						},
+						legend: {
+							data: []
+						},
+						grid: {
+							left: '20',
+							right: '20',
+							bottom: '5',
+							top:'20',
+							containLabel: true
+						},
+						toolbox: {
+						},
+						xAxis: {
+							type: 'category',
+							boundaryGap: false,
+							data:this.dataList,
+							axisTick: {
+								show: false
+							},
+							axisLabel: {
+								show:false
+							},
+							axisLine: {
+								show: false
+							},
+						},
+						yAxis: {
+							type: 'value',
+							min:'-1000',
+							max:'1000',
+							axisTick: {
+								show: false
+							},
+							axisLabel: {
+								show: false
+							},
+							axisLine: {
+								show: false
+							},
+							splitLine: {
+								show: true,
+								lineStyle:{
+									type:'disable'
+								}
+							},
+						},
+						series: [
+							{
+								name: 'Union Ads',
+								type: 'line',
+								stack: 'Total',
+								data: this.mapList,
+								showSymbol: false,
+								itemStyle: {
+									normal: {
+										lineStyle: {
+											color: "#63DDBA",
+											width: 1
+										}
+									}
+								},
+							}
+						]
+					};
 				})
-				
+			},
+			handleChange(val){
+				console.log(val,'val')
+				let list = []
+				this.mapList = []
+				this.lenList = []
+				this.count = 90
+				this.allCount = 0
+				val.list.forEach(item=>{
+					list.push(item)
+				})
+				// console.log(list.slice(90,list.length),'list')
+				this.allCount = list.length
+				for(let i =0;i<this.count;i++){
+					this.mapList.push(list[i])
+				}
+				this.lenList = list.slice(this.count,list.length)
+				let len = this.lenList.length
+				setInterval(()=>{
+					console.log('定时器----------------------')
+					if(this.count == this.allCount){
+						return
+					}else{
+						for(let i =0;i<this.lenList.length;i++){
+							this.count++
+							this.mapList.push(this.lenList[i])
+							this.mapList.shift()
+							return
+						}
+					}
+					this.dataList.push(len++)
+					this.dataList.shift()
+				},100)
 				this.option = {
 					title: {
 						text: ''
@@ -116,11 +251,9 @@
 					toolbox: {
 					},
 					xAxis: {
-						type: 'time',
-						interval:1000, // 间隔为6小时
-						min: new Date(`${this.time + ' 00:00:00'}`), // x轴起始时间
-						max: new Date(`${this.time + ' 23:59:59'}`), // x轴结束时间
+						type: 'category',
 						boundaryGap: false,
+						data:this.dataList,
 						axisTick: {
 							show: false
 						},
@@ -133,6 +266,8 @@
 					},
 					yAxis: {
 						type: 'value',
+						min:'-500',
+						max:'500',
 						axisTick: {
 							show: false
 						},
@@ -154,7 +289,7 @@
 							name: 'Union Ads',
 							type: 'line',
 							stack: 'Total',
-							data: ['240', '180', '60', '120', '120','60','60'],
+							data: this.mapList,
 							showSymbol: false,
 							itemStyle: {
 								normal: {
@@ -167,7 +302,7 @@
 						}
 					]
 				};
-			},
+			}
 		}
 	}
 </script>
@@ -246,5 +381,4 @@
 			margin: 0 auto;
 		}
 	}
-	
 </style>
