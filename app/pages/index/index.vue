@@ -29,14 +29,16 @@
 					:inactiveStyle="{color: '#888888', fontSize: '40rpx'}"></u-tabs>
 			</view>
 			<!-- /家庭tab -->
-			
+
 			<!-- 家庭列表 -->
 			<template v-if="familyList.length">
-				<scroll-view :scroll-y="true" class="ui-scroll" refresher-enabled :refresher-triggered="isRefresh" @refresherrefresh="pullDownRefresh" refresher-background="transparent" lower-threshold="10">
+				<scroll-view :scroll-y="true" class="ui-scroll" refresher-enabled :refresher-triggered="isRefresh"
+					@refresherrefresh="pullDownRefresh" refresher-background="transparent" lower-threshold="10">
 					<view class="ui-group" v-for="(familyItem, index) of familyList" :key="'family' + index">
 						<view class="ui-title">
 							<view>
-								<u-text :text="familyItem.name" size="32rpx" :iconStyle="{height: '40rpx', width: '40rpx'}"
+								<u-text :text="familyItem.name" size="32rpx"
+									:iconStyle="{height: '40rpx', width: '40rpx'}"
 									prefixIcon="../../static/images/index/home.png"></u-text>
 							</view>
 							<view class="ui-share-box">
@@ -52,85 +54,16 @@
 									height: '40rpx', width: '40rpx'
 								}" text="分享" v-if="familyItem.shareFlag === '2'"></u-text>
 							</view>
-					
+
 						</view>
 						<view class="ui-device">
 							<!-- 房间 -->
-							<view class="ui-list" v-for="room of familyItem.rooms" :key="'r' + room.roomId">
-								<template v-if="getDeives(room).deviceId">
-									<!-- 雷达波设备 -->
-									<view class="ui-list-box active" @click="goDeciveDetails(getDeives(room))">
-										<image src="../../static/images/leida-nm.png"></image>
-										<view class="ui-device-info">
-											<text>{{room.name || '未命名房间'}}</text>
-											<view class="ui-device-name">
-												<view class="ui-list-static"
-													:class="{online: getDeives(room).onlineFlag === '1'}"></view>
-												<text class="ui-list-static-font">{{getDeives(room).onlineFlag==='1' ? '在线':'离线'}}</text>
-												<view class="ui-list-people"
-													:class="{online: getDeives(room).hasPerson === '1'}"></view>
-												<text class="ui-list-static-font">{{getDeives(room).hasPerson==='1' ? '有人':'无人'}}</text>
-											</view>
-										</view>
-										<u-badge v-if="getDeives(room).msgNum > 1" color="#fff" :offset="[-1, 0]"
-											:value="getDeives(room).msgNum" absolute>
-										</u-badge>
-									</view>
-								</template>
-								<!-- 空房间 -->
-								<template v-else>
-									<view class="ui-list-box ui-list-room active"
-										@click="bindDevice(room,familyItem.shareFlag)">
-										<view >
-											<u-text :block="false" :text="room.name || '未命名房间'"
-												:prefixIcon="getRoomIcon(room.roomType)" size="36rpx"
-												:iconStyle="{height: '48rpx', width: '48rpx',marginRight:'20rpx'}"></u-text>
-										</view>
-										<text v-if="familyItem.shareFlag == '2'" class="ui-link">点击绑定设备</text>
-										<text v-else>暂无设备</text>
-									</view>
-								</template>
-								<!-- /空房间 -->
-							</view>
+							<room-card :rooms="familyItem.rooms" :shareFlag="familyItem.shareFlag"
+								@confirm="handleInitList" />
 							<!-- 房间 -->
+							<human-card :humans="familyItem.humans" :shareFlag="familyItem.shareFlag"
+								@confirm="handleInitList" />
 							<!-- 人员 -->
-							<view class="ui-list" v-for="human of familyItem.humans" :key="'human' + human.humanId">
-								<template v-if="getDeives(human).deviceId">
-									<view class="ui-list-box active" v-if="getDeives(human).type === '1'"
-										@click="goDeciveDetails(getDeives(human))">
-										<image src="../../static/images/dzqgk.png"></image>
-										<view class="ui-device-info">
-											<text>{{human.name || '未命名人员'}}</text>
-											<view class="ui-device-name">
-												<view class="ui-list-static"
-													:class="{online: getDeives(human).onlineFlag === '1'}"></view>
-												<text class="ui-list-static-font"
-													v-if="getDeives(human).onlineFlag === '1'">在线</text>
-												<text class="ui-list-static-font" v-else>离线</text>
-											</view>
-										</view>
-										<u-badge v-if="getDeives(human).msgNum > 1" color="#fff" :offset="[-1, 0]"
-											:value="getDeives(human).msgNum" absolute>
-										</u-badge>
-									</view>
-								</template>
-								<!-- 空人员 -->
-								<template v-else>
-									<view class="ui-list-box ui-list-room active"
-										@click="bindDevice(human, familyItem.shareFlag)">
-										<view >
-											<u-text :block="false" :text="human.name"
-												prefixIcon="../../static/images/add-person.png" size="36rpx"
-												:iconStyle="{height: '48rpx', width: '48rpx',marginRight:'20rpx'}"></u-text>
-										</view>
-										<text v-if="familyItem.shareFlag == '2'" class="ui-link">点击绑定设备</text>
-										<text v-else>暂无设备</text>
-									</view>
-								</template>
-								<!-- /空人员 -->
-							</view>
-							<!-- 人员 -->
-					
 							<!-- 新增房间 -->
 							<view class="ui-list ui-list-add" v-if="familyItem.shareFlag == '2'">
 								<view class="ui-list-box" @click="addRoom(familyItem)">
@@ -149,20 +82,8 @@
 				</scroll-view>
 			</template>
 			<!-- /家庭列表 -->
-			<!-- 空户 -->
-			<template v-else>
-				<view class="ui-default">
-					<image src="../../static/images/index/empty.png" mode=""></image>
-					<text>未添加任何家庭</text>
-				</view>
-				<!-- 添加 -->
-				<view class="ui-add-btn">
-					<image @click="addStep" src="../../static/images/index/add-family.png" mode=""></image>
-					<text>新建家庭</text>
-				</view>
-			</template>
-			<!-- /空户 -->
-			
+
+
 			<add-step ref="addStepRef"></add-step>
 			<bind-device :payload="bindPayload" @next="handleInitList" ref="indexBindDev" />
 			<room-pop ref="indexAddRoom" @update="handleInitList" />
@@ -189,9 +110,18 @@
 	import
 	AppHandle
 	from '@/components/add-handle/add-handle.vue';
+	import
+	RoomCard
+	from './components/room-card.vue';
+	import
+	HumanCard
+	from './components/human-card.vue';
+
 	export default {
 		components: {
-			AppHandle
+			AppHandle,
+			RoomCard,
+			HumanCard
 		},
 		data() {
 			return {
@@ -204,9 +134,9 @@
 				/**当前选中的家庭**/
 				currentTab: '',
 				/**下拉刷新状态**/
-				isRefresh:false,
+				isRefresh: false,
 				/**轮询定时器**/
-				timer:null
+				timer: null
 			}
 		},
 		computed: {
@@ -269,9 +199,9 @@
 		},
 		onShow() {
 			this.handleInitList();
-			this.timer = setInterval(()=>{
+			this.timer = setInterval(() => {
 				this.forIndexFun()
-			},1000*60)
+			}, 1000 * 60)
 		},
 		onHide() {
 			clearInterval(this.timer)
@@ -289,22 +219,22 @@
 					this.forIndexFun(),
 					this.getReadInfo(),
 					this.getPushMsgState()
-				]).then(res=>{
+				]).then(res => {
 					this.isRefresh = false;
 				})
-				
+
 			},
-			forIndexFun(){
+			forIndexFun() {
 				return new Promise(resolve => {
-					forIndex().then(res=>{
-						console.log(res,'res')
+					forIndex().then(res => {
+						console.log(res, 'res')
 						this.$store.commit('setFamilyList', res[0].data.rows);
 						this.$store.commit('setDevicesList', res[1].data.rows);
 						this.isRefresh = false;
 					})
 				})
 			},
-			pullDownRefresh(){
+			pullDownRefresh() {
 				this.isRefresh = true;
 				this.handleInitList();
 			},
@@ -339,9 +269,9 @@
 				let url;
 				if (info.type === '0') { // 雷达波
 					url = '/pages/equipment/radar-detail/radar-detail';
-				} else if(info.type === '1'){ // 监控设备
+				} else if (info.type === '1') { // 监控设备
 					url = '/pages/card/card-detail/card-detail';
-				} else {// 电子手表
+				} else { // 电子手表
 					url = '/pages/watch/watch-detail/watch-detail';
 				}
 				this.$setCache('familyId', info.familyId);
@@ -418,10 +348,11 @@
 	}
 </script>
 
-<style lang="scss">
-	.ui-scroll{
+<style lang="scss" scoped>
+	.ui-scroll {
 		height: calc(100vh - (var(--window-bottom) + 315rpx + var(--status-bar-height)))
 	}
+
 	.ui-scan {
 		display: flex;
 		position: absolute;
@@ -531,10 +462,13 @@
 
 		.ui-device {
 			display: inline-block;
-			width: calc(100% - 64rpx);
+			width: calc(100%);
 			margin-top: 36rpx;
+			padding-left: 32rpx;
+			padding-right: 32rpx;
 
 			.ui-list {
+				margin-left: 20rpx;
 				margin-bottom: 20rpx;
 				float: left;
 				height: 160rpx;
@@ -561,78 +495,6 @@
 						height: 100rpx;
 						width: 100rpx;
 					}
-
-					.ui-device-info {
-						display: flex;
-						align-items: flex-start;
-						flex-direction: column;
-						margin-left: 10rpx;
-
-						text {
-							display: inline-block;
-							font-size: 36rpx;
-							color: #353535;
-						}
-					}
-
-
-
-					.ui-device-name {
-						display: flex;
-						align-items: center;
-						flex-direction: row;
-						margin-top: 16rpx;
-						color: #888888;
-						font-size: 26rpx;
-
-						.ui-list-static-font {
-							font-size: 26rpx;
-							margin-right: 10rpx;
-							color: #888888;
-						}
-					}
-
-					.ui-list-static {
-						margin-right: 6rpx;
-						margin-bottom: 6rpx;
-						height: 36rpx;
-						width: 36rpx;
-						border-radius: 50% 50%;
-						background-image: url('@/static/images/index/off-line.png');
-						background-size: 100% 100%;
-
-						&.online {
-							background-image: url('@/static/images/index/online.png');
-							background-size: 100% 100%;
-						}
-					}
-
-					.ui-list-people {
-						margin-right: 6rpx;
-						margin-bottom: 6rpx;
-						height: 36rpx;
-						width: 36rpx;
-						border-radius: 50% 50%;
-						background-image: url('@/static/images/index/nobody.png');
-						background-size: 100% 100%;
-
-						&.online {
-							background-image: url('@/static/images/index/someone.png');
-							background-size: 100% 100%;
-						}
-					}
-
-					&.ui-list-room {
-						flex-direction: column;
-						align-items: center;
-						justify-content: center;
-						padding: 0;
-
-						>text {
-							margin-top: 26rpx;
-							font-size: 24rpx;
-						}
-					}
 				}
 
 				&.ui-list-add {
@@ -646,6 +508,7 @@
 						justify-content: center;
 						flex-direction: column;
 						padding: 0;
+
 						text {
 							margin-top: 20rpx;
 							font-size: 24rpx !important;
