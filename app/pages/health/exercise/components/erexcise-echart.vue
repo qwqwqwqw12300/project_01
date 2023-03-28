@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-		<app-echarts :option="type == 'date' ? optionDate: optionWeek" id="myChart" class="myChart"></app-echarts>
+		<app-echarts :option="options" id="myChart" class="myChart"></app-echarts>
 	</view>
 </template>
 
@@ -10,71 +10,55 @@
 			type: {
 				default: 'date'
 			},
-			optionDate: {
-				default: function() {
-					return {
-						notMerge: true,
-						tooltip: {
-							trigger: ''
+			options: {
+					notMerge: true,
+					tooltip: {
+						trigger: ''
+					},
+					grid: {
+						left: '0',
+						right: '0',
+						bottom: '0',
+						top: '10',
+						containLabel: true
+					},
+					xAxis: [{
+						type: 'time',
+						interval: 6 * 3600 * 1000, // 间隔为6小时
+						min: new Date(`${res.value + ' 00:00:00'}`), // x轴起始时间
+						max: new Date(`${res.value + ' 23:59:59'}`), // x轴结束时间
+						boundaryGap: false,
+						axisTick: { //坐标轴刻度相关设置。
+							show: false,
 						},
-						grid: {
-							left: '0',
-							right: '0',
-							bottom: '0',
-							top: '10',
-							containLabel: true
+					}],
+					yAxis: [{
+						type: "value",
+						axisLine: {
+							show: false
 						},
-						xAxis: {
-							type: 'category',
-							data: ['00:00', '06:00', '12:00', '18:00', '23:59'],
-							axisTick: {
-								show: false
-							},
+						axisTick: {
+							show: false
 						},
-						yAxis: {
-							type: 'value',
-							axisTick: {
-								show: false
-							},
-							axisLine: {
-								show: false
-							},
-							data: [0, 25, 50, 70, 100],
+						data: [0, 25, 50, 70, 100],
+					}],
+					series: [{
+						data: [
+							[new Date('2023-3-28 00:00:00'), '1'],
+							[new Date('2023-3-28 06:00:00'), '2'],
+							[new Date('2023-3-28 12:00:00'), '3'],
+							[new Date('2023-3-28 18:00:00'), '4'],
+							[new Date('2023-3-28 23:59:59'), '5'],
+						],
+						type: 'bar',
+						itemStyle: { //---图形形状
+							color: '#61AAF7',
+							barBorderRadius: [18, 18, 0, 0],
 						},
-						series: [{
-								data: [10, 25, 50, 70, 100],
-								type: 'bar',
-								itemStyle: { //---图形形状
-									color: '#61AAF7',
-									barBorderRadius: [18, 18, 0, 0],
-								},
-								barWidth: '10', //---柱形宽度
-								barCategoryGap: '20%', //---柱形间距
-							},
-							{
-								data: [50, 100, 50, 70, 100],
-								type: 'bar',
-								itemStyle: { //---图形形状
-									color: '#61AAF7',
-									barBorderRadius: [18, 18, 0, 0],
-								},
-								barWidth: '10', //---柱形宽度
-								barCategoryGap: '20%', //---柱形间距
-							},
-							{
-								data: [25, 50, 50, 70, 100],
-								type: 'bar',
-								itemStyle: { //---图形形状
-									color: '#61AAF7',
-									barBorderRadius: [18, 18, 0, 0],
-								},
-								barWidth: '10', //---柱形宽度
-								barCategoryGap: '20%', //---柱形间距
-							}
-						]
-					}
-				}
-			},
+						barWidth: '10', //---柱形宽度
+						barCategoryGap: '20%', //---柱形间距
+					}, ]
+				},
 			optionWeek: {
 				default: function() {
 					return {

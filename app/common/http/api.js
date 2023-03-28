@@ -622,3 +622,34 @@ export const GetListBloodOxygenByWeek = (params) => http.get('/api/tWatch/listBl
  * 查询心电数据
  */
 export const GetListElectrocardiogramByDay = (params) => http.get('/api/tWatch/listElectrocardiogramByDay', params, {});
+
+/**
+ * 查询日步数数据
+ */
+export const GetListStepNumByDay = (params) => http.get('/api/tWatch/listStepNumByDay', params, {});
+
+/**
+ * 查询周步数数据
+ */
+export const GetListStepNumByWeek = (params) => http.get('/api/tWatch/listStepNumByWeek', params, {});
+
+/**
+ * 查询日卡路里数据
+ */
+export const GetListCalorieByDay = (params) => http.get('/api/tWatch/listCalorieByDay', params, {});
+
+/**
+ * 查询周卡路里数据
+ */
+export const GetListCalorieByWeek = (params) => http.get('/api/tWatch/listCalorieByWeek', params, {});
+
+/**
+ * 查询日时长数据
+ */
+export const GetListExerciseDurationByDay = (params) => http.get('/api/tWatch/listExerciseDurationByDay', params, {});
+
+/**
+ * 查询周时长数据
+ */
+export const GetListExerciseDurationByWeek = (params) => http.get('/api/tWatch/listSExerciseDurationByWeek', params, {});
+
