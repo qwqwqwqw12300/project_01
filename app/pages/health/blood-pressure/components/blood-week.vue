@@ -94,10 +94,16 @@
 					this.dateList[0].value = res.data.spAvg
 					this.dateList[1].value = res.data.dpAvg
 					for(let i =0;i<res.data.spMapList.length;i++){
-						this.spMapList.push(res.data.spMapList[i].value)
+						this.spMapList.push([
+							res.data.spMapList[i].time,
+							res.data.spMapList[i].value
+						])
 					}
 					for(let i =0;i<res.data.dpMapList.length;i++){
-						this.dpMapList.push(res.data.dpMapList[i].value)
+						this.dpMapList.push([
+							res.data.dpMapList[i].time,
+							res.data.dpMapList[i].value
+						])
 					}
 				})
 				this.option = {
@@ -112,7 +118,7 @@
 						data: []
 					},
 					grid: {
-						left: '0',
+						left: '20',
 						right: '20',
 						bottom: '5',
 						top:'20',
@@ -121,23 +127,48 @@
 					toolbox: {
 					},
 					xAxis: {
-						type: 'category',
+						type: 'time',
 						boundaryGap: false,
-						data:['周一','周二','周三','周四','周五','周六','周日'],
+						interval: 24 * 3600 * 1000,
+						min: new Date(`${this.time[0] + ' 00:00:00'}`), // x轴起始时间
+						max: new Date(`${this.time[6] + ' 00:00:00'}`), // x轴结束时间
 						axisTick: {
 							show: false
+						},
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							},
+							formatter: function(val,index) {
+								const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+								return index == 7 ? '' : weekArr[new Date(val).getDay()]
+							}
 						},
 					},
 					yAxis: {
-						type: 'value',
-						axisTick: {
+						type: "value",
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							}
+						},
+						nameTextStyle: {
+							color: "#666",
+							fontSize: 12,
+							lineHeight: 40
+						},
+						// 分割线
+						splitLine: {
+							lineStyle: {
+								type: "dashed",
+								color: "#E9E9E9"
+							}
+						},
+						axisLine: {
 							show: false
 						},
-						splitLine: {
-							show: true,
-							lineStyle:{
-								type:'disable'
-							}
+						axisTick: {
+							show: false
 						}
 					},
 					series: [{

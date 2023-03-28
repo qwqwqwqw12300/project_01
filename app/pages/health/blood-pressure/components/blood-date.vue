@@ -147,6 +147,14 @@
 						axisTick: {
 							show: false
 						},
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							},
+							formatter: function(val) {
+								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
+							}
+						},
 					},
 					yAxis: {
 						type: 'value',

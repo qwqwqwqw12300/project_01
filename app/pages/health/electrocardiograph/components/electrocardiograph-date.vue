@@ -39,7 +39,15 @@
 
 <script>
 	import * as echarts from '@/static/js/echarts.js';
+	import {
+		GetListElectrocardiogramByDay
+	} from '@/common/http/api';
 	export default {
+		props:{
+			time:{
+				default:''
+			}
+		},
 		data() {
 			return {
 				cellList:[{
@@ -53,23 +61,41 @@
 					num:'90',
 					value:'',
 					input:false
-				},
-				{
-					time:'21:29',
-					num:'90',
-					value:'',
-					input:false
-				}]
+				}],
+				option:{},
+				mapList:[]
 			}
 		},
-		created() {
-			this.logstatrt();
+		watch: {
+			time: {
+				handler(val) {
+					console.log(val, '333333333')
+					if (val) {
+						this.logstatrt();
+					}
+				},
+				immediate:true //监听到数据立即执行
+			}
 		},
 		methods: {
-			onSelect(val) {
-				console.log(val, '000')
-			},
 			logstatrt() {
+				GetListElectrocardiogramByDay({
+					deviceId:240,
+					dayTime:this.time,
+					humanId:'116'
+				}).then(res=>{
+					console.log(res,'res')
+					let list = []
+					this.mapList = res.data.MapList.map(item=>{
+						console.log(item,'item')
+						return [item.time,item.value.split(",")]
+					}).forEach(item=>{
+						list = [...list,item[1]]
+					})
+					console.log(list,'list')
+					console.log(this.mapList,'mapList')
+				})
+				
 				this.option = {
 					title: {
 						text: ''
@@ -90,16 +116,23 @@
 					toolbox: {
 					},
 					xAxis: {
-						type: 'category',
+						type: 'time',
+						interval:1000, // 间隔为6小时
+						min: new Date(`${this.time + ' 00:00:00'}`), // x轴起始时间
+						max: new Date(`${this.time + ' 23:59:59'}`), // x轴结束时间
 						boundaryGap: false,
-						data: ['周日','周一','周二','周三','周四','周五','周六'],
 						axisTick: {
+							show: false
+						},
+						axisLabel: {
+							show:false
+						},
+						axisLine: {
 							show: false
 						},
 					},
 					yAxis: {
-						type: 'category',
-						data: ['0', '60', '120', '180', '240'],
+						type: 'value',
 						axisTick: {
 							show: false
 						},

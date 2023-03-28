@@ -67,8 +67,8 @@
 					xAxis: [{
 						type: 'time',
 						interval: 6 * 3600 * 1000, // 间隔为6小时
-						min: new Date(`${'2023-03-24' + ' 00:00:00'}`), // x轴起始时间
-						max: new Date(`${'2023-03-24' + ' 23:59:59'}`), // x轴结束时间
+						min: new Date(`${option.value + ' 00:00:00'}`), // x轴起始时间
+						max: new Date(`${option.value + ' 23:59:59'}`), // x轴结束时间
 						boundaryGap: false,
 						axisTick: { //坐标轴刻度相关设置。
 							show: false,
@@ -76,6 +76,9 @@
 						axisLabel: {
 							textStyle: {
 								color: "#666"
+							},
+							formatter: function(val) {
+								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
 							}
 						},
 						axisLine: {
@@ -83,7 +86,7 @@
 								color: 'rgb(238,238,238)',
 								width: 1
 							}
-						}
+						},
 					}, ],
 					yAxis: [{
 						type: "value",
@@ -126,7 +129,7 @@
 					}]
 				}
 			},
-			weekFun(){
+			weekFun(option){
 				this.options = {
 					tooltip: {
 						trigger: 'axis'
@@ -138,7 +141,10 @@
 						containLabel: true
 					},
 					xAxis: [{
-						type: 'category',
+						type: 'time',
+						interval: 24 * 3600 * 1000,
+						min: new Date(`${option.value[0] + ' 00:00:00'}`), // x轴起始时间
+						max: new Date(`${option.value[6] + ' 00:00:00'}`), // x轴结束时间
 						boundaryGap: false,
 						axisTick: { //坐标轴刻度相关设置。
 							show: false,
@@ -146,6 +152,12 @@
 						axisLabel: {
 							textStyle: {
 								color: "#666"
+							},
+							formatter: function(val,index) {
+								console.log(val,index, 'dddd----------')
+								const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+								return index == 7 ? '' : weekArr[new Date(val).getDay()]
+								// return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
 							}
 						},
 						axisLine: {
@@ -154,7 +166,6 @@
 								width: 1
 							}
 						},
-						data:['周一','周二','周三','周四','周五','周六','周日'],
 					}, ],
 					yAxis: [{
 						type: "value",
@@ -193,15 +204,7 @@
 								},
 							}
 						},
-						data: [
-							['周一','10'],
-							['周二','10'],
-							['周三','10'],
-							['周四','10'],
-							['周五','10'],
-							['周六','10'],
-							['周日','10'],
-						]
+						data: this.dataList
 					}]
 				}
 			},
@@ -218,12 +221,12 @@
 					this.totalList[2].num = res.data.oxMap.minOx
 					for(let i =0;i<res.data.oxMap.dataList.length;i++){
 						this.dataList.push([
-							`${option.value} ${res.data.oxMap.dataList[i].time}`,
+							res.data.oxMap.dataList[i].time,
 							res.data.oxMap.dataList[i].value
 						])
 					}
 				})
-				this.dateFun()
+				this.dateFun(option)
 			},
 			handleWeek(option){
 				this.dataList = []
@@ -239,13 +242,13 @@
 					this.totalList[2].num = res.data.oxMap.minOx
 					for(let i =0;i<res.data.oxMap.dataList.length;i++){
 						this.dataList.push([
-							`${option.value} ${res.data.oxMap.dataList[i].time}`,
+							res.data.oxMap.dataList[i].time,
 							res.data.oxMap.dataList[i].value
 						])
 					}
 					console.log(this.dataList,'this.dataList')
 				})
-				this.weekFun()
+				this.weekFun(option)
 			},
 			onSelect(val) {
 				console.log(val, '000')
