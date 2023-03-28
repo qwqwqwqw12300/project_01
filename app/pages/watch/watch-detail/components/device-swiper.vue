@@ -11,16 +11,22 @@
 				</view>
 				<view class="status">
 					<view class="status-block">
-						<u-icon name="/static/images/link-sucess.png" size="20" style="margin-right: 6rpx;" />
-						<text>已连接</text>
+						<template v-if="record.currentStatus === '0'">
+							<u-icon name="/static/images/link-sucess.png" size="20" style="margin-right: 6rpx;" />
+							<text>已连接</text>
+						</template>
+						<template v-else>
+							<u-icon name="/static/images/link-false.png" size="20" style="margin-right: 6rpx;" />
+							<text>未连接</text>
+						</template>
 					</view>
 					<view class="status-block" style="margin-left:14rpx">
 						<u-icon name="/static/images/electricity.png" size="20" style="margin-right: 4rpx;" />
-						<text>电量:100%</text>
+						<text>电量:{{ record.currentPower }}</text>
 					</view>
 				</view>
 				<view class="time">
-					最近更新时间：2023年2月16日
+					最近更新时间：{{ record.updateTime }}
 				</view>
 			</view>
 			<view class="device-set" @click="jumpUrl">
@@ -36,12 +42,7 @@
 		props: {
 			record: {
 				type: Object,
-				default: () => {
-					return {
-						name: '张三的手环',
-						onlineFlag: '1',
-					}
-				},
+				default: () => {},
 			},
 		},
 		data() {

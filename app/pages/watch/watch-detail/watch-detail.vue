@@ -67,12 +67,10 @@
 				return familyId === n.familyId
 			}).devices
 			this.deviceList = allDevice.filter(n => {
-				return n.type === '1'
+				return n.type === '2'
 			})
 			this.current = this.deviceList.indexOf(this.deviceInfo)
 			this.swiperData = this.deviceList[this.current]
-			console.log(this.deviceList, '999')
-			// console.log(familyId, 'gg')
 		},
 		methods: {
 			swiperChange(val) {
@@ -94,7 +92,7 @@
 	}
 
 	.ui-banner {
-		// padding: 0 0rpx;
+		padding: 0 10rpx;
 
 		.ui-swiper {
 			height: 320rpx;
