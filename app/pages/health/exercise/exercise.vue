@@ -5,7 +5,7 @@
 			<date-picker @onSelect="onSelect"></date-picker>
 		</view>
 		<view class="ui-echart">
-			<exexcise-echart :type="type"></exexcise-echart>
+			<exexcise-echart :type="type" ></exexcise-echart>
 		</view>
 		<view class="day-title">
 			<text>日平均数据</text>
