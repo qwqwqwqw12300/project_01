@@ -55,8 +55,8 @@
 					trigger: 'axis'
 				},
 				grid: {
-					left: '5%',
-					right: '5%',
+					left: '3%',
+					right: '3%',
 					bottom: '3%',
 					containLabel: true
 				},
@@ -70,13 +70,18 @@
 						textStyle: {
 							color: "#666"
 						},
-						formatter: function(val) {
-							console.log(val, 'dddd----------')
+						formatter: function(val, index) {
 							const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-							return weekArr[new Date(val).getDay()]
+							return index === 7 ? '' : weekArr[new Date(val).getDay()]
+							// return weekArr[new Date(val).getDay()]
 							// return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
 						}
 					},
+					// nameLocation: 'end',
+					// nameTextStyle: {
+					// 	align: "center",
+					// 	padding: [33, 13, 12, 35]
+					// },
 					axisLine: {
 						lineStyle: {
 							color: 'rgb(238,238,238)',
@@ -143,13 +148,7 @@
 							}
 						}
 					},
-					data: [
-						[new Date('2023-3-22 00:00:00'), '4'],
-						[new Date('2023-3-23 06:00:00'), '2'],
-						[new Date('2023-3-24 12:00:00'), '3'],
-						[new Date('2023-3-25 18:00:00'), '6'],
-						[new Date('2023-3-26 23:50:59'), '5'],
-					]
+					data: []
 				}]
 			}
 			const dayOptions = {
@@ -327,13 +326,16 @@
 				val.type === 'date' ? this.handleDate(val) : this.handleWeek(val)
 			},
 			handleWeek(options) {
-				console
 				GetListHeartRateByWeek({
 					deviceId: 240,
 					beginDate: options.value[0],
 					endDate: options.value[6],
 					humanId: '1',
 				}).then(res => {
+					const data = res.data.MapList.map(n => {
+						return [new Date(n.time), n.value]
+					})
+					this.weekOptions.series[0].data = data
 					this.weekOptions.xAxis[0].min = new Date(uni.$u.timeFormat(new Date(options.value[0]),
 							'yyyy-mm-dd') +
 						' 00:00:00')
@@ -341,11 +343,9 @@
 							'yyyy-mm-dd') +
 						' 23:59:59')
 					this.options = this.weekOptions
-					console.log(this.options, 'oooooo------------')
 				})
 			},
 			handleDate(options) {
-				console.log(options, 'op')
 				GetListHeartRateByDay({
 					deviceId: 240,
 					dayTime: options.value,
@@ -354,7 +354,6 @@
 					const data = res.data.MapList.map(n => {
 						return [new Date(n.time), n.value]
 					})
-					console.log(data, 'dddddddddddddd')
 					this.$nextTick(() => {
 						this.dayOptions.xAxis[0].min = new Date(uni.$u.timeFormat(new Date(options.value),
 								'yyyy-mm-dd') +
