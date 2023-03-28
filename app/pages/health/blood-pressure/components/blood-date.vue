@@ -1,247 +1,302 @@
 <template>
-	<view >
+	<view>
 		<!-- <app-echarts :option="option" id="myChart" class="myChart"></app-echarts> -->
-		
-		
+		<view class="ui-content">
+			<view class="ui-title" v-for="(item,index) in list" :key="index">
+				<view class="ui-title-content">
+					<view class="ui-circle" :style="{backgroundColor:item.color}"></view>
+					<view class="ui-title-font">{{item.title}}</view>
+				</view>
+				<view style="margin-top: 8rpx;">
+					<text class="ui-font">{{item.value}}</text>
+					<text class="ui-content-font">mmHg</text>
+				</view>
+			</view>
+		</view>
+		<app-echarts :option="option" id="myChart" class="myChart"></app-echarts>
+		<view class="ui-statistics">
+			<view class="ui-date-title">日统计</view> 
+			<view class="ui-window">
+				<view v-for="(item,index) in dateList" :key="index" class="ui-statistics-content">
+					<view class="ui-statistics-title">{{item.title}}</view>
+					<view style="margin-top: 8rpx;">
+						<text class="ui-statistics-font">{{item.value}}</text>
+						<text class="ui-statistics-fonts">mmHg</text>
+					</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
 <script>
+	import * as echarts from '@/static/js/echarts.js';
+	import {
+		GetListBloodPressureByDay
+	} from '@/common/http/api';
 	export default {
+		props:{
+			time:{
+				default:''
+			}
+		},
 		data() {
 			return {
 				option: {},
-				sleepList:[{
-					color:'#68D688',
-					title:'总睡眠时长',
-					value:'6-10h'
-				},
-				{
-					color:'#8437DA',
-					title:'深睡 0%',
-					value:'10-40%'
-				},
-				{
-					color:'#C145C9',
-					title:'浅睡 0%',
-					value:'45-80%'
-				},
-				{
-					color:'#EFC356',
-					title:'清醒时长 0%',
-					value:'<10%'
-				}]
+				list: [{
+						color: '#FF7E23',
+						title: '收缩压',
+						value: '126'
+					},
+					{
+						color: '#63DDBA',
+						title: '舒张压',
+						value: '88'
+					}
+				],
+				dateList: [{
+						title: '平均收缩压',
+						value: '126'
+					},
+					{
+						title: '平均舒张压',
+						value: '88'
+					},
+					{
+						title: '最高收缩压',
+						value: '126'
+					},
+					{
+						title: '最高舒张压',
+						value: '88'
+					}
+				],
+				spMapList:[],//收缩压
+				dpMapList:[],//舒张压
 			}
 		},
-		created() {
-			this.logstatrt();
+		mounted() {
+			
+		},
+		watch: {
+			time: {
+				handler(val) {
+					console.log(val, '333333333')
+					if (val) {
+						this.logstatrt();
+					}
+				},
+				immediate:true //监听到数据立即执行
+			}
 		},
 		methods: {
-			onSelect(val) {
-				console.log(val, '000')
-			},
-			logstatrt(){
-				const types = ['任务一', '任务二', '任务三']
-				const series = [
-				    [
-				        ["00:01~00:35", "00:00", "04:35"],
-				        ["08:00~10:35", "12:00", "16:35"],
-				    ],
-				    [
-				        ["09:01~09:35", "04:35", "08:35"],
-					    ["06:00~07:35", "14:00", "18:00"],
-				    ],
-				    [
-				        ["00:00~04:45", "08:35", "12:35"],
-				        ["05:09~07:35", "16:00", "20:00"],
-				    ],
-				]
-				const colors = ['#EF7B8C', '#BF47CA', '#8538E0']
-				const dataSeries = types.map((item, index) => {
-				    return {
-				        type: 'custom',
-				        name: item,
-				        label: {
-				            show: true
-				        },
-				        encode: {
-				            x: [1, 2],
-				            // label: [0]
-				        },
-				        itemStyle: {
-				            color: colors[index]
-				        },
-				        data: series[index],
-				        renderItem:function(params,api){
-							const start = api.coord([api.value(1), params.seriesName])
-							const end = api.coord([api.value(2), params.seriesName])
-							const height = api.size([1, 1])[1]
-							const width = end[0] - start[0]
-						
-							var rectShape = echarts.graphic.clipRectByRect({
-								x: start[0],
-								y: start[1] - height / 2,
-								width: width,
-								height: height
-							}, {
-								x: params.coordSys.x,
-								y: params.coordSys.y,
-								width: params.coordSys.width,
-								height: params.coordSys.height
-							});
-						
-							return rectShape && {
-								type: 'rect',
-								shape: rectShape,
-								style: api.style()
-							}
-						}
-				    }
+			logstatrt() {
+				this.spMapList = []
+				this.dpMapList = []
+				GetListBloodPressureByDay({
+					deviceId:240,
+					dayTime:this.time,
+					humanId:'00000000000000000001'
+				}).then(res=>{
+					console.log(res,'res')
+					this.list[0].value = res.data.spAvg
+					this.list[1].value = res.data.dpAvg
+					this.dateList[0].value = res.data.spAvg
+					this.dateList[1].value = res.data.dpAvg
+					this.dateList[2].value = res.data.maxSp
+					this.dateList[3].value = res.data.maxDp
+					for(let i =0;i<res.data.spMapList.length;i++){
+						this.spMapList.push([
+							res.data.spMapList[i].time,
+							res.data.spMapList[i].value
+						])
+					}
+					for(let i =0;i<res.data.dpMapList.length;i++){
+						this.dpMapList.push([
+							res.data.dpMapList[i].time,
+							res.data.dpMapList[i].value
+						])
+					}
 				})
-				this.option= {
+				this.option = {
 					title: {
 						text: ''
 					},
-					//取消坐标轴
-					grid:{
-						left:'0',
-						right:'0',
-						bottom:'5',
-						top:'0',
-						// containLabel:false
+					tooltip: {
+						positionStatus:true,
+						trigger: 'axis',
+					},
+					legend: {
+						data: []
+					},
+					grid: {
+						left: '0',
+						right: '20',
+						bottom: '5',
+						top:'20',
+						containLabel: true
+					},
+					toolbox: {
 					},
 					xAxis: {
-						type: 'category',
+						type: 'time',
+						interval: 6 * 3600 * 1000, // 间隔为6小时
+						min: new Date(`${this.time + ' 00:00:00'}`), // x轴起始时间
+						max: new Date(`${this.time + ' 23:59:59'}`), // x轴结束时间
 						boundaryGap: false,
-						axisLabel: {
-							show: false
-						},
 						axisTick: {
 							show: false
 						},
-						axisLine: {
-							show: false
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							},
+							formatter: function(val) {
+								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
+							}
 						},
-						data: this.makeXAxis()
 					},
 					yAxis: {
-						type: 'category',
-						splitLine: {
-							show: true
-						},
-						axisLabel: {
-							show: false
-						},
+						type: 'value',
 						axisTick: {
 							show: false
 						},
-						axisLine: {
-							show: false
-						},
-						data: types
+						splitLine: {
+							show: true,
+							lineStyle:{
+								type:'disable'
+							}
+						}
 					},
-					series: dataSeries,
-				}
+					series: [{
+							name: '收缩压',
+							type: 'line',
+							stack: 'Total',
+							data:this.spMapList,
+							showSymbol: false,
+							itemStyle: {
+								normal: {
+									lineStyle: {
+										color: "#FF7E23",
+										width: 1
+									}
+								}
+							},
+						},
+						{
+							name: '舒张压',
+							type: 'line',
+							stack: 'Total',
+							data: this.dpMapList,
+							showSymbol: false,
+							itemStyle: {
+								normal: {
+									lineStyle: {
+										color: "#63DDBA",
+										width: 1
+									}
+								}
+							},
+						}
+					]
+				};
 			},
-			makeXAxis(){
-				const axis = []
-				for (let i = 0; i < 24; i++) {
-					for (let j = 0; j < 60; j++) {
-						const str = (i >= 10 ? i : ('0' + i)) + ':' + (j >= 10 ? j : ('0' + j))
-						axis.push(str)
-					}
-				}
-				return axis
-			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.box {
-		margin-top: 68rpx;
-	}
-	.ui-icon{
-		margin-left: 546rpx;
-	}
-	.myChart{
-		width: 90%;
-		height: 200rpx;
-		margin: 64rpx 32rpx 20rpx;
-	}
-	.ui-time{
-		width: 90%;
+	.ui-content {
+		width: 80%;
 		margin: 0 auto;
-		margin-bottom: 32rpx;
+		margin-top: 32rpx !important;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		font-size: 32rpx;
-		color: #353535;
-		letter-spacing: 0;
-		font-weight: 400;
-	}
-	.ui-content{
-		width: 90%;
-		height: 728rpx;
-		margin: 0 auto;
-		margin-top: 20rpx !important;
-		background-color: #FFFFFF;
-		border-radius: 16rpx;
-		.ui-title{
-			width:92%;
-			height: 136rpx;
-			margin: 0rpx 20rpx;
-			margin-bottom: 48rpx !important;
+
+		.ui-title {
 			display: flex;
-			align-items: center;
 			flex-direction: column;
 			justify-content: space-between;
-			.ui-title-content{
-				width: 100%;
-				margin-top: 32rpx;
+
+			.ui-title-content {
+				width: 90%;
 				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				.ui-left{
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					.ui-circle{
-						width: 30rpx;
-						height: 30rpx;
-						margin-right: 10rpx;
-						border-radius: 50rpx;
-					}
-					.ui-left-title{
-						font-size: 34rpx;
-						color: #353535;
-						letter-spacing: 0;
-						font-weight: 400;
-					}
+
+				.ui-circle {
+					width: 30rpx;
+					height: 30rpx;
+					margin-right: 10rpx;
+					border-radius: 50rpx;
 				}
-				.ui-right{
-					font-size: 34rpx;
-					color: #888888;
+
+				.ui-title-font {
+					font-size: 26rpx;
+					color: #353535;
+					letter-spacing: 0;
 					font-weight: 400;
-					display: flex;
-					align-items: center;
-					justify-content: center;
 				}
 			}
-			.ui-time{
-				margin-top: 20rpx;
-				// background-color: pink;
+		}
+
+		.ui-font {
+			font-size: 72rpx;
+			color: #353535;
+			letter-spacing: 0;
+			font-weight: 700;
+		}
+
+		.ui-content-font {
+			font-size: 26rpx;
+			color: #888888;
+			letter-spacing: 0;
+			font-weight: 400;
+		}
+	}
+	.myChart{
+		width: 90%;
+		height: 400rpx;
+		margin: 64rpx 32rpx 20rpx;
+	}
+	.ui-statistics{
+		margin-top: 32rpx;
+		display: flex;
+		flex-direction: column;
+		border-radius: 16rpx;
+		background-color: #FFF;
+		.ui-date-title{
+			margin-top: 32rpx;
+			margin-left: 20rpx;
+			font-size: 36rpx;
+			color: #353535;
+			letter-spacing: 0;
+			font-weight: 500;
+		}
+		.ui-window{
+			margin-bottom: 36rpx;
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			.ui-statistics-content{
+				width: 50%;
+				margin-top: 48rpx;
 				display: flex;
+				flex-direction: column;
 				align-items: center;
-				justify-content: flex-start;
-				.ui-font{
-					font-size: 56rpx;
+				.ui-content-title{
+					font-size: 26rpx;
+					color: #353535;
+					letter-spacing: 0;
+					font-weight: 400;
+				}
+				.ui-statistics-font{
+					font-size: 72rpx;
+					margin-right: 10rpx;
 					color: #353535;
 					letter-spacing: 0;
 					font-weight: 700;
 				}
-				.ui-time-font{
+				.ui-statistics-fonts{
 					font-size: 26rpx;
 					color: #888888;
 					letter-spacing: 0;

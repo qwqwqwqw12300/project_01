@@ -378,7 +378,7 @@
 			}
 		},
 		{
-			"path": "pages/health/index",
+			"path": "pages/health/index/index",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -580,16 +580,27 @@
 			}
 
 		},
+		//新增手表设备
 		{
-			"path": "pages/watch/add/add-watch",
+			"path": "pages/watch/add-watch",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
 					"titleNView": false
 				}
 			}
-
 		},
+		//手表设备详情
+		{
+			"path": "pages/watch/watch-detail/watch-detail",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		//手表设备设置
 		{
 			"path": "pages/watch/watch-set/watch-set",
 			"style": {
@@ -648,8 +659,56 @@
 				}
 			}
 		},
+		//心率
+		{
+			"path": "pages/health/heart-rate/heart-rate",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		//血氧
+		{
+			"path": "pages/health/blood-oxygen/blood-oxygen",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		//
 		{
 			"path": "pages/health/blood-pressure/blood-pressure",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/health/exercise/exercise",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/health/electrocardiograph/electrocardiograph",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/card/ceshi",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -680,7 +739,7 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/health/index",
+				"pagePath": "pages/health/index/index",
 				"iconPath": "/static/images/tabbar/jiankan.png",
 				"selectedIconPath": "/static/images/tabbar/jiankan-ac.png",
 				"text": "健康"

@@ -1,16 +1,16 @@
 <template>
 	<app-body :bg="false" >
-		<app-logo text="睡眠" :isShare="true"></app-logo>
+		<app-logo text="心电" :isShare="true"></app-logo>
 		<view class="box">
 			<date-picker @onSelect="onSelect"></date-picker>
 		</view>
-		<component ref="comRef" :is="tabKey"></component>
+		<component ref="comRef" :is="tabKey" :time="time"></component>
 	</app-body>
 </template>
 
 <script>
-	import date from './components/sleep-date.vue'
-	import week from './components/sleep-week.vue'
+	import date from './components/electrocardiograph-date.vue'
+	import week from './components/electrocardiograph-week.vue'
 	export default {
 		components: {
 			week,
@@ -18,7 +18,8 @@
 		},
 		data() {
 			return {
-				tabKey:'date'
+				tabKey:'date',
+				time:''
 			}
 		},
 		created() {
@@ -28,6 +29,8 @@
 			onSelect(val) {
 				console.log(val, '000')
 				this.tabKey = val.type
+				// this.time = val.value
+				this.time = '2023-1-10'
 			},
 			
 		}

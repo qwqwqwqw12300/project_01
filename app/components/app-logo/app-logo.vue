@@ -3,7 +3,7 @@
 		<text>
 			{{text}}
 		</text>
-		<u-icon v-if="isShare" name="../../../static/images/share@3x.png" size="26"></u-icon>
+		<u-icon v-if="iconUrl" :name="iconUrl" size="26"></u-icon>
 		<slot></slot>
 	</view>
 
@@ -26,9 +26,9 @@
 				type: String,
 				default: '#35353',
 			},
-			isShare: {
-				type: Boolean,
-				default: false
+			iconUrl: {
+				type: String,
+				default: ''
 			}
 		},
 		data() {

@@ -1,4 +1,4 @@
-<!-- 增加监护设备 -->
+<!-- 增加手表设备 -->
 <template>
 	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<app-logo color="#353535" text="绑定4G手表"></app-logo>
@@ -47,7 +47,7 @@
 				cardInfo: {
 					deviceNo: '',
 					deviceName: '',
-					deviceType: "1"
+					deviceType: '2'
 				}
 			}
 		},
@@ -56,11 +56,8 @@
 				uni.scanCode({
 					// scanType: ['barCode', 'qrCode'],
 					success: res => {
-						const {
-							scanType,
-							result
-						} = res
-						this.cardInfo.deviceNo = result
+						const result = JSON.parse(res.result)
+						this.cardInfo.deviceNo = result.dev_info.imei
 					},
 					false: res => {
 						console.log(res, '00000000000000000000000')
@@ -101,7 +98,7 @@
 			border-radius: 16px;
 			box-sizing: border-box;
 			padding: 20rpx;
-			
+
 			.box-bg {
 				width: 100%;
 				height: 100%;
@@ -110,6 +107,7 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
+
 				.img {
 					width: 100rpx;
 					height: 100rpx;

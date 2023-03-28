@@ -1,12 +1,10 @@
 <template>
 	<app-body :bg="false" >
-		<app-logo text="血压">
-			<u-icon class="ui-icon" :name="'../../../static/images/share@3x.png'" size="40rpx"></u-icon>
-		</app-logo>
+		<app-logo text="血压" :isShare="true"></app-logo>
 		<view class="box">
 			<date-picker @onSelect="onSelect"></date-picker>
 		</view>
-		<component ref="comRef" :is="tabKey"></component>
+		<component ref="comRef" :is="tabKey" :time="time"></component>
 	</app-body>
 </template>
 
@@ -20,7 +18,8 @@
 		},
 		data() {
 			return {
-				tabKey:'date'
+				tabKey:'date',
+				time:''
 			}
 		},
 		created() {
@@ -30,6 +29,7 @@
 			onSelect(val) {
 				console.log(val, '000')
 				this.tabKey = val.type
+				this.time = val.value
 			},
 			
 		}

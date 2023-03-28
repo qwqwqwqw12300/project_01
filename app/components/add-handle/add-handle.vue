@@ -43,7 +43,7 @@
 						{
 							name: '4G健康手表',
 							icon: '/static/images/watch.png',
-							url: '/pages/watch/add/add-watch'
+							url: '/pages/watch/add-watch'
 						}
 					]
 				},
