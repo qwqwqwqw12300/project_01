@@ -26,14 +26,18 @@
 							<!-- /雷达波设备 -->
 							<!-- 电子牵挂卡设备 -->
 							<dzqgk-card v-if="item.type === '1'" :device="item" @change="init" :key="'dzqgk' + index"
-								@bind="bindingHuman" />
+								@bind="bindingHuman($event, '1')" />
 							<!-- 电子牵挂卡设备 -->
+							<!-- 4g手表设备 -->
+							<watch-card v-if="item.type === '2'" :device="item" @change="init" :key="'watch' + index"
+								@bind="bindingHuman($event, '2')" />
+							<!-- /4g手表设备 -->
 						</template>
 					</view>
 				</view>
 			</view>
 			<view class="ui-btn"><button class="default" @click="show = true">添加设备</button></view>
-			<AppHandle :isShow="show" :safeShow="safeAreaShow = true" @cancle="show = false"></AppHandle>
+			<app-handle :isShow="show" :safeShow="safeAreaShow = true" @cancle="show = false"></app-handle>
 			<select-bind ref="selectRef" @comfirm="bindSubmit"></select-bind>
 			<select-human ref="selectHumanRef" @comfirm="bindHumanSubmit"></select-human>
 		</app-body>
@@ -49,7 +53,8 @@
 		setDevice,
 		relDevice,
 		getDeviceListState,
-		PostUpdateCareCardBind
+		PostUpdateCareCardBind,
+		PostUpdateWatchBind
 	} from '@/common/http/api.js';
 	import {
 		mapState,
@@ -70,13 +75,17 @@
 	import
 	SelectHuman
 	from './components/select-human.vue';
+	import
+	WatchCard
+	from './components/watch-card.vue';
 	export default {
 		components: {
 			AppHandle,
 			DeviceCard,
 			SelectBind,
 			DzqgkCard,
-			SelectHuman
+			SelectHuman,
+			WatchCard
 		},
 		data() {
 			return {
@@ -84,6 +93,8 @@
 				safeAreaShow: false,
 				list: [],
 				dzqgkList: [],
+				// 绑定的设备 1 -电子牵挂卡 2-手表
+				bindType: '1',
 				back: () => {
 					uni.switchTab({
 						url: '/pages/myself/myself'
@@ -138,7 +149,8 @@
 			/**
 			 * 绑定人员
 			 */
-			bindingHuman(deviceId) {
+			bindingHuman(deviceId, type) {
+				this.bindType = type;
 				this.$refs.selectHumanRef.open(deviceId);
 			},
 
@@ -166,7 +178,8 @@
 			 */
 			bindHumanSubmit(form) {
 				if (form.familyId && form.humanId) {
-					PostUpdateCareCardBind({
+					const post = this.bindType === '1' ? PostUpdateCareCardBind : PostUpdateWatchBind;
+					post({
 						...form,
 					}).then(res => {
 						uni.$u.toast(res.msg);
@@ -174,8 +187,9 @@
 							this.init();
 						}, 1000);
 					})
+
 				} else {
-					uni.$u.toast('请选择要绑定的房间');
+					uni.$u.toast('请选择要绑定的人员');
 				}
 			},
 

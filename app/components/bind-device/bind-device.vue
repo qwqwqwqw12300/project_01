@@ -32,7 +32,8 @@
 	} from 'vuex';
 	import {
 		PostUpdateCareCardBind,
-		setDevice
+		setDevice,
+		PostUpdateWatchBind
 	} from '../../common/http/api';
 	export default {
 		props: {
@@ -55,14 +56,17 @@
 							devices = state.devicesList.filter(ele => (!ele.roomId) && ele.type === '0'); // 跌倒设备
 							break;
 						case 'human': // 绑定房间
-							devices = state.devicesList.filter(ele => (!ele.humanId) && ele.type === '1'); // 跌倒设备
+							devices = state.devicesList.filter(ele => (!ele.humanId) && (ele.type === '1' || ele
+								.type === '2')); // 跌倒设备
 							break;
 						default:
 							break;
 					}
-					return devices.map(ele => ({
+					return devices.map((ele, index) => ({
 						text: ele.name,
-						value: ele.deviceId
+						value: index,
+						deviceId: ele.deviceId,
+						type: ele.type
 					}));
 				}
 			})
@@ -77,12 +81,14 @@
 				this.show = true;
 			},
 			next() {
-				if (!this.deviceId) return uni.$u.toast('请选择设备');
+				if (!this.deviceId && this.deviceId !== 0) return uni.$u.toast('请选择设备');
 				const {
 					familyId,
 					id,
 					type
 				} = this.payload;
+				const device = this.devices[this.deviceId];
+				console.log(device, 'device');
 				let handle;
 				console.log(type, 'type');
 				switch (type) {
@@ -91,15 +97,19 @@
 						handle = setDevice({
 							familyId,
 							roomId: id,
-							deviceId: this.deviceId,
+							deviceId: device.deviceId,
 							flag: '1'
 						})
 						break;
 					case 'human':
 						console.log('绑定到人');
-						handle = PostUpdateCareCardBind({
+						handle = device.type === '1' ? PostUpdateCareCardBind({
 							familyId,
-							deviceId: this.deviceId,
+							deviceId: device.deviceId,
+							humanId: id
+						}) : PostUpdateWatchBind({
+							familyId,
+							deviceId: device.deviceId,
 							humanId: id
 						})
 						break;

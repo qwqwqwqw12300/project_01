@@ -9,7 +9,7 @@
 	<view class="wd-card-box">
 		<view class="wd-list" v-for="human of humans" :key="'human' + human.humanId">
 			<template v-if="getDevice(human).deviceId">
-				<view class="wd-list-box active" v-if="getDevice(human).type === '1'"
+				<view class="wd-list-box active" v-if="getDevice(human).type === '1' || getDevice(human).type === '2'"
 					@click="goDeciveDetails(getDevice(human))">
 					<image :src="getDeviceImg(getDevice(human).type)"></image>
 					<view class="wd-device-info">
@@ -80,10 +80,10 @@
 			}),
 			getDeviceImg() {
 				return type => {
-					if (type === '2') {
-						return '../../static/images/dzqgk.png';
+					if (type === '1') {
+						return '/static/images/dzqgk.png';
 					}
-					return '../../static/images/dzqgk.png';
+					return '/static/images/watch.png';
 				}
 			}
 		},
@@ -94,7 +94,12 @@
 			goDeciveDetails(info) {
 				this.$store.commit('setDeviceInfo', info);
 				this.$setCache('familyId', info.familyId);
-				this.goPage('/pages/card/card-detail/card-detail');
+				if (info.type === '1') { // 电子牵挂卡
+					this.goPage('/pages/card/card-detail/card-detail');
+				} else { // 手表
+					this.goPage('/pages/watch/watch-detail/watch-detail');
+				}
+
 			},
 			/**
 			 * 页面跳转
