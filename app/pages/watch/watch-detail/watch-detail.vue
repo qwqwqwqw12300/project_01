@@ -92,7 +92,7 @@
 	}
 
 	.ui-banner {
-		padding: 0 10rpx;
+		padding: 0 20rpx;
 
 		.ui-swiper {
 			height: 320rpx;

@@ -685,3 +685,8 @@ export const GetListExerciseDurationByWeek = (params) => http.get('/api/tWatch/l
  */
 export const GetWatchInfo = (params) => http.get('/api/tWatch/getWatchInfo', params, {});
 
+/*
+ * 获取手表最后定位
+ */
+export const GetWatchTrack = (params) => http.get('/api/tWatch/track/lastPoint', params, {});
+
