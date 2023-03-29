@@ -61,7 +61,7 @@
 				}, {
 					title: '跌倒检测',
 					type: '1',
-					url: '/pages/card/guard'
+					// url: '/pages/card/guard'
 				}, {
 					title: '活动设定',
 					url: 'active'
