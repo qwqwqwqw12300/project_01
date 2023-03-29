@@ -209,12 +209,14 @@
 			})
 			if (this.deviceList.length) {
 				this.swiperData = this.deviceList[0]
+				this.$store.commit('setDeviceInfo', this.swiperData)
 				this.fetchData();
 			}
 		},
 		methods: {
 			swiperChange(val) {
 				this.swiperData = this.deviceList[val.detail.current]
+				this.$store.commit('setDeviceInfo', this.swiperData)
 				this.fetchData()
 			},
 			fetchData() {
