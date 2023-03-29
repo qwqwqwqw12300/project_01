@@ -642,6 +642,15 @@
 
 		},
 		{
+			"path": "pages/watch/enclosure/enclosure",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
 			"path": "pages/watch/watch-set/watchInfo",
 			"style": {
 				"navigationStyle": "custom",
