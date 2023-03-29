@@ -52,6 +52,7 @@
 		},
 		methods: {
 			jumpUrl() {
+				this.$store.commit('setDeviceInfo', record)
 				uni.navigateTo({
 					url: '/pages/watch/watch-set/watch-set'
 				})
