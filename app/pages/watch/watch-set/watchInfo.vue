@@ -1,3 +1,4 @@
+<!-- 设备信息 -->
 <template>
 	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<app-logo text="设备信息"></app-logo>
@@ -6,16 +7,16 @@
 				<view class="box-bg">
 					<view class="ui-code"><canvas id="qrcode" canvas-id="qrcode"
 							:style="{ width: `${size}px`, height: `${size}px` }"></canvas></view>
-					<!-- <image src="@/static/images/QRcode.svg"></image> -->
 				</view>
 			</view>
 		</view>
 		<view class="ui-cell">
 			<view class="cell-box">
 				<u-cell-group>
-					<u-cell title="设置手机号码" arrow-direction="right" isLink titleStyle="font-size: 15px;color: #303133;">
+					<u-cell @tap="phoneEdit" title="设置手机号码" arrow-direction="right" isLink
+						titleStyle="font-size: 15px;color: #303133;">
 						<view slot="value" class="u-slot-value">
-							{{ deviceData.simPhone }}
+							{{ phoneDeal(deviceData.simPhone || '') }}
 						</view>
 					</u-cell>
 					<u-cell title="IMEI号" titleStyle="font-size: 15px;color: #303133;">
@@ -38,10 +39,12 @@
 			</text>
 		</view>
 	</app-body>
-
 </template>
 
 <script>
+	import {
+		phoneHide
+	} from '@/common/utils/util';
 	import UQRCode from '@/uni_modules/Sansnn-uQRCode/js_sdk/uqrcode/uqrcode.js';
 	import {
 		mapState,
@@ -60,16 +63,25 @@
 			...mapState({
 				deviceInfo: state => state.deviceInfo
 			}, ),
+			phoneDeal() {
+				return function(phone) {
+					return phoneHide(phone)
+				}
+			}
 		},
-		mounted() {
+		onLoad() {
 			this.handleInit()
 		},
 		methods: {
+			phoneEdit() {
+				uni.navigateTo({
+					url: `/pages/watch/watch-set/phone-edit`
+				})
+			},
 			handleInit() {
 				GetWatchInfo({
-					deviceId: '243'
+					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
-					console.log(res, 'ffff')
 					this.deviceData = res.data
 					this.$nextTick(() => {
 						const qr = new UQRCode();

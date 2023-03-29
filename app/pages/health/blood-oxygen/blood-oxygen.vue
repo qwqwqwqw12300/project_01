@@ -32,7 +32,17 @@
 		GetListBloodOxygenByDay,
 		GetListBloodOxygenByWeek
 	} from '@/common/http/api';
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				deviceInfo: state => state.deviceInfo
+			}),
+		
+		},
 		data() {
 			return {
 				totalList: [{
@@ -53,7 +63,7 @@
 			}
 		},
 		methods: {
-			dateFun(){
+			dateFun(option){
 				this.options = {
 					tooltip: {
 						trigger: 'axis'
@@ -209,11 +219,12 @@
 				}
 			},
 			handleDate(option){
+				console.log(option,'option')
 				this.dataList = []
 				GetListBloodOxygenByDay({
-					deviceId:240,
+					deviceId:this.deviceInfo.deviceId,
 					queryDate:option.value,
-					humanId:'101'
+					humanId:this.deviceInfo.familyId
 				}).then(res=>{
 					console.log(res,'res')
 					this.totalList[0].num = res.data.oxMap.avgOx
@@ -231,10 +242,10 @@
 			handleWeek(option){
 				this.dataList = []
 				GetListBloodOxygenByWeek({
-					deviceId:240,
+					deviceId:this.deviceInfo.deviceId,
 					beginDate:option.value[0],
 					endDate:option.value[6],
-					humanId:'101'
+					humanId:this.deviceInfo.familyId
 				}).then(res=>{
 					console.log(res,'res')
 					this.totalList[0].num = res.data.oxMap.avgOx

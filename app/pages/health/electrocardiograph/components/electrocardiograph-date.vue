@@ -67,9 +67,9 @@
 				option: {}, //echart配置
 				mapList: [], //echart series数组
 				dataList: Array.from(Array(91).keys()),
-				lenList: [], //定时器处理数组
 				count: 90, //计数器
-				allCount: 0 //总数组长度
+				allCount: 0,//总数组长度
+				interval:null
 			}
 		},
 		watch: {
@@ -82,6 +82,14 @@
 				},
 				immediate: true //监听到数据立即执行
 			}
+		},
+		onHide() {
+			clearInterval(this.interval)
+			this.interval = null
+		},
+		destroyed() {
+			clearInterval(this.interval)
+			this.interval = null
 		},
 		methods: {
 			logstatrt() {
@@ -101,102 +109,9 @@
 							value: '',
 							input: false
 						}
-					})
-
-					console.log(this.cellList, 'cellList')
-					this.cellList[0].list.forEach(item => {
-						list.push(item)
-					})
-					// console.log(list.slice(90,list.length),'list')
-					this.allCount = list.length
-					for (let i = 0; i < this.count; i++) {
-						this.mapList.push(list[i])
-					}
-					this.lenList = list.slice(this.count, list.length)
-					let len = this.lenList.length
-					// setInterval(()=>{
-					// 	console.log('定时器----------------------')
-					// 	if(this.count == this.allCount){
-					// 		return
-					// 	}else{
-					// 		for(let i =0;i<this.lenList.length;i++){
-					// 			this.count++
-					// 			this.mapList.push(this.lenList[i])
-					// 			this.mapList.shift()
-					// 			return
-					// 		}
-					// 	}
-					// 	this.dataList.push(len++)
-					// 	this.dataList.shift()
-					// },100)
-					this.option = {
-						title: {
-							text: ''
-						},
-						tooltip: {
-							trigger: 'axis'
-						},
-						legend: {
-							data: []
-						},
-						grid: {
-							left: '20',
-							right: '20',
-							bottom: '5',
-							top: '20',
-							containLabel: true
-						},
-						toolbox: {},
-						xAxis: {
-							type: 'category',
-							boundaryGap: false,
-							data: this.dataList,
-							axisTick: {
-								show: false
-							},
-							axisLabel: {
-								show: false
-							},
-							axisLine: {
-								show: false
-							},
-						},
-						yAxis: {
-							type: 'value',
-							min: '-10000',
-							max: '10000',
-							axisTick: {
-								show: false
-							},
-							axisLabel: {
-								show: false
-							},
-							axisLine: {
-								show: false
-							},
-							splitLine: {
-								show: true,
-								lineStyle: {
-									type: 'disable'
-								}
-							},
-						},
-						series: [{
-							name: 'Union Ads',
-							type: 'line',
-							stack: 'Total',
-							data: this.mapList,
-							showSymbol: false,
-							itemStyle: {
-								normal: {
-									lineStyle: {
-										color: "#63DDBA",
-										width: 1
-									}
-								}
-							},
-						}]
-					};
+					})			
+					clearInterval(this.interval)
+					this.handleChange(this.cellList[0])
 				})
 			},
 			setOption(data) {
@@ -270,12 +185,14 @@
 				};
 			},
 			handleChange(val) {
+				clearInterval(this.interval)
 				const list = [...val.list].filter(ele => Number(ele) || ele === 0); // 当前项列表
 				this.count = 90; // 初始化展示数量
 				this.allCount = list.length; //  当前项长度
 				this.mapList = list.slice(0, this.count); // 实际渲染数组
-				setInterval(() => {
+				this.interval = setInterval(() => {
 					if (this.count == this.allCount) {
+						this.mapList = list.slice(0, 90);
 						return
 					} else {
 						this.mapList.shift()

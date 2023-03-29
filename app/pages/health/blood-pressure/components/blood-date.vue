@@ -34,7 +34,17 @@
 	import {
 		GetListBloodPressureByDay
 	} from '@/common/http/api';
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				deviceInfo: state => state.deviceInfo
+			}),
+		
+		},
 		props:{
 			time:{
 				default:''
@@ -94,9 +104,9 @@
 				this.spMapList = []
 				this.dpMapList = []
 				GetListBloodPressureByDay({
-					deviceId:240,
+					deviceId:this.deviceInfo.deviceId,
 					dayTime:this.time,
-					humanId:'00000000000000000001'
+					humanId:this.deviceInfo.familyId
 				}).then(res=>{
 					console.log(res,'res')
 					this.list[0].value = res.data.spAvg
@@ -220,9 +230,9 @@
 			justify-content: space-between;
 
 			.ui-title-content {
-				width: 90%;
+				width: 100%;
 				display: flex;
-
+				
 				.ui-circle {
 					width: 30rpx;
 					height: 30rpx;
