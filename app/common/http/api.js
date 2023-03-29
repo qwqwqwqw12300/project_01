@@ -622,3 +622,19 @@ export const GetListBloodOxygenByWeek = (params) => http.get('/api/tWatch/listBl
  * 查询心电数据
  */
 export const GetListElectrocardiogramByDay = (params) => http.get('/api/tWatch/listElectrocardiogramByDay', params, {});
+
+
+/**
+ * 获取通讯录
+ */
+export const GetWatchAddressBook = (params) => http.get('/api/tWatch/getAddressBook', params, {});
+
+/**
+ * 下发通讯录
+ */
+export const PostWatchContactsSync = (params) => http.post('/api/tWatch/contactsSync', params, {});
+
+/**
+ * 删除通讯录
+ */
+export const PostWatchDeleteAddressBook = (params) => http.post('/api/tWatch/deleteAddressBook', params, {});

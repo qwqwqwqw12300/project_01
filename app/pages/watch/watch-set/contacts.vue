@@ -30,12 +30,12 @@
 					<view class="cell">
 						<view class="cell-box">
 							<view class="input">
-								<u--input v-model="item.phoneName" maxlength="6" placeholder="请输入姓名" border="none"
+								<u--input v-model="item.name" maxlength="6" placeholder="请输入姓名" border="none"
 									clearable>
 								</u--input>
 							</view>
 							<view class="input">
-								<u--input v-model="item.phoneNumber" maxlength="11" type="number" placeholder="请输入手机号"
+								<u--input v-model="item.number" maxlength="11" type="number" placeholder="请输入手机号"
 									border="none" clearable>
 								</u--input>
 							</view>
@@ -61,9 +61,9 @@
 
 <script>
 	import {
-		PostAddOrUpdateAddressBook,
-		GetAddressBook,
-		PostDeleteAddressBook
+		GetWatchAddressBook,
+		PostWatchContactsSync,
+		PostWatchDeleteAddressBook
 	} from '@/common/http/api';
 	import {
 		phoneValidator
@@ -91,8 +91,8 @@
 			//初始化数据
 			initData() {
 				this.options4 = []
-				GetAddressBook({
-					deviceId: this.deviceInfo.deviceId
+				GetWatchAddressBook({
+					deviceId: '243'
 				}).then(res => {
 					this.options4 = res.data.map(n => {
 						n.options = [{
@@ -103,7 +103,6 @@
 						}]
 						return n
 					})
-
 				})
 			},
 			handleCancel() {
@@ -113,28 +112,30 @@
 			handleSave() {
 				const list = uni.$u.deepClone(this.options4)
 				for (let i = 0; i < list.length; i++) {
-					if (!list[i].phoneName) return uni.$u.toast('请填写联系人姓名')
-					if (!phoneValidator(list[i].phoneNumber)) return uni.$u.toast('手机号不正确')
+					if (!list[i].name) return uni.$u.toast('请填写联系人姓名')
+					if (!phoneValidator(list[i].number)) return uni.$u.toast('手机号不正确')
 				}
 				const addressBooks = []
 				this.options4.forEach(item=>{
 					console.log(item,'item')
 					if(item.addressBookId!=undefined){
 						addressBooks.push({
-							phoneName:item.phoneName,
-							phoneNumber:item.phoneNumber,
-							addressBookId:item.addressBookId
+							name:item.name,
+							number:item.number,
+							addressBookId:item.addressBookId,
+							sos:item.sos
 						})
 					}else{
 						addressBooks.push({
-							phoneName:item.phoneName,
-							phoneNumber:item.phoneNumber,
+							name:item.name,
+							number:item.number,
+							sos:false
 						})
 					}
 				})
-				PostAddOrUpdateAddressBook({
-					deviceId: this.deviceInfo.deviceId,
-					addressBooks: addressBooks
+				PostWatchContactsSync({
+					deviceId: '243',
+					watchSyncList: addressBooks
 				}).then(res => {
 					console.log(res, 'res')
 					uni.$u.toast(res.msg)
@@ -168,8 +169,8 @@
 						console.log(res, 'res')
 						if (res.confirm) {
 							if (list.addressBookId != undefined) {
-								PostDeleteAddressBook({
-									deviceId: this.deviceInfo.deviceId,
+								PostWatchDeleteAddressBook({
+									deviceId: '243',
 									addressBookId: list.addressBookId,
 									phoneNumber: list.phoneNumber
 								}).then(res => {
@@ -208,7 +209,7 @@
 			}
 		},
 		onShow() {
-			// this.initData()
+			this.initData()
 		}
 
 	}
