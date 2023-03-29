@@ -34,6 +34,7 @@
 				<u-input v-model="item.vlaue" border="none" class="ui-input"></u-input>
 			</view>
 		</view>
+		<view style="margin-top: 30rpx;width: 100%;height: 30rpx;"></view>
 	</view>
 </template>
 
@@ -380,5 +381,8 @@
 			width: 90%;
 			margin: 0 auto;
 		}
+	}
+	.ui-window:hover{
+		background-color: lightgray;
 	}
 </style>
