@@ -1,28 +1,12 @@
 <template>
 	<view class="ui-map">
 		<point-map :record="addressInfo"></point-map>
-		<touch-popup :minHeight="0.1" :maxHeight="0.7" :touchHeight="64" radius="30rpx">
+		<touch-popup :minHeight="0.1" :maxHeight="0.1" :touchHeight="64" radius="30rpx">
 			<view class="map-position">
 				<text class="label">当前位置:</text>
 				<view class="content">
 					{{ addressInfo.address }}
 				</view>
-			</view>
-			<template v-if="historyList.length">
-				<view class="address-list">
-					<view class="list-item" v-for="(n, index) in historyList" :key="index" @click="mapMarker(n)">
-						<text class="list-item-label">
-							{{ n.address }}
-						</text>
-						<u-icon :name="getMapIcon(n)" size="44rpx" style="margin-right: 6rpx;" />
-					</view>
-				</view>
-			</template>
-			<view class="list-empty" v-else>
-				<u-empty mode="list" text="暂无数据"></u-empty>
-			</view>
-			<view class="ui-btn">
-				<button class="default" @click="toJump">历史位置</button>
 			</view>
 		</touch-popup>
 	</view>
@@ -30,9 +14,11 @@
 
 <script>
 	import {
-		GetLastPoint,
-		GetsetAddressBook
-	} from '@/common/http/api';
+		GetWatchTrack,
+	} from '@/common/http/api'
+	import {
+		isIos,
+	} from '@/common/utils/util'
 	export default {
 		props: {
 			deviceInfo: {
@@ -53,9 +39,6 @@
 					longitude: '',
 					address: '',
 				},
-				currentSelect: '',
-				historyList: [],
-
 			}
 		},
 		created() {
@@ -66,38 +49,8 @@
 		},
 		mounted() {
 			this.getDeviceLocation()
-
-		},
-		computed: {
-			getMapIcon() {
-				return function(item) {
-					return this.currentSelect === item.index ? '/static/images/map-select.png' :
-						'/static/images/position.png'
-				}
-			},
 		},
 		methods: {
-			toJump() {
-				uni.navigateTo({
-					url: '/pages/equipment/historical-location'
-				})
-			},
-			mapMarker(data) {
-				const {
-					address,
-					index,
-					location: {
-						latitude,
-						longitude
-					}
-				} = data
-				this.currentSelect = index
-				this.addressInfo = {
-					latitude,
-					longitude,
-					address
-				}
-			},
 			getLocation(n) {
 				const {
 					latitude,
@@ -106,7 +59,7 @@
 				return new Promise((resolve, reject) => {
 					uni.getLocation({
 						geocode: true,
-						type: 'gcj02',
+						type: isIos() ? 'wgs84' : 'gcj02',
 						latitude,
 						longitude,
 						success: (res) => {
@@ -134,33 +87,11 @@
 					})
 				})
 			},
-			getHistoryLocation() {
-				const dateData = uni.$u.timeFormat(new Date(), 'yyyy-mm-dd')
-				GetsetAddressBook({
-					startTime: dateData + " " + '00:00:00',
-					endTime: dateData + " " + '23:59:59',
-					deviceId: this.deviceInfo.deviceId
-				}).then(res => {
-					const list = res.data.map(n => {
-						n.locateTime = uni.$u.timeFormat(n.locateTime, 'yyyy-mm-dd hh:MM')
-						return n
-					}).slice(0, 3)
-					const promises = list.map(n => {
-						return this.getLocation(n)
-					})
-					Promise.all(promises).then(res => {
-						this.historyList = res.map((n, i) => {
-							n.index = i
-							return n
-						})
-					}).catch(res => {}).finally(() => {})
-				})
-			},
 			getDeviceLocation() {
 				uni.showLoading({
 					title: '加载中'
 				})
-				GetLastPoint({
+				GetWatchTrack({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					if (!res.data.location?.latitude) {
@@ -184,9 +115,7 @@
 							longitude,
 							address
 						}
-						this.getHistoryLocation()
 						uni.hideLoading()
-						// console.log(res, 'ddiididi')
 					})
 				})
 			}

@@ -5,7 +5,7 @@
 			<date-picker @onSelect="onSelect"></date-picker>
 		</view>
 		<view class="ui-echart">
-			<exexcise-echart :type="type" ></exexcise-echart>
+			<exexcise-echart  :options="options"></exexcise-echart>
 		</view>
 		<view class="day-title">
 			<text>日平均数据</text>
@@ -147,19 +147,17 @@
 					this.queryData.beginDate = val.value[0];
 					this.queryData.endDate = val.value[6];
 				}
-				// val.type === 'date' ? this.handleDate(val) : this.handleWeek(val)
 			},
 			handleTab(key) {
 				console.log(key, 'kkkkkkkk')
 				this.key = key;
 				this.queryData.key = key;
 			},
-			handleDate(val) {
-				this.dataList = []
-
-				this.dealDay(option)
-			},
 			dealDay(res) {
+				let resArr = [];
+				res.forEach((item)=>{
+					resArr.push(item.value)
+				});
 				this.options = {
 					notMerge: true,
 					tooltip: {
@@ -167,72 +165,53 @@
 					},
 					grid: {
 						left: '0',
-						right: '0',
+						right: '3',
 						bottom: '0',
 						top: '10',
 						containLabel: true
 					},
-					xAxis: [{
-						type: 'time',
-						interval: 6 * 3600 * 1000, // 间隔为6小时
-						min: new Date(`${res.value + ' 00:00:00'}`), // x轴起始时间
-						max: new Date(`${res.value + ' 23:59:59'}`), // x轴结束时间
-						boundaryGap: false,
-						axisTick: { //坐标轴刻度相关设置。
-							show: false,
-						},
-					}],
-					yAxis: [{
-						type: "value",
-						axisLine: {
-							show: false
-						},
+					xAxis: {
+						type: 'category',
+						data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00',
+							'18:00', '20:00', '22:00', '23:59'
+						],
 						axisTick: {
 							show: false
 						},
-						data: [0, 25, 50, 70, 100],
-					}],
-					series: [{
-						data: [
-							[new Date('2023-3-28 00:00:00'), '1'],
-							[new Date('2023-3-28 06:00:00'), '2'],
-							[new Date('2023-3-28 12:00:00'), '3'],
-							[new Date('2023-3-28 18:00:00'), '4'],
-							[new Date('2023-3-28 23:59:59'), '5'],
-						],
-						type: 'bar',
-						itemStyle: { //---图形形状
-							color: '#61AAF7',
-							barBorderRadius: [18, 18, 0, 0],
+						axisLabel: {
+							interval: 2
+						}
+					},
+					yAxis: {
+						type: 'value',
+						axisTick: {
+							show: false
 						},
-						barWidth: '10', //---柱形宽度
-						barCategoryGap: '20%', //---柱形间距
-					}, ]
+						axisLine: {
+							show: false
+						},
+						data: [0, 25, 50, 70, 100],
+					},
+					series: [{
+							data: [100, 25, 50, 70, 100, 100, 25, 50, 70, 100, 42, 32, 20],
+							// data:resArr,
+							type: 'bar',
+							itemStyle: { //---图形形状
+								color: '#61AAF7',
+								barBorderRadius: [18, 18, 0, 0],
+							},
+							barWidth: '10', //---柱形宽度
+							barCategoryGap: '20%', //---柱形间距
+						},
+
+					]
 				}
 			},
-			handleWeek(val) {
-				this.dataList = []
-				GetListBloodOxygenByWeek({
-					deviceId: 240,
-					beginDate: val.value[0],
-					endDate: val.value[6],
-					humanId: '101'
-				}).then(res => {
-					console.log(res, 'res')
-					this.totalList[0].num = res.data.oxMap.avgOx
-					this.totalList[1].num = res.data.oxMap.maxOx
-					this.totalList[2].num = res.data.oxMap.minOx
-					for (let i = 0; i < res.data.oxMap.dataList.length; i++) {
-						this.dataList.push([
-							res.data.oxMap.dataList[i].time,
-							res.data.oxMap.dataList[i].value
-						])
-					}
-					console.log(this.dataList, 'this.dataList')
-				})
-				this.dealWeek(val)
-			},
 			dealWeek(res) {
+				let resArr = [];
+				res.forEach((item)=>{
+					resArr.push(item.value)
+				});
 				this.options = {
 					notMerge: true,
 					tooltip: {
@@ -263,7 +242,7 @@
 						data: [0, 25, 50, 70, 100],
 					},
 					series: [{
-						data: [10, 25, 50, 70, 100, 120, 140],
+						data: resArr,
 						type: 'bar',
 						itemStyle: { //---图形形状
 							color: '#61AAF7',
@@ -281,8 +260,8 @@
 					humanId: '1'
 				}
 				GetListStepNumByDay(params).then(res => {
-					console.log(res, 'res')
-					// this.dealDay(res.data);
+					console.log(res.data, 'res')
+					this.dealDay(res.data.MapList);
 				});
 			},
 			fetchStepNumByWeek() {
@@ -295,6 +274,7 @@
 				}
 				GetListStepNumByWeek(params).then(res => {
 					console.log(res, 'res')
+					this.dealWeek(res.data.MapList);
 				});
 			},
 			fetchCalorieByDay() {
@@ -306,6 +286,7 @@
 				}
 				GetListCalorieByDay(params).then(res => {
 					console.log(res, 'res')
+					this.dealDay(res.data.MapList);
 				});;
 			},
 			fetchCalorieByWeek() {
@@ -318,6 +299,7 @@
 				}
 				GetListStepNumByWeek(params).then(res => {
 					console.log(res, 'res')
+					this.dealWeek(res.data.MapList);
 				});
 				GetListCalorieByWeek();
 			},
@@ -330,6 +312,7 @@
 				}
 				GetListExerciseDurationByDay(params).then(res => {
 					console.log(res, 'res')
+					this.dealDay(res.data.MapList);
 				});
 			},
 			fetchExerciseDurationByWeek() {
@@ -342,6 +325,7 @@
 				}
 				GetListStepNumByWeek(params).then(res => {
 					console.log(res, 'res')
+					this.dealWeek(res.data.MapList);
 				});
 			}
 		}
@@ -426,13 +410,14 @@
 		background: transparent;
 	}
 
-	.detail-box:not(:first-child){
+	.detail-box:not(:first-child) {
 		margin-top: 20rpx;
 	}
 
 	.ui-detail {
 		padding: 0 32rpx;
 		margin-top: 20rpx;
+
 		.detail-box {
 			background: #FFFFFF;
 			border-radius: 16rpx;
