@@ -226,7 +226,7 @@
 				} = this.swiperData
 				const params = {
 					deviceId,
-					dayTime: '2023-03-23',
+					dayTime: uni.$u.timeFormat(new Date(), 'yyyy-mm-dd'),
 					humanId,
 				}
 				GetCaiHongData(params).then(res => {
