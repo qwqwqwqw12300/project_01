@@ -240,9 +240,6 @@
 					url: url
 				})
 			},
-			swiperChange(val) {
-
-			},
 			logstatrt(res) {
 				this.caiHongOptionHandle(res);
 				this.xinLvOptionHandle(res);
