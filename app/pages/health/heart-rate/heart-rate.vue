@@ -48,6 +48,9 @@
 		GetListHeartRateByDay,
 		GetListHeartRateByWeek
 	} from '@/common/http/api.js';
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
 		data() {
 			const weekOptions = {
@@ -256,15 +259,15 @@
 			}
 			return {
 				totalList: [{
-						num: 80,
+						num: 0,
 						title: '平均'
 					},
 					{
-						num: 60,
+						num: 0,
 						title: '最低'
 					},
 					{
-						num: 100,
+						num: 0,
 						title: '最高'
 					}
 				],
@@ -320,17 +323,27 @@
 				}
 			}
 		},
+		computed: {
+			...mapState({
+				deviceInfo: state => state.deviceInfo
+			}),
+
+		},
 		mounted() {},
 		methods: {
 			onSelect(val) {
 				val.type === 'date' ? this.handleDate(val) : this.handleWeek(val)
 			},
 			handleWeek(options) {
+				const {
+					deviceId,
+					humanId
+				} = this.deviceInfo
 				GetListHeartRateByWeek({
-					deviceId: 243,
+					deviceId,
+					humanId,
 					beginDate: options.value[0],
 					endDate: options.value[6],
-					humanId: '1',
 				}).then(res => {
 					const data = res.data.MapList.map(n => {
 						return [new Date(n.time), n.value]
@@ -346,10 +359,14 @@
 				})
 			},
 			handleDate(options) {
+				const {
+					deviceId,
+					humanId
+				} = this.deviceInfo
 				GetListHeartRateByDay({
-					deviceId: 243,
+					deviceId,
+					humanId,
 					dayTime: options.value,
-					humanId: '1',
 				}).then(res => {
 					const data = res.data.MapList.map(n => {
 						return [new Date(n.time), n.value]

@@ -204,9 +204,11 @@
 		},
 		created() {},
 		onShow() {
+			
 			this.deviceList = this.$store.getters.filterDevice({
 				type: '2'
 			})
+			console.log(this.$store.getters.devicesList,'11111')
 			if (this.deviceList.length) {
 				this.swiperData = this.deviceList[0]
 				this.$store.commit('setDeviceInfo', this.swiperData)
@@ -226,7 +228,7 @@
 				} = this.swiperData
 				const params = {
 					deviceId,
-					dayTime: '2023-03-23',
+					dayTime: uni.$u.timeFormat(new Date(), 'yyyy-mm-dd'),
 					humanId,
 				}
 				GetCaiHongData(params).then(res => {
@@ -240,9 +242,6 @@
 					url: url
 				})
 			},
-			swiperChange(val) {
-
-			},
 			logstatrt(res) {
 				this.caiHongOptionHandle(res);
 				this.xinLvOptionHandle(res);
@@ -254,18 +253,18 @@
 			caiHongOptionHandle(res) {
 				var data = [{
 						"name": "StepNum",
-						"value": 111,
-						"maxValue": 20
+						"value": 0,
+						"maxValue": 1000
 					},
 					{
 						"name": "calorie",
-						"value": 511,
-						"maxValue": 20
+						"value": 0,
+						"maxValue": 10000
 					},
 					{
 						"name": "DurationNum",
-						"value": 3,
-						"maxValue": 20
+						"value": 0,
+						"maxValue": 30
 					}
 				];
 

@@ -7,7 +7,7 @@
 		<view class="ui-echart">
 			<exexcise-echart  :options="options"></exexcise-echart>
 		</view>
-		<view class="day-title">
+		<view class="day-title" v-if="type === 'week'">
 			<text>日平均数据</text>
 		</view>
 		<view class="ui-tab">
@@ -62,8 +62,10 @@
 		GetListCalorieByDay,
 		GetListCalorieByWeek,
 		GetListExerciseDurationByDay,
-		GetListExerciseDurationByWeek
+		GetListExerciseDurationByWeek,
+		GetExerciseAvg
 	} from '@/common/http/api.js'
+	import { mapState } from 'vuex';
 	export default {
 		components: {
 			exexciseEchart,
@@ -73,6 +75,7 @@
 				key: 'step',
 				type: 'date',
 				options: {},
+				avgData: {},
 				queryData: {
 					key: 'step', // 步数 时间 卡路里
 					type: '', // week day
@@ -103,6 +106,11 @@
 		},
 		created() {
 
+		},
+		computed: {
+			...mapState({
+				deviceInfo: state => state.deviceInfo
+			}),
 		},
 		watch: {
 			queryData: {
@@ -140,12 +148,15 @@
 		methods: {
 			onSelect(val) {
 				console.log(val)
+				this.type = val.type;
 				this.queryData.type = val.type;
 				if (val.type === 'date') {
 					this.queryData.date = val.value;
+					this.fetchExerciseAvg(val.value,val.value); // 查询单天
 				} else if (val.type === 'week') {
 					this.queryData.beginDate = val.value[0];
 					this.queryData.endDate = val.value[6];
+					this.fetchExerciseAvg(val.value[0],val.value[6]);
 				}
 			},
 			handleTab(key) {
@@ -193,8 +204,8 @@
 						data: [0, 25, 50, 70, 100],
 					},
 					series: [{
-							data: [100, 25, 50, 70, 100, 100, 25, 50, 70, 100, 42, 32, 20],
-							// data:resArr,
+							// data: [100, 25, 50, 70, 100, 100, 25, 50, 70, 100, 42, 32, 20],
+							data:resArr,
 							type: 'bar',
 							itemStyle: { //---图形形状
 								color: '#61AAF7',
@@ -255,9 +266,9 @@
 			fetchStepNumByDay() {
 				console.log(1)
 				const params = {
-					deviceId: 240,
+					deviceId: this.deviceInfo.deviceId,
 					dayTime: this.queryData.date,
-					humanId: '1'
+					humanId: this.deviceInfo.humanId
 				}
 				GetListStepNumByDay(params).then(res => {
 					console.log(res.data, 'res')
@@ -267,10 +278,10 @@
 			fetchStepNumByWeek() {
 				console.log(2)
 				const params = {
-					deviceId: 240,
+					deviceId: this.deviceInfo.deviceId,
 					beginDate: this.queryData.beginDate,
 					endDate: this.queryData.endDate,
-					humanId: '1'
+					humanId: this.deviceInfo.humanId
 				}
 				GetListStepNumByWeek(params).then(res => {
 					console.log(res, 'res')
@@ -280,9 +291,9 @@
 			fetchCalorieByDay() {
 				console.log(3)
 				const params = {
-					deviceId: 240,
+					deviceId: this.deviceInfo.deviceId,
 					dayTime: this.queryData.date,
-					humanId: '1'
+					humanId: this.deviceInfo.humanId
 				}
 				GetListCalorieByDay(params).then(res => {
 					console.log(res, 'res')
@@ -292,10 +303,10 @@
 			fetchCalorieByWeek() {
 				console.log(4)
 				const params = {
-					deviceId: 240,
+					deviceId: this.deviceInfo.deviceId,
 					beginDate: this.queryData.beginDate,
 					endDate: this.queryData.endDate,
-					humanId: '1'
+					humanId: this.deviceInfo.humanId
 				}
 				GetListStepNumByWeek(params).then(res => {
 					console.log(res, 'res')
@@ -306,9 +317,9 @@
 			fetchExerciseDurationByDay() {
 				console.log(5)
 				const params = {
-					deviceId: 240,
+					deviceId: this.deviceInfo.deviceId,
 					dayTime: this.queryData.date,
-					humanId: '1'
+					humanId: this.deviceInfo.humanId
 				}
 				GetListExerciseDurationByDay(params).then(res => {
 					console.log(res, 'res')
@@ -318,15 +329,32 @@
 			fetchExerciseDurationByWeek() {
 				console.log(6)
 				const params = {
-					deviceId: 240,
+					deviceId: this.deviceInfo.deviceId,
 					beginDate: this.queryData.beginDate,
 					endDate: this.queryData.endDate,
-					humanId: '1'
+					humanId: this.deviceInfo.humanId
 				}
 				GetListStepNumByWeek(params).then(res => {
 					console.log(res, 'res')
 					this.dealWeek(res.data.MapList);
 				});
+			},
+			/**
+			 * 查询活动周平均数据
+			 */
+			fetchExerciseAvg(begin,end){
+				const params = {
+					// deviceId: this.deviceInfo.deviceId,
+					deviceId:240,
+					beginDate: begin,
+					endDate: end,
+					// humanId: this.deviceInfo.humanId
+					humanId:'1'
+				}
+				GetExerciseAvg(params).then(res=>{
+					console.log(res,55)
+					this.avgData = res.data;
+				})
 			}
 		}
 	}

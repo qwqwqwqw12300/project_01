@@ -690,3 +690,7 @@ export const GetWatchInfo = (params) => http.get('/api/tWatch/getWatchInfo', par
  */
 export const GetWatchTrack = (params) => http.get('/api/tWatch/track/lastPoint', params, {});
 
+/**
+ * 查询活动周平均数据
+ */
+export const GetExerciseAvg = (params) => http.get('/api/tWatch/exerciseAvg', params, {});
