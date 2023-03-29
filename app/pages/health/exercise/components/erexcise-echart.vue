@@ -1,6 +1,6 @@
 <template>
 	<view class="">
-		<app-echarts :option="type == 'date' ? optionDate: optionWeek" id="myChart" class="myChart"></app-echarts>
+		<app-echarts :option="options" id="myChart" class="myChart"></app-echarts>
 	</view>
 </template>
 
@@ -10,7 +10,7 @@
 			type: {
 				default: 'date'
 			},
-			optionDate: {
+			options: {
 				default: function() {
 					return {
 						notMerge: true,
@@ -42,7 +42,7 @@
 							data: [0, 25, 50, 70, 100],
 						},
 						series: [{
-								data: [10, 25, 50, 70, 100],
+								data: [100, 25, 50, 70, 100],
 								type: 'bar',
 								itemStyle: { //---图形形状
 									color: '#61AAF7',

@@ -327,7 +327,7 @@
 			},
 			handleWeek(options) {
 				GetListHeartRateByWeek({
-					deviceId: 240,
+					deviceId: 243,
 					beginDate: options.value[0],
 					endDate: options.value[6],
 					humanId: '1',
@@ -347,7 +347,7 @@
 			},
 			handleDate(options) {
 				GetListHeartRateByDay({
-					deviceId: 240,
+					deviceId: 243,
 					dayTime: options.value,
 					humanId: '1',
 				}).then(res => {
