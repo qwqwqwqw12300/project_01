@@ -2,7 +2,6 @@
 	<app-body :bg="false" >
 		<app-logo text="心电" :isShare="true"></app-logo>
 		<view class="box">
-			<!-- <date-picker @onSelect="onSelect"></date-picker> -->
 			<dates @change="change"></dates>
 		</view>
 		<date :time="time"></date>

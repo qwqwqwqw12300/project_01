@@ -34,7 +34,17 @@
 	import {
 		GetListBloodPressureByWeek
 	} from '@/common/http/api';
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				deviceInfo: state => state.deviceInfo
+			}),
+		
+		},
 		props:{
 			time:{
 				default:''
@@ -85,8 +95,8 @@
 				GetListBloodPressureByWeek({
 					beginDate:this.time[0],
 					endDate:this.time[6],
-					deviceId:240,
-					humanId:'00000000000000000001'
+					deviceId:this.deviceInfo.deviceId,
+					humanId:this.deviceInfo.familyId
 				}).then(res=>{
 					console.log(res,'res')
 					this.list[0].value = res.data.spAvg
@@ -223,7 +233,7 @@
 			justify-content: space-between;
 
 			.ui-title-content {
-				width: 90%;
+				width: 100%;
 				display: flex;
 
 				.ui-circle {

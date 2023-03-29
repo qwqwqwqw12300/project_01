@@ -83,7 +83,20 @@
 			</template>
 			<!-- /家庭列表 -->
 
-
+			<!-- 空户 -->
+			<template v-else>
+				<view class="ui-default">
+					<image src="../../static/images/index/empty.png" mode=""></image>
+					<text>未添加任何家庭</text>
+				</view>
+				<!-- 添加 -->
+				<view class="ui-add-btn">
+					<image @click="addStep" src="../../static/images/index/add-family.png" mode=""></image>
+					<text>新建家庭</text>
+				</view>
+			</template>
+			<!-- /空户 -->
+			
 			<add-step ref="addStepRef"></add-step>
 			<bind-device :payload="bindPayload" @next="handleInitList" ref="indexBindDev" />
 			<room-pop ref="indexAddRoom" @update="handleInitList" />
