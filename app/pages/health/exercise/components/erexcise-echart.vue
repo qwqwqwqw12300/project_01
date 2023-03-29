@@ -11,71 +11,10 @@
 				default: 'date'
 			},
 			options: {
-				default: function() {
-					return {
-						notMerge: true,
-						tooltip: {
-							trigger: ''
-						},
-						grid: {
-							left: '0',
-							right: '0',
-							bottom: '0',
-							top: '10',
-							containLabel: true
-						},
-						xAxis: {
-							type: 'category',
-							data: ['00:00', '06:00', '12:00', '18:00', '23:59'],
-							axisTick: {
-								show: false
-							},
-						},
-						yAxis: {
-							type: 'value',
-							axisTick: {
-								show: false
-							},
-							axisLine: {
-								show: false
-							},
-							data: [0, 25, 50, 70, 100],
-						},
-						series: [{
-								data: [100, 25, 50, 70, 100],
-								type: 'bar',
-								itemStyle: { //---图形形状
-									color: '#61AAF7',
-									barBorderRadius: [18, 18, 0, 0],
-								},
-								barWidth: '10', //---柱形宽度
-								barCategoryGap: '20%', //---柱形间距
-							},
-							{
-								data: [50, 100, 50, 70, 100],
-								type: 'bar',
-								itemStyle: { //---图形形状
-									color: '#61AAF7',
-									barBorderRadius: [18, 18, 0, 0],
-								},
-								barWidth: '10', //---柱形宽度
-								barCategoryGap: '20%', //---柱形间距
-							},
-							{
-								data: [25, 50, 50, 70, 100],
-								type: 'bar',
-								itemStyle: { //---图形形状
-									color: '#61AAF7',
-									barBorderRadius: [18, 18, 0, 0],
-								},
-								barWidth: '10', //---柱形宽度
-								barCategoryGap: '20%', //---柱形间距
-							}
-						]
-					}
-				}
+				type: Object,
+				required: true
 			},
-			optionWeek: {
+			options2: {
 				default: function() {
 					return {
 						notMerge: true,

@@ -5,14 +5,14 @@
 			<view class="ui-content-left">增长</view>
 			<view class="ui-content-right">
 				10mm/mv
-				<u-icon name="arrow-right" size="28rpx" ></u-icon>
+				<u-icon name="arrow-right" size="28rpx"></u-icon>
 			</view>
 		</view>
 		<view class="ui-content" style="margin-top: 48rpx;">
 			<view class="ui-content-left">移动速度</view>
 			<view class="ui-content-right">
 				25mm/s
-				<u-icon name="arrow-right" size="28rpx" ></u-icon>
+				<u-icon name="arrow-right" size="28rpx"></u-icon>
 			</view>
 		</view>
 		<view class="ui-window" v-for="(item,index) in cellList" :key="index" @click="handleChange(item)">
@@ -44,31 +44,32 @@
 		GetListElectrocardiogramByDay
 	} from '@/common/http/api';
 	export default {
-		props:{
-			time:{
-				default:''
+		props: {
+			time: {
+				default: ''
 			}
 		},
 		data() {
 			return {
-				cellList:[{
-					time:'21:31',
-					num:'90',
-					value:'',
-					input:false
-				},
-				{
-					time:'21:30',
-					num:'90',
-					value:'',
-					input:false
-				}],
-				option:{},//echart配置
-				mapList:[],//echart series数组
-				dataList:[],//erchart x轴数组
-				lenList:[],//定时器处理数组
-				count:90,//计数器
-				allCount:0//总数组长度
+				cellList: [{
+						time: '21:31',
+						num: '90',
+						value: '',
+						input: false
+					},
+					{
+						time: '21:30',
+						num: '90',
+						value: '',
+						input: false
+					}
+				],
+				option: {}, //echart配置
+				mapList: [], //echart series数组
+				dataList: Array.from(Array(91).keys()),
+				lenList: [], //定时器处理数组
+				count: 90, //计数器
+				allCount: 0 //总数组长度
 			}
 		},
 		watch: {
@@ -79,38 +80,39 @@
 						this.logstatrt();
 					}
 				},
-				immediate:true //监听到数据立即执行
+				immediate: true //监听到数据立即执行
 			}
 		},
 		methods: {
 			logstatrt() {
 				GetListElectrocardiogramByDay({
-					deviceId:240,
-					dayTime:this.time,
-					humanId:'116'
-				}).then(res=>{
-					console.log(res,'res')
+					deviceId: 240,
+					dayTime: this.time,
+					humanId: '116'
+				}).then(res => {
+					console.log(res, 'res')
 					let list = []
-					this.cellList = res.data.MapList.map(item=>{
+					this.cellList = res.data.MapList.map(item => {
+						console.log(list, 'list');
 						return {
-							time:uni.$u.timeFormat(item.time, 'hh:MM'),
-							list:item.value.split(","),
-							num:0,
-							value:'',
-							input:false
+							time: uni.$u.timeFormat(item.time, 'hh:MM'),
+							list: item.value.split(","),
+							num: 0,
+							value: '',
+							input: false
 						}
 					})
 
-					console.log(this.cellList,'cellList')
-					this.cellList[0].list.forEach(item=>{
+					console.log(this.cellList, 'cellList')
+					this.cellList[0].list.forEach(item => {
 						list.push(item)
 					})
 					// console.log(list.slice(90,list.length),'list')
 					this.allCount = list.length
-					for(let i =0;i<this.count;i++){
+					for (let i = 0; i < this.count; i++) {
 						this.mapList.push(list[i])
 					}
-					this.lenList = list.slice(this.count,list.length)
+					this.lenList = list.slice(this.count, list.length)
 					let len = this.lenList.length
 					// setInterval(()=>{
 					// 	console.log('定时器----------------------')
@@ -141,20 +143,19 @@
 							left: '20',
 							right: '20',
 							bottom: '5',
-							top:'20',
+							top: '20',
 							containLabel: true
 						},
-						toolbox: {
-						},
+						toolbox: {},
 						xAxis: {
 							type: 'category',
 							boundaryGap: false,
-							data:this.dataList,
+							data: this.dataList,
 							axisTick: {
 								show: false
 							},
 							axisLabel: {
-								show:false
+								show: false
 							},
 							axisLine: {
 								show: false
@@ -162,8 +163,8 @@
 						},
 						yAxis: {
 							type: 'value',
-							min:'-1000',
-							max:'1000',
+							min: '-10000',
+							max: '10000',
 							axisTick: {
 								show: false
 							},
@@ -175,63 +176,30 @@
 							},
 							splitLine: {
 								show: true,
-								lineStyle:{
-									type:'disable'
+								lineStyle: {
+									type: 'disable'
 								}
 							},
 						},
-						series: [
-							{
-								name: 'Union Ads',
-								type: 'line',
-								stack: 'Total',
-								data: this.mapList,
-								showSymbol: false,
-								itemStyle: {
-									normal: {
-										lineStyle: {
-											color: "#63DDBA",
-											width: 1
-										}
+						series: [{
+							name: 'Union Ads',
+							type: 'line',
+							stack: 'Total',
+							data: this.mapList,
+							showSymbol: false,
+							itemStyle: {
+								normal: {
+									lineStyle: {
+										color: "#63DDBA",
+										width: 1
 									}
-								},
-							}
-						]
+								}
+							},
+						}]
 					};
 				})
 			},
-			handleChange(val){
-				console.log(val,'val')
-				let list = []
-				this.mapList = []
-				this.lenList = []
-				this.count = 90
-				this.allCount = 0
-				val.list.forEach(item=>{
-					list.push(item)
-				})
-				// console.log(list.slice(90,list.length),'list')
-				this.allCount = list.length
-				for(let i =0;i<this.count;i++){
-					this.mapList.push(list[i])
-				}
-				this.lenList = list.slice(this.count,list.length)
-				let len = this.lenList.length
-				setInterval(()=>{
-					console.log('定时器----------------------')
-					if(this.count == this.allCount){
-						return
-					}else{
-						for(let i =0;i<this.lenList.length;i++){
-							this.count++
-							this.mapList.push(this.lenList[i])
-							this.mapList.shift()
-							return
-						}
-					}
-					this.dataList.push(len++)
-					this.dataList.shift()
-				},100)
+			setOption(data) {
 				this.option = {
 					title: {
 						text: ''
@@ -246,20 +214,19 @@
 						left: '20',
 						right: '20',
 						bottom: '5',
-						top:'0',
+						top: '0',
 						containLabel: true
 					},
-					toolbox: {
-					},
+					toolbox: {},
 					xAxis: {
 						type: 'category',
 						boundaryGap: false,
-						data:this.dataList,
+						data: this.dataList,
 						axisTick: {
 							show: false
 						},
 						axisLabel: {
-							show:false
+							show: false
 						},
 						axisLine: {
 							show: false
@@ -267,8 +234,8 @@
 					},
 					yAxis: {
 						type: 'value',
-						min:'-500',
-						max:'500',
+						min: '-5000',
+						max: '5000',
 						axisTick: {
 							show: false
 						},
@@ -280,54 +247,71 @@
 						},
 						splitLine: {
 							show: true,
-							lineStyle:{
-								type:'disable'
+							lineStyle: {
+								type: 'disable'
 							}
 						},
 					},
-					series: [
-						{
-							name: 'Union Ads',
-							type: 'line',
-							stack: 'Total',
-							data: this.mapList,
-							showSymbol: false,
-							itemStyle: {
-								normal: {
-									lineStyle: {
-										color: "#63DDBA",
-										width: 1
-									}
+					series: [{
+						name: 'Union Ads',
+						type: 'line',
+						stack: 'Total',
+						data,
+						showSymbol: false,
+						itemStyle: {
+							normal: {
+								lineStyle: {
+									color: "#63DDBA",
+									width: 1
 								}
-							},
-						}
-					]
+							}
+						},
+					}]
 				};
+			},
+			handleChange(val) {
+				const list = [...val.list].filter(ele => Number(ele) || ele === 0); // 当前项列表
+				this.count = 90; // 初始化展示数量
+				this.allCount = list.length; //  当前项长度
+				this.mapList = list.slice(0, this.count); // 实际渲染数组
+				setInterval(() => {
+					if (this.count == this.allCount) {
+						return
+					} else {
+						this.mapList.shift()
+						this.mapList.push(list[++this.count])
+					}
+					this.setOption(this.mapList);
+				}, 40)
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.myChart{
+	.myChart {
 		width: 90%;
 		height: 400rpx;
 		margin: 64rpx 32rpx 48rpx;
 	}
-	.ui-content{
+
+	.ui-content {
 		display: flex;
 		align-items: center;
-		.ui-content-left{
+
+		.ui-content-left {
 			margin-left: 48rpx;
 		}
-		.ui-content-right{
-			margin-left:100rpx;
+
+		.ui-content-right {
+			margin-left: 100rpx;
 			display: flex;
 			align-items: center;
 			font-weight: bold;
 		}
 	}
-	.ui-window{
+
+	.ui-window {
 		width: 90%;
 		// height: 200rpx;
 		margin: 0 auto;
@@ -336,10 +320,12 @@
 		display: flex;
 		flex-direction: column;
 		background-color: #FFF;
+
 		.ui-window-content {
 			display: flex;
 			margin-left: 20rpx;
 			margin-top: 32rpx;
+
 			.ui-circle {
 				width: 30rpx;
 				height: 30rpx;
@@ -347,7 +333,7 @@
 				border-radius: 50rpx;
 				background-color: #fd993f;
 			}
-		
+
 			.ui-window-font {
 				font-size: 26rpx;
 				color: #353535;
@@ -355,34 +341,40 @@
 				font-weight: 400;
 			}
 		}
-		.ui-row{
+
+		.ui-row {
 			margin: 32rpx 20rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			.ui-row-num{
+
+			.ui-row-num {
 				font-size: 50rpx;
 				font-weight: bold;
 				margin-right: 10rpx;
 			}
-			.ui-row-right{
+
+			.ui-row-right {
 				font-size: 32rpx;
 				padding: 5rpx 20rpx;
 				border: 1px black solid;
 				border-radius: 50rpx;
 			}
 		}
-		.ui-input-font{
+
+		.ui-input-font {
 			margin-left: 20rpx;
 			margin-bottom: 20rpx;
 			font-size: 30rpx;
 		}
-		.ui-input{
+
+		.ui-input {
 			width: 90%;
 			margin: 0 auto;
 		}
 	}
-	.ui-window:hover{
+
+	.ui-window:hover {
 		background-color: lightgray;
 	}
 </style>
