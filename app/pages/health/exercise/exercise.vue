@@ -26,14 +26,14 @@
 				</block>
 			</scroll-view>
 		</view>
-		<view class="detail-title">
+<!-- 		<view class="detail-title">
 			详情
 		</view>
 		<view class="ui-detail">
 			<view class="detail-box" v-for="item in 3">
 				<view class="box-cell">
 					<view class="title">
-						20:37 - 20:53 步行
+						20:37 步行
 					</view>
 					<view class="content">
 						<view class="c">
@@ -50,7 +50,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 	</app-body>
 </template>
 
@@ -343,17 +343,21 @@
 			 * 查询活动周平均数据
 			 */
 			fetchExerciseAvg(begin,end){
+				console.log('fetchExerciseAvg')
 				const params = {
-					// deviceId: this.deviceInfo.deviceId,
-					deviceId:240,
+					deviceId: this.deviceInfo.deviceId,
+					// deviceId:240,
 					beginDate: begin,
 					endDate: end,
-					// humanId: this.deviceInfo.humanId
-					humanId:'1'
+					humanId: this.deviceInfo.humanId
+					// humanId:'1'
 				}
 				GetExerciseAvg(params).then(res=>{
 					console.log(res,55)
 					this.avgData = res.data;
+					this.list[0].num = res.data.stepNumAvg;
+					this.list[1].num = res.data.calorieAvg;
+					this.list[2].num = res.data.exerciseDurationAvg;
 				})
 			}
 		}

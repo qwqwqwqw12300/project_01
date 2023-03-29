@@ -10,7 +10,7 @@
 		</view>
 		<view class="ui-body">
 			<view class="ui-w-h-100">
-				<view class="ui-f-center ui-white-bg ui-br-16 ui-padding-r-40"
+				<view class="ui-f-center ui-white-bg ui-br-16" style="padding-right:60rpx"
 					@click="jumpUrl('/pages/health/exercise/exercise')">
 					<!-- <image class="ui-img-size1" src="@/static/images/caihong.png"></image> -->
 					<app-echarts style="height: 300rpx;width:300rpx" id="caiHongChart" :option="caiHongOption">
@@ -45,7 +45,7 @@
 					</view>
 				</view>
 				<view class="ui-f-between ui-mar-t-20  ui-f-wrap ui-w-h-100">
-					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+					<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
 						@click="jumpUrl('/pages/health/sleep/sleep')">
 						<view class="ui-f-start ui-f-wrap">
 							<image class="ui-img-size3" src="/static/images/yueliang.png"></image>
@@ -60,7 +60,7 @@
 								<view class="ui-color-block4 ui-color-block1-width"></view>
 							</view>
 							<view class="ui-w-h-100 ui-f-between ui-mar-t-20" v-if="!fetchRes.sleepMap">
-								<view class="ui-noData-font" style="height: 114rpx;">无数据</view>
+								<view class="ui-noData-font">无数据</view>
 							</view>
 							<view class="ui-f-between ui-w-h-100 ui-mar-t-10" v-if="fetchRes.sleepMap">
 								<text class="ui-font-22 ui-font-c-888">差</text>
@@ -69,7 +69,7 @@
 						</view>
 
 					</view>
-					<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100"
+					<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100"
 						@click="jumpUrl('/pages/health/heart-rate/heart-rate')">
 						<view class="ui-f-start ui-f-wrap">
 							<image class="ui-img-size3" src="/static/images/xinlv.png"></image>
@@ -92,7 +92,7 @@
 						</view>
 					</view>
 					<view class="ui-f-between ui-mar-t-20 ">
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+						<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
 							@click="jumpUrl('/pages/health/blood-pressure/blood-pressure')">
 							<view class="ui-f-start ui-f-wrap">
 								<image class="ui-img-size3" src="/static/images/xueya.png"></image>
@@ -114,7 +114,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100"
+						<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100"
 							@click="jumpUrl('/pages/health/blood-oxygen/blood-oxygen')">
 							<view class="ui-f-start ui-f-wrap">
 								<image class="ui-img-size3" src="/static/images/xueyang.png"></image>
@@ -127,8 +127,10 @@
 									</app-echarts>
 									<!-- <image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image> -->
 								</view>
-								<view class="ui-noData-font" v-if="!fetchRes.tWatchBloodOxygen.length">
-									无数据
+								<view class="ui-w-h-100 ui-mar-t-20">
+									<view class="ui-noData-font" v-if="!fetchRes.tWatchBloodOxygen.length">
+										无数据
+									</view>
 								</view>
 								<view class="ui-f-between ui-w-h-100 ui-mar-t-10"
 									v-if="fetchRes.tWatchBloodOxygen.length">
@@ -139,7 +141,7 @@
 						</view>
 					</view>
 					<view class="ui-f-between ui-mar-t-20 ui-w-h-100">
-						<view class="ui-w-42 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+						<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
 							@click="jumpUrl('/pages/health/electrocardiograph/electrocardiograph')">
 							<view class="ui-f-start ui-f-wrap">
 								<image class="ui-img-size3" src="/static/images/xindian.png"></image>
@@ -152,9 +154,11 @@
 									<app-echarts class="ui-echarts-size" :option="xinDianOption" id="xinDianChart">
 									</app-echarts>
 								</view>
-								<view class="ui-noData-font"
-									v-if="!fetchRes.electrocardiogramMapList || !fetchRes.electrocardiogramMapList.length">
-									无数据
+								<view class="ui-w-h-100 ui-mar-t-20">
+									<view class="ui-noData-font"
+										v-if="!fetchRes.electrocardiogramMapList || !fetchRes.electrocardiogramMapList.length">
+										无数据
+									</view>
 								</view>
 								<view class="ui-f-between ui-w-h-100 ui-mar-t-10"
 									v-if="fetchRes.electrocardiogramMapList && fetchRes.electrocardiogramMapList.length">
@@ -832,6 +836,10 @@
 
 		.ui-w-42 {
 			width: 42%;
+		}
+		
+		.ui-w-43 {
+			width: 43%;
 		}
 
 		.ui-img-size2 {
