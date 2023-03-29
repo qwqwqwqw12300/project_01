@@ -3,7 +3,6 @@
 		<text>
 			{{text}}
 		</text>
-		<u-icon v-if="iconUrl" :name="iconUrl" size="26"></u-icon>
 		<slot></slot>
 	</view>
 
@@ -25,10 +24,6 @@
 			color: {
 				type: String,
 				default: '#35353',
-			},
-			iconUrl: {
-				type: String,
-				default: ''
 			}
 		},
 		data() {
@@ -41,13 +36,9 @@
 
 <style lang="scss">
 	.wd-logo {
-		// margin: 20rpx 0 0 32rpx;
-		padding: 0 32rpx;
-		margin-top: 20rpx;
-		// display: inline-flex;
-		// flex-direction: row;
-		display: flex;
-		justify-content: space-between;
+		margin: 20rpx 0 0 32rpx;
+		display: inline-flex;
+		flex-direction: row;
 		font-size: 50rpx;
 		font-weight: bold;
 		// color: #ffffff;

@@ -2,10 +2,10 @@
 	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<view class="ui-title">
 			<view class="ui-title-left">设备配置</view>
-			<view class="ui-title-right">
+			<!-- 	<view class="ui-title-right">
 				<u-icon name="/static/images/restart@3x.png" color="black" size="36rpx"></u-icon>
 				<text style="margin-left: 11rpx;">重启设备</text>
-			</view>
+			</view> -->
 		</view>
 		<view class="ui-cell">
 			<view class="cell-box">
@@ -61,7 +61,7 @@
 				}, {
 					title: '跌倒检测',
 					type: '1',
-					url: '/pages/card/guard'
+					// url: '/pages/card/guard'
 				}, {
 					title: '活动设定',
 					url: 'active'
@@ -273,7 +273,6 @@
 
 	.ui-cell {
 		margin-top: 64rpx;
-		padding: 0 32rpx;
 
 		.cell-box {
 			background-color: #fff;

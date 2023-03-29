@@ -623,6 +623,33 @@ export const GetListBloodOxygenByWeek = (params) => http.get('/api/tWatch/listBl
  */
 export const GetListElectrocardiogramByDay = (params) => http.get('/api/tWatch/listElectrocardiogramByDay', params, {});
 
+
+
+/**
+ * 获取通讯录
+ */
+export const GetWatchAddressBook = (params) => http.get('/api/tWatch/getAddressBook', params, {});
+
+/**
+ * 下发通讯录
+ */
+export const PostWatchContactsSync = (params) => http.post('/api/tWatch/contactsSync', params, {});
+
+/**
+ * 删除通讯录
+ */
+export const PostWatchDeleteAddressBook = (params) => http.post('/api/tWatch/deleteAddressBook', params, {});
+
+/**
+ * 绑定手表
+ */
+export const PostUpdateWatchBind = (params) => http.post('/api/tWatch/updateWatchBind', params, {});
+
+/**
+ * 解绑手表
+ */
+export const PostWatchUnBind = (params) => http.post('/api/tWatch/watchUnBind', params, {});
+
 /**
  * 查询日步数数据
  */
@@ -657,3 +684,9 @@ export const GetListExerciseDurationByWeek = (params) => http.get('/api/tWatch/l
  * 获取手表信息
  */
 export const GetWatchInfo = (params) => http.get('/api/tWatch/getWatchInfo', params, {});
+
+/*
+ * 获取手表最后定位
+ */
+export const GetWatchTrack = (params) => http.get('/api/tWatch/track/lastPoint', params, {});
+

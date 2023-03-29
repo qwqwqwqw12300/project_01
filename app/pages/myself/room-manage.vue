@@ -64,7 +64,9 @@
 								<text class="offline" v-else>离线</text>
 							</view>
 							<view class="device-info">
-								<image src="/static/images/dzqgk.png"></image>
+								<image
+									:src="getDevices(item).type == 1 ?'/static/images/dzqgk.png' : '/static/images/watch.png'">
+								</image>
 								<view class="detail">
 									<text class="name">{{ item.name }}</text>
 									<text class="position" v-if="item.devices.length">
@@ -109,7 +111,8 @@
 		relDevice,
 		PostSelectTHumanListByFamilyId,
 		PostDeleteTHumanByHumanIds,
-		PostCareCardUnBind
+		PostCareCardUnBind,
+		PostWatchUnBind
 	} from '@/common/http/api.js';
 	import {
 		assignDeep
@@ -289,10 +292,11 @@
 				if (devices.humanId) {
 					uni.showModal({
 						title: '提示',
-						content: '是否和房间解除绑定',
+						content: '是否和人员解除绑定',
 						success: res => {
 							if (res.confirm) {
-								PostCareCardUnBind({
+								const post = devices.type === '1' ? PostCareCardUnBind : PostWatchUnBind;
+								post({
 									deviceId: devices.deviceId,
 									humanId: devices.humanId
 								}).then(res => {

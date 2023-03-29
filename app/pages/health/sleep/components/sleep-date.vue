@@ -45,7 +45,7 @@
 				sleepList:[{
 					color:'#68D688',
 					title:'总睡眠时长',
-					text:'总睡眠时长',
+					text:'夜间睡眠',
 					value:'6-10h'
 				},
 				{
@@ -63,7 +63,7 @@
 				{
 					color:'#EFC356',
 					title:'清醒时长 0%',
-					text:'清醒时长',
+					text:'清醒',
 					value:'<10%'
 				}]
 			}

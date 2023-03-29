@@ -3,8 +3,8 @@
 		<view class="ui-banner">
 			<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange"
 				:current="current">
-				<swiper-item>
-					<swiper-device></swiper-device>
+				<swiper-item v-for="item in deviceList" :key="item.deviceId">
+					<swiper-device :record="item"></swiper-device>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -127,8 +127,7 @@
 									</app-echarts>
 									<!-- <image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image> -->
 								</view>
-								<view class="ui-noData-font"
-									v-if="!fetchRes.tWatchBloodOxygen.length">
+								<view class="ui-noData-font" v-if="!fetchRes.tWatchBloodOxygen.length">
 									无数据
 								</view>
 								<view class="ui-f-between ui-w-h-100 ui-mar-t-10"
@@ -148,7 +147,8 @@
 								<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 									2月16日
 								</view>
-								<view class="ui-w-h-100 ui-mar-t-20" v-if="fetchRes.electrocardiogramMapList && fetchRes.electrocardiogramMapList.length">
+								<view class="ui-w-h-100 ui-mar-t-20"
+									v-if="fetchRes.electrocardiogramMapList && fetchRes.electrocardiogramMapList.length">
 									<app-echarts class="ui-echarts-size" :option="xinDianOption" id="xinDianChart">
 									</app-echarts>
 								</view>
@@ -156,7 +156,8 @@
 									v-if="!fetchRes.electrocardiogramMapList || !fetchRes.electrocardiogramMapList.length">
 									无数据
 								</view>
-								<view class="ui-f-between ui-w-h-100 ui-mar-t-10" v-if="fetchRes.electrocardiogramMapList && fetchRes.electrocardiogramMapList.length">
+								<view class="ui-f-between ui-w-h-100 ui-mar-t-10"
+									v-if="fetchRes.electrocardiogramMapList && fetchRes.electrocardiogramMapList.length">
 									<text class="ui-font-22 ui-font-c-888">00:00</text>
 									<text class="ui-font-22 ui-font-c-888">24:00</text>
 								</view>
@@ -185,8 +186,8 @@
 					spMapList: [],
 					tWatchBloodOxygen: [],
 					HeartRateList: [],
-					electrocardiogramMapList:[],
-					sleepMap:''
+					electrocardiogramMapList: [],
+					sleepMap: ''
 				},
 				caiHongOption: {},
 				caiHongData: [],
@@ -196,21 +197,37 @@
 				xueYangOption: {},
 				xinDianOption: {},
 				xinZangOption: {},
-				current: 0
+				current: 0,
+				deviceList: [],
+				swiperData: {},
 			}
 		},
-		created() {
-			this.fetchData();
-		},
-		mounted() {
-
+		created() {},
+		onShow() {
+			this.deviceList = this.$store.getters.filterDevice({
+				type: '2'
+			})
+			if (this.deviceList.length) {
+				this.swiperData = this.deviceList[0]
+				this.$store.commit('setDeviceInfo', this.swiperData)
+				this.fetchData();
+			}
 		},
 		methods: {
+			swiperChange(val) {
+				this.swiperData = this.deviceList[val.detail.current]
+				this.$store.commit('setDeviceInfo', this.swiperData)
+				this.fetchData()
+			},
 			fetchData() {
+				const {
+					deviceId,
+					humanId
+				} = this.swiperData
 				const params = {
-					deviceId: '240',
+					deviceId,
 					dayTime: '2023-03-23',
-					humanId: '00000000000000000001'
+					humanId,
 				}
 				GetCaiHongData(params).then(res => {
 					this.logstatrt(res);
