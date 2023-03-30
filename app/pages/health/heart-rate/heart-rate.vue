@@ -57,6 +57,7 @@
 				tooltip: {
 					trigger: 'axis'
 				},
+				backgroundColor: '#fff',
 				grid: {
 					left: '5%',
 					right: '5%',
@@ -158,6 +159,7 @@
 				tooltip: {
 					trigger: 'axis'
 				},
+				backgroundColor: '#fff',
 				grid: {
 					left: '5%',
 					right: '5%',
@@ -195,6 +197,13 @@
 				}, ],
 				yAxis: [{
 					type: "value",
+					scale: true,
+					splitArea: {
+						show: true,
+						areaStyle: {
+							color: ['#f6f8fc', '#fff']
+						}
+					},
 					axisLabel: {
 						textStyle: {
 							color: "#666"
@@ -393,10 +402,11 @@
 	}
 
 	.ui-echart {
-		// margin-top: 20rpx;
+		margin-top: 20rpx;
+		padding: 0 32rpx;
 
 		.echart-box {
-			width: 100%;
+			// width: 100%;
 			height: 500rpx;
 		}
 	}
