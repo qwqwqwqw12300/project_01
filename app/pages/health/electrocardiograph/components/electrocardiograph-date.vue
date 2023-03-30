@@ -114,8 +114,8 @@
 							time: uni.$u.timeFormat(item.time, 'hh:MM'),
 							list: item.value.split(","),
 							num: 0,
-							value: '',
-							input: false
+							value: item.remark,
+							input: item.remark !='' ? true : false
 						}
 					})	
 					clearInterval(this.interval)
