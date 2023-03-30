@@ -7,14 +7,14 @@
 			<view class="ui-content-left">增长</view>
 			<view class="ui-content-right">
 				10mm/mv
-				<u-icon name="arrow-right" size="28rpx"></u-icon>
+				<!-- <u-icon name="arrow-right" size="28rpx"></u-icon> -->
 			</view>
 		</view>
 		<view class="ui-content" style="margin-top: 48rpx;">
 			<view class="ui-content-left">移动速度</view>
 			<view class="ui-content-right">
 				25mm/s
-				<u-icon name="arrow-right" size="28rpx"></u-icon>
+				<!-- <u-icon name="arrow-right" size="28rpx"></u-icon> -->
 			</view>
 		</view>
 		<view class="ui-window" v-for="(item,index) in cellList" :key="index" @click="handleChange(item)">
@@ -162,8 +162,8 @@
 					},
 					yAxis: {
 						type: 'value',
-						min: '-5000',
-						max: '5000',
+						min: '-3000',
+						max: '3000',
 						axisTick: {
 							show: false
 						},

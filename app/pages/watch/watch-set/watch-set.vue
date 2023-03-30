@@ -289,8 +289,8 @@
 	}
 
 	.ui-button {
-		margin-top: 104rpx;
-		padding: 0 32rpx;
+
+		padding: 104rpx 32rpx;
 
 		button {
 			color: #FF4645;

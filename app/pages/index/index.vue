@@ -32,10 +32,9 @@
 
 			<!-- 家庭列表 -->
 			<template v-if="loading">
-				<view class="ui-scroll">
-					<u-loading-icon text="加载中" textSize="18"></u-loading-icon>
+				<view class="ui-loading">
+					<u-loading-icon mode="semicircle" :vertical="true" text="加载中" textSize="18"></u-loading-icon>
 				</view>
-
 			</template>
 			<template v-else-if="familyList.length">
 				<scroll-view :scroll-y="true" class="ui-scroll" refresher-enabled :refresher-triggered="isRefresh"
@@ -216,7 +215,7 @@
 					forIndex().then(res => {
 						this.$store.commit('setFamilyList', res[0].data.rows);
 						this.$store.commit('setDevicesList', res[1].data.rows);
-						// resolve();
+						resolve();
 					})
 				})
 			},
@@ -535,5 +534,13 @@
 			font-size: 24rpx;
 			color: #888888;
 		}
+	}
+
+	.ui-loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 500px;
+		width: 100%;
 	}
 </style>
