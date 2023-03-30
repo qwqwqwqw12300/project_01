@@ -45,7 +45,7 @@
 					</view>
 				</view>
 				<view class="ui-f-between ui-mar-t-20  ui-f-wrap ui-w-h-100">
-					<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+					<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-min-h-121"
 						@click="jumpUrl('/pages/health/sleep/sleep')">
 						<view class="ui-f-start ui-f-wrap">
 							<image class="ui-img-size3" src="/static/images/yueliang.png"></image>
@@ -69,7 +69,7 @@
 						</view>
 
 					</view>
-					<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100"
+					<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100 ui-min-h-121"
 						@click="jumpUrl('/pages/health/heart-rate/heart-rate')">
 						<view class="ui-f-start ui-f-wrap">
 							<image class="ui-img-size3" src="/static/images/xinlv.png"></image>
@@ -92,7 +92,7 @@
 						</view>
 					</view>
 					<view class="ui-f-between ui-mar-t-20 ">
-						<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+						<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-min-h-121"
 							@click="jumpUrl('/pages/health/blood-pressure/blood-pressure')">
 							<view class="ui-f-start ui-f-wrap">
 								<image class="ui-img-size3" src="/static/images/xueya.png"></image>
@@ -114,7 +114,7 @@
 								</view>
 							</view>
 						</view>
-						<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100"
+						<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100 ui-min-h-121"
 							@click="jumpUrl('/pages/health/blood-oxygen/blood-oxygen')">
 							<view class="ui-f-start ui-f-wrap">
 								<image class="ui-img-size3" src="/static/images/xueyang.png"></image>
@@ -141,7 +141,7 @@
 						</view>
 					</view>
 					<view class="ui-f-between ui-mar-t-20 ui-w-h-100">
-						<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20"
+						<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-min-h-121"
 							@click="jumpUrl('/pages/health/electrocardiograph/electrocardiograph')">
 							<view class="ui-f-start ui-f-wrap">
 								<image class="ui-img-size3" src="/static/images/xindian.png"></image>
@@ -939,6 +939,10 @@
 
 		.ui-font-c-888 {
 			color: #888888;
+		}
+		
+		.ui-min-h-121{
+			min-height: 242rpx;
 		}
 	}
 

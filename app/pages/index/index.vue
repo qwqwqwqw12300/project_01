@@ -31,7 +31,13 @@
 			<!-- /家庭tab -->
 
 			<!-- 家庭列表 -->
-			<template v-if="familyList.length">
+			<template v-if="loading">
+				<view class="ui-scroll">
+					<u-loading-icon text="加载中" textSize="18"></u-loading-icon>
+				</view>
+
+			</template>
+			<template v-else-if="familyList.length">
 				<scroll-view :scroll-y="true" class="ui-scroll" refresher-enabled :refresher-triggered="isRefresh"
 					@refresherrefresh="pullDownRefresh" refresher-background="transparent" lower-threshold="10">
 					<view class="ui-group" v-for="(familyItem, index) of familyList" :key="'family' + index">
@@ -96,7 +102,7 @@
 				</view>
 			</template>
 			<!-- /空户 -->
-			
+
 			<add-step ref="addStepRef"></add-step>
 			<bind-device :payload="bindPayload" @next="handleInitList" ref="indexBindDev" />
 			<room-pop ref="indexAddRoom" @update="handleInitList" />
@@ -149,7 +155,9 @@
 				/**下拉刷新状态**/
 				isRefresh: false,
 				/**轮询定时器**/
-				timer: null
+				timer: null,
+				/**是否在加载状态**/
+				loading: true
 			}
 		},
 		computed: {
@@ -171,44 +179,9 @@
 						name: '全部',
 						id: ''
 					}, ...list];
-				},
-				getDeives: state => {
-					return item => {
-						let arr = [];
-						if (state.familyList.length) {
-							const devices = state.familyList.find(ele => ele.familyId === item.familyId)
-								.devices;
-							if (item.roomId) { // 查询房间下的设备
-								arr = devices.filter(ele => ele.roomId === item.roomId)
-							} else {
-								arr = devices.filter(ele => ele.humanId === item.humanId)
-							}
-							arr.filter(ele => ele.roomId === item.roomId);
-						}
-						return arr[0] || {};;
-
-					}
-				},
-
+				}
 			}, ),
 			...mapGetters(['filterDevice']),
-			/**获取房间图标**/
-			getRoomIcon: () => {
-				return (type) => {
-					let pic;
-					switch (type) { //  0:其他、1:书房、2:客厅、3:卧室、4:浴室、5:厨房、6:餐厅
-						case '1':
-						case '2':
-							pic = `../../static/images/index/room${type}.png`;
-							break;
-						default:
-							pic = `../../static/images/index/room0.png`;
-							break;
-					}
-					return pic;
-				}
-			}
-
 		},
 		onShow() {
 			this.handleInitList();
@@ -217,36 +190,39 @@
 			}, 1000 * 60)
 		},
 		onHide() {
-			clearInterval(this.timer)
-			this.timer = null
-		},
-		destroyed() {
-			clearInterval(this.timer)
-			this.timer = null
+			this.timer && clearInterval(this.timer)
 		},
 		methods: {
 			...mapActions(['getPushMsgState', 'getAllRoom']),
 
+			/**
+			 * 数据初始化
+			 */
 			handleInitList() {
 				Promise.all([
 					this.forIndexFun(),
 					this.getReadInfo(),
 					this.getPushMsgState()
 				]).then(res => {
+					this.loading = false;
 					this.isRefresh = false;
 				})
-
 			},
+			/**  
+			 * 获取设备与房间信息
+			 */
 			forIndexFun() {
 				return new Promise(resolve => {
 					forIndex().then(res => {
-						console.log(res, 'res')
 						this.$store.commit('setFamilyList', res[0].data.rows);
 						this.$store.commit('setDevicesList', res[1].data.rows);
-						this.isRefresh = false;
+						// resolve();
 					})
 				})
 			},
+			/**
+			 *下拉刷新
+			 **/
 			pullDownRefresh() {
 				this.isRefresh = true;
 				this.handleInitList();

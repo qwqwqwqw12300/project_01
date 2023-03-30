@@ -67,6 +67,7 @@
 				console.log(option, 'option');
 				console.log(this.dataList, 'this.dataList');
 				this.options = {
+					notMerge: true,
 					tooltip: {
 						trigger: 'axis'
 					},
@@ -90,6 +91,7 @@
 								color: "#666"
 							},
 							formatter: function(val) {
+								console.log(val,'val')
 								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
 							}
 						},
@@ -140,6 +142,8 @@
 								},
 							}
 						},
+						barWidth: '6', //---柱形宽度
+						barCategoryGap: '20%', //---柱形间距
 						data: this.dataList
 					}]
 				}
@@ -209,7 +213,7 @@
 						}
 					}],
 					series: [{
-						type: 'line',
+						type: 'bar',
 						showSymbol: false,
 						itemStyle: {
 							normal: {
@@ -236,10 +240,11 @@
 					this.totalList[2].num = res.data.oxMap.minOx
 					for (let i = 0; i < res.data.oxMap.dataList.length; i++) {
 						this.dataList.push([
-							res.data.oxMap.dataList[i].time,
+							new Date(res.data.oxMap.dataList[i].time).valueOf(),
 							res.data.oxMap.dataList[i].value
 						])
 					}
+					console.log(this.dataList,'dataList')
 				})
 				this.dateFun(option)
 			},

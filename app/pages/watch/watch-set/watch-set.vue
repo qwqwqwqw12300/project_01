@@ -1,12 +1,15 @@
 <template>
 	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
-		<view class="ui-title">
+		<view>
+			<app-logo text="设备配置" color="#353535"></app-logo>
+		</view>
+		<!-- <view class="ui-title">
 			<view class="ui-title-left">设备配置</view>
-			<!-- 	<view class="ui-title-right">
+				<view class="ui-title-right">
 				<u-icon name="/static/images/restart@3x.png" color="black" size="36rpx"></u-icon>
 				<text style="margin-left: 11rpx;">重启设备</text>
-			</view> -->
-		</view>
+			</view>
+		</view> -->
 		<view class="ui-cell">
 			<view class="cell-box">
 				<u-cell-group>
@@ -42,7 +45,8 @@
 		PostCareCardUnBind,
 		GetFallCheckInfo,
 		GetAutoLocationInfo,
-		PostUpdateFallCheck
+		PostUpdateFallCheck,
+		PostWatchDataSync
 	} from '@/common/http/api';
 	export default {
 		data() {
@@ -83,7 +87,7 @@
 		methods: {
 			initData() {
 				GetFallCheckInfo({
-					deviceId: 243
+					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					this.cellList.forEach(item => {
 						if (item.type != undefined) {
@@ -96,7 +100,7 @@
 					})
 				})
 				GetAutoLocationInfo({
-					deviceId: 243
+					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					console.log(res, 'res')
 					this.obj = res.data
@@ -114,7 +118,11 @@
 						content: '是否确认一键同步手表的运动、计步、睡眠、心率等',
 						success: res => {
 							if (res.confirm) {
-								console.log('确认')
+								PostWatchDataSync({
+									deviceId: this.deviceInfo.deviceId,
+								}).then(res => {
+									uni.$u.toast(res.msg)
+								})
 							}
 						}
 					});
@@ -135,7 +143,7 @@
 			handleSwitch(type) {
 				let fallCheck = type == '1' ? true : false
 				PostUpdateFallCheck({
-					deviceId: 243,
+					deviceId: this.deviceInfo.deviceId,
 					fallCheck: fallCheck
 				}).then(res => {
 					uni.$u.toast(res.msg)
@@ -147,7 +155,7 @@
 			unBind() {
 				const {
 					humanId,
-					deviceId: deviceId
+					deviceId
 				} = this.deviceInfo
 				PostCareCardUnBind({
 					humanId,
