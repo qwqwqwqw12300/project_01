@@ -77,25 +77,23 @@
 						containLabel: true
 					},
 					xAxis: [{
-						type: 'category',
-						min:'dataMin',
-						max:'dataMax',
-						// interval: 6 * 3600 * 1000, // 间隔为6小时
-						// min: `${option.value + ' 00:00:00'}`, // x轴起始时间
-						// max: `${option.value + ' 23:59:59'}`, // x轴结束时间
-						data:[`${option.value+'00:00'}`,`${option.value+'06:00'}`,`${option.value+'12:00'}`,`${option.value+'18:00'}`,`${option.value+'23:00'}`],
+						type: 'time',
+						interval: 6 * 3600 * 1000, // 间隔为6小时
+						min: new Date(`${option.value + ' 00:00:00'}`).valueOf(), // x轴起始时间
+						max: new Date(`${option.value + ' 23:59:59'}`).valueOf(), // x轴结束时间
 						boundaryGap: false,
 						axisTick: { //坐标轴刻度相关设置。
 							show: false,
 						},
-						// axisLabel: {
-						// 	textStyle: {
-						// 		color: "#666"
-						// 	},
-						// 	formatter: function(val) {
-						// 		return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
-						// 	}
-						// },
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							},
+							formatter: function(val) {
+								console.log(val,'val')
+								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
+							}
+						},
 						splitLine: {
 							show: false
 						},
@@ -134,7 +132,7 @@
 					}],
 					series: [{
 						type: 'bar',
-						showSymbol: false,
+						// showSymbol: false,
 						// itemStyle: {
 						// 	normal: {
 						// 		lineStyle: {
@@ -244,7 +242,7 @@
 					this.totalList[2].num = res.data.oxMap.minOx
 					for (let i = 0; i < res.data.oxMap.dataList.length; i++) {
 						this.dataList.push([
-							res.data.oxMap.dataList[i].time,
+							new Date(res.data.oxMap.dataList[i].time).valueOf(),
 							res.data.oxMap.dataList[i].value
 						])
 					}
