@@ -57,6 +57,7 @@
 				tooltip: {
 					trigger: 'axis'
 				},
+				backgroundColor: '#fff',
 				grid: {
 					left: '5%',
 					right: '5%',
@@ -98,6 +99,13 @@
 				}, ],
 				yAxis: [{
 					type: "value",
+					scale: true,
+					splitArea: {
+						show: true,
+						areaStyle: {
+							color: ['#f6f8fc', '#fff']
+						}
+					},
 					axisLabel: {
 						textStyle: {
 							color: "#666"
@@ -120,7 +128,8 @@
 					},
 					axisTick: {
 						show: false
-					}
+					},
+					data: []
 				}],
 				series: [{
 					type: 'line',
@@ -158,6 +167,7 @@
 				tooltip: {
 					trigger: 'axis'
 				},
+				backgroundColor: '#fff',
 				grid: {
 					left: '5%',
 					right: '5%',
@@ -195,6 +205,13 @@
 				}, ],
 				yAxis: [{
 					type: "value",
+					scale: true,
+					splitArea: {
+						show: true,
+						areaStyle: {
+							color: ['#f6f8fc', '#fff']
+						}
+					},
 					axisLabel: {
 						textStyle: {
 							color: "#666"
@@ -345,6 +362,14 @@
 					beginDate: options.value[0],
 					endDate: options.value[6],
 				}).then(res => {
+					const {
+						avg,
+						max,
+						min
+					} = res.data
+					this.totalList[0].num = svg
+					this.totalList[1].num = min
+					this.totalList[2].num = max
 					const data = res.data.MapList.map(n => {
 						return [new Date(n.time), n.value]
 					})
@@ -368,6 +393,14 @@
 					humanId,
 					dayTime: options.value,
 				}).then(res => {
+					const {
+						avg,
+						max,
+						min
+					} = res.data
+					this.totalList[0].num = avg
+					this.totalList[1].num = min
+					this.totalList[2].num = max
 					const data = res.data.MapList.map(n => {
 						return [new Date(n.time), n.value]
 					})
@@ -393,10 +426,11 @@
 	}
 
 	.ui-echart {
-		// margin-top: 20rpx;
+		margin-top: 20rpx;
+		padding: 0 32rpx;
 
 		.echart-box {
-			width: 100%;
+			// width: 100%;
 			height: 500rpx;
 		}
 	}
