@@ -684,7 +684,7 @@ export const GetListExerciseDurationByDay = (params) => http.get('/api/tWatch/li
  * 查询周时长数据
  */
 export const GetListExerciseDurationByWeek = (params) => http.get('/api/tWatch/listSExerciseDurationByWeek',
-params, {});
+	params, {});
 
 /*
  * 获取手表信息
@@ -710,3 +710,8 @@ export const PostSetSimNumber = (params) => http.post('/api/tWatch/setSimNumber'
  * 获取手表sim卡号码
  */
 export const GetSimNumber = (params) => http.get('/api/tWatch/getSimNumber', params, {});
+
+/*
+ * 数据一键同步
+ */
+export const PostWatchDataSync = (params) => http.post('/api/tWatch/dataSync', params, {});
