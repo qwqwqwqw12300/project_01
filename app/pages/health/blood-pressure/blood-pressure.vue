@@ -1,5 +1,5 @@
 <template>
-	<app-body :bg="false" >
+	<app-body :bg="false" :bodyStyle="{background: '#F7F7F7' }">
 		<app-logo text="血压" :isShare="true"></app-logo>
 		<view class="box">
 			<date-picker @onSelect="onSelect"></date-picker>
@@ -18,12 +18,12 @@
 		},
 		data() {
 			return {
-				tabKey:'date',
-				time:''
+				tabKey: 'date',
+				time: ''
 			}
 		},
 		created() {
-			
+
 		},
 		methods: {
 			onSelect(val) {
@@ -31,7 +31,7 @@
 				this.tabKey = val.type
 				this.time = val.value
 			},
-			
+
 		}
 	}
 </script>
@@ -40,7 +40,8 @@
 	.box {
 		margin-top: 68rpx;
 	}
-	.ui-icon{
+
+	.ui-icon {
 		margin-left: 546rpx;
 	}
 </style>

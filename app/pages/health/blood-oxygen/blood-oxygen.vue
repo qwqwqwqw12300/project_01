@@ -71,6 +71,7 @@
 					tooltip: {
 						trigger: 'axis'
 					},
+					backgroundColor: '#fff',
 					grid: {
 						left: '5%',
 						right: '5%',
@@ -91,7 +92,7 @@
 								color: "#666"
 							},
 							formatter: function(val) {
-								console.log(val,'val')
+								console.log(val, 'val')
 								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
 							}
 						},
@@ -107,6 +108,13 @@
 					}, ],
 					yAxis: [{
 						type: "value",
+						scale: true,
+						splitArea: {
+							show: true,
+							areaStyle: {
+								color: ['#f6f8fc', '#fff']
+							}
+						},
 						axisLabel: {
 							textStyle: {
 								color: "#666"
@@ -135,10 +143,18 @@
 						type: 'bar',
 						showSymbol: false,
 						itemStyle: {
-							color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-							  { offset: 0, color: '#83bff6' },
-							  { offset: 0.5, color: '#188df0' },
-							  { offset: 1, color: '#188df0' }
+							color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+									offset: 0,
+									color: '#83bff6'
+								},
+								{
+									offset: 0.5,
+									color: '#188df0'
+								},
+								{
+									offset: 1,
+									color: '#188df0'
+								}
 							])
 						},
 						barWidth: '5', //---柱形宽度
@@ -152,6 +168,7 @@
 					tooltip: {
 						trigger: 'axis'
 					},
+					backgroundColor: '#fff',
 					grid: {
 						left: '5%',
 						right: '5%',
@@ -215,7 +232,7 @@
 						type: 'line',
 						showSymbol: false,
 						itemStyle: {
-							color:'#36BFFF'
+							color: '#36BFFF'
 						},
 						data: this.dataList
 					}]
@@ -236,9 +253,9 @@
 						this.dataList.push([
 							res.data.oxMap.dataList[i].time,
 							res.data.oxMap.dataList[i].value
-						])					
+						])
 					}
-					console.log(this.dataList,'dataList')
+					console.log(this.dataList, 'dataList')
 				})
 				this.dateFun(option)
 			},
@@ -286,9 +303,9 @@
 
 	.ui-echart {
 		// margin-top: 20rpx;
+		padding: 0 32rpx;
 
 		.echart-box {
-			width: 100%;
 			height: 500rpx;
 		}
 	}

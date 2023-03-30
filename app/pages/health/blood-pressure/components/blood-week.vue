@@ -15,13 +15,15 @@
 		</view>
 		<app-echarts :option="option" id="myChart" class="myChart"></app-echarts>
 		<view class="ui-statistics">
-			<view class="ui-date-title">周统计</view> 
-			<view class="ui-window">
-				<view v-for="(item,index) in dateList" :key="index" class="ui-statistics-content">
-					<view class="ui-statistics-title">{{item.title}}</view>
-					<view style="margin-top: 8rpx;">
-						<text class="ui-statistics-font">{{item.value}}</text>
-						<text class="ui-statistics-fonts">mmHg</text>
+			<view class="statistics-box">
+				<view class="ui-date-title">周统计</view>
+				<view class="ui-window">
+					<view v-for="(item,index) in dateList" :key="index" class="ui-statistics-content">
+						<view class="ui-statistics-title">{{item.title}}</view>
+						<view style="margin-top: 8rpx;">
+							<text class="ui-statistics-font">{{item.value}}</text>
+							<text class="ui-statistics-fonts">mmHg</text>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -43,11 +45,11 @@
 				/**所有家庭列表**/
 				deviceInfo: state => state.deviceInfo
 			}),
-		
+
 		},
-		props:{
-			time:{
-				default:''
+		props: {
+			time: {
+				default: ''
 			}
 		},
 		data() {
@@ -73,8 +75,8 @@
 						value: '88'
 					}
 				],
-				spMapList:[],//收缩压
-				dpMapList:[],//舒张压
+				spMapList: [], //收缩压
+				dpMapList: [], //舒张压
 			}
 		},
 		watch: {
@@ -85,7 +87,7 @@
 						this.logstatrt();
 					}
 				},
-				immediate:true //监听到数据立即执行
+				immediate: true //监听到数据立即执行
 			}
 		},
 		methods: {
@@ -93,23 +95,23 @@
 				this.spMapList = []
 				this.dpMapList = []
 				GetListBloodPressureByWeek({
-					beginDate:this.time[0],
-					endDate:this.time[6],
-					deviceId:this.deviceInfo.deviceId,
-					humanId:this.deviceInfo.humanId
-				}).then(res=>{
-					console.log(res,'res')
+					beginDate: this.time[0],
+					endDate: this.time[6],
+					deviceId: this.deviceInfo.deviceId,
+					humanId: this.deviceInfo.humanId
+				}).then(res => {
+					console.log(res, 'res')
 					this.list[0].value = res.data.spAvg
 					this.list[1].value = res.data.dpAvg
 					this.dateList[0].value = res.data.spAvg
 					this.dateList[1].value = res.data.dpAvg
-					for(let i =0;i<res.data.spMapList.length;i++){
+					for (let i = 0; i < res.data.spMapList.length; i++) {
 						this.spMapList.push([
 							res.data.spMapList[i].time,
 							res.data.spMapList[i].value
 						])
 					}
-					for(let i =0;i<res.data.dpMapList.length;i++){
+					for (let i = 0; i < res.data.dpMapList.length; i++) {
 						this.dpMapList.push([
 							res.data.dpMapList[i].time,
 							res.data.dpMapList[i].value
@@ -121,9 +123,10 @@
 						text: ''
 					},
 					tooltip: {
-						positionStatus:true,
+						positionStatus: true,
 						trigger: 'axis',
 					},
+					backgroundColor: '#fff',
 					legend: {
 						data: []
 					},
@@ -131,11 +134,10 @@
 						left: '20',
 						right: '20',
 						bottom: '5',
-						top:'20',
+						top: '20',
 						containLabel: true
 					},
-					toolbox: {
-					},
+					toolbox: {},
 					xAxis: {
 						type: 'time',
 						boundaryGap: false,
@@ -145,18 +147,34 @@
 						axisTick: {
 							show: false
 						},
+						axisLine: {
+							lineStyle: {
+								color: 'rgb(238,238,238)',
+								width: 1
+							}
+						},
 						axisLabel: {
 							textStyle: {
 								color: "#666"
 							},
-							formatter: function(val,index) {
+							formatter: function(val, index) {
 								const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
 								return index == 7 ? '' : weekArr[new Date(val).getDay()]
 							}
 						},
+						splitLine: {
+							show: false
+						},
 					},
 					yAxis: {
 						type: "value",
+						scale: true,
+						splitArea: {
+							show: true,
+							areaStyle: {
+								color: ['#f6f8fc', '#fff']
+							}
+						},
 						axisLabel: {
 							textStyle: {
 								color: "#666"
@@ -185,7 +203,7 @@
 							name: '收缩压',
 							type: 'line',
 							stack: 'Total',
-							data:this.spMapList,
+							data: this.spMapList,
 							showSymbol: false,
 							itemStyle: {
 								normal: {
@@ -266,54 +284,66 @@
 			font-weight: 400;
 		}
 	}
-	.myChart{
+
+	.myChart {
 		width: 90%;
-		height: 400rpx;
+		height: 500rpx;
 		margin: 64rpx 32rpx 20rpx;
 	}
-	.ui-statistics{
-		margin-top: 32rpx;
-		display: flex;
-		flex-direction: column;
-		border-radius: 16rpx;
-		background-color: #FFF;
-		.ui-date-title{
-			margin-top: 32rpx;
-			margin-left: 20rpx;
-			font-size: 36rpx;
-			color: #353535;
-			letter-spacing: 0;
-			font-weight: 500;
-		}
-		.ui-window{
-			margin-bottom: 84rpx;
+
+	.ui-statistics {
+		margin: 32rpx 0;
+		padding: 0 32rpx;
+
+		.statistics-box {
 			display: flex;
-			align-items: center;
-			flex-wrap: wrap;
-			.ui-statistics-content{
-				width: 50%;
-				margin-top: 48rpx;
+			flex-direction: column;
+			border-radius: 16rpx;
+			background-color: #FFF;
+
+			.ui-date-title {
+				margin-top: 32rpx;
+				margin-left: 20rpx;
+				font-size: 36rpx;
+				color: #353535;
+				letter-spacing: 0;
+				font-weight: 500;
+			}
+
+			.ui-window {
+				margin-bottom: 84rpx;
 				display: flex;
-				flex-direction: column;
 				align-items: center;
-				.ui-content-title{
-					font-size: 26rpx;
-					color: #353535;
-					letter-spacing: 0;
-					font-weight: 400;
-				}
-				.ui-statistics-font{
-					font-size: 72rpx;
-					margin-right: 10rpx;
-					color: #353535;
-					letter-spacing: 0;
-					font-weight: 700;
-				}
-				.ui-statistics-fonts{
-					font-size: 26rpx;
-					color: #888888;
-					letter-spacing: 0;
-					font-weight: 400;
+				flex-wrap: wrap;
+
+				.ui-statistics-content {
+					width: 50%;
+					margin-top: 48rpx;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+
+					.ui-content-title {
+						font-size: 26rpx;
+						color: #353535;
+						letter-spacing: 0;
+						font-weight: 400;
+					}
+
+					.ui-statistics-font {
+						font-size: 72rpx;
+						margin-right: 10rpx;
+						color: #353535;
+						letter-spacing: 0;
+						font-weight: 700;
+					}
+
+					.ui-statistics-fonts {
+						font-size: 26rpx;
+						color: #888888;
+						letter-spacing: 0;
+						font-weight: 400;
+					}
 				}
 			}
 		}

@@ -1,6 +1,8 @@
 <template>
 	<view>
-		<app-echarts :option="option" id="myChart" class="myChart"></app-echarts>
+		<view class="ui-echart">
+			<app-echarts :option="option" id="myChart" class="myChart"></app-echarts>
+		</view>
 		<view class="ui-content">
 			<view class="ui-content-left">增长</view>
 			<view class="ui-content-right">
@@ -31,7 +33,8 @@
 			</view>
 			<view style="height: 150rpx;" v-if="item.input">
 				<view class="ui-input-font">心电信号弱，请重新测量</view>
-				<u-input v-model="item.value" border="none" class="ui-input" @blur="handleBlur(item.idElectrocardiogram,item.value)"></u-input>
+				<u-input v-model="item.value" border="none" class="ui-input"
+					@blur="handleBlur(item.idElectrocardiogram,item.value)"></u-input>
 			</view>
 		</view>
 		<view style="margin-top: 30rpx;width: 100%;height: 30rpx;"></view>
@@ -53,7 +56,7 @@
 				/**所有家庭列表**/
 				deviceInfo: state => state.deviceInfo
 			}),
-		
+
 		},
 		props: {
 			time: {
@@ -79,8 +82,8 @@
 				mapList: [], //echart series数组
 				dataList: Array.from(Array(91).keys()),
 				count: 90, //计数器
-				allCount: 0,//总数组长度
-				interval:null
+				allCount: 0, //总数组长度
+				interval: null
 			}
 		},
 		watch: {
@@ -110,16 +113,16 @@
 					console.log(res, 'res')
 					this.cellList = res.data.MapList.map(item => {
 						return {
-							idElectrocardiogram:item.idElectrocardiogram,
+							idElectrocardiogram: item.idElectrocardiogram,
 							time: uni.$u.timeFormat(item.time, 'hh:MM'),
 							list: item.value.split(","),
 							num: 0,
 							value: item.remark,
-							input: item.remark !='' ? true : false
+							input: item.remark != '' ? true : false
 						}
-					})	
+					})
 					clearInterval(this.interval)
-					if(this.cellList.length == 0) return this.setOption(this.cellList)
+					if (this.cellList.length == 0) return this.setOption(this.cellList)
 					this.handleChange(this.cellList[0])
 				})
 			},
@@ -128,6 +131,7 @@
 					title: {
 						text: ''
 					},
+					backgroundColor: '#fff',
 					tooltip: {
 						trigger: 'axis'
 					},
@@ -211,12 +215,12 @@
 					this.setOption(this.mapList);
 				}, 30)
 			},
-			handleBlur(id,val){
+			handleBlur(id, val) {
 				PostAddElectrocardiogramReMake({
-					 idElectrocardiogram:parseInt(id),
-					 remake:val
-				}).then(res=>{
-					console.log(res,'res')
+					idElectrocardiogram: parseInt(id),
+					remake: val
+				}).then(res => {
+					console.log(res, 'res')
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
 						this.logstatrt()
@@ -228,13 +232,18 @@
 </script>
 
 <style lang="scss" scoped>
-	.myChart {
-		width: 90%;
-		height: 400rpx;
-		margin: 64rpx 32rpx 48rpx;
+	.ui-echart {
+		padding: 0 32rpx;
+		margin-top: 30rpx;
+
+		.myChart {
+			height: 500rpx;
+			// margin: 64rpx 32rpx 48rpx;
+		}
 	}
 
 	.ui-content {
+		margin-top: 30rpx;
 		display: flex;
 		align-items: center;
 
