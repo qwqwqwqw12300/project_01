@@ -224,7 +224,7 @@
 				GetListBloodOxygenByDay({
 					deviceId:this.deviceInfo.deviceId,
 					queryDate:option.value,
-					humanId:this.deviceInfo.familyId
+					humanId:this.deviceInfo.humanId
 				}).then(res=>{
 					console.log(res,'res')
 					this.totalList[0].num = res.data.oxMap.avgOx
@@ -245,7 +245,7 @@
 					deviceId:this.deviceInfo.deviceId,
 					beginDate:option.value[0],
 					endDate:option.value[6],
-					humanId:this.deviceInfo.familyId
+					humanId:this.deviceInfo.humanId
 				}).then(res=>{
 					console.log(res,'res')
 					this.totalList[0].num = res.data.oxMap.avgOx

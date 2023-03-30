@@ -31,7 +31,7 @@
 			</view>
 			<view style="height: 150rpx;" v-if="item.input">
 				<view class="ui-input-font">心电信号弱，请重新测量</view>
-				<u-input v-model="item.vlaue" border="none" class="ui-input"></u-input>
+				<u-input v-model="item.value" border="none" class="ui-input" @blur="handleBlur(item.idElectrocardiogram,item.value)"></u-input>
 			</view>
 		</view>
 		<view style="margin-top: 30rpx;width: 100%;height: 30rpx;"></view>
@@ -41,9 +41,20 @@
 <script>
 	import * as echarts from '@/static/js/echarts.js';
 	import {
-		GetListElectrocardiogramByDay
+		GetListElectrocardiogramByDay,
+		PostAddElectrocardiogramReMake
 	} from '@/common/http/api';
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				deviceInfo: state => state.deviceInfo
+			}),
+		
+		},
 		props: {
 			time: {
 				default: ''
@@ -84,32 +95,30 @@
 			}
 		},
 		onHide() {
-			clearInterval(this.interval)
-			this.interval = null
+			this.interval && clearInterval(this.interval)
 		},
 		destroyed() {
-			clearInterval(this.interval)
-			this.interval = null
+			this.interval && clearInterval(this.interval)
 		},
 		methods: {
 			logstatrt() {
 				GetListElectrocardiogramByDay({
-					deviceId: 240,
+					deviceId: this.deviceInfo.deviceId,
 					dayTime: this.time,
-					humanId: '116'
+					humanId: this.deviceInfo.humanId
 				}).then(res => {
 					console.log(res, 'res')
-					let list = []
 					this.cellList = res.data.MapList.map(item => {
-						console.log(list, 'list');
 						return {
+							idElectrocardiogram:item.idElectrocardiogram,
 							time: uni.$u.timeFormat(item.time, 'hh:MM'),
 							list: item.value.split(","),
 							num: 0,
 							value: '',
 							input: false
 						}
-					})			
+					})	
+					if(this.cellList.length == 0) return this.setOption(this.cellList)
 					clearInterval(this.interval)
 					this.handleChange(this.cellList[0])
 				})
@@ -192,14 +201,23 @@
 				this.mapList = list.slice(0, this.count); // 实际渲染数组
 				this.interval = setInterval(() => {
 					if (this.count == this.allCount) {
-						this.mapList = list.slice(0, 90);
-						return
+						this.count = 90;
+						this.mapList = list.slice(0, this.count);
+						// return
 					} else {
 						this.mapList.shift()
 						this.mapList.push(list[++this.count])
 					}
 					this.setOption(this.mapList);
-				}, 40)
+				}, 30)
+			},
+			handleBlur(id,val){
+				PostAddElectrocardiogramReMake({
+					 idElectrocardiogram:id,
+					 remake:val
+				}).then(res=>{
+					console.log(res,'res')
+				})
 			}
 		}
 	}
@@ -221,7 +239,7 @@
 		}
 
 		.ui-content-right {
-			margin-left: 100rpx;
+			margin-left: 32rpx;
 			display: flex;
 			align-items: center;
 			font-weight: bold;

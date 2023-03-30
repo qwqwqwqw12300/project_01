@@ -106,7 +106,7 @@
 				GetListBloodPressureByDay({
 					deviceId:this.deviceInfo.deviceId,
 					dayTime:this.time,
-					humanId:this.deviceInfo.familyId
+					humanId:this.deviceInfo.humanId
 				}).then(res=>{
 					console.log(res,'res')
 					this.list[0].value = res.data.spAvg
