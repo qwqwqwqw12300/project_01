@@ -64,6 +64,8 @@
 		},
 		methods: {
 			dateFun(option) {
+				console.log(option, 'option');
+				console.log(this.dataList, 'this.dataList');
 				this.options = {
 					tooltip: {
 						trigger: 'axis'
@@ -76,10 +78,10 @@
 					},
 					xAxis: [{
 						type: 'time',
-						interval: 6 * 3600 * 1000, // 间隔为6小时
-						min: new Date(`${option.value + ' 00:00:00'}`), // x轴起始时间
-						max: new Date(`${option.value + ' 23:59:59'}`), // x轴结束时间
-						boundaryGap: false,
+						// interval: 6 * 60 * 60 * 1000, // 设置x轴间隔为6小时
+						// min: `${option.value + ' 00:00:00'}`, // x轴起始时间
+						// max: `${option.value + ' 24:00:00'}`, // x轴结束时间
+						// boundaryGap: false,
 						axisTick: { //坐标轴刻度相关设置。
 							show: false,
 						},
@@ -128,7 +130,7 @@
 						}
 					}],
 					series: [{
-						type: 'line',
+						type: 'bar',
 						showSymbol: false,
 						itemStyle: {
 							normal: {
@@ -225,10 +227,10 @@
 				console.log(option, 'option')
 				this.dataList = []
 				GetListBloodOxygenByDay({
-					deviceId:this.deviceInfo.deviceId,
-					queryDate:option.value,
-					humanId:this.deviceInfo.humanId
-				}).then(res=>{
+					deviceId: this.deviceInfo.deviceId,
+					queryDate: option.value,
+					humanId: this.deviceInfo.humanId
+				}).then(res => {
 					this.totalList[0].num = res.data.oxMap.avgOx
 					this.totalList[1].num = res.data.oxMap.maxOx
 					this.totalList[2].num = res.data.oxMap.minOx
@@ -244,10 +246,10 @@
 			handleWeek(option) {
 				this.dataList = []
 				GetListBloodOxygenByWeek({
-					deviceId:this.deviceInfo.deviceId,
-					beginDate:option.value[0],
-					endDate:option.value[6],
-					humanId:this.deviceInfo.humanId
+					deviceId: this.deviceInfo.deviceId,
+					beginDate: option.value[0],
+					endDate: option.value[6],
+					humanId: this.deviceInfo.humanId
 				}).then(res => {
 					this.totalList[0].num = res.data.oxMap.avgOx
 					this.totalList[1].num = res.data.oxMap.maxOx
