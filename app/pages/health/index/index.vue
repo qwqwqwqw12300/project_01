@@ -11,7 +11,7 @@
 		<scroll-view class="ui-scroll" scroll-y="true">
 		<view class="ui-body">
 			<view class="ui-w-h-100">
-				<view class="ui-f-center ui-white-bg ui-br-16" style="padding-right:60rpx"
+				<view class="ui-f-center ui-white-bg ui-br-16" style="padding-right:30rpx"
 					@click="jumpUrl('/pages/health/exercise/exercise')">
 					<!-- <image class="ui-img-size1" src="@/static/images/caihong.png"></image> -->
 					<app-echarts style="height: 300rpx;width:300rpx" id="caiHongChart" :option="caiHongOption">
@@ -30,7 +30,7 @@
 							<text class="ui-font-24 ui-mar-l-10">活动(分)</text>
 							<view class="ui-text-box ui-mar-t-15">
 								<text class="ui-font-1">{{caiHongData[1]}}</text>
-								<text class="ui-font-2">/{{maxDataArr[0]}}</text>
+								<text class="ui-font-2">/{{maxDataArr[1]}}</text>
 							</view>
 						</view>
 						<view class="ui-f-start">
@@ -257,43 +257,44 @@
 				// this.xinZangOptionHandle(res);
 			},
 			caiHongOptionHandle(res) {
-				var data = [{
-						"name": "StepNum",
-						"value": 0,
-						"maxValue": 1000
-					},
-					{
-						"name": "calorie",
-						"value": 0,
-						"maxValue": 10000
-					},
-					{
-						"name": "DurationNum",
-						"value": 0,
-						"maxValue": 30
-					}
-				];
+				// var data = [{
+				// 		"name": "StepNum",
+				// 		"value": 30000,
+				// 		"maxValue": 1000
+				// 	},
+				// 	{
+				// 		"name": "calorie",
+				// 		"value": 2000,
+				// 		"maxValue": 10000
+				// 	},
+				// 	{
+				// 		"name": "DurationNum",
+				// 		"value": 300,
+				// 		"maxValue": 30
+				// 	}
+				// ];
 
-				// let data = res.data.rainbowDiagram;
+				let data = res.data.rainbowDiagram;
 				let caiHongData = [];
 				let maxDataArr = [];
 
 				for (let i = 0; i < data.length; i++) {
+					console.log(data[i],'data')
 					if (data[i]['name'] === 'calorie') { //卡路里
 						this.maxDataArr[0] = data[i].maxValue;
-						this.caiHongData[0] = data[i].value;
+						this.caiHongData[0] = data[i].value ? data[i].value : 0;
 					}
 					if (data[i]['name'] === 'StepNum') { //步数
-						this.maxDataArr[1] = data[i].maxValue;
-						this.caiHongData[1] = data[i].value;
+						this.maxDataArr[2] = data[i].maxValue;
+						this.caiHongData[2] = data[i].value ? data[i].value : 0;
 					}
 					if (data[i]['name'] === 'DurationNum') { //活动时间
-						this.maxDataArr[2] = data[i].maxValue;
-						this.caiHongData[2] = data[i].value;
+						this.maxDataArr[1] = data[i].maxValue;
+						this.caiHongData[1] = data[i].value ? data[i].value : 0;
 					}
 				}
-				console.log(this.caiHongData)
-				console.log(this.maxDataArr)
+				console.log(this.caiHongData,'caiHongData')
+				console.log(this.maxDataArr,'maxDataArr')
 				// data.foreach((item)=>{
 				// 	console.log(item)
 				// })
