@@ -114,12 +114,12 @@
 							time: uni.$u.timeFormat(item.time, 'hh:MM'),
 							list: item.value.split(","),
 							num: 0,
-							value: '',
-							input: false
+							value: item.remark,
+							input: item.remark !='' ? true : false
 						}
 					})	
-					if(this.cellList.length == 0) return this.setOption(this.cellList)
 					clearInterval(this.interval)
+					if(this.cellList.length == 0) return this.setOption(this.cellList)
 					this.handleChange(this.cellList[0])
 				})
 			},
@@ -217,6 +217,10 @@
 					 remake:val
 				}).then(res=>{
 					console.log(res,'res')
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						this.logstatrt()
+					}, 500);
 				})
 			}
 		}

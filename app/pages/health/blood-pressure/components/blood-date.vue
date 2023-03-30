@@ -150,9 +150,9 @@
 					},
 					xAxis: {
 						type: 'time',
-						interval: 6 * 3600 * 1000, // 间隔为6小时
-						min: new Date(`${this.time + ' 00:00:00'}`), // x轴起始时间
-						max: new Date(`${this.time + ' 23:59:59'}`), // x轴结束时间
+						// interval: 6 * 3600 * 1000, // 间隔为6小时
+						// min: new Date(`${this.time + ' 00:00:00'}`), // x轴起始时间
+						// max: new Date(`${this.time + ' 23:59:59'}`), // x轴结束时间
 						boundaryGap: false,
 						axisTick: {
 							show: false
@@ -180,33 +180,47 @@
 					},
 					series: [{
 							name: '收缩压',
-							type: 'line',
-							stack: 'Total',
+							// type: 'line',
+							// stack: 'Total',
 							data:this.spMapList,
+							// showSymbol: false,
+							// itemStyle: {
+							// 	normal: {
+							// 		lineStyle: {
+							// 			color: "#FF7E23",
+							// 			width: 1
+							// 		}
+							// 	}
+							// },
+							type: 'bar',
 							showSymbol: false,
 							itemStyle: {
-								normal: {
-									lineStyle: {
-										color: "#FF7E23",
-										width: 1
-									}
-								}
+								color: '#FF7E23'
 							},
+							barWidth: '10', //---柱形宽度
+							barCategoryGap: '20%', //---柱形间距
 						},
 						{
 							name: '舒张压',
-							type: 'line',
-							stack: 'Total',
+							// type: 'line',
+							// stack: 'Total',
 							data: this.dpMapList,
+							// showSymbol: false,
+							// itemStyle: {
+							// 	normal: {
+							// 		lineStyle: {
+							// 			color: "#63DDBA",
+							// 			width: 1
+							// 		}
+							// 	}
+							// },
+							type: 'bar',
 							showSymbol: false,
 							itemStyle: {
-								normal: {
-									lineStyle: {
-										color: "#63DDBA",
-										width: 1
-									}
-								}
+								color: '#63DDBA'
 							},
+							barWidth: '10', //---柱形宽度
+							barCategoryGap: '20%', //---柱形间距
 						}
 					]
 				};

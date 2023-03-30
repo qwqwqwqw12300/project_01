@@ -135,14 +135,13 @@
 						type: 'bar',
 						showSymbol: false,
 						itemStyle: {
-							normal: {
-								lineStyle: {
-									color: "#36BFFF",
-									width: 2
-								},
-							}
+							color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+							  { offset: 0, color: '#83bff6' },
+							  { offset: 0.5, color: '#188df0' },
+							  { offset: 1, color: '#188df0' }
+							])
 						},
-						barWidth: '6', //---柱形宽度
+						// barWidth: '10', //---柱形宽度
 						barCategoryGap: '20%', //---柱形间距
 						data: this.dataList
 					}]
@@ -213,15 +212,10 @@
 						}
 					}],
 					series: [{
-						type: 'bar',
+						type: 'line',
 						showSymbol: false,
 						itemStyle: {
-							normal: {
-								lineStyle: {
-									color: "#36BFFF",
-									width: 2
-								},
-							}
+							color:'#36BFFF'
 						},
 						data: this.dataList
 					}]
@@ -240,7 +234,7 @@
 					this.totalList[2].num = res.data.oxMap.minOx
 					for (let i = 0; i < res.data.oxMap.dataList.length; i++) {
 						this.dataList.push([
-							new Date(res.data.oxMap.dataList[i].time).valueOf(),
+							res.data.oxMap.dataList[i].time,
 							res.data.oxMap.dataList[i].value
 						])
 					}
