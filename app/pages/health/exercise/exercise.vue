@@ -88,19 +88,19 @@
 					iconPath: "/static/images/bushu.png",
 					selectedIconPath: "/static/images/bushu_white.png",
 					selectedBg: "#61AAF7",
-					num: 3000
+					num: 0
 				}, {
 					key: 'calories',
 					iconPath: "/static/images/xiaohao.png",
 					selectedIconPath: "/static/images/xiaohao_white.png",
 					selectedBg: "#E43552",
-					num: 3077
+					num: 0
 				}, {
 					key: 'time',
 					iconPath: "/static/images/timeclock.png",
 					selectedIconPath: "/static/images/timeclock_white.png",
 					selectedBg: "#69CA5F",
-					num: 303
+					num: 0
 				}]
 			}
 		},
