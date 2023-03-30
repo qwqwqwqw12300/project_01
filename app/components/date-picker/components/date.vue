@@ -3,16 +3,13 @@
 		<view class="ui-box">
 			<view class="content">
 				<u-icon name="/static/images/back.png" size="25" @tap="handleBack"></u-icon>
-				<text>{{ dateFormat }}</text>
+				<text @tap="handleSelect">{{ dateFormat }}</text>
 				<u-icon name="/static/images/forward.png" size="25" @tap="handleForward"></u-icon>
 			</view>
 			<view class="icon">
 				<u-icon name="/static/images/room-edit.png" size="25" @tap="handleSelect"></u-icon>
 			</view>
 		</view>
-		<!-- 		<u-calendar :show="show" :defaultDate="dateTime" monthNum="4" :mode="'single'" :maxDate="maxDate"
-			:minDate="minDate" @confirm="confirm" @close="show = false">
-		</u-calendar> -->
 		<term-date-picker :value="dateFormat1" :showHoliday="false" :show="show" @confirm="confirm" @cancel="show=false"
 			type="date" v-bind="$attrs" @monthChange="monthChange">
 		</term-date-picker>
@@ -28,8 +25,6 @@
 		data() {
 			return {
 				show: false,
-				maxDate: '',
-				minDate: '',
 				dateTime: '',
 			}
 		},
@@ -50,8 +45,6 @@
 		},
 		mounted() {
 			this.dateTime = new Date()
-			this.maxDate = uni.$u.timeFormat(new Date(), 'yyyy-mm-dd')
-			this.minDate = uni.$u.timeFormat((new Date().setMonth(new Date().getMonth() - 3)), 'yyyy-mm-dd')
 		},
 		watch: {
 			dateTime: {

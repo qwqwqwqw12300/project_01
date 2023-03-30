@@ -27,8 +27,8 @@
 		methods: {
 			change(val){
 				console.log(val,'val')
-				// this.time = val.value
-				this.time = '2023-1-10'
+				this.time = val.value
+				// this.time = '2023-1-10'
 			}
 		}
 	}

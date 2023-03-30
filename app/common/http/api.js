@@ -624,6 +624,11 @@ export const GetListBloodOxygenByWeek = (params) => http.get('/api/tWatch/listBl
 export const GetListElectrocardiogramByDay = (params) => http.get('/api/tWatch/listElectrocardiogramByDay', params, {});
 
 
+/**
+ * 插入心电备注信息
+ */
+export const PostAddElectrocardiogramReMake = (params) => http.post('/api/tWatch/addElectrocardiogramReMake', params, {});
+
 
 /**
  * 获取通讯录
