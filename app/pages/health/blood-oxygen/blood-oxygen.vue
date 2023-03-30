@@ -80,8 +80,8 @@
 					xAxis: [{
 						type: 'time',
 						// interval: 6 * 60 * 60 * 1000, // 设置x轴间隔为6小时
-						// min: `${option.value + ' 00:00:00'}`, // x轴起始时间
-						// max: `${option.value + ' 24:00:00'}`, // x轴结束时间
+						min: `${option.value + ' 00:00:00'}`, // x轴起始时间
+						max: `${option.value + ' 23:49:00'}`, // x轴结束时间
 						// boundaryGap: false,
 						axisTick: { //坐标轴刻度相关设置。
 							show: false,
@@ -141,7 +141,7 @@
 							  { offset: 1, color: '#188df0' }
 							])
 						},
-						// barWidth: '10', //---柱形宽度
+						barWidth: '5', //---柱形宽度
 						barCategoryGap: '20%', //---柱形间距
 						data: this.dataList
 					}]
@@ -236,7 +236,7 @@
 						this.dataList.push([
 							res.data.oxMap.dataList[i].time,
 							res.data.oxMap.dataList[i].value
-						])
+						])					
 					}
 					console.log(this.dataList,'dataList')
 				})

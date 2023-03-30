@@ -106,7 +106,8 @@
 				GetListBloodPressureByDay({
 					deviceId:this.deviceInfo.deviceId,
 					dayTime:this.time,
-					humanId:this.deviceInfo.humanId
+					humanId:this.deviceInfo.humanId,
+					// humanId:'117'
 				}).then(res=>{
 					console.log(res,'res')
 					this.list[0].value = res.data.spAvg
@@ -140,7 +141,7 @@
 						data: []
 					},
 					grid: {
-						left: '0',
+						left: '20',
 						right: '20',
 						bottom: '5',
 						top:'20',
@@ -151,8 +152,8 @@
 					xAxis: {
 						type: 'time',
 						// interval: 6 * 3600 * 1000, // 间隔为6小时
-						// min: new Date(`${this.time + ' 00:00:00'}`), // x轴起始时间
-						// max: new Date(`${this.time + ' 23:59:59'}`), // x轴结束时间
+						min: `${this.time + ' 00:00:00'}`, // x轴起始时间
+						max: `${this.time + ' 23:04:00'}`, // x轴结束时间
 						boundaryGap: false,
 						axisTick: {
 							show: false
@@ -165,6 +166,9 @@
 								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
 							}
 						},
+						splitLine: {
+							show: false
+						},
 					},
 					yAxis: {
 						type: 'value',
@@ -173,10 +177,10 @@
 						},
 						splitLine: {
 							show: true,
-							lineStyle:{
-								type:'disable'
+							lineStyle: {
+								type: 'disable'
 							}
-						}
+						},
 					},
 					series: [{
 							name: '收缩压',
