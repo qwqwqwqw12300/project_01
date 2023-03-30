@@ -118,8 +118,8 @@
 							input: false
 						}
 					})	
-					if(this.cellList.length == 0) return this.setOption(this.cellList)
 					clearInterval(this.interval)
+					if(this.cellList.length == 0) return this.setOption(this.cellList)
 					this.handleChange(this.cellList[0])
 				})
 			},
@@ -217,6 +217,10 @@
 					 remake:val
 				}).then(res=>{
 					console.log(res,'res')
+					uni.$u.toast(res.msg)
+					setTimeout(() => {
+						this.logstatrt()
+					}, 500);
 				})
 			}
 		}
