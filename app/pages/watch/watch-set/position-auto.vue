@@ -44,6 +44,12 @@
 			return {
 				switchValue:'1',
 				actions: [{
+						name: '5',
+					},
+					{
+						name: '10',
+					},
+					{
 						name: '30',
 					},
 					{

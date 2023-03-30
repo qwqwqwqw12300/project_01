@@ -213,7 +213,7 @@
 			},
 			handleBlur(id,val){
 				PostAddElectrocardiogramReMake({
-					 idElectrocardiogram:id,
+					 idElectrocardiogram:parseInt(id),
 					 remake:val
 				}).then(res=>{
 					console.log(res,'res')

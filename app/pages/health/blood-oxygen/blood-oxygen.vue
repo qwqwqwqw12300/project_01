@@ -64,7 +64,9 @@
 		},
 		methods: {
 			dateFun(option) {
+				console.log(option.value,'option.value')
 				this.options = {
+					notMerge: true,
 					tooltip: {
 						trigger: 'axis'
 					},
@@ -75,22 +77,25 @@
 						containLabel: true
 					},
 					xAxis: [{
-						type: 'time',
-						interval: 6 * 3600 * 1000, // 间隔为6小时
-						min: new Date(`${option.value + ' 00:00:00'}`), // x轴起始时间
-						max: new Date(`${option.value + ' 23:59:59'}`), // x轴结束时间
+						type: 'category',
+						min:'dataMin',
+						max:'dataMax',
+						// interval: 6 * 3600 * 1000, // 间隔为6小时
+						// min: `${option.value + ' 00:00:00'}`, // x轴起始时间
+						// max: `${option.value + ' 23:59:59'}`, // x轴结束时间
+						data:[`${option.value+'00:00'}`,`${option.value+'06:00'}`,`${option.value+'12:00'}`,`${option.value+'18:00'}`,`${option.value+'23:00'}`],
 						boundaryGap: false,
 						axisTick: { //坐标轴刻度相关设置。
 							show: false,
 						},
-						axisLabel: {
-							textStyle: {
-								color: "#666"
-							},
-							formatter: function(val) {
-								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
-							}
-						},
+						// axisLabel: {
+						// 	textStyle: {
+						// 		color: "#666"
+						// 	},
+						// 	formatter: function(val) {
+						// 		return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
+						// 	}
+						// },
 						splitLine: {
 							show: false
 						},
@@ -128,16 +133,21 @@
 						}
 					}],
 					series: [{
-						type: 'line',
+						type: 'bar',
 						showSymbol: false,
-						itemStyle: {
-							normal: {
-								lineStyle: {
-									color: "#36BFFF",
-									width: 2
-								},
-							}
+						// itemStyle: {
+						// 	normal: {
+						// 		lineStyle: {
+						// 			color: "#36BFFF",
+						// 			width: 2
+						// 		},
+						// 	}
+						// },
+						itemStyle: { //---图形形状
+							color: '#61AAF7',
 						},
+						barWidth: '6', //---柱形宽度
+						barCategoryGap: '20%', //---柱形间距
 						data: this.dataList
 					}]
 				}
@@ -207,7 +217,7 @@
 						}
 					}],
 					series: [{
-						type: 'line',
+						type: 'bar',
 						showSymbol: false,
 						itemStyle: {
 							normal: {
@@ -238,6 +248,7 @@
 							res.data.oxMap.dataList[i].value
 						])
 					}
+					console.log(this.dataList,'dataList')
 				})
 				this.dateFun(option)
 			},
