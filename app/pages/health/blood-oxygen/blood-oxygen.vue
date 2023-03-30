@@ -41,7 +41,7 @@
 				/**所有家庭列表**/
 				deviceInfo: state => state.deviceInfo
 			}),
-		
+
 		},
 		data() {
 			return {
@@ -58,12 +58,12 @@
 						title: '日最低值'
 					}
 				],
-				options:{},
-				dataList:[]
+				options: {},
+				dataList: []
 			}
 		},
 		methods: {
-			dateFun(option){
+			dateFun(option) {
 				this.options = {
 					tooltip: {
 						trigger: 'axis'
@@ -90,6 +90,9 @@
 							formatter: function(val) {
 								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
 							}
+						},
+						splitLine: {
+							show: false
 						},
 						axisLine: {
 							lineStyle: {
@@ -139,7 +142,7 @@
 					}]
 				}
 			},
-			weekFun(option){
+			weekFun(option) {
 				this.options = {
 					tooltip: {
 						trigger: 'axis'
@@ -163,8 +166,8 @@
 							textStyle: {
 								color: "#666"
 							},
-							formatter: function(val,index) {
-								console.log(val,index, 'dddd----------')
+							formatter: function(val, index) {
+								console.log(val, index, 'dddd----------')
 								const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
 								return index == 7 ? '' : weekArr[new Date(val).getDay()]
 								// return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
@@ -218,19 +221,19 @@
 					}]
 				}
 			},
-			handleDate(option){
-				console.log(option,'option')
+			handleDate(option) {
+				console.log(option, 'option')
 				this.dataList = []
 				GetListBloodOxygenByDay({
-					deviceId:this.deviceInfo.deviceId,
-					queryDate:option.value,
-					humanId:this.deviceInfo.familyId
-				}).then(res=>{
-					console.log(res,'res')
+					deviceId: this.deviceInfo.deviceId,
+					queryDate: option.value,
+					humanId: this.deviceInfo.familyId
+				}).then(res => {
+					console.log(res, 'res')
 					this.totalList[0].num = res.data.oxMap.avgOx
 					this.totalList[1].num = res.data.oxMap.maxOx
 					this.totalList[2].num = res.data.oxMap.minOx
-					for(let i =0;i<res.data.oxMap.dataList.length;i++){
+					for (let i = 0; i < res.data.oxMap.dataList.length; i++) {
 						this.dataList.push([
 							res.data.oxMap.dataList[i].time,
 							res.data.oxMap.dataList[i].value
@@ -239,25 +242,25 @@
 				})
 				this.dateFun(option)
 			},
-			handleWeek(option){
+			handleWeek(option) {
 				this.dataList = []
 				GetListBloodOxygenByWeek({
-					deviceId:this.deviceInfo.deviceId,
-					beginDate:option.value[0],
-					endDate:option.value[6],
-					humanId:this.deviceInfo.familyId
-				}).then(res=>{
-					console.log(res,'res')
+					deviceId: this.deviceInfo.deviceId,
+					beginDate: option.value[0],
+					endDate: option.value[6],
+					humanId: this.deviceInfo.familyId
+				}).then(res => {
+					console.log(res, 'res')
 					this.totalList[0].num = res.data.oxMap.avgOx
 					this.totalList[1].num = res.data.oxMap.maxOx
 					this.totalList[2].num = res.data.oxMap.minOx
-					for(let i =0;i<res.data.oxMap.dataList.length;i++){
+					for (let i = 0; i < res.data.oxMap.dataList.length; i++) {
 						this.dataList.push([
 							res.data.oxMap.dataList[i].time,
 							res.data.oxMap.dataList[i].value
 						])
 					}
-					console.log(this.dataList,'this.dataList')
+					console.log(this.dataList, 'this.dataList')
 				})
 				this.weekFun(option)
 			},
