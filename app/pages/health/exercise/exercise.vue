@@ -5,7 +5,7 @@
 			<date-picker @onSelect="onSelect"></date-picker>
 		</view>
 		<view class="ui-echart">
-			<exexcise-echart  :options="options"></exexcise-echart>
+			<exexcise-echart :options="options"></exexcise-echart>
 		</view>
 		<view class="day-title" v-if="type === 'week'">
 			<text>日平均数据</text>
@@ -26,7 +26,7 @@
 				</block>
 			</scroll-view>
 		</view>
-<!-- 		<view class="detail-title">
+		<!-- 		<view class="detail-title">
 			详情
 		</view>
 		<view class="ui-detail">
@@ -65,7 +65,9 @@
 		GetListExerciseDurationByWeek,
 		GetExerciseAvg
 	} from '@/common/http/api.js'
-	import { mapState } from 'vuex';
+	import {
+		mapState
+	} from 'vuex';
 	export default {
 		components: {
 			exexciseEchart,
@@ -152,11 +154,11 @@
 				this.queryData.type = val.type;
 				if (val.type === 'date') {
 					this.queryData.date = val.value;
-					this.fetchExerciseAvg(val.value,val.value); // 查询单天
+					this.fetchExerciseAvg(val.value, val.value); // 查询单天
 				} else if (val.type === 'week') {
 					this.queryData.beginDate = val.value[0];
 					this.queryData.endDate = val.value[6];
-					this.fetchExerciseAvg(val.value[0],val.value[6]);
+					this.fetchExerciseAvg(val.value[0], val.value[6]);
 				}
 			},
 			handleTab(key) {
@@ -166,54 +168,32 @@
 			},
 			dealDay(res) {
 				let resArr = [];
-				res.forEach((item)=>{
-					resArr.push([
-						new Date(item.time).valueOf(),
-						item.value
-					])
+				res.forEach((item) => {
+					resArr.push(item.value)
 				});
-				console.log('1ttt',this.queryData.date);
 				this.options = {
 					notMerge: true,
 					tooltip: {
-						trigger: 'axis'
+						trigger: ''
 					},
 					grid: {
-						left: '3',
-						right: '5',
+						left: '0',
+						right: '3',
 						bottom: '0',
 						top: '10',
 						containLabel: true
 					},
 					xAxis: {
-						type: 'time',
-						// data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00',
-						// 	'18:00', '20:00', '22:00', '23:59'
-						// ],
+						type: 'category',
+						data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00',
+							'18:00', '20:00', '22:00', '23:59'
+						],
 						axisTick: {
 							show: false
 						},
-						boundaryGap: false,
-						interval: 6 * 60 * 60 * 1000, // 设置x轴间隔为6小时
-						min: `${this.queryData.date + ' 00:00:00'}`, // x轴起始时间
-						max: `${this.queryData.date + ' 24:00:00'}`, // x轴结束时间
 						axisLabel: {
-							textStyle: {
-								color: "#666"
-							},
-							formatter: function(val) {
-								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
-							}
-						},
-						splitLine: {
-							show: false
-						},
-						axisLine: {
-							lineStyle: {
-								color: 'rgb(238,238,238)',
-								width: 1
-							}
-						},
+							interval: 2
+						}
 					},
 					yAxis: {
 						type: 'value',
@@ -223,16 +203,11 @@
 						axisLine: {
 							show: false
 						},
-						splitLine: {
-							show: false
-						},
-						min:0,
-						max:resArr.length === 0 ? 1000 : null,
 						data: [0, 25, 50, 70, 100],
 					},
 					series: [{
-							// data: [100, 25, 50, 70, 100, 100, 25, 50, 70, 100, 42, 32, 20],
-							data:resArr,
+							data: [100, 25, 50, 70, 100, 100, 25, 50, 70, 100, 42, 32, 20],
+							// data: resArr,
 							type: 'bar',
 							itemStyle: { //---图形形状
 								color: '#61AAF7',
@@ -247,7 +222,7 @@
 			},
 			dealWeek(res) {
 				let resArr = [];
-				res.forEach((item)=>{
+				res.forEach((item) => {
 					resArr.push([
 						new Date(item.time).valueOf(),
 						item.value
@@ -289,7 +264,7 @@
 								// return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
 							}
 						}
-					},	
+					},
 					yAxis: {
 						type: 'value',
 						axisTick: {
@@ -301,8 +276,8 @@
 						axisLine: {
 							show: false
 						},
-						min:0,
-						max:resArr.length === 0 ? 1000 : null,
+						min: 0,
+						max: resArr.length === 0 ? 1000 : null,
 						data: [0, 25, 50, 70, 100],
 					},
 					series: [{
@@ -395,7 +370,7 @@
 			/**
 			 * 查询活动周平均数据
 			 */
-			fetchExerciseAvg(begin,end){
+			fetchExerciseAvg(begin, end) {
 				console.log('fetchExerciseAvg')
 				const params = {
 					deviceId: this.deviceInfo.deviceId,
@@ -405,8 +380,8 @@
 					humanId: this.deviceInfo.humanId
 					// humanId:'1'
 				}
-				GetExerciseAvg(params).then(res=>{
-					console.log(res,55)
+				GetExerciseAvg(params).then(res => {
+					console.log(res, 55)
 					this.avgData = res.data;
 					this.list[0].num = res.data.stepNumAvg;
 					this.list[1].num = res.data.calorieAvg;
@@ -422,8 +397,7 @@
 		margin-top: 64rpx;
 	}
 
-	.ui-echart {
-	}
+	.ui-echart {}
 
 	.day-title {
 		margin-top: 30rpx;
