@@ -1,12 +1,15 @@
 <template>
 	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
-		<view class="ui-title">
+		<view>
+			<app-logo text="设备配置" color="#353535"></app-logo>
+		</view>
+		<!-- <view class="ui-title">
 			<view class="ui-title-left">设备配置</view>
-			<!-- 	<view class="ui-title-right">
+				<view class="ui-title-right">
 				<u-icon name="/static/images/restart@3x.png" color="black" size="36rpx"></u-icon>
 				<text style="margin-left: 11rpx;">重启设备</text>
-			</view> -->
-		</view>
+			</view>
+		</view> -->
 		<view class="ui-cell">
 			<view class="cell-box">
 				<u-cell-group>
