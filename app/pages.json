@@ -660,6 +660,15 @@
 			}
 		},
 		{
+			"path": "pages/watch/watch-set/phone-edit",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
 			"path": "pages/health/sleep/sleep",
 			"style": {
 				"navigationStyle": "custom",

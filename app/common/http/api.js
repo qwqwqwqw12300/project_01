@@ -683,7 +683,8 @@ export const GetListExerciseDurationByDay = (params) => http.get('/api/tWatch/li
 /**
  * 查询周时长数据
  */
-export const GetListExerciseDurationByWeek = (params) => http.get('/api/tWatch/listSExerciseDurationByWeek', params, {});
+export const GetListExerciseDurationByWeek = (params) => http.get('/api/tWatch/listSExerciseDurationByWeek',
+params, {});
 
 /*
  * 获取手表信息
@@ -699,3 +700,13 @@ export const GetWatchTrack = (params) => http.get('/api/tWatch/track/lastPoint',
  * 查询活动周平均数据
  */
 export const GetExerciseAvg = (params) => http.get('/api/tWatch/exerciseAvg', params, {});
+
+/*
+ * 设置手表sim卡号码
+ */
+export const PostSetSimNumber = (params) => http.post('/api/tWatch/setSimNumber', params, {});
+
+/*
+ * 获取手表sim卡号码
+ */
+export const GetSimNumber = (params) => http.get('/api/tWatch/getSimNumber', params, {});
