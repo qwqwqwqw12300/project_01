@@ -167,31 +167,53 @@
 			dealDay(res) {
 				let resArr = [];
 				res.forEach((item)=>{
-					resArr.push(item.value)
+					resArr.push([
+						new Date(item.time).valueOf(),
+						item.value
+					])
 				});
+				console.log('1ttt',this.queryData.date);
 				this.options = {
 					notMerge: true,
 					tooltip: {
-						trigger: ''
+						trigger: 'axis'
 					},
 					grid: {
-						left: '0',
-						right: '3',
+						left: '3',
+						right: '5',
 						bottom: '0',
 						top: '10',
 						containLabel: true
 					},
 					xAxis: {
-						type: 'category',
-						data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00',
-							'18:00', '20:00', '22:00', '23:59'
-						],
+						type: 'time',
+						// data: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00',
+						// 	'18:00', '20:00', '22:00', '23:59'
+						// ],
 						axisTick: {
 							show: false
 						},
+						boundaryGap: false,
+						interval: 6 * 60 * 60 * 1000, // 设置x轴间隔为6小时
+						min: `${this.queryData.date + ' 00:00:00'}`, // x轴起始时间
+						max: `${this.queryData.date + ' 24:00:00'}`, // x轴结束时间
 						axisLabel: {
-							interval: 2
-						}
+							textStyle: {
+								color: "#666"
+							},
+							formatter: function(val) {
+								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
+							}
+						},
+						splitLine: {
+							show: false
+						},
+						axisLine: {
+							lineStyle: {
+								color: 'rgb(238,238,238)',
+								width: 1
+							}
+						},
 					},
 					yAxis: {
 						type: 'value',
@@ -201,6 +223,11 @@
 						axisLine: {
 							show: false
 						},
+						splitLine: {
+							show: false
+						},
+						min:0,
+						max:resArr.length === 0 ? 1000 : null,
 						data: [0, 25, 50, 70, 100],
 					},
 					series: [{
@@ -221,7 +248,10 @@
 			dealWeek(res) {
 				let resArr = [];
 				res.forEach((item)=>{
-					resArr.push(item.value)
+					resArr.push([
+						new Date(item.time).valueOf(),
+						item.value
+					])
 				});
 				this.options = {
 					notMerge: true,
@@ -236,20 +266,43 @@
 						containLabel: true
 					},
 					xAxis: {
-						type: 'category',
-						data: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+						type: 'time',
+						// data: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
 						axisTick: {
 							show: false
 						},
-					},
+						splitLine: {
+							show: false
+						},
+						type: 'time',
+						interval: 24 * 3600 * 1000,
+						min: new Date(`${this.queryData.beginDate + ' 00:00:00'}`), // x轴起始时间
+						max: new Date(`${this.queryData.endDate + ' 00:00:00'}`), // x轴结束时间
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							},
+							formatter: function(val, index) {
+								console.log(val, index, 'dddd----------')
+								const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+								return index == 7 ? '' : weekArr[new Date(val).getDay()]
+								// return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
+							}
+						}
+					},	
 					yAxis: {
 						type: 'value',
 						axisTick: {
 							show: false
 						},
+						splitLine: {
+							show: false
+						},
 						axisLine: {
 							show: false
 						},
+						min:0,
+						max:resArr.length === 0 ? 1000 : null,
 						data: [0, 25, 50, 70, 100],
 					},
 					series: [{
@@ -369,7 +422,8 @@
 		margin-top: 64rpx;
 	}
 
-	.ui-echart {}
+	.ui-echart {
+	}
 
 	.day-title {
 		margin-top: 30rpx;

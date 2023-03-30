@@ -8,6 +8,7 @@
 				</swiper-item>
 			</swiper>
 		</view>
+		<scroll-view class="ui-scroll" scroll-y="true">
 		<view class="ui-body">
 			<view class="ui-w-h-100">
 				<view class="ui-f-center ui-white-bg ui-br-16" style="padding-right:60rpx"
@@ -45,7 +46,7 @@
 					</view>
 				</view>
 				<view class="ui-f-between ui-mar-t-20  ui-f-wrap ui-w-h-100">
-					<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-min-h-121"
+					<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-min-h-121	"
 						@click="jumpUrl('/pages/health/sleep/sleep')">
 						<view class="ui-f-start ui-f-wrap">
 							<image class="ui-img-size3" src="/static/images/yueliang.png"></image>
@@ -69,7 +70,7 @@
 						</view>
 
 					</view>
-					<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100 ui-min-h-121"
+					<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-min-h-121"
 						@click="jumpUrl('/pages/health/heart-rate/heart-rate')">
 						<view class="ui-f-start ui-f-wrap">
 							<image class="ui-img-size3" src="/static/images/xinlv.png"></image>
@@ -171,6 +172,7 @@
 				</view>
 			</view>
 		</view>
+		</scroll-view>
 	</app-body>
 </template>
 
@@ -731,8 +733,8 @@
 
 <style lang="scss" scoped>
 	.ui-banner {
-		margin-top: 60rpx;
 		padding: 0 20rpx;
+		padding-top: 60rpx;
 	}
 
 	.ui-swiper {
@@ -957,5 +959,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center
+	}
+	
+	.ui-scroll{
+		height:calc(100vh - (var(--window-bottom) + 213px + 0px))
 	}
 </style>
