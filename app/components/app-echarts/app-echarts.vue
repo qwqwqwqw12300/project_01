@@ -68,54 +68,39 @@
 				if (this.chart) {
 					// 因App端，回调函数无法从renderjs外传递，故在此自定义设置相关回调函数
 					if (option) {
-						// tooltip
-						if (option.tooltip) {
-							// 判断是否设置tooltip的位置
-							if (option.tooltip.positionStatus) {
-								option.tooltip.position = this.tooltipPosition()
-							}
-							// 判断是否格式化tooltip
-							if (option.tooltip.formatterStatus) {
-								option.tooltip.formatter = this.tooltipFormatter(option.tooltip.formatterUnit, option
-									.tooltip.formatFloat2, option.tooltip.formatThousands)
-							}
+						if (option.xAxis && Array.isArray(option.xAxis)) {
+							option.xAxis.forEach(ele => {
+								const formatter = ele.axisLabel.formatter
+								if (formatter) {
+									ele.axisLabel.formatter = this.axisLabelFormatter(formatter)
+								}
+							})
 						}
-						// if (option.xAxis[0].data.length >= 5) {
-						//  option.xAxis[0].axisLabel.formatter = function formatter(params) {
-						//      if (params > 5) {
-						//          return params;
-						//      }
-						//      var maxLength = 4;
-						//      //判断长度，超出使用...代替
-						//      if (params && params.length > maxLength) {
-						//          return params.substring(0, maxLength - 1) + '...';
-						//      } else {
-						//          return params;
-						//      }
-						//  }
-						// } else if(option.xAxis[0].data.length === 1){
-						//  option.xAxis[0].axisLabel.formatter = function formatter(params) {
-						//      return params
-						//  }
-						// } else {
-						//  option.xAxis[0].axisLabel.formatter = function formatter(params) {
-						//      if (params > 5) {
-						//          return params;
-						//      }
-						//      var maxLength = 6;
-						//      //判断长度，超出使用...代替
-						//      if (params && params.length > maxLength) {
-						//          return params.substring(0, maxLength - 1) + '...';
-						//      } else {
-						//          return params;
-						//      }
-						//  }
-						// }
 						// 设置新的option
 						this.chart.setOption(option, option.notMerge)
 					}
 				}
 			},
+
+			/**
+			 * 设置Formatter
+			 */
+			axisLabelFormatter(type) {
+				switch (type) {
+					case 'date':
+						return val => {
+							const date = new Date(val);
+							const hour = date.getHours(),
+								minu = date.getMinutes();
+							return `${hour > 10 ? hour : 0 + hour}:${minu > 10 ? minu : '0'+minu}`;
+						}
+						break;
+					default:
+						return type;
+						break;
+				}
+			},
+
 			/**
 			 * 点击事件，可传递到外部
 			 * @param {Object} event

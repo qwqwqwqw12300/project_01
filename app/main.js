@@ -23,7 +23,7 @@ Vue.prototype.$apm = (option) => {
 	log.apm(option);
 };
 // 自定义弹窗
-uni.showModal = e => store.commit('setModal', e);
+// uni.showModal = e => store.commit('setModal', e);
 const app = new Vue({
 	...App
 });
