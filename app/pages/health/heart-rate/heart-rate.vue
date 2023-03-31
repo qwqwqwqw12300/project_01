@@ -376,7 +376,7 @@
 						' 00:00:00')
 					this.weekOptions.xAxis[0].max = new Date(uni.$u.timeFormat(new Date(options.value[6]),
 							'yyyy-mm-dd') +
-						' 23:59:59')
+						' 00:00:00')
 					this.options = this.weekOptions
 				})
 			},

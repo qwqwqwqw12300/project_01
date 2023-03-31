@@ -85,12 +85,10 @@
 			handleInit() {
 				this.loadmore = 'loadmore';
 				const {
-					type,
 					familyId,
 					deviceId
 				} = this.deviceInfo;
 				getMessage({
-					type,
 					familyId,
 					deviceId,
 					readFlag: 0,
