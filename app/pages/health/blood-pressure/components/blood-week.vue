@@ -13,7 +13,7 @@
 				</view>
 			</view>
 		</view>
-		<app-echarts :option="option" id="myChart" class="myChart"></app-echarts>
+		<app-echarts :option="option" @click="handleClick" id="myChart" class="myChart"></app-echarts>
 		<view class="ui-statistics">
 			<view class="statistics-box">
 				<view class="ui-date-title">周统计</view>
@@ -91,6 +91,10 @@
 			}
 		},
 		methods: {
+			handleClick(option){
+				console.log(option,'option')
+				option.seriesName =='收缩压' ? this.list[0].value = option.value[1] : this.list[1].value = option.value[1]
+			},
 			logstatrt() {
 				this.spMapList = []
 				this.dpMapList = []
@@ -157,10 +161,7 @@
 							textStyle: {
 								color: "#666"
 							},
-							formatter: function(val, index) {
-								const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-								return index == 7 ? '' : weekArr[new Date(val).getDay()]
-							}
+							formatter: 'week'
 						},
 						splitLine: {
 							show: false

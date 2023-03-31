@@ -74,12 +74,7 @@
 						textStyle: {
 							color: "#666"
 						},
-						formatter: function(val, index) {
-							const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-							return index === 7 ? '' : weekArr[new Date(val).getDay()]
-							// return weekArr[new Date(val).getDay()]
-							// return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
-						}
+						formatter: 'week'
 					},
 					// nameLocation: 'end',
 					// nameTextStyle: {
@@ -184,9 +179,7 @@
 						textStyle: {
 							color: "#666"
 						},
-						formatter: function(val) {
-							return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
-						}
+						formatter: 'date'
 					},
 					axisLine: {
 						lineStyle: {
