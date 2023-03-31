@@ -198,6 +198,10 @@
 				}, ],
 				yAxis: [{
 					type: "value",
+					min: '0',
+					max: function(value) {
+						return value.max == '-Infinity' ? 120 : value.max
+					},
 					scale: true,
 					splitArea: {
 						show: true,
