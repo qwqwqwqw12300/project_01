@@ -33,6 +33,12 @@
 		GetLastPoint,
 		GetsetAddressBook
 	} from '@/common/http/api';
+	import {
+		isIos,
+		isApp
+	} from '@/common/utils/util';
+	let mapSearch;
+	if (isApp()) mapSearch = weex.requireModule('mapSearch');
 	export default {
 		props: {
 			deviceInfo: {
@@ -104,34 +110,21 @@
 					longitude
 				} = n.location
 				return new Promise((resolve, reject) => {
-					uni.getLocation({
-						geocode: true,
-						type: 'gcj02',
-						latitude,
-						longitude,
-						success: (res) => {
-							const {
-								address: {
-									province,
-									city,
-									district,
-									street,
-									streetNum,
-									poiName
-								},
-							} = res
-							n.address = province + city + district
-							n.subAddress = street + streetNum + poiName
-							resolve(n)
-							// this.addressInfo.latitude = latitude
-							// this.addressInfo.longitude = longitude
-							// this.addressInfo.address = province + city + district + street + streetNum + poiName
+					mapSearch && mapSearch.reverseGeocode({
+							point: {
+								latitude,
+								longitude
+							}
 						},
-						false: (res) => {
-							reject(res)
-							uni.hideLoading()
-						}
-					})
+						e => {
+							resolve({
+								location: {
+									latitude,
+									longitude,
+								},
+								address: e.address
+							})
+						})
 				})
 			},
 			getHistoryLocation() {
