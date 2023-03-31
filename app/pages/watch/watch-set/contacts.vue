@@ -13,14 +13,8 @@
 				</view>
 			</view>
 			<view style="margin-top: 48rpx;">
-				<u--input
-					style="background-color:#F2F2F2;"
-					placeholder="请输入您想搜索的内容"
-					border="surround"
-					shape="circle"
-					prefixIcon="search"
-					prefixIconStyle="font-size: 22px;color: #909399"
-				></u--input>
+				<u--input style="background-color:#F2F2F2;" placeholder="请输入您想搜索的内容" border="surround" shape="circle"
+					prefixIcon="search" prefixIconStyle="font-size: 22px;color: #909399"></u--input>
 			</view>
 		</view>
 		<view class="ui-content">
@@ -30,8 +24,7 @@
 					<view class="cell">
 						<view class="cell-box">
 							<view class="input">
-								<u--input v-model="item.name" maxlength="6" placeholder="请输入姓名" border="none"
-									clearable>
+								<u--input v-model="item.name" maxlength="6" placeholder="请输入姓名" border="none" clearable>
 								</u--input>
 							</view>
 							<view class="input">
@@ -77,10 +70,9 @@
 	export default {
 		computed: {
 			...mapState({
-				/**所有家庭列表**/
 				deviceInfo: state => state.deviceInfo
 			}),
-		
+
 		},
 		data() {
 			return {
@@ -92,7 +84,7 @@
 			initData() {
 				this.options4 = []
 				GetWatchAddressBook({
-					deviceId: '243'
+					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					this.options4 = res.data.map(n => {
 						n.options = [{
@@ -116,25 +108,25 @@
 					if (!phoneValidator(list[i].number)) return uni.$u.toast('手机号不正确')
 				}
 				const addressBooks = []
-				this.options4.forEach(item=>{
-					console.log(item,'item')
-					if(item.addressBookId!=undefined){
+				this.options4.forEach(item => {
+					console.log(item, 'item')
+					if (item.addressBookId != undefined) {
 						addressBooks.push({
-							name:item.name,
-							number:item.number,
-							addressBookId:item.addressBookId,
-							sos:item.sos
+							name: item.name,
+							number: item.number,
+							addressBookId: item.addressBookId,
+							sos: item.sos
 						})
-					}else{
+					} else {
 						addressBooks.push({
-							name:item.name,
-							number:item.number,
-							sos:false
+							name: item.name,
+							number: item.number,
+							sos: false
 						})
 					}
 				})
 				PostWatchContactsSync({
-					deviceId: '243',
+					deviceId: this.deviceInfo.deviceId,
 					watchSyncList: addressBooks
 				}).then(res => {
 					console.log(res, 'res')
@@ -170,7 +162,7 @@
 						if (res.confirm) {
 							if (list.addressBookId != undefined) {
 								PostWatchDeleteAddressBook({
-									deviceId: '243',
+									deviceId: this.deviceInfo.deviceId,
 									addressBookId: list.addressBookId,
 									phoneNumber: list.phoneNumber
 								}).then(res => {
@@ -245,6 +237,7 @@
 	.ui-content {
 		margin-top: 30rpx;
 		background-color: #fff;
+
 		.cell {
 			padding: 0rpx 32rpx;
 
@@ -261,9 +254,11 @@
 			}
 		}
 	}
-	.ui-div{
+
+	.ui-div {
 		height: 90rpx;
 	}
+
 	.ui-btn {
 		width: 100%;
 		position: fixed;
