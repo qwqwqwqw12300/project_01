@@ -40,6 +40,12 @@
 	import {
 		mapState,
 	} from 'vuex';
+	import {
+		isIos,
+		isApp
+	} from '@/common/utils/util';
+	let mapSearch;
+	if (isApp()) mapSearch = weex.requireModule('mapSearch');
 	export default {
 		components: {
 			timePicker
@@ -94,31 +100,21 @@
 					longitude
 				} = n.location
 				return new Promise((resolve, reject) => {
-					// console.log(latitude, longitude, 'lllllll')
-					uni.getLocation({
-						latitude,
-						longitude,
-						geocode: true,
-						type: 'gcj02',
-						success: res => {
-							const {
-								address: {
-									province,
-									city,
-									district,
-									street,
-									streetNum,
-									poiName
-								},
-							} = res
-							n.address = province + city + district
-							n.subAddress = street + streetNum + poiName
-							resolve(n)
+					mapSearch && mapSearch.reverseGeocode({
+							point: {
+								latitude,
+								longitude
+							}
 						},
-						false: (res) => {
-							reject(res)
-						}
-					})
+						e => {
+							resolve({
+								location: {
+									latitude,
+									longitude,
+								},
+								address: e.address
+							})
+						})
 				})
 			},
 			queryData() {
