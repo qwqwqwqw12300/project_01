@@ -355,11 +355,10 @@
 					endDate: this.queryData.endDate,
 					humanId: this.deviceInfo.humanId
 				}
-				GetListStepNumByWeek(params).then(res => {
+				GetListCalorieByWeek(params).then(res => {
 					console.log(res, 'res')
 					this.dealWeek(res.data.MapList);
 				});
-				GetListCalorieByWeek();
 			},
 			fetchExerciseDurationByDay() {
 				console.log(5)
@@ -381,7 +380,7 @@
 					endDate: this.queryData.endDate,
 					humanId: this.deviceInfo.humanId
 				}
-				GetListStepNumByWeek(params).then(res => {
+				GetListExerciseDurationByWeek(params).then(res => {
 					console.log(res, 'res')
 					this.dealWeek(res.data.MapList);
 				});

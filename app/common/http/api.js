@@ -683,7 +683,7 @@ export const GetListExerciseDurationByDay = (params) => http.get('/api/tWatch/li
 /**
  * 查询周时长数据
  */
-export const GetListExerciseDurationByWeek = (params) => http.get('/api/tWatch/listSExerciseDurationByWeek',
+export const GetListExerciseDurationByWeek = (params) => http.get('/api/tWatch/listtExerciseDurationByWeek',
 	params, {});
 
 /*

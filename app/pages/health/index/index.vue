@@ -476,12 +476,6 @@
 					resArr.push(item.value)
 				})
 				this.xinLvOption = {
-					tooltip: {
-						trigger: 'axis',
-						position: function(pt) {
-							return [pt[0], '10%'];
-						}
-					},
 					grid: {
 						top: 0,
 						left: 0,
@@ -551,10 +545,6 @@
 				this.xueYaOption = {
 					title: {
 						text: ''
-					},
-					tooltip: {
-						positionStatus: true,
-						trigger: 'axis',
 					},
 					backgroundColor: '#fff',
 					legend: {
@@ -680,9 +670,6 @@
 				console.log('resarr', resArr)
 				this.xueYangOption = {
 					notMerge: true,
-					tooltip: {
-						trigger: 'axis'
-					},
 					backgroundColor: '#fff',
 					grid: {
 						left: '0',
@@ -782,12 +769,6 @@
 
 				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
 				this.xinDianOption = {
-					tooltip: {
-						trigger: 'axis',
-						position: function(pt) {
-							return [pt[0], '10%'];
-						}
-					},
 					grid: {
 						top: 0,
 						left: 0,
@@ -838,12 +819,6 @@
 			xinZangOptionHandle() {
 				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
 				this.xinZangOption = {
-					tooltip: {
-						trigger: 'axis',
-						position: function(pt) {
-							return [pt[0], '10%'];
-						}
-					},
 					grid: {
 						top: 0,
 						left: 0,
@@ -1144,7 +1119,7 @@
 	}
 
 	.ui-scroll {
-		height: calc(100vh - (var(--window-bottom) + 213px + 0px))
+		height: calc(100vh - (var(--window-bottom) + 300rpx + 50px + var(--status-bar-height)))
 	}
 
 	.ui-p-center {
