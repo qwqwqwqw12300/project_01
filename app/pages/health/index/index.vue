@@ -1,6 +1,6 @@
 <template>
 	<app-body :hideTitle="true" :bg="pageShow">
-		<view v-show = "pageShow">
+		<view v-if="pageShow">
 			<view class="ui-banner">
 				<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange"
 					:current="current">
@@ -112,7 +112,8 @@
 										<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 											{{date}}
 										</view>
-										<view class="ui-w-h-100 ui-f-between ui-mar-t-20" v-if="fetchRes.spMapList.length">
+										<view class="ui-w-h-100 ui-f-between ui-mar-t-20"
+											v-if="fetchRes.spMapList.length">
 											<app-echarts class="ui-echarts-size" :option="xueYaOption" id="xueYaChart">
 											</app-echarts>
 											<!-- <image class="ui-img-size4" src="../../static/images/xueyaLine.png"></image> -->
@@ -120,13 +121,15 @@
 										<view class="ui-w-h-100 ui-mar-t-20" v-if="!fetchRes.spMapList.length">
 											<view class="ui-noData-font">无数据</view>
 										</view>
-										<view class="ui-f-between ui-w-h-100 ui-mar-t-10" v-if="fetchRes.spMapList.length">
+										<view class="ui-f-between ui-w-h-100 ui-mar-t-10"
+											v-if="fetchRes.spMapList.length">
 											<text class="ui-font-22 ui-font-c-888">00:00</text>
 											<text class="ui-font-22 ui-font-c-888">24:00</text>
 										</view>
 									</view>
 								</view>
-								<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100 ui-min-h-121"
+								<view
+									class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100 ui-min-h-121"
 									@click="jumpUrl('/pages/health/blood-oxygen/blood-oxygen')">
 									<view class="ui-f-start ui-f-wrap">
 										<image class="ui-img-size3" src="/static/images/xueyang.png"></image>
@@ -135,7 +138,8 @@
 											{{date}}
 										</view>
 										<view class="ui-w-h-100 ui-mar-t-20" v-if="fetchRes.tWatchBloodOxygen.length">
-											<app-echarts class="ui-echarts-size" :option="xueYangOption" id="xueYangChart">
+											<app-echarts class="ui-echarts-size" :option="xueYangOption"
+												id="xueYangChart">
 											</app-echarts>
 											<!-- <image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image> -->
 										</view>
@@ -163,7 +167,8 @@
 										</view>
 										<view class="ui-w-h-100 ui-mar-t-20"
 											v-if="fetchRes.electrocardiogramMapList && fetchRes.electrocardiogramMapList.length">
-											<app-echarts class="ui-echarts-size" :option="xinDianOption" id="xinDianChart">
+											<app-echarts class="ui-echarts-size" :option="xinDianOption"
+												id="xinDianChart">
 											</app-echarts>
 										</view>
 										<view class="ui-w-h-100 ui-mar-t-20">
@@ -185,7 +190,7 @@
 				</view>
 			</scroll-view>
 		</view>
-		<u-empty class="ui-p-center" mode="data" :show="!pageShow">
+		<u-empty class="ui-p-center" mode="data" v-else>
 		</u-empty>
 	</app-body>
 </template>
@@ -194,7 +199,8 @@
 	import * as echarts from '@/static/js/echarts.js';
 	import SwiperDevice from '@/pages/watch/watch-detail/components/device-swiper.vue';
 	import {
-		GetCaiHongData	
+		GetCaiHongData,
+		getDeviceListState,
 	} from '@/common/http/api.js'
 	export default {
 		components: {
@@ -209,7 +215,7 @@
 					electrocardiogramMapList: [],
 					sleepMap: ''
 				},
-				pageShow:true,
+				pageShow: true,
 				caiHongOption: {},
 				caiHongData: [],
 				maxDataArr: [],
@@ -229,16 +235,20 @@
 			this.getDate();
 		},
 		onShow() {
-
-			this.deviceList = this.$store.getters.filterDevice({
-				type: '2'
+			getDeviceListState({
+				pageSize: 10000
+			}).then(res => {
+				this.deviceList = res.rows.filter(n => {
+					return n.type === '2'
+				})
+				if (this.deviceList.length) {
+					this.swiperData = this.deviceList[0]
+					this.$store.commit('setDeviceInfo', this.swiperData)
+					this.fetchData();
+				} else {
+					this.pageShow = false
+				}
 			})
-			console.log(this.$store.getters.devicesList, '11111')
-			if (this.deviceList.length) {
-				this.swiperData = this.deviceList[0]
-				this.$store.commit('setDeviceInfo', this.swiperData)
-				this.fetchData();
-			}
 		},
 		methods: {
 			swiperChange(val) {
@@ -1136,11 +1146,11 @@
 	.ui-scroll {
 		height: calc(100vh - (var(--window-bottom) + 213px + 0px))
 	}
-	
+
 	.ui-p-center {
-	  position: absolute;
-	  top: 50%;
-	  left: 50%;
-	  transform: translate(-50%, -50%);
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 </style>

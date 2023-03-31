@@ -22,7 +22,7 @@
 					</view>
 					<view class="status-block" style="margin-left:14rpx">
 						<u-icon name="/static/images/electricity.png" size="20" style="margin-right: 4rpx;" />
-						<text>电量:{{ record.currentPower }}</text>
+						<text>电量:{{ record.currentPower || '0%' }}</text>
 					</view>
 				</view>
 				<view class="time">
