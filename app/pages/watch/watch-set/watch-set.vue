@@ -17,7 +17,7 @@
 						@tap="handleJump(item.url)" :isLink="true" titleStyle="font-size: 15px;color: #303133;">
 					</u-cell> -->
 					<u-cell :title="item.title" v-for="(item,index) in cellList" :key="index" arrow-direction="right"
-						isLink titleStyle="font-size: 15px;color: #303133;" @tap="handleJump(item.url)">
+						:isLink="item.type!=undefined ? false : true" titleStyle="font-size: 15px;color: #303133;" @tap="handleJump(item.url)">
 						<view slot="value" class="u-slot-value">
 							<text>{{item.value}}</text>
 							<u-switch space="2" v-model="item.type" activeValue="1" inactiveValue="0" v-if="item.type"

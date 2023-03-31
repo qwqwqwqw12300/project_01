@@ -72,6 +72,9 @@
 		onLoad() {
 			this.handleInit()
 		},
+		onShow() {
+			this.handleInit()
+		},
 		methods: {
 			phoneEdit() {
 				uni.navigateTo({

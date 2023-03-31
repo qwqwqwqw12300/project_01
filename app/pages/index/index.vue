@@ -321,7 +321,7 @@
 
 <style lang="scss" scoped>
 	.ui-scroll {
-		height: calc(100vh - (var(--window-bottom) + 315rpx + var(--status-bar-height)))
+		height: calc(100vh - (var(--window-bottom) + 220rpx + 50px + var(--status-bar-height)))
 	}
 
 	.ui-scan {
