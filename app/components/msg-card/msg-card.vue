@@ -2,7 +2,7 @@
 	<view class="ui-box">
 		<view style="padding: 20rpx 30rpx;">
 			<view class="box-title">
-				<text class="device-type">跌倒检测器{{msgDetail.operateFlag}}</text>
+				<text class="device-type">{{deviceName(msgDetail.deviceType)}}</text>
 				<text class="event-date">{{$u.timeFormat(msgDetail.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
 				<view class="event-status">
 					<text class="urgent common" v-if="msgDetail.eventLevel == 'urgent'">紧急事件</text>
@@ -78,6 +78,25 @@
 					item.name = `${obj[item.orderNum]} ${item.name}`
 					return item
 				})
+			},
+			deviceName() {
+				return (type) => {
+					let str = '';
+					switch (type) {
+						case '0':
+							str = '跌倒检测器';
+							break;
+						case '1':
+							str = '电子牵挂卡';
+							break;
+						case '2':
+							str = '4G健康手表';
+							break;
+						default:
+							break;
+					}
+					return str;
+				}
 			}
 		},
 		mounted() {

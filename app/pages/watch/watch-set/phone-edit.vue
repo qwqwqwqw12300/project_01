@@ -7,7 +7,7 @@
 		<view class="ui-form">
 			<view class="ui-form-item">
 				<view class="title">
-					手机号码:
+					手机号码
 				</view>
 				<u-input v-model="simNumber" disabledColor="#fff" :border="'none'" fontSize="32rpx" clearable />
 			</view>
