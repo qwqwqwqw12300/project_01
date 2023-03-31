@@ -104,7 +104,7 @@
 		methods: {
 			handleClick(option){
 				console.log(option,'option')
-				
+				option.seriesName =='收缩压' ? this.list[0].value = option.value[1] : this.list[1].value = option.value[1]
 			},
 			logstatrt() {
 				this.spMapList = []
