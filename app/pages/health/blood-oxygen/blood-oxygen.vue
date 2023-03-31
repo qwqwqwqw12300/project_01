@@ -111,7 +111,7 @@
 					yAxis: [{
 						type: "value",
 						min: '0', 
-						max:'130',
+						max:'120',
 						scale: true,
 						splitArea: {
 							show: true,
