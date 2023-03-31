@@ -9,7 +9,7 @@
 			<text>95%</text>
 		</view>
 		<view class="ui-echart">
-			<app-echarts :option="options" id="myChart" class="echart-box"></app-echarts>
+			<app-echarts @click="handleClick" :option="options" id="myChart" class="echart-box"></app-echarts>
 		</view>
 		<view class="ui-total">
 			<view class="total-box">
@@ -63,6 +63,10 @@
 			}
 		},
 		methods: {
+			handleClick(option){
+				console.log(option,'option')
+				
+			},
 			dateFun(option) {
 				console.log(option, 'option');
 				console.log(this.dataList, 'this.dataList');
