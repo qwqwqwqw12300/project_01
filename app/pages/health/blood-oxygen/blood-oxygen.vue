@@ -6,7 +6,7 @@
 			<date-picker @onSelect="onSelect"></date-picker>
 		</view>
 		<view class="ui-show">
-			<text>95%</text>
+			<text>{{text}}%</text>
 		</view>
 		<view class="ui-echart">
 			<app-echarts @click="handleClick" :option="options" id="myChart" class="echart-box"></app-echarts>
@@ -59,13 +59,14 @@
 					}
 				],
 				options: {},
-				dataList: []
+				dataList: [],
+				text:'0'
 			}
 		},
 		methods: {
 			handleClick(option){
 				console.log(option,'option')
-				
+				this.text = option.value[1]
 			},
 			dateFun(option) {
 				console.log(option, 'option');
@@ -96,7 +97,6 @@
 								color: "#666"
 							},
 							formatter: function(val) {
-								console.log(val, 'val')
 								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
 							}
 						},
@@ -112,6 +112,7 @@
 					}, ],
 					yAxis: [{
 						type: "value",
+						min: '0', 
 						scale: true,
 						splitArea: {
 							show: true,
@@ -193,7 +194,6 @@
 								color: "#666"
 							},
 							formatter: function(val, index) {
-								console.log(val, index, 'dddd----------')
 								const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
 								return index == 7 ? '' : weekArr[new Date(val).getDay()]
 								// return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
@@ -259,6 +259,7 @@
 							res.data.oxMap.dataList[i].value
 						])
 					}
+					this.text = this.dataList[0][1]
 					console.log(this.dataList, 'dataList')
 				})
 				this.dateFun(option)
