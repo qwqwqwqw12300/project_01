@@ -102,9 +102,9 @@
 			}
 		},
 		methods: {
-			handleClick(option){
-				console.log(option,'option')
-				option.seriesName =='收缩压' ? this.list[0].value = option.value[1] : this.list[1].value = option.value[1]
+			handleClick(option) {
+				console.log(option, 'option')
+				option.seriesName == '收缩压' ? this.list[0].value = option.value[1] : this.list[1].value = option.value[1]
 			},
 			logstatrt() {
 				this.spMapList = []
@@ -182,7 +182,11 @@
 					},
 					yAxis: {
 						type: 'value',
-						min: '0', 
+						min: '0',
+						max: function(value) {
+							console.log(value, '222')
+							return value.max == '-Infinity' ? 120 : value.max
+						},
 						scale: true,
 						splitArea: {
 							show: true,

@@ -168,7 +168,7 @@
 			},
 			dealDay(res) {
 				let resArr = [];
-				res.forEach((item)=>{
+				res.forEach((item) => {
 					resArr.push([
 						new Date(item.time).valueOf(),
 						item.value
@@ -179,11 +179,12 @@
 					tooltip: {
 						trigger: 'axis'
 					},
+					backgroundColor: '#fff',
 					grid: {
 						left: '3',
 						right: '15',
 						bottom: '0',
-						top: '10',	
+						top: '10',
 						containLabel: true
 					},
 					xAxis: {
@@ -202,7 +203,7 @@
 							textStyle: {
 								color: "#666"
 							},
-							formatter:'date'
+							formatter: 'date'
 						},
 						splitLine: {
 							show: false
@@ -216,6 +217,12 @@
 					},
 					yAxis: {
 						type: 'value',
+						splitArea: {
+							show: true,
+							areaStyle: {
+								color: ['#f6f8fc', '#fff']
+							}
+						},
 						axisTick: {
 							show: false
 						},
@@ -225,13 +232,13 @@
 						splitLine: {
 							show: false
 						},
-						min:0,
-						max:resArr.length === 0 ? 1000 : null,
+						min: 0,
+						max: resArr.length === 0 ? 1000 : null,
 						data: [0, 25, 50, 70, 100],
 					},
 					series: [{
 							// data: [100, 25, 50, 70, 100, 100, 25, 50, 70, 100, 42, 32, 20],
-							data:resArr,
+							data: resArr,
 							type: 'bar',
 							itemStyle: { //---图形形状
 								color: '#61AAF7',
@@ -246,7 +253,7 @@
 			},
 			dealWeek(res) {
 				let resArr = [];
-				res.forEach((item)=>{
+				res.forEach((item) => {
 					resArr.push([
 						new Date(item.time).valueOf(),
 						item.value
@@ -257,6 +264,7 @@
 					tooltip: {
 						trigger: ''
 					},
+					backgroundColor: '#fff',
 					grid: {
 						left: '0',
 						right: '0',
@@ -283,11 +291,17 @@
 							},
 							formatter: 'week'
 						}
-					},	
+					},
 					yAxis: {
 						type: 'value',
 						axisTick: {
 							show: false
+						},
+						splitArea: {
+							show: true,
+							areaStyle: {
+								color: ['#f6f8fc', '#fff']
+							}
 						},
 						splitLine: {
 							show: false
@@ -295,8 +309,8 @@
 						axisLine: {
 							show: false
 						},
-						min:0,
-						max:resArr.length === 0 ? 1000 : null,
+						min: 0,
+						max: resArr.length === 0 ? 1000 : null,
 						data: [0, 25, 50, 70, 100],
 					},
 					series: [{

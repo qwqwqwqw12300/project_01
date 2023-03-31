@@ -93,7 +93,7 @@
 		methods: {
 			handleInit() {
 				GetFenceInfo({
-					deviceId: '243',
+					deviceId: this.deviceInfo.deviceId,
 				}).then(res => {
 					console.log(res, 'rrrr----------------------')
 					if (!res.data.length) return this.handleGetLocation()
@@ -231,17 +231,15 @@
 				if (sliderValue === 0) {
 					return uni.$u.toast('半径长度大于0')
 				}
-				console.log('77777777777777777777777---')
 				PostAddFence({
 					fenceType: 'circle',
-					deviceNo: '869389030355280',
-					deviceId: '243',
+					deviceNo: this.deviceInfo.no,
+					deviceId: this.deviceInfo.deviceId,
 					address,
 					longitude,
 					latitude,
 					radius: sliderValue + '',
 				}).then(res => {
-					console.log(res, 'dddddddddddddddddd--------')
 					uni.navigateBack()
 					uni.$u.toast(res.msg)
 				})

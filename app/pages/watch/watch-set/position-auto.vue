@@ -4,14 +4,15 @@
 		<view class="ui-cell">
 			<view class="cell-box">
 				<u-cell-group>
-					<u-cell title="自动定位"   titleStyle="font-size: 15px;color: #303133;" >
+					<u-cell title="自动定位" titleStyle="font-size: 15px;color: #303133;">
 						<view slot="value" class="u-slot-value">
-							<u-switch space="2" v-model="switchValue" activeValue="1" inactiveValue="0" @change="handleSwitch" :loading="loading" 
-								size="20" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)"></u-switch>
+							<u-switch space="2" v-model="switchValue" activeValue="1" inactiveValue="0"
+								@change="handleSwitch" :loading="loading" size="20" activeColor="#FEAE43"
+								inactiveColor="rgb(230, 230, 230)"></u-switch>
 						</view>
 					</u-cell>
-					<u-cell title="定位频率"  arrow-direction="right" @click="show = true"
-						isLink titleStyle="font-size: 15px;color: #303133;" >
+					<u-cell title="定位频率" arrow-direction="right" @click="show = true" isLink
+						titleStyle="font-size: 15px;color: #303133;">
 						<view slot="value" class="u-slot-value">
 							{{frequency}}分钟
 						</view>
@@ -19,13 +20,7 @@
 				</u-cell-group>
 			</view>
 		</view>
-		<u-action-sheet
-			:show="show"
-			:actions="actions"
-			title="请选择定位频率"
-			@close="show = false"
-			@select="handleSelect"
-		>
+		<u-action-sheet :show="show" :actions="actions" title="请选择定位频率" @close="show = false" @select="handleSelect">
 		</u-action-sheet>
 	</app-body>
 
@@ -42,7 +37,7 @@
 	export default {
 		data() {
 			return {
-				switchValue:'1',
+				switchValue: '1',
 				actions: [{
 						name: '5',
 					},
@@ -62,10 +57,10 @@
 						name: '60',
 					}
 				],
-				show:false,
-				frequency:'30',
-				gpsAutoCheck:false,
-				loading:false
+				show: false,
+				frequency: '30',
+				gpsAutoCheck: false,
+				loading: false
 			}
 		},
 		computed: {
@@ -75,41 +70,41 @@
 		},
 		mounted() {},
 		methods: {
-			initData(){
+			initData() {
 				GetAutoLocationInfo({
-					deviceId:243
-				}).then(res=>{
+					deviceId: this.deviceInfo.deviceId
+				}).then(res => {
 					this.gpsAutoCheck = res.data.gpsAutoCheck
-					if(this.gpsAutoCheck){
+					if (this.gpsAutoCheck) {
 						this.switchValue = '1'
-					}else{
+					} else {
 						this.switchValue = '0'
 					}
 					this.frequency = res.data.gpsIntervalTime
 				})
 			},
-			handleSwitch(){
-				console.log(this.switchValue,'switchValue')
+			handleSwitch() {
+				console.log(this.switchValue, 'switchValue')
 				this.loading = true
-				if(this.switchValue=='1'){
+				if (this.switchValue == '1') {
 					this.gpsAutoCheck = true
-					this.handlePost(this.gpsAutoCheck,this.frequency)
-				}else{
+					this.handlePost(this.gpsAutoCheck, this.frequency)
+				} else {
 					this.gpsAutoCheck = false
-					this.handlePost(this.gpsAutoCheck,this.frequency)
+					this.handlePost(this.gpsAutoCheck, this.frequency)
 				}
 			},
 			handleSelect(e) {
 				this.frequency = e.name
 				this.loading = true
-				this.handlePost(this.gpsAutoCheck,this.frequency)
+				this.handlePost(this.gpsAutoCheck, this.frequency)
 			},
-			handlePost(gpsAutoCheck,gpsIntervalTime){
+			handlePost(gpsAutoCheck, gpsIntervalTime) {
 				PostUpdateAutoLocation({
-					deviceId:243,
-					gpsAutoCheck:gpsAutoCheck,
-					gpsIntervalTime:gpsIntervalTime
-				}).then(res=>{
+					deviceId: this.deviceInfo.deviceId,
+					gpsAutoCheck: gpsAutoCheck,
+					gpsIntervalTime: gpsIntervalTime
+				}).then(res => {
 					this.loading = false
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
@@ -140,6 +135,4 @@
 			border-radius: 16rpx;
 		}
 	}
-
-
 </style>
