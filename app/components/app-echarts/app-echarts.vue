@@ -52,6 +52,12 @@
 			 */
 			init() {
 				this.chart = echarts.init(this.$el)
+				this.chart.on('click', params => {
+					this.onClick(params)
+					// // 把点击事件的数据缓存
+					// this.clickData = params
+
+				})
 				this.update(this.option)
 			},
 			/**
@@ -107,13 +113,6 @@
 						// }
 						// 设置新的option
 						this.chart.setOption(option, option.notMerge)
-						this.chart.on('click', params => {
-							console.log(params, 'pppppppp--')
-							this.onClick(params)
-							// // 把点击事件的数据缓存
-							// this.clickData = params
-
-						})
 					}
 				}
 			},
