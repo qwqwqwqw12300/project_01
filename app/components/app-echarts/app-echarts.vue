@@ -31,7 +31,7 @@
 				// 动态引入类库
 				window.wx = {}
 				const script = document.createElement('script')
-				script.src = '../../static/js/echarts.js'
+				script.src = 'static/js/echarts.js'
 				// script.src = "https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js";
 				script.onload = this.init
 				document.head.appendChild(script)
