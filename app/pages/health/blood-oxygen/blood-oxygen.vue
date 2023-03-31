@@ -6,10 +6,10 @@
 			<date-picker @onSelect="onSelect"></date-picker>
 		</view>
 		<view class="ui-show">
-			<text>95%</text>
+			<text>{{text}}%</text>
 		</view>
 		<view class="ui-echart">
-			<app-echarts :option="options" id="myChart" class="echart-box"></app-echarts>
+			<app-echarts @click="handleClick" :option="options" id="myChart" class="echart-box"></app-echarts>
 		</view>
 		<view class="ui-total">
 			<view class="total-box">
@@ -59,10 +59,15 @@
 					}
 				],
 				options: {},
-				dataList: []
+				dataList: [],
+				text:'0'
 			}
 		},
 		methods: {
+			handleClick(option){
+				console.log(option,'option')
+				this.text = option.value[1]
+			},
 			dateFun(option) {
 				console.log(option, 'option');
 				console.log(this.dataList, 'this.dataList');
@@ -82,7 +87,7 @@
 						type: 'time',
 						// interval: 6 * 60 * 60 * 1000, // 设置x轴间隔为6小时
 						min: `${option.value + ' 00:00:00'}`, // x轴起始时间
-						max: `${option.value + ' 23:48:00'}`, // x轴结束时间
+						max: `${option.value + ' 23:49:00'}`, // x轴结束时间
 						// boundaryGap: false,
 						axisTick: { //坐标轴刻度相关设置。
 							show: false,
@@ -105,6 +110,7 @@
 					}, ],
 					yAxis: [{
 						type: "value",
+						min: '0', 
 						scale: true,
 						splitArea: {
 							show: true,
@@ -185,12 +191,7 @@
 							textStyle: {
 								color: "#666"
 							},
-							formatter: function(val, index) {
-								console.log(val, index, 'dddd----------')
-								const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-								return index == 7 ? '' : weekArr[new Date(val).getDay()]
-								// return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
-							}
+							formatter:'week'
 						},
 						axisLine: {
 							lineStyle: {
@@ -252,6 +253,7 @@
 							res.data.oxMap.dataList[i].value
 						])
 					}
+					this.text = this.dataList[0][1]
 					console.log(this.dataList, 'dataList')
 				})
 				this.dateFun(option)

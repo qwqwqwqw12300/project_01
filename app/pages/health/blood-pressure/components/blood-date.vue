@@ -13,7 +13,7 @@
 				</view>
 			</view>
 		</view>
-		<app-echarts :option="option" id="myChart" class="myChart"></app-echarts>
+		<app-echarts :option="option" @click="handleClick" id="myChart" class="myChart"></app-echarts>
 		<view class="ui-statistics">
 			<view class="statistics-box">
 				<view class="ui-date-title">日统计</view>
@@ -102,6 +102,10 @@
 			}
 		},
 		methods: {
+			handleClick(option){
+				console.log(option,'option')
+				option.seriesName =='收缩压' ? this.list[0].value = option.value[1] : this.list[1].value = option.value[1]
+			},
 			logstatrt() {
 				this.spMapList = []
 				this.dpMapList = []
@@ -170,9 +174,7 @@
 							textStyle: {
 								color: "#666"
 							},
-							formatter: function(val) {
-								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
-							}
+							formatter: 'date'
 						},
 						splitLine: {
 							show: false
@@ -180,6 +182,7 @@
 					},
 					yAxis: {
 						type: 'value',
+						min: '0', 
 						scale: true,
 						splitArea: {
 							show: true,
@@ -202,18 +205,7 @@
 					},
 					series: [{
 							name: '收缩压',
-							// type: 'line',
-							// stack: 'Total',
 							data: this.spMapList,
-							// showSymbol: false,
-							// itemStyle: {
-							// 	normal: {
-							// 		lineStyle: {
-							// 			color: "#FF7E23",
-							// 			width: 1
-							// 		}
-							// 	}
-							// },
 							type: 'bar',
 							showSymbol: false,
 							itemStyle: {
@@ -224,18 +216,7 @@
 						},
 						{
 							name: '舒张压',
-							// type: 'line',
-							// stack: 'Total',
 							data: this.dpMapList,
-							// showSymbol: false,
-							// itemStyle: {
-							// 	normal: {
-							// 		lineStyle: {
-							// 			color: "#63DDBA",
-							// 			width: 1
-							// 		}
-							// 	}
-							// },
 							type: 'bar',
 							showSymbol: false,
 							itemStyle: {
