@@ -91,10 +91,7 @@
 							textStyle: {
 								color: "#666"
 							},
-							formatter: function(val) {
-								console.log(val, 'val')
-								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
-							}
+							formatter: 'date'
 						},
 						splitLine: {
 							show: false
