@@ -43,7 +43,7 @@
 				script.src = 'static/js/echarts.js'
 				// script.src = "https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js";
 				script.onload = this.init
-				document.head.appendChild(script)
+				document.head.appendChild(script);
 			}
 		},
 		methods: {
@@ -68,9 +68,10 @@
 				if (this.chart) {
 					// 因App端，回调函数无法从renderjs外传递，故在此自定义设置相关回调函数
 					if (option) {
-						if (option.xAxis && Array.isArray(option.xAxis)) {
+						if (option.xAxis) {
+							if (!Array.isArray(option.xAxis)) option.xAxis = [option.xAxis];
 							option.xAxis.forEach(ele => {
-								const formatter = ele.axisLabel.formatter
+								const formatter = ele.axisLabel.formatter;
 								if (formatter) {
 									ele.axisLabel.formatter = this.axisLabelFormatter(formatter)
 								}
@@ -86,19 +87,27 @@
 			 * 设置Formatter
 			 */
 			axisLabelFormatter(type) {
+				let fn;
 				switch (type) {
 					case 'date':
-						return val => {
+						fn = val => {
 							const date = new Date(val);
 							const hour = date.getHours(),
 								minu = date.getMinutes();
 							return `${hour > 10 ? hour : 0 + hour}:${minu > 10 ? minu : '0'+minu}`;
 						}
 						break;
+					case 'week':
+						fn = (val, index) => {
+							const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+							return index == 7 ? '' : weekArr[new Date(val).getDay()];
+						}
+						break;
 					default:
-						return type;
+						fn = type;
 						break;
 				}
+				return fn;
 			},
 
 			/**
@@ -112,115 +121,6 @@
 					name: options.name,
 					seriesName: options.seriesName
 				})
-				// if (this.clickData) {
-				// 	// 把echarts点击事件相关的值传递到renderjs外
-				// 	instance.callMethod('onViewClick', {
-				// 		value: this.clickData.data,
-				// 		name: this.clickData.name,
-				// 		seriesName: this.clickData.seriesName
-				// 	})
-				// 	// 上次点击数据置空
-				// 	this.clickData = null
-				// }
-			},
-			/**
-			 * 设置tooltip的位置，防止超出画布
-			 */
-			tooltipPosition() {
-				return (point, params, dom, rect, size) => {
-					//其中point为当前鼠标的位置，size中有两个属性：viewSize和contentSize，分别为外层div和tooltip提示框的大小
-					let x = point[0]
-					let y = point[1]
-					let viewWidth = size.viewSize[0]
-					let viewHeight = size.viewSize[1]
-					let boxWidth = size.contentSize[0]
-					let boxHeight = size.contentSize[1]
-					let posX = 0 //x坐标位置
-					let posY = 0 //y坐标位置
-					if (x < boxWidth) { //左边放不开
-						posX = 5
-					} else { //左边放的下
-						posX = x - boxWidth
-					}
-					if (y < boxHeight) { //上边放不开
-						posY = 5
-					} else { //上边放得下
-						posY = y - boxHeight
-					}
-					return [posX, posY]
-				}
-			},
-			/**
-			 * tooltip格式化
-			 * @param {Object} unit 数值后的单位
-			 * @param {Object} formatFloat2 是否保留两位小数
-			 * @param {Object} formatThousands 是否添加千分位
-			 */
-			tooltipFormatter(unit, formatFloat2, formatThousands) {
-				return params => {
-					let result = ''
-					unit = unit ? unit : ''
-					for (let i in params) {
-						if (i == 0) {
-							result += params[i].axisValueLabel
-						}
-						let value = '--'
-						if (params[i].data !== null) {
-							value = params[i].data
-							// 保留两位小数
-							if (formatFloat2) {
-								value = this.formatFloat2(value)
-							}
-							// 添加千分位
-							if (formatThousands) {
-								value = this.formatThousands(value)
-							}
-						}
-						// #ifdef H5
-						result += '\n' + params[i].seriesName + '：' + value + ' ' + unit
-						// #endif
-
-						// #ifdef APP-PLUS
-						result += '<br/>' + params[i].marker + params[i].seriesName + '：' + value + ' ' + unit
-						// #endif
-					}
-					return result
-				}
-			},
-			/**
-			 * 保留两位小数
-			 * @param {Object} value
-			 */
-			formatFloat2(value) {
-				let temp = Math.round(parseFloat(value) * 100) / 100
-				let xsd = temp.toString().split('.')
-				if (xsd.length === 1) {
-					temp = (isNaN(temp) ? '0' : temp.toString()) + '.00'
-					return temp
-				}
-				if (xsd.length > 1) {
-					if (xsd[1].length < 2) {
-						temp = temp.toString() + '0'
-					}
-					return temp
-				}
-			},
-			/**
-			 * 添加千分位
-			 * @param {Object} value
-			 */
-			formatThousands(value) {
-				if (value === undefined || value === null) {
-					value = ''
-				}
-				if (!isNaN(value)) {
-					value = value + ''
-				}
-				let re = /\d{1,3}(?=(\d{3})+$)/g
-				let n1 = value.replace(/^(\d+)((\.\d+)?)$/, function(s, s1, s2) {
-					return s1.replace(re, '$&,') + s2
-				})
-				return n1
 			}
 		}
 	}
