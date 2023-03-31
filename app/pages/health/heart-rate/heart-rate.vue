@@ -89,7 +89,7 @@
 					},
 					interval: 24 * 3600 * 1000,
 					min: '',
-					max: '',
+					max: '130',
 					// data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
 				}, ],
 				yAxis: [{
@@ -194,14 +194,10 @@
 					// splitNumber: 6,
 					interval: 6 * 3600 * 1000,
 					min: '',
-					max: '',
+					max: '130',
 				}, ],
 				yAxis: [{
 					type: "value",
-					min: '0',
-					max: function(value) {
-						return value.max == '-Infinity' ? 120 : value.max
-					},
 					scale: true,
 					splitArea: {
 						show: true,

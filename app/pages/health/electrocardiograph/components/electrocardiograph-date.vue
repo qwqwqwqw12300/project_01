@@ -32,7 +32,7 @@
 				</view>
 			</view>
 			<view style="height: 150rpx;" v-if="item.input">
-				<view class="ui-input-font">心电信号弱，请重新测量</view>
+				<!-- 	<view class="ui-input-font">心电信号弱，请重新测量</view> -->
 				<u-input v-model="item.value" border="none" class="ui-input"
 					@blur="handleBlur(item.idElectrocardiogram,item.value)"></u-input>
 			</view>

@@ -90,12 +90,12 @@
 									<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 										{{date}}
 									</view>
-									<view class="ui-w-h-100 ui-mar-t-20" v-if="fetchRes.HeartRateList.length > 1">
+									<view class="ui-w-h-100 ui-mar-t-20" v-if="fetchRes.HeartRateList.length">
 										<app-echarts class="ui-echarts-size" :option="xinLvOption" id="xinLvChart">
 										</app-echarts>
 										<!-- <image class="ui-img-size4" src="../../static/images/xinlvLine.png"></image> -->
 									</view>
-									<view class="ui-w-h-100 ui-mar-t-20" v-if="fetchRes.HeartRateList.length <= 1">
+									<view class="ui-w-h-100 ui-mar-t-20" v-if="!fetchRes.HeartRateList.length">
 										<view class="ui-noData-font">无数据</view>
 									</view>
 									<view class="ui-f-between ui-w-h-100 ui-mar-t-10"
