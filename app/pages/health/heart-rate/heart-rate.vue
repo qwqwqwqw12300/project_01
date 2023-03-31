@@ -367,7 +367,7 @@
 						max,
 						min
 					} = res.data
-					this.totalList[0].num = svg
+					this.totalList[0].num = avg
 					this.totalList[1].num = min
 					this.totalList[2].num = max
 					const data = res.data.MapList.map(n => {
