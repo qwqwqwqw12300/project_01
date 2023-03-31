@@ -1,14 +1,14 @@
 <template>
 	<view class="ui-map">
 		<point-map :record="addressInfo"></point-map>
-		<touch-popup :minHeight="0.1" :maxHeight="0.1" :touchHeight="64" radius="30rpx">
+		<view class="map-popup">
 			<view class="map-position">
 				<text class="label">当前位置:</text>
 				<view class="content">
 					{{ addressInfo.address }}
 				</view>
 			</view>
-		</touch-popup>
+		</view>
 	</view>
 </template>
 
@@ -112,6 +112,20 @@
 <style lang="scss" scoped>
 	.ui-map {
 
+		.map-popup {
+			position: fixed;
+			left: 0;
+			bottom: 0;
+			background-color: #FFFFFF;
+			box-sizing: border-box;
+			padding: 0 12px;
+			padding-top: 20rpx;
+			width: 100%;
+			z-index: 9999;
+			border-radius: 30rpx 30rpx 0 0;
+			height: 180rpx;
+		}
+
 		// padding: 32rpx;
 		.list-empty {
 			height: 600rpx;
@@ -128,7 +142,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			border-bottom: solid 2px #f7f7f7;
+			// border-bottom: solid 2px #f7f7f7;
 
 			.label {
 				width: 160rpx;
