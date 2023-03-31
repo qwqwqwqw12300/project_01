@@ -150,6 +150,11 @@
 					setTimeout(() => {
 						this.initData()
 					}, 1000)
+				},err=>{
+					uni.$u.toast(err.msg)
+					setTimeout(() => {
+						this.initData()
+					}, 1000)
 				})
 			},
 			unBind() {

@@ -82,7 +82,7 @@
 						type: 'time',
 						// interval: 6 * 60 * 60 * 1000, // 设置x轴间隔为6小时
 						min: `${option.value + ' 00:00:00'}`, // x轴起始时间
-						max: `${option.value + ' 23:49:00'}`, // x轴结束时间
+						max: `${option.value + ' 23:48:00'}`, // x轴结束时间
 						// boundaryGap: false,
 						axisTick: { //坐标轴刻度相关设置。
 							show: false,

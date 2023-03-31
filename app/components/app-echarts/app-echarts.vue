@@ -13,6 +13,15 @@
 				type: Object,
 				required: true
 			}
+		},
+		methods: {
+			/**
+			 * renderjs内的点击事件，回调到父组件
+			 * @param {Object} params
+			 */
+			onViewClick(params) {
+				this.$emit('click', params)
+			}
 		}
 	}
 </script>
@@ -21,7 +30,7 @@
 	export default {
 		data() {
 			return {
-				chart: null
+				chart: null,
 			}
 		},
 		mounted() {
@@ -43,6 +52,12 @@
 			 */
 			init() {
 				this.chart = echarts.init(this.$el)
+				this.chart.on('click', params => {
+					this.onClick(params)
+					// // 把点击事件的数据缓存
+					// this.clickData = params
+
+				})
 				this.update(this.option)
 			},
 			/**
@@ -64,7 +79,6 @@
 						// 设置新的option
 						this.chart.setOption(option, option.notMerge)
 					}
-
 				}
 			},
 
@@ -87,6 +101,28 @@
 				}
 			},
 
+			/**
+			 * 点击事件，可传递到外部
+			 * @param {Object} event
+			 * @param {Object} instance
+			 */
+			onClick(options) {
+				this.$ownerInstance.callMethod('onViewClick', {
+					value: options.data,
+					name: options.name,
+					seriesName: options.seriesName
+				})
+				// if (this.clickData) {
+				// 	// 把echarts点击事件相关的值传递到renderjs外
+				// 	instance.callMethod('onViewClick', {
+				// 		value: this.clickData.data,
+				// 		name: this.clickData.name,
+				// 		seriesName: this.clickData.seriesName
+				// 	})
+				// 	// 上次点击数据置空
+				// 	this.clickData = null
+				// }
+			},
 			/**
 			 * 设置tooltip的位置，防止超出画布
 			 */
