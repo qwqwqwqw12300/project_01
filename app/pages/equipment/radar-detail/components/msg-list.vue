@@ -118,6 +118,7 @@
 				this.loadmore = 'loadmore'
 				this.pageOptions.pageNum = 1
 				this.triggered = true;
+				this.msgList = []
 				this.handleInit()
 			}
 		}
