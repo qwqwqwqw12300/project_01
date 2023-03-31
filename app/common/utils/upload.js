@@ -31,8 +31,6 @@ export default {
 				this.getVersion(),
 				this.getCurrentVer()
 			]).then(([versionInfo, currentVer]) => {
-
-				console.log(versionInfo, 'versionInfo');
 				if (versionInfo && currentVer) {
 					const {
 						forceUpdate,
@@ -50,7 +48,10 @@ export default {
 										status: false,
 										content
 									});
-									plus.runtime.openURL(downloadAddress);
+									plus.runtime.openURL(downloadAddress,
+										error => {
+											console.log(error, '浏览器打开失败');
+										});
 								} else {
 									resolve({
 										status: true,

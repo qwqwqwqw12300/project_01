@@ -65,7 +65,7 @@
 							</view>
 							<view class="device-info">
 								<image
-									:src="getDevices(item).type == 1 ?'/static/images/dzqgk.png' : '/static/images/watch.png'">
+									:src="getDevices(item).type == 1 ?'/static/images/dzqgk.png' : '/static/images/watch-device.png'">
 								</image>
 								<view class="detail">
 									<text class="name">{{ item.name }}</text>

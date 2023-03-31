@@ -83,7 +83,7 @@
 					if (type === '1') {
 						return '/static/images/dzqgk.png';
 					}
-					return '/static/images/watch.png';
+					return '/static/images/watch-device.png';
 				}
 			}
 		},

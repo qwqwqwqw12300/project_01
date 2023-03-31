@@ -71,7 +71,7 @@
 						if (option.xAxis) {
 							if (!Array.isArray(option.xAxis)) option.xAxis = [option.xAxis];
 							option.xAxis.forEach(ele => {
-								const formatter = ele.axisLabel.formatter;
+								const formatter = ele.axisLabel && ele.axisLabel.formatter;
 								if (formatter) {
 									ele.axisLabel.formatter = this.axisLabelFormatter(formatter)
 								}
