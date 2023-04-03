@@ -94,7 +94,7 @@
 					uuid: '',
 					code: ''
 				},
-				radiovalue: ['ag'],
+				radiovalue: [],
 				registrationId: '',
 			};
 		},
@@ -128,7 +128,7 @@
 			 * 注册
 			 */
 			register() {
-				console.log(this.formParams, 'this.formParams');
+				console.log(this.radiovalue, 'this.formParams');
 				const {
 					phone,
 					pwd,

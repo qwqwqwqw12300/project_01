@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<app-body :bg="false" :needService="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<circle-map :record="mapInfo"></circle-map>
 		<touch-popup :minHeight="0.1" :maxHeight="0.75" :touchHeight="64" radius="30rpx">
 			<view class="title">
@@ -43,7 +43,7 @@
 				<button class="default" @click="handleSubmit">提交</button>
 			</view>
 		</touch-popup>
-	</view>
+	</app-body>
 </template>
 
 <script>
@@ -219,7 +219,7 @@
 		},
 		onLoad(option) {
 			const obj = option.obj && JSON.parse(option.obj);
-			if (obj) {
+			if (obj.latitude && obj.longitude) {
 				const {
 					siteInfo,
 					longitude,
