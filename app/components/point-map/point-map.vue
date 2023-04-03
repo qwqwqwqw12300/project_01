@@ -105,7 +105,7 @@
 				} = this.mapData
 				this.map = new AMap.Map('container', {
 					resizeEnable: true,
-					center: [longitude, latitude],
+					// center: [longitude, latitude],
 					zoom: 13 //地图显示的缩放级别
 				})
 				type === 'add' && this.mapMarker()
@@ -115,13 +115,19 @@
 					latitude,
 					longitude
 				} = this.mapData
-				console.log(this.AMap, '00000000--------------')
+				const icon = new this.AMap.Icon({
+					size: new AMap.Size(40, 40), // 图标尺寸
+					image: 'static/images/mapSite.png', // Icon的图像
+					// imageOffset: new AMap.Pixel(-10, -10), // 图像相对展示区域的偏移量，适于雪碧图等
+					imageSize: new AMap.Size(40, 40) // 根据所设置的大小拉伸或压缩图片
+				})
 				this.marker = new AMap.Marker({
 					position: new AMap.LngLat(longitude, latitude),
-					offset: new AMap.Pixel(-13, -30),
-					icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png'
+					offset: new AMap.Pixel(-20, -20),
+					icon,
 				})
 				this.map.add(this.marker)
+				this.map.setCenter([longitude, latitude]) //设置地图中心点
 				this.map.setFitView()
 			},
 			deepClone(target) {
@@ -160,7 +166,7 @@
 </script>
 <style lang="scss" scoped>
 	.container {
-		height: 100vh;
+		height: calc(100vh - 540rpx - var(--status-bar-height));
 		width: 100%;
 	}
 </style>
