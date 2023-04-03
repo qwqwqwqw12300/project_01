@@ -715,3 +715,13 @@ export const GetSimNumber = (params) => http.get('/api/tWatch/getSimNumber', par
  * 数据一键同步
  */
 export const PostWatchDataSync = (params) => http.post('/api/tWatch/dataSync', params, {});
+
+/*
+ * 获取活动目标
+ */
+export const GetExerciseTarget = (params) => http.get('/api/tWatch/getExerciseTarget', params, {});
+
+/*
+ * 新增/修改活动目标
+ */
+export const PostCreateExerciseTarget = (params) => http.post('/api/tWatch/createExerciseTarget', params, {});
