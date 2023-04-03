@@ -232,6 +232,7 @@
 			},
 			handleSave(){
 				const list = []
+				let toast = ''
 				this.contactList.forEach(item=>{
 					console.log(item,'item')
 					item.estimatedTime = item.date +' '+ item.time
@@ -244,9 +245,14 @@
 						enable:item.flag,
 						estimatedTime:item.estimatedTime
 					})
-					
-					return item
 				})
+				this.contactList.forEach(item => {
+					if (!item.address) return toast = '请填写地址'
+					if (!item.date) return toast = '请填写日期'
+					if (!item.time) return toast = '请填写时间'
+				})
+				if (toast) return uni.$u.toast(toast)
+				if (list.length == 0) return uni.$u.toast('请添加地点')
 				const obj = {
 					deviceId:this.deviceInfo.deviceId,
 					jobName:this.name,
