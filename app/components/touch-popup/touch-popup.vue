@@ -133,14 +133,14 @@
 	}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 	.fixedbox {
 		position: fixed;
 		left: 0;
 		background-color: #FFFFFF;
 		box-sizing: border-box;
 		padding: 0 12px;
-		z-index: 99;
+		z-index: 999;
 	}
 
 	.fixedboxTouch {
