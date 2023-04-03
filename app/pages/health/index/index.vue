@@ -199,6 +199,14 @@
 		</view>
 		<u-empty class="ui-p-center" mode="data" v-else>
 		</u-empty>
+<!-- 		<touch-popup :minHeight="0.03" :maxHeight="0.15" :touchHeight="64" radius="30rpx">
+			<view class="ui-list">
+				<view v-for="item in moveList" :key="item.key" class="list-item">
+					<u-icon :name="item.icon" size="50"></u-icon>
+					<text>{{ item.title }}</text>
+				</view>
+			</view>
+		</touch-popup> -->
 	</app-body>
 </template>
 
@@ -235,7 +243,20 @@
 				deviceList: [],
 				swiperData: {},
 				date: '',
-				echartDate: ''
+				echartDate: '',
+				moveList: [{
+					key: 'walk',
+					icon: '/static/images/walk@3x.png',
+					title: '行走'
+				}, {
+					key: 'run',
+					icon: '/static/images/run@3x.png',
+					title: '跑步'
+				}, {
+					key: 'circling',
+					icon: '/static/images/cycling.png',
+					title: '骑行'
+				}]
 			}
 		},
 		created() {
@@ -1134,5 +1155,23 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
+	}
+
+	.ui-list {
+		margin-top: 16rpx;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+
+		.list-item {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			text {
+				font-size: 32rpx;
+				color: #353535;
+			}
+		}
 	}
 </style>
