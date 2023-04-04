@@ -107,13 +107,21 @@
 			 * 单条用户信息已读
 			 */
 			handleRead(msgId) {
-				PostSetMsgInfo({
-					msgId,
-					msgFlag: '1'
-				}).then(res => {
-					uni.$u.toast('已处理登记成功')
-					this.msgDetail.operateFlag = '1'
-				})
+				uni.showModal({
+					title: '提示',
+					content: `是否确认处理？`,
+					success: res => {
+						if (res.confirm) {
+							PostSetMsgInfo({
+								msgId,
+								msgFlag: '1'
+							}).then(res => {
+								uni.$u.toast('已处理登记成功')
+								this.msgDetail.operateFlag = '1'
+							})
+						}
+					}
+				});
 			},
 			/**
 			 * 点击联系人

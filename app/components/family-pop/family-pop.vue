@@ -104,7 +104,7 @@
 			 * 跳转选择地址
 			 */
 			goMap() {
-				uni.$once('searchData', res => {
+				uni.$on('searchData', res => {
 					const {
 						province,
 						city,

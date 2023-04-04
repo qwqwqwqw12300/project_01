@@ -77,6 +77,10 @@
 					deviceId
 				}).then(res => {
 					uni.$u.toast('已处理登记成功')
+					this.msgList = []
+					this.loadmore = 'loadmore'
+					this.pageOptions.pageNum = 1
+					this.triggered = true;
 					setTimeout(() => {
 						this.handleInit()
 					}, 500)
