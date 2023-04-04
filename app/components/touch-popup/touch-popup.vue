@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view v-if="fixboxtop">
 		<view :class="{'fixedboxTouch' : isend}" class="fixedbox"
 			:style="{'height':windowHeight + 'px','width':windowWidth + 'px','top':fixboxtop +'px','border-top-left-radius':radius,'border-top-right-radius':radius}"
 			@touchstart="getStart" @touchmove="getMove($event)" @touchend="getend">
@@ -140,7 +140,7 @@
 		background-color: #FFFFFF;
 		box-sizing: border-box;
 		padding: 0 12px;
-		z-index: 999;
+		z-index: 9999;
 	}
 
 	.fixedboxTouch {
