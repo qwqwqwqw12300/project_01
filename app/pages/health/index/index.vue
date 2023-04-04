@@ -9,12 +9,11 @@
 					</swiper-item>
 				</swiper>
 			</view>
-			<scroll-view class="ui-scroll" scroll-y="true">
+			<scroll-view class="ui-scroll" :scroll-y="scrollAble">
 				<view class="ui-body">
 					<view class="ui-w-h-100">
 						<view class="ui-f-center ui-white-bg ui-br-16" style="padding:30rpx 30rpx 30rpx 0"
 							@click="jumpUrl('/pages/health/exercise/exercise')">
-							<!-- <image class="ui-img-size1" src="@/static/images/caihong.png"></image> -->
 							<app-echarts style="height: 250rpx;width:250rpx" id="caiHongChart" :option="caiHongOption">
 							</app-echarts>
 							<view class="ui-f-center ui-f-wrap ui-w-70">
@@ -51,160 +50,75 @@
 								</view>
 							</view>
 						</view>
-						<view class="ui-f-between ui-mar-t-20  ui-f-wrap ui-w-h-100">
-							<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-min-h-121	"
-								@click="jumpUrl('/pages/health/sleep/sleep')">
-								<view class="ui-f-start ui-f-wrap">
-									<image class="ui-img-size3" src="/static/images/yueliang.png"></image>
-									<text class="ui-font-32 ui-mar-l-10">睡眠</text>
-									<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-										{{date}}
-									</view>
-									<view class="ui-w-h-100 ui-f-start ui-mar-t-20" v-if="fetchRes.sleepMap">
-										<view class="ui-color-block1 ui-color-block1-width"
-											v-if="fetchRes.sleepMap > 0 && fetchRes.sleepMap <= 0.25"></view>
-										<view class="ui-color-block2 ui-color-block1-width ui-mar-l-10"
-											v-if="fetchRes.sleepMap > 0.25 && fetchRes.sleepMap <= 0.5"></view>
-										<view class="ui-color-block3 ui-color-block1-width ui-mar-l-10"
-											v-if="fetchRes.sleepMap > 0.5 && fetchRes.sleepMap <= 0.75"></view>
-										<view class="ui-color-block4 ui-color-block1-width ui-mar-l-10"
-											v-if="fetchRes.sleepMap > 0.75 && fetchRes.sleepMap <= 1"></view>
-									</view>
-									<view class="ui-w-h-100 ui-f-between ui-mar-t-20" v-if="!fetchRes.sleepMap">
-										<view class="ui-noData-font">无数据</view>
-									</view>
-									<view class="ui-f-between ui-w-h-100 ui-mar-t-10" v-if="fetchRes.sleepMap">
-										<text class="ui-font-22 ui-font-c-888">差</text>
-										<text class="ui-font-22 ui-font-c-888">很好</text>
-									</view>
-								</view>
-
+						<movable-area class="ui-f-between ui-mar-t-10  ui-f-wrap ui-w-h-100" ref="areaBox" id="areaBox"
+							style="background-color: rgba(255,255,255,0);">
+							<!-- 这块只是循环出固定内容，监听其元素touch事件获取坐标 -->
+							<view class="ui-w-48 ui-white-bg ui-br-16 ui-f-wrap ui-mar-t-20 "
+								v-for="(item,index) in listData_c" :key="index" :id="'appLi' + index"
+								:class="(hoverClass==='appLi'+index)?'select':''"
+								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
+								@touchend="AppLi_touchend(index)" v-if="item.isShow || isEdit">
+								<SleepCard v-if="item.type === '1'" :date="date" :fetchRes="fetchRes" :item="item" :isEdit="isEdit" @iconClick="editCard"></SleepCard>
+								<XinLvCard v-if="item.type === '2' " :date="date" :fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinLvCard>
+								<XueYaCard v-if="item.type === '3'" :date="date" :fetchRes="fetchRes" :option="xueYaOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYaCard>
+								<XueYangCard v-if="item.type === '4'" :date="date" :fetchRes="fetchRes" :option="xueYangOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYangCard>
+								<XinDianCard v-if="item.type === '5'" :date="date" :fetchRes="fetchRes" :option="xinDianOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinDianCard>
 							</view>
-							<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-min-h-121"
-								@click="jumpUrl('/pages/health/heart-rate/heart-rate')">
-								<view class="ui-f-start ui-f-wrap">
-									<image class="ui-img-size3" src="/static/images/xinlv.png"></image>
-									<text class="ui-font-32 ui-mar-l-10">心率</text>
-									<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-										{{date}}
-									</view>
-									<view class="ui-w-h-100 ui-mar-t-20" v-if="fetchRes.HeartRateList.length > 1">
-										<app-echarts class="ui-echarts-size" :option="xinLvOption" id="xinLvChart">
-										</app-echarts>
-										<!-- <image class="ui-img-size4" src="../../static/images/xinlvLine.png"></image> -->
-									</view>
-									<view class="ui-w-h-100 ui-mar-t-20" v-if="fetchRes.HeartRateList.length <= 1">
-										<view class="ui-noData-font">无数据</view>
-									</view>
-									<view class="ui-f-between ui-w-h-100 ui-mar-t-10"
-										v-if="fetchRes.HeartRateList.length > 1">
-										<text class="ui-font-22 ui-font-c-888">00:00</text>
-										<text class="ui-font-22 ui-font-c-888">24:00</text>
-									</view>
-								</view>
-							</view>
-							<view class="ui-f-between ui-mar-t-20 ">
-								<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-min-h-121"
-									@click="jumpUrl('/pages/health/blood-pressure/blood-pressure')">
-									<view class="ui-f-start ui-f-wrap">
-										<image class="ui-img-size3" src="/static/images/xueya.png"></image>
-										<text class="ui-font-32 ui-mar-l-10">血压</text>
-										<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-											{{date}}
-										</view>
-										<view class="ui-w-h-100 ui-f-between ui-mar-t-20"
-											v-if="fetchRes.spMapList.length">
-											<app-echarts class="ui-echarts-size" :option="xueYaOption" id="xueYaChart">
-											</app-echarts>
-											<!-- <image class="ui-img-size4" src="../../static/images/xueyaLine.png"></image> -->
-										</view>
-										<view class="ui-w-h-100 ui-mar-t-20" v-if="!fetchRes.spMapList.length">
-											<view class="ui-noData-font">无数据</view>
-										</view>
-										<view class="ui-f-between ui-w-h-100 ui-mar-t-10"
-											v-if="fetchRes.spMapList.length">
-											<text class="ui-font-22 ui-font-c-888">00:00</text>
-											<text class="ui-font-22 ui-font-c-888">24:00</text>
-										</view>
-									</view>
-								</view>
-								<view
-									class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-w-h-100 ui-min-h-121"
-									@click="jumpUrl('/pages/health/blood-oxygen/blood-oxygen')">
-									<view class="ui-f-start ui-f-wrap">
-										<image class="ui-img-size3" src="/static/images/xueyang.png"></image>
-										<text class="ui-font-32 ui-mar-l-10">血氧</text>
-										<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-											{{date}}
-										</view>
-										<view class="ui-w-h-100 ui-mar-t-20" v-if="fetchRes.tWatchBloodOxygen.length">
-											<app-echarts class="ui-echarts-size" :option="xueYangOption"
-												id="xueYangChart">
-											</app-echarts>
-											<!-- <image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image> -->
-										</view>
-										<view class="ui-w-h-100 ui-mar-t-20">
-											<view class="ui-noData-font" v-if="!fetchRes.tWatchBloodOxygen.length">
-												无数据
-											</view>
-										</view>
-										<view class="ui-f-between ui-w-h-100 ui-mar-t-10"
-											v-if="fetchRes.tWatchBloodOxygen.length">
-											<text class="ui-font-22 ui-font-c-888">00:00</text>
-											<text class="ui-font-22 ui-font-c-888">24:00</text>
-										</view>
-									</view>
-								</view>
-							</view>
-							<view class="ui-f-between ui-mar-t-20 ui-w-h-100">
-								<view class="ui-w-43 ui-white-bg ui-br-16 ui-f-wrap ui-padding-20 ui-min-h-121"
-									@click="jumpUrl('/pages/health/electrocardiograph/electrocardiograph')">
-									<view class="ui-f-start ui-f-wrap">
-										<image class="ui-img-size3" src="/static/images/xindian.png"></image>
-										<text class="ui-font-32 ui-mar-l-10">心电</text>
-										<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-											{{date}}
-										</view>
-										<view class="ui-w-h-100 ui-mar-t-20"
-											v-if="fetchRes.electrocardiogramMapList && fetchRes.electrocardiogramMapList.length">
-											<app-echarts class="ui-echarts-size" :option="xinDianOption"
-												id="xinDianChart">
-											</app-echarts>
-										</view>
-										<view class="ui-w-h-100 ui-mar-t-20">
-											<view class="ui-noData-font"
-												v-if="!fetchRes.electrocardiogramMapList || !fetchRes.electrocardiogramMapList.length">
-												无数据
-											</view>
-										</view>
-										<view class="ui-f-between ui-w-h-100 ui-mar-t-10"
-											v-if="fetchRes.electrocardiogramMapList && fetchRes.electrocardiogramMapList.length">
-											<text class="ui-font-22 ui-font-c-888">00:00</text>
-											<text class="ui-font-22 ui-font-c-888">24:00</text>
-										</view>
-									</view>
-								</view>
-							</view>
+							<!-- 滑块 -->
+							<movable-view v-if="moviewShow" :animation="false" class="ui-mov-view ui-br-16" :x="moveX"
+								:y="moveY" direction="all"
+								:style="{ width: moveViewSize + 'rpx', height: 270 + 'rpx' }">
+								<image class="ui-w-h-100" :src="touchItem.img"></image>
+							</movable-view>
+						</movable-area>
+						<view class="ui-f-center ui-mar-t-45">
+							<text class="ui-block-edit ui-font-center ui-br-16" @click="tabEdit()">{{ isEdit ? "完成" : "编辑" }}</text>
 						</view>
 					</view>
 				</view>
 			</scroll-view>
 		</view>
-		<u-empty class="ui-p-center" mode="data" v-else>
-		</u-empty>
+		<view class="ui-w-h-100" mode="data" v-else>
+			<view class="ui-p-center">
+				<image class="ui-add-watch-img1" src="../../../static/images/health_nodata.png"></image>
+				<view>
+					<view class="ui-add-watch-font">未添加任何手表设备</view>
+				</view>
+			</view>
+			
+			<view class="ui-add-watch">
+				<image src="../../../static/images/add_watch.png" class="ui-add-watch-img2" @click="jumpUrl('/pages/watch/add-watch')"></image>
+			</view>
+			<view class="ui-add-watch-text">
+				添加手表
+			</view>
+		</view>
 	</app-body>
 </template>
 
 <script>
+	import IndexDarg from "./components/index-darg.vue"
 	import * as echarts from '@/static/js/echarts.js';
 	import SwiperDevice from '@/pages/watch/watch-detail/components/device-swiper.vue';
+	import SleepCard from "./components/SleepCard.vue";
+	import XinLvCard from "./components/XinLvCard.vue";
+	import XueYaCard from "./components/XueYaCard.vue";
+	import XueYangCard from "./components/XueYangCard.vue";
+	import XinDianCard from "./components/XinDianCard.vue"
 	import {
 		GetCaiHongData,
 		getDeviceListState,
 	} from '@/common/http/api.js'
+
 	export default {
 		components: {
-			SwiperDevice
+			SwiperDevice,
+			IndexDarg,
+			SleepCard,
+			XinLvCard,
+			XueYaCard,
+			XueYangCard,
+			XinDianCard
 		},
 		data() {
 			return {
@@ -216,6 +130,8 @@
 					sleepMap: ''
 				},
 				pageShow: true,
+				isEdit:false,
+				scrollAble:true,
 				caiHongOption: {},
 				caiHongData: [],
 				maxDataArr: [],
@@ -228,11 +144,67 @@
 				deviceList: [],
 				swiperData: {},
 				date: '',
-				echartDate: ''
+				echartDate: '',
+				listData_c: [{
+					type: '1',
+					name: 'SleepCard',
+					img: '../../../static/images/sleep_drag.svg',
+					isShow:true
+				}, {
+					type: '2',
+					name: 'XinLvCard',
+					img: '../../../static/images/xinlv_drag.svg',
+					isShow:true
+				}, {
+					type: '3',
+					name: 'XueYaCard',
+					img: '../../../static/images/xueya_drag.svg',
+					isShow:true
+				}, {
+					type: '4',
+					name: 'XueYangCard',
+					img: '../../../static/images/xueyang_drag.svg',
+					isShow:true
+				}, {
+					type: '5',
+					name: 'XinDianCard',
+					img: '../../../static/images/xindian_drag.svg',
+					isShow:true
+				}],
+				// CheckAppId: null,
+				deleteAppID: null, //触发删除的itemID
+				showDelete: false, //删除按钮状态
+				IsDeleteAfter: false, //是否为删除后
+				IsCancelDelete: false, //是否为取消后
+				moviewShow: false, //滑块状态
+				areaBoxInfo: null, //保存滑动区域盒子dom信息
+				inBoxXY: {}, //鼠标在item中的坐标
+				touchIndex: 0, //被移动index
+				touchItem: '', //备份被移动item数据
+				moveX: 0, //相对滑动盒子的坐标
+				moveY: 0, //相对滑动盒子的坐标
+				hoverClass: '',
+				hoverClassIndex: null, //最终index
 			}
 		},
 		created() {
 			this.getDate();
+			const _this = this;
+			uni.getStorage({
+				key:'healthCardData',
+				success(res) {
+					_this.listData_c = res.data;
+				}
+			})
+		},
+		computed: {
+			moveViewSize() {
+				if (this.areaBoxInfo && this.areaBoxInfo.width) {
+					return this.areaBoxInfo.width / 1.2
+				} else {
+					return 0
+				}
+			}
 		},
 		onShow() {
 			getDeviceListState({
@@ -251,6 +223,23 @@
 			})
 		},
 		methods: {
+			tabEdit(){
+				this.isEdit = !this.isEdit;
+				if(this.isEdit){
+					setTimeout(()=>{
+						this.resetListDom()
+					},300)
+				}
+			},
+			editCard(type){
+				console.log('type',type)
+				this.listData_c.forEach(item=>{
+					if(item.type === type){
+						item.isShow = !item.isShow;
+					}
+				})
+				this.setCardData();
+			},
 			swiperChange(val) {
 				this.swiperData = this.deviceList[val.detail.current]
 				this.$store.commit('setDeviceInfo', this.swiperData)
@@ -866,11 +855,177 @@
 					}]
 				};
 			},
+			listChange(option) {
+				console.log("listChange", option)
+			},
+			getDomInfo(id, callBack) {
+				const query = uni.createSelectorQuery().in(this);
+				query.select('#' + id)
+					.boundingClientRect()
+					.exec(function(res) {
+						callBack(res[0]);
+					});
+			},
+			AppLi_touchstart(index, event) {
+				if(!this.isEdit){
+					return;//编辑状态下允许拖动
+				}
+				this.scrollAble = false; //阻止页面滚动
+				this.touchItem = this.listData_c[index];
+				// 行为判断
+				if (this.showDelete) {
+					// 取消删除
+					if (this.touchItem.appId != this.deleteAppID) {
+						this.deleteAppID = null;
+						this.showDelete = false;
+						this.IsCancelDelete = true;
+					}
+					// 删除
+					// if(this.touchItem.appId==this.deleteAppID){
+					// 	this.deleteAppItem(index)
+					// }
+				}
+				// 过时触发（touchEnd中清除此定时器）
+				this.Loop = setTimeout(
+					() => {
+						// 触感反馈（安卓上是150毫秒，ios无短触控反馈）
+						uni.vibrateShort();
+						this.showDelete = true;
+						this.deleteAppID = this.touchItem.appId;
+						// 拖动逻辑
+						//显示可移动方块
+						this.moviewShow = true
+						//保存当前所选择的索引
+						this.touchIndex = index;
+						// 设置可移动方块的初始位置为当前所选中图片的位置坐标
+						this.moveX = this.listData_c[index].x;
+						this.moveY = this.listData_c[index].y;
+						var x = event.changedTouches[0].clientX - this.areaBoxInfo.left;
+						var y = event.changedTouches[0].clientY - this.areaBoxInfo.top;
+						// 保存鼠标在图片内的坐标
+						this.inBoxXY = {
+							x: x - this.listData_c[index].x,
+							y: y - this.listData_c[index].y,
+						}
+					},
+					500);
+			},
+			AppLi_touchmove(event) {
+				if(!this.isEdit){
+					return;//编辑状态下允许拖动
+				}
+				// 每次endTouch清除startTouch删除按钮定时器
+				if (this.Loop) {
+					clearTimeout(this.Loop);
+					this.Loop = null;
+				}
+				if (this.showDelete) {
+					let areaBoxTop = this.areaBoxInfo.top;
+					let areaBoxLeft = this.areaBoxInfo.left;
+					//重置为以拖拽盒子左上角为坐标原点
+					var x = event.changedTouches[0].clientX - areaBoxLeft;
+					var y = event.changedTouches[0].clientY - areaBoxTop;
+					this.moveX = x - this.inBoxXY.x;
+					this.moveY = y - this.inBoxXY.y;
+					let setIng = false;
+					this.listData_c.forEach((item, idx) => {
+						if (this.moveX > item.x && this.moveX < item.x + 100 && this.moveY > item.y && this.moveY < item.y + 160) {
+							this.hoverClass = 'appLi' + idx
+							this.hoverClassIndex = idx;
+							setIng = true
+						}
+					});
+					// 都不存在代表脱离
+					if (!setIng) {
+						this.hoverClass = ""
+						this.hoverClassIndex = null;
+					}
+				}
+			},
+			AppLi_touchend(index) {
+				if(!this.isEdit){
+					return; //编辑状态下允许拖动
+				}
+				this.scrollAble = true; //阻止页面滚动
+				console.log(this.listData_c)
+				if (!this.showDelete && !this.IsDeleteAfter && !this.IsCancelDelete) {
+					// 点击事件进入
+				} else {
+					// 为下次getInto清除状态
+					this.IsDeleteAfter = false;
+					this.IsCancelDelete = false;
+					// 移动结束隐藏可移动方块
+					if (this.hoverClassIndex != null && this.touchIndex != this.hoverClassIndex) {
+						console.log('ffff',this.hoverClassIndex,'touchitem',this.touchItem)
+						this.$set(this.listData_c, this.touchIndex, this.listData_c[this.hoverClassIndex]);
+						this.$set(this.listData_c, this.hoverClassIndex, this.touchItem);
+						this.setCardData()
+						this.showDelete = false;
+						this.resetListDom()
+					}
+					this.touchItem = ""
+					this.moviewShow = false
+					this.hoverClass = ""
+					this.hoverClassIndex = null;
+				}
+
+				// 每次endTouch清除startTouch删除按钮定时器
+				if (this.Loop) {
+					clearTimeout(this.Loop);
+					this.Loop = null;
+				}
+			},
+			resetListDom() {
+				let _this = this;
+				this.getDomInfo('areaBox', info => {
+					_this.areaBoxInfo = info;
+					// 设置区域内所有图片的左上角坐标
+					_this.listData_c.forEach((item, idx) => {
+						_this.getDomInfo('appLi' + idx, res => {
+							console.log(res,info,'resinfo')	
+							item.x = idx % 2 === 1 ? 200 : 0;
+							item.y = res.top - info.top;
+						});
+					});
+				});
+			},
+			boxClick() {
+				this.deleteAppID = null;
+				this.showDelete = false;
+			},
+			setCardData(){
+				uni.setStorage({
+					key:'healthCardData',
+					data:this.listData_c
+				})
+			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	movable-view {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 150rpx;
+		width: 150rpx;
+		background-color: #007AFF;
+		color: #fff;
+	}
+
+	movable-area {
+		height: 300rpx;
+		width: 100%;
+		background-color: #D8D8D8;
+		overflow: hidden;
+	}
+
+	.max {
+		width: 500rpx;
+		height: 500rpx;
+	}
+
 	.ui-banner {
 		padding: 0 20rpx;
 		padding-top: 60rpx;
@@ -990,6 +1145,10 @@
 		.ui-w-43 {
 			width: 43%;
 		}
+		
+		.ui-w-48 {
+			width: 48%;
+		}
 
 		.ui-img-size2 {
 			width: 36rpx;
@@ -1103,6 +1262,18 @@
 		.ui-min-h-121 {
 			min-height: 242rpx;
 		}
+		
+		.ui-block-edit{
+			font-size: 30rpx;
+			background-color: #FFF;
+			border-radius: 30rpx;
+			color: #353535;
+			width: 156rpx;
+			/* border: 1px solid #999999; */
+			height: 56rpx;
+			line-height: 56rpx;
+			box-shadow: #eeeeee 4rpx 4rpx 16rpx 4rpx;
+		}
 	}
 
 	.ui-img {
@@ -1123,9 +1294,62 @@
 	}
 
 	.ui-p-center {
+		transform: translate(-50%, -50%);
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		transform: translate(-50%, -50%);
+	}
+	
+	.ui-mov-view{
+		background-color: #FFF;
+		width:100%;
+		height: auto;
+		box-shadow: #999999 2rpx 2rpx 10rpx 0rpx;
+	}
+	
+	.select {
+		// transform: scale(1.3);
+		border-radius: 16rpx;
+		border: 1px dashed #C0C0C0;
+		color: #C0C0C0;
+	}
+	
+	.ui-font-center{
+		text-align: center;
+	}
+	
+	.ui-add-watch{
+		position: fixed;
+		bottom: 268rpx;
+		display: flex;
+		justify-content: center;
+		width: 100%;
+	}
+	
+	.ui-add-watch-img1{
+		width:330rpx;
+		height: 330rpx;
+	}
+	
+	.ui-add-watch-img2{
+		box-shadow: #dddddd 4rpx 4rpx 16rpx 4rpx;
+		width:100rpx;
+		height: 100rpx;
+		border-radius: 50%;
+	}
+	
+	.ui-add-watch-text{
+		position: fixed;
+		bottom: 202rpx;
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		color:#888888;
+	}
+	
+	.ui-add-watch-font{
+		font-size: 40rpx;
+		color: #888888;
+		font-weight: 500;
 	}
 </style>
