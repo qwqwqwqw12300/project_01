@@ -47,9 +47,8 @@
 									prefixIcon="../../static/images/index/home.png"></u-text>
 							</view>
 							<view class="ui-share-box">
-								<u-text @click="goPage('/pages/myself/famliy-manage')"
-									prefixIcon="../../static/images/index/edit.png" size="32rpx" :align="'right'"
-									:block="false" :iconStyle="{
+								<u-text @click="editClick(familyItem)" prefixIcon="../../static/images/index/edit.png"
+									size="32rpx" :align="'right'" :block="false" :iconStyle="{
 									height: '40rpx', width: '40rpx'
 								}" text="编辑" v-if="familyItem.shareFlag === '2'"></u-text>
 								<u-text
@@ -314,6 +313,15 @@
 			 */
 			tabChange($e) {
 				this.currentTab = $e.id;
+			},
+			/**
+			 * 编辑家庭
+			 */
+			editClick(item) {
+				this.$setCache('familyInfo', item);
+				uni.navigateTo({
+					url: '/pages/myself/room-manage'
+				});
 			}
 		}
 	}
