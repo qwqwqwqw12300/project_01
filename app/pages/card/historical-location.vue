@@ -1,5 +1,5 @@
 <template>
-	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
+	<app-body :needService="false" :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<locus-map :record="mapData"></locus-map>
 		<touch-popup :minHeight="0.13" :maxHeight="0.6" :touchHeight="64" radius="30rpx">
 			<!-- 	<view class="ui-search">
