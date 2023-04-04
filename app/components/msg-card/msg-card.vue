@@ -2,7 +2,7 @@
 	<view class="ui-box">
 		<view style="padding: 20rpx 30rpx;">
 			<view class="box-title">
-				<text class="device-type">跌倒检测器{{msgDetail.operateFlag}}</text>
+				<text class="device-type">{{deviceName(msgDetail.deviceType)}}</text>
 				<text class="event-date">{{$u.timeFormat(msgDetail.createTime, 'mm/dd hh:MM:ss') || '--'}}</text>
 				<view class="event-status">
 					<text class="urgent common" v-if="msgDetail.eventLevel == 'urgent'">紧急事件</text>
@@ -78,6 +78,25 @@
 					item.name = `${obj[item.orderNum]} ${item.name}`
 					return item
 				})
+			},
+			deviceName() {
+				return (type) => {
+					let str = '';
+					switch (type) {
+						case '0':
+							str = '跌倒检测器';
+							break;
+						case '1':
+							str = '电子牵挂卡';
+							break;
+						case '2':
+							str = '4G健康手表';
+							break;
+						default:
+							break;
+					}
+					return str;
+				}
 			}
 		},
 		mounted() {
@@ -88,13 +107,21 @@
 			 * 单条用户信息已读
 			 */
 			handleRead(msgId) {
-				PostSetMsgInfo({
-					msgId,
-					msgFlag: '1'
-				}).then(res => {
-					uni.$u.toast('已处理登记成功')
-					this.msgDetail.operateFlag = '1'
-				})
+				uni.showModal({
+					title: '提示',
+					content: `是否确认处理？`,
+					success: res => {
+						if (res.confirm) {
+							PostSetMsgInfo({
+								msgId,
+								msgFlag: '1'
+							}).then(res => {
+								uni.$u.toast('已处理登记成功')
+								this.msgDetail.operateFlag = '1'
+							})
+						}
+					}
+				});
 			},
 			/**
 			 * 点击联系人

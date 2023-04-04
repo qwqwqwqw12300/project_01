@@ -71,13 +71,13 @@
 						}
 					},1000)
 				}
-				// PostRemoteMonitor({
-				// 	deviceId: this.deviceInfo.deviceId,
-				// 	requestCall: "1"
-				// }).then(res => {
-				// 	console.log(res, 'res')
-				// 	uni.$u.toast(res.msg)
-				// })
+				PostRemoteMonitor({
+					deviceId: this.deviceInfo.deviceId,
+					requestCall: "1"
+				}).then(res => {
+					console.log(res, 'res')
+					uni.$u.toast(res.msg)
+				})
 			}
 		}
 	};

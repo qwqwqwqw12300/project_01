@@ -111,6 +111,7 @@
 				for (let i = 0; i < list.length; i++) {
 					if (list[i].phoneName || list[i].phone) {
 						if (!list[i].phoneName) return uni.$u.toast(`${list[i].buttonName}姓名不能为空`)
+						if (!list[i].phone) return uni.$u.toast(`${list[i].buttonName}手机号不能为空`)
 						if (!phoneValidator(list[i].phone)) return uni.$u.toast(`${list[i].buttonName}手机号不正确`)
 					}
 				}

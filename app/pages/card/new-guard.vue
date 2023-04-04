@@ -207,6 +207,7 @@
 					if (!item.time) return toast = '请填写时间'
 				})
 				if (toast) return uni.$u.toast(toast)
+				if (list.length == 0) return uni.$u.toast('请添加地点')
 				const obj = {
 					deviceId: this.deviceInfo.deviceId,
 					jobName: this.name,

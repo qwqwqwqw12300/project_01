@@ -68,7 +68,7 @@
 					// url: '/pages/card/guard'
 				}, {
 					title: '活动设定',
-					url: 'active'
+					url: '/pages/watch/watch-set/active'
 				}, {
 					title: '地理围栏',
 					url: '/pages/watch/enclosure/enclosure'
@@ -131,8 +131,6 @@
 					uni.navigateTo({
 						url: `/pages/watch/watch-set/position-auto?obj=${obj}`
 					})
-				} else if (url == 'active') {
-					uni.$u.toast('暂未开放')
 				} else {
 					uni.navigateTo({
 						url

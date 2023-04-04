@@ -77,6 +77,10 @@
 					deviceId
 				}).then(res => {
 					uni.$u.toast('已处理登记成功')
+					this.msgList = []
+					this.loadmore = 'loadmore'
+					this.pageOptions.pageNum = 1
+					this.triggered = true;
 					setTimeout(() => {
 						this.handleInit()
 					}, 500)
@@ -85,12 +89,10 @@
 			handleInit() {
 				this.loadmore = 'loadmore';
 				const {
-					type,
 					familyId,
 					deviceId
 				} = this.deviceInfo;
 				getMessage({
-					type,
 					familyId,
 					deviceId,
 					readFlag: 0,
@@ -118,6 +120,7 @@
 				this.loadmore = 'loadmore'
 				this.pageOptions.pageNum = 1
 				this.triggered = true;
+				this.msgList = []
 				this.handleInit()
 			}
 		}

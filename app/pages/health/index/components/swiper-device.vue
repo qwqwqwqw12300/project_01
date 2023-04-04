@@ -45,13 +45,13 @@
 		},
 		data() {
 			return {
-				
+
 			}
 		},
 		methods: {
-			jumpUrl(){
+			jumpUrl() {
 				uni.navigateTo({
-					url:'/pages/watch/watch-set/watch-set'
+					url: '/pages/watch/watch-set/watch-set'
 				})
 			}
 		}
@@ -130,6 +130,7 @@
 				}
 
 				.time {
+					position: absolute;
 					margin-top: 14rpx;
 					font-size: 24rpx;
 					color: #888888;

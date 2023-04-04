@@ -124,9 +124,7 @@
 						textStyle: {
 							color: "#666"
 						},
-						formatter: function(val) {
-							return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
-						}
+						formatter: 'date'
 					},
 					axisLine: {
 						lineStyle: {

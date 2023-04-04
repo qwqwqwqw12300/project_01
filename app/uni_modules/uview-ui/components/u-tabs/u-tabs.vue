@@ -3,34 +3,17 @@
 		<view class="u-tabs__wrapper">
 			<slot name="left" />
 			<view class="u-tabs__wrapper__scroll-view-wrapper">
-				<scroll-view
-					:scroll-x="scrollable"
-					:scroll-left="scrollLeft"
-					scroll-with-animation
-					class="u-tabs__wrapper__scroll-view"
-					:show-scrollbar="false"
-					ref="u-tabs__wrapper__scroll-view"
-				>
-					<view
-						class="u-tabs__wrapper__nav"
-						ref="u-tabs__wrapper__nav"
-					>
-						<view
-							class="u-tabs__wrapper__nav__item"
-							v-for="(item, index) in list"
-							:key="index"
-							@tap="clickHandler(item, index)"
-							:ref="`u-tabs__wrapper__nav__item-${index}`"
+				<scroll-view :scroll-x="scrollable" :scroll-left="scrollLeft" scroll-with-animation
+					class="u-tabs__wrapper__scroll-view" :show-scrollbar="false" ref="u-tabs__wrapper__scroll-view">
+					<view class="u-tabs__wrapper__nav" ref="u-tabs__wrapper__nav">
+						<view class="u-tabs__wrapper__nav__item" v-for="(item, index) in list" :key="index"
+							@tap="clickHandler(item, index)" :ref="`u-tabs__wrapper__nav__item-${index}`"
 							:style="[$u.addStyle(itemStyle), {flex: scrollable ? '' : 1}]"
-							:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']"
-						>
-							<text
-								:class="[item.disabled && 'u-tabs__wrapper__nav__item__text--disabled']"
+							:class="[`u-tabs__wrapper__nav__item-${index}`, item.disabled && 'u-tabs__wrapper__nav__item--disabled']">
+							<text :class="[item.disabled && 'u-tabs__wrapper__nav__item__text--disabled']"
 								class="u-tabs__wrapper__nav__item__text"
-								:style="[textStyle(index)]"
-							>{{ item[keyName] }}</text>
-							<u-badge
-								:show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
+								:style="[textStyle(index)]">{{ item[keyName] }}</text>
+							<u-badge :show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
 								:isDot="item.badge && item.badge.isDot || propsBadge.isDot"
 								:value="item.badge && item.badge.value || propsBadge.value"
 								:max="item.badge && item.badge.max || propsBadge.max"
@@ -41,34 +24,25 @@
 								:shape="item.badge && item.badge.shape || propsBadge.shape"
 								:numberType="item.badge && item.badge.numberType || propsBadge.numberType"
 								:inverted="item.badge && item.badge.inverted || propsBadge.inverted"
-								customStyle="margin-left: 4px;"
-							></u-badge>
+								customStyle="margin-left: 4px;"></u-badge>
 						</view>
 						<!-- #ifdef APP-NVUE -->
-						<view
-							class="u-tabs__wrapper__nav__line"
-							ref="u-tabs__wrapper__nav__line"
-							:style="[{
+						<view class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" :style="[{
 									width: $u.addUnit(lineWidth),
 									height: $u.addUnit(lineHeight),
 									background: lineColor,
 									backgroundSize: lineBgSize,
-								}]"
-						>
+								}]">
 							<!-- #endif -->
 							<!-- #ifndef APP-NVUE -->
-							<view
-								class="u-tabs__wrapper__nav__line"
-								ref="u-tabs__wrapper__nav__line"
-								:style="[{
+							<view class="u-tabs__wrapper__nav__line" ref="u-tabs__wrapper__nav__line" :style="[{
 										width: $u.addUnit(lineWidth),
 										transform: `translate(${lineOffsetLeft}px)`,
 										transitionDuration: `${firstTime ? 0 : duration}ms`,
 										height: $u.addUnit(lineHeight),
 										background: lineColor,
 										backgroundSize: lineBgSize,
-									}]"
-							>
+									}]">
 								<!-- #endif -->
 							</view>
 						</view>
@@ -115,7 +89,7 @@
 		watch: {
 			current: {
 				immediate: true,
-				handler (newValue, oldValue) {
+				handler(newValue, oldValue) {
 					// 内外部值不相等时，才尝试移动滑块
 					if (newValue !== this.innerCurrent) {
 						this.innerCurrent = newValue
@@ -126,8 +100,11 @@
 				}
 			},
 			// list变化时，重新渲染list各项信息
-			list() {
+			list(newValue) {
 				this.$nextTick(() => {
+					if (!newValue[this.innerCurrent]) {
+						this.innerCurrent = 0;
+					}
 					this.resize()
 				})
 			}
@@ -164,7 +141,7 @@
 				let lineOffsetLeft = this.list
 					.slice(0, this.innerCurrent)
 					.reduce((total, curr) => total + curr.rect.width, 0);
-                // 获取下划线的数值px表示法
+				// 获取下划线的数值px表示法
 				const lineWidth = uni.$u.getPx(this.lineWidth);
 				this.lineOffsetLeft = lineOffsetLeft + (tabItem.rect.width - lineWidth) / 2
 				// #ifdef APP-NVUE
@@ -234,7 +211,7 @@
 			// 获取所有标签的尺寸
 			resize() {
 				// 如果不存在list，则不处理
-				if(this.list.length === 0) {
+				if (this.list.length === 0) {
 					return
 				}
 				Promise.all([this.getTabsRect(), this.getAllItemRect()]).then(([tabsRect, itemRect = []]) => {

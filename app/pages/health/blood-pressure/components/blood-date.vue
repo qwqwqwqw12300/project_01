@@ -58,29 +58,29 @@
 				list: [{
 						color: '#FF7E23',
 						title: '收缩压',
-						value: '126'
+						value: '0'
 					},
 					{
 						color: '#63DDBA',
 						title: '舒张压',
-						value: '88'
+						value: '0'
 					}
 				],
 				dateList: [{
 						title: '平均收缩压',
-						value: '126'
+						value: '0'
 					},
 					{
 						title: '平均舒张压',
-						value: '88'
+						value: '0'
 					},
 					{
 						title: '最高收缩压',
-						value: '126'
+						value: '0'
 					},
 					{
 						title: '最高舒张压',
-						value: '88'
+						value: '0'
 					}
 				],
 				spMapList: [], //收缩压
@@ -93,7 +93,6 @@
 		watch: {
 			time: {
 				handler(val) {
-					console.log(val, '333333333')
 					if (val) {
 						this.logstatrt();
 					}
@@ -102,9 +101,9 @@
 			}
 		},
 		methods: {
-			handleClick(option){
-				console.log(option,'option')
-				option.seriesName =='收缩压' ? this.list[0].value = option.value[1] : this.list[1].value = option.value[1]
+			handleClick(option) {
+				console.log(option, 'option')
+				option.seriesName == '收缩压' ? this.list[0].value = option.value[1] : this.list[1].value = option.value[1]
 			},
 			logstatrt() {
 				this.spMapList = []
@@ -182,7 +181,8 @@
 					},
 					yAxis: {
 						type: 'value',
-						min: '0', 
+						min: '0',
+						max: '200',
 						scale: true,
 						splitArea: {
 							show: true,

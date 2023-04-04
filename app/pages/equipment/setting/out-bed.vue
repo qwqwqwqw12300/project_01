@@ -18,8 +18,8 @@
 								<view :key="index + 'c'" class="ui-cell" @touchstart="touchstart($event, item, index)"
 									@touchmove.stop.prevent="touchMove($event, item, index)"
 									@touchend="touchend($event, item)"
-									:class="{ active: item.active, hover: item.status === 'hover', edit: roomZones.length && roomZones[activeZone].roomZoneId === item.roomZoneId }"
-									:style="cell" v-if="item.zoneType === '2'">
+									:class="{ active: item.active, hover: item.status === 'hover', edit: roomZones.length && activeZone.roomZoneId === item.roomZoneId }"
+									:style="cell" v-if="item.zoneType === '2'">{{index}}
 								</view>
 								<view :key="index + 'ec'" v-else :style="cell" class="ui-cell disable">
 								</view>
@@ -30,19 +30,24 @@
 								<view class="ui-device"><text class="ui-zone-name"></text></view>
 							</movable-view>
 						</movable-area>
-						<view class="ui-tips">每个方块区域大小为 0.5米 x 0.5米</view>
+						<view class="ui-tips">
+							<text>每个方块区域大小为 0.5米 x 0.5米</text>
+							<text>选中</text>
+							<text>未选中</text>
+						</view>
+
 					</view>
 				</view>
 			</view>
 			<!-- 配置区域 -->
-			<view class="ui-set-box" v-if="roomZones && roomZones[activeZone]">
+			<view class="ui-set-box" v-if="roomZones && activeZone">
 				<view class="ui-list">
-					<u-tabs v-if="tabInit" lineWidth="108rpx" lineColor="#FEAE43" :list="getTabList" @click="acitve">
+					<u-tabs lineWidth="108rpx" lineColor="#FEAE43" :list="getTabList" @click="acitve">
 					</u-tabs>
 				</view>
 				<!-- 床区域设置 -->
-				<template v-if="getParameter.setRuleDate">
-					<u-cell-group>
+				<template v-if="getParameter">
+					<u-cell-group v-if="getParameter.setRuleDate">
 						<view class="ui-time" @click="setRule(getParameter.setRuleDate)">
 							<view class="ui-time-box">
 								<text>时间设置</text>
@@ -71,13 +76,12 @@
 									</view>
 								</view>
 								<view slot="right-icon">
-									<u-checkbox-group shape="circle" placement="column"
-										v-model="roomZones[activeZone].timeCus">
+									<u-checkbox-group shape="circle" placement="column" v-model="activeZone.timeCus">
 										<u-checkbox activeColor="#FEAE43" label="自定义时间" :name="true"></u-checkbox>
 									</u-checkbox-group>
 								</view>
 							</u-cell>
-							<u-cell v-if="roomZones[activeZone].timeCus && roomZones[activeZone].timeCus[0]">
+							<u-cell v-if="activeZone.timeCus && activeZone.timeCus[0]">
 								<view slot="title" class="ui-sub-title"><text>选择自定义时间</text></view>
 								<view slot="right-icon">
 									<u-number-box v-model="getParameter.intervalTime"></u-number-box>
@@ -87,7 +91,7 @@
 					</u-cell-group>
 					<view class="ui-setting-btn wd-btn-group">
 						<button class="plain" @click="deleteZone">删除</button>
-						<button class="default" @click="updateZone(roomZones[activeZone])">保存</button>
+						<button class="default" @click="updateZone(activeZone)">保存</button>
 					</view>
 				</template>
 				<!-- /床区域设置 -->
@@ -190,8 +194,7 @@
 					roomLength: 0,
 					roomFront: 0,
 					roomBehind: 0
-				},
-				tabInit: false
+				}
 			};
 		},
 		computed: {
@@ -205,13 +208,6 @@
 					height: this.sizeInfo.box.height + 'px'
 				};
 			},
-			/**
-			 * 获取背景单元格样式
-			 */
-			getCellStyle() {
-				const obj = {};
-				return {};
-			},
 			/**获取子区域tab列表**/
 			getTabList() {
 				let list = [];
@@ -222,6 +218,7 @@
 						zoneType: ele.zoneType
 					})).filter(ele => ele.zoneType === '2');
 				}
+				console.log(list, 'list--------');
 				return list;
 			},
 			/**日期信息**/
@@ -236,7 +233,8 @@
 				};
 			},
 			getParameter() {
-				return this.roomZones[this.activeZone].leaveBedWarnParameter;
+				return this.activeZone.zoneType === '2' && this.activeZone
+					.leaveBedWarnParameter;
 			},
 		},
 		onLoad() {
@@ -258,7 +256,7 @@
 				});
 				this.$setCache('bedRuleCache', {
 					deviceId: this.deviceInfo.deviceId,
-					roomZoneId: this.roomZones[this.activeZone].roomZoneId,
+					roomZoneId: this.activeZone.roomZoneId,
 					...(rule || {})
 				});
 				uni.navigateTo({
@@ -266,13 +264,11 @@
 				});
 			},
 			init() {
-				this.tabInit = false;
 				Promise.all([this.getRoomInfo(), this.getRoomZone()]).then(([roomInfo, rows]) => {
 					// 盒子容器信息
 					const {
 						width
 					} = this.sizeInfo.box;
-					console.log(this.deviceInfo, '设备信息');
 					// 设备距离墙壁范围
 					const {
 						parameter
@@ -386,9 +382,7 @@
 							}
 						});
 						this.roomZones = rows;
-						const index = this.roomZones.findIndex(ele => ele.zoneType === '2');
-						if (index > -1) this.activeZone = index;
-						this.tabInit = true;
+						this.indexInit();
 					} else {
 						uni.showToast({
 							icon: 'none',
@@ -398,12 +392,16 @@
 				});
 			},
 
+			indexInit() {
+				this.activeZone = this.roomZones.filter(ele => ele.zoneType === '2')[0] || {};
+			},
+
 			/**
 			 * 选择子区域
 			 * @param {string} 下标
 			 */
 			acitve(item) {
-				this.activeZone = item.idx;
+				this.activeZone = this.roomZones[item.idx] || {};
 			},
 			del() {
 				this.roomZones.pop();
@@ -413,7 +411,7 @@
 			 * 监控区域修改
 			 */
 			monitorChange([active], type) {
-				this.roomZones[this.activeZone][type] = this.roomZones[this.activeZone][type] == 1 ? 0 : 1;
+				this.activeZone[type] = this.activeZone[type] == 1 ? 0 : 1;
 			},
 			/**
 			 * 开启选择时间
@@ -436,7 +434,7 @@
 			 * 选择时间
 			 */
 			onTimeBtn(time) {
-				this.roomZones[this.activeZone].leaveBedWarnParameter.intervalTime = time;
+				this.activeZone.leaveBedWarnParameter.intervalTime = time;
 			},
 			/**
 			 * 选择时间完成
@@ -444,7 +442,7 @@
 			dateConfirm({
 				value
 			}) {
-				this.roomZones[this.activeZone][this.dateHandle.type] = typeof value === 'number' ? uni.$u.date(value,
+				this.activeZone[this.dateHandle.type] = typeof value === 'number' ? uni.$u.date(value,
 					'yyyy/mm/dd hh:MM:ss') : value;
 				this.dateHandle.show = false;
 			},
@@ -540,7 +538,7 @@
 			async deleteZone() {
 				const {
 					roomZoneId
-				} = this.roomZones[this.activeZone];
+				} = this.activeZone;
 				// 已经保存过的
 				await PostRemRadarDevice({
 					roomZoneId
@@ -559,13 +557,13 @@
 				const {
 					roomZoneId
 				} = item;
+				item.status = 'hover';
 				Object.assign(this.touchInfo, {
 					x: clientX,
 					y: clientY,
 					isAdd: !roomZoneId,
 					index
 				});
-				console.log(roomZoneId, 'roomZoneId');
 				if (roomZoneId) {
 					// 修改
 					this.area.forEach(ele => {
@@ -588,7 +586,6 @@
 				this.area.forEach((ele, idx) => {
 					if (ele.active && ele.roomZoneId !== item.roomZoneId) {
 						if (arr.includes(idx)) {
-							console.log(ele.index, 'ele');
 							this.touchInfo.invalid = true;
 						}
 						return;
@@ -651,16 +648,13 @@
 			 * @param {Object} form
 			 */
 			confirm(form) {
-				console.log(form, '添加');
 				// 根据保存的长宽做调整
 				let {
 					width,
 					height
 				} = form;
-				console.log(width, height, '填写完成前的宽高');
 				width = width / this.cell.size;
 				height = height / this.cell.size;
-				console.log(width, height, '填写完成的宽高');
 				const {
 					roomZoneId
 				} = form,
@@ -682,7 +676,6 @@
 					// 添加
 					this.roomZones.push(form);
 				}
-				console.log(form, '提交的数据');
 				this.radarDevice(form);
 			},
 
@@ -781,10 +774,8 @@
 					line,
 					column
 				} = this.getCellSize();
-				console.log(min, max, 'min, max', Math.floor(max / line), Math.floor(min / line));
 				const zoneHeight = Math.floor(max / line) - Math.floor(min / line) + 1,
 					zongWidth = (max % line) - (min % line) + 1;
-				console.log(zongWidth, zoneHeight, this, 'zongWidth, zoneHeight,');
 				return {
 					height: zoneHeight * this.cell.size,
 					width: zongWidth * this.cell.size
@@ -844,7 +835,6 @@
 			 * 根据起始点和宽高计算x1 y1....
 			 */
 			getAxisBySize(start, width, height) {
-				console.log(start, width, height, 'start, width, height');
 				const {
 					scale,
 					x,
@@ -909,6 +899,41 @@
 			font-size: 26rpx;
 			color: #353535;
 			margin: 32rpx 0;
+
+			>text {
+				margin-right: 20rpx;
+				position: relative;
+
+				&:nth-child(2) {
+					margin-right: 30rpx;
+
+					&::after {
+						margin-right: 30rpx;
+						margin-left: 5rpx;
+						content: '';
+						position: absolute;
+						top: 10rpx;
+						height: 20rpx;
+						width: 20rpx;
+						border-radius: 50% 50%;
+						background: #f8b551;
+					}
+				}
+
+				&:nth-child(3) {
+					&::after {
+						margin-right: 30rpx;
+						margin-left: 5rpx;
+						content: '';
+						position: absolute;
+						top: 10rpx;
+						height: 20rpx;
+						width: 20rpx;
+						border-radius: 50% 50%;
+						background: #007aff;
+					}
+				}
+			}
 		}
 
 		movable-area {

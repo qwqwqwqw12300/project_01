@@ -31,6 +31,84 @@
 		data() {
 			return {
 				chart: null,
+				initOption: {
+					title: {
+						text: ''
+					},
+					tooltip: {
+						positionStatus: true,
+						trigger: 'axis',
+					},
+					backgroundColor: '#fff',
+					legend: {
+						data: []
+					},
+					grid: {
+						left: '20',
+						right: '20',
+						bottom: '5',
+						top: '20',
+						containLabel: true
+					},
+					toolbox: {},
+					xaxis: {
+						boundaryGap: false,
+						axisTick: {
+							show: false
+						},
+						axisLine: {
+							lineStyle: {
+								color: 'rgb(238,238,238)',
+								width: 1
+							}
+						},
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							},
+							formatter: 'week'
+						},
+						splitLine: {
+							show: false
+						},
+					},
+					yAxis: {
+						type: "value",
+						scale: true,
+						splitArea: {
+							show: true,
+							areaStyle: {
+								color: ['#f6f8fc', '#fff']
+							}
+						},
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							}
+						},
+						nameTextStyle: {
+							color: "#666",
+							fontSize: 12,
+							lineHeight: 40
+						},
+						// 分割线
+						splitLine: {
+							lineStyle: {
+								type: "dashed",
+								color: "#E9E9E9"
+							}
+						},
+						axisLine: {
+							show: false
+						},
+						axisTick: {
+							show: false
+						}
+					},
+					series: [{
+						showSymbol: false
+					}]
+				},
 			}
 		},
 		mounted() {
@@ -62,12 +140,15 @@
 			},
 			/**
 			 * 监测数据更新
-			 * @param {Object} option
+			 * @param {Object} obj
 			 */
 			update(option) {
 				if (this.chart) {
 					// 因App端，回调函数无法从renderjs外传递，故在此自定义设置相关回调函数
 					if (option) {
+						// const option = {};
+						// this.assignDeep(option, this.initOption, obj);
+						// console.log(option, '--------option');
 						if (option.xAxis) {
 							if (!Array.isArray(option.xAxis)) option.xAxis = [option.xAxis];
 							option.xAxis.forEach(ele => {
@@ -77,6 +158,26 @@
 								}
 							})
 						}
+
+						// 处理单条折线数据无法展示的问题
+						if (option.series) {
+							if (!Array.isArray(option.series)) option.series = [option.series];
+							for (let i = 0; i < option.series.length; i++) {
+								if (option.series[i].data && option.series[i].data.length === 1) {
+									if (option.xAxis[0].type === 'time') {
+										const arr = option.series[i].data[0];
+										option.series[i].data.push([arr[0], 0]);
+									} else {
+										option.series[i].data.push(0);
+									}
+								}
+
+							}
+
+						}
+						// console.log(option, 'option.series[i]------');
+
+
 						// 设置新的option
 						this.chart.setOption(option, option.notMerge)
 					}
@@ -121,7 +222,95 @@
 					name: options.name,
 					seriesName: options.seriesName
 				})
+			},
+
+			assignDeep(target, ...sources) {
+				// 1. 参数校验
+				if (target == null) {
+					throw new TypeError('Cannot convert undefined or null to object');
+				}
+
+				// 2. 如果是基本类型，则转换包装对象
+				const result = Object(target);
+				// 3. 缓存已拷贝过的对象
+				const hash = new WeakMap();
+
+				// 4. 目标属性是否可直接覆盖赋值判断
+				function canPropertyCover(node) {
+					if (!node.target[node.key]) {
+						return true;
+					}
+					if (node.target[node.key] == null) {
+						return true;
+					}
+					if (!(typeof node.target[node.key] === 'object')) {
+						return true;
+					}
+					if (Array.isArray(node.target[node.key]) !== Array.isArray(node.data)) {
+						return true;
+					}
+					return false;
+				}
+
+				sources.forEach(v => {
+					const source = Object(v);
+
+					const stack = [{
+						data: source,
+						key: undefined,
+						target: result
+					}];
+
+					while (stack.length > 0) {
+						const node = stack.pop();
+						if (typeof node.data === 'object' && node.data !== null) {
+							let isPropertyDone = false;
+							if (hash.get(node.data) && node.key !== undefined) {
+								if (canPropertyCover(node)) {
+									node.target[node.key] = hash.get(node.data);
+									isPropertyDone = true;
+								}
+							}
+
+							if (!isPropertyDone) {
+								// tslint:disable-next-line:no-shadowed-variable
+								let target;
+								if (node.key !== undefined) {
+									if (canPropertyCover(node)) {
+										target = Array.isArray(node.data) ? [] : {};
+										hash.set(node.data, target);
+										node.target[node.key] = target;
+									} else {
+										target = node.target[node.key];
+									}
+								} else {
+									target = node.target;
+								}
+
+								Reflect.ownKeys(node.data).forEach(key => {
+									// 过滤不可枚举属性
+									const desc = Object.getOwnPropertyDescriptor(node.data, key);
+									if (desc && !desc.enumerable) {
+										return;
+									}
+									stack.push({
+										data: node.data[key],
+										key: key,
+										target: target
+									});
+								});
+							}
+						} else {
+							Object.assign(node.target, {
+								[node.key]: node.data
+							});
+						}
+					}
+
+				});
+				return result;
 			}
+
 		}
 	}
 </script>

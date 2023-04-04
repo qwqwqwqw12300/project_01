@@ -1,7 +1,7 @@
 <template>
-	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
+	<app-body :needService="false" :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<locus-map :record="mapData"></locus-map>
-		<touch-popup :minHeight="0.1" :maxHeight="0.6" :touchHeight="64" radius="30rpx">
+		<touch-popup :minHeight="0.13" :maxHeight="0.6" :touchHeight="64" radius="30rpx">
 			<!-- 	<view class="ui-search">
 				<u-search placeholder="请输入您想搜索的内容" :showAction="false"></u-search>
 			</view> -->
@@ -10,9 +10,8 @@
 					<text>选择时间</text>
 				</view>
 				<view class="value" @click="handleSelect">
-					<u-input disabled type="text" :value="`${dateData[0]} 00:00`" /><text
-						style="margin: 0 20rpx;">至</text>
-					<u-input disabled type="text" :value="`${dateData[1]} 23:59`" />
+					<u-input disabled type="text" :value="`${dateData} 00:00`" /><text style="margin: 0 20rpx;">至</text>
+					<u-input disabled type="text" :value="`${dateData} 23:59`" />
 				</view>
 			</view>
 			<view class="address-list">
@@ -27,8 +26,8 @@
 				</view>
 			</view>
 		</touch-popup>
-		<u-calendar :show="show" mode="range" monthNum="4" :minDate="minDate" :maxDate="maxDate" @confirm="onSelected"
-			@close="show=false" maxRange="3" :allowSameDay="true"></u-calendar>
+		<u-calendar :show="show" mode="single" monthNum="4" :minDate="minDate" :maxDate="maxDate" @confirm="onSelected"
+			@close="show=false" :allowSameDay="true"></u-calendar>
 	</app-body>
 </template>
 
@@ -77,8 +76,7 @@
 		},
 		mounted() {
 			const today = new Date()
-			this.dateData = [uni.$u.timeFormat((new Date().setDate(today.getDate() -
-				1)), 'yyyy-mm-dd'), uni.$u.timeFormat(today, 'yyyy-mm-dd')]
+			this.dateData = uni.$u.timeFormat(today, 'yyyy-mm-dd')
 			console.log(this.dateData, '098882222---------')
 			this.maxDate = uni.$u.timeFormat(today, 'yyyy-mm-dd')
 			this.minDate = uni.$u.timeFormat((today.setMonth(today.getMonth() - 2)), 'yyyy-mm-dd')
@@ -89,8 +87,7 @@
 				this.show = true
 			},
 			onSelected(e) {
-				console.log(e, 'eeeeeee-----------')
-				this.dateData = [e[0], e[e.length - 1]]
+				this.dateData = e[0]
 				this.show = false
 				this.queryData()
 			},
@@ -120,8 +117,8 @@
 			queryData() {
 				// uni.showLoading()
 				GetsetAddressBook({
-					startTime: this.dateData[0] + " " + '00:00:00',
-					endTime: this.dateData[1] + " " + '23:59:59',
+					startTime: this.dateData + " " + '00:00:00',
+					endTime: this.dateData + " " + '23:59:59',
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					const list = res.data.map(n => {
@@ -132,6 +129,7 @@
 						return this.getAddress(n)
 					})
 					Promise.all(promises).then(res => {
+						console.log(res, 'res---------------------------------')
 						this.dataList = res
 					}).catch(res => {}).finally(() => {
 						// uni.hideLoading()

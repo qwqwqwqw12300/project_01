@@ -1,7 +1,7 @@
 <template>
 	<view class="ui-map">
 		<point-map :record="addressInfo"></point-map>
-		<touch-popup :minHeight="0.1" :maxHeight="0.7" :touchHeight="64" radius="30rpx">
+		<touch-popup :minHeight="0.12" :maxHeight="0.7" :touchHeight="64" radius="30rpx">
 			<view class="map-position">
 				<text class="label">当前位置:</text>
 				<view class="content">

@@ -133,6 +133,7 @@
 				}
 
 				.time {
+					position: absolute;
 					margin-top: 14rpx;
 					font-size: 24rpx;
 					color: #888888;

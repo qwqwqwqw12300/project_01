@@ -93,7 +93,7 @@
 						text: '电子牵挂卡'
 					},
 					{
-						value: '3',
+						value: '2',
 						icon: 'watch',
 						text: '4g智能手表'
 					}

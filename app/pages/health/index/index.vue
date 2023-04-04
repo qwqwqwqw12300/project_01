@@ -93,6 +93,14 @@
 				添加手表
 			</view>
 		</view>
+<!-- 		<touch-popup :minHeight="0.03" :maxHeight="0.15" :touchHeight="64" radius="30rpx">
+			<view class="ui-list">
+				<view v-for="item in moveList" :key="item.key" class="list-item">
+					<u-icon :name="item.icon" size="50"></u-icon>
+					<text>{{ item.title }}</text>
+				</view>
+			</view>
+		</touch-popup> -->
 	</app-body>
 </template>
 
@@ -185,6 +193,19 @@
 				moveY: 0, //相对滑动盒子的坐标
 				hoverClass: '',
 				hoverClassIndex: null, //最终index
+				moveList: [{
+					key: 'walk',
+					icon: '/static/images/walk@3x.png',
+					title: '行走'
+				}, {
+					key: 'run',
+					icon: '/static/images/run@3x.png',
+					title: '跑步'
+				}, {
+					key: 'circling',
+					icon: '/static/images/cycling.png',
+					title: '骑行'
+				}]
 			}
 		},
 		created() {
@@ -1351,5 +1372,23 @@
 		font-size: 40rpx;
 		color: #888888;
 		font-weight: 500;
+	}
+
+	.ui-list {
+		margin-top: 16rpx;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+
+		.list-item {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			text {
+				font-size: 32rpx;
+				color: #353535;
+			}
+		}
 	}
 </style>

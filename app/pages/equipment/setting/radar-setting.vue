@@ -63,9 +63,8 @@
 							<view class="ui-slider-box">
 								<view class="ui-slider-tit">高度</view>
 								<view class="ui-slider">
-									<u-slider min="0" max="1.5" step="0.1"
-										v-model="editFrom.deviceLocationTop.roomHeight" activeColor="#eeaa3d"
-										blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
+									<u-slider min="0" max="4" step="0.1" v-model="editFrom.deviceLocationTop.roomHeight"
+										activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#c0c4cc" />
 									<text>{{ $u.priceFormat(editFrom.deviceLocationTop.roomHeight, 2) + '米' }}</text>
 								</view>
 							</view>
