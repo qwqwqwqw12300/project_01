@@ -112,7 +112,7 @@
 		methods: {
 			handleInit(){
 				GetHumanInfo({
-					humanId:117
+					humanId:this.deviceInfo.humanId
 				}).then(res=>{
 					console.log(res,'res')
 					this.sexValue = res.data.sex
@@ -133,7 +133,7 @@
 			submit() {
 				PostSetHumanInfo({
 					humanInfoId:this.humanInfoId || null,
-					humanId:117,
+					humanId:this.deviceInfo.humanId,
 					sex:this.sexValue,
 					height:this.cellList[0].value,
 					weight:this.cellList[1].value.toString(),
