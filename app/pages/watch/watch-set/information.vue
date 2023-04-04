@@ -9,9 +9,9 @@
 						<view>
 							<u-radio-group v-model="sexValue" placement="row">
 								<u-radio :customStyle="{margin: '20rpx'}" v-for="(item,index) in sexList" :key="index"
-									activeColor="#fd963e" :name="item.name">
+									activeColor="#fd963e" :name="item.sex">
 									<u-icon :name="item.icon" :color="item.color" size="42rpx"></u-icon>
-									<text style="margin-left: 10rpx;">{{item.name}}</text>
+									<text style="margin-left: 10rpx;">{{item.sex =='1' ? '男' : '女'}}</text>
 								</u-radio>
 							</u-radio-group>
 						</view>
@@ -57,7 +57,8 @@
 		mapState,
 	} from 'vuex';
 	import {
-		PostCreateHumanIfo
+		GetHumanInfo,
+		PostSetHumanInfo
 	} from '@/common/http/api';
 	import timePicker from '@/components/term-picker/term-picker.vue';
 	export default {
@@ -81,20 +82,21 @@
 						value: 0
 					}
 				],
-				sexValue: '男',
+				sexValue: '1',
 				sexList: [{
-						name: '男',
+						sex: '1',
 						icon: 'man',
 						color: '#1F91F2'
 					},
 					{
-						name: '女',
+						sex: '2',
 						icon: 'woman',
 						color: '#FC7265'
 					},
 				],
 				showPicker:false,
 				defaultValue:'',
+				humanInfoId:''
 			}
 		},
 		computed: {
@@ -105,24 +107,44 @@
 		onShow() {
 			const newData = new Date()
 			this.defaultValue = uni.$u.timeFormat(newData, 'yyyy-mm-dd')
+			this.handleInit()
 		},
 		methods: {
+			handleInit(){
+				GetHumanInfo({
+					humanId:117
+				}).then(res=>{
+					console.log(res,'res')
+					this.sexValue = res.data.sex
+					this.cellList[0].value = res.data.height || 0
+					this.cellList[1].value = res.data.weight || 0
+					this.defaultValue = res.data.birthday
+					this.humanInfoId = res.data.humanInfoId
+				})
+			},
 			onSelected(e){
 				console.log(e,'e')
-				this.defaultValue = [...e.value]
+				this.defaultValue = e.value
 				this.showPicker = false
 			},
 			cancel() {
 				uni.navigateBack()
 			},
 			submit() {
-				// PostCreateHumanIfo({
-				// 	calorie:this.cellList[0].value,
-				// 	stepNum:this.cellList[1].value,
-				// 	dration:this.cellList[2].value
-				// }).then(res=>{
-				// 	console.log(res,'res')
-				// })
+				PostSetHumanInfo({
+					humanInfoId:this.humanInfoId || null,
+					humanId:117,
+					sex:this.sexValue,
+					height:this.cellList[0].value,
+					weight:this.cellList[1].value.toString(),
+					birthday:this.defaultValue
+				}).then(res=>{
+					console.log(res,'res')
+					uni.$u.toast(res.msg)
+					setTimeout(()=>{
+						this.handleInit()
+					},1000)
+				})
 			}
 		}
 	}

@@ -96,7 +96,7 @@
 					stepNum:this.cellList[1].value,
 					weight:this.cellList[2].value,
 					exerciseDuration:'',
-					exerciseTargetId:this.exerciseTargetId || ''
+					exerciseTargetId:this.exerciseTargetId || null
 				}).then(res=>{
 					console.log(res,'res')
 					uni.$u.toast('操作成功')

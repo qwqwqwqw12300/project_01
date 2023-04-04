@@ -725,3 +725,13 @@ export const GetExerciseTarget = (params) => http.get('/api/tWatch/getExerciseTa
  * 新增/修改活动目标
  */
 export const PostCreateExerciseTarget = (params) => http.post('/api/tWatch/createExerciseTarget', params, {});
+
+/*
+ * 获取家庭成员信息
+ */
+export const GetHumanInfo = (params) => http.get('/api/tWatch/getHumanInfo', params, {});
+
+/*
+ * 设置家庭成员信息
+ */
+export const PostSetHumanInfo = (params) => http.post('/api/tWatch/setHumanInfo', params, {});
