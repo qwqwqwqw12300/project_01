@@ -18,7 +18,7 @@
 								<view :key="index + 'c'" class="ui-cell" @touchstart="touchstart($event, item, index)"
 									@touchmove.stop.prevent="touchMove($event, item, index)"
 									@touchend="touchend($event, item)"
-									:class="{ active: item.active, hover: item.status === 'hover', edit: roomZones.length && roomZones[activeZone].roomZoneId === item.roomZoneId }"
+									:class="{ active: item.active, hover: item.status === 'hover', edit: roomZones.length &&  activeZone.roomZoneId === item.roomZoneId }"
 									:style="cell" v-if="item.zoneType === '1'">
 								</view>
 								<view :key="index + 'ec'" v-else :style="cell" class="ui-cell disable">
@@ -30,7 +30,11 @@
 								<view class="ui-device"><text class="ui-zone-name"></text></view>
 							</movable-view>
 						</movable-area>
-						<view class="ui-tips">每个方块区域大小为 0.5米 x 0.5米</view>
+						<view class="ui-tips">
+							<text>每个方块区域大小为 0.5米 x 0.5米</text>
+							<text>选中</text>
+							<text>未选中</text>
+						</view>
 					</view>
 
 				</view>
@@ -44,30 +48,30 @@
 				<template>
 					<u-cell-group>
 						<u-cell title="区域名称">
-							<u-input placeholder="请输入区域名称" v-model="roomZones[activeZone].shadowZoneName" clearable
-								border="none" inputAlign="right" slot="right-icon"></u-input>
+							<u-input placeholder="请输入区域名称" v-model="activeZone.shadowZoneName" clearable border="none"
+								inputAlign="right" slot="right-icon"></u-input>
 						</u-cell>
 						<u-cell title="屏蔽区域长x宽（米）">
 							<view class="ui-zooe-size" slot="right-icon">
 								<u-input border="none" placeholder="请输入" type="number" inputAlign="left"
-									v-model="roomZones[activeZone].height" clearable></u-input>
+									v-model="activeZone.height" clearable></u-input>
 								<text>×</text>
 								<u-input border="none" placeholder="请输入" type="number" inputAlign="right"
-									v-model="roomZones[activeZone].width" clearable></u-input>
+									v-model="activeZone.width" clearable></u-input>
 							</view>
 						</u-cell>
 						<u-cell title="离地高度（米）">
-							<u-input type="number" placeholder="请输入离地高度" v-model="roomZones[activeZone].above" clearable
+							<u-input type="number" placeholder="请输入离地高度" v-model="activeZone.above" clearable
 								border="none" inputAlign="right" slot="right-icon"></u-input>
 						</u-cell>
 						<u-cell title="物体高度（米）">
-							<u-input type="number" placeholder="请输入物体高度" v-model="roomZones[activeZone].stature"
-								clearable border="none" inputAlign="right" slot="right-icon"></u-input>
+							<u-input type="number" placeholder="请输入物体高度" v-model="activeZone.stature" clearable
+								border="none" inputAlign="right" slot="right-icon"></u-input>
 						</u-cell>
 					</u-cell-group>
 					<view class="ui-setting-btn wd-btn-group">
 						<button class="plain" @click="deleteZone">删除</button>
-						<button class="default" @click="updateZone(roomZones[activeZone])">保存</button>
+						<button class="default" @click="updateZone(activeZone)">保存</button>
 					</view>
 				</template>
 			</view>
@@ -179,13 +183,6 @@
 					height: this.sizeInfo.box.height + 'px'
 				};
 			},
-			/**
-			 * 获取背景单元格样式
-			 */
-			getCellStyle() {
-				const obj = {};
-				return {};
-			},
 			/**获取子区域tab列表**/
 			getTabList() {
 				let list = [];
@@ -197,22 +194,18 @@
 					})).filter(ele => ele.zoneType === '1');
 				}
 				return list;
-			}
+			},
 		},
 		onLoad() {
 			this.init();
 		},
 		methods: {
-			tabClick(obj, index) {
-				console.log(obj, index, 'obj');
-			},
 			init() {
 				Promise.all([this.getRoomInfo(), this.getRoomZone()]).then(([roomInfo, rows]) => {
 					// 盒子容器信息
 					const {
 						width
 					} = this.sizeInfo.box;
-					console.log(this.deviceInfo, '设备信息');
 					// 设备距离墙壁范围
 					const {
 						parameter
@@ -318,7 +311,7 @@
 							});
 						});
 						this.roomZones = rows;
-
+						this.indexInit();
 					} else {
 						uni.showToast({
 							icon: 'none',
@@ -329,8 +322,7 @@
 			},
 
 			indexInit() {
-				const index = this.roomZones.findIndex(ele => ele.zoneType === '1');
-				this.activeZone = index > -1 ? index : 0;
+				this.activeZone = this.roomZones.filter(ele => ele.zoneType === '1')[0] || {};
 			},
 
 			/**
@@ -338,8 +330,7 @@
 			 * @param {string} 下标
 			 */
 			acitve(item) {
-				console.log(item, 'item');
-				this.activeZone = item.idx;
+				this.activeZone = this.roomZones[item.idx] || {};
 			},
 			del() {
 				this.roomZones.pop();
@@ -349,7 +340,7 @@
 			 * 监控区域修改
 			 */
 			monitorChange([active], type) {
-				this.roomZones[this.activeZone][type] = this.roomZones[this.activeZone][type] == 1 ? 0 : 1;
+				this.activeZone[type] = this.activeZone[type] == 1 ? 0 : 1;
 			},
 			/**
 			 * 开启选择时间
@@ -372,7 +363,7 @@
 			 * 选择时间
 			 */
 			onTimeBtn(time, type) {
-				this.roomZones[this.activeZone][type] = time;
+				this.activeZone[type] = time;
 			},
 			/**
 			 * 选择时间完成
@@ -380,7 +371,7 @@
 			dateConfirm({
 				value
 			}) {
-				this.roomZones[this.activeZone][this.dateHandle.type] = typeof value === 'number' ? uni.$u.date(value,
+				this.activeZone[this.dateHandle.type] = typeof value === 'number' ? uni.$u.date(value,
 					'yyyy/mm/dd hh:MM:ss') : value;
 				this.dateHandle.show = false;
 			},
@@ -478,7 +469,7 @@
 			async deleteZone() {
 				const {
 					roomZoneId
-				} = this.roomZones[this.activeZone];
+				} = this.activeZone;
 				// 已经保存过的
 				await PostRemRadarDevice({
 					roomZoneId
@@ -497,13 +488,13 @@
 				const {
 					roomZoneId
 				} = item;
+				item.status = 'hover';
 				Object.assign(this.touchInfo, {
 					x: clientX,
 					y: clientY,
 					isAdd: !roomZoneId,
 					index
 				});
-				console.log(roomZoneId, 'roomZoneId');
 				if (roomZoneId) {
 					// 修改
 					this.area.forEach(ele => {
@@ -526,7 +517,6 @@
 				this.area.forEach((ele, idx) => {
 					if (ele.active && ele.roomZoneId !== item.roomZoneId) {
 						if (arr.includes(idx)) {
-							console.log(ele.index, 'ele');
 							this.touchInfo.invalid = true;
 						}
 						return;
@@ -561,7 +551,6 @@
 						return uni.$u.toast('子区域不能超过4个');
 					}
 					// 添加的话弹窗填写信息
-					console.log(width, height, 'width, height');
 					this.$refs.zonePopRef.open({
 							roomId: this.deviceInfo.roomId,
 							deviceId: this.deviceInfo.deviceId,
@@ -591,7 +580,6 @@
 			 * @param {Object} form
 			 */
 			confirm(form) {
-				console.log(form, '添加');
 				// 根据保存的长宽做调整
 				let {
 					width,
@@ -599,10 +587,8 @@
 					above,
 					stature
 				} = form;
-				console.log(width, height, '填写完成前的宽高');
 				width = width / this.cell.size;
 				height = height / this.cell.size;
-				console.log(width, height, '填写完成的宽高');
 				const {
 					roomZoneId
 				} = form,
@@ -624,7 +610,6 @@
 					// 添加
 					this.roomZones.push(form);
 				}
-				console.log(form, '提交的数据');
 				this.radarDevice(form);
 			},
 
@@ -632,7 +617,6 @@
 			 * 获取格子参数
 			 */
 			getCellSize() {
-				console.log(this.sizeInfo, 'this.sizeInfo');
 				// 每个格子的宽度、高度
 				const width = this.sizeInfo.scale.x,
 					height = this.sizeInfo.scale.y; // 高度
@@ -852,6 +836,41 @@
 			font-size: 26rpx;
 			color: #353535;
 			margin: 32rpx 0;
+
+			>text {
+				margin-right: 20rpx;
+				position: relative;
+
+				&:nth-child(2) {
+					margin-right: 30rpx;
+
+					&::after {
+						margin-right: 30rpx;
+						margin-left: 5rpx;
+						content: '';
+						position: absolute;
+						top: 10rpx;
+						height: 20rpx;
+						width: 20rpx;
+						border-radius: 50% 50%;
+						background: #f8b551;
+					}
+				}
+
+				&:nth-child(3) {
+					&::after {
+						margin-right: 30rpx;
+						margin-left: 5rpx;
+						content: '';
+						position: absolute;
+						top: 10rpx;
+						height: 20rpx;
+						width: 20rpx;
+						border-radius: 50% 50%;
+						background: #FF6969;
+					}
+				}
+			}
 		}
 
 		movable-area {

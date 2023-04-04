@@ -19,7 +19,7 @@
 									@touchmove.stop.prevent="touchMove($event, item, index)"
 									@touchend="touchend($event, item)"
 									:class="{ active: item.active, hover: item.status === 'hover', edit: roomZones.length && roomZones[activeZone].roomZoneId === item.roomZoneId }"
-									:style="cell" v-if="item.zoneType === '2'">
+									:style="cell" v-if="item.zoneType === '2'">{{index}}
 								</view>
 								<view :key="index + 'ec'" v-else :style="cell" class="ui-cell disable">
 								</view>
@@ -30,7 +30,12 @@
 								<view class="ui-device"><text class="ui-zone-name"></text></view>
 							</movable-view>
 						</movable-area>
-						<view class="ui-tips">每个方块区域大小为 0.5米 x 0.5米</view>
+						<view class="ui-tips">
+							<text>每个方块区域大小为 0.5米 x 0.5米</text>
+							<text>选中</text>
+							<text>未选中</text>
+						</view>
+
 					</view>
 				</view>
 			</view>
@@ -41,8 +46,8 @@
 					</u-tabs>
 				</view>
 				<!-- 床区域设置 -->
-				<template v-if="getParameter.setRuleDate">
-					<u-cell-group>
+				<template v-if="getParameter">
+					<u-cell-group v-if="getParameter.setRuleDate">
 						<view class="ui-time" @click="setRule(getParameter.setRuleDate)">
 							<view class="ui-time-box">
 								<text>时间设置</text>
@@ -236,7 +241,8 @@
 				};
 			},
 			getParameter() {
-				return this.roomZones[this.activeZone].leaveBedWarnParameter;
+				return this.roomZones[this.activeZone].zoneType === '2' && this.roomZones[this.activeZone]
+					.leaveBedWarnParameter;
 			},
 		},
 		onLoad() {
@@ -348,6 +354,7 @@
 							installPosition: parameter.installPosition
 						});
 						rows.forEach((ele, idx) => {
+							console.log(ele, '---ele');
 							let {
 								x1 = 0, x2 = 0, y1 = 0, y2 = 0, z1 = 0, z2 = 0, roomZoneId, name
 							} = ele;
@@ -356,6 +363,7 @@
 							y1 = y1 / this.cell.size;
 							y2 = y2 / this.cell.size;
 							const activeList = this.getArrByAxis(x1, x2, y1, y2);
+							if (ele.zoneType === '1') console.log(activeList, 'activeList');
 							this.area.forEach(area => {
 								if (activeList.includes(area.index)) {
 									area.active = true;
@@ -559,13 +567,13 @@
 				const {
 					roomZoneId
 				} = item;
+				item.status = 'hover';
 				Object.assign(this.touchInfo, {
 					x: clientX,
 					y: clientY,
 					isAdd: !roomZoneId,
 					index
 				});
-				console.log(roomZoneId, 'roomZoneId');
 				if (roomZoneId) {
 					// 修改
 					this.area.forEach(ele => {
@@ -666,6 +674,7 @@
 				} = form,
 				list = this.area.filter(ele => ele.status === 'hover').map(ele => ele.index),
 					newList = this.getArrBySize(Math.min(...list), width, height);
+				console.log(list, 'list--------');
 				if (this.area.find(ele => ele.active && newList.includes(ele.index) && ele.roomZoneId !== roomZoneId)) {
 					this.clearCell();
 					return uni.$u.toast('监测区域重叠，请重新选择');
@@ -909,6 +918,41 @@
 			font-size: 26rpx;
 			color: #353535;
 			margin: 32rpx 0;
+
+			>text {
+				margin-right: 20rpx;
+				position: relative;
+
+				&:nth-child(2) {
+					margin-right: 30rpx;
+
+					&::after {
+						margin-right: 30rpx;
+						margin-left: 5rpx;
+						content: '';
+						position: absolute;
+						top: 10rpx;
+						height: 20rpx;
+						width: 20rpx;
+						border-radius: 50% 50%;
+						background: #f8b551;
+					}
+				}
+
+				&:nth-child(3) {
+					&::after {
+						margin-right: 30rpx;
+						margin-left: 5rpx;
+						content: '';
+						position: absolute;
+						top: 10rpx;
+						height: 20rpx;
+						width: 20rpx;
+						border-radius: 50% 50%;
+						background: #007aff;
+					}
+				}
+			}
 		}
 
 		movable-area {
