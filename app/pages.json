@@ -733,6 +733,24 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/watch/watch-set/active",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/watch/watch-set/information",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 	"globalStyle": {

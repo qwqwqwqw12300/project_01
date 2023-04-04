@@ -42,7 +42,11 @@
 				<button @click="handleCancel" class="cancel">取消</button>
 				<button @click="handleReset" class="default">重置</button>
 			</view>
+			<view class="ui-forget">
+				<text class="active" @click="forgot">忘记密码？</text>
+			</view>
 		</view>
+
 		<!-- <view class="wd-btn-group">
 			<button @click="handleCancel" class="cancel">取消</button>
 			<button @click="handleReset" class="default">重置</button>
@@ -116,7 +120,16 @@
 			 */
 			eyesChange(type) {
 				this.eyes[type] = !this.eyes[type];
-			}
+			},
+
+			/**
+			 * 忘记密码
+			 */
+			forgot() {
+				uni.navigateTo({
+					url: '/pages/login/forgot'
+				})
+			},
 		}
 	};
 </script>
@@ -145,5 +158,14 @@
 
 	.wd-btn-group {
 		margin-top: 100rpx;
+	}
+
+	.ui-forget {
+		margin-top: 80rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 30rpx;
+		color: #599FFF;
 	}
 </style>
