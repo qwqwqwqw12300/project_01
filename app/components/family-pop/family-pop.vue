@@ -113,6 +113,9 @@
 						name
 					} = res
 					this.form.address = province + city + district + address + name;
+					this.form = {
+						...this.form
+					};
 				});
 				uni.navigateTo({
 					url: '/pages/equipment/search'
