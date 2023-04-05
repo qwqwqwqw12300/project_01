@@ -33,16 +33,23 @@
 				</view>
 			</view>
 			<!-- /房间 -->
-			<!-- 人员 -->
+			<!-- 成员 -->
 			<view class="wd-add wd-person" v-else>
 				<view class="wd-title">
-					<text class="wd-title-font">{{mode === 'add' ? '新建人员': '修改人员'}}</text>
+					<text class="wd-title-font">{{mode === 'add' ? '新建成员': '修改成员'}}</text>
 				</view>
 				<view class="wd-add-box">
 					<view class="wd-input">
-						<text class="wd-input-font">人员名称</text>
-						<u-input :maxlength="6" v-model="form.name" placeholder="请输入人员名称" border="surround" clearable>
+						<text class="wd-input-font">成员名称</text>
+						<u-input :maxlength="6" v-model="form.name" placeholder="请输入成员名称" border="surround" clearable>
 						</u-input>
+					</view>
+					<view class="wd-tags">
+						<view class="wd-tags-item active" v-for="(item, index) in humanTagsList" :key="index">
+							<u-tag :text="item.name" :plain="!item.checked" type="warning" :name="item.name"
+								@click="humanRadioClick">
+							</u-tag>
+						</view>
 					</view>
 				</view>
 				<view class="wd-hr"></view>
@@ -50,7 +57,7 @@
 					<view>{{ subTitle }}</view>
 				</view>
 			</view>
-			<!-- /人员 -->
+			<!-- /成员 -->
 		</u-popup>
 		<u-action-sheet :closeOnClickOverlay="true" :closeOnClickAction="true" :safeAreaInsetBottom="true"
 			@close="close" :show="sheetShow" cancelText="取消">
@@ -130,13 +137,50 @@
 						checked: false
 					}
 				],
+				humanTagsList: [{
+						name: '爷爷',
+						value: 1,
+						checked: false
+					},
+					{
+						name: '奶奶',
+						value: 2,
+						checked: false
+					}, {
+						name: '外公',
+						value: 3,
+						checked: false
+					}, {
+						name: '外婆',
+						value: 4,
+						checked: false
+					}, {
+						name: '父亲',
+						value: 5,
+						checked: false
+					}, {
+						name: '母亲',
+						value: 6,
+						checked: false
+					},
+					{
+						name: '岳父',
+						value: 7,
+						checked: false
+					},
+					{
+						name: '岳母',
+						value: 8,
+						checked: false
+					}
+				],
 				sheetList: [{
 						name: '房间',
 						icon: 'add-home',
 						value: 'room'
 					},
 					{
-						name: '人员',
+						name: '成员',
 						icon: 'add-person',
 						value: 'human'
 					}
@@ -156,6 +200,7 @@
 			}
 		},
 		methods: {
+			//家庭tags
 			radioClick(name) {
 				// this.form.name = name
 				this.form = {
@@ -164,6 +209,18 @@
 				}
 				console.log(this.form.name, 'fff')
 				this.tagsList.map((item) => {
+					item.checked = item.name === name ? true : false
+				})
+			},
+			//成员tags
+			humanRadioClick(name) {
+				// this.form.name = name
+				this.form = {
+					...this.form,
+					name,
+				}
+				console.log(this.form.name, 'fff')
+				this.humanTagsList.map((item) => {
 					item.checked = item.name === name ? true : false
 				})
 			},

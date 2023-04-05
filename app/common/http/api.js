@@ -558,7 +558,17 @@ export const GetLastPoint = (params) => http.get('/api/careCard/track/lastPoint'
 	showLoading: false
 });
 
+/**
+ * 获取紧急联系人列表
+ */
+export const GetMemberContactskList = (params) => http.get('/api/memberContacts/list', params, {
+});
 
+/**
+ * 设置紧急联系人列表
+ */
+export const PostSetMemberConWithFamilyId = (params) => http.post('/api/memberContacts/setMemberConWithFamilyId',
+	params, {});
 
 //-----------------------------------------------------------------------健康手表-----------------------------------------------------------------------
 
