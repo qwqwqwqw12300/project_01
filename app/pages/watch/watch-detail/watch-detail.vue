@@ -15,6 +15,10 @@
 					<text @tap="handleTab(item.key)" :class="{'active': tabKey === item.key }">{{ item.name }}</text>
 				</view>
 			</view>
+			<view class="ui-action">
+				<text></text>
+				<u-icon name="/static/images/read-all.png" size="50rpx" @click="readMsgAll"></u-icon>
+			</view>
 		</view>
 		<view class="ui-content">
 			<component ref="comRef" :is="tabKey" :key="`${tabKey}${current}`" :deviceInfo="swiperData"></component>
@@ -79,6 +83,19 @@
 			},
 			handleTab(index) {
 				this.tabKey = index
+			},
+			readMsgAll() {
+				if (this.$refs.comRef?.readMsgAll) {
+					uni.showModal({
+						title: '提示',
+						content: `是否全部标记已读？`,
+						success: res => {
+							if (res.confirm) {
+								this.$refs.comRef.readMsgAll()
+							}
+						}
+					})
+				}
 			}
 		}
 	};
@@ -109,7 +126,9 @@
 	.ui-tab {
 		display: flex;
 		align-items: center;
-		padding: 0 20rpx;
+		justify-content: space-between;
+		padding-left: 20rpx;
+		padding-right: 30rpx;
 
 		.ui-tabs {
 			display: flex;
