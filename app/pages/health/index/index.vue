@@ -59,10 +59,10 @@
 								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
 								@touchend="AppLi_touchend(index)" v-if="item.isShow || isEdit">
 								<SleepCard v-if="item.type === '1'" :date="date" :fetchRes="fetchRes" :item="item" :isEdit="isEdit" @iconClick="editCard"></SleepCard>
-								<XinLvCard v-if="item.type === '2' " :date="date" :fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinLvCard>
-								<XueYaCard v-if="item.type === '3'" :date="date" :fetchRes="fetchRes" :option="xueYaOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYaCard>
-								<XueYangCard v-if="item.type === '4'" :date="date" :fetchRes="fetchRes" :option="xueYangOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYangCard>
-								<XinDianCard v-if="item.type === '5'" :date="date" :fetchRes="fetchRes" :option="xinDianOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinDianCard>
+								<XinLvCard v-if="item.type === '2' " :date="fetchRes.HeartRateTime.substr(5,6)" :fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinLvCard>
+								<XueYaCard v-if="item.type === '3'" :date="fetchRes.BloodPressureTime.substr(5,6)" :fetchRes="fetchRes" :option="xueYaOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYaCard>
+								<XueYangCard v-if="item.type === '4'" :date="fetchRes.BloodOxygenTime.substr(5,6)" :fetchRes="fetchRes" :option="xueYangOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYangCard>
+								<XinDianCard v-if="item.type === '5'" :date="fetchRes.ElectrocardiogramTime.substr(5,6)" :fetchRes="fetchRes" :option="xinDianOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinDianCard>
 							</view>
 							<!-- 滑块 -->
 							<movable-view v-if="moviewShow" :animation="false" class="ui-mov-view ui-br-16" :x="moveX"
@@ -135,7 +135,11 @@
 					tWatchBloodOxygen: [],
 					HeartRateList: [],
 					electrocardiogramMapList: [],
-					sleepMap: ''
+					sleepMap: '',
+					HeartRateTime:'',
+					BloodPressureTime:'',
+					BloodOxygenTime:'',
+					ElectrocardiogramTime:''
 				},
 				pageShow: true,
 				isEdit:false,
@@ -284,7 +288,8 @@
 				} = this.swiperData
 				const params = {
 					deviceId,
-					dayTime: uni.$u.timeFormat(new Date(), 'yyyy-mm-dd'),
+					// dayTime: uni.$u.timeFormat(new Date(), 'yyyy-mm-dd'),
+					dayTime:'',
 					humanId,
 				}
 				GetCaiHongData(params).then(res => {
@@ -551,7 +556,8 @@
 						res.data.dpMapList[i].value
 					])
 				}
-
+				const dateRes = res.data.BloodPressureTime.slice(0,4) + '-' + res.data.BloodPressureTime.slice(5,7) + '-' + res.data.BloodPressureTime.slice(8,10);
+				console.log(dateRes,'dateres')
 				this.xueYaOption = {
 					title: {
 						text: ''
@@ -571,8 +577,8 @@
 						type: 'time',
 						show: false,
 						// interval: 6 * 3600 * 1000, // 间隔为6小时
-						min: `${this.echartDate + ' 00:00:00'}`, // x轴起始时间
-						max: `${this.echartDate + ' 23:59:59'}`, // x轴结束时间
+						min: `${dateRes + ' 00:00:00'}`, // x轴起始时间
+						max: `${dateRes + ' 23:59:59'}`, // x轴结束时间
 						boundaryGap: false,
 						axisTick: {
 							show: false
@@ -678,6 +684,7 @@
 					])
 				})
 				console.log('resarr', resArr)
+				const dateRes = res.data.BloodOxygenTime.slice(0,4) + '-' + res.data.BloodOxygenTime.slice(5,7) + '-' + res.data.BloodOxygenTime.slice(8,10);
 				this.xueYangOption = {
 					notMerge: true,
 					backgroundColor: '#fff',
@@ -691,8 +698,8 @@
 						show: false,
 						type: 'time',
 						// interval: 6 * 60 * 60 * 1000, // 设置x轴间隔为6小时
-						min: `${this.echartDate + ' 00:00:00'}`, // x轴起始时间
-						max: `${this.echartDate + ' 23:49:00'}`, // x轴结束时间
+						min: `${dateRes + ' 00:00:00'}`, // x轴起始时间
+						max: `${dateRes + ' 23:49:00'}`, // x轴结束时间
 						// boundaryGap: false,
 						axisTick: { //坐标轴刻度相关设置。
 							show: false,
