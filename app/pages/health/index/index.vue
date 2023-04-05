@@ -1,5 +1,5 @@
 <template>
-	<app-body :hideTitle="true" :bg="pageShow">
+	<app-body :hideTitle="true" :bg="true">
 		<view v-if="pageShow">
 			<view class="ui-banner">
 				<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange"
