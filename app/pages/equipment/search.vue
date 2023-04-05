@@ -3,6 +3,10 @@
 		<!-- mapSearch模块需要页面有地图组件才能正常初始化 -->
 		<map v-show="false"></map>
 		<view class="ui-u-search">
+			<view class="map-icon" @click="cityPicker">
+				<u-icon name="map" size="20"></u-icon>
+				<text>{{ currentCity }}</text>
+			</view>
 			<u-search @change="searchChange" placeholder="请输入地址信息" @custom="back" :showAction="true" actionText="取消"
 				v-model="search"></u-search>
 		</view>
@@ -20,7 +24,8 @@
 
 <script>
 	import {
-		isApp
+		isApp,
+		isIos
 	} from '../../common/utils/util';
 	let mapSearch;
 	if (isApp()) mapSearch = weex.requireModule('mapSearch');
@@ -29,6 +34,7 @@
 		data() {
 			return {
 				search: '',
+				currentCity: '',
 				poiList: []
 			}
 		},
@@ -80,15 +86,30 @@
 			getLocation() {
 				return new Promise(resolve => {
 					uni.getLocation({
-						type: 'wgs84',
+						geocode: true,
+						type: isIos() ? 'wgs84' : 'gcj02',
 						success: resolve
 					});
 				});
 
+			},
+			cityPicker() {
+				uni.$on('citySelect', data => {
+					this.search = data.cityName
+					this.currentCity = data.cityName
+					this.searchChange(this.search)
+				})
+				this.$setCache('position', this.currentCity);
+				uni.navigateTo({
+					url: '/pages/equipment/citySelect/citySelect'
+				})
 			}
 		},
 		created() {
+			console.log(66, 'pp--------------------')
 			this.getLocation().then(location => {
+				console.log(location, '99999-------------')
+				this.currentCity = location.address.city
 				mapSearch && mapSearch.poiSearchNearBy({
 					point: location,
 					key: '小区'
@@ -124,6 +145,15 @@
 		padding-top: calc(var(--status-bar-height) + 20rpx);
 		width: calc(100% - 60rpx);
 		background-color: #fff;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.map-icon {
+			display: flex;
+			align-items: center;
+			margin-right: 20rpx;
+		}
 
 	}
 
