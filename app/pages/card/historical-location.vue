@@ -15,14 +15,19 @@
 				</view>
 			</view>
 			<view class="address-list">
-				<view class="address-cell" v-for="(item,index) in dataList" :key="index">
-					<view class="label">
-						<text>{{ item.address }}</text>
-						<text class="sub">{{ item.subAddress }}</text>
+				<template v-if="dataList.length">
+					<view class="address-cell" v-for="(item,index) in dataList" :key="index">
+						<view class="label">
+							<text>{{ item.address }}</text>
+							<text class="sub">{{ item.subAddress }}</text>
+						</view>
+						<text class="value">
+							{{item.locateTime}}
+						</text>
 					</view>
-					<text class="value">
-						{{item.locateTime}}
-					</text>
+				</template>
+				<view class="list-empty" v-else>
+					<u-empty mode="list" text="暂无数据"></u-empty>
 				</view>
 			</view>
 		</touch-popup>
@@ -77,7 +82,6 @@
 		mounted() {
 			const today = new Date()
 			this.dateData = uni.$u.timeFormat(today, 'yyyy-mm-dd')
-			console.log(this.dateData, '098882222---------')
 			this.maxDate = uni.$u.timeFormat(today, 'yyyy-mm-dd')
 			this.minDate = uni.$u.timeFormat((today.setMonth(today.getMonth() - 2)), 'yyyy-mm-dd')
 			this.queryData()
@@ -129,7 +133,6 @@
 						return this.getAddress(n)
 					})
 					Promise.all(promises).then(res => {
-						console.log(res, 'res---------------------------------')
 						this.dataList = res
 					}).catch(res => {}).finally(() => {
 						// uni.hideLoading()
@@ -141,6 +144,13 @@
 </script>
 
 <style lang="scss" scoped>
+	.list-empty {
+		height: 600rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
 	.ui-search {
 		margin: 20rpx 0;
 	}
