@@ -314,17 +314,17 @@
 			caiHongOptionHandle(res) {
 				// var data = [{
 				// 		"name": "StepNum",
-				// 		"value": 30000,
-				// 		"maxValue": 1000
-				// 	},
-				// 	{
-				// 		"name": "calorie",
-				// 		"value": 2000,
+				// 		"value": 3000,
 				// 		"maxValue": 10000
 				// 	},
 				// 	{
+				// 		"name": "calorie",
+				// 		"value": 200,
+				// 		"maxValue": 1000
+				// 	},
+				// 	{
 				// 		"name": "DurationNum",
-				// 		"value": 300,
+				// 		"value": 10,
 				// 		"maxValue": 30
 				// 	}
 				// ];
@@ -332,37 +332,41 @@
 				let data = res.data.rainbowDiagram;
 				let caiHongData = [];
 				let maxDataArr = [];
-
+				let resArr = [];
 				for (let i = 0; i < data.length; i++) {
 					if (data[i]['name'] === 'calorie') { //卡路里
 						this.maxDataArr[0] = data[i].maxValue;
 						this.caiHongData[0] = data[i].value ? data[i].value : 0;
+						resArr[0] = data[i];
 					}
 					if (data[i]['name'] === 'StepNum') { //步数
 						this.maxDataArr[2] = data[i].maxValue;
 						this.caiHongData[2] = data[i].value ? data[i].value : 0;
+						resArr[2]= data[i];
 					}
 					if (data[i]['name'] === 'DurationNum') { //活动时间
 						this.maxDataArr[1] = data[i].maxValue;
 						this.caiHongData[1] = data[i].value ? data[i].value : 0;
+						resArr[1] = data[i];
 					}
 				}
+				console.log(resArr,'resarr')
 				// data.foreach((item)=>{
 				// 	console.log(item)
 				// })
 				var seriesd = [],
 					legend = [];
 
-				for (var j in data) {
-					if (legend.indexOf(data[j]["name"] == -1)) {
+				for (var j in resArr) {
+					if (legend.indexOf(resArr[j]["name"] == -1)) {
 						legend.push({
 							'icon': 'rect',
-							"name": data[j]["name"]
+							"name": resArr[j]["name"]
 						});
 					}
-					var ra = data.length - 1 - j;
+					var ra = resArr.length - 1 - j;
 					seriesd.push({
-						name: data[j]["name"],
+						name: resArr[j]["name"],
 						type: 'pie',
 						radius: [(ra * 20 + 15) + "%", (30 + ra * 20) + "%"],
 						itemStyle: {
@@ -376,9 +380,9 @@
 						startAngle: 180,
 						center: ["50%", "60%"],
 						data: [{
-								value: this.maxDataArr[j] - data[j]["value"] > 0 ? data[j]["value"] : this
+								value: this.maxDataArr[j] - resArr[j]["value"] > 0 ? resArr[j]["value"] : this
 									.maxDataArr[j],
-								name: data[j]["name"],
+								name: resArr[j]["name"],
 								label: {
 									normal: {
 										postion: "center"
@@ -386,7 +390,7 @@
 								},
 							},
 							{
-								value: this.maxDataArr[j] - data[j]["value"] > 0 ? this.maxDataArr[j] - data[j]
+								value: this.maxDataArr[j] - resArr[j]["value"] > 0 ? this.maxDataArr[j] - resArr[j]
 									["value"] : 0,
 								itemStyle: {
 									normal: {
@@ -397,7 +401,7 @@
 										color: 'rgba(203,203,203,1)'
 									}
 								},
-								name: 'showtip_' + data[j]["value"]
+								name: 'showtip_' + resArr[j]["value"]
 							},
 							{
 								value: this.maxDataArr[j],
@@ -420,7 +424,7 @@
 						]
 					})
 				}
-
+				console.log('seriesd',seriesd)
 				seriesd.push({
 					type: 'gauge',
 					z: 3,
@@ -472,15 +476,32 @@
 							color: "#676767", //仪表盘颜色
 						}
 					}
-
 				})
+				let colorArr = [];
+				seriesd.forEach(item=>{
+					if( item.name ){
+						switch(item.name){
+							case 'calorie' :
+								colorArr.push("rgba(255,97,97,1)");
+								break;
+							case 'DurationNum' :
+								colorArr.push("rgba(142,230,130,1)");
+								break;
+							case 'StepNum' :
+								colorArr.push("rgba(115,227,255,1)");
+								break;	
+						}
+					}
+				})
+				console.log('qq',colorArr)
+				
 				this.caiHongOption = {
 					grid: {
 						top: 0,
 						left: 0
 					},
 					series: seriesd,
-					color: ["rgba(255,97,97,1)", "rgba(142,230,130,1)", "rgba(115,227,255,1)"]
+					color: colorArr
 				};
 			},
 			xinLvOptionHandle(res) {
