@@ -1,6 +1,17 @@
 <template>
 	<view class="ui-map">
 		<point-map :record="addressInfo"></point-map>
+		<view class="ui-float">
+			<view class="float-item" @click="getDeviceLocation">
+				<u-icon name="/static/images/map-position.png" size="36px"></u-icon>
+			<!-- 	<text>定位</text> -->
+			</view>
+			<view class="float-line"></view>
+			<view class="float-item" @click="toJump">
+				<u-icon name="/static/images/map-track.png" size="30px"></u-icon>
+			<!-- 	<text>轨迹</text> -->
+			</view>
+		</view>
 		<touch-popup :minHeight="0.12" :maxHeight="0.7" :touchHeight="64" radius="30rpx">
 			<view class="map-position">
 				<text class="label">当前位置:</text>
@@ -286,5 +297,41 @@
 				color: #353535;
 			}
 		}
+	}
+
+	.ui-float {
+		position: fixed;
+		right: 32rpx;
+		bottom: 600rpx;
+		padding: 25rpx 20rpx;
+		background-color: #FFFFFF;
+		box-sizing: border-box;
+		border-radius: 15rpx;
+		z-index: 999;
+
+		// .border {
+		// 	border-bottom: 2rpx solid #353535;
+		// }
+
+		.float-item {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			text {
+				margin-top: 4rpx;
+				font-size: 26rpx;
+			}
+		}
+
+		.float-line {
+			width: 100%;
+			border-bottom: 2rpx solid #353535;
+			margin: 20rpx 0;
+		}
+
+		// :nth-child(1) {
+		// 	border-bottom: 2rpx solid #353535;
+		// }
 	}
 </style>

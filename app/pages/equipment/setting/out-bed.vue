@@ -654,6 +654,7 @@
 						'add'
 					);
 				} else {
+					console.log(width, height, 'width,height');
 					const zone = this.roomZones.filter(ele => ele.roomZoneId === item.roomZoneId);
 					this.confirm(
 						assignDeep({}, zone[0], {
@@ -675,6 +676,10 @@
 					width,
 					height
 				} = form;
+				if (width > (this.roomSize.roomLeft + this.roomSize.roomRight)) {
+					this.clearCell();
+					return uni.$u.toast('区域超出检测范围，请重新选择');
+				}
 				width = width / this.cell.size;
 				height = height / this.cell.size;
 				const {
