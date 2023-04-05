@@ -48,7 +48,7 @@
 					</u-input>
 				</view>
 				<view class="ui-agreement">
-					<u-checkbox-group v-model="radiovalue">
+					<u-checkbox-group v-model="radiovalue" @change="handleShowModal">
 						<u-checkbox :customStyle="{ marginRight: '8rpx' }" shape="square" activeColor="#fdbc2b"
 							size="30rpx" name="ag"></u-checkbox>
 					</u-checkbox-group>
@@ -58,12 +58,23 @@
 				<text class="ui-link active" @click="goLogin">老朋友？点此登录</text>
 			</u-form>
 		</view>
+		<u-popup :closeable="true" zIndex="99" :round="10" :show="showVisible" mode="center"
+			@close="showVisible = false">
+			<view class="ui-content">
+				<scroll-view scroll-y class="uni-scroll">
+					<view v-html="content"></view>
+				</scroll-view>
+				<button @click="handleCancle" class="default" style="margin-top: 20rpx;">我已阅读</button>
+		
+			</view>
+		</u-popup>
 	</app-body>
 </template>
 
 <script>
 	import {
-		regMember
+		regMember,
+		PostUserAgreement
 	} from '../../common/http/api';
 	import jsencrypt from '@/common/utils/jsencrypt.js'
 	import {
@@ -96,6 +107,8 @@
 				},
 				radiovalue: [],
 				registrationId: '',
+				showVisible: false,
+				content: '',
 			};
 		},
 		computed: {
@@ -108,12 +121,32 @@
 		},
 		methods: {
 			/**
-			 * 跳转用户协议
+			 * 打开用户协议弹窗
 			 */
 			userAgreement() {
-				uni.navigateTo({
-					url: '/pages/myself/agreement/agreement-detail'
-				});
+				PostUserAgreement({}).then(res=>{
+					this.content = res.data.content
+				})
+				// uni.navigateTo({
+				// 	url: '/pages/myself/agreement/agreement-detail'
+				// });
+				this.showVisible = true
+			},
+			/**
+			 * 取消用户协议弹窗
+			 */
+			handleCancle(){
+				this.radiovalue = []
+				this.radiovalue.push('ag')
+				this.showVisible = false
+			},
+			/**
+			 * 点击单选框用户协议弹窗
+			 */
+			handleShowModal(){
+				if (!this.radiovalue.includes('ag')) {
+					this.userAgreement()
+				}
 			},
 			/**
 			 * 跳转登录
@@ -307,4 +340,20 @@
 			color: #0094ff;
 		}
 	}
+	.ui-content{
+		width: 600rpx;
+		height: 900rpx;
+		border-radius: 20rpx;
+		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
+		background-image: #fff;
+		padding: 100rpx 31rpx 53rpx 31rpx;
+		.uni-scroll{
+			width: 100%;
+			height: 820rpx;
+			word-wrap: break-word;
+			word-break: normal;
+			text-indent: 1em;
+		}
+	}
+	
 </style>

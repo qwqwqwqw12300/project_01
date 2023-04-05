@@ -751,6 +751,15 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/equipment/citySelect/citySelect",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 	"globalStyle": {
