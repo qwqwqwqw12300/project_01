@@ -68,6 +68,7 @@
 			 * 关键字搜索
 			 */
 			searchChange($e) {
+				this.poiList = []
 				uni.$u.debounce(() => {
 					mapSearch && mapSearch.poiKeywordsSearch({
 						// city 指定搜索所在城市，支持传入格式有：城市名、citycode和adcode  
