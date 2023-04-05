@@ -615,6 +615,10 @@
 					above,
 					stature
 				} = form;
+				if (width > (this.roomSize.roomLeft + this.roomSize.roomRight)) {
+					this.clearCell();
+					return uni.$u.toast('区域超出检测范围，请重新选择');
+				}
 				width = width / this.cell.size;
 				height = height / this.cell.size;
 				const {
@@ -625,6 +629,10 @@
 				if (this.area.find(ele => ele.active && newList.includes(ele.index) && ele.roomZoneId !== roomZoneId)) {
 					this.clearCell();
 					return uni.$u.toast('监测区域重叠，请重新选择');
+				}
+				if (width > (this.roomSize.roomLeft + this.roomSize.roomRight)) {
+					this.clearCell();
+					return uni.$u.toast('区域超出检测范围，请重新选择');
 				}
 				Object.assign(form, {
 					z1: above,
@@ -736,10 +744,8 @@
 					line,
 					column
 				} = this.getCellSize();
-				console.log(min, max, 'min, max', Math.floor(max / line), Math.floor(min / line));
 				const zoneHeight = Math.floor(max / line) - Math.floor(min / line) + 1,
 					zongWidth = (max % line) - (min % line) + 1;
-				console.log(zongWidth, zoneHeight, this, 'zongWidth, zoneHeight,');
 				return {
 					height: zoneHeight * this.cell.size,
 					width: zongWidth * this.cell.size
@@ -775,7 +781,6 @@
 				const pointW = x2 - x1,
 					pointH = y2 - y1; // 区域宽度
 				// arr.push(start);
-				console.log(start, pointW, pointH, 'getArrByAxis');
 				return this.getArrBySize(start, pointW, pointH);
 			},
 
@@ -800,7 +805,6 @@
 			 * 根据起始点和宽高计算x1 y1....
 			 */
 			getAxisBySize(start, width, height) {
-				console.log(start, width, height, 'start, width, height');
 				const {
 					scale,
 					x,
@@ -818,12 +822,6 @@
 				// 起始点在第几列
 				const x2 = x1 + width,
 					y1 = y2 - height;
-				console.log({
-					x1: uni.$u.priceFormat(x1 * this.cell.size, 1),
-					x2: uni.$u.priceFormat(x2 * this.cell.size, 1),
-					y1: uni.$u.priceFormat(y1 * this.cell.size, 1),
-					y2: uni.$u.priceFormat(y2 * this.cell.size, 1)
-				});
 				return {
 					x1: uni.$u.priceFormat(x1 * this.cell.size, 1),
 					x2: uni.$u.priceFormat(x2 * this.cell.size, 1),
