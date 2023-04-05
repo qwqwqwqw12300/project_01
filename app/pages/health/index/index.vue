@@ -950,7 +950,7 @@
 					this.moveY = y - this.inBoxXY.y;
 					let setIng = false;
 					this.listData_c.forEach((item, idx) => {
-						if (this.moveX > item.x && this.moveX < item.x + 100 && this.moveY > item.y && this.moveY < item.y + 160) {
+						if (this.moveX > item.x-50 && this.moveX < item.x + 100 && this.moveY > item.y && this.moveY < item.y + 160) {
 							this.hoverClass = 'appLi' + idx
 							this.hoverClassIndex = idx;
 							setIng = true
