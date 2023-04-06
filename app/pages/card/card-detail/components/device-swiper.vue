@@ -6,7 +6,7 @@
 				<view class="title">
 					<text class="name">{{record.name || '未命名设备'}}</text>
 					<text class="line"
-						:class="[record.onlineFlag === '1' ? 'online' : 'offline']">{{record.onlineFlag === '1' ? '在线' : '离线'}}</text>
+						:class="[record.onlineFlag === '1' ? 'online' : 'offline']">{{getOnlineStatus}}</text>
 				</view>
 				<view class="status">
 					<u-icon name="/static/images/run-status.png" size="44rpx" style="margin-right: 6rpx;" />
@@ -53,6 +53,13 @@
 					1: '低电量',
 					2: '关机',
 				} [this.record.currentStatus]
+			},
+			getOnlineStatus() {
+				return {
+					0: '离线',
+					1: '在线',
+					2: '休眠',
+				} [this.record.onlineFlag]
 			}
 		},
 		methods: {

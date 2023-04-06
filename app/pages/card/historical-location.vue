@@ -14,17 +14,19 @@
 					<u-input disabled type="text" :value="`${dateData} 23:59`" />
 				</view>
 			</view>
-			<view class="address-list">
+			<view class="address-list" @touchstart.stop @touchmove.stop @touchend.stop>
 				<template v-if="dataList.length">
-					<view class="address-cell" v-for="(item,index) in dataList" :key="index">
-						<view class="label">
-							<text>{{ item.address }}</text>
-							<text class="sub">{{ item.subAddress }}</text>
+					<scroll-view :scroll-y="true" class="scroll">
+						<view class="address-cell" v-for="(item,index) in dataList" :key="index">
+							<view class="label">
+								<text>{{ item.address }}</text>
+								<text class="sub">{{ item.subAddress }}</text>
+							</view>
+							<text class="value">
+								{{item.locateTime}}
+							</text>
 						</view>
-						<text class="value">
-							{{item.locateTime}}
-						</text>
-					</view>
+					</scroll-view>
 				</template>
 				<view class="list-empty" v-else>
 					<u-empty mode="list" text="暂无数据"></u-empty>
@@ -128,7 +130,7 @@
 					const list = res.data.map(n => {
 						n.locateTime = uni.$u.timeFormat(n.locateTime, 'yyyy-mm-dd hh:MM')
 						return n
-					}).slice(0, 4)
+					})
 					const promises = list.map(n => {
 						return this.getAddress(n)
 					})
@@ -176,6 +178,10 @@
 	.address-list {
 		margin-top: 30rpx;
 		background-color: #fff;
+
+		.scroll {
+			height: 660rpx;
+		}
 
 		.address-cell {
 			height: 128rpx;
