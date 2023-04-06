@@ -9,7 +9,8 @@
 					</swiper-item>
 				</swiper>
 			</view>
-			<scroll-view class="ui-scroll" :scroll-y="scrollAble">
+			<scroll-view class="ui-scroll" :scroll-y="scrollAble" :refresher-enabled="scrollAble" :refresher-triggered="isRefresh"
+					@refresherrefresh="pullDownRefresh" refresher-background="transparent" lower-threshold="10">
 				<view class="ui-body">
 					<view class="ui-w-h-100">
 						<view class="ui-f-center ui-white-bg ui-br-16" style="padding:30rpx 30rpx 30rpx 0"
@@ -78,6 +79,11 @@
 				</view>
 			</scroll-view>
 		</view>
+		<view v-else-if="loading">
+			<view class="ui-loading">
+				<u-loading-icon mode="semicircle" :vertical="true" text="加载中" textSize="18"></u-loading-icon>
+			</view>
+		</view>
 		<view class="ui-w-h-100" mode="data" v-else>
 			<view class="ui-p-center">
 				<image class="ui-add-watch-img1" src="../../../static/images/health_nodata.png"></image>
@@ -141,9 +147,11 @@
 					BloodOxygenTime:'',
 					ElectrocardiogramTime:''
 				},
-				pageShow: true,
+				pageShow: false,
 				isEdit:false,
 				scrollAble:true,
+				isRefresh: false,
+				loading:true,
 				caiHongOption: {},
 				caiHongData: [],
 				maxDataArr: [],
@@ -232,22 +240,35 @@
 			}
 		},
 		onShow() {
-			getDeviceListState({
-				pageSize: 10000
-			}).then(res => {
-				this.deviceList = res.rows.filter(n => {
-					return n.type === '2'
-				})
-				if (this.deviceList.length) {
-					this.swiperData = this.deviceList[0]
-					this.$store.commit('setDeviceInfo', this.swiperData)
-					this.fetchData();
-				} else {
-					this.pageShow = false
-				}
-			})
+			this.init();
 		},
 		methods: {
+			/**
+			 *下拉刷新
+			 **/
+			pullDownRefresh() {
+				this.isRefresh = true;
+				this.init();
+			},
+			init(){
+				// this.pageShow = false;
+				// this.loading = true;
+				getDeviceListState({
+					pageSize: 10000
+				}).then(res => {
+					this.deviceList = res.rows.filter(n => {
+						return n.type === '2'
+					})
+					if (this.deviceList.length) {
+						this.swiperData = this.deviceList[0]
+						this.$store.commit('setDeviceInfo', this.swiperData)
+						this.pageShow = true;
+						this.fetchData();
+					} else {
+						this.pageShow = false
+					}
+				})
+			},
 			tabEdit(){
 				this.isEdit = !this.isEdit;
 				if(this.isEdit){
@@ -295,6 +316,8 @@
 				GetCaiHongData(params).then(res => {
 					this.logstatrt(res);
 					this.fetchRes = res.data;
+					this.loading = false;
+					this.isRefresh = false;
 					console.log('fetchres', this.fetchRes)
 				})
 			},
@@ -957,7 +980,7 @@
 							y: y - this.listData_c[index].y,
 						}
 					},
-					500);
+					200);
 			},
 			AppLi_touchmove(event) {
 				if(!this.isEdit){
@@ -1418,5 +1441,12 @@
 				color: #353535;
 			}
 		}
+	}
+	.ui-loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 500px;
+		width: 100%;
 	}
 </style>
