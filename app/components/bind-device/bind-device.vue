@@ -11,10 +11,17 @@
 			<view class="ui-title">
 				<text class="ui-title-font">绑定设备</text>
 			</view>
-			<view class="ui-add-box">
+			<!-- <view class="ui-add-box">
 				<text class="ui-input-font">选择设备</text>
 				<view class="ui-select">
 					<uni-data-select v-model="deviceId" :clear="false" :localdata="devices"></uni-data-select>
+				</view>
+			</view> -->
+			<view class="ui-add-box">
+				<u-text size="28rpx" text="设备绑定"></u-text>
+				<view class="ui-select" @click="demo">
+					<u-input placeholder="请绑定设备" border="surround" v-model="deviceName" readonly
+						:suffixIcon="sheetRoom ? 'arrow-up' : 'arrow-down'"></u-input>
 				</view>
 			</view>
 			<view class="ui-btn-group">
@@ -23,6 +30,9 @@
 				<view class="plain" @click="next">确定</view>
 			</view>
 		</view>
+		<u-action-sheet :actions="devices" :closeOnClickOverlay="true" :safeAreaInsetBottom="true"
+			@select="selectRoom" :closeOnClickAction="true" @close="sheetRoom = false" :show="sheetRoom"
+			cancelText="取消"></u-action-sheet>
 	</u-popup>
 </template>
 
@@ -44,7 +54,9 @@
 		data() {
 			return {
 				show: false,
-				deviceId: ''
+				deviceId: '',
+				sheetRoom:false,
+				deviceName: '',
 			};
 		},
 		computed: {
@@ -63,7 +75,7 @@
 							break;
 					}
 					return devices.map((ele, index) => ({
-						text: ele.name,
+						name: ele.name,
 						value: index,
 						deviceId: ele.deviceId,
 						type: ele.type
@@ -73,10 +85,15 @@
 		},
 		mounted(options) {},
 		methods: {
+			demo(){
+				console.log(this.devices,'devices')
+				this.sheetRoom = true
+			},
 			close() {
 				this.show = false;
 			},
 			open() {
+				this.deviceName = ''
 				this.deviceId = '';
 				this.show = true;
 			},
@@ -133,7 +150,15 @@
 				uni.navigateTo({
 					url: '/pages/myself/device-manage/device-manage'
 				});
-			}
+			},
+			/**
+			 * 选择设备
+			 */
+			selectRoom(item) {
+				console.log(item);
+				this.deviceName = item.name
+				this.deviceId = item.value
+			},
 		}
 	};
 </script>

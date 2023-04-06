@@ -75,11 +75,11 @@
 			}
 		},
 		mounted() {
-			const newData = new Date()
-			const endTime = uni.$u.timeFormat(newData, 'yyyy-mm-dd hh:MM')
-			const startTime = uni.$u.timeFormat(new Date(newData.getTime() - 24 * 60 * 60 * 1000),
-				'yyyy-mm-dd hh:MM') //前一天
-			this.defaultValue = [startTime, endTime]
+			// const newData = new Date()
+			// const endTime = uni.$u.timeFormat(newData, 'yyyy-mm-dd hh:MM')
+			// const startTime = uni.$u.timeFormat(new Date(newData.getTime() - 24 * 60 * 60 * 1000),
+			// 	'yyyy-mm-dd hh:MM') //前一天
+			// this.defaultValue = [startTime, endTime]
 		},
 		methods: {
 			handleSelectStart() {
@@ -151,6 +151,7 @@
 			this.name = list.periodDisableTag
 			this.defaultValue[0] = list.beginTime
 			this.defaultValue[1] = list.endTime
+			console.log(this.defaultValue,'defaultValue')
 			this.id = list.uuid
 			this.enable = list.enable
 		}
