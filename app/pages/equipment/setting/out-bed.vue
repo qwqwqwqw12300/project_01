@@ -19,7 +19,7 @@
 									@touchmove.stop.prevent="touchMove($event, item, index)"
 									@touchend="touchend($event, item)"
 									:class="{ active: item.active, hover: item.status === 'hover', edit: roomZones.length && activeZone.roomZoneId === item.roomZoneId }"
-									:style="cell" v-if="item.zoneType === '2'">{{index}}
+									:style="cell" v-if="item.zoneType === '2'">
 								</view>
 								<view :key="index + 'ec'" v-else :style="cell" class="ui-cell disable">
 								</view>
@@ -218,7 +218,6 @@
 						zoneType: ele.zoneType
 					})).filter(ele => ele.zoneType === '2');
 				}
-				console.log(list, 'list--------');
 				return list;
 			},
 			/**日期信息**/
@@ -241,9 +240,6 @@
 			this.init();
 		},
 		methods: {
-			tabClick(obj, index) {
-				console.log(obj, index, 'obj');
-			},
 			/**
 			 * 设置规则
 			 */
@@ -285,22 +281,32 @@
 							roomFront = 0,
 							roomBehind = 0
 						} = location;
+						const w = (roomLeft + roomRight) % 1;
+						const h = (roomBehind + roomFront) % 1;
+						if (w !== 0 && w !== 0.5) {
+							roomLeft = this.controlSize(roomLeft),
+								roomRight = this.controlSize(roomRight)
+						}
+						if (h !== 0 && h !== 0.5) {
+							roomBehind = this.controlSize(roomBehind),
+								roomFront = this.controlSize(roomFront)
+						}
 						this.roomSize = {
 							roomLeft,
 							roomRight,
 							roomHeight,
-							roomLength,
+							roomLength: this.controlSize(roomLength),
 							roomFront,
 							roomBehind
-						}
+						};
 						// 按每格比例放大
-						roomLeft = roomLeft / cellSize;
-						roomRight = roomRight / cellSize;
+						roomLeft = this.roomSize.roomLeft / cellSize;
+						roomRight = this.roomSize.roomRight / cellSize;
 
-						roomHeight = roomHeight / cellSize;
-						roomLength = roomLength / cellSize;
-						roomFront = roomFront / cellSize;
-						roomBehind = roomBehind / cellSize;
+						roomHeight = this.roomSize.roomHeight / cellSize;
+						roomLength = this.roomSize.roomLength / cellSize;
+						roomFront = this.roomSize.roomFront / cellSize;
+						roomBehind = this.roomSize.roomBehind / cellSize;
 
 						// 盒子比例
 						const scale = {
@@ -324,18 +330,20 @@
 						};
 						/**网格个数**/
 						let idx = 0;
-						this.area = new Array((box.width / scale.x) * (box.height / scale.y)).fill('').map(ele =>
-							({
-								status: 'none',
-								axis: {
-									x: 0,
-									y: 0
-								},
-								index: idx++,
-								roomZoneId: '',
-								zoneType: '2',
-								active: false
-							}));
+						this.area = new Array(Math.ceil(box.width / scale.x) * Math.ceil(box.height / scale.y))
+							.fill('')
+							.map(ele =>
+								({
+									status: 'none',
+									axis: {
+										x: 0,
+										y: 0
+									},
+									index: idx++,
+									roomZoneId: '',
+									zoneType: '2',
+									active: false
+								}));
 						Object.assign(this.sizeInfo, {
 							x,
 							y,
@@ -392,6 +400,20 @@
 				});
 			},
 
+			/**
+			 * 长度处理（每格大小是0.5，所以不足0.5的需要补足保证格子大小）
+			 */
+			controlSize(num) {
+				const remainder = num % 1;
+				if (!remainder) {
+					return num;
+				} else if (remainder < 0.5) {
+					return Math.floor(num) + 0.5;
+				} else {
+					return Math.ceil(num);
+				}
+
+			},
 			indexInit() {
 				this.activeZone = this.roomZones.filter(ele => ele.zoneType === '2')[0] || {};
 			},
@@ -632,6 +654,7 @@
 						'add'
 					);
 				} else {
+					console.log(width, height, 'width,height');
 					const zone = this.roomZones.filter(ele => ele.roomZoneId === item.roomZoneId);
 					this.confirm(
 						assignDeep({}, zone[0], {
@@ -653,6 +676,10 @@
 					width,
 					height
 				} = form;
+				if (width > (this.roomSize.roomLeft + this.roomSize.roomRight)) {
+					this.clearCell();
+					return uni.$u.toast('区域超出检测范围，请重新选择');
+				}
 				width = width / this.cell.size;
 				height = height / this.cell.size;
 				const {
@@ -852,12 +879,6 @@
 				// 起始点在第几列
 				const x2 = x1 + width,
 					y1 = y2 - height;
-				console.log({
-					x1: uni.$u.priceFormat(x1 * this.cell.size, 1),
-					x2: uni.$u.priceFormat(x2 * this.cell.size, 1),
-					y1: uni.$u.priceFormat(y1 * this.cell.size, 1),
-					y2: uni.$u.priceFormat(y2 * this.cell.size, 1)
-				});
 				return {
 					x1: uni.$u.priceFormat(x1 * this.cell.size, 1),
 					x2: uni.$u.priceFormat(x2 * this.cell.size, 1),

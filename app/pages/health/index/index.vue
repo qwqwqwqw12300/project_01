@@ -1,5 +1,5 @@
 <template>
-	<app-body :hideTitle="true" :bg="pageShow">
+	<app-body :hideTitle="true" :bg="true">
 		<view v-if="pageShow">
 			<view class="ui-banner">
 				<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange"
@@ -59,10 +59,10 @@
 								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
 								@touchend="AppLi_touchend(index)" v-if="item.isShow || isEdit">
 								<SleepCard v-if="item.type === '1'" :date="date" :fetchRes="fetchRes" :item="item" :isEdit="isEdit" @iconClick="editCard"></SleepCard>
-								<XinLvCard v-if="item.type === '2' " :date="date" :fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinLvCard>
-								<XueYaCard v-if="item.type === '3'" :date="date" :fetchRes="fetchRes" :option="xueYaOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYaCard>
-								<XueYangCard v-if="item.type === '4'" :date="date" :fetchRes="fetchRes" :option="xueYangOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYangCard>
-								<XinDianCard v-if="item.type === '5'" :date="date" :fetchRes="fetchRes" :option="xinDianOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinDianCard>
+								<XinLvCard v-if="item.type === '2' " :date="fetchRes.HeartRateTime.substr(5,6)" :fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinLvCard>
+								<XueYaCard v-if="item.type === '3'" :date="fetchRes.BloodPressureTime.substr(5,6)" :fetchRes="fetchRes" :option="xueYaOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYaCard>
+								<XueYangCard v-if="item.type === '4'" :date="fetchRes.BloodOxygenTime.substr(5,6)" :fetchRes="fetchRes" :option="xueYangOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYangCard>
+								<XinDianCard v-if="item.type === '5'" :date="fetchRes.ElectrocardiogramTime.substr(5,6)" :fetchRes="fetchRes" :option="xinDianOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinDianCard>
 							</view>
 							<!-- 滑块 -->
 							<movable-view v-if="moviewShow" :animation="false" class="ui-mov-view ui-br-16" :x="moveX"
@@ -135,7 +135,11 @@
 					tWatchBloodOxygen: [],
 					HeartRateList: [],
 					electrocardiogramMapList: [],
-					sleepMap: ''
+					sleepMap: '',
+					HeartRateTime:'',
+					BloodPressureTime:'',
+					BloodOxygenTime:'',
+					ElectrocardiogramTime:''
 				},
 				pageShow: true,
 				isEdit:false,
@@ -284,7 +288,8 @@
 				} = this.swiperData
 				const params = {
 					deviceId,
-					dayTime: uni.$u.timeFormat(new Date(), 'yyyy-mm-dd'),
+					// dayTime: uni.$u.timeFormat(new Date(), 'yyyy-mm-dd'),
+					dayTime:'',
 					humanId,
 				}
 				GetCaiHongData(params).then(res => {
@@ -309,17 +314,17 @@
 			caiHongOptionHandle(res) {
 				// var data = [{
 				// 		"name": "StepNum",
-				// 		"value": 30000,
-				// 		"maxValue": 1000
-				// 	},
-				// 	{
-				// 		"name": "calorie",
-				// 		"value": 2000,
+				// 		"value": 3000,
 				// 		"maxValue": 10000
 				// 	},
 				// 	{
+				// 		"name": "calorie",
+				// 		"value": 200,
+				// 		"maxValue": 1000
+				// 	},
+				// 	{
 				// 		"name": "DurationNum",
-				// 		"value": 300,
+				// 		"value": 10,
 				// 		"maxValue": 30
 				// 	}
 				// ];
@@ -327,37 +332,41 @@
 				let data = res.data.rainbowDiagram;
 				let caiHongData = [];
 				let maxDataArr = [];
-
+				let resArr = [];
 				for (let i = 0; i < data.length; i++) {
 					if (data[i]['name'] === 'calorie') { //卡路里
 						this.maxDataArr[0] = data[i].maxValue;
 						this.caiHongData[0] = data[i].value ? data[i].value : 0;
+						resArr[0] = data[i];
 					}
 					if (data[i]['name'] === 'StepNum') { //步数
 						this.maxDataArr[2] = data[i].maxValue;
 						this.caiHongData[2] = data[i].value ? data[i].value : 0;
+						resArr[2]= data[i];
 					}
 					if (data[i]['name'] === 'DurationNum') { //活动时间
 						this.maxDataArr[1] = data[i].maxValue;
 						this.caiHongData[1] = data[i].value ? data[i].value : 0;
+						resArr[1] = data[i];
 					}
 				}
+				console.log(resArr,'resarr')
 				// data.foreach((item)=>{
 				// 	console.log(item)
 				// })
 				var seriesd = [],
 					legend = [];
 
-				for (var j in data) {
-					if (legend.indexOf(data[j]["name"] == -1)) {
+				for (var j in resArr) {
+					if (legend.indexOf(resArr[j]["name"] == -1)) {
 						legend.push({
 							'icon': 'rect',
-							"name": data[j]["name"]
+							"name": resArr[j]["name"]
 						});
 					}
-					var ra = data.length - 1 - j;
+					var ra = resArr.length - 1 - j;
 					seriesd.push({
-						name: data[j]["name"],
+						name: resArr[j]["name"],
 						type: 'pie',
 						radius: [(ra * 20 + 15) + "%", (30 + ra * 20) + "%"],
 						itemStyle: {
@@ -371,9 +380,9 @@
 						startAngle: 180,
 						center: ["50%", "60%"],
 						data: [{
-								value: this.maxDataArr[j] - data[j]["value"] > 0 ? data[j]["value"] : this
+								value: this.maxDataArr[j] - resArr[j]["value"] > 0 ? resArr[j]["value"] : this
 									.maxDataArr[j],
-								name: data[j]["name"],
+								name: resArr[j]["name"],
 								label: {
 									normal: {
 										postion: "center"
@@ -381,7 +390,7 @@
 								},
 							},
 							{
-								value: this.maxDataArr[j] - data[j]["value"] > 0 ? this.maxDataArr[j] - data[j]
+								value: this.maxDataArr[j] - resArr[j]["value"] > 0 ? this.maxDataArr[j] - resArr[j]
 									["value"] : 0,
 								itemStyle: {
 									normal: {
@@ -392,7 +401,7 @@
 										color: 'rgba(203,203,203,1)'
 									}
 								},
-								name: 'showtip_' + data[j]["value"]
+								name: 'showtip_' + resArr[j]["value"]
 							},
 							{
 								value: this.maxDataArr[j],
@@ -415,7 +424,7 @@
 						]
 					})
 				}
-
+				console.log('seriesd',seriesd)
 				seriesd.push({
 					type: 'gauge',
 					z: 3,
@@ -467,15 +476,32 @@
 							color: "#676767", //仪表盘颜色
 						}
 					}
-
 				})
+				let colorArr = [];
+				seriesd.forEach(item=>{
+					if( item.name ){
+						switch(item.name){
+							case 'calorie' :
+								colorArr.push("rgba(255,97,97,1)");
+								break;
+							case 'DurationNum' :
+								colorArr.push("rgba(142,230,130,1)");
+								break;
+							case 'StepNum' :
+								colorArr.push("rgba(115,227,255,1)");
+								break;	
+						}
+					}
+				})
+				console.log('qq',colorArr)
+				
 				this.caiHongOption = {
 					grid: {
 						top: 0,
 						left: 0
 					},
 					series: seriesd,
-					color: ["rgba(255,97,97,1)", "rgba(142,230,130,1)", "rgba(115,227,255,1)"]
+					color: colorArr
 				};
 			},
 			xinLvOptionHandle(res) {
@@ -551,7 +577,8 @@
 						res.data.dpMapList[i].value
 					])
 				}
-
+				const dateRes = res.data.BloodPressureTime.slice(0,4) + '-' + res.data.BloodPressureTime.slice(5,7) + '-' + res.data.BloodPressureTime.slice(8,10);
+				console.log(dateRes,'dateres')
 				this.xueYaOption = {
 					title: {
 						text: ''
@@ -571,8 +598,8 @@
 						type: 'time',
 						show: false,
 						// interval: 6 * 3600 * 1000, // 间隔为6小时
-						min: `${this.echartDate + ' 00:00:00'}`, // x轴起始时间
-						max: `${this.echartDate + ' 23:59:59'}`, // x轴结束时间
+						min: `${dateRes + ' 00:00:00'}`, // x轴起始时间
+						max: `${dateRes + ' 23:59:59'}`, // x轴结束时间
 						boundaryGap: false,
 						axisTick: {
 							show: false
@@ -678,6 +705,7 @@
 					])
 				})
 				console.log('resarr', resArr)
+				const dateRes = res.data.BloodOxygenTime.slice(0,4) + '-' + res.data.BloodOxygenTime.slice(5,7) + '-' + res.data.BloodOxygenTime.slice(8,10);
 				this.xueYangOption = {
 					notMerge: true,
 					backgroundColor: '#fff',
@@ -691,8 +719,8 @@
 						show: false,
 						type: 'time',
 						// interval: 6 * 60 * 60 * 1000, // 设置x轴间隔为6小时
-						min: `${this.echartDate + ' 00:00:00'}`, // x轴起始时间
-						max: `${this.echartDate + ' 23:49:00'}`, // x轴结束时间
+						min: `${dateRes + ' 00:00:00'}`, // x轴起始时间
+						max: `${dateRes + ' 23:49:00'}`, // x轴结束时间
 						// boundaryGap: false,
 						axisTick: { //坐标轴刻度相关设置。
 							show: false,

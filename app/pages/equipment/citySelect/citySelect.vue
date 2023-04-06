@@ -1,3 +1,4 @@
+<!-- 城市选择页面 -->
 <template>
 	<view class="ui-box">
 		<city-select @cityClick="cityClick" :formatName="formatName" :activeCity="activeCity" :obtainCitys="obtainCitys"
@@ -6,7 +7,7 @@
 </template>
 
 <script>
-	import citys from './citys.js'
+	import citys from './citys.js' //导入城市列表
 	export default {
 		data() {
 			return {
@@ -27,17 +28,12 @@
 			this.obtainCitys = citys
 		},
 		methods: {
+			/**
+			 * 选择城市
+			 */
 			cityClick(item) {
 				uni.$emit('citySelect', item)
 				uni.navigateBack()
-				// uni.showToast({
-				// 	icon: 'none',
-				// 	title: 'item: ' + JSON.stringify(item),
-				// 	// #ifdef MP-WEIXIN
-				// 	duration: 3000,
-				// 	// #endif
-				// 	mask: true
-				// })
 			}
 		}
 	}

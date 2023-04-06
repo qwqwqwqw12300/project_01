@@ -140,7 +140,7 @@
 		background-color: #FFFFFF;
 		box-sizing: border-box;
 		padding: 0 12px;
-		z-index: 9999;
+		z-index: 999;
 	}
 
 	.fixedboxTouch {

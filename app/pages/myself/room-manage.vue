@@ -24,6 +24,7 @@
 						<template v-if="item.devices.length">
 							<view class="device-status">
 								<text class="online" v-if="getDevices(item).onlineFlag == 1">在线</text>
+								<text class="offline" v-else-if="getDevices(item).onlineFlag == 2">休眠</text>
 								<text class="offline" v-else>离线</text>
 							</view>
 							<view class="device-info">
@@ -61,6 +62,7 @@
 						<template v-if="item.devices && item.devices.length">
 							<view class="device-status">
 								<text class="online" v-if="getDevices(item).onlineFlag == 1">在线</text>
+								<text class="offline" v-else-if="getDevices(item).onlineFlag == 2">休眠</text>
 								<text class="offline" v-else>离线</text>
 							</view>
 							<view class="device-info">

@@ -52,30 +52,37 @@
 			}
 		},
 		methods: {
+			/**
+			 * 选择搜索结果
+			 */
 			handleSelect(val) {
 				uni.$emit('searchData', val);
-				uni.navigateBack()
+				uni.navigateBack();
 			},
 
 			back() {
 				uni.$off('searchData');
 				uni.navigateBack();
 			},
-
+			/**
+			 * 关键字搜索
+			 */
 			searchChange($e) {
+				this.poiList = []
 				uni.$u.debounce(() => {
 					mapSearch && mapSearch.poiKeywordsSearch({
 						// city 指定搜索所在城市，支持传入格式有：城市名、citycode和adcode  
-						key: $e,
+						key: this.currentCity + $e,
 						cityLimit: false,
 						sortrule: 0,
 						offset: 10
 					}, ({
 						poiList
 					}) => {
-						if (poiList && poiList.length) {
-							this.poiList = poiList;
-						}
+						this.poiList = poiList;
+						// if (poiList && poiList.length) {
+						// 	this.poiList = poiList;
+						// }
 					})
 				}, 500)
 			},
@@ -93,22 +100,26 @@
 				});
 
 			},
+
+			/**
+			 * 选择城市
+			 */
 			cityPicker() {
 				uni.$on('citySelect', data => {
-					this.search = data.cityName
-					this.currentCity = data.cityName
+					this.currentCity = data.cityName;
 					this.searchChange(this.search)
 				})
 				this.$setCache('position', this.currentCity);
 				uni.navigateTo({
 					url: '/pages/equipment/citySelect/citySelect'
-				})
+				});
 			}
 		},
 		created() {
-			console.log(66, 'pp--------------------')
 			this.getLocation().then(location => {
-				console.log(location, '99999-------------')
+				uni.showLoading({
+					title: '加载中'
+				})
 				this.currentCity = location.address.city
 				mapSearch && mapSearch.poiSearchNearBy({
 					point: location,
@@ -120,6 +131,7 @@
 					if (poiList && poiList.length) {
 						this.poiList = poiList;
 					}
+					uni.hideLoading()
 				})
 			});
 		},
