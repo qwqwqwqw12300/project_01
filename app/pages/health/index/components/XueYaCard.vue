@@ -76,7 +76,7 @@ export default {
 	.ui-pos-right{
 		position: absolute;
 		right: 20rpx;
-		top:6rpx;
+		top: 20rpx;
 	}
 	
 	.max {

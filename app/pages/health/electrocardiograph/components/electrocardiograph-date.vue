@@ -38,6 +38,8 @@
 			</view>
 		</view>
 		<view style="margin-top: 30rpx;width: 100%;height: 30rpx;"></view>
+		<u-empty mode="search" icon="http://cdn.uviewui.com/uview/empty/search.png" v-if="cellList.length ==0">
+		</u-empty>
 	</view>
 </template>
 

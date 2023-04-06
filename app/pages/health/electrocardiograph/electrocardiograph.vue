@@ -1,5 +1,5 @@
 <template>
-	<app-body :bg="false" >
+	<app-body :bg="false" :needService="false">
 		<app-logo text="心电" :isShare="true"></app-logo>
 		<view class="box">
 			<dates @change="change"></dates>
