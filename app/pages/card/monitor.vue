@@ -47,10 +47,14 @@
 				countDown:''
 			};
 		},
-		mounted() {
-
+		onHide() {
+			clearInterval(this.countDown)
+			uni.navigateBack()
 		},
 		onBackPress() {
+			clearInterval(this.countDown)
+		},
+		destroyed() {
 			clearInterval(this.countDown)
 		},
 		methods: {
@@ -64,10 +68,6 @@
 							this.disable = false
 							this.second = 60
 							clearInterval(this.countDown)
-							uni.showModal({
-								title: '提示',
-								content: '设备暂时无响应，请稍后再试。'
-							});
 						}
 					},1000)
 				}

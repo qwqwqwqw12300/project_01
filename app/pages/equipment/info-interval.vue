@@ -57,10 +57,6 @@
 				//日期选择组件
 				showPicker: false,
 				defaultValue:['2023-02-27 14:00', '2023-03-05 13:59'],
-				startDate: "2023/02/27",
-				endDate: "2023/03/05",
-				startTime: "14:00",
-				endTime: "15:00",
 				timeShow:false,
 				defaultTime:[0, 0, 0, 23, 59],
 				id:'',
@@ -88,23 +84,26 @@
 			handleTime(){
 				this.timeShow = true
 			},
-			confrim(e){
-				console.log(e)//确定事件 =>12:30-17:30
-				this.startTime = e.aboveTime
-				this.endTime = e.underTime
-				this.timeShow = false
-				
-				// this.defaultTime = this.defaultTime.forEach(item=>{
-				// 	item = parseInt(item)
-				// })
-				console.log(this.defaultTime)
-			},
 			cancel(e){
 				this.timeShow = false
 			},
 			onSelected(e){
-				this.defaultValue = [...e.value]
-				this.showPicker = false
+				let date1 = new Date(e.value[0]) //要对比的时间
+				let date2 = new Date(); //获取当前时间对象
+				let num = 24 * 60 * 60 * 1000; //一天的毫秒数
+				let res = date2.getTime() - date1.getTime(); //两个时间的毫秒差
+				if (res > 0) {
+					if (res > num) {
+						uni.$u.toast('选择的时间已过期，请重新选择')
+					} else if (date1.getDate() != date2.getDate()) {
+						uni.$u.toast('选择的时间已过期，请重新选择')
+					} else {
+						uni.$u.toast('选择的时间已过期，请重新选择')
+					}
+				}else{
+					this.defaultValue = [...e.value]
+					this.showPicker = false
+				}
 			},
 			handleDel() {
 				const list = []
