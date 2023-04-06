@@ -4,12 +4,12 @@
 		<view class="ui-float">
 			<view class="float-item" @click="getDeviceLocation">
 				<u-icon name="/static/images/map-position.png" size="36px"></u-icon>
-			<!-- 	<text>定位</text> -->
+				<!-- 	<text>定位</text> -->
 			</view>
 			<view class="float-line"></view>
 			<view class="float-item" @click="toJump">
 				<u-icon name="/static/images/map-track.png" size="30px"></u-icon>
-			<!-- 	<text>轨迹</text> -->
+				<!-- 	<text>轨迹</text> -->
 			</view>
 		</view>
 		<touch-popup :minHeight="0.12" :maxHeight="0.7" :touchHeight="64" radius="30rpx">
@@ -125,9 +125,10 @@
 							point: {
 								latitude,
 								longitude
-							}
+							},
 						},
 						e => {
+							console.log(e, '------------------eeeeee')
 							resolve({
 								location: {
 									latitude,
@@ -167,6 +168,7 @@
 				GetLastPoint({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
+					console.log(res, 'ryryyryr----------------')
 					if (!res.data.location?.latitude) {
 						this.addressInfo = {
 							latitude: '',
@@ -302,7 +304,7 @@
 	.ui-float {
 		position: fixed;
 		right: 32rpx;
-		bottom: 600rpx;
+		bottom: 300rpx;
 		padding: 25rpx 20rpx;
 		background-color: #FFFFFF;
 		box-sizing: border-box;
