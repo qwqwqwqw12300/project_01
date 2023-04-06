@@ -17,7 +17,7 @@
 						<view class="wd-device-name">
 							<view class="wd-list-static" :class="{online: getDevice(human).onlineFlag === '1'}"></view>
 							<text class="wd-list-static-font" v-if="getDevice(human).onlineFlag === '1'">在线</text>
-							<text class="wd-list-static-font" v-if="getDevice(human).onlineFlag === '2'">休眠</text>
+							<text class="wd-list-static-font" v-else-if="getDevice(human).onlineFlag === '2'">休眠</text>
 							<text class="wd-list-static-font" v-else>离线</text>
 						</view>
 					</view>
