@@ -11,6 +11,7 @@
 		<view class="item-box" @click="edit(device)">
 			<view class="device-status">
 				<text class="online" v-if="device.onlineFlag == 1">在线</text>
+				<text class="offline" v-else-if="device.onlineFlag == 2">休眠</text>
 				<text class="offline" v-else>离线</text>
 			</view>
 			<view class="device-info">
