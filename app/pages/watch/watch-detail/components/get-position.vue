@@ -1,6 +1,7 @@
 <template>
 	<view class="ui-map">
 		<point-map :record="addressInfo"></point-map>
+		<map v-show="false"></map>
 		<view class="map-popup">
 			<view class="map-position">
 				<text class="label">当前位置:</text>
