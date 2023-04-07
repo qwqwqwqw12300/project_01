@@ -29,7 +29,7 @@
 					最近更新时间：{{ record.updateTime || '----' }}
 				</view>
 			</view>
-			<view class="device-set" @click="jumpUrl" v-show="record.onlineFlag">
+			<view class="device-set" @click="jumpUrl">
 				<u-icon name="/static/images/device-set.png" size="44rpx" style="margin-right: 4rpx;">
 				</u-icon>配置
 			</view>
@@ -63,10 +63,12 @@
 		},
 		methods: {
 			jumpUrl() {
+				if (!this.record.onlineFlag) {
+					return uni.navigateTo({
+						url: '/pages/watch/add-watch'
+					})
+				}
 				this.$store.commit('setDeviceInfo', this.record)
-				uni.navigateTo({
-					url: '/pages/watch/watch-set/watch-set'
-				})
 			}
 		}
 	}

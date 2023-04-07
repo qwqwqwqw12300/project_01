@@ -9,15 +9,12 @@
 			<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 				{{date}}
 			</view>
-			<view class="ui-w-h-100 ui-f-between ui-mar-t-20" v-if="fetchRes.spMapList.length">
+			<view class="ui-w-h-100 ui-f-between ui-mar-t-20">
 				<app-echarts class="ui-echarts-size" :option="option" id="xueYaChart">
 				</app-echarts>
 				<!-- <image class="ui-img-size4" src="../../static/images/xueyaLine.png"></image> -->
 			</view>
-			<view class="ui-w-h-100 ui-mar-t-20" v-if="!fetchRes.spMapList.length">
-				<view class="ui-noData-font">无数据</view>
-			</view>
-			<view class="ui-f-between ui-w-h-100 ui-mar-t-10" v-if="fetchRes.spMapList.length">
+			<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
 				<text class="ui-font-22 ui-font-c-888">00:00</text>
 				<text class="ui-font-22 ui-font-c-888">24:00</text>
 			</view>
