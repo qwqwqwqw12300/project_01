@@ -59,9 +59,8 @@
 			 * 菜单点击
 			 */
 			gridClick(item) {
-				this.$setCache('familyInfo', item);
 				uni.navigateTo({
-					url: '/pages/myself/room-manage'
+					url: `/pages/myself/room-manage?id=${item.familyId}`
 				});
 			},
 			/**

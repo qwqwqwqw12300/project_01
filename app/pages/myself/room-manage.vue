@@ -117,6 +117,9 @@
 		PostWatchUnBind
 	} from '@/common/http/api.js';
 	import {
+		mapState,
+	} from 'vuex';
+	import {
 		assignDeep
 	} from '../../common/utils/util';
 	export default {
@@ -128,12 +131,14 @@
 				/**人员列表**/
 				humanList: [],
 				/**家庭信息**/
-				familyInfo: {},
-				bindPayload: {}
+				// familyInfo: {},
+				bindPayload: {},
+				familyId: ''
 			};
 		},
-		onLoad() {
-			this.familyInfo = this.$getCache('familyInfo');
+		onLoad(params) {
+			this.familyId = params.id;
+			// this.familyInfo = this.$getCache('familyInfo');
 			this.handleInitList()
 		},
 		computed: {
@@ -146,6 +151,15 @@
 
 				}
 			},
+			...mapState({
+				/**所有家庭列表**/
+				familyInfo: function(state) {
+					const familys = state.familyList.filter(item =>
+						item.familyId == this.familyId
+					);
+					return familys[0] || {}
+				}
+			}),
 			/**获取房间图标**/
 			getRoomIcon: () => {
 				return (type) => {
@@ -245,10 +259,10 @@
 				this.$store.dispatch('getAllDevices');
 				Promise.all([
 					PostRoomList({ // 房间列表
-						familyId: this.familyInfo.familyId,
+						familyId: this.familyId,
 					}),
 					PostSelectTHumanListByFamilyId({ // 人员列表
-						familyId: this.familyInfo.familyId,
+						familyId: this.familyId,
 					})
 				]).then(res => {
 					this.list = res[0].rows;
@@ -259,10 +273,8 @@
 			/**
 			 * 家庭信息修改完成
 			 */
-			familyNext({
-				name
-			}) {
-				this.familyInfo.name = name;
+			familyNext() {
+				this.$store.dispatch('getAllFamily');
 			},
 			/**
 			 * 编辑家庭信息

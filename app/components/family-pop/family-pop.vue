@@ -6,7 +6,7 @@
 -->
 
 <template>
-	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close" @open="open">
+	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
 		<view class="wd-add">
 			<view class="wd-title">
 				<text class="wd-title-font">{{mode === 'add' ? '新建家庭': '修改家庭'}}</text>
@@ -27,7 +27,7 @@
 			</view>
 			<view class="wd-input">
 				<text class="wd-input-font">具体楼栋/单元</text>
-				<u-input border="surround" v-model="form.detailedAddress" placeholder="请输入具体楼栋/单元"  clearable>
+				<u-input border="surround" v-model="form.detailedAddress" placeholder="请输入具体楼栋/单元" clearable>
 				</u-input>
 			</view>
 			<view class="wd-hr"></view>
@@ -62,7 +62,7 @@
 				form: {
 					familyName: '', //家庭名称
 					address: '', //家庭地址
-					detailedAddress:''//详细地址
+					detailedAddress: '' //详细地址
 				}
 			};
 		},
@@ -76,7 +76,7 @@
 			 * 打开家庭
 			 */
 			open(data = {}) {
-				this.form.address = this.$store.getters.positionInfo.address || ''
+				this.form.address = this.$store.getters.positionInfo.address || '';
 				Object.assign(this.form, data);
 				this.show = true;
 			},

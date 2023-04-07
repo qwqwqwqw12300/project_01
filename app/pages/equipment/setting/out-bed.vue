@@ -639,7 +639,7 @@
 				if (isAdd) {
 					if (this.roomZones.length >= 4) {
 						this.clearCell();
-						return uni.$u.toast('子区域不能超过4个');
+						return uni.$u.toast('屏蔽区域与离床区域的子区域总数不能超过4个');
 					}
 					this.$refs.zonePopRef.open({
 							roomId: this.deviceInfo.roomId,
