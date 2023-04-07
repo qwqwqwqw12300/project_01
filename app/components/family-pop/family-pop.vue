@@ -76,8 +76,13 @@
 			 * 打开家庭
 			 */
 			open(data = {}) {
-				this.form.address = this.$store.getters.positionInfo.address || '';
-				Object.assign(this.form, data);
+				this.$store.dispatch('setLocation').then(res => {
+					console.log(res, 'setLocation');
+					if (res) {
+						this.form.address = res.address || ''
+					}
+					Object.assign(this.form, data);
+				})
 				this.show = true;
 			},
 			next() {
