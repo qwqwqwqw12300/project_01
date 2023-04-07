@@ -1,6 +1,6 @@
 <template>
 	<app-body :hideTitle="true" :bg="true">
-		<view v-if="pageShow">
+		<view v-if="!loading">
 			<view class="ui-banner">
 				<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange"
 					:current="current">
@@ -23,7 +23,7 @@
 									<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
 									<view class="ui-text-box ui-mar-t-15">
 										<text class="ui-font-1">{{caiHongData[0]?caiHongData[0]:0}}</text>
-										<text class="ui-font-2">/{{maxDataArr[0]?maxDataArr[0]:1000}}</text>
+										<text class="ui-font-2">/{{maxDataArr[0]?maxDataArr[0]:0}}</text>
 									</view>
 								</view>
 								<view class="ui-w-47 ui-f-start ui-f-wrap">
@@ -31,7 +31,7 @@
 									<text class="ui-font-24 ui-mar-l-10">活动(分)</text>
 									<view class="ui-text-box ui-mar-t-15">
 										<text class="ui-font-1">{{caiHongData[1]?caiHongData[1]:0}}</text>
-										<text class="ui-font-2">/{{maxDataArr[1]?maxDataArr[1]:30}}</text>
+										<text class="ui-font-2">/{{maxDataArr[1]?maxDataArr[1]:0}}</text>
 									</view>
 								</view>
 								<view class="ui-w-52 ui-f-start ui-mar-t-45 ui-f-wrap">
@@ -39,7 +39,7 @@
 									<text class="ui-font-24 ui-mar-l-10">行走<步></text>
 									<view class="ui-text-box ui-mar-t-15">
 										<text class="ui-font-1">{{caiHongData[2]?caiHongData[2]:0}}</text>
-										<text class="ui-font-2">/{{maxDataArr[2]?maxDataArr[2]:10000}}</text>
+										<text class="ui-font-2">/{{maxDataArr[2]?maxDataArr[2]:0}}</text>
 									</view>
 								</view>
 								<view class="ui-w-47 ui-f-start ui-mar-t-45 ui-f-wrap">
@@ -59,11 +59,11 @@
 								:class="(hoverClass==='appLi'+index)?'select':''"
 								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
 								@touchend="AppLi_touchend(index)" v-if="item.isShow || isEdit">
-								<SleepCard v-if="item.type === '1'" :date="date" :fetchRes="fetchRes" :item="item" :isEdit="isEdit" @iconClick="editCard"></SleepCard>
-								<XinLvCard v-if="item.type === '2' " :date="fetchRes.HeartRateTime.substr(5,6)" :fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinLvCard>
-								<XueYaCard v-if="item.type === '3'" :date="fetchRes.BloodPressureTime.substr(5,6)" :fetchRes="fetchRes" :option="xueYaOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYaCard>
-								<XueYangCard v-if="item.type === '4'" :date="fetchRes.BloodOxygenTime.substr(5,6)" :fetchRes="fetchRes" :option="xueYangOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYangCard>
-								<XinDianCard v-if="item.type === '5'" :date="fetchRes.ElectrocardiogramTime.substr(5,6)" :fetchRes="fetchRes" :option="xinDianOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinDianCard>
+								<SleepCard v-if="item.type === '1'" :date="fetchRes.sleepTime ? fetchRes.sleepTime : '暂无数据'" :fetchRes="fetchRes" :item="item" :isEdit="isEdit" @iconClick="editCard"></SleepCard>
+								<XinLvCard v-if="item.type === '2' " :date="fetchRes.HeartRateTime.substr(5,6) && fetchRes.HeartRateList.length !== 0? fetchRes.HeartRateTime.substr(5,6) : '暂无数据'" :fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinLvCard>
+								<XueYaCard v-if="item.type === '3'" :date="fetchRes.BloodPressureTime.substr(5,6) && fetchRes.spMapList.length !== 0? fetchRes.BloodPressureTime.substr(5,6) : '暂无数据'" :fetchRes="fetchRes" :option="xueYaOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYaCard>
+								<XueYangCard v-if="item.type === '4'" :date="fetchRes.BloodOxygenTime.substr(5,6) && fetchRes.tWatchBloodOxygen.length !== 0 ? fetchRes.BloodOxygenTime.substr(5,6) : '暂无数据'" :fetchRes="fetchRes" :option="xueYangOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XueYangCard>
+								<XinDianCard v-if="item.type === '5'" :date="fetchRes.ElectrocardiogramTime.substr(5,6) && fetchRes.electrocardiogramMapList.length ? fetchRes.ElectrocardiogramTime.substr(5,6): '暂无数据'" :fetchRes="fetchRes" :option="xinDianOption" :item="item" :isEdit="isEdit" @iconClick="editCard"></XinDianCard>
 							</view>
 							<!-- 滑块 -->
 							<movable-view v-if="moviewShow" :animation="false" class="ui-mov-view ui-br-16" :x="moveX"
@@ -79,24 +79,9 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view v-else-if="loading">
+		<view v-else>
 			<view class="ui-loading">
 				<u-loading-icon mode="semicircle" :vertical="true" text="加载中" textSize="18"></u-loading-icon>
-			</view>
-		</view>
-		<view class="ui-w-h-100" mode="data" v-else>
-			<view class="ui-p-center">
-				<image class="ui-add-watch-img1" src="../../../static/images/health_nodata.png"></image>
-				<view>
-					<view class="ui-add-watch-font">未添加任何手表设备</view>
-				</view>
-			</view>
-			
-			<view class="ui-add-watch">
-				<image src="../../../static/images/add_watch.png" class="ui-add-watch-img2" @click="jumpUrl('/pages/watch/add-watch')"></image>
-			</view>
-			<view class="ui-add-watch-text">
-				添加手表
 			</view>
 		</view>
 <!-- 		<touch-popup :minHeight="0.03" :maxHeight="0.15" :touchHeight="64" radius="30rpx">
@@ -138,10 +123,11 @@
 			return {
 				fetchRes: {
 					spMapList: [],
+					dpMapList:[],
 					tWatchBloodOxygen: [],
 					HeartRateList: [],
 					electrocardiogramMapList: [],
-					sleepMap: '',
+					sleepMap: 1,
 					HeartRateTime:'',
 					BloodPressureTime:'',
 					BloodOxygenTime:'',
@@ -314,7 +300,12 @@
 					humanId,
 				}
 				GetCaiHongData(params).then(res => {
+					res.data.sleepMap = res.data.sleepMap ? res.data.sleepMap : 1; // 无数据默认显示1
 					this.logstatrt(res);
+					// var tt = {
+					// 	data:this.fetchRes
+					// }
+					// this.logstatrt(tt);
 					this.fetchRes = res.data;
 					this.loading = false;
 					this.isRefresh = false;
@@ -529,7 +520,21 @@
 			},
 			xinLvOptionHandle(res) {
 				// var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
-				var arr = res.data.HeartRateList;
+				let arr = [];
+				if(res.data.HeartRateList.length !== 0){
+					arr = res.data.HeartRateList;
+				}else{
+					arr = [
+						{time: this.date+" 00:51:00", value: "20"},
+						{time: this.date+" 06:51:00", value: "33"},
+						{time: this.date+" 10:51:00", value: "34"},
+						{time: this.date+" 13:51:00", value: "45"},
+						{time: this.date+" 15:51:00", value: "25"},
+						{time: this.date+" 18:51:00", value: "60"},
+						{time: this.date+" 21:51:00", value: "35"},
+						{time: this.date+" 23:51:00", value: "27"},
+					]
+				}
 				let resArr = [];
 				arr.forEach((item) => {
 					resArr.push(item.value)
@@ -584,24 +589,61 @@
 
 			},
 			xueYaOptionHandle(res) {
+				const dateRes = res.data.BloodPressureTime.slice(0,4) + '-' + res.data.BloodPressureTime.slice(5,7) + '-' + res.data.BloodPressureTime.slice(8,10);
 				let spMapList = []
 				let dpMapList = []
+				let spArr = [];
+				let dpArr = [];
+				if(res.data.spMapList.length !== 0){
+					spArr = res.data.spMapList;
+				}else{
+					spArr = [
+						{time: (dateRes ? dateRes : this.echartDate)+" 00:00:01", value: "90"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 02:00:00", value: "129"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 04:00:00", value: "90"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 06:00:00", value: "129"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 08:00:00", value: "90"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 10:00:00", value: "129"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 12:00:00", value: "90"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 14:00:00", value: "129"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 16:00:00", value: "90"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 18:00:00", value: "129"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 20:00:00", value: "90"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 22:00:00", value: "129"}
+					]
+				}
+				if(res.data.dpMapList.length !== 0){
+					dpArr = res.data.dpMapList;
+				}else{
+					dpArr = [
+						{time: (dateRes ? dateRes : this.echartDate)+" 00:00:01", value: "60"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 02:00:00", value: "75"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 04:00:00", value: "60"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 06:00:00", value: "75"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 08:00:00", value: "60"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 10:00:00", value: "75"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 12:00:00", value: "60"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 14:00:00", value: "75"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 16:00:00", value: "60"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 18:00:00", value: "75"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 20:00:00", value: "60"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 22:00:00", value: "75"}
+					]
+				}
 
-				console.log(res, 'res')
-				for (let i = 0; i < res.data.spMapList.length; i++) {
+				for (let i = 0; i < spArr.length; i++) {
 					spMapList.push([
-						res.data.spMapList[i].time,
-						res.data.spMapList[i].value
+						spArr[i].time,
+						spArr[i].value
 					])
 				}
-				for (let i = 0; i < res.data.dpMapList.length; i++) {
+				for (let i = 0; i < dpArr.length; i++) {
 					dpMapList.push([
-						res.data.dpMapList[i].time,
-						res.data.dpMapList[i].value
+						dpArr[i].time,
+						dpArr[i].value
 					])
 				}
-				const dateRes = res.data.BloodPressureTime.slice(0,4) + '-' + res.data.BloodPressureTime.slice(5,7) + '-' + res.data.BloodPressureTime.slice(8,10);
-				console.log(dateRes,'dateres')
+				
 				this.xueYaOption = {
 					title: {
 						text: ''
@@ -611,7 +653,7 @@
 						data: []
 					},
 					grid: {
-						left: '0',
+						left: '-15%',
 						right: '0',
 						bottom: '100%',
 						containLabel: true
@@ -670,56 +712,76 @@
 							}
 						},
 					},
-					series: [{
-							name: '收缩压',
-							// type: 'line',
-							// stack: 'Total',
-							data: spMapList,
-							// showSymbol: false,
-							// itemStyle: {
-							// 	normal: {
-							// 		lineStyle: {
-							// 			color: "#FF7E23",
-							// 			width: 1
-							// 		}
-							// 	}
-							// },
-							type: 'bar',
-							showSymbol: false,
-							itemStyle: {
-								color: '#FF7E23'
-							},
-							barWidth: '3', //---柱形宽度
-							barCategoryGap: '20%', //---柱形间距
-						},
+					series: [
 						{
 							name: '舒张压',
 							// type: 'line',
 							// stack: 'Total',
 							data: dpMapList,
 							// showSymbol: false,
-							// itemStyle: {
-							// 	normal: {
-							// 		lineStyle: {
-							// 			color: "#63DDBA",
-							// 			width: 1
-							// 		}
-							// 	}
-							// },
+							itemStyle: {
+								normal: {
+									lineStyle: {
+										color: "#63DDBA",
+										width: 1
+									}
+								},
+								barBorderRadius:[15,15,0,0]
+							},
 							type: 'bar',
 							showSymbol: false,
 							itemStyle: {
 								color: '#63DDBA'
 							},
 							barWidth: '3', //---柱形宽度
-							barCategoryGap: '20%', //---柱形间距
+							barCategoryGap: '10%', //---柱形间距
+						},{
+							name: '收缩压',
+							// type: 'line',
+							// stack: 'Total',
+							data: spMapList,
+							// showSymbol: false,
+							itemStyle: {
+								normal: {
+									lineStyle: {
+										color: "#FF7E23",
+										width: 1
+									}
+								},
+								barBorderRadius:[15,15,0,0]
+							},
+							type: 'bar',
+							showSymbol: false,
+							itemStyle: {
+								color: '#FF7E23'
+							},
+							barWidth: '3', //---柱形宽度
+							barCategoryGap: '10%', //---柱形间距
 						}
 					]
 				}
 			},
 			xueYangOptionHandle(res) {
-				// var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
-				var arr = res.data.tWatchBloodOxygen;
+				const dateRes = res.data.BloodOxygenTime.slice(0,4) + '-' + res.data.BloodOxygenTime.slice(5,7) + '-' + res.data.BloodOxygenTime.slice(8,10);
+				let arr = [];
+				if(res.data.tWatchBloodOxygen.length !== 0){
+					arr = res.data.tWatchBloodOxygen;
+				}else{
+					arr = [
+						{time: (dateRes ? dateRes : this.echartDate)+" 00:00:01", value: "75"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 02:00:00", value: "109"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 04:00:00", value: "75"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 06:00:00", value: "109"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 08:00:00", value: "75"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 10:00:00", value: "109"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 12:00:00", value: "75"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 14:00:00", value: "109"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 16:00:00", value: "75"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 18:00:00", value: "109"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 20:00:00", value: "75"},
+						{time: (dateRes ? dateRes : this.echartDate)+" 22:00:00", value: "109"}
+					]
+				}
 				let resArr = [];
 				arr.forEach((item) => {
 					resArr.push([
@@ -728,12 +790,12 @@
 					])
 				})
 				console.log('resarr', resArr)
-				const dateRes = res.data.BloodOxygenTime.slice(0,4) + '-' + res.data.BloodOxygenTime.slice(5,7) + '-' + res.data.BloodOxygenTime.slice(8,10);
+				
 				this.xueYangOption = {
 					notMerge: true,
 					backgroundColor: '#fff',
 					grid: {
-						left: '0',
+						left: '-15%',
 						right: '0',
 						bottom: '100%',
 						containLabel: true
@@ -818,7 +880,8 @@
 									offset: 1,
 									color: '#188df0'
 								}
-							])
+							]),
+							barBorderRadius:[15,15,0,0]
 						},
 						barWidth: '3', //---柱形宽度
 						barCategoryGap: '20%', //---柱形间距

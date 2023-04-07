@@ -9,20 +9,17 @@
 			<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 				{{date}}
 			</view>
-			<view class="ui-w-h-100 ui-f-start ui-mar-t-20" v-if="fetchRes.sleepMap">
+			<view class="ui-w-h-100 ui-f-start ui-mar-t-20">
 				<view class="ui-color-block1 ui-color-block1-width"
-					v-if="fetchRes.sleepMap > 0 && fetchRes.sleepMap <= 0.25"></view>
+					v-if="fetchRes.sleepMap > 0"></view>
 				<view class="ui-color-block2 ui-color-block1-width ui-mar-l-10"
-					v-if="fetchRes.sleepMap > 0.25 && fetchRes.sleepMap <= 0.5"></view>
+					v-if="fetchRes.sleepMap > 0.25"></view>
 				<view class="ui-color-block3 ui-color-block1-width ui-mar-l-10"
-					v-if="fetchRes.sleepMap > 0.5 && fetchRes.sleepMap <= 0.75"></view>
+					v-if="fetchRes.sleepMap > 0.5"></view>
 				<view class="ui-color-block4 ui-color-block1-width ui-mar-l-10"
-					v-if="fetchRes.sleepMap > 0.75 && fetchRes.sleepMap <= 1"></view>
+					v-if="fetchRes.sleepMap > 0.75"></view>
 			</view>
-			<view class="ui-w-h-100 ui-f-between ui-mar-t-20" v-if="!fetchRes.sleepMap">
-				<view class="ui-noData-font">无数据</view>
-			</view>
-			<view class="ui-f-between ui-w-h-100 ui-mar-t-10" v-if="fetchRes.sleepMap">
+			<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
 				<text class="ui-font-22 ui-font-c-888">差</text>
 				<text class="ui-font-22 ui-font-c-888">很好</text>
 			</view>

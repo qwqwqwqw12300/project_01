@@ -11,19 +11,11 @@
 			<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
 				{{date}}
 			</view>
-			<view class="ui-w-h-100 ui-mar-t-20"
-				v-if="fetchRes.electrocardiogramMapList && fetchRes.electrocardiogramMapList.length">
+			<view class="ui-w-h-100 ui-mar-t-20">
 				<app-echarts class="ui-echarts-size" :option="option" id="xinDianChart">
 				</app-echarts>
 			</view>
-			<view class="ui-w-h-100 ui-mar-t-20">
-				<view class="ui-noData-font"
-					v-if="!fetchRes.electrocardiogramMapList || !fetchRes.electrocardiogramMapList.length">
-					无数据
-				</view>
-			</view>
-			<view class="ui-f-between ui-w-h-100 ui-mar-t-10"
-				v-if="fetchRes.electrocardiogramMapList && fetchRes.electrocardiogramMapList.length">
+			<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
 				<text class="ui-font-22 ui-font-c-888">00:00</text>
 				<text class="ui-font-22 ui-font-c-888">24:00</text>
 			</view>
