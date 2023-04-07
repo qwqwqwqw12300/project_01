@@ -1,5 +1,6 @@
 <template>
 	<app-body :needService="false" :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
+		<map v-show="false"></map>
 		<locus-map :record="mapData"></locus-map>
 		<touch-popup :minHeight="0.13" :maxHeight="0.6" :touchHeight="64" radius="30rpx">
 			<!-- 	<view class="ui-search">
@@ -103,6 +104,9 @@
 					longitude
 				} = n.location
 				return new Promise((resolve, reject) => {
+					if (!latitude || !longitude) {
+						return reject()
+					}
 					mapSearch && mapSearch.reverseGeocode({
 							point: {
 								latitude,
@@ -110,6 +114,7 @@
 							}
 						},
 						e => {
+							if (e.type === 'fail') return reject()
 							resolve({
 								location: {
 									latitude,
@@ -134,11 +139,14 @@
 					const promises = list.map(n => {
 						return this.getAddress(n)
 					})
-					Promise.all(promises).then(res => {
-						this.dataList = res
-					}).catch(res => {}).finally(() => {
-						// uni.hideLoading()
-					})
+					Promise.allSettled(promises).then(res => {
+						this.dataList = res.filter(n => {
+							return n.status = 'fulfilled'
+						}).map(item => {
+							return item.value
+						})
+						console.log(this.historyList, 'pppppppp------------')
+					}).catch(res => {}).finally(() => {})
 				})
 			}
 		}
