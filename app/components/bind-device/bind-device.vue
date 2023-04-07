@@ -1,6 +1,4 @@
 <!--
-* @Author: zhanch
-* @Date: 2022-12-29 18:05:30
 * @FilePath: /components/bind-device/bind-device.vue
 * @Description: 绑定设备
 -->
@@ -9,30 +7,24 @@
 	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close" @open="open">
 		<view class="ui-add">
 			<view class="ui-title">
-				<text class="ui-title-font">绑定设备</text>
+				<text class="ui-title-font">选择绑定设备</text>
 			</view>
-			<!-- <view class="ui-add-box">
-				<text class="ui-input-font">选择设备</text>
-				<view class="ui-select">
-					<uni-data-select v-model="deviceId" :clear="false" :localdata="devices"></uni-data-select>
+
+			<scroll-view :scroll-y="true" class="scroll">
+				<view class="ui-add-box">
+					<view class="device-list" v-for="(n,index) in devices" :key="index">
+						<image :src="getImage(n)"></image>
+						<view class="detail">
+							<text class="name">{{ n.name }}</text>
+							<text class="action" @click="next(n)">绑定</text>
+						</view>
+					</view>
 				</view>
-			</view> -->
-			<view class="ui-add-box">
-				<u-text size="28rpx" text="设备绑定"></u-text>
-				<view class="ui-select" @click="demo">
-					<u-input placeholder="请绑定设备" border="surround" v-model="deviceName" readonly
-						:suffixIcon="sheetRoom ? 'arrow-up' : 'arrow-down'"></u-input>
-				</view>
-			</view>
+			</scroll-view>
 			<view class="ui-btn-group">
-				<view class="plain" @click="goManager">管理设备</view>
-				<view class="ui-btn-hr"></view>
-				<view class="plain" @click="next">确定</view>
+				<text @click="goManager">前往管理设备</text>
 			</view>
 		</view>
-		<u-action-sheet :actions="devices" :closeOnClickOverlay="true" :safeAreaInsetBottom="true"
-			@select="selectRoom" :closeOnClickAction="true" @close="sheetRoom = false" :show="sheetRoom"
-			cancelText="取消"></u-action-sheet>
 	</u-popup>
 </template>
 
@@ -54,9 +46,7 @@
 		data() {
 			return {
 				show: false,
-				deviceId: '',
-				sheetRoom:false,
-				deviceName: '',
+				sheetRoom: false,
 			};
 		},
 		computed: {
@@ -81,30 +71,43 @@
 						type: ele.type
 					}));
 				}
-			})
+			}),
+			getImage() {
+				return function(val) {
+					return {
+						0: '/static/images/leida-nm.png',
+						1: '/static/images/dzqkg.png',
+						2: '/static/images/watch-device.png',
+					} [val.type]
+				}
+			}
 		},
-		mounted(options) {},
+		mounted(options) {
+			console.log(this.devices, '444444---------')
+		},
 		methods: {
-			demo(){
-				console.log(this.devices,'devices')
+			demo() {
+				console.log(this.devices, 'devices')
 				this.sheetRoom = true
 			},
 			close() {
 				this.show = false;
 			},
 			open() {
-				this.deviceName = ''
-				this.deviceId = '';
 				this.show = true;
 			},
-			next() {
-				if (!this.deviceId && this.deviceId !== 0) return uni.$u.toast('请选择设备');
+			next(item) {
+				console.log(item, '999998898')
+				const {
+					deviceId
+				} = item
+				if (!deviceId && deviceId !== 0) return uni.$u.toast('请选择设备');
 				const {
 					familyId,
 					id,
 					type
 				} = this.payload;
-				const device = this.devices[this.deviceId];
+				const device = this.devices[deviceId];
 				console.log(device, 'device');
 				let handle;
 				console.log(type, 'type');
@@ -151,27 +154,20 @@
 					url: '/pages/myself/device-manage/device-manage'
 				});
 			},
-			/**
-			 * 选择设备
-			 */
-			selectRoom(item) {
-				console.log(item);
-				this.deviceName = item.name
-				this.deviceId = item.value
-			},
 		}
 	};
 </script>
 
 <style lang="scss">
 	.ui-add {
-		width: 582rpx;
+		width: 600rpx;
 		height: 352rpx;
 		border-radius: 20rpx;
-		padding: 20rpx 31rpx;
-		background: #fff;
+		padding: 20rpx 20rpx;
+		background: #F7F7F7;
 
 		.ui-title {
+			// height: 80rpx;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -183,19 +179,62 @@
 				letter-spacing: 0;
 				text-align: center;
 				line-height: 46rpx;
-				font-weight: 500;
+				font-weight: 550;
 			}
 		}
 
-		&>view {
-			margin-top: 10rpx;
+		.scroll {
+			height: 440rpx;
+		}
 
-			&.ui-add-box {
-				padding: 10rpx 20rpx;
+		.ui-add-box {
+			margin-top: 30rpx;
+			// padding: 10rpx 20rpx;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
 
-				&>* {
-					margin-top: 30rpx;
+			.device-list {
+				height: 160rpx;
+				width: calc(50% - 50rpx);
+				padding: 0 16rpx;
+				margin: 0 8rpx;
+				margin-bottom: 20rpx;
+				background: #fff;
+				border-radius: 32rpx;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+
+				image {
+					height: 120rpx;
+					width: 120rpx;
 				}
+
+				.detail {
+					flex: 1;
+					margin-left: 10rpx;
+					display: flex;
+					align-items: center;
+					flex-direction: column;
+
+					.name {
+						font-size: 30rpx;
+						color: #353535;
+						font-weight: 550;
+					}
+
+					.action {
+						margin-top: 16rpx;
+						border-radius: 24px;
+						color: #fff;
+						padding: 6rpx 24rpx;
+						font-size: 26rpx;
+						color: #fff;
+						background-image: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);
+					}
+				}
+
 			}
 		}
 
@@ -231,6 +270,7 @@
 
 		.ui-btn-group {
 			width: 100%;
+			height: 98rpx;
 			position: absolute;
 			left: 0rpx;
 			bottom: 0rpx;
@@ -239,22 +279,24 @@
 			border-color: rgba(0, 0, 0, 0.1);
 			display: flex;
 			align-items: center;
-			justify-content: space-between;
+			justify-content: center;
+			font-size: 30rpx;
+			color: #599FFF;
 
-			.plain {
-				width: 49.5%;
-				height: 100rpx;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
+			// .plain {
+			// 	width: 49.5%;
+			// 	height: 100rpx;
+			// 	display: flex;
+			// 	align-items: center;
+			// 	justify-content: center;
+			// }
 
-			.ui-btn-hr {
-				width: 1rpx;
-				height: 100rpx;
-				opacity: 0.1;
-				background-color: black;
-			}
+			// .ui-btn-hr {
+			// 	width: 1rpx;
+			// 	height: 100rpx;
+			// 	opacity: 0.1;
+			// 	background-color: black;
+			// }
 		}
 	}
 </style>
