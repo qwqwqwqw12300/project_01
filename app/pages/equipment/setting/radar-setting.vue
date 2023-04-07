@@ -131,23 +131,29 @@
 								activeValue="1" inactiveValue="0" size="20" slot="right-icon" activeColor="#FEAE43"
 								inactiveColor="rgb(230, 230, 230)"></u-switch>
 						</u-cell>
-						<view class="ui-rule" v-for="(item, index) of editFrom.deviceWarnParameter.nobodyWarn.warnRules"
-							:key="'wall' + index">
-							<view class="" @click="addWarnRule(item)">
-								<text>{{ item.warnRuleName }}</text>
-								<u-icon name="arrow-right" color="#909193" size="36rpx"></u-icon>
-							</view>
-							<view>
-								<view class="ui-rule-time" v-if="item.dateType == 0">
-									<text>{{ item.startDate }} 至 {{ item.endDate }}</text>
-									<text>{{ item.startTime }} 至 {{ item.endTime }}</text>
+						<u-swipe-action>
+							<u-swipe-action-item :options="swipe"
+								v-for="(item, index) of editFrom.deviceWarnParameter.nobodyWarn.warnRules"
+								:key="'wall' + index" @click="actionItem($event, item)">
+								<view class="ui-rule">
+									<view class="" @click="addWarnRule(item)">
+										<text>{{ item.warnRuleName }}</text>
+										<u-icon name="arrow-right" color="#909193" size="36rpx"></u-icon>
+									</view>
+									<view>
+										<view class="ui-rule-time" v-if="item.dateType == 0">
+											<text>{{ item.startDate }} 至 {{ item.endDate }}</text>
+											<text>{{ item.startTime }} 至 {{ item.endTime }}</text>
+										</view>
+										<text v-else>{{ weekText(item.week) }}</text>
+										<u-switch space="2" v-model="item.ruleSwitch" activeValue="1" inactiveValue="0"
+											size="20" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)">
+										</u-switch>
+									</view>
 								</view>
-								<text v-else>{{ weekText(item.week) }}</text>
+							</u-swipe-action-item>
+						</u-swipe-action>
 
-								<u-switch space="2" v-model="item.ruleSwitch" activeValue="1" inactiveValue="0"
-									size="20" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)"></u-switch>
-							</view>
-						</view>
 						<u-cell isLink @click="addWarnRule()" title="新增规则"></u-cell>
 					</view>
 				</u-cell-group>
@@ -179,7 +185,8 @@
 	import {
 		setDevice,
 		PosteditDevice,
-		PostSetRadarWaveDevice
+		PostSetRadarWaveDevice,
+		PostDelRadarWaveNobodyWarn
 	} from '../../../common/http/api';
 	import {
 		assignDeep,
@@ -227,6 +234,12 @@
 					text: '顶挂',
 					value: '1'
 				}],
+				swipe: [{
+					text: '删除',
+					style: {
+						backgroundColor: '#f56c6c'
+					}
+				}]
 			};
 		},
 		computed: {
@@ -405,7 +418,29 @@
 						location.roomFront = 4 - num;
 					}
 				}, 100, false);
+			},
 
+			/**
+			 * 	无人预警规则删除 
+			 */
+			actionItem($event, rule) {
+				console.log(rule, 'rule');
+				const {
+					ruleNo
+				} = rule;
+				PostDelRadarWaveNobodyWarn({
+					deviceId: this.deviceInfo.deviceId,
+					ruleNo
+				}).then(res => {
+					const index = this.editFrom.deviceWarnParameter.nobodyWarn.warnRules.indexOf(rule);
+					this.editFrom.deviceWarnParameter.nobodyWarn.warnRules.splice(index, 1);
+					uni.$u.toast('删除成功');
+					setTimeout(() => {
+						this.$store.dispatch('updateDevacesInfo'); // 更新设备数据
+					}, 2000);
+
+
+				});
 			}
 		}
 	};

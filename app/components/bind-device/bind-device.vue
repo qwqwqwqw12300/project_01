@@ -11,12 +11,6 @@
 			<view class="ui-title">
 				<text class="ui-title-font">绑定设备</text>
 			</view>
-			<!-- <view class="ui-add-box">
-				<text class="ui-input-font">选择设备</text>
-				<view class="ui-select">
-					<uni-data-select v-model="deviceId" :clear="false" :localdata="devices"></uni-data-select>
-				</view>
-			</view> -->
 			<view class="ui-add-box">
 				<u-text size="28rpx" text="设备绑定"></u-text>
 				<view class="ui-select" @click="demo">
@@ -30,9 +24,8 @@
 				<view class="plain" @click="next">确定</view>
 			</view>
 		</view>
-		<u-action-sheet :actions="devices" :closeOnClickOverlay="true" :safeAreaInsetBottom="true"
-			@select="selectRoom" :closeOnClickAction="true" @close="sheetRoom = false" :show="sheetRoom"
-			cancelText="取消"></u-action-sheet>
+		<u-action-sheet :actions="devices" :closeOnClickOverlay="true" :safeAreaInsetBottom="true" @select="selectRoom"
+			:closeOnClickAction="true" @close="sheetRoom = false" :show="sheetRoom" cancelText="取消"></u-action-sheet>
 	</u-popup>
 </template>
 
@@ -55,7 +48,7 @@
 			return {
 				show: false,
 				deviceId: '',
-				sheetRoom:false,
+				sheetRoom: false,
 				deviceName: '',
 			};
 		},
@@ -85,8 +78,8 @@
 		},
 		mounted(options) {},
 		methods: {
-			demo(){
-				console.log(this.devices,'devices')
+			demo() {
+				console.log(this.devices, 'devices')
 				this.sheetRoom = true
 			},
 			close() {
