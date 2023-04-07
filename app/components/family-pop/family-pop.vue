@@ -76,7 +76,10 @@
 			 * 打开家庭
 			 */
 			open(data = {}) {
-				this.form.address = this.$store.getters.positionInfo.address || ''
+				console.log('-----------------------')
+				this.$store.dispatch('setLocation').then(res=>{
+					this.form.address = res.address || ''
+				})
 				Object.assign(this.form, data);
 				this.show = true;
 			},
