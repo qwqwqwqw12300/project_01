@@ -9,15 +9,19 @@
 			<view class="ui-title">
 				<text class="ui-title-font">选择绑定设备</text>
 			</view>
-
 			<scroll-view :scroll-y="true" class="scroll">
 				<view class="ui-add-box">
-					<view class="device-list" v-for="(n,index) in devices" :key="index">
-						<image :src="getImage(n)"></image>
-						<view class="detail">
-							<text class="name">{{ n.name }}</text>
-							<text class="action" @click="next(n)">绑定</text>
+					<template v-if="devices.length">
+						<view class="device-list" v-for="(n,index) in devices" :key="index">
+							<image :src="getImage(n)"></image>
+							<view class="detail">
+								<text class="name">{{ n.name }}</text>
+								<text class="action" @click="next(n)">绑定</text>
+							</view>
 						</view>
+					</template>
+					<view class="list-empty" v-else>
+						<u-empty mode="list" text="暂无数据"></u-empty>
 					</view>
 				</view>
 			</scroll-view>
@@ -155,7 +159,7 @@
 <style lang="scss">
 	.ui-add {
 		width: 600rpx;
-		height: 352rpx;
+		height: 642rpx;
 		border-radius: 20rpx;
 		padding: 20rpx 20rpx;
 		background: #F7F7F7;
@@ -178,15 +182,24 @@
 		}
 
 		.scroll {
-			height: 440rpx;
+			height: 450rpx;
 		}
 
 		.ui-add-box {
 			margin-top: 30rpx;
+			height: 400rpx;
 			// padding: 10rpx 20rpx;
 			display: flex;
 			flex-direction: row;
 			flex-wrap: wrap;
+
+			.list-empty {
+				width: 100%;
+				height: 350rpx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
 
 			.device-list {
 				height: 160rpx;
