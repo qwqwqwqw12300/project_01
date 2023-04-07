@@ -98,7 +98,7 @@
 				this.show = false
 				this.queryData()
 			},
-			getAddress(n) {
+			getLocation(n) {
 				const {
 					latitude,
 					longitude
@@ -126,27 +126,37 @@
 				})
 			},
 			queryData() {
-				// uni.showLoading()
+				uni.showLoading({
+					title: '加载中'
+				})
 				GetsetAddressBook({
 					startTime: this.dateData + " " + '00:00:00',
 					endTime: this.dateData + " " + '23:59:59',
 					deviceId: this.deviceInfo.deviceId
-				}).then(res => {
+				}).then(async res => {
 					const list = res.data.map(n => {
 						n.locateTime = uni.$u.timeFormat(n.locateTime, 'yyyy-mm-dd hh:MM')
 						return n
 					})
-					const promises = list.map(n => {
-						return this.getAddress(n)
-					})
-					Promise.allSettled(promises).then(res => {
-						this.dataList = res.filter(n => {
-							return n.status = 'fulfilled'
-						}).map(item => {
-							return item.value
-						})
-						console.log(this.historyList, 'pppppppp------------')
-					}).catch(res => {}).finally(() => {})
+					const arr = []
+					for (let i = 0; i < list.length; i++) {
+						const res = await this.getLocation(list[i])
+						res.index = i
+						arr.push(res)
+					}
+					this.dataList = arr
+					uni.hideLoading()
+					// const promises = list.map(n => {
+					// 	return this.getAddress(n)
+					// })
+					// Promise.allSettled(promises).then(res => {
+					// 	this.dataList = res.filter(n => {
+					// 		return n.status = 'fulfilled'
+					// 	}).map(item => {
+					// 		return item.value
+					// 	})
+					// 	console.log(this.historyList, 'pppppppp------------')
+					// }).catch(res => {}).finally(() => {})
 				})
 			}
 		}

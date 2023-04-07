@@ -39,10 +39,9 @@
 			};
 		},
 		mounted() {
-			upload.check().then(async res => { // 检查更新
+			upload.check().then(res => { // 检查更新
 				if (res.status) {
-					await this.$store.dispatch('GetContactsList');
-					await this.$store.dispatch('setLocation');
+					this.$store.dispatch('GetContactsList');
 					this.initInfo();
 				}
 			});
