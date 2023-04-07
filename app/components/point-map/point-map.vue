@@ -17,7 +17,7 @@
 		},
 		watch: {
 			record: {
-				handler(val) {
+				async handler(val) {
 					if (val.latitude && val.longitude) {
 						const {
 							latitude,
@@ -32,7 +32,7 @@
 						const {
 							latitude,
 							longitude
-						} = uni.$u.deepClone(this.$store.getters.positionInfo || {})
+						} = await this.$store.dispatch('GetContactsList');
 						this.mapInfo = {
 							type: 'cur',
 							latitude,

@@ -22,14 +22,14 @@
 					</view>
 					<view class="status-block" style="margin-left:14rpx">
 						<u-icon name="/static/images/electricity.png" size="20" style="margin-right: 4rpx;" />
-						<text>电量:{{ record.currentPower || '0%' }}</text>
+						<text>电量:{{ record.currentPower || '--' }}</text>
 					</view>
 				</view>
 				<view class="time">
-					最近更新时间：{{ record.updateTime }}
+					最近更新时间：{{ record.updateTime || '----' }}
 				</view>
 			</view>
-			<view class="device-set" @click="jumpUrl">
+			<view class="device-set" @click="jumpUrl" v-show="record.onlineFlag">
 				<u-icon name="/static/images/device-set.png" size="44rpx" style="margin-right: 4rpx;">
 				</u-icon>配置
 			</view>
@@ -42,16 +42,18 @@
 		props: {
 			record: {
 				type: Object,
-				default: () => {},
+				default: () => {
+					return {}
+				}
 			},
 		},
 		computed: {
 			getOnlineStatus() {
-				return {
+				return this.record.onlineFlag ? {
 					0: '离线',
 					1: '在线',
 					2: '休眠',
-				} [this.record.onlineFlag]
+				} [this.record.onlineFlag] : '离线'
 			}
 		},
 		data() {

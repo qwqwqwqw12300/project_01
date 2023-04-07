@@ -1,6 +1,7 @@
 <template>
 	<view class="ui-map">
 		<point-map :record="addressInfo"></point-map>
+		<map v-show="false"></map>
 		<view class="ui-float">
 			<view class="float-item" @click="getDeviceLocation">
 				<u-icon name="/static/images/map-position.png" size="36px"></u-icon>
@@ -116,28 +117,36 @@
 				}
 			},
 			getLocation(n) {
-				const {
-					latitude,
-					longitude
-				} = n.location
-				return new Promise((resolve, reject) => {
-					mapSearch && mapSearch.reverseGeocode({
-							point: {
-								latitude,
-								longitude
-							},
-						},
-						e => {
-							console.log(e, '------------------eeeeee')
-							resolve({
-								location: {
+				try {
+					const {
+						latitude,
+						longitude
+					} = n.location
+					return new Promise((resolve, reject) => {
+						if (!latitude || !longitude) {
+							return reject()
+						}
+						mapSearch && mapSearch.reverseGeocode({
+								point: {
 									latitude,
-									longitude,
+									longitude
 								},
-								address: e.address
+							},
+							e => {
+								if (e.type === 'fail') return reject()
+								resolve({
+									location: {
+										latitude,
+										longitude,
+									},
+									address: e.address
+								})
 							})
-						})
-				})
+					})
+				} catch (err) {
+					console.log(err, '报错-------------------------------------')
+				}
+
 			},
 			getHistoryLocation() {
 				const dateData = uni.$u.timeFormat(new Date(), 'yyyy-mm-dd')
@@ -145,20 +154,18 @@
 					startTime: dateData + " " + '00:00:00',
 					endTime: dateData + " " + '23:59:59',
 					deviceId: this.deviceInfo.deviceId
-				}).then(res => {
-					const list = res.data.map(n => {
+				}).then(async res => {
+					const list = res.data.map((n, i) => {
 						n.locateTime = uni.$u.timeFormat(n.locateTime, 'yyyy-mm-dd hh:MM')
 						return n
 					}).slice(0, 3)
-					const promises = list.map(n => {
-						return this.getLocation(n)
-					})
-					Promise.all(promises).then(res => {
-						this.historyList = res.map((n, i) => {
-							n.index = i
-							return n
-						})
-					}).catch(res => {}).finally(() => {})
+					const arr = []
+					for (let i = 0; i < list.length; i++) {
+						const res = await this.getLocation(list[i])
+						res.index = i
+						arr.push(res)
+					}
+					this.historyList = arr
 				})
 			},
 			getDeviceLocation() {
@@ -168,7 +175,7 @@
 				GetLastPoint({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
-					console.log(res, 'ryryyryr----------------')
+
 					if (!res.data.location?.latitude) {
 						this.addressInfo = {
 							latitude: '',
@@ -178,6 +185,7 @@
 						return uni.hideLoading()
 					}
 					this.getLocation(res.data).then(info => {
+
 						const {
 							location: {
 								latitude,

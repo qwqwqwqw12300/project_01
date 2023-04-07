@@ -10,7 +10,10 @@
 			<u-search @change="searchChange" placeholder="请输入地址信息" @custom="back" :showAction="true" actionText="取消"
 				v-model="search"></u-search>
 		</view>
-		<view class="ui-site-gloup" v-if="poiList.length">
+		<view class="ui-site-gloup ui-loading" v-if="loading">
+			<u-loading-icon text="查询中..." :vertical="true" mode="semicircle"></u-loading-icon>
+		</view>
+		<view class="ui-site-gloup" v-else-if="poiList.length">
 			<view class="ui-item active" v-for="(item, index) of poiList" :key="index" @tap="handleSelect(item)">
 				<u-text prefixIcon="map" iconStyle="font-size: 19px" :text="item.name"></u-text>
 				<text>{{getAddress(item)}}</text>
@@ -35,7 +38,8 @@
 			return {
 				search: '',
 				currentCity: '',
-				poiList: []
+				poiList: [],
+				loading: true
 			}
 		},
 		computed: {
@@ -68,8 +72,9 @@
 			 * 关键字搜索
 			 */
 			searchChange($e) {
-				this.poiList = []
+				// this.poiList = []
 				uni.$u.debounce(() => {
+					this.loading = true;
 					mapSearch && mapSearch.poiKeywordsSearch({
 						// city 指定搜索所在城市，支持传入格式有：城市名、citycode和adcode  
 						key: this.currentCity + $e,
@@ -79,6 +84,7 @@
 					}, ({
 						poiList
 					}) => {
+						this.loading = false;
 						this.poiList = poiList;
 						// if (poiList && poiList.length) {
 						// 	this.poiList = poiList;
@@ -117,9 +123,9 @@
 		},
 		created() {
 			this.getLocation().then(location => {
-				uni.showLoading({
-					title: '加载中'
-				})
+				// uni.showLoading({
+				// 	title: '加载中'
+				// })
 				this.currentCity = location.address.city
 				mapSearch && mapSearch.poiSearchNearBy({
 					point: location,
@@ -131,7 +137,8 @@
 					if (poiList && poiList.length) {
 						this.poiList = poiList;
 					}
-					uni.hideLoading()
+					this.loading = false;
+					// uni.hideLoading()
 				})
 			});
 		},
@@ -181,5 +188,9 @@
 			border-bottom: 1rpx solid #e2e2e2;
 		}
 
+	}
+
+	.ui-loading {
+		margin-top: 200rpx;
 	}
 </style>

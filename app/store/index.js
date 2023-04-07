@@ -141,8 +141,14 @@ const store = {
 		/**
 		 * 获取当前位置
 		 */
-		setLocation(ctx) {
-			return new Promise(resolve => {
+		setLocation({
+			commit,
+			state
+		}) {
+			return new Promise((resolve, reject) => {
+				if (state.positionInfo.latitude && state.positionInfo.longitude) {
+					return resolve(state.positionInfo)
+				}
 				uni.getLocation({
 					geocode: true,
 					type: isIos() ? 'wgs84' : 'gcj02',
@@ -162,10 +168,12 @@ const store = {
 							longitude,
 							address: province + city + district + street
 						}
-						ctx.commit('setPositionInfo', info);
+						commit('setPositionInfo', info);
 						resolve(info);
 					},
-					false: (res) => {}
+					false: (res) => {
+						reject()
+					}
 				})
 			})
 		},

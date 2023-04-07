@@ -1,5 +1,6 @@
 <template>
 	<app-body :needService="false" :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
+		<map v-show="false"></map>
 		<locus-map :record="mapData"></locus-map>
 		<touch-popup :minHeight="0.13" :maxHeight="0.6" :touchHeight="64" radius="30rpx">
 			<!-- 	<view class="ui-search">
@@ -97,12 +98,15 @@
 				this.show = false
 				this.queryData()
 			},
-			getAddress(n) {
+			getLocation(n) {
 				const {
 					latitude,
 					longitude
 				} = n.location
 				return new Promise((resolve, reject) => {
+					if (!latitude || !longitude) {
+						return reject()
+					}
 					mapSearch && mapSearch.reverseGeocode({
 							point: {
 								latitude,
@@ -110,6 +114,7 @@
 							}
 						},
 						e => {
+							if (e.type === 'fail') return reject()
 							resolve({
 								location: {
 									latitude,
@@ -121,24 +126,37 @@
 				})
 			},
 			queryData() {
-				// uni.showLoading()
+				uni.showLoading({
+					title: '加载中'
+				})
 				GetsetAddressBook({
 					startTime: this.dateData + " " + '00:00:00',
 					endTime: this.dateData + " " + '23:59:59',
 					deviceId: this.deviceInfo.deviceId
-				}).then(res => {
+				}).then(async res => {
 					const list = res.data.map(n => {
 						n.locateTime = uni.$u.timeFormat(n.locateTime, 'yyyy-mm-dd hh:MM')
 						return n
 					})
-					const promises = list.map(n => {
-						return this.getAddress(n)
-					})
-					Promise.all(promises).then(res => {
-						this.dataList = res
-					}).catch(res => {}).finally(() => {
-						// uni.hideLoading()
-					})
+					const arr = []
+					for (let i = 0; i < list.length; i++) {
+						const res = await this.getLocation(list[i])
+						res.index = i
+						arr.push(res)
+					}
+					this.dataList = arr
+					uni.hideLoading()
+					// const promises = list.map(n => {
+					// 	return this.getAddress(n)
+					// })
+					// Promise.allSettled(promises).then(res => {
+					// 	this.dataList = res.filter(n => {
+					// 		return n.status = 'fulfilled'
+					// 	}).map(item => {
+					// 		return item.value
+					// 	})
+					// 	console.log(this.historyList, 'pppppppp------------')
+					// }).catch(res => {}).finally(() => {})
 				})
 			}
 		}

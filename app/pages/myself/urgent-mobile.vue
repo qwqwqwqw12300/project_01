@@ -71,30 +71,30 @@
 	// import {
 	// 	phoneValidator
 	// } from '../../common/utils/util';
+	let contactList = [{
+			orderNum: 1,
+			orderName: '第一紧急联系人',
+			familyId:0
+		},
+		{
+			orderNum: 2,
+			orderName: '第二紧急联系人',
+			familyId:0
+		},
+		{
+			orderNum: 3,
+			orderName: '第三紧急联系人',
+			familyId:0
+		},
+	]
 	export default {
 		data() {
-
 			return {
 				index: 0,
 				/**家庭列表是否展示**/
 				familyShow: false,
 				familyName:'',
-				contactList: [{
-						orderNum: 1,
-						orderName: '第一紧急联系人',
-						familyId:0
-					},
-					{
-						orderNum: 2,
-						orderName: '第二紧急联系人',
-						familyId:0
-					},
-					{
-						orderNum: 3,
-						orderName: '第三紧急联系人',
-						familyId:0
-					}
-				],
+				contactList
 			}
 		},
 		computed: {
@@ -128,15 +128,15 @@
 				}).then(res=>{
 					console.log(res,'res')
 					// console.log(res,'res-------------------------')
-					this.contactList = this.contactList.map(item => {
+					this.contactList = contactList.map(item => {
 						item.familyId = familyId
 						const data = res.rows.find(n => {
 							return n.orderNum === item.orderNum
 						})
-						return data ? {
+						return data!=undefined ? {
 							...data,
 							orderName: item.orderName
-						} : item
+						} : {...item}
 					})
 					console.log(this.contactList, 'llllllllll')
 				})
@@ -165,6 +165,7 @@
 				PostSetMemberConWithFamilyId(this.contactList).then(res => {
 					console.log(res,'res')
 					uni.$u.toast(res.msg)
+					this.$store.commit('setContactInfo',res.rows)
 					setTimeout(() => {
 						// this.$store.dispatch('GetContactsList')
 						this.handleCancel()

@@ -6,7 +6,7 @@
 -->
 
 <template>
-	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close" @open="open">
+	<u-popup :closeable="true" :round="10" :show="show" mode="center" @close="close">
 		<view class="wd-add">
 			<view class="wd-title">
 				<text class="wd-title-font">{{mode === 'add' ? '新建家庭': '修改家庭'}}</text>
@@ -23,6 +23,11 @@
 						<!-- <u-icon name="map-fill" class="active" @click="goMap" size="38rpx"></u-icon> -->
 						<image class="wd-input-image" src="@/static/images/position@3x.png" @click="goMap"></image>
 					</template>
+				</u-input>
+			</view>
+			<view class="wd-input">
+				<text class="wd-input-font">具体楼栋/单元</text>
+				<u-input border="surround" v-model="form.detailedAddress" placeholder="请输入具体楼栋/单元" clearable>
 				</u-input>
 			</view>
 			<view class="wd-hr"></view>
@@ -57,10 +62,10 @@
 				form: {
 					familyName: '', //家庭名称
 					address: '', //家庭地址
+					detailedAddress: '' //详细地址
 				}
 			};
 		},
-
 		mounted(options) {},
 		methods: {
 			close() {
@@ -71,7 +76,13 @@
 			 * 打开家庭
 			 */
 			open(data = {}) {
-				Object.assign(this.form, data);
+				this.$store.dispatch('setLocation').then(res => {
+					console.log(res, 'setLocation');
+					if (res) {
+						this.form.address = res.address || ''
+					}
+					Object.assign(this.form, data);
+				})
 				this.show = true;
 			},
 			next() {
@@ -157,7 +168,6 @@
 			margin-top: 10rpx;
 
 			&.wd-input {
-				margin-top: 40rpx;
 				position: relative;
 				padding: 10rpx 20rpx;
 
