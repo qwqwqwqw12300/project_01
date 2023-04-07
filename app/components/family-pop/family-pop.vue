@@ -25,6 +25,11 @@
 					</template>
 				</u-input>
 			</view>
+			<view class="wd-input">
+				<text class="wd-input-font">具体楼栋/单元</text>
+				<u-input border="surround" v-model="form.detailedAddress" placeholder="请输入具体楼栋/单元"  clearable>
+				</u-input>
+			</view>
 			<view class="wd-hr"></view>
 			<view class="wd-btn">
 				<view @click="next">{{ btnName }}</view>
@@ -57,10 +62,10 @@
 				form: {
 					familyName: '', //家庭名称
 					address: '', //家庭地址
+					detailedAddress:''//详细地址
 				}
 			};
 		},
-
 		mounted(options) {},
 		methods: {
 			close() {
@@ -71,6 +76,7 @@
 			 * 打开家庭
 			 */
 			open(data = {}) {
+				this.form.address = this.$store.getters.positionInfo.address || ''
 				Object.assign(this.form, data);
 				this.show = true;
 			},
@@ -157,7 +163,6 @@
 			margin-top: 10rpx;
 
 			&.wd-input {
-				margin-top: 40rpx;
 				position: relative;
 				padding: 10rpx 20rpx;
 
