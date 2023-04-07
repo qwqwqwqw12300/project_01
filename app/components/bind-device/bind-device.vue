@@ -165,7 +165,7 @@
 		background: #F7F7F7;
 
 		.ui-title {
-			// height: 80rpx;
+			height: 80rpx;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -186,7 +186,7 @@
 		}
 
 		.ui-add-box {
-			margin-top: 30rpx;
+			// margin-top: 30rpx;
 			height: 400rpx;
 			// padding: 10rpx 20rpx;
 			display: flex;
