@@ -318,9 +318,8 @@
 			 * 编辑家庭
 			 */
 			editClick(item) {
-				this.$setCache('familyInfo', item);
 				uni.navigateTo({
-					url: '/pages/myself/room-manage'
+					url: `/pages/myself/room-manage?id=${item.familyId}`
 				});
 			}
 		}

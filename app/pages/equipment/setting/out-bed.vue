@@ -185,7 +185,7 @@
 				/**页面宽度**/
 				windowWidth: uni.getSystemInfoSync().windowWidth,
 				/**时间列表**/
-				timeList: [1, 5, 10],
+				timeList: [30, 45, 60],
 				/**区域尺寸**/
 				roomSize: {
 					roomLeft: 0,
@@ -486,16 +486,12 @@
 			 */
 			updateZone(zone) {
 				let {
-					x1 = 0, x2 = 0, y1 = 0, y2 = 0, height, width
-				} = zone;
-				if (x1 * this.cell.size + width > this.roomSize.roomLeft) return uni.$u.toast('宽度超出检测范围');
-				if ((y1 * this.cell.size + height) > (this.sizeInfo.installPosition === '0' ? this.roomSize.roomLength :
-						this.roomSize.roomBehind)) return uni.$u.toast('长度超出检测范围');
+					x1 = 0, x2 = 0, y1 = 0, y2 = 0 } = zone;
 				const obj = Object.assign(assignDeep({}, zone), {
 					x1: x1 * this.cell.size,
-					x2: x1 * this.cell.size + width,
+					x2: x2 * this.cell.size,
 					y1: y1 * this.cell.size,
-					y2: y1 * this.cell.size + height
+					y2: y2 * this.cell.size 
 				})
 				this.radarDevice(obj);
 			},
@@ -885,6 +881,10 @@
 					y1: uni.$u.priceFormat(y1 * this.cell.size, 1),
 					y2: uni.$u.priceFormat(y2 * this.cell.size, 1)
 				};
+			},
+			
+			onSizeInput() {
+				uni.$u.toast('请尝试拖动网格进行修改');
 			}
 		}
 	};
@@ -1043,7 +1043,7 @@
 			}
 
 			.ui-date-list {
-				width: 300rpx;
+				width: 330rpx;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
