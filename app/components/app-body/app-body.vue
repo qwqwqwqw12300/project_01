@@ -19,16 +19,20 @@
 						@leftClick="leftClick" />
 					<slot></slot>
 				</view>
+				<!-- /需要返回头 -->
 			</template>
 			<template v-else>
 				<!-- 不需要返回头 -->
 				<view class="wd-bg">
 					<slot></slot>
 				</view>
+				<!-- /不需要返回头 -->
 			</template>
-			<view class="wd-service" v-if="needService" @touchmove="onMove" @click="goService" @touchstart="onStart"
-				:style="{top: serviceTop + 'px'}">
+			<!-- 智能客服 -->
+			<view class="wd-service" v-if="needService" @touchmove.prevent="onMove" @click="goService"
+				@touchstart.prevent="onStart" :style="{top: serviceTop + 'px'}">
 			</view>
+			<!-- 智能客服 -->
 		</scroll-view>
 	</view>
 </template>
