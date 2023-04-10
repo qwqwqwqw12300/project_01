@@ -8,7 +8,7 @@
 <template>
 	<app-body :bg="false">
 		<view class="ui-body">
-			<app-logo :text="form.ruleNo ? '修改无人预警规则': '新增无人预警规则'"></app-logo>
+			<app-logo :text="'无人预警规则'"></app-logo>
 			<view class="ui-edit">
 				<u-cell-group>
 					<u-cell title="规则名称">
@@ -63,15 +63,15 @@
 					//日期类型 ： 0 按日期  1 按星期
 					dateType: '0',
 					//星期 ： 日期类型为 1时使用
-					week: [],
+					week: ['0', '1', '2', '3', '4', '5', '6'],
 					//开始日期 ：日期类型为 0时使用
 					startDate: '',
 					//结束日期 ：日期类型为 0时使用
 					endDate: '',
 					//开始时间：必传
-					startTime: '',
+					startTime: '00:00',
 					//结束时间：必传
-					endTime: ''
+					endTime: '23:59'
 				},
 				calendarShow: false,
 				timeShow: false
