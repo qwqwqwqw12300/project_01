@@ -9,7 +9,8 @@
 
 <script>
 	import {
-		phoneRemove
+		phoneRemove,
+		isIos,
 	} from '@/common/utils/util';
 	export default {
 		data() {
@@ -37,9 +38,21 @@
 			 */
 			getContact() {
 				this.contactList = [];
-				Promise.all([this.getTypeContact(plus.contacts.ADDRESSBOOK_PHONE), this.getTypeContact(plus.contacts
-					.ADDRESSBOOK_SIM)]).then(res => {
-					const data = [...res[0], ...res[1]];
+				uni.showLoading({
+					title: '加载中'
+				})
+				const readInfo = isIos() ? [this.getTypeContact(plus.contacts.ADDRESSBOOK_PHONE)] : [this.getTypeContact(
+					plus.contacts.ADDRESSBOOK_PHONE), this.getTypeContact(plus.contacts
+					.ADDRESSBOOK_SIM)]
+				Promise.all(readInfo).then(res => {
+					console.log(res, 'rrrrrrrr----------')
+					let data = []
+					res.forEach(n => {
+						console.log(n, 'nnnnnnnnnnn---------------')
+						data = [...data, ...n]
+						console.log(data, '22222222-------')
+					})
+					console.log(res, 'ssssssss-----------')
 					const obj = {};
 					this.contactList = data.reduce(function(item, next) {
 						obj[next.phone] ? '' : obj[next.phone] = true && item.push(next);
@@ -47,6 +60,7 @@
 					}, []);
 					console.log(this.contactList, 'oooooo')
 					this.visible = true;
+					uni.hideLoading()
 				})
 			},
 			/**
@@ -68,7 +82,6 @@
 							}).filter(item => {
 								return item.phone !== ''
 							});
-							console.log(list, 'sssssssssssssss')
 							resolve(list)
 						});
 

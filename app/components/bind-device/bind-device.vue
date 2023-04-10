@@ -86,9 +86,7 @@
 				}
 			}
 		},
-		mounted(options) {
-			console.log(this.devices, '444444---------')
-		},
+		mounted(options) {},
 		methods: {
 			demo() {
 				console.log(this.devices, 'devices')
@@ -106,9 +104,7 @@
 					id,
 					type
 				} = this.payload;
-				console.log(device, 'device');
 				let handle;
-				console.log(type, 'type');
 				switch (type) {
 					case 'room':
 						console.log('绑定到房间');
