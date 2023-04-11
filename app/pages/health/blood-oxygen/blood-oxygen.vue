@@ -254,7 +254,7 @@
 							res.data.oxMap.dataList[i].value
 						])
 					}
-					this.text = this.dataList[0][1]
+					this.text = this.dataList[0] ? this.dataList[0][1] : 0;
 					console.log(this.dataList, 'dataList')
 				})
 				this.dateFun(option)

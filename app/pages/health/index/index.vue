@@ -51,7 +51,7 @@
 									</view>
 								</view>
 								<view class="ui-w-47 ui-f-start ui-mar-t-45 ui-f-wrap">
-									<image class="ui-img-size5" src="@/static/images/stand.png"></image>
+									<image class="ui-img-size6" src="@/static/images/stand.png"></image>
 									<text class="ui-font-24 ui-mar-l-10">站立<分></text>
 									<view class="ui-text-box ui-mar-t-15 ui-f-center">
 										<text class="ui-font-2" style="font-size:30rpx">暂无数据</text>
@@ -1333,6 +1333,10 @@
 </script>
 
 <style lang="scss" scoped>
+	@font-face {
+	    font-family: 'health-index-font';
+	    src: url('@/static/ttf/DIN_Alternate_Bold.ttf');
+	}
 	movable-view {
 		display: flex;
 		align-items: center;
@@ -1498,22 +1502,24 @@
 		}
 
 		.ui-text-box {
-			padding-left: 36rpx;
+			padding-left: 50rpx;
 
 			.ui-font-1 {
-				font-size: 36rpx;
+				font-size: 44rpx;
 				color: #353535;
 				letter-spacing: 0;
 				line-height: 36rpx;
 				font-weight: 700;
+				font-family: health-index-font;
 			}
 
 			.ui-font-2 {
-				font-size: 36rpx;
+				font-size: 44rpx;
 				color: #D4D4D4;
 				letter-spacing: 0;
 				line-height: 36rpx;
 				font-weight: 700;
+				font-family: health-index-font;
 			}
 		}
 
