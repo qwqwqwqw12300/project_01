@@ -745,3 +745,8 @@ export const GetHumanInfo = (params) => http.get('/api/tWatch/getHumanInfo', par
  * 设置家庭成员信息
  */
 export const PostSetHumanInfo = (params) => http.post('/api/tWatch/setHumanInfo', params, {});
+
+/*
+ * 获取月份数据标记
+ */
+export const GetMonthDataFlag = (params) => http.get('/api/tWatch/getMonthDataFlag', params, {});
