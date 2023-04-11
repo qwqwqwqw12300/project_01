@@ -1,4 +1,4 @@
-<!--  手表设备设置 -->
+<!--  手表设备设置卡片 -->
 <template>
 	<view class="swiper-item">
 		<view class="item-box">
@@ -78,9 +78,9 @@
 	.swiper-item {
 		display: block;
 		height: 250rpx;
-		margin: 0 6rpx;
+		// margin: 0 6rpx;
 		background-color: #fff;
-		padding: 30rpx 20rpx;
+		padding: 30rpx 10rpx;
 		border-radius: 20rpx;
 		box-sizing: border-box;
 

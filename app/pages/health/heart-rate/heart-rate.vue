@@ -2,7 +2,7 @@
 	<app-body :bodyStyle="{background: '#F7F7F7' }">
 		<app-logo text="心率" top="36rpx" iconUrl="/static/images/share@3x.png"></app-logo>
 		<view class="ui-tab">
-			<date-picker @onSelect="onSelect"></date-picker>
+			<date-picker @onSelect="onSelect" @month="monthChange" :lightDot="monthData"></date-picker>
 		</view>
 		<view class="ui-echart">
 			<!-- 	<rate-echarts :timeOption="timeOption"></rate-echarts> -->
@@ -45,6 +45,7 @@
 
 <script>
 	import {
+		GetMonthDataFlag,
 		GetListHeartRateByDay,
 		GetListHeartRateByWeek
 	} from '@/common/http/api.js';
@@ -330,7 +331,8 @@
 				weekOptions,
 				options: {
 
-				}
+				},
+				monthData: [],
 			}
 		},
 		computed: {
@@ -339,10 +341,31 @@
 			}),
 
 		},
-		mounted() {},
+		mounted() {
+			const month = uni.$u.timeFormat(new Date(), 'yyyy-mm')
+			this.getMonthData(month)
+		},
 		methods: {
 			onSelect(val) {
 				val.type === 'date' ? this.handleDate(val) : this.handleWeek(val)
+			},
+			monthChange(date) {
+				const month = uni.$u.timeFormat(date, 'yyyy-mm')
+				this.getMonthData(month)
+			},
+
+			getMonthData(month) {
+				GetMonthDataFlag({
+					yearMonth: month,
+					type: '6', //（ 1卡路里 2活动时长 3步数 4睡眠 5站立 6心率 7血压 8血氧 9心电）
+				}).then(res => {
+					this.monthData = res.data.filter(n => {
+						return n.flag === '1'
+					}).map(item => {
+						return item.date
+					})
+					console.log(this.monthData, 'mmm-----------')
+				})
 			},
 			handleWeek(options) {
 				const {

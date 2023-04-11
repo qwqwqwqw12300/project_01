@@ -95,11 +95,8 @@
 			goDeciveDetails(info) {
 				this.$store.commit('setDeviceInfo', info);
 				this.$setCache('familyId', info.familyId);
-				if (info.type === '1') { // 电子牵挂卡
-					this.goPage('/pages/card/card-detail/card-detail');
-				} else { // 手表
-					this.goPage('/pages/watch/watch-detail/watch-detail');
-				}
+				this.goPage('/pages/equipment/device-detail/device-detail');
+
 
 			},
 			/**

@@ -33,15 +33,6 @@
 			}
 		},
 		{
-			"path": "pages/equipment/radar-detail/radar-detail",
-			"style": {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
-		{
 			"path": "pages/service/customer-service",
 			"style": {
 				"navigationBarTitleText": "在线客服",
@@ -494,14 +485,6 @@
 			}
 
 		}, {
-			"path": "pages/card/card-detail/card-detail",
-			"style": {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		}, {
 			"path": "pages/card/card-set",
 			"style": {
 				"navigationStyle": "custom",
@@ -590,29 +573,9 @@
 				}
 			}
 		},
-		//手表设备详情
-		{
-			"path": "pages/watch/watch-detail/watch-detail",
-			"style": {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
 		//手表设备设置
 		{
 			"path": "pages/watch/watch-set/watch-set",
-			"style": {
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-
-		},
-		{
-			"path": "pages/card/card-detail/card-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -754,6 +717,15 @@
 		},
 		{
 			"path": "pages/equipment/citySelect/citySelect",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/equipment/device-detail/device-detail",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {

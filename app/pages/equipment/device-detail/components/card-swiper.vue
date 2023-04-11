@@ -1,7 +1,8 @@
+<!-- 电子牵挂卡卡片 -->
 <template>
-	<view class="ui-detail">
-		<view class="detail-box">
-			<image class="device-img" src="/static/images/electron-card.png"></image>
+	<view class="swiper-item">
+		<view class="item-box">
+			<image class="img" src="/static/images/electron-card.png"></image>
 			<view class="device-info">
 				<view class="title">
 					<text class="name">{{record.name || '未命名设备'}}</text>
@@ -92,21 +93,23 @@
 </script>
 
 <style lang="scss" scoped>
-	.ui-detail {
-		margin-top: 52rpx;
-		padding: 0 32rpx;
+	.swiper-item {
+		display: block;
+		height: 250rpx;
+		// margin: 0 6rpx;
+		background-color: #fff;
+		padding: 30rpx 10rpx;
+		border-radius: 20rpx;
+		box-sizing: border-box;
 
-		.detail-box {
-			background-color: #fff;
-			border-radius: 16rpx;
-			padding: 26rpx;
+		.item-box {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 
-			.device-img {
-				width: 140rpx;
-				height: 140rpx;
+			.img {
+				width: 190rpx;
+				height: 190rpx;
 			}
 
 			.device-info {
@@ -117,8 +120,8 @@
 
 				.title {
 					color: #353535;
-					font-size: 32rpx;
-					font-weight: 500;
+					font-size: 36rpx;
+					font-weight: 550;
 					padding-left: 4rpx;
 					display: flex;
 					align-items: center;
@@ -142,7 +145,7 @@
 
 				.status {
 					// height: 60rpx;
-					margin-top: 4rpx;
+					margin-top: 14rpx;
 					display: flex;
 					align-items: center;
 

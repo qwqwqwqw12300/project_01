@@ -121,7 +121,7 @@
 <script>
 	import IndexDarg from "./components/index-darg.vue"
 	import * as echarts from '@/static/js/echarts.js';
-	import SwiperDevice from '@/pages/watch/watch-detail/components/device-swiper.vue';
+	import SwiperDevice from '@/pages/equipment/device-detail/components/watch-swiper.vue';
 	import SleepCard from "./components/SleepCard.vue";
 	import XinLvCard from "./components/XinLvCard.vue";
 	import XueYaCard from "./components/XueYaCard.vue";

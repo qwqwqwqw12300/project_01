@@ -45,20 +45,15 @@
 					plus.contacts.ADDRESSBOOK_PHONE), this.getTypeContact(plus.contacts
 					.ADDRESSBOOK_SIM)]
 				Promise.all(readInfo).then(res => {
-					console.log(res, 'rrrrrrrr----------')
 					let data = []
 					res.forEach(n => {
-						console.log(n, 'nnnnnnnnnnn---------------')
 						data = [...data, ...n]
-						console.log(data, '22222222-------')
 					})
-					console.log(res, 'ssssssss-----------')
 					const obj = {};
 					this.contactList = data.reduce(function(item, next) {
 						obj[next.phone] ? '' : obj[next.phone] = true && item.push(next);
 						return item;
 					}, []);
-					console.log(this.contactList, 'oooooo')
 					this.visible = true;
 					uni.hideLoading()
 				})

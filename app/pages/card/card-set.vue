@@ -1,6 +1,8 @@
 <template>
 	<app-body>
-		<DeviceSwiper :record="deviceInfo" type="reset"></DeviceSwiper>
+		<view class="ui-card">
+			<DeviceSwiper :record="deviceInfo" type="reset"></DeviceSwiper>
+		</view>
 		<view class="ui-cell">
 			<view class="cell-box">
 				<u-cell-group>
@@ -27,7 +29,7 @@
 	import {
 		PostCareCardUnBind
 	} from '@/common/http/api';
-	import DeviceSwiper from '@/pages/card/card-detail/components/device-swiper.vue'
+	import DeviceSwiper from '@/pages/equipment/device-detail/components/card-swiper.vue'
 	export default {
 		components: {
 			DeviceSwiper,
@@ -94,7 +96,9 @@
 			margin: 0px !important;
 		}
 	}
-
+	.ui-card{
+		padding: 0 26rpx;
+	}
 	.ui-detail {
 		margin-top: 52rpx;
 		padding: 0 32rpx;
