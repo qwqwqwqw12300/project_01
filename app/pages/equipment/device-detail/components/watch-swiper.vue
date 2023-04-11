@@ -1,4 +1,4 @@
-<!--  手表设备设置 -->
+<!--  手表设备设置卡片 -->
 <template>
 	<view class="swiper-item">
 		<view class="item-box">

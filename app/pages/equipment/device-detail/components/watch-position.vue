@@ -9,6 +9,12 @@
 					{{ addressInfo.address }}
 				</view>
 			</view>
+			<view class="map-position">
+				<text class="label">距上次更新时间:</text>
+				<view class="content">
+					{{ addressInfo.locateTimeFromCurrent }}
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -71,7 +77,8 @@
 							resolve({
 								latitude,
 								longitude,
-								address: e.address
+								address: e.address,
+								locateTimeFromCurrent: n.locateTimeFromCurrent,
 							})
 						})
 				})
@@ -87,20 +94,24 @@
 						this.addressInfo = {
 							latitude: '',
 							longitude: '',
-							address: '暂无数据'
+							address: '暂无数据',
+							locateTimeFromCurrent: '暂无数据',
 						}
 						return uni.hideLoading()
 					}
 					this.getLocation(res.data).then(info => {
+						console.log(info, 'ffffff------------')
 						const {
 							latitude,
 							longitude,
-							address
+							address,
+							locateTimeFromCurrent
 						} = info
 						this.addressInfo = {
 							latitude,
 							longitude,
-							address
+							address,
+							locateTimeFromCurrent,
 						}
 						uni.hideLoading()
 					})
@@ -124,7 +135,7 @@
 			width: 100%;
 			z-index: 9999;
 			border-radius: 30rpx 30rpx 0 0;
-			height: 180rpx;
+			height: 240rpx;
 		}
 
 		// padding: 32rpx;
@@ -139,14 +150,14 @@
 
 		.map-position {
 			// margin-top: 30rpx;
-			height: 128rpx;
+			height: 100rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			// border-bottom: solid 2px #f7f7f7;
 
 			.label {
-				width: 160rpx;
+				width: 240rpx;
 				font-size: 32rpx;
 				color: #888888;
 			}

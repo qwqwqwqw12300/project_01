@@ -101,7 +101,7 @@
 			goDeciveDetails(info) {
 				this.$store.commit('setDeviceInfo', info);
 				this.$setCache('familyId', info.familyId);
-				this.goPage('/pages/equipment/radar-detail/radar-detail');
+				this.goPage('/pages/equipment/device-detail/device-detail');
 			},
 
 			/**
