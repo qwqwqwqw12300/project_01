@@ -21,7 +21,7 @@
 							<text class="wd-list-static-font" v-else>离线</text>
 						</view>
 					</view>
-					<u-badge v-if="getDevice(human).msgNum > 1" color="#fff" :offset="[-1, 0]"
+					<u-badge v-if="getDevice(human).msgNum >= 1" color="#fff" :offset="[-1, 0]"
 						:value="getDevice(human).msgNum" absolute>
 					</u-badge>
 				</view>

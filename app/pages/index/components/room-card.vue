@@ -21,7 +21,7 @@
 							<text class="wd-list-static-font">{{getDeives(room).hasPerson==='1' ? '有人':'无人'}}</text>
 						</view>
 					</view>
-					<u-badge v-if="getDeives(room).msgNum > 1" color="#fff" :offset="[-1, 0]"
+					<u-badge v-if="getDeives(room).msgNum >= 1" color="#fff" :offset="[-1, 0]"
 						:value="getDeives(room).msgNum" absolute>
 					</u-badge>
 				</view>
