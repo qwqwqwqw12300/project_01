@@ -20,6 +20,12 @@
 					{{ addressInfo.address }}
 				</view>
 			</view>
+			<view class="map-position border">
+				<text class="label">更新时间:</text>
+				<view class="content">
+					{{ addressInfo.locateTime }}
+				</view>
+			</view>
 			<template v-if="historyList.length">
 				<view class="address-list">
 					<view class="list-item" v-for="(n, index) in historyList" :key="index" @click="mapMarker(n)">
@@ -104,6 +110,7 @@
 				const {
 					address,
 					index,
+					locateTime,
 					location: {
 						latitude,
 						longitude
@@ -113,7 +120,8 @@
 				this.addressInfo = {
 					latitude,
 					longitude,
-					address
+					address,
+					locateTime
 				}
 			},
 			getLocation(n) {
@@ -139,6 +147,7 @@
 										latitude,
 										longitude,
 									},
+									locateTime: n.locateTime,
 									address: e.address
 								})
 							})
@@ -175,28 +184,30 @@
 				GetLastPoint({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
-
+					console.log(res, 'resrttttttt')
 					if (!res.data.location?.latitude) {
 						this.addressInfo = {
 							latitude: '',
 							longitude: '',
-							address: '暂无数据'
+							address: '暂无数据',
+							locateTime: '暂无数据'
 						}
 						return uni.hideLoading()
 					}
 					this.getLocation(res.data).then(info => {
-
 						const {
 							location: {
 								latitude,
 								longitude
 							},
-							address
+							address,
+							locateTim
 						} = info
 						this.addressInfo = {
 							latitude,
 							longitude,
-							address
+							address,
+							locateTime: uni.$u.timeFormat(new Date(locateTime), 'yyyy-mm-dd')
 						}
 						this.getHistoryLocation()
 						uni.hideLoading()
@@ -223,11 +234,10 @@
 
 		.map-position {
 			// margin-top: 30rpx;
-			height: 128rpx;
+			height: 100rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			border-bottom: solid 2px #f7f7f7;
 
 			.label {
 				width: 160rpx;
@@ -241,6 +251,10 @@
 				color: #353535;
 				font-weight: 600;
 			}
+		}
+
+		.border {
+			border-bottom: solid 2px #f7f7f7;
 		}
 
 		.map-address {
