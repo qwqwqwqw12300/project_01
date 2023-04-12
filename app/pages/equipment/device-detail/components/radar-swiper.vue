@@ -63,6 +63,7 @@
 		background-color: #fff;
 		padding: 30rpx 10rpx;
 		box-sizing: border-box;
+		box-shadow: 0px 2px 20px 0px rgba(220,205,180,0.5);
 		.item-box {
 			display: flex;
 			align-items: center;
