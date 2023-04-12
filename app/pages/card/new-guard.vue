@@ -319,11 +319,11 @@
 
 	.ui-form {
 		// padding: 0 44rpx;
-		margin-top: 40rpx;
+		margin-top: 20rpx;
 
 		.ui-form-item {
 			background-color: #ffffff;
-			margin-bottom: 40rpx;
+			margin-bottom: 20rpx;
 			padding: 0rpx 30rpx;
 
 			.item-title {

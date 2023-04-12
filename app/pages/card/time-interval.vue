@@ -24,8 +24,8 @@
 							<view>{{item.beginTime}} 至 </view>
 							<view>{{item.endTime}}</view>
 						</view>
-						<u-switch @click.native.stop="handleSwitch(item)" v-model="item.enable" activeValue="1" inactiveValue="0"
-							activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20">
+						<u-switch @click.native.stop="handleSwitch(item)" v-model="item.enable" activeValue="1"
+							inactiveValue="0" activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20">
 						</u-switch>
 					</view>
 				</view>
@@ -58,7 +58,7 @@
 				/**所有家庭列表**/
 				deviceInfo: state => state.deviceInfo
 			}),
-		
+
 		},
 		data() {
 			return {
@@ -67,7 +67,7 @@
 			};
 		},
 		mounted() {
-			console.log(this.deviceInfo,'this.deviceInfo')
+			console.log(this.deviceInfo, 'this.deviceInfo')
 		},
 		methods: {
 			initData() {
@@ -86,6 +86,8 @@
 					setTimeout(() => {
 						this.initData()
 					}, 1000);
+				}, err => {
+					item.enable = item.enable === '0' ? '1' : '0'; // 异常需要把状态重置
 				})
 			},
 			toJump(item) {
@@ -108,12 +110,23 @@
 
 <style lang="scss">
 	.ui-cell {
+		position: relative;
 		width: 100%;
 		height: 240rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		background-color: #fff;
+
+		&::before {
+			bottom: 0;
+			left: 32rpx;
+			content: '';
+			height: 1rpx;
+			width: calc(100% - 32rpx);
+			position: absolute;
+			background: #f2f2f2;
+		}
 
 		.ui-cell-content {
 			width: 91.4%;
@@ -147,9 +160,11 @@
 			}
 		}
 	}
-	.ui-div{
+
+	.ui-div {
 		height: 90rpx;
 	}
+
 	.ui-btn {
 
 		.box {

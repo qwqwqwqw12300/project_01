@@ -13,13 +13,13 @@
 				</view>
 			</view>
 			<view style="margin-top: 48rpx;">
-				<u--input style="background-color:#F2F2F2;" placeholder="请输入您想搜索的内容" border="surround" shape="circle"
-					prefixIcon="search" prefixIconStyle="font-size: 22px;color: #909399"></u--input>
+				<u--input style="background-color:#F2F2F2;" @change="search" placeholder="请输入您想搜索的内容" border="surround"
+					shape="circle" prefixIcon="search" prefixIconStyle="font-size: 22px;color: #909399"></u--input>
 			</view>
 		</view>
 		<view class="ui-content">
 			<u-swipe-action>
-				<u-swipe-action-item :options="item.options" v-for="(item, index) in options4" :key="index"
+				<u-swipe-action-item :options="item.options" v-for="(item, index) in mobileLIst" :key="index"
 					@click="handleDel(index,item)">
 					<view class="cell">
 						<view class="cell-box">
@@ -76,17 +76,20 @@
 		},
 		data() {
 			return {
-				options4: [],
+				/** 展示的数据*/
+				mobileLIst: [],
+				/**原始数据*/
+				baseList: []
 			}
 		},
 		methods: {
 			//初始化数据
 			initData() {
-				this.options4 = []
+				this.mobileLIst = []
 				GetWatchAddressBook({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
-					this.options4 = res.data.map(n => {
+					this.mobileLIst = res.data.map(n => {
 						n.options = [{
 							text: '删除',
 							style: {
@@ -102,13 +105,13 @@
 			},
 			//批量保存和修改
 			handleSave() {
-				const list = uni.$u.deepClone(this.options4)
+				const list = uni.$u.deepClone(this.mobileLIst)
 				for (let i = 0; i < list.length; i++) {
 					if (!list[i].name) return uni.$u.toast('请填写联系人姓名')
 					if (!phoneValidator(list[i].number)) return uni.$u.toast('手机号不正确')
 				}
 				const addressBooks = []
-				this.options4.forEach(item => {
+				this.mobileLIst.forEach(item => {
 					console.log(item, 'item')
 					if (item.addressBookId != undefined) {
 						addressBooks.push({
@@ -141,7 +144,7 @@
 			},
 			//添加输入框
 			handleAdd() {
-				this.options4.push({
+				this.mobileLIst.push({
 					phoneName: '',
 					phoneNumber: '',
 					options: [{
@@ -172,7 +175,8 @@
 									}, 1000);
 								})
 							} else {
-								this.options4.splice(this.options4.findIndex((item, index) => index == id), 1)
+								this.mobileLIst.splice(this.mobileLIst.findIndex((item, index) => index == id),
+									1)
 							}
 						}
 					}
@@ -187,7 +191,7 @@
 			phoneSelect(data) {
 				// console.log(data)
 				data.map(item => {
-					this.options4.push({
+					this.mobileLIst.push({
 						phoneName: item.name,
 						phoneNumber: item.phone,
 						options: [{
@@ -198,6 +202,12 @@
 						}],
 					})
 				})
+			},
+			/**
+			 * 搜索
+			 */
+			search(value) {
+				console.log('value', value);
 			}
 		},
 		onShow() {
