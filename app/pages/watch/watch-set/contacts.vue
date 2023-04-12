@@ -13,13 +13,14 @@
 				</view>
 			</view>
 			<view style="margin-top: 48rpx;">
-				<u--input style="background-color:#F2F2F2;" @change="search" placeholder="请输入您想搜索的内容" border="surround"
-					shape="circle" prefixIcon="search" prefixIconStyle="font-size: 22px;color: #909399"></u--input>
+				<u--input v-model="searchValue" style="background-color:#F2F2F2;" placeholder="请输入您想搜索的内容"
+					border="surround" shape="circle" prefixIcon="search"
+					prefixIconStyle="font-size: 22px;color: #909399"></u--input>
 			</view>
 		</view>
 		<view class="ui-content">
 			<u-swipe-action>
-				<u-swipe-action-item :options="item.options" v-for="(item, index) in mobileLIst" :key="index"
+				<u-swipe-action-item :options="item.options" v-for="(item, index) in searchList" :key="index"
 					@click="handleDel(index,item)">
 					<view class="cell">
 						<view class="cell-box">
@@ -72,30 +73,41 @@
 			...mapState({
 				deviceInfo: state => state.deviceInfo
 			}),
-
+			searchList: function() {
+				return this.mobileList.filter(ele => {
+					const nameSearch = ele.name.includes(this.searchValue) || this.searchValue
+						.includes(ele.name),
+						numberSearch = ele.number.includes(this.searchValue) || this.searchValue
+						.includes(ele.number)
+					return !this.searchValue || nameSearch || numberSearch;
+				})
+			}
 		},
 		data() {
 			return {
 				/** 展示的数据*/
-				mobileLIst: [],
-				/**原始数据*/
-				baseList: []
+				mobileList: [],
+				/**筛选内容**/
+				searchValue: ''
 			}
 		},
 		methods: {
 			//初始化数据
 			initData() {
-				this.mobileLIst = []
+				this.mobileList = []
 				GetWatchAddressBook({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
-					this.mobileLIst = res.data.map(n => {
-						n.options = [{
-							text: '删除',
-							style: {
-								backgroundColor: '#f56c6c'
-							}
-						}]
+					this.mobileList = res.data.map((n, index) => {
+						Object.assign(n, {
+							options: [{
+								text: '删除',
+								style: {
+									backgroundColor: '#f56c6c'
+								}
+							}],
+							index
+						});
 						return n
 					})
 				})
@@ -105,13 +117,13 @@
 			},
 			//批量保存和修改
 			handleSave() {
-				const list = uni.$u.deepClone(this.mobileLIst)
+				const list = uni.$u.deepClone(this.mobileList)
 				for (let i = 0; i < list.length; i++) {
 					if (!list[i].name) return uni.$u.toast('请填写联系人姓名')
 					if (!phoneValidator(list[i].number)) return uni.$u.toast('手机号不正确')
 				}
 				const addressBooks = []
-				this.mobileLIst.forEach(item => {
+				this.mobileList.forEach(item => {
 					console.log(item, 'item')
 					if (item.addressBookId != undefined) {
 						addressBooks.push({
@@ -144,7 +156,7 @@
 			},
 			//添加输入框
 			handleAdd() {
-				this.mobileLIst.push({
+				this.mobileList.push({
 					phoneName: '',
 					phoneNumber: '',
 					options: [{
@@ -175,7 +187,7 @@
 									}, 1000);
 								})
 							} else {
-								this.mobileLIst.splice(this.mobileLIst.findIndex((item, index) => index == id),
+								this.mobileList.splice(this.mobileList.findIndex((item, index) => index == id),
 									1)
 							}
 						}
@@ -191,7 +203,7 @@
 			phoneSelect(data) {
 				// console.log(data)
 				data.map(item => {
-					this.mobileLIst.push({
+					this.mobileList.push({
 						phoneName: item.name,
 						phoneNumber: item.phone,
 						options: [{
@@ -207,7 +219,9 @@
 			 * 搜索
 			 */
 			search(value) {
-				console.log('value', value);
+				this.mobileList = this.baseList.filter(ele => {
+					return !value || ele.name.includes(value) || value.includes(ele.name)
+				})
 			}
 		},
 		onShow() {
