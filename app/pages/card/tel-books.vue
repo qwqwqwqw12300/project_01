@@ -16,25 +16,30 @@
 			</card-title>
 		</view>
 		<view class="ui-content">
-			<u-swipe-action>
-				<u-swipe-action-item :options="item.options" v-for="(item, index) in options4" :key="index"
-					@click="handleDel(index,item)">
-					<view class="cell">
-						<view class="cell-box">
-							<view class="input">
-								<u--input v-model="item.phoneName" maxlength="6" placeholder="请输入姓名" border="none"
-									clearable>
-								</u--input>
-							</view>
-							<view class="input">
-								<u--input v-model="item.phoneNumber" maxlength="11" type="number" placeholder="请输入手机号"
-									border="none" clearable>
-								</u--input>
+			<template v-if="options4.length">
+				<u-swipe-action>
+					<u-swipe-action-item :options="item.options" v-for="(item, index) in options4" :key="index"
+						@click="handleDel(index,item)">
+						<view class="cell">
+							<view class="cell-box">
+								<view class="input">
+									<u--input v-model="item.phoneName" maxlength="6" placeholder="请输入姓名" border="none"
+										clearable>
+									</u--input>
+								</view>
+								<view class="input">
+									<u--input v-model="item.phoneNumber" maxlength="11" type="number"
+										placeholder="请输入手机号" border="none" clearable>
+									</u--input>
+								</view>
 							</view>
 						</view>
-					</view>
-				</u-swipe-action-item>
-			</u-swipe-action>
+					</u-swipe-action-item>
+				</u-swipe-action>
+			</template>
+			<view class="list-empty" v-else>
+				<u-empty mode="list" text="暂无数据"></u-empty>
+			</view>
 		</view>
 		<view class="ui-div"></view>
 		<view class="ui-btn">
@@ -72,7 +77,7 @@
 				/**所有家庭列表**/
 				deviceInfo: state => state.deviceInfo
 			}),
-		
+
 		},
 		data() {
 			return {
@@ -109,18 +114,18 @@
 					if (!phoneValidator(list[i].phoneNumber)) return uni.$u.toast('手机号不正确')
 				}
 				const addressBooks = []
-				this.options4.forEach(item=>{
-					console.log(item,'item')
-					if(item.addressBookId!=undefined){
+				this.options4.forEach(item => {
+					console.log(item, 'item')
+					if (item.addressBookId != undefined) {
 						addressBooks.push({
-							phoneName:item.phoneName,
-							phoneNumber:item.phoneNumber,
-							addressBookId:item.addressBookId
+							phoneName: item.phoneName,
+							phoneNumber: item.phoneNumber,
+							addressBookId: item.addressBookId
 						})
-					}else{
+					} else {
 						addressBooks.push({
-							phoneName:item.phoneName,
-							phoneNumber:item.phoneNumber,
+							phoneName: item.phoneName,
+							phoneNumber: item.phoneNumber,
 						})
 					}
 				})
@@ -236,6 +241,15 @@
 	.ui-content {
 		margin-top: 30rpx;
 		background-color: #fff;
+
+		.list-empty {
+			width: 100%;
+			height: 500rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
 		.cell {
 			padding: 0rpx 32rpx;
 
@@ -252,9 +266,11 @@
 			}
 		}
 	}
-	.ui-div{
+
+	.ui-div {
 		height: 90rpx;
 	}
+
 	.ui-btn {
 		width: 100%;
 		position: fixed;

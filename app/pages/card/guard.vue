@@ -10,24 +10,29 @@
 		<app-logo color="#353535" text="位置守护"></app-logo>
 		<CardTitle :title="'到达提醒'" :content="'迟到APP有报警'" :backGroundImg="'/static/images/arrive-guard.png'"></CardTitle>
 		<view style="margin-top: 50rpx;">
-			<view class="ui-cell" v-for="(item,index) in list" :key="index" @click="toJump(item)">
-				<view class="ui-cell-content">
-					<view class="ui-cell-style">
-						<view class="ui-cell-title">{{item.jobName}}</view>
-						<view>
-							<u-icon name="arrow-right"></u-icon>
+			<template v-if="list.length">
+				<view class="ui-cell" v-for="(item,index) in list" :key="index" @click="toJump(item)">
+					<view class="ui-cell-content">
+						<view class="ui-cell-style">
+							<view class="ui-cell-title">{{item.jobName}}</view>
+							<view>
+								<u-icon name="arrow-right"></u-icon>
+							</view>
 						</view>
-					</view>
-					<view class="ui-cell-style">
-						<view class="ui-cell-font">
-							<view>{{item.firstDate}} 至 </view>
-							<view>{{item.lastDate}}</view>
+						<view class="ui-cell-style">
+							<view class="ui-cell-font">
+								<view>{{item.firstDate}} 至 </view>
+								<view>{{item.lastDate}}</view>
+							</view>
+							<u-switch @click.native.stop="handleSwitch(item)" v-model="item.enable" activeValue="1"
+								inactiveValue="0" activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20"> >
+							</u-switch>
 						</view>
-						<u-switch @click.native.stop="handleSwitch(item)" v-model="item.enable" activeValue="1"
-							inactiveValue="0" activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20"> >
-						</u-switch>
 					</view>
 				</view>
+			</template>
+			<view class="list-empty" v-else>
+				<u-empty mode="list" text="暂无数据"></u-empty>
 			</view>
 		</view>
 		<view class="ui-btn"><button class="default" @click="toJumpTime">新增守护位置</button></view>
@@ -171,5 +176,13 @@
 		button {
 			border-radius: 0rpx !important;
 		}
+	}
+
+	.list-empty {
+		width: 100%;
+		height: 500rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>

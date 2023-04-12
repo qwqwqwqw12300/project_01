@@ -70,20 +70,28 @@
 				})
 			},
 			unBind() {
-				const {
-					humanId,
-					deviceId: deviceId
-				} = this.deviceInfo
-				PostCareCardUnBind({
-					humanId,
-					deviceId
-				}).then(res => {
-					uni.$u.toast(res.msg)
-					setTimeout(() => {
-						uni.switchTab({
-							url: '/pages/index/index'
-						})
-					}, 1000)
+				uni.showModal({
+					title: '提示',
+					content: `是否确认解绑？`,
+					success: res => {
+						if (res.confirm) {
+							const {
+								humanId,
+								deviceId: deviceId
+							} = this.deviceInfo
+							PostCareCardUnBind({
+								humanId,
+								deviceId
+							}).then(res => {
+								uni.$u.toast(res.msg)
+								setTimeout(() => {
+									uni.switchTab({
+										url: '/pages/index/index'
+									})
+								}, 1000)
+							})
+						}
+					}
 				})
 			}
 		}
@@ -96,9 +104,11 @@
 			margin: 0px !important;
 		}
 	}
-	.ui-card{
+
+	.ui-card {
 		padding: 0 26rpx;
 	}
+
 	.ui-detail {
 		margin-top: 52rpx;
 		padding: 0 32rpx;

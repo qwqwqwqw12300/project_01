@@ -81,21 +81,11 @@
 			},
 			deviceName() {
 				return (type) => {
-					let str = '';
-					switch (type) {
-						case '0':
-							str = '跌倒检测器';
-							break;
-						case '1':
-							str = '电子牵挂卡';
-							break;
-						case '2':
-							str = '4G健康手表';
-							break;
-						default:
-							break;
-					}
-					return str;
+					return {
+						0: '跌倒检测器',
+						1: '电子牵挂卡',
+						2: '4G健康手表'
+					} [type]
 				}
 			}
 		},

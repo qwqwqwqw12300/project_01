@@ -59,6 +59,7 @@
 		methods: {
 			handleStart() {
 				console.log('开始倒计时......')
+				if (this.disabled) return
 				this.disabled = true
 				PostRemoteMonitor({
 					deviceId: this.deviceInfo.deviceId,
