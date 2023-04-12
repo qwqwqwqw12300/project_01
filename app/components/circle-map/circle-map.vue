@@ -2,7 +2,14 @@
 
 <template>
 	<view>
-		<view id="container" class="container"></view>
+		<template v-if="show">
+			<view class="ui-loading">
+				<u-loading-icon mode="semicircle" :vertical="true" text="加载中" textSize="18"></u-loading-icon>
+			</view>
+		</template>
+		<view v-show="!show">
+			<view id="container" class="container"></view>
+		</view>
 		<view :slider="slider" :change:slider="maps.loadData"></view>
 	</view>
 </template>
@@ -30,11 +37,14 @@
 		},
 		data() {
 			return {
+				show: false,
 				slider: 0,
 			};
 		},
 		methods: {
-
+			onMsg(val) {
+				this.show = val
+			}
 		}
 	}
 </script>
@@ -77,6 +87,7 @@
 					this.mapMarker()
 				} else {
 					if (longitude && latitude) {
+						this.$ownerInstance.callMethod('onMsg', true)
 						this.loadMap(this.init);
 					}
 				}
@@ -115,19 +126,23 @@
 			 * 初始化
 			 */
 			init(AMap) {
-				console.log('098765')
 				const {
 					latitude,
 					longitude
 				} = this.mapInfo
 				this.AMap = AMap;
-				this.map = new AMap.Map('container', {
-					resizeEnable: true,
-					center: [longitude, latitude],
-					zoom: 13 //地图显示的缩放级别
-				});
-				this.drawCircle()
-				this.mapMarker()
+				setTimeout(() => {
+					this.map = new AMap.Map('container', {
+						resizeEnable: true,
+						center: [longitude, latitude],
+						zoom: 13 //地图显示的缩放级别
+					});
+					this.drawCircle()
+					this.mapMarker()
+				}, 100);
+				this.$ownerInstance.callMethod('onMsg', false)
+
+
 			},
 			drawCircle() {
 				const {
@@ -169,6 +184,14 @@
 	}
 </script>
 <style lang="scss">
+	.ui-loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 800rpx;
+		width: 100%;
+	}
+
 	.container {
 		height: calc(100vh - 300rpx);
 		width: 100%;

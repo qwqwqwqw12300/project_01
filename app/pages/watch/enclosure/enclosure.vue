@@ -49,7 +49,7 @@
 		left: 32rpx;
 		// top: 800rpx;
 		bottom: 250rpx;
-		z-index: 9999;
+		z-index: 99;
 
 		.tab-box {
 			width: 260rpx;

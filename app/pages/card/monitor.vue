@@ -1,7 +1,4 @@
 <!--
-* @Author: zhanghaowei
-* @Date: 2023年2月28日14:43:51
-* @FilePath: 
 * @Description: 远程监听
 -->
 
@@ -10,8 +7,10 @@
 		<app-logo color="#353535" text="远程监听"></app-logo>
 		<CardTitle :title="'远程监听'" :content="'您可以实时获取设备环境声音'" :backGroundImg="'/static/images/long-range-monitor.png'">
 		</CardTitle>
-		<view class="ui-btn"><button :class="disable ? '' : 'default'" @click="handleStart">开始监听</button></view>
-		<view class="ui-content" v-if="disable">
+		<view class="ui-btn">
+			<button :disabled="disabled" :class="disabled ? '' : 'default'" @click="handleStart">开始监听</button>
+		</view>
+		<view class="ui-content" v-if="disabled">
 			<view class="ui-time">
 				<text>{{second}}</text>
 			</view>
@@ -42,9 +41,9 @@
 		data() {
 			return {
 				flag: '0', //0关闭，1开启
-				second:60,
-				disable:false, //倒计时开关
-				countDown:''
+				second: 60,
+				disabled: false, //倒计时开关
+				countDown: ''
 			};
 		},
 		onHide() {
@@ -60,23 +59,22 @@
 		methods: {
 			handleStart() {
 				console.log('开始倒计时......')
-				this.disable = true
-				if(this.second == 60){
-					this.countDown = setInterval(()=>{
-						this.second--
-						if(this.second ==0){
-							this.disable = false
-							this.second = 60
-							clearInterval(this.countDown)
-						}
-					},1000)
-				}
+				this.disabled = true
 				PostRemoteMonitor({
 					deviceId: this.deviceInfo.deviceId,
 					requestCall: "1"
 				}).then(res => {
-					console.log(res, 'res')
 					uni.$u.toast(res.msg)
+					if (this.second == 60) {
+						this.countDown = setInterval(() => {
+							this.second--
+							if (this.second == 0) {
+								this.disabled = false
+								this.second = 60
+								clearInterval(this.countDown)
+							}
+						}, 1000)
+					}
 				})
 			}
 		}
@@ -88,14 +86,15 @@
 		width: 686rpx;
 		margin: 0 auto;
 		margin-top: 104rpx;
-		
+
 		button {
 			color: #FFFFFF !important;
 			background-color: #D4D4D4 !important;
 			border-radius: 44rpx !important;
 		}
 	}
-	.ui-content{
+
+	.ui-content {
 		width: 100%;
 		margin-top: 104rpx;
 		display: flex;
@@ -103,7 +102,8 @@
 		align-items: center;
 		justify-content: center;
 	}
-	.ui-time{
+
+	.ui-time {
 		width: 144rpx;
 		height: 144rpx;
 		border-radius: 100%;
@@ -116,7 +116,8 @@
 		line-height: 64rpx;
 		font-weight: 500;
 	}
-	.ui-font{
+
+	.ui-font {
 		margin-top: 32rpx;
 		font-size: 28rpx;
 		color: #353535;
