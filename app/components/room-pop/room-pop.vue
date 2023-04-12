@@ -285,24 +285,54 @@
 				if (!name) {
 					return uni.$u.toast('请完善人员信息');
 				}
-				const handle = this.mode === 'add' ? PostinsertTHuman({
-					name,
-					familyId
-				}) : PostUpdateTHuman({
-					humanId,
-					name,
-					familyId
-				});
-				handle.then(res => {
-					uni.$u.toast('操作成功')
-					this.close();
-					setTimeout(() => {
-						this.$emit('update', {
-							type: 'human',
-							data: res.data
-						})
-					}, 500);
-				})
+				if (this.mode === 'add') {
+					PostinsertTHuman({
+						name,
+						familyId
+					}).then(res => {
+						uni.$u.toast('操作成功')
+						this.close();
+						setTimeout(() => {
+							this.$emit('update', {
+								type: 'human',
+								data: res.data
+							})
+						}, 500);
+						// console.log('添加成功成员信息', res);
+						// uni.showModal({
+						// 	content: '添加成功，是否继续完善成员信息',
+						// 	confirmText: '立即前往',
+						// 	success: modalRes => {
+						// 		if (modalRes.confirm) {
+						// 			uni.navigateTo({
+						// 				url: `/pages/watch/watch-set/information?id=${res.data}`
+						// 			});
+						// 		} else {
+						// 			this.close();
+						// 			this.$emit('update', {
+						// 				type: 'human',
+						// 				data: res.data
+						// 			})
+						// 		}
+						// 	}
+						// })
+					});
+				} else { // 修改
+					PostUpdateTHuman({
+						humanId,
+						name,
+						familyId
+					}).then(res => {
+						uni.$u.toast('操作成功')
+						this.close();
+						setTimeout(() => {
+							this.$emit('update', {
+								type: 'human',
+								data: res.data
+							})
+						}, 500);
+					})
+				}
 			},
 
 			sheetSelect(item) {
