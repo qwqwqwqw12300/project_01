@@ -34,10 +34,12 @@
 							longitude
 						}
 					} else {
+						console.log(677777777)
 						const {
 							latitude,
 							longitude
-						} = await this.$store.dispatch('GetContactsList');
+						} = await this.$store.dispatch('setLocation')
+						console.log(latitude, longitude, 'lllllpppppppppp--------')
 						this.mapInfo = {
 							type: 'cur',
 							latitude,
@@ -116,7 +118,7 @@
 				} = this.mapData
 				this.map = new AMap.Map('container', {
 					resizeEnable: true,
-					// center: [longitude, latitude],
+					center: [longitude, latitude],
 					zoom: 13 //地图显示的缩放级别
 				})
 				type === 'add' && this.mapMarker()
