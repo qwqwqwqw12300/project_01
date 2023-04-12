@@ -1,7 +1,12 @@
 <!--多边形-->
 <template>
 	<view>
-		<view id="container" class="container"></view>
+		<template v-if="show">
+			<view class="ui-loading">
+				<u-loading-icon mode="semicircle" :vertical="true" text="加载中" textSize="18"></u-loading-icon>
+			</view>
+		</template>
+		<view v-show="!show" id="container" class="container"></view>
 		<view :mapData="mapData" :change:mapData="maps.loadData"></view>
 	</view>
 </template>
@@ -17,6 +22,7 @@
 		},
 		data() {
 			return {
+				show: false,
 				mapData: {
 
 				},
@@ -39,6 +45,9 @@
 			 */
 			onMsg(info) {
 				this.$emit('sendMsg', info)
+			},
+			onLoadMsg(val) {
+				this.show = val
 			}
 		}
 	}
@@ -77,7 +86,8 @@
 					points
 				} = val
 				if (latitude && longitude) {
-					this.loadMap(this.init);
+					this.$ownerInstance.callMethod('onLoadMsg', true)
+					this.loadMap(this.init)
 				}
 			},
 			/**
@@ -89,26 +99,25 @@
 					longitude,
 					points,
 				} = this.mapInfo
-				this.AMap = AMap;
-				this.map = new AMap.Map('container', {
-					resizeEnable: true,
-					center: [longitude, latitude],
-					zoom: 13 //地图显示的缩放级别
-				});
-				if (points.length) {
-					this.polygon = this.createPolygon(points);
-					this.polygonEditor = this.createEditor(this.polygon);
-					this.map.setFitView()
-					this.sendMsg(this.beginPoints)
-				} else {
-					// 挂载点击事件
-					this.clickListener = this.map.on('click', this.mapOnClick.bind(this));
-					// AMap.event.addListener(this.map, "click", this.mapOnClick.bind(this));
-				}
-				// this.$ownerInstance.callMethod('onMsg', {
-				// 	AMap,
-				// 	map: this.map
-				// });
+				this.AMap = AMap
+				setTimeout(() => {
+					this.map = new AMap.Map('container', {
+						resizeEnable: true,
+						center: [longitude, latitude],
+						zoom: 13 //地图显示的缩放级别
+					});
+					if (points.length) {
+						this.polygon = this.createPolygon(points);
+						this.polygonEditor = this.createEditor(this.polygon);
+						this.map.setFitView()
+						this.sendMsg(this.beginPoints)
+					} else {
+						// 挂载点击事件
+						this.clickListener = this.map.on('click', this.mapOnClick.bind(this));
+						// AMap.event.addListener(this.map, "click", this.mapOnClick.bind(this));
+					}
+				}, 100)
+				this.$ownerInstance.callMethod('onLoadMsg', false)
 			},
 
 			/**
@@ -240,6 +249,14 @@
 	}
 </script>
 <style lang="scss">
+	.ui-loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 800rpx;
+		width: 100%;
+	}
+
 	.container {
 		height: calc(100vh - 400rpx);
 		width: 100%;

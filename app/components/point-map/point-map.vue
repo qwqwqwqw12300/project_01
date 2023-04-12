@@ -1,7 +1,12 @@
 <template>
 	<view>
 		<view :mapInfo="mapInfo" :change:mapInfo="maps.loadData"></view>
-		<view id="container" class="container"></view>
+		<template v-if="show">
+			<view class="ui-loading">
+				<u-loading-icon mode="semicircle" :vertical="true" text="加载中" textSize="18"></u-loading-icon>
+			</view>
+		</template>
+		<view v-show="!show" id="container" class="container"></view>
 	</view>
 </template>
 
@@ -48,6 +53,7 @@
 		mounted() {},
 		data() {
 			return {
+				show: false,
 				mapInfo: {
 					type: 'add', //cur: 当前定位,add: '地图定位'
 					latitude: '',
@@ -55,7 +61,11 @@
 				}
 			}
 		},
-		methods: {}
+		methods: {
+			onMsg(val) {
+				this.show = val
+			}
+		}
 	}
 </script>
 <script module="maps" lang="renderjs">
@@ -90,6 +100,7 @@
 						this.map.setCenter([longitude, latitude]); //设置地图中心点
 					}
 				} else {
+					this.$ownerInstance.callMethod('onMsg', true);
 					this.loadMap(this.init);
 				}
 			},
@@ -109,6 +120,7 @@
 					zoom: 13 //地图显示的缩放级别
 				})
 				type === 'add' && this.mapMarker()
+				this.$ownerInstance.callMethod('onMsg', false);
 			},
 			mapMarker() {
 				const {
@@ -167,6 +179,14 @@
 <style lang="scss" scoped>
 	.container {
 		height: calc(100vh - 540rpx - var(--status-bar-height));
+		width: 100%;
+	}
+
+	.ui-loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 700rpx;
 		width: 100%;
 	}
 </style>

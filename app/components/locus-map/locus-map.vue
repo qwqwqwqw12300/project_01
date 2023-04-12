@@ -1,7 +1,12 @@
 <!-- 地图轨迹 -->
 <template>
 	<view>
-		<view id="container" class="container"></view>
+		<template v-if="show">
+			<view class="ui-loading">
+				<u-loading-icon mode="semicircle" :vertical="true" text="加载中" textSize="18"></u-loading-icon>
+			</view>
+		</template>
+		<view v-show="!show" id="container" class="container"></view>
 		<view :mapData="mapData" :change:mapData="maps.loadData"></view>
 	</view>
 </template>
@@ -33,6 +38,7 @@
 		},
 		data() {
 			return {
+				show: false,
 				mapData: {
 					info: [],
 					cur: {}
@@ -44,7 +50,9 @@
 			// console.log(this.sysHeight)
 		},
 		methods: {
-
+			onMsg(val) {
+				this.show = val
+			}
 		}
 	}
 </script>
@@ -69,7 +77,6 @@
 
 		methods: {
 			loadData(data) {
-				console.log(data, '88899')
 				// if (!data.length) return
 				const {
 					info,
@@ -85,6 +92,7 @@
 						this.map.setCenter([cur.longitude, cur.latitude])
 					}
 				} else {
+					this.$ownerInstance.callMethod('onMsg', true)
 					this.loadMap(this.init);
 				}
 			},
@@ -101,12 +109,15 @@
 				} = this.lineArr
 				const center = info.length ? [info[0][0], info[0][1]] : [longitude, latitude]
 				this.AMap = AMap;
-				this.map = new AMap.Map('container', {
-					resizeEnable: true,
-					center: center,
-					zoom: 13 //地图显示的缩放级别
-				})
-				info.length && this.markLine()
+				setTimeout(() => {
+					this.map = new AMap.Map('container', {
+						resizeEnable: true,
+						center: center,
+						zoom: 13 //地图显示的缩放级别
+					})
+					info.length && this.markLine()
+				}, 100)
+				this.$ownerInstance.callMethod('onMsg', false)
 				// this.markLine()
 			},
 			markLine() {
@@ -167,6 +178,14 @@
 	}
 </script>
 <style lang="scss">
+	.ui-loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 800rpx;
+		width: 100%;
+	}
+
 	.container {
 		height: calc(100vh - 100px);
 		width: 100%;

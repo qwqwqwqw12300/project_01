@@ -39,7 +39,7 @@
 			getContact() {
 				this.contactList = [];
 				uni.showLoading({
-					title: '加载中'
+					title: '获取中'
 				})
 				const readInfo = isIos() ? [this.getTypeContact(plus.contacts.ADDRESSBOOK_PHONE)] : [this.getTypeContact(
 					plus.contacts.ADDRESSBOOK_PHONE), this.getTypeContact(plus.contacts
