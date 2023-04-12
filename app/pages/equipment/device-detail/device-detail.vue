@@ -4,7 +4,7 @@
 			<swiper class="swiper" circular :indicator-dots="true" previous-margin="50rpx" next-margin="50rpx"
 				:autoplay="false" @change="swiperChange" :current="current">
 				<swiper-item v-for="(item,index) in deviceList" :key="item.deviceId">
-					<view :class="{ 'noActive':current !== index }">
+					<view :class="{ 'swiper-box':true, 'noActive':current !== index }">
 						<component :is="getDeviveType(item.type)" :record="item"></component>
 					</view>
 				</swiper-item>
@@ -112,15 +112,32 @@
 			},
 			handleTab(key) {
 				this.tabKey = key
+			},
+			readMsgAll() {
+				if (this.$refs.comRef?.readMsgAll) {
+					uni.showModal({
+						title: '提示',
+						content: `是否全部标记已读？`,
+						success: res => {
+							if (res.confirm) {
+								this.$refs.comRef.readMsgAll()
+							}
+						}
+					})
+				}
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.noActive{
+	.noActive {
+		// transition: transform 0.3s; // 缩放动画播放 0.3S
+		// transition: all 0.5s;
+		transition: all 0.6s;
 		transform: scale(0.92);
 	}
+
 	.ui-banner {
 		margin-top: 40rpx;
 		// padding: 0 20rpx;
