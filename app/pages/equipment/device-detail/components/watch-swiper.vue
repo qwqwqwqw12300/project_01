@@ -63,12 +63,15 @@
 		},
 		methods: {
 			jumpUrl() {
-				if (!this.record.onlineFlag) {
+				if (this.record.onlineFlag === '') {
 					return uni.navigateTo({
 						url: '/pages/watch/add-watch'
 					})
 				}
 				this.$store.commit('setDeviceInfo', this.record)
+				uni.navigateTo({
+					url: '/pages/watch/watch-set/watch-set'
+				})
 			}
 		}
 	}
