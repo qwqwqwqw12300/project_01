@@ -111,7 +111,6 @@
 						this.fixboxtop = this.firstMaxtop
 					}
 				} else {
-					console.log(this.fixboxtop, this.phonetop, 'ssssssssssssssss-------')
 					if (this.fixboxtop - this.phonetop > 0) {
 						this.fixboxtop = this.firsttop
 					} else {

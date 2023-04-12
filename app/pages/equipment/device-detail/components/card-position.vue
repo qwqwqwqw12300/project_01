@@ -195,21 +195,28 @@
 						return uni.hideLoading()
 					}
 					this.getLocation(res.data).then(info => {
-						const {
-							location: {
+						try{
+							const {
+								location: {
+									latitude,
+									longitude
+								},
+								address,
+								locateTim
+							} = info
+							this.addressInfo = {
 								latitude,
-								longitude
-							},
-							address,
-							locateTim
-						} = info
-						this.addressInfo = {
-							latitude,
-							longitude,
-							address,
-							locateTime: uni.$u.timeFormat(new Date(locateTime), 'yyyy-mm-dd')
+								longitude,
+								address,
+								locateTime: uni.$u.timeFormat(new Date(res.data.locateTime || 0), 'yyyy-mm-dd')
+							}
+							this.getHistoryLocation()
+						}catch(e){
+							console.log('报错-------', e);
+							//TODO handle the exception
 						}
-						this.getHistoryLocation()
+						
+							console.log('关闭弹窗----------', info);
 						uni.hideLoading()
 						// console.log(res, 'ddiididi')
 					})

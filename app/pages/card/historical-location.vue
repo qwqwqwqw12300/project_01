@@ -73,7 +73,13 @@
 				deviceInfo: state => state.deviceInfo
 			}),
 			mapData() {
-				return this.dataList.map(n => {
+				return this.dataList.filter(ele=> {
+					const {
+						longitude,
+						latitude
+					} = ele.location;
+					return longitude && latitude;
+				}).map(n => {
 					const {
 						longitude,
 						latitude
@@ -120,6 +126,7 @@
 									latitude,
 									longitude,
 								},
+								locateTime: n.locateTime,
 								address: e.address
 							})
 						})
@@ -209,6 +216,7 @@
 			justify-content: space-between;
 
 			.label {
+				width: 400rpx;
 				display: flex;
 				flex-direction: column;
 				font-size: 32rpx;
@@ -226,103 +234,7 @@
 				color: #888888;
 			}
 		}
-
-		// .address-box {
-		// 	display: flex;
-		// 	flex-direction: column;
-
-
-		// 	.list-item {
-		// 		// padding: 48rpx 32rpx;
-		// 		height: 128rpx;
-		// 		display: flex;
-		// 		align-items: center;
-		// 		justify-content: space-between;
-		// 		border-bottom: solid 2px #f7f7f7;
-		// 	}
-		// }
 	}
 
-	.ui-box {
-		padding: 32rpx;
-
-		.time-picker {
-			height: 128rpx;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			// border-bottom: solid 2px #f7f7f7;
-
-			.label {
-				width: 80rpx;
-				font-size: 34rpx;
-				color: #353535;
-			}
-
-			.value {
-				flex: 1;
-				font-size: 30rpx;
-				color: #888888;
-				text-align: right;
-			}
-		}
-
-		.map-address {
-			margin-top: 30rpx;
-			background-color: #fff;
-
-			.title-cell {
-				height: 130rpx;
-				display: flex;
-				align-items: center;
-				font-size: 36rpx;
-				color: #333;
-				border-bottom: solid 2px #f7f7f7;
-
-				text {
-					height: 50rpx;
-					border-left: solid 14rpx #FEAE43;
-					border-radius: 4rpx;
-					margin-right: 20rpx;
-				}
-			}
-
-			.address-cell {
-				height: 128rpx;
-				border-bottom: solid 2px #f7f7f7;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-
-				.label {
-					font-size: 32rpx;
-					color: #353535;
-				}
-
-				.value {
-					font-size: 30rpx;
-					color: #888888;
-				}
-			}
-
-			// .address-box {
-			// 	display: flex;
-			// 	flex-direction: column;
-
-
-			// 	.list-item {
-			// 		// padding: 48rpx 32rpx;
-			// 		height: 128rpx;
-			// 		display: flex;
-			// 		align-items: center;
-			// 		justify-content: space-between;
-			// 		border-bottom: solid 2px #f7f7f7;
-			// 	}
-			// }
-		}
-
-		.ui-btn {
-			margin-top: 50rpx;
-		}
-	}
+	
 </style>

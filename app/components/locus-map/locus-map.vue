@@ -26,10 +26,13 @@
 				handler(val) {
 					// if (val.length) {
 					// this.mapData.info = uni.$u.deepClone(val)
-					this.mapData = {
-						info: uni.$u.deepClone(val),
-						cur: uni.$u.deepClone(this.$store.getters.positionInfo) || {}
+					if(val && val.length) {
+						this.mapData = {
+							info: uni.$u.deepClone(val),
+							cur: uni.$u.deepClone(this.$store.getters.positionInfo) || {}
+						}
 					}
+				
 					// }
 				},
 				immediate: true,
@@ -82,19 +85,22 @@
 					info,
 					cur
 				} = data
-				this.lineArr = this.deepClone(data)
-				// this.loadMap(this.init)
-				if (this.map) {
-					this.polyline && this.map.remove(this.polyline)
-					if (info.length) {
-						this.markLine()
+				if(info && info.length && cur) {
+					this.lineArr = this.deepClone(data)
+					// this.loadMap(this.init)
+					if (this.map) {
+						this.polyline && this.map.remove(this.polyline)
+						if (info.length) {
+							this.markLine()
+						} else {
+							this.map.setCenter([cur.longitude, cur.latitude])
+						}
 					} else {
-						this.map.setCenter([cur.longitude, cur.latitude])
+						this.$ownerInstance.callMethod('onMsg', true)
+						this.loadMap(this.init);
 					}
-				} else {
-					this.$ownerInstance.callMethod('onMsg', true)
-					this.loadMap(this.init);
 				}
+				
 			},
 			/**
 			 * 初始化
