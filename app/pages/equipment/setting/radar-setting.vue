@@ -131,7 +131,8 @@
 								activeValue="1" inactiveValue="0" size="20" slot="right-icon" activeColor="#FEAE43"
 								inactiveColor="rgb(230, 230, 230)"></u-switch>
 						</u-cell>
-						<u-swipe-action>
+						<u-swipe-action
+							:key="'swipe-action' + editFrom.deviceWarnParameter.nobodyWarn.warnRules.length">
 							<u-swipe-action-item :options="swipe"
 								v-for="(item, index) of editFrom.deviceWarnParameter.nobodyWarn.warnRules"
 								:key="'wall' + index" @click="actionItem($event, item)">
@@ -262,7 +263,7 @@
 			 * 添加预警规则
 			 */
 			addWarnRule(rule) {
-				uni.$once('alertRule', ({
+				uni.$on('alertRule', ({
 					type,
 					data
 				}) => {
@@ -512,7 +513,7 @@
 		align-items: center;
 		font-size: 15px;
 		padding: 25rpx 20rpx 25rpx 0;
-		border-bottom: 2px solid #f2f2f2;
+		border-bottom: 0.5px solid rgb(214, 215, 217);
 	}
 
 	.ui-slider-tit {
@@ -598,7 +599,7 @@
 		box-sizing: border-box;
 		padding: 47rpx 32rpx;
 		min-height: 80px;
-		border-bottom: 2px solid #f2f2f2;
+		border-bottom: 0.5px solid rgb(214, 215, 217);
 
 		>view {
 			display: flex;

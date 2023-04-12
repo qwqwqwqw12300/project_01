@@ -35,8 +35,9 @@
 						</u-number-box>
 					</view>
 				</u-cell>
-				<u-cell title="生日" arrow-direction="right" isLink tleStyle="font-size: 15px;color: #303133;" @click="showPicker = true">
-					<view slot="value" class="u-slot-value" >
+				<u-cell title="生日" arrow-direction="right" isLink tleStyle="font-size: 15px;color: #303133;"
+					@click="showPicker = true">
+					<view slot="value" class="u-slot-value">
 						{{defaultValue}}
 					</view>
 				</u-cell>
@@ -46,8 +47,8 @@
 			<button class="ui-btn" @click="cancel">跳过</button>
 			<button class="default" @click="submit">下一步</button>
 		</view>
-		<time-picker :show="showPicker" format="yyyy-mm-dd" type="date" :value="defaultValue" :show-tips="true" :begin-text="'开始'"
-		    :end-text="'结束'" :show-seconds="false" @confirm="onSelected"  @cancel="showPicker=false">
+		<time-picker :show="showPicker" format="yyyy-mm-dd" type="date" :value="defaultValue" :show-tips="true"
+			:begin-text="'开始'" :end-text="'结束'" :show-seconds="false" @confirm="onSelected" @cancel="showPicker=false">
 		</time-picker>
 	</app-body>
 </template>
@@ -62,27 +63,27 @@
 	} from '@/common/http/api';
 	import timePicker from '@/components/term-picker/term-picker.vue';
 	export default {
-		components:{
+		components: {
 			timePicker
 		},
 		data() {
 			return {
 				cellList: [{
 						name: '身高',
-						min:25,
-						max:270,
-						step:25,
+						min: 25,
+						max: 270,
+						step: 25,
 						value: 0
 					},
 					{
 						name: '体重',
-						min:25,
-						max:200,
-						step:25,
+						min: 25,
+						max: 200,
+						step: 25,
 						value: 0
 					}
 				],
-				sexValue: '1',
+				sexValue: ['1'],
 				sexList: [{
 						sex: '1',
 						icon: 'man',
@@ -94,36 +95,33 @@
 						color: '#FC7265'
 					},
 				],
-				showPicker:false,
-				defaultValue:'',
-				humanInfoId:''
+				showPicker: false,
+				defaultValue: '',
+				humanInfoId: ''
 			}
 		},
-		computed: {
-			...mapState({
-				deviceInfo: state => state.deviceInfo
-			}, )
-		},
-		onShow() {
+		onLoad(params) {
+			this.humanId = params.id;
+			console.log(params, 'params');
 			const newData = new Date()
 			this.defaultValue = uni.$u.timeFormat(newData, 'yyyy-mm-dd')
 			this.handleInit()
 		},
 		methods: {
-			handleInit(){
+			handleInit() {
 				GetHumanInfo({
-					humanId:this.deviceInfo.humanId
-				}).then(res=>{
-					console.log(res,'res')
-					this.sexValue = res.data.sex
-					this.cellList[0].value = res.data.height || 0
+					humanId: this.humanId
+				}).then(res => {
+					console.log(res, 'res')
+					this.sexValue = [res.data.sex],
+						this.cellList[0].value = res.data.height || 0
 					this.cellList[1].value = res.data.weight || 0
 					this.defaultValue = res.data.birthday
 					this.humanInfoId = res.data.humanInfoId
 				})
 			},
-			onSelected(e){
-				console.log(e,'e')
+			onSelected(e) {
+				console.log(e, 'e')
 				this.defaultValue = e.value
 				this.showPicker = false
 			},
@@ -132,18 +130,18 @@
 			},
 			submit() {
 				PostSetHumanInfo({
-					humanInfoId:this.humanInfoId || null,
-					humanId:this.deviceInfo.humanId,
-					sex:this.sexValue,
-					height:this.cellList[0].value,
-					weight:this.cellList[1].value.toString(),
-					birthday:this.defaultValue
-				}).then(res=>{
-					console.log(res,'res')
+					humanInfoId: this.humanInfoId || null,
+					humanId: this.humanId,
+					sex: this.sexValue[0],
+					height: this.cellList[0].value,
+					weight: this.cellList[1].value.toString(),
+					birthday: this.defaultValue
+				}).then(res => {
+					console.log(res, 'res')
 					uni.$u.toast(res.msg)
-					setTimeout(()=>{
+					setTimeout(() => {
 						this.handleInit()
-					},1000)
+					}, 1000)
 				})
 			}
 		}
