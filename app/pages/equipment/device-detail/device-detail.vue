@@ -1,10 +1,12 @@
 <template>
 	<app-body>
 		<view class="ui-banner">
-			<swiper class="swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange"
-				:current="current">
-				<swiper-item v-for="item in deviceList" :key="item.deviceId">
-					<component :is="getDeviveType(item.type)" :record="item"></component>
+			<swiper class="swiper" circular :indicator-dots="true" previous-margin="50rpx" next-margin="50rpx"
+				:autoplay="false" @change="swiperChange" :current="current">
+				<swiper-item v-for="(item,index) in deviceList" :key="item.deviceId">
+					<view :class="{ 'noActive':current !== index }">
+						<component :is="getDeviveType(item.type)" :record="item"></component>
+					</view>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -103,6 +105,7 @@
 		},
 		methods: {
 			swiperChange(item) {
+				this.current = item.detail.current
 				this.swiperData = this.deviceList[item.detail.current]
 				this.swiperKey = this.swiperData.type
 				this.tabKey = 'MsgList'
@@ -115,9 +118,12 @@
 </script>
 
 <style lang="scss" scoped>
+	.noActive{
+		transform: scale(0.92);
+	}
 	.ui-banner {
 		margin-top: 40rpx;
-		padding: 0 20rpx;
+		// padding: 0 20rpx;
 
 		.swiper {
 			height: 320rpx;
@@ -152,11 +158,11 @@
 				}
 			}
 		}
-		
+
 		.action {
 			display: flex;
 			align-items: center;
-		
+
 			text {
 				height: 50rpx;
 				border-left: 1px solid rgba(53, 53, 53, 1);
