@@ -1,6 +1,6 @@
 <!-- 血氧 -->
 <template>
-	<app-body :bodyStyle="{background: '#F7F7F7' }">
+	<app-body titleColor="#F7F7F7" :bodyStyle="{background: '#F7F7F7' }">
 		<app-logo text="血氧" top="36rpx" iconUrl="/static/images/share@3x.png"></app-logo>
 		<view class="ui-tab">
 			<date-picker @onSelect="onSelect" @month="monthChange" :lightDot="monthData"></date-picker>
@@ -78,7 +78,7 @@
 			getMonthData(month) {
 				GetMonthDataFlag({
 					yearMonth: month,
-					type: '4', //（ 1卡路里 2活动时长 3步数 4睡眠 5站立 6心率 7血压 8血氧 9心电）
+					type: '8', //（ 1卡路里 2活动时长 3步数 4睡眠 5站立 6心率 7血压 8血氧 9心电）
 				}).then(res => {
 					this.monthData = res.data.filter(n => {
 						return n.flag === '1'

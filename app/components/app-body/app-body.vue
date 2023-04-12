@@ -13,9 +13,9 @@
 		<scroll-view :scroll-y="true" :class="{'wd-body-bg': bg}" class="wd-body" :style="bodyStyle">
 			<template v-if="!hideTitle">
 				<!-- 需要返回头 -->
-				<view class="wd-bg" :class="{ 'wd-fixed': !bg}">
-					<u-navbar :leftText="leftText" :safeAreaInsetTop="!bg" :autoBack="!back"
-						:bgColor="bg ? 'transparent': '#fff'" :fixed="!bg" :leftIconColor="'#000'"
+				<view class="wd-bg wd-fixed">
+					<u-navbar :leftText="leftText" :safeAreaInsetTop="true" :autoBack="!back"
+						:bgColor="titleColor || (bg ? 'transparent': '#fff')" :fixed="true" :leftIconColor="'#000'"
 						@leftClick="leftClick" />
 					<slot></slot>
 				</view>
@@ -78,7 +78,13 @@
 			 */
 			leftIconColor: {
 				default: '#fff'
-			}
+			},
+			/**
+			 * 返回头颜色
+			 */
+			titleColor: {
+				default: ''
+			},
 		},
 		data() {
 			return {

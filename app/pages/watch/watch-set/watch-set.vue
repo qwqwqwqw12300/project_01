@@ -17,7 +17,8 @@
 						@tap="handleJump(item.url)" :isLink="true" titleStyle="font-size: 15px;color: #303133;">
 					</u-cell> -->
 					<u-cell :title="item.title" v-for="(item,index) in cellList" :key="index" arrow-direction="right"
-						:isLink="item.type!=undefined ? false : true" titleStyle="font-size: 15px;color: #303133;" @tap="handleJump(item.url)">
+						:isLink="item.type!=undefined ? false : true" titleStyle="font-size: 15px;color: #303133;"
+						@tap="handleJump(item.url)">
 						<view slot="value" class="u-slot-value">
 							<text>{{item.value}}</text>
 							<u-switch space="2" v-model="item.type" activeValue="1" inactiveValue="0" v-if="item.type"
@@ -148,7 +149,7 @@
 					setTimeout(() => {
 						this.initData()
 					}, 1000)
-				},err=>{
+				}, err => {
 					uni.$u.toast(err.msg)
 					setTimeout(() => {
 						this.initData()
@@ -156,20 +157,28 @@
 				})
 			},
 			unBind() {
-				const {
-					humanId,
-					deviceId
-				} = this.deviceInfo
-				PostCareCardUnBind({
-					humanId,
-					deviceId
-				}).then(res => {
-					uni.$u.toast(res.msg)
-					setTimeout(() => {
-						uni.switchTab({
-							url: '/pages/index/index'
-						})
-					}, 1000)
+				uni.showModal({
+					title: '提示',
+					content: `是否确认解绑？`,
+					success: res => {
+						if (res.confirm) {
+							const {
+								humanId,
+								deviceId
+							} = this.deviceInfo
+							PostCareCardUnBind({
+								humanId,
+								deviceId
+							}).then(res => {
+								uni.$u.toast(res.msg)
+								setTimeout(() => {
+									uni.switchTab({
+										url: '/pages/index/index'
+									})
+								}, 1000)
+							})
+						}
+					}
 				})
 			}
 		},

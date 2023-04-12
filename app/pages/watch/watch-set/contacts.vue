@@ -19,24 +19,30 @@
 			</view>
 		</view>
 		<view class="ui-content">
-			<u-swipe-action>
-				<u-swipe-action-item :options="item.options" v-for="(item, index) in searchList" :key="index"
-					@click="handleDel(index,item)">
-					<view class="cell">
-						<view class="cell-box">
-							<view class="input">
-								<u--input v-model="item.name" maxlength="6" placeholder="请输入姓名" border="none" clearable>
-								</u--input>
-							</view>
-							<view class="input">
-								<u--input v-model="item.number" maxlength="11" type="number" placeholder="请输入手机号"
-									border="none" clearable>
-								</u--input>
+			<template v-if="searchList.length">
+				<u-swipe-action>
+					<u-swipe-action-item :options="item.options" v-for="(item, index) in searchList" :key="index"
+						@click="handleDel(index,item)">
+						<view class="cell">
+							<view class="cell-box">
+								<view class="input">
+									<u--input v-model="item.name" maxlength="6" placeholder="请输入姓名" border="none"
+										clearable>
+									</u--input>
+								</view>
+								<view class="input">
+									<u--input v-model="item.number" maxlength="11" type="number" placeholder="请输入手机号"
+										border="none" clearable>
+									</u--input>
+								</view>
 							</view>
 						</view>
-					</view>
-				</u-swipe-action-item>
-			</u-swipe-action>
+					</u-swipe-action-item>
+				</u-swipe-action>
+			</template>
+			<view class="list-empty" v-else>
+				<u-empty mode="list" text="暂无数据"></u-empty>
+			</view>
 		</view>
 		<view class="ui-div"></view>
 		<view class="ui-btn">
@@ -261,6 +267,14 @@
 	.ui-content {
 		margin-top: 30rpx;
 		background-color: #fff;
+
+		.list-empty {
+			width: 100%;
+			height: 500rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 
 		.cell {
 			padding: 0rpx 32rpx;

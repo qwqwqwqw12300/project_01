@@ -39,7 +39,7 @@
 			getMonthData(month) {
 				GetMonthDataFlag({
 					yearMonth: month,
-					type: '4', //（ 1卡路里 2活动时长 3步数 4睡眠 5站立 6心率 7血压 8血氧 9心电）
+					type: '7', //（ 1卡路里 2活动时长 3步数 4睡眠 5站立 6心率 7血压 8血氧 9心电）
 				}).then(res => {
 					this.monthData = res.data.filter(n => {
 						return n.flag === '1'

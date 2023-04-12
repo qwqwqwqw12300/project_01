@@ -1,5 +1,5 @@
 <template>
-	<app-body :bodyStyle="{background: '#F7F7F7' }">
+	<app-body titleColor="#F7F7F7" :bodyStyle="{background: '#F7F7F7' }">
 		<app-logo text="活动" top="36rpx" iconUrl="/static/images/question.png"></app-logo>
 		<view class="ui-date">
 			<date-picker @onSelect="onSelect"></date-picker>
