@@ -1,5 +1,5 @@
 <template>
-	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
+	<app-body :bg="false" :needService="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<view style="margin-bottom: 50rpx;">
 			<app-logo color="#353535" text="设置电子围栏"></app-logo>
 		</view>
