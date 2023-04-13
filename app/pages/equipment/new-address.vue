@@ -230,6 +230,7 @@
 					this.mapInfo = obj
 					this.siteInfo = siteInfo
 				}
+				this.getSiteInfo(obj)
 				return;
 			}
 			this.handleGetLocation()
@@ -268,7 +269,7 @@
 			.input-text {
 				margin-right: 10rpx;
 				font-size: 30rpx;
-				color: #D4D4D4;
+				color: #333333;
 				display: flex;
 				align-items: flex-end;
 				justify-content: flex-end;

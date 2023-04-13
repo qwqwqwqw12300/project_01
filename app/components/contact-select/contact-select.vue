@@ -101,7 +101,8 @@
 			}
 		},
 		created() {
-			this.height = (uni.getSystemInfoSync().windowHeight) * 0.8 - (this.isSingle ? 120 : 160)
+			const height = (uni.getSystemInfoSync().windowHeight) * 0.8
+			this.height = (height > 650 ? height : 650) - (this.isSingle ? 120 : 160)
 			// 初始化城市数据
 			this.contactList = this.obtainTels;
 			this.initializationTel();

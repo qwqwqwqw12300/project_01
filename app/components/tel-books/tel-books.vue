@@ -22,7 +22,8 @@
 			}
 		},
 		created() {
-			this.height = (uni.getSystemInfoSync().windowHeight) * 0.8
+			const height = (uni.getSystemInfoSync().windowHeight) * 0.8
+			this.height = height > 650 ? height : 650
 			console.log(this.height, 'ooo---------------------')
 		},
 		methods: {
@@ -42,7 +43,8 @@
 			 * 获取手机联系人
 			 */
 			getContact() {
-				this.contactList = [];
+				// this.contactList = [];
+				if (this.contactList.length) return this.visible = true
 				uni.showLoading({
 					title: '获取中'
 				})
