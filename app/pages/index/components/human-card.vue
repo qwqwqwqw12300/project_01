@@ -30,7 +30,7 @@
 			<template v-else>
 				<view class="wd-list-box wd-list-room active" @click="bindDevice(human)">
 					<view>
-						<u-text :block="false" :text="human.name" prefixIcon="../../static/images/add-person.png"
+						<u-text :block="false" :text="human.name" prefixIcon="/static/images/add-person.png"
 							size="36rpx" :iconStyle="{height: '48rpx', width: '48rpx',marginRight:'20rpx'}">
 						</u-text>
 					</view>

@@ -4,6 +4,10 @@
 		<app-logo text="个人信息"></app-logo>
 		<view class="ui-cell">
 			<u-cell-group>
+				<u-cell title="名称">
+					<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="value" v-model="name">
+					</u-input>
+				</u-cell>
 				<u-cell title="选择性别" arrow-direction="right" titleStyle="font-size: 15px;color: #303133;">
 					<view slot="value" class="u-slot-value">
 						<view>
@@ -44,8 +48,8 @@
 			</u-cell-group>
 		</view>
 		<view class="ui-confirm">
-			<button class="ui-btn" @click="cancel">跳过</button>
-			<button class="default" @click="submit">下一步</button>
+			<button class="ui-btn" @click="cancel">返回</button>
+			<button class="default" @click="submit">保存</button>
 		</view>
 		<time-picker :show="showPicker" format="yyyy-mm-dd" type="date" :value="defaultValue" :show-tips="true"
 			:begin-text="'开始'" :end-text="'结束'" :show-seconds="false" @confirm="onSelected" @cancel="showPicker=false">
@@ -69,21 +73,21 @@
 		data() {
 			return {
 				cellList: [{
-						name: '身高',
+						name: '身高(厘米)',
 						min: 25,
 						max: 270,
 						step: 25,
 						value: 0
 					},
 					{
-						name: '体重',
+						name: '体重(公斤)',
 						min: 25,
 						max: 200,
 						step: 25,
 						value: 0
 					}
 				],
-				sexValue: ['1'],
+				sexValue: '1',
 				sexList: [{
 						sex: '1',
 						icon: 'man',
@@ -97,12 +101,13 @@
 				],
 				showPicker: false,
 				defaultValue: '',
-				humanInfoId: ''
+				humanInfoId: '',
+				/**成员名称**/
+				name: ''
 			}
 		},
 		onLoad(params) {
 			this.humanId = params.id;
-			console.log(params, 'params');
 			const newData = new Date()
 			this.defaultValue = uni.$u.timeFormat(newData, 'yyyy-mm-dd')
 			this.handleInit()
@@ -112,11 +117,11 @@
 				GetHumanInfo({
 					humanId: this.humanId
 				}).then(res => {
-					console.log(res, 'res')
-					this.sexValue = [res.data.sex],
-						this.cellList[0].value = res.data.height || 0
-					this.cellList[1].value = res.data.weight || 0
-					this.defaultValue = res.data.birthday
+					this.name = res.data.name;
+					this.sexValue = res.data.sex || '1',
+						this.cellList[0].value = res.data.height || 170
+					this.cellList[1].value = res.data.weight || 50
+					this.defaultValue = res.data.birthday || '1990-01-01'
 					this.humanInfoId = res.data.humanInfoId
 				})
 			},
@@ -135,12 +140,12 @@
 					sex: this.sexValue[0],
 					height: this.cellList[0].value,
 					weight: this.cellList[1].value.toString(),
-					birthday: this.defaultValue
+					birthday: this.defaultValue,
+					name: this.name
 				}).then(res => {
-					console.log(res, 'res')
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
-						this.handleInit()
+						uni.navigateBack();
 					}, 1000)
 				})
 			}

@@ -163,8 +163,8 @@
 			//添加输入框
 			handleAdd() {
 				this.mobileList.push({
-					phoneName: '',
-					phoneNumber: '',
+					name: '',
+					number: '',
 					options: [{
 						text: '删除',
 						style: {
@@ -185,7 +185,7 @@
 								PostWatchDeleteAddressBook({
 									deviceId: this.deviceInfo.deviceId,
 									addressBookId: list.addressBookId,
-									phoneNumber: list.phoneNumber
+									phoneNumber: list.name
 								}).then(res => {
 									uni.$u.toast(res.msg)
 									setTimeout(() => {
@@ -210,8 +210,8 @@
 				// console.log(data)
 				data.map(item => {
 					this.mobileList.push({
-						phoneName: item.name,
-						phoneNumber: item.phone,
+						name: item.name,
+						number: item.phone,
 						options: [{
 							text: '删除',
 							style: {

@@ -27,7 +27,13 @@
 			<scroll-view class="ui-msg" scroll-y="true" @scrolltolower="pageNext" lower-threshold="10"
 				@refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled
 				refresher-background="transparent">
-				<template v-if="messageList.length">
+				<!-- 家庭列表 -->
+				<template v-if="loading">
+					<view class="ui-loading">
+						<u-loading-icon mode="semicircle" :vertical="true" text="加载中" textSize="18"></u-loading-icon>
+					</view>
+				</template>
+				<template v-else-if="messageList.length">
 					<view class="ui-scroll">
 						<msg-card v-for="(item, index) of messageList" :key="index" :msgInfo="item"></msg-card>
 						<u-loadmore marginBottom="30" dashed :status="loadmore" />
@@ -82,7 +88,9 @@
 				/**家庭列表是否展示**/
 				familyShow: false,
 				/**加载更多管理**/
-				loadmore: 'loadmore' // loadmore-加载更多 loading-加载中 nomore-没有更多
+				loadmore: 'loadmore', // loadmore-加载更多 loading-加载中 nomore-没有更多
+				/**是否初始化查询**/
+				loading: true
 			};
 		},
 		computed: {
@@ -157,9 +165,11 @@
 					this.messageList = [];
 					this.eventInfo.pageNum = 1;
 					this.loadmore = 'loadmore';
+					// this.loading = true;
 					getMessage({
 						...this.eventInfo,
 					}).then(res => {
+						this.loading = false;
 						this.messageList = res.rows || [];
 						this.loadmore = res.total <= this.messageList.length ? 'nomore' :
 							'loadmore';
@@ -172,7 +182,6 @@
 			 * 下一页
 			 */
 			pageNext() {
-				console.log(this.loadmore, 'this.loadmore');
 				if (this.loadmore === 'nomore') return;
 				this.loadmore = 'loading';
 				return new Promise(resolve => {
@@ -194,6 +203,7 @@
 			goSreen() {
 				uni.$once('detailsScreenResult', screenInfo => {
 					Object.assign(this.eventInfo, screenInfo);
+					this.loading = true;
 					this.getMsgList();
 				});
 				this.$setCache('detailsScreenInfo', this.eventInfo);
@@ -296,5 +306,9 @@
 		text {
 			margin-left: 10rpx;
 		}
+	}
+
+	.loading {
+		margin-top: 200rpx;
 	}
 </style>

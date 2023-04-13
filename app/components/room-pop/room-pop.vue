@@ -290,32 +290,32 @@
 						name,
 						familyId
 					}).then(res => {
-						uni.$u.toast('操作成功')
-						this.close();
-						setTimeout(() => {
-							this.$emit('update', {
-								type: 'human',
-								data: res.data
-							})
-						}, 500);
-						// console.log('添加成功成员信息', res);
-						// uni.showModal({
-						// 	content: '添加成功，是否继续完善成员信息',
-						// 	confirmText: '立即前往',
-						// 	success: modalRes => {
-						// 		if (modalRes.confirm) {
-						// 			uni.navigateTo({
-						// 				url: `/pages/watch/watch-set/information?id=${res.data}`
-						// 			});
-						// 		} else {
-						// 			this.close();
-						// 			this.$emit('update', {
-						// 				type: 'human',
-						// 				data: res.data
-						// 			})
-						// 		}
-						// 	}
-						// })
+						uni.showModal({
+							title: '提示',
+							content: '添加成功，是否继续完善成员信息',
+							confirmText: '立即前往',
+							success: modalRes => {
+								if (modalRes.confirm) {
+									uni.navigateTo({
+										url: `/pages/watch/watch-set/information?id=${res.data}`
+									}).then(res => {
+										console.log('跳转成功');
+										this.close();
+										this.$emit('update', {
+											type: 'human',
+											data: res.data
+										})
+									})
+
+								} else {
+									this.close();
+									this.$emit('update', {
+										type: 'human',
+										data: res.data
+									})
+								}
+							}
+						})
 					});
 				} else { // 修改
 					PostUpdateTHuman({

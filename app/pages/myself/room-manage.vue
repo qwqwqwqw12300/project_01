@@ -58,7 +58,7 @@
 				<!-- /房间 -->
 				<!-- 人员 -->
 				<view class="ui-menu-item" v-for="(item, index) in humanList" :key="'human' + index">
-					<view class="item-box" @click="openRoomEdit(item)">
+					<view class="item-box" @click="goEdit(item)">
 						<template v-if="item.devices && item.devices.length">
 							<view class="device-status">
 								<text class="online" v-if="getDevices(item).onlineFlag == 1">在线</text>
@@ -138,7 +138,8 @@
 		},
 		onLoad(params) {
 			this.familyId = params.id;
-			// this.familyInfo = this.$getCache('familyInfo');
+		},
+		onShow() {
 			this.handleInitList()
 		},
 		computed: {
@@ -285,6 +286,16 @@
 						...this.familyInfo,
 						familyName: this.familyInfo.name
 					}));
+			},
+
+			/**
+			 * 跳转人员管理
+			 * @param {Object} item
+			 */
+			goEdit(item) {
+				uni.navigateTo({
+					url: `/pages/watch/watch-set/information?id=${item.humanId}`
+				})
 			},
 
 			/**
