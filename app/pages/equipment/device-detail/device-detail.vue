@@ -1,5 +1,5 @@
 <template>
-	<app-body>
+	<app-body :needService="false">
 		<view class="ui-banner">
 			<swiper class="swiper" circular :indicator-dots="true" previous-margin="50rpx" next-margin="50rpx"
 				:autoplay="false" @change="swiperChange" :current="current">

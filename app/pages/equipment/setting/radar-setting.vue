@@ -12,7 +12,7 @@
 			<view class="ui-edit">
 				<u-cell-group>
 					<u-cell title="设备名称">
-						<u-input inputAlign="right" placeholder="请输入设备名称" border="none" slot="right-icon"
+						<u-input inputAlign="right" placeholder="请输入设备名称" border="none" slot="value"
 							v-model="editFrom.deviceName"></u-input>
 					</u-cell>
 					<u-cell>

@@ -38,9 +38,6 @@
 		},
 		data() {
 			return {
-				siteInfo: '',
-				latitude: 39.909,
-				longitude: 116.39742,
 				covers: [],
 				mapHeight: 0,
 				loading: false,
