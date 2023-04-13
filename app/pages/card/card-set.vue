@@ -106,6 +106,7 @@
 	}
 
 	.ui-card {
+		margin-top: 50rpx;
 		padding: 0 26rpx;
 	}
 

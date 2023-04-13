@@ -4,7 +4,7 @@
 			<swiper class="swiper" circular :indicator-dots="true" previous-margin="50rpx" next-margin="50rpx"
 				:autoplay="false" @change="swiperChange" :current="current">
 				<swiper-item v-for="(item,index) in deviceList" :key="item.deviceId">
-					<view :class="{ 'swiper-box':true, 'noActive':current !== index }">
+					<view :class="[ current === index ? 'active' : 'noActive' ]">
 						<component :is="getDeviveType(item.type)" :record="item"></component>
 					</view>
 				</swiper-item>
@@ -133,10 +133,13 @@
 </script>
 
 <style lang="scss" scoped>
+	.active {
+		transition: all 0.1s;
+		transform: scale(1);
+	}
+
 	.noActive {
-		// transition: transform 0.3s; // 缩放动画播放 0.3S
-		// transition: all 0.5s;
-		transition: all 0.6s;
+		transition: all 0.1s;
 		transform: scale(0.92);
 	}
 
