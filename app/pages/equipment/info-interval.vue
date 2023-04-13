@@ -11,7 +11,7 @@
 		<view class="ui-cell">
 			<u-cell-group>
 				<u-cell title="名称">
-					<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="right-icon" v-model="name">
+					<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="value" v-model="name">
 					</u-input>
 				</u-cell>
 				<u-cell @tap="handleSelectStart" title="日期" arrow-direction="right" isLink>

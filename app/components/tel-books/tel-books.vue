@@ -1,6 +1,6 @@
 <template>
 	<u-popup :round="14" :show="visible" mode="bottom" @close="visible = false" :closeable="true">
-		<view style="height: 1400rpx;">
+		<view :style="{'height': height+ 'px'}">
 			<contact-select placeholder="请输入联系人姓名" @click="phoneClick" formatName="name" :obtainTels="contactList"
 				:isSearch="true" :isSingle="isSingle"></contact-select>
 		</view>
@@ -15,10 +15,15 @@
 	export default {
 		data() {
 			return {
+				height: 1300,
 				visible: false,
 				isSingle: true,
 				contactList: [],
 			}
+		},
+		created() {
+			this.height = (uni.getSystemInfoSync().windowHeight) * 0.8
+			console.log(this.height, 'ooo---------------------')
 		},
 		methods: {
 			show(params) {

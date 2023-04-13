@@ -1,5 +1,5 @@
 <template>
-	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
+	<app-body :bg="false" :needService="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<view style="margin-bottom: 50rpx;">
 			<app-logo color="#353535" text="设置电子围栏"></app-logo>
 		</view>
@@ -49,7 +49,7 @@
 		left: 32rpx;
 		// top: 800rpx;
 		bottom: 250rpx;
-		z-index: 9999;
+		z-index: 9;
 
 		.tab-box {
 			width: 260rpx;

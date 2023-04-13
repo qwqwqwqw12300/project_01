@@ -6,7 +6,7 @@
 				prefixIconStyle="font-size: 22px;color: #909399" />
 		</view>
 		<checkbox-group class="block" @change="checkboxChange">
-			<scroll-view :scroll-top="scrollTop" scroll-y="true" class="ui-select-main" id="ui-select-main"
+			<scroll-view :style="{'height': height+ 'px'}" :scroll-top="scrollTop" scroll-y="true" class="ui-select-main" id="ui-select-main"
 				:scroll-into-view="toView">
 				<!-- 联系人列表(搜索前) -->
 				<view class="tel-list" v-if="!serachValue">
@@ -44,6 +44,7 @@
 				</view>
 			</view>
 		</view>
+		<view class="ui-div"></view>
 		<view class="ui-footer" v-if="!isSingle">
 			<view class="footer-box">
 				<button class="select-btn" @click="selectAll">{{ checkbox_all ? '取消': '全选' }}</button>
@@ -85,6 +86,7 @@
 		},
 		data() {
 			return {
+				height: 500,
 				contactList: [], //联系人列表
 				handleTels: [], // 处理后的联系人数据
 				telIndexs: [], // 城市索引
@@ -98,6 +100,7 @@
 			}
 		},
 		created() {
+			this.height = (uni.getSystemInfoSync().windowHeight) * 0.8 - 160
 			// 初始化城市数据
 			this.contactList = this.obtainTels;
 			this.initializationTel();
@@ -375,7 +378,7 @@
 	.ui-select-main {
 		position: relative;
 		width: 100%;
-		height: calc(100vh - 520rpx);
+		// height: calc(100vh - 600rpx);
 		margin-bottom: 30rpx;
 		// background: #f6f5fa;
 
@@ -422,7 +425,7 @@
 		position: absolute;
 		right: 0;
 		top: 0;
-		z-index: 999;
+		z-index: 9;
 		display: flex;
 		width: 50rpx;
 		height: 100%;
@@ -450,9 +453,13 @@
 		}
 	}
 
+	.ui-div {
+		height: 120rpx;
+	}
+
 	.ui-footer {
 		position: fixed;
-		z-index: 999999;
+		z-index: 5;
 		width: 100%;
 		bottom: 0;
 		left: 0;
