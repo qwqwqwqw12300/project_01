@@ -105,10 +105,12 @@
 		},
 		methods: {
 			swiperChange(item) {
-				this.current = item.detail.current
-				this.swiperData = this.deviceList[item.detail.current]
-				this.swiperKey = this.swiperData.type
-				this.tabKey = 'MsgList'
+				uni.$u.debounce(() => {
+					this.current = item.detail.current
+					this.swiperData = this.deviceList[item.detail.current]
+					this.swiperKey = this.swiperData.type
+					this.tabKey = 'MsgList'
+				}, 500)
 			},
 			handleTab(key) {
 				this.tabKey = key
