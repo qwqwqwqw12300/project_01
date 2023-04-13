@@ -23,7 +23,7 @@
 			<view class="map-position border">
 				<text class="label">更新时间:</text>
 				<view class="content">
-					{{ addressInfo.locateTime }}
+					{{ addressInfo.locateTimeFromCurrent }}
 				</view>
 			</view>
 			<template v-if="historyList.length">
@@ -190,12 +190,13 @@
 							latitude: '',
 							longitude: '',
 							address: '暂无数据',
-							locateTime: '暂无数据'
+							locateTime: '暂无数据',
+							locateTimeFromCurrent: '暂无数据'
 						}
 						return uni.hideLoading()
 					}
 					this.getLocation(res.data).then(info => {
-						try{
+						try {
 							const {
 								location: {
 									latitude,
@@ -208,15 +209,17 @@
 								latitude,
 								longitude,
 								address,
-								locateTime: uni.$u.timeFormat(new Date(res.data.locateTime || 0), 'yyyy-mm-dd')
+								locateTime: uni.$u.timeFormat(new Date(res.data.locateTime || 0),
+									'yyyy-mm-dd'),
+								locateTimeFromCurrent: res.data.locateTimeFromCurrent
 							}
 							this.getHistoryLocation()
-						}catch(e){
+						} catch (e) {
 							console.log('报错-------', e);
 							//TODO handle the exception
 						}
-						
-							console.log('关闭弹窗----------', info);
+
+						console.log('关闭弹窗----------', info);
 						uni.hideLoading()
 						// console.log(res, 'ddiididi')
 					})

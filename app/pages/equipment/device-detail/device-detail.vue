@@ -19,7 +19,7 @@
 					</view>
 				</template>
 			</view>
-			<view class="action">
+			<view class="action" v-show="tabKey === 'MsgList'">
 				<text></text>
 				<u-icon name="/static/images/read-all.png" size="50rpx" @click="readMsgAll"></u-icon>
 			</view>
