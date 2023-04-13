@@ -7,11 +7,13 @@
 				<u-cell :title="item.name" v-for="(item,index) in cellList" :key="index" arrow-direction="right"
 					titleStyle="font-size: 15px;color: #303133;">
 					<view slot="value" class="u-slot-value">
-						<u-number-box v-model="item.value" :step='item.step' :min="item.min" :max="item.max" :showMinus="item.value > item.min">
+						<u-number-box v-model="item.value" :step='item.step' :min="item.min" :max="item.max"
+							:showMinus="item.value > item.min">
 							<view slot="minus" class="minus">
 								<u-icon name="minus" size="12"></u-icon>
 							</view>
-							<input slot="input" style="width: 50px;text-align: center;" class="input" v-model="item.value" ></input>
+							<input slot="input" style="width: 50px;text-align: center;" class="input"
+								v-model="item.value"></input>
 							<view slot="plus" class="plus">
 								<u-icon name="plus" color="#FFFFFF" size="12"></u-icon>
 							</view>
@@ -21,8 +23,8 @@
 			</u-cell-group>
 		</view>
 		<view class="ui-confirm">
-			<button class="ui-btn" @click="cancel" >跳过</button>
-			<button class="default" @click="submit">下一步</button>
+			<button class="ui-btn" @click="cancel">返回</button>
+			<button class="default" @click="submit">确认</button>
 		</view>
 	</app-body>
 </template>
@@ -39,27 +41,28 @@
 		data() {
 			return {
 				cellList: [{
-					name: '卡路里',
-					min:200,
-					max:1000,
-					step:100,
-					value: 0
-				},
-				{
-					name: '步数',
-					min:3000,
-					max:40000,
-					step:1000,
-					value: 0
-				},
-				{
-					name: '体重',
-					min:25,
-					max:200,
-					step:25,
-					value: 0
-				}],
-				exerciseTargetId:0
+						name: '卡路里',
+						min: 200,
+						max: 1000,
+						step: 100,
+						value: 0
+					},
+					{
+						name: '步数',
+						min: 3000,
+						max: 40000,
+						step: 1000,
+						value: 0
+					},
+					{
+						name: '体重',
+						min: 25,
+						max: 200,
+						step: 25,
+						value: 0
+					}
+				],
+				exerciseTargetId: 0
 			}
 		},
 		computed: {
@@ -68,41 +71,41 @@
 			}, )
 		},
 		mounted() {
-			
+
 		},
 		methods: {
 			handleSelect() {
 
 			},
-			handleInit(){
+			handleInit() {
 				GetExerciseTarget({
-					deviceId:this.deviceInfo.deviceId,
-					humanId:this.deviceInfo.humanId
-				}).then(res=>{
-					console.log(res,'res')
+					deviceId: this.deviceInfo.deviceId,
+					humanId: this.deviceInfo.humanId
+				}).then(res => {
+					console.log(res, 'res')
 					this.cellList[0].value = res.data.calorie
 					this.cellList[1].value = res.data.stepNum
 					this.cellList[2].value = res.data.weight
 					this.exerciseTargetId = res.data.exerciseTargetId
 				})
 			},
-			cancel(){
+			cancel() {
 				uni.navigateBack()
 			},
-			submit(){
+			submit() {
 				PostCreateExerciseTarget({
-					deviceId:this.deviceInfo.deviceId,
-					calorie:this.cellList[0].value,
-					stepNum:this.cellList[1].value,
-					weight:this.cellList[2].value,
-					exerciseDuration:'',
-					exerciseTargetId:this.exerciseTargetId || null
-				}).then(res=>{
-					console.log(res,'res')
+					deviceId: this.deviceInfo.deviceId,
+					calorie: this.cellList[0].value,
+					stepNum: this.cellList[1].value,
+					weight: this.cellList[2].value,
+					exerciseDuration: '',
+					exerciseTargetId: this.exerciseTargetId || null
+				}).then(res => {
+					console.log(res, 'res')
 					uni.$u.toast('操作成功')
-					setTimeout(()=>{
+					setTimeout(() => {
 						this.handleInit()
-					},1000)
+					}, 1000)
 				})
 			}
 		},
@@ -147,17 +150,20 @@
 		justify-content: center;
 		align-items: center;
 	}
+
 	.ui-confirm {
 		width: 100%;
 		display: flex;
 		margin-top: 104rpx;
-		button{
+
+		button {
 			width: 320rpx;
 		}
 	}
-	.ui-btn{
+
+	.ui-btn {
 		background-color: #FFF !important;
 		color: #fd963e;
-		border: 1px solid  #fd963e;
+		border: 1px solid #fd963e;
 	}
 </style>

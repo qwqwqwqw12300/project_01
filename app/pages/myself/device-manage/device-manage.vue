@@ -12,28 +12,33 @@
 				<app-logo text="设备管理"></app-logo>
 			</view>
 			<view class="ui-menu">
-				<view v-for="(device, index) of devices" :key="'f' + index">
-					<!-- 	<view class="ui-title" v-if="device.list.length">{{device.name}}</view> -->
-					<view class="ui-menu-title" v-if="device.list.length">
-						<u-icon name="/static/images/home.png" size="28"></u-icon>
-						<text>{{device.name || '未命名家庭'}}</text>
+				<template v-if="devices.length">
+					<view v-for="(device, index) of devices" :key="'f' + index">
+						<!-- 	<view class="ui-title" v-if="device.list.length">{{device.name}}</view> -->
+						<view class="ui-menu-title" v-if="device.list.length">
+							<u-icon name="/static/images/home.png" size="28"></u-icon>
+							<text>{{device.name || '未命名家庭'}}</text>
+						</view>
+						<view class="ui-menu-content">
+							<template v-for="(item, index) in device.list">
+								<!-- 雷达波设备 -->
+								<device-card v-if="item.type === '0'" :device="item" @change="init"
+									:key="'leidabo' + index" @bind="binding" />
+								<!-- /雷达波设备 -->
+								<!-- 电子牵挂卡设备 -->
+								<dzqgk-card v-if="item.type === '1'" :device="item" @change="init"
+									:key="'dzqgk' + index" @bind="bindingHuman($event, '1')" />
+								<!-- 电子牵挂卡设备 -->
+								<!-- 4g手表设备 -->
+								<watch-card v-if="item.type === '2'" :device="item" @change="init"
+									:key="'watch' + index" @bind="bindingHuman($event, '2')" />
+								<!-- /4g手表设备 -->
+							</template>
+						</view>
 					</view>
-					<view class="ui-menu-content">
-						<template v-for="(item, index) in device.list">
-							<!-- 雷达波设备 -->
-							<device-card v-if="item.type === '0'" :device="item" @change="init" :key="'leidabo' + index"
-								@bind="binding" />
-							<!-- /雷达波设备 -->
-							<!-- 电子牵挂卡设备 -->
-							<dzqgk-card v-if="item.type === '1'" :device="item" @change="init" :key="'dzqgk' + index"
-								@bind="bindingHuman($event, '1')" />
-							<!-- 电子牵挂卡设备 -->
-							<!-- 4g手表设备 -->
-							<watch-card v-if="item.type === '2'" :device="item" @change="init" :key="'watch' + index"
-								@bind="bindingHuman($event, '2')" />
-							<!-- /4g手表设备 -->
-						</template>
-					</view>
+				</template>
+				<view class="list-empty" v-else>
+					<u-empty mode="list" text="暂无数据"></u-empty>
 				</view>
 			</view>
 			<view class="ui-btn"><button class="default" @click="show = true">添加设备</button></view>
@@ -247,6 +252,14 @@
 			display: flex;
 			flex-wrap: wrap;
 			box-sizing: border-box;
+		}
+
+		.list-empty {
+			width: 100%;
+			height: 500rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 	}
 

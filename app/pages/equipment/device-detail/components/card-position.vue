@@ -1,6 +1,6 @@
 <template>
 	<view class="ui-map">
-		<point-map :record="addressInfo"></point-map>
+		<point-map :record="locationInfo"></point-map>
 		<map v-show="false"></map>
 		<view class="ui-float">
 			<view class="float-item" @click="getDeviceLocation">
@@ -23,7 +23,7 @@
 			<view class="map-position border">
 				<text class="label">更新时间:</text>
 				<view class="content">
-					{{ addressInfo.locateTime }}
+					{{ addressInfo.locateTimeFromCurrent }}
 				</view>
 			</view>
 			<template v-if="historyList.length">
@@ -66,16 +66,18 @@
 		},
 		data() {
 			return {
-				siteInfo: '',
-				latitude: 39.909,
-				longitude: 116.39742,
 				covers: [],
 				mapHeight: 0,
 				loading: false,
+				//最近更新信息
 				addressInfo: {
+					address: '',
+					locateTimeFromCurrent: '',
+				},
+				//经纬度信息
+				locationInfo: {
 					latitude: '',
 					longitude: '',
-					address: '',
 				},
 				currentSelect: '',
 				historyList: [],
@@ -108,20 +110,16 @@
 			},
 			mapMarker(data) {
 				const {
-					address,
 					index,
-					locateTime,
 					location: {
 						latitude,
 						longitude
 					}
 				} = data
 				this.currentSelect = index
-				this.addressInfo = {
+				this.locationInfo = {
 					latitude,
 					longitude,
-					address,
-					locateTime
 				}
 			},
 			getLocation(n) {
@@ -185,31 +183,46 @@
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					console.log(res, 'resrttttttt')
-					if (!res.data.location?.latitude) {
-						this.addressInfo = {
+					const {
+						latitude,
+						longitude
+					} = res.data.location
+					if (!latitude || !longitude) {
+						this.locationInfo = {
 							latitude: '',
 							longitude: '',
+						}
+						this.addressInfo = {
 							address: '暂无数据',
-							locateTime: '暂无数据'
+							locateTimeFromCurrent: '暂无数据'
 						}
 						return uni.hideLoading()
 					}
 					this.getLocation(res.data).then(info => {
-						const {
-							location: {
+						try {
+							const {
+								location: {
+									latitude,
+									longitude
+								},
+								address,
+								locateTime
+							} = info
+							this.locationInfo = {
 								latitude,
-								longitude
-							},
-							address,
-							locateTim
-						} = info
-						this.addressInfo = {
-							latitude,
-							longitude,
-							address,
-							locateTime: uni.$u.timeFormat(new Date(locateTime), 'yyyy-mm-dd')
+								longitude,
+							}
+							this.addressInfo = {
+								address,
+								locateTimeFromCurrent: res.data.locateTimeFromCurrent
+							}
+							this.getHistoryLocation()
+						} catch (e) {
+							console.log('报错-------', e);
+							//TODO handle the exception
 						}
-						this.getHistoryLocation()
+
+						console.log('关闭弹窗----------', info);
 						uni.hideLoading()
 						// console.log(res, 'ddiididi')
 					})

@@ -19,41 +19,47 @@
 			</view>
 			<view class="ui-menu">
 				<!-- 房间 -->
-				<view class="ui-menu-item" v-for="(item, index) in list" :key="'room' + index">
-					<view class="item-box" @click="openRoomEdit(item)">
-						<template v-if="item.devices.length">
-							<view class="device-status">
-								<text class="online" v-if="getDevices(item).onlineFlag == 1">在线</text>
-								<text class="offline" v-else-if="getDevices(item).onlineFlag == 2">休眠</text>
-								<text class="offline" v-else>离线</text>
-							</view>
-							<view class="device-info">
-								<image src="/static/images/leida-nm.png"></image>
-								<view class="detail">
-									<text class="name">{{ item.name }}</text>
-									<text class="position" v-if="item.devices.length">
-										{{ item.devices[0].roomName + ' | ' + item.devices[0].location}}
-									</text>
-									<text class="position" v-else>
-										未绑定设备
-									</text>
+				<template v-if="list.length">
+					<view class="ui-menu-item" v-for="(item, index) in list" :key="'room' + index">
+						<view class="item-box" @click="openRoomEdit(item)">
+							<template v-if="item.devices.length">
+								<view class="device-status">
+									<text class="online" v-if="getDevices(item).onlineFlag == 1">在线</text>
+									<text class="offline" v-else-if="getDevices(item).onlineFlag == 2">休眠</text>
+									<text class="offline" v-else>离线</text>
 								</view>
-							</view>
-						</template>
-						<template v-else>
-							<view class="device-info">
-								<u-text :block="false" :text="item.name || '未命名房间'"
-									:prefixIcon="getRoomIcon(item.roomType)" size="40rpx"
-									:iconStyle="{height: '70rpx', width: '70rpx'}"></u-text>
-							</view>
-						</template>
+								<view class="device-info">
+									<image src="/static/images/leida-nm.png"></image>
+									<view class="detail">
+										<text class="name">{{ item.name }}</text>
+										<text class="position" v-if="item.devices.length">
+											{{ item.devices[0].roomName + ' | ' + item.devices[0].location}}
+										</text>
+										<text class="position" v-else>
+											未绑定设备
+										</text>
+									</view>
+								</view>
+							</template>
+							<template v-else>
+								<view class="device-info">
+									<u-text :block="false" :text="item.name || '未命名房间'"
+										:prefixIcon="getRoomIcon(item.roomType)" size="40rpx"
+										:iconStyle="{height: '70rpx', width: '70rpx'}"></u-text>
+								</view>
+							</template>
 
-						<view class="device-action">
-							<text class="danger" @click.stop="onDelete(item.roomId)">删除</text>
-							<text class="warn" v-if="!item.devices.length" @click.stop="binding(item, 'room')">绑定</text>
-							<text class="orange" v-else @click.stop="unbinding(item.devices)">解绑</text>
+							<view class="device-action">
+								<text class="danger" @click.stop="onDelete(item.roomId)">删除</text>
+								<text class="warn" v-if="!item.devices.length"
+									@click.stop="binding(item, 'room')">绑定</text>
+								<text class="orange" v-else @click.stop="unbinding(item.devices)">解绑</text>
+							</view>
 						</view>
 					</view>
+				</template>
+				<view class="list-empty" v-else>
+					<u-empty mode="list" text="暂无数据"></u-empty>
 				</view>
 				<!-- /房间 -->
 				<!-- 人员 -->
@@ -397,6 +403,14 @@
 		display: flex;
 		flex-wrap: wrap;
 		box-sizing: border-box;
+
+		.list-empty {
+			width: 100%;
+			height: 500rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 
 		.ui-menu-item {
 			background: #FFFFFF;

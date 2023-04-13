@@ -11,18 +11,23 @@
 			<app-logo text="我的家庭管理"></app-logo>
 		</view>
 		<view class="ui-menu">
-			<view class="menu-item" v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
-				<view class="item-box">
-					<view class="title">
-						<u-icon name="/static/images/home.png" size="28"></u-icon>
-						<text>{{ baseListItem.name }}</text>
-					</view>
-					<!-- 	<view class="action" >删除家庭</view> -->
-					<view class="action">
-						<text class="delete" @click.stop="onDelete(baseListItem.familyId)">删除</text>
-						<text class="edit" @click.stop="gridClick(baseListItem)">编辑</text>
+			<template v-if="baseList.length">
+				<view class="menu-item" v-for="(baseListItem, baseListIndex) in baseList" :key="baseListIndex">
+					<view class="item-box">
+						<view class="title">
+							<u-icon name="/static/images/home.png" size="28"></u-icon>
+							<text>{{ baseListItem.name }}</text>
+						</view>
+						<!-- 	<view class="action" >删除家庭</view> -->
+						<view class="action">
+							<text class="delete" @click.stop="onDelete(baseListItem.familyId)">删除</text>
+							<text class="edit" @click.stop="gridClick(baseListItem)">编辑</text>
+						</view>
 					</view>
 				</view>
+			</template>
+			<view class="list-empty" v-else>
+				<u-empty mode="list" text="暂无数据"></u-empty>
 			</view>
 		</view>
 		<view class="ui-btn"><button class="default" @click="add">创建家庭</button></view>
@@ -173,6 +178,14 @@
 					// color: #E95656;
 				}
 			}
+		}
+
+		.list-empty {
+			width: 100%;
+			height: 500rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 
 	}

@@ -9,7 +9,8 @@
 				<view class="title">
 					手机号码
 				</view>
-				<u-input v-model="simNumber" disabledColor="#fff" :border="'none'" fontSize="32rpx" clearable />
+				<u-input v-model="simNumber" type="number" maxlength="11" disabledColor="#fff" :border="'none'"
+					fontSize="32rpx" clearable />
 			</view>
 			<view class="ui-btn">
 				<button @click="handleSumbit" class="default">确定</button>
