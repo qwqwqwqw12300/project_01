@@ -6,8 +6,8 @@
 				prefixIconStyle="font-size: 22px;color: #909399" />
 		</view>
 		<checkbox-group class="block" @change="checkboxChange">
-			<scroll-view :style="{'height': height+ 'px'}" :scroll-top="scrollTop" scroll-y="true" class="ui-select-main" id="ui-select-main"
-				:scroll-into-view="toView">
+			<scroll-view :style="{'height': height+ 'px'}" :scroll-top="scrollTop" scroll-y="true"
+				class="ui-select-main" id="ui-select-main" :scroll-into-view="toView">
 				<!-- 联系人列表(搜索前) -->
 				<view class="tel-list" v-if="!serachValue">
 					<view v-for="(record, index) in sortItems" :key="index" v-show="record.isCity" class="select-row">
@@ -15,20 +15,21 @@
 							:id="'city-letter-' + (record.name === '#' ? '0' : record.name)">
 							{{ record.name }}
 						</view>
-						<view class="citys-item" v-for="(item, inx) in record.citys" :key="inx">
+						<view class="citys-item" v-for="(item, inx) in record.citys" :key="inx"
+							@click="contactTrigger(item)">
 							<checkbox v-if="!isSingle" class='round' :value="findValue(item)"
 								:checked="findCheck(item)" />
-							<text @click="contactTrigger(item)">{{ item.cityName }}</text>
+							<text>{{ item.cityName }}</text>
 						</view>
 					</view>
 				</view>
 				<!-- 联系人列表(搜索后)  -->
 				<view class="tel-list" v-if="serachValue">
 					<view v-for="(item, index) in searchDatas" :key="index" class="select-row">
-						<view class="citys-item" :key="index">
+						<view class="citys-item" :key="index" @click="contactTrigger(item)">
 							<checkbox v-if="!isSingle" class='round' :value="findValue(item)"
 								:checked="findCheck(item)" />
-							<text @click="contactTrigger(item)">{{ item.name }}</text>
+							<text>{{ item.name }}</text>
 						</view>
 					</view>
 				</view>
@@ -100,7 +101,7 @@
 			}
 		},
 		created() {
-			this.height = (uni.getSystemInfoSync().windowHeight) * 0.8 - 160
+			this.height = (uni.getSystemInfoSync().windowHeight) * 0.8 - (this.isSingle ? 120 : 160)
 			// 初始化城市数据
 			this.contactList = this.obtainTels;
 			this.initializationTel();
