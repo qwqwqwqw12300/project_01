@@ -29,9 +29,14 @@
 			<template v-if="historyList.length">
 				<view class="address-list">
 					<view class="list-item" v-for="(n, index) in historyList" :key="index" @click="mapMarker(n)">
-						<text class="list-item-label">
-							{{ n.address }}
-						</text>
+						<view class="list-item-label">
+							<text class="main">
+								{{ n.address }}
+							</text>
+							<text class="sub">
+								{{ n.locateTime }}
+							</text>
+						</view>
 						<u-icon :name="getMapIcon(n)" size="44rpx" style="margin-right: 6rpx;" />
 					</view>
 				</view>
@@ -173,6 +178,7 @@
 						arr.push(res)
 					}
 					this.historyList = arr
+					console.log(this.historyList, 'ssssssooooo----------')
 				})
 			},
 			getDeviceLocation() {
@@ -330,8 +336,15 @@
 			border-bottom: solid 2px #f7f7f7;
 
 			.list-item-label {
-				font-size: 34rpx;
+				font-size: 32rpx;
 				color: #353535;
+				display: flex;
+				flex-direction: column;
+				.sub {
+					margin-top: 5px;
+					font-size: 30rpx;
+					color: #909193;
+				}
 			}
 		}
 	}
