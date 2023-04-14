@@ -78,8 +78,8 @@
 				</view>
 			</view>
 		</view>
-		<u-calendar :show="showDate" :defaultDate="defaultDate" :mode="mode" @confirm="confirm" @close="close"
-			closeOnClickOverlay></u-calendar>
+		<u-calendar :show="showDate" :minDate="startDate" :maxDate="endDate" :defaultDate="defaultDate" :mode="mode"
+			@confirm="confirm" @close="close" closeOnClickOverlay></u-calendar>
 		<u-datetime-picker ref="datetimePicker" :show="showTime" v-model="time" mode="time" closeOnClickOverlay
 			@confirm="confirmTime" @close="showTime=false" @cancel="cancelTime"></u-datetime-picker>
 		<time-picker :show="showPicker" format="yyyy-mm-dd hh:ii" type="rangetime" :value="defaultValue"
@@ -309,6 +309,8 @@
 			this.name = list.jobName
 			this.defaultValue[0] = list.firstDate
 			this.defaultValue[1] = list.lastDate
+			this.startDate = uni.$u.timeFormat(list.firstDate, 'yyyy/mm/dd')
+			this.endDate = uni.$u.timeFormat(list.lastDate, 'yyyy/mm/dd')
 			this.id = list.uuid
 			list.places.forEach(item => {
 				this.contactList.push({
