@@ -1,5 +1,5 @@
 <template>
-	<app-body  >
+	<app-body :bg="false">
 		<app-logo :text="text" :isShare="false"></app-logo>
 		<view v-for="(item,index) in list" :key="index" class="ui-window">
 			<view class="ui-window-title">{{item.title}}</view>
@@ -10,38 +10,52 @@
 
 <script>
 	import {
-		clearHeaded,
-		lightSleep,
-		deepSleep,
-		nocturnalSleep
+		clearHeaded, //清醒
+		lightSleep, //浅睡
+		deepSleep, //深睡
+		nocturnalSleep, //夜睡
+		heartRate, //心率
+		bloodPressure, //血压
+		bloodOxygen, //血氧
 	} from '@/config/db';
 	export default {
 		data() {
+			const textObj = {
+				'清醒': clearHeaded,
+				'浅睡': lightSleep,
+				'深睡': deepSleep,
+				'夜间睡眠': nocturnalSleep,
+				'心率': heartRate,
+				'血压': bloodPressure,
+				'血氧': bloodOxygen,
+			}
 			return {
-				text:'',
-				list:[]
+				text: '',
+				list: [],
+				textObj,
 			}
 		},
 		created() {
-			
+
 		},
 		methods: {
-			
-			
+
+
 		},
 		onLoad(option) {
 			this.text = option.name
-			this.text == '浅睡' ? this.list = lightSleep : this.text =='深睡' ? this.list = deepSleep : this.text=='清醒' ? this.list = clearHeaded : this.list = nocturnalSleep
+			this.list = this.textObj[option.name]
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.ui-window{
+	.ui-window {
 		width: 90%;
 		margin: 0 auto;
 		margin-top: 30rpx !important;
-		.ui-window-title{
+
+		.ui-window-title {
 			margin-bottom: 20rpx;
 			font-weight: bold;
 			font-size: 32rpx;

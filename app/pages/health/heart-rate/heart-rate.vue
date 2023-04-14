@@ -40,6 +40,8 @@
 				</view>
 			</view>
 		</view>
+
+		<health-info title="心率"></health-info>
 	</app-body>
 </template>
 

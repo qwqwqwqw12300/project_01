@@ -5,6 +5,7 @@
 			<date-picker @onSelect="onSelect" @month="monthChange" :lightDot="monthData"></date-picker>
 		</view>
 		<component ref="comRef" :is="tabKey" :time="time"></component>
+		<health-info title="血压"></health-info>
 	</app-body>
 </template>
 

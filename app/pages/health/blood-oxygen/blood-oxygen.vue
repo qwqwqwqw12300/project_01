@@ -23,6 +23,7 @@
 				</view>
 			</view>
 		</view>
+		<health-info title="血氧"></health-info>
 	</app-body>
 </template>
 
