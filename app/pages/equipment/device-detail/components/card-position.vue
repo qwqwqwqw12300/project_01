@@ -327,8 +327,8 @@
 		}
 
 		.list-item {
-			// padding: 48rpx 32rpx;
-			height: 128rpx;
+			padding: 24rpx 4rpx;
+			// height: 128rpx;
 			display: flex;
 			flex-direction: row;
 			align-items: center;
