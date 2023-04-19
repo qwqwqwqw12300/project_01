@@ -13,7 +13,7 @@
 				<view class="wd-list-box active" @click="goDeciveDetails(getDeives(room))">
 					<image src="../../../static/images/leida-nm.png"></image>
 					<view class="wd-device-info">
-						<text>{{room.name + '测试' || '未命名房间'}}</text>
+						<text>{{room.name || '未命名房间'}}</text>
 						<view class="wd-device-name">
 							<view class="wd-list-static" :class="{online: getDeives(room).onlineFlag === '1'}"></view>
 							<text class="wd-list-static-font">{{getDeives(room).onlineFlag==='1' ? '在线':'离线'}}</text>

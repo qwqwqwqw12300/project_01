@@ -60,9 +60,9 @@
 			getDeviveType() {
 				return function(type) {
 					return {
-						0: RadarSwiper,
-						1: CardSwiper,
-						2: WatchSwiper
+						0: 'RadarSwiper',
+						1: 'CardSwiper',
+						2: 'WatchSwiper'
 					} [type]
 				}
 			},
