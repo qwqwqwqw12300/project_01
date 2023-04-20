@@ -73,7 +73,7 @@
 					3: '第三紧急联系人',
 				}
 				return list.filter(n => {
-					return n.phone !== ''
+					return n.phone !== '' && n.familyId === this.msgInfo.familyId
 				}).map(item => {
 					item.name = `${obj[item.orderNum]} ${item.name}`
 					return item
@@ -89,9 +89,7 @@
 				}
 			}
 		},
-		mounted() {
-
-		},
+		mounted() {},
 		methods: {
 			/**
 			 * 单条用户信息已读
