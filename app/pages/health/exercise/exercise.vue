@@ -97,13 +97,15 @@
 					selectedIconPath: "/static/images/xiaohao_white.png",
 					selectedBg: "#E43552",
 					num: 0
-				}, {
-					key: 'time',
-					iconPath: "/static/images/timeclock.png",
-					selectedIconPath: "/static/images/timeclock_white.png",
-					selectedBg: "#69CA5F",
-					num: 0
-				}]
+				}
+				// , {
+				// 	key: 'time',
+				// 	iconPath: "/static/images/timeclock.png",
+				// 	selectedIconPath: "/static/images/timeclock_white.png",
+				// 	selectedBg: "#69CA5F",
+				// 	num: 0
+				// },
+				]
 			}
 		},
 		created() {
@@ -417,7 +419,7 @@
 					this.avgData = res.data;
 					this.list[0].num = res.data.stepNumAvg;
 					this.list[1].num = res.data.calorieAvg;
-					this.list[2].num = res.data.exerciseDurationAvg;
+					// this.list[2].num = res.data.exerciseDurationAvg;
 				})
 			}
 		}
@@ -465,7 +467,7 @@
 			.scroll-item {
 				display: inline-block;
 				height: 128rpx;
-				width: 200rpx;
+				width: 310rpx;
 				background: #FFFFFF;
 				border-radius: 16rpx;
 				padding: 14rpx;
