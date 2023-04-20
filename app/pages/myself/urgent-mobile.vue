@@ -3,12 +3,12 @@
 	<app-body :bg="false">
 		<view class="ui-logo">
 			<app-logo color="#353535" text="紧急联系人设置"></app-logo>
+		</view>
+		<view class="ui-form">
 			<view class="ui-screen-icon " style="margin-right: 20rpx;" @click="familyShow = true">
 				<text>{{familyName}}</text>
 				<u-icon size="35rpx" :name="familyShow ? 'arrow-down-fill' : 'arrow-up-fill'"></u-icon>
 			</view>
-		</view>
-		<view class="ui-form">
 			<view class="ui-form-item" v-for="(item,index) in contactList" :key="item.orderNum">
 				<view class="item-title">
 					<view class="title-left">
@@ -203,7 +203,7 @@
 
 	.ui-form {
 		// padding: 0 44rpx;
-		margin-top: 40rpx;
+		margin-top: 10rpx;
 
 		.ui-form-item {
 			background-color: #ffffff;
@@ -293,6 +293,8 @@
 		}
 	}
 	.ui-screen-icon {
+		height: 90rpx;
+		padding-left: 20rpx;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
