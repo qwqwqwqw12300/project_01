@@ -23,26 +23,26 @@
 					<view class="ui-w-h-100">
 						<view class="ui-f-center ui-white-bg ui-br-16" style="padding:30rpx 30rpx 30rpx 0"
 							@click="jumpUrl('/pages/health/exercise/exercise')">
-							<app-echarts style="height: 250rpx;width:250rpx" id="caiHongChart" :option="caiHongOption">
+							<app-echarts style="height: 300rpx;width:600rpx" id="caiHongChart" :option="caiHongOption">
 							</app-echarts>
-							<view class="ui-f-center ui-f-wrap ui-w-70">
-								<view class="ui-w-52 ui-f-start ui-f-wrap">
+							<view class="ui-f-center ui-f-wrap ui-w-60">
+								<view class="ui-f-start ui-f-wrap">
 									<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
 									<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
 									<view class="ui-text-box ui-mar-t-15">
 										<text class="ui-font-1">{{caiHongData[0]?caiHongData[0]:0}}</text>
 										<text class="ui-font-2">/{{maxDataArr[0]?maxDataArr[0]:0}}</text>
 									</view>
-								</view>
-								<view class="ui-w-47 ui-f-start ui-f-wrap">
+								</view>	
+<!-- 								<view class="ui-w-47 ui-f-start ui-f-wrap">
 									<image class="ui-img-size6" src="@/static/images/timeclock.png"></image>
 									<text class="ui-font-24 ui-mar-l-10">活动(分)</text>
 									<view class="ui-text-box ui-mar-t-15">
 										<text class="ui-font-1">{{caiHongData[1]?caiHongData[1]:0}}</text>
 										<text class="ui-font-2">/{{maxDataArr[1]?maxDataArr[1]:0}}</text>
 									</view>
-								</view>
-								<view class="ui-w-52 ui-f-start ui-mar-t-45 ui-f-wrap">
+								</view> -->
+								<view class="ui-f-start ui-mar-t-45 ui-f-wrap">
 									<image class="ui-img-size5" src="@/static/images/walk2.png"></image>
 									<text class="ui-font-24 ui-mar-l-10">行走<步></text>
 									<view class="ui-text-box ui-mar-t-15">
@@ -50,13 +50,13 @@
 										<text class="ui-font-2">/{{maxDataArr[2]?maxDataArr[2]:0}}</text>
 									</view>
 								</view>
-								<view class="ui-w-47 ui-f-start ui-mar-t-45 ui-f-wrap">
+	<!-- 							<view class="ui-w-47 ui-f-start ui-mar-t-45 ui-f-wrap">
 									<image class="ui-img-size6" src="@/static/images/stand.png"></image>
 									<text class="ui-font-24 ui-mar-l-10">站立<分></text>
 									<view class="ui-text-box ui-mar-t-15 ui-f-center">
 										<text class="ui-font-2" style="font-size:30rpx">暂无数据</text>
 									</view>
-								</view>
+								</view> -->
 							</view>
 						</view>
 						<movable-area class="ui-f-between ui-mar-t-10  ui-f-wrap ui-w-h-100" ref="areaBox" id="areaBox"
@@ -439,7 +439,7 @@
 						},
 						hoverAnimation: false,
 						startAngle: 180,
-						center: ["50%", "60%"],
+						center: ["50%", "70%"],
 						data: [{
 								value: this.maxDataArr[j] - resArr[j]["value"] > 0 ? resArr[j]["value"] : this
 									.maxDataArr[j],
@@ -491,9 +491,9 @@
 					type: 'gauge',
 					z: 3,
 					min: 0,
-					max: 20,
+					max: 200,
 					splitNumber: 5,
-					center: ['50%', '50%'], // 默认全局居中
+					center: ['100%', '100%'], // 默认全局居中
 					radius: '0%',
 					endAngle: 0,
 					startAngle: 90,
@@ -560,7 +560,9 @@
 				this.caiHongOption = {
 					grid: {
 						top: 0,
-						left: 0
+						left: 0,
+						bottom:0,
+						right:0
 					},
 					series: seriesd,
 					color: colorArr
