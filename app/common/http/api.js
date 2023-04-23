@@ -750,3 +750,13 @@ export const PostSetHumanInfo = (params) => http.post('/api/tWatch/setHumanInfo'
  * 获取月份数据标记
  */
 export const GetMonthDataFlag = (params) => http.get('/api/tWatch/getMonthDataFlag', params, {});
+
+/*
+ * 获取牵挂卡当前位置
+ */
+export const GetNowLocation = (params) => http.get('/api/careCard/getNowLocation', params, {});
+
+/*
+ * 手表设备实时定位
+ */
+export const GetWatchLocation = (params) => http.post('/api/tWatch/location', params, {});

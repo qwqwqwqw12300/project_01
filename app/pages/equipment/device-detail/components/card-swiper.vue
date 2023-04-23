@@ -66,6 +66,7 @@
 		methods: {
 			handleSet() {
 				if (this.type === 'set') {
+					if(this.record.onlineFlag != 1) return uni.$u.toast('设备离线') 
 					this.$store.commit('setDeviceInfo', this.record);
 					uni.navigateTo({
 						url: '/pages/card/card-set'

@@ -2,6 +2,14 @@
 	<view class="ui-map">
 		<point-map :record="addressInfo"></point-map>
 		<map v-show="false"></map>
+
+		<view class="ui-float">
+			<view class="float-item" @click="getNowLocation">
+				<u-icon name="/static/images/map-position.png" size="36px"></u-icon>
+				<!-- <text>更新位置</text> -->
+			</view>
+			<!-- 	<view class="float-line"></view> -->
+		</view>
 		<view class="map-popup">
 			<view class="map-position">
 				<text class="label">当前位置:</text>
@@ -10,7 +18,7 @@
 				</view>
 			</view>
 			<view class="map-position">
-				<text class="label">距上次更新时间:</text>
+				<text class="label">更新时间:</text>
 				<view class="content">
 					{{ addressInfo.locateTimeFromCurrent }}
 				</view>
@@ -22,6 +30,7 @@
 <script>
 	import {
 		GetWatchTrack,
+		GetWatchLocation
 	} from '@/common/http/api'
 	import {
 		isIos,
@@ -55,9 +64,12 @@
 			this.mapHeight = sysHeight - saveHeight - 400
 		},
 		mounted() {
-			this.getDeviceLocation()
+			this.getDeviceLocation('last')
 		},
 		methods: {
+			getNowLocation() {
+				this.getDeviceLocation('now')
+			},
 			getLocation(n) {
 				const {
 					latitude,
@@ -80,11 +92,15 @@
 						})
 				})
 			},
-			getDeviceLocation() {
+			getDeviceLocation(type) {
+				const interList = {
+					last: GetWatchTrack,
+					now: GetWatchLocation
+				}
 				uni.showLoading({
 					title: '加载中'
 				})
-				GetWatchTrack({
+				interList[type]({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					if (!res.data.location?.latitude) {
@@ -102,13 +118,13 @@
 							latitude,
 							longitude,
 							address,
-							locateTimeFromCurrent
+							// locateTimeFromCurrent
 						} = info
 						this.addressInfo = {
 							latitude,
 							longitude,
 							address,
-							locateTimeFromCurrent,
+							locateTimeFromCurrent: res.data?.locateTimeFromCurrent ||  uni.$u.timeFormat(res.data.locateTime, 'yyyy-mm-dd hh:MM'),
 						}
 						uni.hideLoading()
 					})
@@ -131,8 +147,8 @@
 			padding-top: 20rpx;
 			width: 100%;
 			z-index: 9999;
-			border-radius: 30rpx 30rpx 0 0;
-			height: 240rpx;
+			// border-radius: 30rpx 30rpx 0 0;
+			height: 260rpx;
 		}
 
 		// padding: 32rpx;
@@ -154,7 +170,7 @@
 			// border-bottom: solid 2px #f7f7f7;
 
 			.label {
-				width: 240rpx;
+				width: 180rpx;
 				font-size: 32rpx;
 				color: #888888;
 			}
@@ -232,5 +248,34 @@
 				color: #353535;
 			}
 		}
+	}
+
+	.ui-float {
+		position: fixed;
+		right: 32rpx;
+		bottom: 330rpx;
+		padding: 20rpx 20rpx;
+		background-color: #FFFFFF;
+		box-sizing: border-box;
+		border-radius: 15rpx;
+		z-index: 999;
+
+		.float-item {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			text {
+				margin-top: 4rpx;
+				font-size: 26rpx;
+			}
+		}
+
+		.float-line {
+			width: 100%;
+			border-bottom: 2rpx solid #353535;
+			margin: 20rpx 0;
+		}
+
 	}
 </style>
