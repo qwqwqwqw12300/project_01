@@ -17,7 +17,7 @@
 							<template v-for="(item, index) of area">
 								<view :key="index + 'c'" class="ui-cell" @touchstart="touchstart($event, item, index)"
 									@touchmove.stop.prevent="touchMove($event, item, index)"
-									@touchend="touchend($event, item)"
+									@touchend.stop.prevent="touchend($event, item)"
 									:class="{ active: item.active, hover: item.status === 'hover', edit: roomZones.length && activeZone.roomZoneId === item.roomZoneId }"
 									:style="cell" v-if="item.zoneType === '2'">
 								</view>
@@ -31,7 +31,7 @@
 							</movable-view>
 						</movable-area>
 						<view class="ui-tips">
-							<text>每个方块区域大小为 0.5米 x 0.5米</text>
+							<text>每个方块区域大小为 0.2米 x 0.2米</text>
 							<text>选中</text>
 							<text>未选中</text>
 						</view>
@@ -110,6 +110,10 @@
 		wddkAbbreviation
 	} from '../../../common/utils/util';
 	import {
+		numberUtil
+	} from '../../../common/utils/numberUtil';
+	
+	import {
 		mapState
 	} from 'vuex';
 	import {
@@ -170,7 +174,7 @@
 					width: 10,
 					height: 10,
 					/**一格等于多少米**/
-					size: 0.5
+					size: 0.2
 				},
 				/**网格列表**/
 				area: [],
@@ -202,7 +206,6 @@
 				deviceInfo: state => state.deviceInfo
 			}),
 			getStyle() {
-				const minBox = 50;
 				return {
 					width: this.sizeInfo.box.width + 'px',
 					height: this.sizeInfo.box.height + 'px'
@@ -238,6 +241,7 @@
 		},
 		onLoad() {
 			this.init();
+			console.log(numberUtil, 'numberUtil');
 		},
 		methods: {
 			/**
@@ -281,13 +285,13 @@
 							roomFront = 0,
 							roomBehind = 0
 						} = location;
-						const w = (roomLeft + roomRight) % 1;
-						const h = (roomBehind + roomFront) % 1;
-						if (w !== 0 && w !== 0.5) {
+						const w = numberUtil.floatMod(roomLeft + roomRight, this.cell.size);
+						const h = numberUtil.floatMod(roomBehind + roomFront, this.cell.size);
+						if (w !== 0) {
 							roomLeft = this.controlSize(roomLeft),
 								roomRight = this.controlSize(roomRight)
 						}
-						if (h !== 0 && h !== 0.5) {
+						if (h !== 0) {
 							roomBehind = this.controlSize(roomBehind),
 								roomFront = this.controlSize(roomFront)
 						}
@@ -300,18 +304,18 @@
 							roomBehind
 						};
 						// 按每格比例放大
-						roomLeft = this.roomSize.roomLeft / cellSize;
-						roomRight = this.roomSize.roomRight / cellSize;
+						roomLeft = numberUtil.floatDiv(this.roomSize.roomLeft, cellSize);
+						roomRight = numberUtil.floatDiv(this.roomSize.roomRight, cellSize);
 
-						roomHeight = this.roomSize.roomHeight / cellSize;
-						roomLength = this.roomSize.roomLength / cellSize;
-						roomFront = this.roomSize.roomFront / cellSize;
-						roomBehind = this.roomSize.roomBehind / cellSize;
+						roomHeight = numberUtil.floatDiv(this.roomSize.roomHeight, cellSize);
+						roomLength = numberUtil.floatDiv(this.roomSize.roomLength, cellSize);
+						roomFront = numberUtil.floatDiv(this.roomSize.roomFront, cellSize);
+						roomBehind = numberUtil.floatDiv(this.roomSize.roomBehind, cellSize);
 
 						// 盒子比例
 						const scale = {
-								x: width / (roomLeft + roomRight),
-								y: width / (roomLeft + roomRight) // 以横向距离作为基准
+								x: numberUtil.floatDiv(width, (roomLeft + roomRight)),
+								y: numberUtil.floatDiv(width, (roomLeft + roomRight)) // 以横向距离作为基准
 							},
 							/**设备位置**/
 							x = roomLeft * scale.x,
@@ -324,13 +328,13 @@
 							};
 						/**网格**/
 						this.cell = {
-							width: 100 / (box.width / scale.x) + '%',
-							height: 100 / (box.height / scale.y) + '%',
+							width: numberUtil.floatDiv(100, Math.floor(numberUtil.floatDiv(box.width, scale.x))) + '%',
+							height: numberUtil.floatDiv(100, Math.floor(numberUtil.floatDiv(box.height, scale.y))) + '%',
 							size: cellSize
 						};
 						/**网格个数**/
 						let idx = 0;
-						this.area = new Array(Math.ceil(box.width / scale.x) * Math.ceil(box.height / scale.y))
+						this.area = new Array(Math.ceil(numberUtil.floatDiv(box.width, scale.x)) * Math.ceil(numberUtil.floatDiv(box.height, scale.y)))
 							.fill('')
 							.map(ele =>
 								({
@@ -355,11 +359,12 @@
 							let {
 								x1 = 0, x2 = 0, y1 = 0, y2 = 0, z1 = 0, z2 = 0, roomZoneId, name
 							} = ele;
-							x1 = x1 / this.cell.size;
-							x2 = x2 / this.cell.size;
-							y1 = y1 / this.cell.size;
-							y2 = y2 / this.cell.size;
+							x1 = numberUtil.floatDiv(x1, this.cell.size);
+							x2 = numberUtil.floatDiv(x2, this.cell.size);
+							y1 = numberUtil.floatDiv(y1, this.cell.size);
+							y2 = numberUtil.floatDiv(y2, this.cell.size);
 							const activeList = this.getArrByAxis(x1, x2, y1, y2);
+							console.log(activeList, 'activeList-------');
 							this.area.forEach(area => {
 								if (activeList.includes(area.index)) {
 									area.active = true;
@@ -380,8 +385,8 @@
 								y2
 							});
 							if (ele.zoneType === '2') { // 床区域特殊处理
-								ele.leaveBedWarnParameter.intervalTime = ele.leaveBedWarnParameter
-									.intervalTime / 60;
+								numberUtil.floatDiv(ele.leaveBedWarnParameter.intervalTime = ele.leaveBedWarnParameter
+									.intervalTime, 60);
 								Object.assign(ele, {
 									bedName: name,
 									timeCus: [!this.timeList.includes(ele.leaveBedWarnParameter
@@ -401,16 +406,14 @@
 			},
 
 			/**
-			 * 长度处理（每格大小是0.5，所以不足0.5的需要补足保证格子大小）
+			 * 长度处理（每格大小是0.2，所以不足0.2的需要补足保证格子大小）
 			 */
 			controlSize(num) {
-				const remainder = num % 1;
+				const remainder = numberUtil.floatMod(num, this.cell.size);
 				if (!remainder) {
 					return num;
-				} else if (remainder < 0.5) {
-					return Math.floor(num) + 0.5;
 				} else {
-					return Math.ceil(num);
+					return num + 0.1;
 				}
 
 			},
@@ -598,7 +601,7 @@
 					clientX,
 					clientY
 				} = event.touches[0];
-				if (clientX < (this.windowWidth - 300) / 2 || clientX > (this.windowWidth - 300) / 2 + 300) return;
+				if (clientX < numberUtil.floatDiv(this.windowWidth - 300, 2) || clientX > numberUtil.floatDiv(this.windowWidth - 300, 2) + 300) return;
 				this.touchInfo.invalid = false;
 				const arr = this.getCellArr(clientX, clientY);
 				this.area.forEach((ele, idx) => {
@@ -637,6 +640,7 @@
 						this.clearCell();
 						return uni.$u.toast('屏蔽区域与离床区域的子区域总数不能超过4个');
 					}
+					console.log(width, height, 'height------');
 					this.$refs.zonePopRef.open({
 							roomId: this.deviceInfo.roomId,
 							deviceId: this.deviceInfo.deviceId,
@@ -676,8 +680,8 @@
 					this.clearCell();
 					return uni.$u.toast('区域超出检测范围，请重新选择');
 				}
-				width = width / this.cell.size;
-				height = height / this.cell.size;
+				width = numberUtil.floatDiv(width, this.cell.size);
+				height = numberUtil.floatDiv(height, this.cell.size);
 				const {
 					roomZoneId
 				} = form,
@@ -704,15 +708,16 @@
 
 			/**
 			 * 获取格子参数
+			 * returns { width- 每个格子的宽度，height: 格子高度，line：一行几个格子，column：一列几个格子， total：一共几个格子}   
 			 */
 			getCellSize() {
 				// 每个格子的宽度、高度
 				const width = this.sizeInfo.scale.x,
 					height = this.sizeInfo.scale.y; // 高度
 				// 一行几个格子
-				const line = Math.floor(this.sizeInfo.box.width / width),
+				const line = Math.floor(numberUtil.floatDiv(this.sizeInfo.box.width, width)),
 					// 一列几个格子
-					column = Math.floor(this.sizeInfo.box.height / height),
+					column = Math.floor(numberUtil.floatDiv(this.sizeInfo.box.height,height)),
 					// 一共几个格子
 					total = this.area.length;
 				return {
@@ -744,12 +749,12 @@
 					total
 				} = this.getCellSize();
 				// 触摸地址距离起始点几个格子
-				const countX = Math.ceil((endX - x) / width),
-					countY = Math.ceil((endY - y) / height);
+				const countX = Math.ceil(numberUtil.floatDiv(endX - x,  width)),
+					countY = Math.ceil(numberUtil.floatDiv(endY - y, height));
 				// 当前在第几行
-				let currentLine = Math.ceil(index / line),
+				let currentLine = Math.ceil(numberUtil.floatDiv(index, line)),
 					// 当前在第几格
-					currentCol = Math.ceil(index % line);
+					currentCol = Math.ceil(numberUtil.floatMod(index, line));
 				if (countY + currentLine > column) return [];
 				if (countX + currentCol + 1 > line) return [];
 				for (let i = 0; i <= Math.abs(countY); i++) {
@@ -797,11 +802,11 @@
 					line,
 					column
 				} = this.getCellSize();
-				const zoneHeight = Math.floor(max / line) - Math.floor(min / line) + 1,
-					zongWidth = (max % line) - (min % line) + 1;
+				const zoneHeight = Math.floor(numberUtil.floatDiv(max, line)) - Math.floor(numberUtil.floatDiv(min, line)) + 1,
+					zongWidth = numberUtil.floatMod(max, line) - numberUtil.floatMod(min, line) + 1;
 				return {
-					height: zoneHeight * this.cell.size,
-					width: zongWidth * this.cell.size
+					height: numberUtil.times(zoneHeight, this.cell.size),
+					width: numberUtil.times(zongWidth, this.cell.size),
 				};
 			},
 
@@ -809,6 +814,7 @@
 			 * 根据坐标获取范围数组
 			 */
 			getArrByAxis(x1, x2, y1, y2) {
+				console.log(x1, x2, y1, y2, 'x1, x2, y1, y2');
 				// 格子参数
 				const {
 					width,
@@ -823,17 +829,21 @@
 						y,
 						scale
 					} = this.sizeInfo;
-				let pointY = Math.floor(y / scale.y - y2),
+					console.log(this.sizeInfo, 'this.sizeInfo');
+				let pointY = Math.floor(numberUtil.round(numberUtil.floatDiv(y, scale.y)) - y2),
 					pointX;
 				if (x1 < 0) {
-					pointX = Math.floor(x / scale.x - Math.abs(x1) + 1);
+					console.log(numberUtil.floatDiv(x, scale.x), 'numberUtil.floatDiv(x, scale.x)');
+					pointX = Math.floor(numberUtil.round(numberUtil.floatDiv(x, scale.x)) - Math.abs(x1) + 1);
 				} else {
-					pointX = Math.floor(x / scale.x + x1) + 1;
+					pointX = Math.floor(numberUtil.round(numberUtil.floatDiv(x, scale.x)) + x1) + 1;
 				}
+				console.log(pointY, pointX, 'pointY, pointX');
 				const start = pointY * line + pointX - 1; // (x1, y1)的点
 				const pointW = x2 - x1,
 					pointH = y2 - y1; // 区域宽度
 				// arr.push(start);
+				console.log(start, pointW, pointH, 'start, pointW, pointH');
 				return this.getArrBySize(start, pointW, pointH);
 			},
 
@@ -869,9 +879,9 @@
 					total
 				} = this.getCellSize();
 				// 起始点坐标
-				const x1 = ((start % line) * scale.x - x) / scale.x,
-					y2 = column - Math.floor(start / line) - (installPosition === '1' ? this.roomSize.roomBehind / this
-						.cell.size : 0);
+				const x1 = numberUtil.floatDiv((numberUtil.floatMod(start, line) * scale.x - x), scale.x),
+					y2 = column - Math.floor(numberUtil.floatDiv(start, line)) - (installPosition === '1' ? numberUtil.floatDiv(this.roomSize.roomBehind, this
+						.cell.size) : 0);
 				// 起始点在第几列
 				const x2 = x1 + width,
 					y1 = y2 - height;

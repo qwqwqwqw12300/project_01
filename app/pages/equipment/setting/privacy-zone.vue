@@ -33,7 +33,7 @@
 							</movable-view>
 						</movable-area>
 						<view class="ui-tips">
-							<text>每个方块区域大小为 0.5米 x 0.5米</text>
+							<text>每个方块区域大小为 0.2米 x 0.2米</text>
 							<text>选中</text>
 							<text>未选中</text>
 						</view>
@@ -80,7 +80,7 @@
 import { assignDeep, getHoursTime, getMinute, minuteToTime } from '../../../common/utils/util';
 import { mapState } from 'vuex';
 import { GetRoomZone, PostRoomList, PostRadarDevice, PostRemRadarDevice, PostSetRadarWareShadowZone } from '../../../common/http/api';
-
+import { numberUtil } from '../../../common/utils/numberUtil';
 export default {
 	data() {
 		return {
@@ -478,6 +478,7 @@ export default {
 		 * 拖拽事件
 		 */
 		touchMove(event, item, index) {
+			console.log(index, 'index---------');
 			const { clientX, clientY } = event.touches[0];
 			if (clientX < (this.windowWidth - 300) / 2 || clientX > (this.windowWidth - 300) / 2 + 300) return;
 			this.touchInfo.invalid = false;
