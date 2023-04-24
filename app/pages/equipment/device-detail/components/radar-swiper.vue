@@ -45,6 +45,7 @@
 		methods: {
 			/**跳转设置页面**/
 			goSetting() {
+				if (this.record.onlineFlag != 1) return uni.$u.toast('设备离线')
 				this.$store.commit('setDeviceInfo', this.record);
 				uni.navigateTo({
 					url: '/pages/equipment/setting/radar-setting'
@@ -63,11 +64,13 @@
 		background-color: #fff;
 		padding: 30rpx 10rpx;
 		box-sizing: border-box;
-		box-shadow: 0px 2px 20px 0px rgba(220,205,180,0.5);
+		box-shadow: 0px 2px 20px 0px rgba(220, 205, 180, 0.5);
+
 		.item-box {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+
 			.img {
 				width: 190rpx;
 				height: 190rpx;

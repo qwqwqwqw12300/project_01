@@ -68,6 +68,7 @@
 						url: '/pages/watch/add-watch'
 					})
 				}
+				if (this.record.onlineFlag != 1) return uni.$u.toast('设备离线')
 				this.$store.commit('setDeviceInfo', this.record)
 				uni.navigateTo({
 					url: '/pages/watch/watch-set/watch-set'
@@ -86,7 +87,7 @@
 		padding: 30rpx 10rpx;
 		border-radius: 20rpx;
 		box-sizing: border-box;
-		box-shadow: 0px 2px 20px 0px rgba(220,205,180,0.5);
+		box-shadow: 0px 2px 20px 0px rgba(220, 205, 180, 0.5);
 
 		.item-box {
 			display: flex;

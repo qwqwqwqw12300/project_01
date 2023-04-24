@@ -3,7 +3,7 @@
 		<point-map :record="locationInfo"></point-map>
 		<map v-show="false"></map>
 		<view class="ui-float">
-			<view class="float-item" @click="getDeviceLocation">
+			<view class="float-item" @click="getNowLocation">
 				<u-icon name="/static/images/map-position.png" size="36px"></u-icon>
 				<!-- 	<text>定位</text> -->
 			</view>
@@ -54,7 +54,8 @@
 <script>
 	import {
 		GetLastPoint,
-		GetsetAddressBook
+		GetsetAddressBook,
+		GetNowLocation
 	} from '@/common/http/api';
 	import {
 		isIos,
@@ -96,7 +97,7 @@
 			this.mapHeight = sysHeight - saveHeight - 400
 		},
 		mounted() {
-			this.getDeviceLocation()
+			this.getDeviceLocation('last')
 
 		},
 		computed: {
@@ -126,6 +127,9 @@
 					latitude,
 					longitude,
 				}
+			},
+			getNowLocation() {
+				this.getDeviceLocation('now')
 			},
 			getLocation(n) {
 				try {
@@ -181,11 +185,15 @@
 					console.log(this.historyList, 'ssssssooooo----------')
 				})
 			},
-			getDeviceLocation() {
+			getDeviceLocation(type) {
+				const interList = {
+					last: GetLastPoint,
+					now: GetNowLocation
+				}
 				uni.showLoading({
 					title: '加载中'
 				})
-				GetLastPoint({
+				interList[type]({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					console.log(res, 'resrttttttt')
@@ -220,7 +228,7 @@
 							}
 							this.addressInfo = {
 								address,
-								locateTimeFromCurrent: res.data.locateTimeFromCurrent
+								locateTimeFromCurrent: res.data?.locateTimeFromCurrent ||  uni.$u.timeFormat(res.data.locateTime, 'yyyy-mm-dd hh:MM')
 							}
 							this.getHistoryLocation()
 						} catch (e) {
@@ -340,6 +348,7 @@
 				color: #353535;
 				display: flex;
 				flex-direction: column;
+
 				.sub {
 					margin-top: 5px;
 					font-size: 30rpx;
