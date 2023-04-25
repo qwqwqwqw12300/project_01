@@ -561,8 +561,7 @@ export const GetLastPoint = (params) => http.get('/api/careCard/track/lastPoint'
 /**
  * 获取紧急联系人列表
  */
-export const GetMemberContactskList = (params) => http.get('/api/memberContacts/list', params, {
-});
+export const GetMemberContactskList = (params) => http.get('/api/memberContacts/list', params, {});
 
 /**
  * 设置紧急联系人列表
@@ -637,7 +636,8 @@ export const GetListElectrocardiogramByDay = (params) => http.get('/api/tWatch/l
 /**
  * 插入心电备注信息
  */
-export const PostAddElectrocardiogramReMake = (params) => http.post('/api/tWatch/addElectrocardiogramReMake', params, {});
+export const PostAddElectrocardiogramReMake = (params) => http.post('/api/tWatch/addElectrocardiogramReMake',
+	params, {});
 
 
 /**
@@ -704,7 +704,9 @@ export const GetWatchInfo = (params) => http.get('/api/tWatch/getWatchInfo', par
 /*
  * 获取手表最后定位
  */
-export const GetWatchTrack = (params) => http.get('/api/tWatch/track/lastPoint', params, {});
+export const GetWatchTrack = (params) => http.get('/api/tWatch/track/lastPoint', params, {
+	showLoading: false
+});
 
 /**
  * 查询活动周平均数据
@@ -754,9 +756,13 @@ export const GetMonthDataFlag = (params) => http.get('/api/tWatch/getMonthDataFl
 /*
  * 获取牵挂卡当前位置
  */
-export const GetNowLocation = (params) => http.get('/api/careCard/getNowLocation', params, {});
+export const GetNowLocation = (params) => http.get('/api/careCard/getNowLocation', params, {
+	showLoading: false
+});
 
 /*
  * 手表设备实时定位
  */
-export const GetWatchLocation = (params) => http.post('/api/tWatch/location', params, {});
+export const GetWatchLocation = (params) => http.post('/api/tWatch/location', params, {
+	showLoading: false
+});

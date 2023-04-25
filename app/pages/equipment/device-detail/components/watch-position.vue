@@ -55,6 +55,8 @@
 					longitude: '',
 					address: '',
 				},
+				isLoading: false,
+				time: 1,
 			}
 		},
 		created() {
@@ -64,11 +66,26 @@
 			this.mapHeight = sysHeight - saveHeight - 400
 		},
 		mounted() {
-			this.getDeviceLocation('last')
+			this.getDeviceLocation()
 		},
 		methods: {
 			getNowLocation() {
-				this.getDeviceLocation('now')
+				if (this.isLoading) return
+				uni.showLoading({
+					title: '获取定位中'
+				})
+				GetWatchLocation({
+					deviceId: this.deviceInfo.deviceId
+				}).then(res => {
+					setTimeout(() => {
+						this.isLoading = true
+						this.time = 1
+						this.getDeviceLocation()
+					}, 3000)
+				}, err => {
+					uni.hideLoading()
+				})
+				// this.getDeviceLocation('now')
 			},
 			getLocation(n) {
 				const {
@@ -92,15 +109,12 @@
 						})
 				})
 			},
-			getDeviceLocation(type) {
-				const interList = {
-					last: GetWatchTrack,
-					now: GetWatchLocation
-				}
-				uni.showLoading({
-					title: '加载中'
+			getDeviceLocation() {
+				console.log(56565656565656)
+				!this.isLoading && uni.showLoading({
+					title: '获取定位中'
 				})
-				interList[type]({
+				GetWatchTrack({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					if (!res.data.location?.latitude) {
@@ -113,7 +127,7 @@
 						return uni.hideLoading()
 					}
 					this.getLocation(res.data).then(info => {
-						console.log(info, 'ffffff------------')
+						console.log(info, '33333333333-----------')
 						const {
 							latitude,
 							longitude,
@@ -124,10 +138,37 @@
 							latitude,
 							longitude,
 							address,
-							locateTimeFromCurrent: res.data?.locateTimeFromCurrent ||  uni.$u.timeFormat(res.data.locateTime, 'yyyy-mm-dd hh:MM'),
+							locateTimeFromCurrent: res.data?.locateTimeFromCurrent,
 						}
-						uni.hideLoading()
+						console.log(this.isLoading, '455555555----')
+						if (!this.isLoading) return uni.hideLoading()
+						console.log(this.addressInfo.locateTimeFromCurrent, res.data.locateTimeFromCurrent,
+							'00000000000000')
+						console.log(this.addressInfo.locateTimeFromCurrent == res.data
+							.locateTimeFromCurrent, 'oo----------')
+						if (this.addressInfo.locateTimeFromCurrent == res.data.locateTimeFromCurrent &&
+							this.time <=
+							3) {
+							console.log('进来了----------')
+							setTimeout(() => {
+								this.time += 1
+								this.getDeviceLocation()
+							}, 3000)
+
+						} else {
+							this.time = 1
+							this.isLoading = false
+							uni.hideLoading()
+						}
 					})
+					// if (this.loading && this.addressInfo.locateTimeFromCurrent != res.data.locateTimeFromCurrent) {
+					// setTimeout(() => {
+					// 	this.isLoading = true
+					// 	this.getDeviceLocation()
+					// }, 3000)
+					// }else{
+					// 	this.isLoading = false
+					// }
 				})
 			}
 		}

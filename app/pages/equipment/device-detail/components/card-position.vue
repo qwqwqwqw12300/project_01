@@ -182,7 +182,6 @@
 						arr.push(res)
 					}
 					this.historyList = arr
-					console.log(this.historyList, 'ssssssooooo----------')
 				})
 			},
 			getDeviceLocation(type) {
@@ -191,12 +190,11 @@
 					now: GetNowLocation
 				}
 				uni.showLoading({
-					title: '加载中'
+					title: '获取定位中'
 				})
 				interList[type]({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
-					console.log(res, 'resrttttttt')
 					const {
 						latitude,
 						longitude
