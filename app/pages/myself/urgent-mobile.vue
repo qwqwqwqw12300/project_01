@@ -168,11 +168,9 @@
 					}
 				}
 				PostSetMemberConWithFamilyId(this.contactList).then(res => {
-					console.log(res, 'res')
+					this.$store.dispatch('GetContactsList')
 					uni.$u.toast(res.msg)
-					this.$store.commit('setContactInfo', res.rows)
 					setTimeout(() => {
-						// this.$store.dispatch('GetContactsList')
 						this.handleCancel()
 					}, 1000)
 				})
