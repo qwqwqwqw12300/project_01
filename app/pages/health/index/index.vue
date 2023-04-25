@@ -131,7 +131,9 @@
 		GetCaiHongData,
 		getDeviceListState,
 	} from '@/common/http/api.js'
-
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
 		components: {
 			SwiperDevice,
@@ -240,6 +242,10 @@
 			})
 		},
 		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				familyList: state => state.familyList,
+			}, ),
 			moveViewSize() {
 				if (this.areaBoxInfo && this.areaBoxInfo.width) {
 					return this.areaBoxInfo.width / 1.2
