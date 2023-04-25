@@ -48,7 +48,7 @@
 					:key="'sheet' + index">
 					<u-icon name="home" class="active" size="38rpx" v-if="item.value">
 					</u-icon>
-					<text>{{item.text}}</text>
+					<text>{{item && item.text}}</text>
 				</view>
 			</view>
 		</u-action-sheet>
@@ -74,17 +74,17 @@
 	let contactList = [{
 			orderNum: 1,
 			orderName: '第一紧急联系人',
-			familyId:0
+			familyId: 0
 		},
 		{
 			orderNum: 2,
 			orderName: '第二紧急联系人',
-			familyId:0
+			familyId: 0
 		},
 		{
 			orderNum: 3,
 			orderName: '第三紧急联系人',
-			familyId:0
+			familyId: 0
 		},
 	]
 	export default {
@@ -93,7 +93,7 @@
 				index: 0,
 				/**家庭列表是否展示**/
 				familyShow: false,
-				familyName:'',
+				familyName: '',
 				contactList
 			}
 		},
@@ -104,9 +104,9 @@
 						value: ele.familyId,
 						text: ele.name
 					}));
-					
-					return [ ...familyList]
-		
+
+					return [...familyList]
+
 				}
 			})
 		},
@@ -116,27 +116,32 @@
 				this.$refs.telBookRef.show(true)
 			},
 			phoneSelect(data) {
-				const { phone,name } = data[0]
+				const {
+					phone,
+					name
+				} = data[0]
 				this.contactList[this.index].phone = phone
 				this.contactList[this.index].name = name
 				this.contactList = [...this.contactList]
 			},
 			handleInit(familyId) {
-				console.log(familyId,'familyId')
+				console.log(familyId, 'familyId')
 				GetMemberContactskList({
-					familyId:familyId
-				}).then(res=>{
-					console.log(res,'res')
+					familyId: familyId
+				}).then(res => {
+					console.log(res, 'res')
 					// console.log(res,'res-------------------------')
 					this.contactList = contactList.map(item => {
 						item.familyId = familyId
 						const data = res.rows.find(n => {
 							return n.orderNum === item.orderNum
 						})
-						return data!=undefined ? {
+						return data != undefined ? {
 							...data,
 							orderName: item.orderName
-						} : {...item}
+						} : {
+							...item
+						}
 					})
 					console.log(this.contactList, 'llllllllll')
 				})
@@ -163,9 +168,9 @@
 					}
 				}
 				PostSetMemberConWithFamilyId(this.contactList).then(res => {
-					console.log(res,'res')
+					console.log(res, 'res')
 					uni.$u.toast(res.msg)
-					this.$store.commit('setContactInfo',res.rows)
+					this.$store.commit('setContactInfo', res.rows)
 					setTimeout(() => {
 						// this.$store.dispatch('GetContactsList')
 						this.handleCancel()
@@ -179,14 +184,14 @@
 			 *  选择家庭
 			 **/
 			sheetSelect(item) {
-				console.log(item,'item')
+				console.log(item, 'item')
 				this.familyName = item.text
 				this.handleInit(item.value)
 				this.familyShow = false;
 			},
 		},
 		onShow() {
-			this.familyName = this.getFamilyList[0].text || '暂无家庭'
+			this.familyName = this.getFamilyList[0] && this.getFamilyList[0].text || '暂无家庭'
 			this.handleInit(this.getFamilyList[0].value)
 		}
 	}
@@ -280,6 +285,7 @@
 			}
 		}
 	}
+
 	.ui-sheet {
 		border-bottom: 1rpx solid #e2e2e2;
 		display: flex;
@@ -287,18 +293,19 @@
 		justify-content: center;
 		height: 120rpx;
 		width: 100%;
-	
+
 		text {
 			margin-left: 10rpx;
 		}
 	}
+
 	.ui-screen-icon {
 		height: 90rpx;
 		padding-left: 20rpx;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-	
+
 		>text {
 			margin-left: 10rpx;
 		}
