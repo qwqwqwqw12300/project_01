@@ -1,10 +1,10 @@
 <template>
-	<view class="">
+	<view style="height:100%">
 		<scroll-view scroll-y="true" @scrolltolower="pageNext" refresher-background="transparent"
-			@refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled :style="{height: '100%'}"
+			@refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled :style="{ height: '100%' }"
 			class="ui-scroll">
 			<template v-if="msgList.length">
-				<msg-card @call="handleCall" v-for="(item,index) in msgList" :key="index" :msgInfo="item"></msg-card>
+				<msg-card @call="handleCall" v-for="(item, index) in msgList" :key="index" :msgInfo="item"></msg-card>
 				<u-loadmore marginBottom="30" dashed :status="loadmore" />
 			</template>
 			<u-empty v-else mode="list" text="暂无数据" marginTop="80rpx"></u-empty>
@@ -94,7 +94,8 @@
 			readMsgAll() {
 				const {
 					familyId,
-					deviceId,type
+					deviceId,
+					type
 				} = this.deviceInfo
 				console.log(this.deviceInfo, 'fff----')
 				PostSetBatchMsgInfo({

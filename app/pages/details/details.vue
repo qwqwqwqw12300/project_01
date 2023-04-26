@@ -113,7 +113,8 @@
 				}
 			})
 		},
-		onLoad() {
+		async onLoad() {
+			await this.$store.dispatch('GetContactsList');
 			this.getMsgList();
 		},
 		methods: {
