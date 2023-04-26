@@ -94,10 +94,11 @@
 			readMsgAll() {
 				const {
 					familyId,
-					deviceId
+					deviceId,type
 				} = this.deviceInfo
+				console.log(this.deviceInfo, 'fff----')
 				PostSetBatchMsgInfo({
-					deviceType: "0",
+					deviceType: type,
 					eventlevel: "",
 					familyId,
 					readFlag: "1",
