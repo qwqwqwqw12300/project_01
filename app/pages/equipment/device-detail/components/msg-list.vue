@@ -1,13 +1,17 @@
 <template>
-	<scroll-view scroll-y="true" @scrolltolower="pageNext" refresher-background="transparent"
-		@refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled :style="{height: '100%'}"
-		class="ui-scroll">
-		<template v-if="msgList.length">
-			<msg-card v-for="(item,index) in msgList" :key="index" :msgInfo="item"></msg-card>
-			<u-loadmore marginBottom="30" dashed :status="loadmore" />
-		</template>
-		<u-empty v-else mode="list" text="暂无数据" marginTop="80rpx"></u-empty>
-	</scroll-view>
+	<view class="">
+		<scroll-view scroll-y="true" @scrolltolower="pageNext" refresher-background="transparent"
+			@refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled :style="{height: '100%'}"
+			class="ui-scroll">
+			<template v-if="msgList.length">
+				<msg-card @call="handleCall" v-for="(item,index) in msgList" :key="index" :msgInfo="item"></msg-card>
+				<u-loadmore marginBottom="30" dashed :status="loadmore" />
+			</template>
+			<u-empty v-else mode="list" text="暂无数据" marginTop="80rpx"></u-empty>
+		</scroll-view>
+		<u-action-sheet :actions="contactsList" :show="show" title="选择紧急联系人" round="10" cancelText="取消"
+			@close="show = false" @select="handleSelect"></u-action-sheet>
+	</view>
 </template>
 
 <script>
@@ -26,6 +30,22 @@
 				default: '1000rpx',
 			}
 		},
+		computed: {
+			contactsList() {
+				const list = uni.$u.deepClone(this.$store.getters.contactList)
+				const obj = {
+					1: '第一紧急联系人',
+					2: '第二紧急联系人',
+					3: '第三紧急联系人',
+				}
+				return list.filter(n => {
+					return n.phone !== '' && n.familyId === this.deviceInfo.familyId
+				}).map(item => {
+					item.name = `${obj[item.orderNum]} ${item.name}`
+					return item
+				})
+			},
+		},
 		data() {
 			return {
 				triggered: false,
@@ -35,13 +55,13 @@
 					pageNum: 1,
 				},
 				/**加载更多管理**/
-				loadmore: 'loadmore' // loadmore-加载更多 loading-加载中 nomore-没有更多
+				loadmore: 'loadmore', // loadmore-加载更多 loading-加载中 nomore-没有更多
+				show: false,
 			}
 		},
 		watch: {
 			deviceInfo: {
 				handler(val) {
-					console.log(val, 'data----------')
 					if (val.deviceId) {
 						this.msgList = []
 						this.pageOptions = {
@@ -56,6 +76,21 @@
 			}
 		},
 		methods: {
+			handleCall() {
+				if (!this.contactsList.length) return uni.$u.toast('您暂未设置联系人')
+				this.show = true
+			},
+			handleSelect(val) {
+				uni.makePhoneCall({
+					phoneNumber: val.phone,
+					success: res => {
+						console.log(res, 'res');
+					},
+					fail: res => {
+						console.log(res, 'fail');
+					}
+				});
+			},
 			readMsgAll() {
 				const {
 					familyId,
@@ -135,5 +170,4 @@
 			margin-left: 4rpx;
 		}
 	}
-	
 </style>

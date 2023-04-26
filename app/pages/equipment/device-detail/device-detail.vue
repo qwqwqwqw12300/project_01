@@ -110,7 +110,7 @@
 			}
 		},
 		async onLoad() {
-			await this.$store.dispatch('GetContactsList');
+			// await this.$store.dispatch('GetContactsList');
 			const familyId = this.deviceInfo.familyId
 			const res = this.familyList.find(n => {
 				return familyId === n.familyId
@@ -122,6 +122,7 @@
 			this.shareFlag = res.shareFlag
 			this.current = this.deviceList.indexOf(this.deviceInfo)
 			this.swiperData = this.deviceList[this.current]
+			console.log(this.swiperData,'ooo----')
 			this.swiperKey = this.swiperData.type
 		},
 		data() {

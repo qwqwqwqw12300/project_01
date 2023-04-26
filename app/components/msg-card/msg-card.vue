@@ -42,8 +42,6 @@
 			</template>
 
 		</view>
-		<u-action-sheet :actions="contactsList" :show="show" title="选择紧急联系人" round="10" cancelText="取消"
-			@close="show = false" @select="handleSelect"></u-action-sheet>
 	</view>
 </template>
 
@@ -60,25 +58,10 @@
 		},
 		data() {
 			return {
-				show: false,
 				msgDetail: this.msgInfo,
 			}
 		},
 		computed: {
-			contactsList() {
-				const list = uni.$u.deepClone(this.$store.getters.contactList)
-				const obj = {
-					1: '第一紧急联系人',
-					2: '第二紧急联系人',
-					3: '第三紧急联系人',
-				}
-				return list.filter(n => {
-					return n.phone !== '' && n.familyId === this.msgInfo.familyId
-				}).map(item => {
-					item.name = `${obj[item.orderNum]} ${item.name}`
-					return item
-				})
-			},
 			deviceName() {
 				return (type) => {
 					return {
@@ -115,22 +98,8 @@
 			 * 点击联系人
 			 */
 			handleCall(phoneNumber) {
-				if (!this.contactsList.length) return uni.$u.toast('您暂未设置联系人')
-				this.show = true
-			},
-			/**
-			 * 选择联系人
-			 */
-			handleSelect(val) {
-				uni.makePhoneCall({
-					phoneNumber: val.phone,
-					success: res => {
-						console.log(res, 'res');
-					},
-					fail: res => {
-						console.log(res, 'fail');
-					}
-				});
+				// if (!this.contactsList.length) return uni.$u.toast('您暂未设置联系人')
+				this.$emit('call')
 			},
 		}
 	}
