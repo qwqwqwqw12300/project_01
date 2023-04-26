@@ -1,21 +1,13 @@
 <template>
-	<view class="">
-		<!-- 	<view class="ui-action">
-			<u-icon name="list" size="18"></u-icon>
-			<text @click="readMsgAll">
-				全部标记已处理
-			</text>
-		</view> -->
-		<scroll-view scroll-y="true" @scrolltolower="pageNext" refresher-background="transparent"
-			@refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled
-			:style="{height: srollHeight}" class="ui-scroll">
-			<template v-if="msgList.length">
-				<msg-card v-for="(item,index) in msgList" :key="index" :msgInfo="item"></msg-card>
-				<u-loadmore marginBottom="30" dashed :status="loadmore" />
-			</template>
-			<u-empty v-else mode="list" text="暂无数据" marginTop="80rpx"></u-empty>
-		</scroll-view>
-	</view>
+	<scroll-view scroll-y="true" @scrolltolower="pageNext" refresher-background="transparent"
+		@refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled :style="{height: '100%'}"
+		class="ui-scroll">
+		<template v-if="msgList.length">
+			<msg-card v-for="(item,index) in msgList" :key="index" :msgInfo="item"></msg-card>
+			<u-loadmore marginBottom="30" dashed :status="loadmore" />
+		</template>
+		<u-empty v-else mode="list" text="暂无数据" marginTop="80rpx"></u-empty>
+	</scroll-view>
 </template>
 
 <script>
@@ -143,4 +135,5 @@
 			margin-left: 4rpx;
 		}
 	}
+	
 </style>
