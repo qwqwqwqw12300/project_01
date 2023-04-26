@@ -109,6 +109,7 @@
 			 * 跳转设备管理
 			 */
 			edit(item) {
+				if (item.onlineFlag != 1) return uni.$u.toast('您的设备已离线，暂时无法进行配置')
 				this.$store.commit('setDeviceInfo', item);
 				// this.$setCache('setDevice', item);
 				uni.navigateTo({
