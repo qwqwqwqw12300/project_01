@@ -29,8 +29,8 @@
 				<!-- /不需要返回头 -->
 			</template>
 			<!-- 智能客服 -->
-			<view class="wd-service" v-if="needService" @touchmove.prevent="onMove" @click="goService"
-				@touchstart.prevent="onStart" :style="{top: serviceTop + 'px'}">
+			<view class="wd-service" v-if="needService" @touchmove.prevent="onMove"
+				@touchstart="onStart" @click="goService" :style="{top: serviceTop + 'px'}">
 			</view>
 			<!-- 智能客服 -->
 		</scroll-view>
@@ -192,6 +192,7 @@
 			 * 跳转客服对话
 			 */
 			goService() {
+				console.log('跳转--------');
 				uni.navigateTo({
 					url: '/pages/service/customer-service'
 				})

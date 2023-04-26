@@ -84,8 +84,6 @@
 		push
 	} from '@/common/sdk/push.js';
 	import {
-		isApp,
-		isIos,
 		phoneValidator
 	} from '../../common/utils/util';
 	import {
@@ -106,18 +104,11 @@
 					code: ''
 				},
 				radiovalue: [],
-				registrationId: '',
 				showVisible: false,
 				content: '',
 			};
 		},
-		computed: {
-			registrationType() {
-				return isIos() ? '1' : '0'
-			}
-		},
 		mounted() {
-			this.getRegistrationID();
 		},
 		methods: {
 			/**
@@ -197,12 +188,11 @@
 						phone: this.formParams.phone,
 						password: jsencrypt.setEncrypt(env.publicKey, this.formParams.pwd),
 						code: this.formParams.code,
-						smsUuid: this.formParams.uuid,
-						registrationType: this.registrationType,
-						registrationId: this.registrationId
+						smsUuid: this.formParams.uuid
 					}).then(res => {
 						setToken(res.token);
 						this.$store.dispatch('getPushMsgState');
+						this.$store.dispatch('setJGInfo'); // 设置极光id
 						uni.$u.toast('注册成功')
 						setTimeout(() => {
 							uni.switchTab({
@@ -261,15 +251,7 @@
 			codeReset() {
 				console.log(12121);
 				this.$refs.codeRef.handleGetCaptcha();
-			},
-			/**
-			 * 获取登录设备注册号
-			 */
-			getRegistrationID() {
-				isApp() && push.getRegistrationID().then(res => {
-					this.registrationId = res
-				});
-			},
+			}
 		}
 	};
 </script>

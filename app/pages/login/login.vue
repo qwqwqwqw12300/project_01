@@ -89,10 +89,8 @@
 	import {
 		loginBySms,
 		PostLoginByPwd,
+		PsotSetJGInfo
 	} from '@/common/http/api.js';
-	import {
-		push
-	} from '@/common/sdk/push.js';
 	import {
 		isApp,
 		isIos,
@@ -134,17 +132,9 @@
 					uuid: '',
 					code: ''
 				},
-				//会员登录设备注册号
-				registrationId: uni.$u.guid(20),
 			};
 		},
 		mounted() {
-			this.getRegistrationID();
-		},
-		computed: {
-			registrationType() {
-				return isIos() ? '1' : '0'
-			}
 		},
 		methods: {
 			navClick({
@@ -183,10 +173,11 @@
 					password: rsaPassword,
 					code,
 					uuid,
-					registrationType: this.registrationType,
-					registrationId: this.registrationId
+					registrationType: '1',
+					registrationId: 'dfdfdfdnufbgudbgud'
 				}).then(res => {
 					setToken(res.token);
+					this.$store.dispatch('setJGInfo'); // 设置推送id
 					this.$store.dispatch('getPushMsgState');
 					uni.switchTab({
 						url: '/pages/index/index'
@@ -249,12 +240,11 @@
 					// 	return uni.$u.toast('请填写正确的验证码')
 					// }
 					loginBySms({
-						...this.smsLoginForm,
-						registrationType: this.registrationType,
-						registrationId: this.registrationId
+						...this.smsLoginForm
 					}).then(res => {
 						setToken(res.token);
 						this.$store.dispatch('getPushMsgState');
+						this.$store.dispatch('setJGInfo'); // 设置极光id
 						uni.switchTab({
 							url: '/pages/index/index'
 						});
@@ -277,15 +267,7 @@
 			 */
 			checkedBySms(smsInfo) {
 				Object.assign(this.smsLoginForm, smsInfo);
-			},
-			/**
-			 * 获取登录设备注册号
-			 */
-			getRegistrationID() {
-				isApp() && push.getRegistrationID().then(res => {
-					if (res) this.registrationId = res;
-				});
-			},
+			}
 		}
 	};
 </script>

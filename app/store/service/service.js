@@ -8,7 +8,9 @@
 export default {
 	state: {
 		/**公告信息**/
-		readInfo: ''
+		readInfo: '',
+		/**智能客服坐标**/
+		serviceAxisY: 300,
 		
 	},
 	mutations: {
@@ -19,7 +21,15 @@ export default {
 		 */
 		setReadInfo(state, info) {
 			state.readInfo = info;
-		}
+		},
+		/**
+		 * 人工客服Y轴
+		 * @param {Object} state
+		 * @param {Object} axisY
+		 */
+		setServiceAxisY(state, axisY) {
+			state.serviceAxisY = axisY;
+		},
 	},
 	actions: {
 	}

@@ -29,35 +29,38 @@ class Push {
 	init() {
 		return new Promise(resolve => {
 			console.log('极光推送开始注册');
-
-			if (uni.getSystemInfoSync().platform == "ios") {
-				// 请求定位权限
-				const locationServicesEnabled = this.jpushModule.locationServicesEnabled(); // 获取系统定位服务是否开启
-				const locationAuthorizationStatus = jpushModule
-					.getLocationAuthorizationStatus(); // 获取用户定位权限状态
-				console.log('locationAuthorizationStatus', locationAuthorizationStatus);
-				if (locationServicesEnabled === true && locationAuthorizationStatus < 3) { // 定位已开启 
-					this.jpushModule.requestLocationAuthorization((result) => { // 请求定位权限
-						console.log('定位权限', result.status);
-					});
-				}
-				this.jpushModule.requestNotificationAuthorization((result) => { // 获取通知的授权状态
-					const status = result.status;
-					if (status < 2) {
-						uni.showToast({
-							icon: 'none',
-							title: '您还没有打开通知权限，可能会错过消息推送',
-							duration: 3000
+			try{
+				if (uni.getSystemInfoSync().platform == "ios") {
+					// 请求定位权限
+					const locationServicesEnabled = this.jpushModule.locationServicesEnabled(); // 获取系统定位服务是否开启
+					const locationAuthorizationStatus = this.jpushModule
+						.getLocationAuthorizationStatus(); // 获取用户定位权限状态
+					if (locationServicesEnabled === true && locationAuthorizationStatus < 3) { // 定位已开启 
+						this.jpushModule.requestLocationAuthorization((result) => { // 请求定位权限
+							console.log('定位权限', result.status);
 						});
 					}
-				})
+					this.jpushModule.requestNotificationAuthorization((result) => { // 获取通知的授权状态
+						const status = result.status;
+						if (status < 2) {
+							uni.showToast({
+								icon: 'none',
+								title: '您还没有打开通知权限，可能会错过消息推送',
+								duration: 3000
+							});
+						}
+					})
+				}
+				this.jpushModule.initJPushService(); // 初始化推送
+				this.jpushModule.setLoggerEnable(env.mode === 'dev'); // 开启debug开关
+				this.addConnectEventListener();
+				this.messageListener();
+				console.log('极光推送注册完成');
+				resolve();
+			}catch(e){
+				console.log(e, '极光推送注册报错--------------');
 			}
-			this.jpushModule.initJPushService(); // 初始化推送
-			this.jpushModule.setLoggerEnable(env.mode === 'dev'); // 开启debug开关
-			this.addConnectEventListener();
-			this.messageListener();
-			console.log('极光推送注册完成');
-			resolve();
+		
 		});
 	}
 

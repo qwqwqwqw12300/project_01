@@ -125,7 +125,7 @@ export const PostEditContacts = (params) => http.post('/api/memberContacts/editM
 export const sendSms = (data) => http.post('/api/sendSms', data);
 
 /**验证码登录发送短信**/
-export const applyLoginBySms = (data) => http.post('/api/applyLoginBySms ', data);
+export const applyLoginBySms = (data) => http.post('/api/applyLoginBySms', data);
 
 /**短信登录**/
 export const loginBySms = (data) => http.post('/api/loginBySms', data);
@@ -764,5 +764,12 @@ export const GetNowLocation = (params) => http.get('/api/careCard/getNowLocation
  * 手表设备实时定位
  */
 export const GetWatchLocation = (params) => http.post('/api/tWatch/location', params, {
+	showLoading: false
+});
+
+/**
+ * 极光推送设置用户id
+ */
+export const PsotSetJGInfo = (params) => http.post('/api/setJGInfo', params, {
 	showLoading: false
 });
