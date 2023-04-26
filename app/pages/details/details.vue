@@ -35,7 +35,8 @@
 				</template>
 				<template v-else-if="messageList.length">
 					<view class="ui-scroll">
-						<msg-card v-for="(item, index) of messageList" :key="index" :msgInfo="item"></msg-card>
+						<msg-card v-for="(item, index) of messageList" :key="index" @call=handleCall(item)
+							:msgInfo="item"></msg-card>
 						<u-loadmore marginBottom="30" dashed :status="loadmore" />
 					</view>
 				</template>
@@ -56,6 +57,8 @@
 				</view>
 			</view>
 		</u-action-sheet>
+		<u-action-sheet :actions="contactsList" :show="contactShow" title="选择紧急联系人" round="10" cancelText="取消"
+			@close="contactShow = false" @select="handleSelect"></u-action-sheet>
 	</app-body>
 </template>
 
@@ -90,7 +93,9 @@
 				/**加载更多管理**/
 				loadmore: 'loadmore', // loadmore-加载更多 loading-加载中 nomore-没有更多
 				/**是否初始化查询**/
-				loading: true
+				loading: true,
+				contactShow: false,
+				contactsList: [],
 			};
 		},
 		computed: {
@@ -112,6 +117,39 @@
 			this.getMsgList();
 		},
 		methods: {
+			/**
+			 * 他人处理
+			 */
+			handleCall(item) {
+				const list = uni.$u.deepClone(this.$store.getters.contactList)
+				const obj = {
+					1: '第一紧急联系人',
+					2: '第二紧急联系人',
+					3: '第三紧急联系人',
+				}
+				this.contactsList = list.filter(n => {
+					return n.phone !== '' && n.familyId === item.familyId
+				}).map(item => {
+					item.name = `${obj[item.orderNum]} ${item.name}`
+					return item
+				})
+				if (!this.contactsList.length) return uni.$u.toast('您暂未设置联系人')
+				this.contactShow = true
+			},
+			/**
+			 * call
+			 */
+			handleSelect(val) {
+				uni.makePhoneCall({
+					phoneNumber: val.phone,
+					success: res => {
+						console.log(res, 'res');
+					},
+					fail: res => {
+						console.log(res, 'fail');
+					}
+				});
+			},
 			/**
 			 * 上拉刷新
 			 * @param {Object} $e
