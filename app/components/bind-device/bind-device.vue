@@ -21,7 +21,7 @@
 						</view>
 					</template>
 					<view class="list-empty" v-else>
-						<u-empty mode="list" text="暂无数据"></u-empty>
+						<u-empty mode="list" text="暂无设备"></u-empty>
 					</view>
 				</view>
 			</scroll-view>

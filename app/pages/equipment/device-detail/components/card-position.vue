@@ -23,7 +23,7 @@
 			<view class="map-position border">
 				<text class="label">更新时间:</text>
 				<view class="content">
-					{{ addressInfo.locateTimeFromCurrent }}
+					{{ addressInfo.locateTimeFromCurrent }}前
 				</view>
 			</view>
 			<template v-if="historyList.length">

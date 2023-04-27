@@ -11,7 +11,7 @@
 		<view class="ui-step">
 			<text>1、请确保手机蓝牙、WIFI处于开启状态</text>
 		</view>
-		<view class="ui-satellite" @click="addTest">
+		<view class="ui-satellite">
 			<image src="@/static/images/wifi@3x.png" mode="heightFix"></image>
 			<image src="@/static/images/blueth@3x.png" mode="heightFix"></image>
 		</view>
@@ -27,29 +27,6 @@
 		<view class="ui-btn" v-if="connectStatic === 'connect'">
 			<u-loading-icon :text="eventMsg"></u-loading-icon>
 		</view>
-		<!-- 修改名称 -->
-		<u-popup :closeable="true" :round="10" :show="isEditShow" mode="center" @close="eidtClose">
-			<view class="wd-add ui-change">
-				<u-text prefixIcon="edit-pen" :iconStyle="{ fontSize: '38rpx', color: '#ea942f' }" color="#ea942f"
-					size="30rpx" text="设备设置"></u-text>
-				<view class="ui-input">
-					<u-text size="28rpx" prefixIcon="home" iconStyle="font-size: 36rpx" text="设备名称"></u-text>
-					<u-input placeholder="请输入设备名称" :maxlength="6" v-model="editForm.deviceName" border="bottom"
-						clearable>
-					</u-input>
-				</view>
-				<view class="ui-radio">
-					<u-text size="28rpx" prefixIcon="map" iconStyle="font-size: 36rpx" text="设备位置"></u-text>
-					<u-radio-group v-model="editForm.location" placement="row">
-						<u-radio :customStyle="{margin: '20rpx'}" v-for="item of locationList" :key="item"
-							activeColor="#1aa208" :name="item" :label="item"></u-radio>
-					</u-radio-group>
-				</view>
-				<view class="wd-btn-group"><button @click="add" class="default">确定</button></view>
-			</view>
-		</u-popup>
-		<!-- /修改名称 -->
-		<connect-wifi :list="wifiList" ref="wifiRef" @confirm="wifiConfirm"></connect-wifi>
 	</app-body>
 </template>
 
@@ -58,10 +35,6 @@
 		PostcreDevice,
 		PosteditDevice
 	} from '../../../common/http/api';
-
-	import {
-		vpsdk
-	} from '../../../common/sdk/vpsdk.js';
 	import {
 		getCurPage,
 		isApp
@@ -73,146 +46,10 @@
 	export default {
 		data() {
 			return {
-				/**创建设备信息**/
-				editForm: {
-					deviceName: '',
-					location: '壁挂',
-					deviceId: ''
-				},
-				addForm: {
-					deviceName: '未命名设备',
-					deviceNo: uni.$u.guid(),
-					deviceType: '0',
-					location: '壁挂'
-				},
-				/**编辑展示**/
-				isEditShow: false,
-				/**事件说明**/
-				eventMsg: '启动中...',
-				/**设备连接状态 init connect success**/
-				connectStatic: 'init',
-				wifiList: [],
-				locationList: [
-					'壁挂',
-					'顶挂',
-				],
-				isTest: false
+				connectStatic: 'init'
 			}
 		},
 		methods: {
-			addTest() {
-				this.isTest = true;
-				this.isEditShow = true;
-			},
-
-			/**
-			 * 关闭编辑弹窗
-			 */
-			eidtClose() {
-				this.isEditShow = false;
-			},
-			handleBack() {
-				uni.navigateBack()
-			},
-
-			add() {
-				if (this.isTest && env.mode === 'dev') {
-					PostcreDevice({ //  先添加设备
-						...this.addForm,
-						...this.editForm
-					}).then(res => {
-						uni.showToast({
-							icon: 'none',
-							title: '添加成功'
-						});
-						setTimeout(() => {
-							uni.navigateTo({
-								url: '/pages/myself/device-manage/device-manage'
-							})
-						}, 1000)
-					});
-					return;
-				}
-				if (this.editForm.location && this.editForm.deviceName) {
-					PosteditDevice({
-						...this.editForm
-					}).then(res => {
-						uni.showToast({
-							icon: 'none',
-							title: '添加成功'
-						});
-						setTimeout(() => {
-							uni.navigateTo({
-								url: '/pages/myself/device-manage/device-manage'
-							});
-						}, 1000);
-
-					})
-				} else {
-					uni.showToast({
-						icon: 'none',
-						title: '请完整填写信息'
-					})
-				}
-			},
-
-			/**
-			 * 添加设备
-			 */
-			async next() {
-				this.isTest = false;
-				try {
-					this.connectStatic = 'connect';
-					if (await this.permissionCheck()) {
-						vpsdk.connect(res => {
-							// if (!getCurPage().includes('pages/equipment/radar')) return;
-							const {
-								type,
-								data
-							} = res;
-							switch (type) {
-								case 'event': // 事件监听
-									this.eventMsg = data.msg;
-									break;
-								case 'wifi': // 选择wifi
-									console.log(data, 'wifi信息');
-									this.openWifi(data);
-									break;
-								case 'success': // 连接成功
-									PostcreDevice({ //  先添加设备
-										...this.addForm,
-										deviceNo: data
-									}).then(res => {
-										this.editForm.deviceId = res.data.deviceId;
-										this.isEditShow = true;
-										this.connectStatic = 'init';
-										this.eventMsg = '启动中...';
-									}, err => {
-										this.connectStatic = 'init'; // 异常重新配置
-										this.eventMsg = '启动中...';
-									})
-									break;
-								default:
-									uni.showModal({
-										title: '设备添加失败，请重试'
-									});
-									this.connectStatic = 'init';
-									this.eventMsg = '启动中...';
-									break;
-							}
-						});
-
-					} else {
-						this.connectStatic = 'init';
-					}
-				} catch (e) {
-					uni.showModal({
-						title: '应用环境异常，请重试'
-					});
-					this.connectStatic = 'init';
-				}
-			},
-
 			/**
 			 * 权限检查
 			 */
@@ -249,26 +86,6 @@
 						}
 					})
 				});
-			},
-
-			/**
-			 * wifi确认
-			 */
-			wifiConfirm(info) {
-				const {
-					ssid,
-					bssid,
-					rssi
-				} = info.wifi;
-				vpsdk.connectWifi(ssid, bssid, rssi, info.pwd);
-			},
-
-			/**
-			 * 打开wifi
-			 */
-			openWifi(data) {
-				this.wifiList = data;
-				this.$refs.wifiRef.open();
 			},
 
 			/**
