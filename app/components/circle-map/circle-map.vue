@@ -10,7 +10,7 @@
 		<view v-show="!show">
 			<view id="container" class="container"></view>
 		</view>
-		<view :slider="slider" :change:slider="maps.loadData"></view>
+		<view :record="record" :change:record="maps.loadData"></view>
 	</view>
 </template>
 
@@ -26,9 +26,8 @@
 		watch: {
 			record: {
 				handler(val) {
-					console.log(val, '333333333')
 					if (val) {
-						this.slider = uni.$u.deepClone(val)
+						this.mapInfo = uni.$u.deepClone(val)
 					}
 				},
 				deep: true,
@@ -38,12 +37,16 @@
 		data() {
 			return {
 				show: false,
-				slider: 0,
+				mapInfo: {}
 			};
 		},
 		methods: {
 			onMsg(val) {
 				this.show = val
+			},
+			onMapChange(obj) {
+				this.$emit('change', obj)
+				this.mapInfo = obj
 			}
 		}
 	}
@@ -66,6 +69,7 @@
 				marker: null,
 				AMap: null,
 				map: null,
+				geocoder: null,
 			}
 		},
 		mounted() {
@@ -73,7 +77,6 @@
 		},
 		methods: {
 			loadData(val) {
-				console.log(val, '9-------------------------')
 				// 数据变更
 				const {
 					latitude,
@@ -82,45 +85,15 @@
 				this.mapInfo = this.deepClone(val)
 				if (this.map) {
 					this.map.remove(this.circle)
-					this.drawCircle()
 					this.map.remove(this.marker)
-					this.mapMarker()
+					this.drawCircle()
+					// this.mapMarker()
 				} else {
 					if (longitude && latitude) {
 						this.$ownerInstance.callMethod('onMsg', true)
 						this.loadMap(this.init);
 					}
 				}
-			},
-			deepClone(target) {
-				let copy_obj = [];
-
-				function _deepCopy(target) {
-					if ((typeof target !== 'object') || !target) {
-						return target;
-					}
-					for (let i = 0; i < copy_obj.length; i++) {
-						if (copy_obj[i].target === target) {
-							return copy_obj[i].copyTarget;
-						}
-					}
-					let obj = {};
-					if (Array.isArray(target)) {
-						obj = []; //处理target是数组的情况 
-					}
-					copy_obj.push({
-						target: target,
-						copyTarget: obj
-					})
-					Object.keys(target).forEach(key => {
-						if (obj[key]) {
-							return;
-						}
-						obj[key] = _deepCopy(target[key]);
-					});
-					return obj;
-				}
-				return _deepCopy(target);
 			},
 			/**
 			 * 初始化
@@ -137,14 +110,23 @@
 						center: [longitude, latitude],
 						zoom: 13 //地图显示的缩放级别
 					});
+					this.map.on('click', e => { // 获取点击位置的经纬度信息
+						const latitude = e.lnglat.getLat()
+						const longitude = e.lnglat.getLng()
+						this.mapInfo.latitude = latitude
+						this.mapInfo.longitude = longitude
+						this.map.remove(this.marker)
+						this.map.remove(this.circle)
+						this.$ownerInstance.callMethod('onMapChange', this.mapInfo)
+						this.drawCircle()
+						// console.log(res,'dt------------')
+					})
 					this.drawCircle()
-					this.mapMarker()
 				}, 100);
 				this.$ownerInstance.callMethod('onMsg', false)
-
-
 			},
 			drawCircle() {
+				this.mapMarker()
 				const {
 					latitude,
 					longitude,
@@ -179,7 +161,37 @@
 					icon,
 				})
 				this.map.add(this.marker)
-			}
+			},
+			deepClone(target) {
+				let copy_obj = [];
+
+				function _deepCopy(target) {
+					if ((typeof target !== 'object') || !target) {
+						return target;
+					}
+					for (let i = 0; i < copy_obj.length; i++) {
+						if (copy_obj[i].target === target) {
+							return copy_obj[i].copyTarget;
+						}
+					}
+					let obj = {};
+					if (Array.isArray(target)) {
+						obj = []; //处理target是数组的情况 
+					}
+					copy_obj.push({
+						target: target,
+						copyTarget: obj
+					})
+					Object.keys(target).forEach(key => {
+						if (obj[key]) {
+							return;
+						}
+						obj[key] = _deepCopy(target[key]);
+					});
+					return obj;
+				}
+				return _deepCopy(target);
+			},
 		}
 	}
 </script>
