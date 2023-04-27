@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<circle-map :record="mapInfo"></circle-map>
+		<circle-map @change="mapChange" :record="mapInfo" ref="mapRef"></circle-map>
 		<touch-popup :minHeight="0.1" :maxHeight="0.75" :touchHeight="64" radius="30rpx">
 			<view class="title">
 				电子围栏设置
@@ -95,20 +95,21 @@
 				GetFenceInfo({
 					deviceId: this.deviceInfo.deviceId,
 				}).then(res => {
-					console.log(res, 'rrrr----------------------')
 					if (!res.data.length) return this.handleGetLocation()
 					const data = res.data[0]
 					if (data.fenceType === 'circle') {
 						const {
 							longitude,
 							latitude,
-							radius
+							radius,
+							address,
 						} = data
 						this.mapInfo = {
 							sliderValue: radius,
 							longitude,
 							latitude,
 						}
+						this.siteInfo = address
 					} else {
 						this.handleGetLocation()
 					}
@@ -144,6 +145,28 @@
 			},
 			onSlider() {
 
+			},
+			async mapChange(obj) {
+				const res = await this.getLocation(obj)
+				this.siteInfo = res
+			},
+			getLocation(obj) {
+				const {
+					latitude,
+					longitude
+				} = obj
+				return new Promise((resolve, reject) => {
+					mapSearch && mapSearch.reverseGeocode({
+							point: {
+								latitude,
+								longitude
+							},
+						},
+						e => {
+							if (e.type === 'fail') return reject()
+							resolve(e.address)
+						})
+				})
 			},
 			/**
 			 * 获取当前定位
@@ -220,13 +243,12 @@
 			 */
 			handleSubmit() {
 				const {
-					// deviceId,
+					longitude,
+					latitude,
+					sliderValue
+				} = this.$refs.mapRef.mapInfo
+				const {
 					siteInfo: address,
-					mapInfo: {
-						longitude,
-						latitude,
-						sliderValue,
-					}
 				} = this
 				if (sliderValue === 0) {
 					return uni.$u.toast('半径长度大于0')
