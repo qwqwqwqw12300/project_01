@@ -33,8 +33,8 @@
 										<text class="ui-font-1">{{caiHongData[0]?caiHongData[0]:0}}</text>
 										<text class="ui-font-2">/{{maxDataArr[0]?maxDataArr[0]:0}}</text>
 									</view>
-								</view>	
-<!-- 								<view class="ui-w-47 ui-f-start ui-f-wrap">
+								</view>
+								<!-- 								<view class="ui-w-47 ui-f-start ui-f-wrap">
 									<image class="ui-img-size6" src="@/static/images/timeclock.png"></image>
 									<text class="ui-font-24 ui-mar-l-10">活动(分)</text>
 									<view class="ui-text-box ui-mar-t-15">
@@ -50,7 +50,7 @@
 										<text class="ui-font-2">/{{maxDataArr[2]?maxDataArr[2]:0}}</text>
 									</view>
 								</view>
-	<!-- 							<view class="ui-w-47 ui-f-start ui-mar-t-45 ui-f-wrap">
+								<!-- 							<view class="ui-w-47 ui-f-start ui-mar-t-45 ui-f-wrap">
 									<image class="ui-img-size6" src="@/static/images/stand.png"></image>
 									<text class="ui-font-24 ui-mar-l-10">站立<分></text>
 									<view class="ui-text-box ui-mar-t-15 ui-f-center">
@@ -275,6 +275,7 @@
 						return n.type === '2'
 					})
 					if (this.deviceList.length) {
+						this.current = 0
 						this.swiperData = this.deviceList[0]
 						this.$store.commit('setDeviceInfo', this.swiperData)
 						this.pageShow = true;
@@ -304,6 +305,7 @@
 				this.setCardData();
 			},
 			swiperChange(val) {
+				this.current = val.detail.current
 				this.swiperData = this.deviceList[val.detail.current]
 				this.$store.commit('setDeviceInfo', this.swiperData)
 				this.fetchData()
@@ -567,8 +569,8 @@
 					grid: {
 						top: 0,
 						left: 0,
-						bottom:0,
-						right:0
+						bottom: 0,
+						right: 0
 					},
 					series: seriesd,
 					color: colorArr
@@ -1342,9 +1344,10 @@
 
 <style lang="scss" scoped>
 	@font-face {
-	    font-family: 'health-index-font';
-	    src: url('@/static/ttf/DIN_Alternate_Bold.ttf');
+		font-family: 'health-index-font';
+		src: url('@/static/ttf/DIN_Alternate_Bold.ttf');
 	}
+
 	movable-view {
 		display: flex;
 		align-items: center;
