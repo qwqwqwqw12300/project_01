@@ -141,7 +141,6 @@
 				});
 			},
 			handleDetail() {
-				console.log(943785778)
 				this.getMessage()
 				this.show = true
 			},

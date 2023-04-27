@@ -1,56 +1,32 @@
 <template>
-  <app-body :needService="false">
-    <view class="ui-banner">
-      <swiper
-        class="swiper"
-        circular
-        :indicator-dots="true"
-        previous-margin="50rpx"
-        next-margin="50rpx"
-        :autoplay="false"
-        @change="swiperChange"
-        :current="current"
-      >
-        <swiper-item v-for="(item, index) in deviceList" :key="item.deviceId">
-          <view :class="[current === index ? 'active' : 'noActive']">
-            <component
-              :is="getDeviveType(item.type)"
-              :record="item"
-            ></component>
-          </view>
-        </swiper-item>
-      </swiper>
-    </view>
-    <view class="ui-action">
-      <view class="tabs">
-        <template v-for="(item, index) in tabList">
-          <view class="tabs-item" :key="index" v-show="item.show">
-            <text
-              @tap="handleTab(item.key)"
-              :class="{ active: tabKey === item.key }"
-              >{{ item.name }}</text
-            >
-          </view>
-        </template>
-      </view>
-      <view class="action" v-show="tabKey === 'MsgList'">
-        <text></text>
-        <u-icon
-          name="/static/images/read-all.png"
-          size="50rpx"
-          @click="readMsgAll"
-        ></u-icon>
-      </view>
-    </view>
-    <view class="ui-content">
-      <component
-        ref="comRef"
-        :is="tabKey"
-        :key="tabKey"
-        :deviceInfo="swiperData"
-      ></component>
-    </view>
-  </app-body>
+	<app-body :needService="false">
+		<view class="ui-banner">
+			<swiper class="swiper" circular :indicator-dots="true" previous-margin="50rpx" next-margin="50rpx"
+				:autoplay="false" @change="swiperChange" :current="current">
+				<swiper-item v-for="(item, index) in deviceList" :key="item.deviceId">
+					<view :class="[current === index ? 'active' : 'noActive']">
+						<component :is="getDeviveType(item.type)" :record="item"></component>
+					</view>
+				</swiper-item>
+			</swiper>
+		</view>
+		<view class="ui-action">
+			<view class="tabs">
+				<template v-for="(item, index) in tabList">
+					<view class="tabs-item" :key="index" v-show="item.show">
+						<text @tap="handleTab(item.key)" :class="{ active: tabKey === item.key }">{{ item.name }}</text>
+					</view>
+				</template>
+			</view>
+			<view class="action" v-show="tabKey === 'MsgList'">
+				<text></text>
+				<u-icon name="/static/images/read-all.png" size="50rpx" @click="readMsgAll"></u-icon>
+			</view>
+		</view>
+		<view class="ui-content">
+			<component ref="comRef" :is="tabKey" :key="tabKey" :deviceInfo="swiperData"></component>
+		</view>
+	</app-body>
 </template>
 
 <script>
@@ -109,7 +85,7 @@
 				}]
 			}
 		},
-		async onLoad() {
+		async onShow() {
 			await this.$store.dispatch('GetContactsList');
 			const familyId = this.deviceInfo.familyId
 			const res = this.familyList.find(n => {
@@ -122,7 +98,6 @@
 			this.shareFlag = res.shareFlag
 			this.current = this.deviceList.indexOf(this.deviceInfo)
 			this.swiperData = this.deviceList[this.current]
-			console.log(this.swiperData,'ooo----')
 			this.swiperKey = this.swiperData.type
 		},
 		data() {
@@ -132,6 +107,7 @@
 				swiperKey: '',
 				deviceList: [],
 				shareFlag: '',
+				swiperData: {},
 			}
 		},
 		methods: {
@@ -164,70 +140,70 @@
 </script>
 
 <style lang="scss" scoped>
-  .active {
-    transition: all 0.1s;
-    transform: scale(1);
-  }
+	.active {
+		transition: all 0.1s;
+		transform: scale(1);
+	}
 
-  .noActive {
-    transition: all 0.1s;
-    transform: scale(0.92);
-  }
+	.noActive {
+		transition: all 0.1s;
+		transform: scale(0.92);
+	}
 
-  .ui-banner {
-    margin-top: 40rpx;
-    // padding: 0 20rpx;
+	.ui-banner {
+		margin-top: 40rpx;
+		// padding: 0 20rpx;
 
-    .swiper {
-      height: 320rpx;
-    }
-  }
+		.swiper {
+			height: 320rpx;
+		}
+	}
 
-  .ui-action {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20rpx;
+	.ui-action {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 20rpx;
 
-    .tabs {
-      display: flex;
-      flex-direction: row;
+		.tabs {
+			display: flex;
+			flex-direction: row;
 
-      .tabs-item {
-        height: 90rpx;
-        line-height: 90rpx;
-        padding: 0 18rpx;
+			.tabs-item {
+				height: 90rpx;
+				line-height: 90rpx;
+				padding: 0 18rpx;
 
-        text {
-          font-size: 36rpx;
-          color: #888888;
-          font-weight: 500;
-        }
+				text {
+					font-size: 36rpx;
+					color: #888888;
+					font-weight: 500;
+				}
 
-        .active {
-          font-size: 40rpx !important;
-          color: #353535 !important;
-          font-weight: 550 !important;
-        }
-      }
-    }
+				.active {
+					font-size: 40rpx !important;
+					color: #353535 !important;
+					font-weight: 550 !important;
+				}
+			}
+		}
 
-    .action {
-      display: flex;
-      align-items: center;
+		.action {
+			display: flex;
+			align-items: center;
 
-      text {
-        height: 50rpx;
-        border-left: 1px solid rgba(53, 53, 53, 1);
-        margin-right: 30rpx;
-      }
-    }
-  }
+			text {
+				height: 50rpx;
+				border-left: 1px solid rgba(53, 53, 53, 1);
+				margin-right: 30rpx;
+			}
+		}
+	}
 
-  .ui-content {
-    padding: 0 20rpx;
-    margin-top: 20rpx;
-    overflow: hidden;
-    height: calc(100vh - 580rpx - var(--status-bar-height));
-  }
+	.ui-content {
+		padding: 0 20rpx;
+		margin-top: 20rpx;
+		overflow: hidden;
+		height: calc(100vh - 580rpx - var(--status-bar-height));
+	}
 </style>
