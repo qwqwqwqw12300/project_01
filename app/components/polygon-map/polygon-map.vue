@@ -8,6 +8,13 @@
 		</template>
 		<view v-show="!show" id="container" class="container"></view>
 		<view :mapData="mapData" :change:mapData="maps.loadData"></view>
+		<view class="ui-float">
+			<view class="float-item" id="claear_action">
+				<u-icon name="/static/images/clear.png" size="32px"></u-icon>
+				<!-- <text>更新位置</text> -->
+			</view>
+			<!-- 	<view class="float-line"></view> -->
+		</view>
 	</view>
 </template>
 
@@ -73,7 +80,9 @@
 			}
 		},
 		mounted() {
-			// this.loadMap(this.init);
+			document.getElementById('claear_action').addEventListener('click', e => {
+				this.handleClear()
+			})
 		},
 
 		methods: {
@@ -113,7 +122,7 @@
 						this.sendMsg(this.beginPoints)
 					} else {
 						// 挂载点击事件
-						this.clickListener = this.map.on('click', this.mapOnClick.bind(this));
+						this.clickListener = this.map.on('click', this.mapOnClick);
 						// AMap.event.addListener(this.map, "click", this.mapOnClick.bind(this));
 					}
 				}, 100)
@@ -127,12 +136,12 @@
 				this.beginMarks.push(this.addMarker(e.lnglat));
 				this.beginPoints.push(e.lnglat);
 				this.beginNum++;
+				console.log(this.beginNum, this.beginPoints, '000000000--------------')
 				if (this.beginNum === 3) {
-					this.map.off('click', this.clickListener); // 移除地图点击事件
-					// this.AMap.event.removeListener(this.clickListener); 
+					console.log(this.beginPoints, 'u---------------')
+					this.map.off('click'); // 移除地图点击事件
 					this.polygon = this.createPolygon(this.beginPoints);
 					this.polygonEditor = this.createEditor(this.polygon);
-					console.log(this.beginPoints, '99988')
 					this.sendMsg(this.beginPoints)
 					// this.$ownerInstance.callMethod('onMsg', data);
 					this.clearMarks();
@@ -245,6 +254,23 @@
 				return marker;
 			},
 
+			handleClear() {
+				this.clearMarks()
+				this.beginPoints = []
+				this.beginNum = 0
+				this.beginMarks = []
+				if (this.beginNum && this.beginNum < 3) {
+					return
+				}
+				this.polygonEditor && this.polygonEditor.close();
+				this.polygon && this.map.remove(this.polygon)
+				this.clickListener = this.map.on('click', this.mapOnClick);
+				this.polygon = this.createPolygon(this.beginPoints);
+				this.polygonEditor = this.createEditor(this.polygon);
+				this.sendMsg([])
+				// this.map.off('click', this.clickListener); // 移除地图点击事件
+			}
+
 		}
 	}
 </script>
@@ -260,5 +286,34 @@
 	.container {
 		height: calc(100vh - 400rpx);
 		width: 100%;
+	}
+
+	.ui-float {
+		position: fixed;
+		right: 20rpx;
+		bottom: 400rpx;
+		padding: 20rpx 20rpx;
+		background-color: #FFFFFF;
+		box-sizing: border-box;
+		border-radius: 15rpx;
+		z-index: 999;
+
+		.float-item {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			text {
+				margin-top: 4rpx;
+				font-size: 26rpx;
+			}
+		}
+
+		.float-line {
+			width: 100%;
+			border-bottom: 2rpx solid #353535;
+			margin: 20rpx 0;
+		}
+
 	}
 </style>

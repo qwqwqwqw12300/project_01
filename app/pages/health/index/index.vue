@@ -2,11 +2,13 @@
 	<app-body :hideTitle="true" :bg="true">
 		<view v-if="!loading">
 			<view class="ui-banner">
-				<swiper class="ui-swiper" circular :indicator-dots="true" :autoplay="false" @change="swiperChange"
-					:current="current">
+				<swiper class="ui-swiper" circular :indicator-dots="true" previous-margin="30rpx" next-margin="30rpx"
+					:autoplay="false" @change="swiperChange" :current="current">
 					<template v-if="deviceList.length">
-						<swiper-item v-for="item in deviceList" :key="item.deviceId">
-							<swiper-device :record="item"></swiper-device>
+						<swiper-item v-for="(item,index) in deviceList" :key="item.deviceId">
+							<view :class="[current === index ? 'active' : 'noActive']">
+								<swiper-device :record="item"></swiper-device>
+							</view>
 						</swiper-item>
 					</template>
 					<template v-else>
@@ -1346,6 +1348,16 @@
 	@font-face {
 		font-family: 'health-index-font';
 		src: url('@/static/ttf/DIN_Alternate_Bold.ttf');
+	}
+
+	.active {
+		transition: all 0.1s;
+		transform: scale(1);
+	}
+
+	.noActive {
+		transition: all 0.1s;
+		transform: scale(0.92);
 	}
 
 	movable-view {
