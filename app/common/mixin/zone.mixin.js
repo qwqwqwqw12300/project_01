@@ -194,7 +194,7 @@ export const zoneMixin = {
 						shadowZoneName: name
 					});
 					if (this.targetZoneType==='2' && ele.zoneType === '2') { // 床区域特殊处理
-						numberUtil.floatDiv(ele.leaveBedWarnParameter.intervalTime = ele.leaveBedWarnParameter
+						ele.leaveBedWarnParameter.intervalTime = numberUtil.floatDiv(ele.leaveBedWarnParameter
 							.intervalTime, 60);
 						Object.assign(ele, {
 							bedName: name,

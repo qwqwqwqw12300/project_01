@@ -139,7 +139,7 @@
 				console.log(this.beginNum, this.beginPoints, '000000000--------------')
 				if (this.beginNum === 3) {
 					console.log(this.beginPoints, 'u---------------')
-					this.map.off('click'); // 移除地图点击事件
+					this.map.off('click', this.mapOnClick);; // 移除地图点击事件
 					this.polygon = this.createPolygon(this.beginPoints);
 					this.polygonEditor = this.createEditor(this.polygon);
 					this.sendMsg(this.beginPoints)
