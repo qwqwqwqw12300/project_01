@@ -185,7 +185,7 @@
 								PostWatchDeleteAddressBook({
 									deviceId: this.deviceInfo.deviceId,
 									addressBookId: list.addressBookId,
-									phoneNumber: list.name
+									phoneNumber: list.number
 								}).then(res => {
 									uni.$u.toast(res.msg)
 									setTimeout(() => {
