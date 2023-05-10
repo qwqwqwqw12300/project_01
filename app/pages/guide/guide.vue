@@ -1,8 +1,9 @@
 <template>
 	<view class="ui-container">
-		<app-map />
+	<!-- 	<app-map /> -->
+	{{msg || '--'}}
 		<view class="ui-host">
-			<u--input placeholder="请输入服务器地址" v-model="host" border="surround" @change="change">
+			<u--input placeholder="请输入服务器地址" v-model="host" border="surround">
 			</u--input>
 			<button @click="saveHost">保存</button>
 		</view>
@@ -20,7 +21,8 @@
 		<button @click="goExt">设备连接</button>
 		<button @click="log">日志测试</button>
 		<button @click="apm">埋点测试</button>
-
+		<button @click="wifi">连接设备</button>
+		
 
 	</view>
 </template>
@@ -37,6 +39,7 @@
 		postDemo,
 		mergeDemo
 	} from '../../common/http/api';
+import { vpActivation } from '../../common/sdk/vp-activation';
 	import {
 		vpsdk
 	} from '../../common/sdk/vpsdk';
@@ -52,10 +55,31 @@
 					name: '检测范围'
 				}, ],
 				id: '',
+				msg: '',
 				host: uni.getStorageSync('appHost') || env.basePath
 			}
 		},
 		methods: {
+			
+			wifi() {
+				console.log('start------------')
+				vpActivation.init((obj) => {
+					try{
+						console.log(obj, 'obj------------')
+						if(obj.type === 'event') {
+							this.msg = obj.data.msg;
+						}
+						if(obj.type === 'wifi') {
+							vpActivation.connect(obj.data[0].ssid, '012345678')
+						}
+					}catch(e){
+						console.log(e, 'error111-------')
+					}
+				
+				});
+				
+				
+			},
 			localPush() {
 				try {
 					push.addLocalNotification();
