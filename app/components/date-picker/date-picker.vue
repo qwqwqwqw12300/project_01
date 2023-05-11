@@ -38,10 +38,12 @@
 				this.tabKey = key
 			},
 			change(val) {
-				this.$emit('onSelect', {
-					type: this.tabKey,
-					value: val.value
-				})
+				uni.$u.debounce(() => {
+					this.$emit('onSelect', {
+						type: this.tabKey,
+						value: val.value
+					})
+				}, 500)
 			}
 		}
 	}
