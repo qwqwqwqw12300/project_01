@@ -19,7 +19,9 @@ import protobuf from '@/static/js/weichatPb/protobuf.js';
 
 // 设备接口工具
 import message from '@/static/js/weichatPb/message.js';
-import { resolve } from "../../static/js/weichatPb/src/path";
+import {
+	resolve
+} from "../../static/js/weichatPb/src/path";
 
 
 class VpActivation {
@@ -143,7 +145,7 @@ class VpActivation {
 				}
 			})
 		})
-	
+
 	}
 
 	/**
@@ -151,7 +153,7 @@ class VpActivation {
 	 */
 	bluetoothConnect() {
 		return new Promise(async resolve => {
-			try{
+			try {
 				this.
 				// 通过蓝牙检测附近设备
 				this.deviceId = await this.startBluetoothDevicesDiscovery();
@@ -164,11 +166,11 @@ class VpActivation {
 				// 获取要连接的设备属性
 				await this.getBLEDeviceCharacteristics(this.deviceId, uuid);
 				resolve();
-			}catch(e){
+			} catch (e) {
 				//TODO handle the exception
 				console.log(e, 'bluetoothConnect-----');
 			}
-		
+
 		})
 	}
 
@@ -271,6 +273,7 @@ class VpActivation {
 	startBluetoothDevicesDiscovery() {
 		return new Promise(resolve => {
 			// 查询设备回调
+			let timeout, interval;
 			const deviceFoundCallBck = res => {
 				console.log('查询附近蓝牙设备---', res.device.name);
 				res.devices.forEach(device => {
@@ -289,25 +292,15 @@ class VpActivation {
 			uni.startBluetoothDevicesDiscovery({
 				allowDuplicatesKey: true,
 				success: res => {
-					console.log('startBluetoothDevicesDiscovery', res)
-					
-					setTimeout(() => {
+					interval = setInterval(() => { // 每三秒查一次
 						uni.getBluetoothDevices({
-							success: data => {
-								console.log(data, '已经匹配到的蓝牙数据');
-								setTimeout(() => {
-									console.log('停止搜寻-------');
-									uni.stopBluetoothDevicesDiscovery();
-								}, 20000);
-							},
-							complete:() => {
-								console.log('搜寻设备--------')
-								uni.onBluetoothDeviceFound(deviceFoundCallBck)
-							}
+							success: deviceFoundCallBck
 						})
-					
+					}, 3000);
+					setInterval(() => {
+						uni.onBluetoothDeviceFound(
+							deviceFoundCallBck
 					}, 1000)
-					
 				},
 				fail: err => {
 					this.pageEventCall(111, '错误码' + (err.code || -1));
