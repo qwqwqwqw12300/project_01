@@ -23,7 +23,8 @@
 				<view class="ui-title-content">
 					<view class="ui-left">
 						<view class="ui-circle" :style="{backgroundColor:item.color}"></view>
-						<view class="ui-left-title">{{item.title}}</view>
+						<view class="ui-left-title">{{item.text}}<text v-if="index !== 0"
+								style="font-size: 30rpx;margin-left: 8rpx">{{ item.percent }}%</text></view>
 					</view>
 					<view class="ui-right" @click="jumpUrl(item.text)">
 						<view style="margin-right: 20rpx;">参考值:{{item.value}}</view>
@@ -32,11 +33,11 @@
 				</view>
 				<view class="ui-time">
 					<view>
-						<text class="ui-font">0</text>
+						<text class="ui-font">{{item.hour }}</text>
 						<text class="ui-time-font">小时</text>
 					</view>
 					<view style="margin-left: 10rpx;">
-						<text class="ui-font">0</text>
+						<text class="ui-font">{{ item.minutes }}</text>
 						<text class="ui-time-font">分钟</text>
 					</view>
 				</view>
@@ -64,6 +65,7 @@
 		},
 		data() {
 			return {
+				sleepScore: {},
 				lengedList: [{
 					text: '浅睡',
 					color: '#EF7B8C'
@@ -79,25 +81,37 @@
 						color: '#68D688',
 						title: '总睡眠时长',
 						text: '夜间睡眠',
-						value: '6-10h'
+						value: '6-10h',
+						hour: '0',
+						minutes: '0',
+						percent: ''
 					},
 					{
-						color: '#8437DA',
+						color: '#BF47CA',
 						title: '深睡 0%',
 						text: '深睡',
-						value: '10-40%'
+						value: '10-40%',
+						hour: '0',
+						minutes: '0',
+						percent: '0'
 					},
 					{
-						color: '#C145C9',
+						color: '#EF7B8C',
 						title: '浅睡 0%',
 						text: '浅睡',
-						value: '45-80%'
+						value: '45-80%',
+						hour: '0',
+						minutes: '0',
+						percent: '0'
 					},
 					{
 						color: '#EFC356',
 						title: '清醒时长 0%',
 						text: '清醒',
-						value: '<10%'
+						value: '<10%',
+						hour: '0',
+						minutes: '0',
+						percent: '0'
 					}
 				]
 			}
@@ -119,7 +133,7 @@
 						this.handleInit()
 					}
 				},
-				immediate:true
+				immediate: true
 			}
 		},
 		methods: {
@@ -138,12 +152,44 @@
 					humanId,
 					dayTime: this.dayTime
 				}).then(res => {
+					const {
+						countTime, //总时长
+						deepSleepDouble, //深睡
+						deepSleepTime,
+						lightSleepDouble, //浅睡
+						lightSleepTime,
+						clearHeadedDouble, //清醒百分百
+						clearSleepTime, //清醒时长
+					} = res.data
+					
+					// this.sleepScore = 
+					//总时长
+					this.sleepList[0].hour = countTime[0]
+					this.sleepList[0].minutes = (countTime[1] % 60)
+
+					//深睡
+					this.sleepList[1].hour = deepSleepTime[0]
+					this.sleepList[1].minutes = deepSleepTime[1] % 60
+					this.sleepList[1].percent = deepSleepDouble
+					//浅睡
+					this.sleepList[2].hour = lightSleepTime[0]
+					this.sleepList[2].minutes = lightSleepTime[1] % 60
+					this.sleepList[2].percent = lightSleepDouble
+					//清醒
+					this.sleepList[3].hour = clearSleepTime[0]
+					this.sleepList[3].minutes = clearSleepTime[1] % 60
+					this.sleepList[3].percent = clearHeadedDouble
+					// this.sleepData = uni.$u.deepClone(res.data)
 					const series = [
 						[],
 						[],
 						[]
 					]
-					res.data.segSleepList.forEach(n => {
+					const data = res.data.segSleepList.filter(n => {
+						return n.slt !== '1'
+					})
+					console.log(data, '33333')
+					data.forEach(n => {
 						const st = uni.$u.timeFormat(n.st, 'hh:MM')
 						const et = uni.$u.timeFormat(n.et, 'hh:MM')
 						const index = {
@@ -152,6 +198,7 @@
 							'4': 2
 						} [n.slt]
 						series[index].push(['', st, et])
+
 					})
 					console.log(series, 'ssssssss--------------')
 					this.logstatrt(series)

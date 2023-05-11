@@ -1,6 +1,16 @@
 <template>
 	<view>
-		<view class="ui-totalTime">00:00</view>
+		<!-- <view class="ui-totalTime">00:00</view> -->
+		<view class="ui-time">
+			<view>
+				<text class="ui-font">{{ totalData.hour }}</text>
+				<text class="ui-time-font">时</text>
+			</view>
+			<view style="margin-left: 10rpx;">
+				<text class="ui-font">{{ totalData.minutes }}</text>
+				<text class="ui-time-font">分</text>
+			</view>
+		</view>
 		<view class="ui-title">
 			<view class="ui-circle"></view>
 			<view class="ui-title-font">睡眠时长</view>
@@ -64,6 +74,10 @@
 					2: [], //浅睡
 					3: [], //深睡
 					4: [] //眼动
+				},
+				totalData: {
+					hour: 0,
+					minutes: 0,
 				}
 			}
 		},
@@ -100,7 +114,14 @@
 					beginDate: this.dayTime[0],
 					endDate: this.dayTime.at(-1)
 				}).then(res => {
-					const data = res.data.sleepSegmentationDataList.map(n => {
+
+					const {
+						sleepSegmentationDataList,
+						countTime
+					} = res.data
+					this.totalData.hour = countTime[0]
+					this.totalData.minutes = countTime[1] % 60
+					const data = sleepSegmentationDataList.map(n => {
 						n.differTime = Number(this.getDifferTime(n.st, n.et).toFixed(2))
 						n.time = uni.$u.timeFormat(n.st, 'yyyy-mm-dd')
 						return n
@@ -207,15 +228,15 @@
 </script>
 
 <style lang="scss" scoped>
-	.ui-totalTime {
+	.ui-time {
 		margin-top: 20rpx;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 56rpx;
+		font-size: 42rpx;
 		color: #353535;
 		letter-spacing: 0;
-		font-weight: 700;
+		font-weight: 550;
 	}
 
 	.ui-title {
@@ -246,7 +267,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		background-color: #FFFFFF;
 
 		.ui-content {
 			width: 48%;
@@ -282,7 +302,8 @@
 		.myChart {
 			width: 90%;
 			height: 400rpx;
-			margin: 64rpx 32rpx 20rpx;
+			padding: 64rpx 32rpx 20rpx;
+			background-color: #FFFFFF;
 		}
 	}
 </style>

@@ -142,7 +142,8 @@
 			 * 监测数据更新
 			 * @param {Object} obj
 			 */
-			update(option) {
+			update(options) {
+				const option = this.assignDeep({}, options)
 				if (option.isRender) {
 					option.series.forEach(n => {
 						n.renderItem = this.seriesRender()
@@ -346,7 +347,7 @@
 
 				});
 				return result;
-			}
+			},
 
 		}
 	}
