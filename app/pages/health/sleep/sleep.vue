@@ -4,7 +4,7 @@
 		<view class="box">
 			<date-picker @onSelect="onSelect" @month="monthChange" :lightDot="monthData"></date-picker>
 		</view>
-		<component ref="comRef" :is="tabKey"></component>
+		<component ref="comRef" :dayTime="searchDate" :is="tabKey"></component>
 	</app-body>
 </template>
 
@@ -23,6 +23,7 @@
 			return {
 				tabKey: 'date',
 				monthData: [],
+				searchDate: '',
 			}
 		},
 		created() {
@@ -48,6 +49,8 @@
 				})
 			},
 			onSelect(val) {
+				console.log(val, '4333333333')
+				this.searchDate = val.value
 				this.tabKey = val.type
 			},
 

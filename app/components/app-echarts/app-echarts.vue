@@ -143,7 +143,14 @@
 			 * @param {Object} obj
 			 */
 			update(option) {
+				if (option.isRender) {
+					option.series.forEach(n => {
+						n.renderItem = this.seriesRender()
+					})
+				}
+
 				if (this.chart) {
+					this.chart.clear();
 					// 因App端，回调函数无法从renderjs外传递，故在此自定义设置相关回调函数
 					if (option) {
 						// const option = {};
@@ -179,11 +186,41 @@
 
 
 						// 设置新的option
-						this.chart.setOption(option, option.notMerge)
+						setTimeout(() => {
+							this.chart.setOption(option, option.notMerge)
+						}, 500)
 					}
 				}
 			},
+			/**
+			 * 设置renderItem
+			 */
+			seriesRender() {
+				return function(params, api) {
+					const start = api.coord([api.value(1), params.seriesName])
+					const end = api.coord([api.value(2), params.seriesName])
+					const height = api.size([1, 1])[1]
+					const width = end[0] - start[0]
 
+					var rectShape = echarts.graphic.clipRectByRect({
+						x: start[0],
+						y: start[1] - height / 2,
+						width: width,
+						height: height
+					}, {
+						x: params.coordSys.x,
+						y: params.coordSys.y,
+						width: params.coordSys.width,
+						height: params.coordSys.height
+					});
+
+					return rectShape && {
+						type: 'rect',
+						shape: rectShape,
+						style: api.style()
+					}
+				}
+			},
 			/**
 			 * 设置Formatter
 			 */
