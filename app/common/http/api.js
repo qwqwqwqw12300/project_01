@@ -773,3 +773,17 @@ export const GetWatchLocation = (params) => http.post('/api/tWatch/location', pa
 export const PsotSetJGInfo = (params) => http.post('/api/setJGInfo', params, {
 	showLoading: false
 });
+
+/**
+ * 睡眠日数据
+ */
+export const GetSleepDayData = (params) => http.get('/api/tWatch/listSleepByDay', params, {
+	// showLoading: false
+});
+
+/**
+ * 睡眠周数据
+ */
+export const GetSleepWeekData = (params) => http.get('/api/tWatch/listSleepByWeek', params, {
+	// showLoading: false
+});
