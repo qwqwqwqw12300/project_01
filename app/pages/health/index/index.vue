@@ -69,9 +69,8 @@
 								:class="(hoverClass==='appLi'+index)?'select':''"
 								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
 								@touchend="AppLi_touchend(index)" v-if="item.isShow || isEdit">
-								<SleepCard v-if="item.type === '1'"
-									:date="fetchRes.sleepTime ? fetchRes.sleepTime : '暂无数据'" :fetchRes="fetchRes"
-									:item="item" :isEdit="isEdit" @iconClick="editCard"></SleepCard>
+								<SleepCard v-if="item.type === '1'" :date="date" :sleepMap="sleepMap" :item="item"
+									:isEdit="isEdit" @iconClick="editCard"></SleepCard>
 								<XinLvCard v-if="item.type === '2' "
 									:date="fetchRes.HeartRateTime.substr(5,6) && fetchRes.HeartRateList.length !== 0? fetchRes.HeartRateTime.substr(5,6) : '暂无数据'"
 									:fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit"
@@ -132,6 +131,7 @@
 	import {
 		GetCaiHongData,
 		getDeviceListState,
+		GetDaySleepQuality
 	} from '@/common/http/api.js'
 	import {
 		mapState,
@@ -148,6 +148,8 @@
 		},
 		data() {
 			return {
+				sleepTime: '',
+				sleepMap: {},
 				fetchRes: {
 					spMapList: [],
 					dpMapList: [],
@@ -234,6 +236,7 @@
 			}
 		},
 		created() {
+			this.sleepTime = uni.$u.timeFormat(new Date(), 'yyyy-mm-dd')
 			this.getDate();
 			const _this = this;
 			uni.getStorage({
@@ -345,6 +348,22 @@
 					this.loading = false;
 					this.isRefresh = false;
 					console.log('fetchres', this.fetchRes)
+				})
+				GetDaySleepQuality({
+					deviceId,
+					humanId,
+					// dayTime: '2023-5-06'
+					dayTime: uni.$u.timeFormat(new Date(), 'yyyy-mm-dd')
+				}).then(res => {
+					const {
+						sleepQuality,
+						sleepScore
+					} = res.data
+					this.sleepMap = {
+						sleepQuality,
+						score: sleepScore || 0
+					}
+					console.log(res, '-----------------------')
 				})
 			},
 			jumpUrl(url) {

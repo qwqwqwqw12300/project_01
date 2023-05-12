@@ -26,7 +26,7 @@
 			</view>
 			<app-echarts :option="option" id="myChart" class="myChart"></app-echarts>
 		</view>
-		<WatchDiv :text="'日均睡眠得分'" :content="'0'"></WatchDiv>
+		<WatchDiv :text="'日均睡眠得分'" :content="sleepScore"></WatchDiv>
 	</view>
 </template>
 
@@ -78,7 +78,8 @@
 				totalData: {
 					hour: 0,
 					minutes: 0,
-				}
+				},
+				sleepScore: 0,
 			}
 		},
 		computed: {
@@ -114,11 +115,12 @@
 					beginDate: this.dayTime[0],
 					endDate: this.dayTime.at(-1)
 				}).then(res => {
-
 					const {
 						sleepSegmentationDataList,
+						sleepScore,
 						countTime
 					} = res.data
+					this.sleepScore = sleepScore
 					this.totalData.hour = countTime[0]
 					this.totalData.minutes = countTime[1] % 60
 					const data = sleepSegmentationDataList.map(n => {

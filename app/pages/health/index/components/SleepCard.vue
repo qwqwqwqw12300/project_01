@@ -1,23 +1,24 @@
 <template>
-	<view class="ui-min-h-121 ui-padding-20"
-		@click="jumpUrl('/pages/health/sleep/sleep')" style="position: relative;">
-		<image v-if="!item.isShow && isEdit" class="ui-img-size2 ui-pos-right" src="../../../../static/images/add.png" @click.stop="iconClick()"></image>
-		<image v-if="item.isShow && isEdit" class="ui-img-size2 ui-pos-right" src="../../../../static/images/minus.png" @click.stop="iconClick()"></image>
+	<view class="ui-min-h-121 ui-padding-20" @click="jumpUrl('/pages/health/sleep/sleep')" style="position: relative;">
+		<image v-if="!item.isShow && isEdit" class="ui-img-size2 ui-pos-right" src="../../../../static/images/add.png"
+			@click.stop="iconClick()"></image>
+		<image v-if="item.isShow && isEdit" class="ui-img-size2 ui-pos-right" src="../../../../static/images/minus.png"
+			@click.stop="iconClick()"></image>
 		<view class="ui-f-start ui-f-wrap">
 			<image class="ui-img-size3" src="/static/images/yueliang.png"></image>
 			<text class="ui-font-32 ui-mar-l-10">睡眠</text>
-			<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-				{{date}}
+			<view class="ui-font-3 ui-w-h-100  ui-mar-t-15" style="padding-left:20rpx">
+				{{ date }} <text style="margin-left: 14rpx">{{ sleepMap.sleepQuality }}</text>
 			</view>
+			<!-- <view style="margin-top: 10rpx;padding-left: 10rpx;">{{ sleepMap.sleepQuality }}</view> -->
 			<view class="ui-w-h-100 ui-f-start ui-mar-t-20">
-				<view class="ui-color-block1 ui-color-block1-width"
-					v-if="fetchRes.sleepMap > 0"></view>
+				<view class="ui-color-block1 ui-color-block1-width" v-if="sleepMap.score >= 0 "></view>
 				<view class="ui-color-block2 ui-color-block1-width ui-mar-l-10"
-					v-if="fetchRes.sleepMap > 0.25"></view>
+					v-if="sleepMap.score > 50 || sleepMap.score===0"></view>
 				<view class="ui-color-block3 ui-color-block1-width ui-mar-l-10"
-					v-if="fetchRes.sleepMap > 0.5"></view>
+					v-if="sleepMap.score > 70 || sleepMap.score===0"></view>
 				<view class="ui-color-block4 ui-color-block1-width ui-mar-l-10"
-					v-if="fetchRes.sleepMap > 0.75"></view>
+					v-if="sleepMap.score > 90 || sleepMap.score===0 "></view>
 			</view>
 			<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
 				<text class="ui-font-22 ui-font-c-888">差</text>
@@ -28,33 +29,46 @@
 </template>
 
 <script>
+	import {
+		GetDaySleepQuality,
+	} from '@/common/http/api.js';
 	export default {
 		props: {
-			fetchRes: {
-				type: Object,
-				default: () => {
-					return {
-						spMapList: [],
-						tWatchBloodOxygen: [],
-						HeartRateList: [],
-						electrocardiogramMapList: [],
-						sleepMap: ''
-					}
-				}
+			// fetchRes: {
+			// 	type: Object,
+			// 	default: () => {
+			// 		return {
+			// 			spMapList: [],
+			// 			tWatchBloodOxygen: [],
+			// 			HeartRateList: [],
+			// 			electrocardiogramMapList: [],
+			// 			sleepMap: ''
+			// 		}
+			// 	}
+			// },
+			sleepMap: {
+				type: Object
 			},
 			date: {
 				type: String
 			},
-			scored:{
+			scored: {
 				type: Number,
 				default: 0
 			},
-			item:{
+			item: {
 				type: Object
 			},
-			isEdit:{
+			isEdit: {
 				type: Boolean,
 				default: false
+			}
+		},
+		computed: {
+			sleepScore() {
+				return {
+
+				}
 			}
 		},
 		data() {
@@ -62,26 +76,29 @@
 
 			}
 		},
-		methods:{
+		mounted() {
+			console.log(this.sleepMap, '5444444----------------4')
+		},
+		methods: {
 			jumpUrl(url) {
 				uni.navigateTo({
 					url: url
 				})
 			},
 			iconClick() {
-				this.$emit('iconClick',this.item.type);
+				this.$emit('iconClick', this.item.type);
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.ui-pos-right{
+	.ui-pos-right {
 		position: absolute;
 		right: 20rpx;
 		top: 20rpx;
 	}
-	
+
 	.max {
 		width: 500rpx;
 		height: 500rpx;

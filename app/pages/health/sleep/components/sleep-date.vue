@@ -17,7 +17,7 @@
 			<text>18:00</text>
 			<text>23:59</text>
 		</view>
-		<WatchDiv :text="'睡眠得分'" :content="'0'"></WatchDiv>
+		<WatchDiv :text="'睡眠得分'" :content="sleepScore"></WatchDiv>
 		<view class="ui-content">
 			<view class="ui-title" v-for="(item,index) in sleepList" :key="index">
 				<view class="ui-title-content">
@@ -160,9 +160,10 @@
 						lightSleepTime,
 						clearHeadedDouble, //清醒百分百
 						clearSleepTime, //清醒时长
+						sleepScore
 					} = res.data
 					
-					// this.sleepScore = 
+					this.sleepScore = sleepScore
 					//总时长
 					this.sleepList[0].hour = countTime[0]
 					this.sleepList[0].minutes = (countTime[1] % 60)
