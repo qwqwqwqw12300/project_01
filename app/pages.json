@@ -286,7 +286,8 @@
 				}
 			}
 
-		}, {
+		},
+		{
 			"path": "pages/equipment/add/add-steps",
 			"style": {
 				"navigationStyle": "custom",
@@ -294,7 +295,8 @@
 					"titleNView": false
 				}
 			}
-		}, {
+		}, 
+		{
 			"path": "pages/myself/mobile/select-way",
 			"style": {
 				"navigationStyle": "custom",

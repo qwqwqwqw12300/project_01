@@ -13,54 +13,66 @@ import {
 	isIos
 } from "../utils/util";
 
-
-// buf数据处理工具
-import protobuf from '@/static/js/weichatPb/protobuf.js';
-
-// 设备接口工具
-import message from '@/static/js/weichatPb/message.js';
 import {
-	resolve
-} from "../../static/js/weichatPb/src/path";
+	WifiCred,
+	ToDeviceMessage,
+	CloudDetails,
+	Pair,
+	PairingComplete,
+	ToAppMessage,
+	PairResult,
+	ToDeviceMessageType
+} from '@/common/utils/messageUtil.js';
+
+import {
+	ab2hex,
+	hexToString,
+	stringToBytes,
+	buf2hex,
+	hex2ArrayBuffer
+} from '@/common/utils/toBufUtils.js'
 
 
 class VpActivation {
 	/**连接事件字典**/
 	connentMap = {
-		1: '正在建立与设备的连接',
-		2: '设备连接到Wi-Fi',
-		3: '将设备连接到您的帐户',
-		4: '云配对',
-		5: '配对完成',
-		6: '重新启动设备',
-		998: '正在检查更新',
-		999: '正在更新设备',
-		7: '正在将设备重新启动到工厂',
-		8: '设备正在扫描Wifi网络',
-		// 自定义事件
-		100: '正在获取设备token',
-		101: '获取设备token成功',
-		102: '正在尝试连接设备',
-		103: '网络账号推送',
-		104: '选择wifi',
-		105: 'token获取失败,请检查网络状态是否正常',
-		106: '获取蓝牙权限失败，请确认蓝牙已正常开启',
-		107: '获取wifi权限失败，请确认wifi已正常开启',
-		108: '正在检测系统权限',
-		109: '蓝牙已正常开启',
-		110: 'wifi正常开启',
-		111: '搜寻蓝牙设备失败，请确认设备是否为蓝灯闪烁状态',
-		112: '搜寻设备成功，正在与设备建立连接',
-		113: '连接设备成功',
-		114: '连接设备失败，请确认设备是否为蓝灯闪烁状态',
-		115: '开始选择设备服务',
-		116: '未搜寻到主服务',
-		117: '选择设备服务失败',
-		118: '开始读取蓝牙特征值',
-		119: '读取特征值失败, 请确认设备是否为蓝灯闪烁状态',
-		200: '获取wifi信息失败，请确认手机是否已经连接上wifi',
-		201: '正在搜寻设备',
-		202: '搜寻设备成功，正在尝试配对'
+		// 权限检查
+		101: '正在检测系统权限',
+		102: '蓝牙已正常开启',
+		103: 'wifi正常开启',
+		104: '获取wifi权限失败，请确认wifi已正常开启',
+		105: '获取蓝牙权限失败，请确认蓝牙已正常开启',
+		106: '权限检查成功, 正在获取设备wifi',
+		107: '正在查询设备wifi成功,请输入密码',
+		108: '获取当前连接的wifi失败，请确认手机已经连接上wifi网络',
+		// token
+		200: '正在获取设备token',
+		201: '获取设备token成功',
+		202: 'token获取失败,请检查网络状态是否正常',
+
+		// 连接蓝牙
+		301: '正在搜寻附近设备',
+		302: '搜寻蓝牙设备失败，请确认设备是否为蓝灯闪烁状态',
+		303: '搜寻设备成功，正在尝试配对',
+		304: '正在尝试连接设备',
+		305: '连接设备成功',
+		306: '连接设备失败，请确认设备是否为蓝灯闪烁状态',
+		307: '开始选择设备服务',
+		308: '未搜寻到主服务',
+		309: '选择设备服务失败，请确认设备是否为蓝灯闪烁状态',
+		310: '开始读取蓝牙特征值',
+		311: '读取特征值失败, 请确认设备是否为蓝灯闪烁状态',
+		// 推送消息
+		401: '开始连接wifi',
+		403: 'wifi连接成功，正在将设备推送至云端',
+		402: '连接wifi失败，请检查wifi密码是否正确',
+		404: '推送云端成功，正在进行用户配对',
+		405: '配对成功，正在激活设备',
+		406: '激活成功，正在同步云端',
+		501: '激活设备成功',
+		502: '激活设备失败，请检查网络状态是否正常',
+		503: '设备连接超时，请检查设备状态后重试'
+
 	}
 
 	/**wifi信息**/
@@ -69,43 +81,45 @@ class VpActivation {
 		pwd: ''
 	};
 
-	/**设备信息**/
-	deviceId = '';
+	baseData = {
+		deviceId: '',
+		serviceId: '21A07E04-1FBF-4BF6-B484-D319B8282A1C',
+		WritecharacteristicId: '21A07E06-1FBF-4BF6-B484-D319B8282A1C',
+		ReadcharacteristicId: '21A07E05-1FBF-4BF6-B484-D319B8282A1C',
+	}
 
-	MessageRoot = protobuf.Root.fromJSON(message);
 
 	callBack = null;
+
+	/**定时器合集**/
+	timeouts = [];
+	intervals = [];
+
+	/**wifi连接尝试次数**/
+	wifiCount = 1;
+
+	/**token信息**/
+	token = {};
 
 	constructor() {}
 
 	/**
 	 * 初始化
 	 */
-	async init(cb = n => {
-		console.log('obj-----', n)
-	}) {
-		console.log('开始权限检测-------', typeof cb)
-		try {
-			this.callBack = n => cb(n); // 设置回调
-			// 检测系统权限，判断蓝牙与wifi是否开启
-			console.log('开始权限检测-------1')
-			this.pageEventCall(108);
-			console.log('开始权限检测-------2')
-			if (!await this.bluetoothCheck()) return; // 检测蓝牙
-			if (!await this.wifiCheck()) return; // 检测wifi
-			const wifi = await this.getWifiList();
-			console.log(wifi, 'wifi--------')
-			this.callBack({
-				type: 'wifi',
-				data: [{
-					ssid: wifi.SSID
-				}]
-			});
-		} catch (e) {
-			console.log(e, 'error-------')
-			//TODO handle the exception
-		}
-
+	async init(cb) {
+		if(!isApp())return;
+		this.callBack = n => cb(n); // 设置回调
+		// 检测系统权限，判断蓝牙与wifi是否开启
+		this.pageEventCall(101);
+		if (!await this.bluetoothCheck()) return; // 检测蓝牙
+		if (!await this.wifiCheck()) return; // 检测wifi
+		const wifi = await this.getWifiList();
+		this.callBack({
+			type: 'wifi',
+			data: [{
+				ssid: wifi.SSID
+			}]
+		});
 	}
 
 	/**
@@ -117,16 +131,20 @@ class VpActivation {
 		this.wifiInfo = {
 			ssid,
 			pwd
-		}
+		};
+
+		this.timeouts.push(setTimeout(() => { // 五分钟没有连接完成就强制断开
+			this.pageErrorCall(503);
+		}, 5 * 60 * 1000));
+		console.log('wifi信息', this.wifiInfo);
 		// 步骤1 获取token
-		const token = await this.getToken();
-		if (!token) return;
+		this.token = await this.getToken();
+		if (!this.token) return;
 		console.log('开始获取蓝牙---------');
 		/**=========步骤2 连接蓝牙==========**/
 		await this.bluetoothConnect();
-
 		/**=========步骤3 连接wifi==========**/
-		await this.wiFiConnect();
+		await this.wifiConnect();
 	}
 
 	/**
@@ -134,18 +152,26 @@ class VpActivation {
 	 */
 	getWifiList() {
 		return new Promise(resolve => {
-			uni.getConnectedWifi({
-				partialInfo: true,
-				success: data => {
-					console.log(data, 'data------');
-					resolve(data.wifi)
-				},
-				fail: error => {
-					this.pageEventCall(200, (error.errCode || -1));
-				}
-			})
+			this.pageEventCall(106);
+			this.timeouts.push(setTimeout(() =>{
+				uni.getConnectedWifi({ // start需要延迟获取列表
+					partialInfo: true,
+					success: data => {
+						console.log(data, 'data------');
+						if (data.wifi.SSID) {
+							this.pageEventCall(107);
+							resolve(data.wifi)
+						} else {
+							this.pageErrorCall(108);
+						}
+					},
+					fail: error => {
+						this.pageErrorCall(108, (error.errCode || -1));
+					}
+				})
+			}, 3000))
+			
 		})
-
 	}
 
 	/**
@@ -154,17 +180,19 @@ class VpActivation {
 	bluetoothConnect() {
 		return new Promise(async resolve => {
 			try {
-				this.
 				// 通过蓝牙检测附近设备
-				this.deviceId = await this.startBluetoothDevicesDiscovery();
+				this.baseData.deviceId = await this.startBluetoothDevicesDiscovery();
+				console.log(this.baseData.deviceId, 'deviceId------')
 				// 连接蓝牙
-				await this.bindCreateBLEConnection(this.deviceId);
+				await this.bindCreateBLEConnection(this.baseData.deviceId);
 				//  获取要连接设备的服务
 				const {
 					uuid
-				} = await this.getBLEDeviceServices(this.deviceId);
+				} = await this.getBLEDeviceServices(this.baseData.deviceId);
+				console.log(uuid, 'uuId----')
 				// 获取要连接的设备属性
-				await this.getBLEDeviceCharacteristics(this.deviceId, uuid);
+				this.onBLECharacteristicValueChange(); // 先设置监听
+				await this.getBLEDeviceCharacteristics(this.baseData.deviceId, uuid);
 				resolve();
 			} catch (e) {
 				//TODO handle the exception
@@ -172,6 +200,7 @@ class VpActivation {
 			}
 
 		})
+
 	}
 
 	/**
@@ -185,7 +214,8 @@ class VpActivation {
 			Pair: this.MessageRoot.lookupType("Pair"),
 			PairingComplete: this.MessageRoot.lookupType("PairingComplete"),
 			ToAppMessage: this.MessageRoot.lookupType("ToAppMessage"),
-			PairResult: this.MessageRoot.lookupType("PairResult")
+			PairResult: this.MessageRoot.lookupType("PairResult"),
+			CONNECT_WIFI: this.MessageRoot.ToDeviceMessageType.CONNECT_WIFI
 		}
 	}
 
@@ -202,11 +232,11 @@ class VpActivation {
 				success: res => {
 					//如果res.avaliable==false 说明没打开蓝牙 反之则打开
 					console.log(res.available, '========蓝牙是否打开========');
-					this.pageEventCall(109);
+					this.pageEventCall(102);
 					resolve(res.available != false)
 				},
 				fail: error => {
-					this.pageEventCall(106);
+					this.pageErrorCall(105);
 					resolve(false);
 				}
 			})
@@ -217,26 +247,44 @@ class VpActivation {
 	 * wifi检测
 	 */
 	wifiCheck() {
-		return new Promise(resolve => {
-			console.log('========开始验证wifi========');
-			uni.startWifi({ // 验证wifi权限
-				success: res => {
-					this.pageEventCall(110);
-					resolve(true)
-				},
-				fail: err => {
-					this.pageEventCall(107);
-					resolve(false)
-				}
-			})
-		});
+		console.log('========开始验证wifi========');
+		let count = 3; // wifi和定位权限相关，因此需要多次尝试
+		const call = resolve => {
+			try{
+				console.log(typeof uni.startWifi, 'uni.startWifi');
+				uni.startWifi({ // 验证wifi权限
+					success: res => {
+						this.pageEventCall(103);
+						resolve(true)
+					},
+					fail: err => {
+						if (count === 0) {
+							this.pageEventCall(104);
+							resolve(false)
+						} else {
+							count--;
+							this.timeouts.push(setTimeout(() => {
+								call(resolve)
+							}, 3000)); // 权限未开三秒后重试
+				
+						}
+				
+					}
+				})
+			}catch(e){
+				console.log(e, '-------');
+				//TODO handle the exception
+			}
+			
+		};
+		return new Promise(call);
 	}
 
 	/**
 	 * 获取token
 	 */
 	getToken() {
-		this.pageEventCall(100);
+		this.pageEventCall(200);
 		return new Promise(resolve => {
 			const {
 				email,
@@ -255,11 +303,11 @@ class VpActivation {
 				withCredentials: true,
 				success: result => {
 					resolve(result.data);
-					this.pageEventCall(101);
+					this.pageEventCall(201);
 					console.log(result, 'getToken');
 				},
 				fail: err => {
-					this.pageEventCall(105);
+					this.pageErrorCall(202);
 					resolve();
 					console.log(err, 'getTokenErr');
 				}
@@ -267,46 +315,101 @@ class VpActivation {
 		});
 	}
 
+
+	/**
+	 * 激活设备
+	 */
+	putPairing(code) {
+		try {
+			console.log(this.token.token.idToken, 'this.token.idToken');
+			console.log(code, 'code------');
+			return new Promise(resolve => {
+				const {
+					par
+				} = env.device;
+				uni.request({
+					url: `${par}/${code}`,
+					data: {},
+					method: 'put',
+					header: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${this.token.token.idToken}`
+					},
+					withCredentials: true,
+					success: result => {
+						console.log('putPairingresult', result)
+						if (result.statusCode === 200) {
+							resolve(result);
+						} else {
+							resolve(false);
+						}
+					},
+					fail: err => {
+						resolve(false);
+						console.log(err, 'getTokenErr');
+					}
+				});
+			});
+		} catch (e) {
+			console.log('putPairin报错', e);
+		}
+
+	}
+
+
 	/**
 	 * 检测附近设备
 	 */
 	startBluetoothDevicesDiscovery() {
 		return new Promise(resolve => {
 			// 查询设备回调
-			let timeout, interval;
+			let interval;
 			const deviceFoundCallBck = res => {
-				console.log('查询附近蓝牙设备---', res.device.name);
+				console.log('查询附近蓝牙设备---', res);
 				res.devices.forEach(device => {
 					if (!device.name && !device.localName) return;
 					//wh开头的是雷达设备
 					if (device.name.startsWith("wh")) {
 						// 停止扫描蓝牙设备
 						uni.stopBluetoothDevicesDiscovery();
+						interval && clearInterval(interval);
 						console.log("设备name：" + device.name + " 设备id：" + device.deviceId)
-						this.pageEventCall(202);
-						resolve(device.uuid);
+						this.pageEventCall(303);
+						resolve(device.deviceId);
 					}
 				})
 			};
-			this.pageEventCall(201);
+			this.pageEventCall(301);
 			uni.startBluetoothDevicesDiscovery({
 				allowDuplicatesKey: true,
 				success: res => {
-					interval = setInterval(() => { // 每三秒查一次
-						uni.getBluetoothDevices({
-							success: deviceFoundCallBck
-						})
-					}, 3000);
-					setInterval(() => {
-						uni.onBluetoothDeviceFound(
-							deviceFoundCallBck
-					}, 1000)
+					this.timeouts.push(setTimeout(() => { // 延迟一秒去查询是为了让蓝牙先搜寻到设备
+						uni.onBluetoothDeviceFound(deviceFoundCallBck);
+						interval = setInterval(() => { // 每三秒查一次已有结果，实测中监听可能没有响应
+							uni.getBluetoothDevices({
+								success: deviceFoundCallBck
+							})
+						}, 3000);
+						this.intervals.push(interval);
+					}, 1000));
 				},
 				fail: err => {
-					this.pageEventCall(111, '错误码' + (err.code || -1));
+					this.pageErrorCall(302, '错误码' + (err.code || -1));
 				}
 			})
 		})
+	}
+
+	/**
+	 * 中止流程
+	 */
+	shopSteps() {
+		this.timeouts.forEach(ele => ele && clearTimeout(ele)); // 关闭所有定时器
+		this.intervals.forEach(ele => ele && clearInterval(ele));
+		uni.stopBluetoothDevicesDiscovery(); // 停止搜寻蓝牙
+		uni.closeBluetoothAdapter(); // 关闭
+		this.wifiCount = 1;
 	}
 
 
@@ -315,15 +418,15 @@ class VpActivation {
 	 */
 	bindCreateBLEConnection(deviceId) {
 		return new Promise(resolve => {
-			this.pageEventCall(112);
+			this.pageEventCall(304);
 			if (deviceId) {
 				uni.createBLEConnection({
 					deviceId,
 					success: res => {
-						this.pageEventCall(113);
+						this.pageEventCall(305);
 						resolve(true)
 					},
-					fail: err => this.pageEventCall(114, '错误码' + (err.code || -1))
+					fail: err => this.pageErrorCall(306, '错误码' + (err.code || -1))
 				})
 			}
 		})
@@ -334,21 +437,26 @@ class VpActivation {
 	 * 选择设备服务
 	 */
 	getBLEDeviceServices(deviceId) {
+		this.pageEventCall(307);
 		return new Promise(resolve => {
-			uni.getBLEDeviceServices({
-				deviceId,
-				success: data => {
-					const service = res.services.find(ele => ele.isPrimary);
-					if (service) {
-						resolve(service)
-					} else {
-						this.pageEventCall(116)
+			this.timeouts.push(setTimeout(() => { // 连接成功后需要延时一秒去读取服务
+				uni.getBLEDeviceServices({
+					deviceId,
+					success: async data => {
+						console.log(data, '查询到的服务--------');
+						const service = data.services.find(ele => ele.uuid === this
+							.baseData.serviceId);
+						if (service) {
+							console.log('搜寻主服务成功-----', service);
+							resolve(service)
+						}
+					},
+					fail: err => {
+						fail: err => this.pageErrorCall(309, '错误码' + (err.code || -
+							1))
 					}
-				},
-				fail: err => {
-					fail: err => this.pageEventCall(117, '错误码' + (err.code || -1))
-				}
-			})
+				})
+			}, 1000));
 		})
 	}
 
@@ -356,140 +464,295 @@ class VpActivation {
 	 * 获取要连接得设备属性
 	 */
 	getBLEDeviceCharacteristics(deviceId, uuId) {
-		this.pageEventCall(118);
-		const serviceId = isIos() ? uuId.toUpperCase() : uuId.toLowerCase()
 		return new Promise(resolve => {
+			this.pageEventCall(310);
+			const serviceId = isIos() ? uuId.toUpperCase() : uuId.toLowerCase();
 			uni.getBLEDeviceCharacteristics({
 				deviceId,
+				serviceId,
 				success: res => {
+					console.log(res.characteristics, 'res.characteristics');
 					res.characteristics.forEach(item => {
 						if (item.properties.notify || item.properties.indicate) {
-							console.log("============notify==========")
-							wx.notifyBLECharacteristicValueChange({
+							console.log("============notify==========");
+							uni.notifyBLECharacteristicValueChange({
 								deviceId,
 								serviceId,
-								characteristicId: item.uuid.toUpperCase(),
+								characteristicId: isIos() ? item.uuid
+									.toUpperCase() : item.uuid.toLowerCase(),
 								state: true,
 							})
+						}
 
+						if (item.properties.write) {
+							console.log("============write==========");
+							//this.baseData.WritecharacteristicId = item.uuid;
+						}
+
+						if (item.properties.read) {
+							console.log("============read==========")
+							//	this.baseData.ReadcharacteristicId = item.uuid;
+							uni.readBLECharacteristicValue({
+								deviceId,
+								serviceId,
+								characteristicId: isIos() ? item.uuid
+									.toUpperCase() : item.uuid
+									.toLowerCase()
+							})
 						}
 					});
-					resolve();
+					this.timeouts.push(setTimeout(() => {
+						resolve(); // 这里没有回调，因此写入和设置监听需要延迟触发
+					}, 1000))
 				},
 				fail: err => {
-					this.pageEventCall(119);
+					fail: err => this.pageErrorCall(311, '错误码' + (err.code || -
+						1))
 				}
 			})
-		})
-	}
+		});
 
+
+	}
 
 	/**
 	 * 监听蓝牙设备推送信息
 	 */
 	onBLECharacteristicValueChange() {
-		uni.onBLECharacteristicValueChange(res => {
-
-			// console.log("收到设备恢复的消息：" + ab2hex(characteristic.value))
-			// var decode = ToAppMessage.decode(characteristic.value);
+		uni.onBLECharacteristicValueChange(characteristic => {
+			console.log('监听蓝牙推送内容----------', ab2hex(characteristic.value));
+			const value = ab2hex(characteristic.value);
+			if (value.startsWith("10031a")) { // 设备连接wifi失败
+				console.log("设备连接wifi失败");
+				if (this.wifiCount < 3) {
+					this.wifiCount++;
+					this.wifiConnect(); // 重试
+				} else {
+					this.pageErrorCall(402);
+					this.shopSteps();
+				}
+			} else if (value.startsWith("1a0e")) { // 设备连接wifi成功
+				console.log("设备连接wifi连接成功");
+				console.log('第一阶段---------------');
+				this.pageEventCall(403);
+				this.timeouts.push(setTimeout(() => {
+					this.sendCloudDetails(); // 推送设备到云端
+				}, 2000));
+			} else if (value.startsWith("0801")) { // 开始用户配对
+				console.log('第二阶段---------------');
+				this.pageEventCall(404);
+				this.pair();
+			} else if (value.startsWith("08021a")) { // 激活设备
+				console.log('第三阶段---------------');
+				this.pageEventCall(405);
+				this.activation(ToAppMessage.decode(characteristic.value));
+			}
 		})
+	}
+
+	/**
+	 * 激活设备
+	 */
+	activation(decode) {
+		try {
+			console.log(decode, 'decode----')
+			let code;
+			try {
+				const str = hexToString(ab2hex(decode.payload)).trim();
+				code = str.replace(/\D/g, ''); // 报文中存在异常字符
+			} catch (e) {
+				code = hexToString(ab2hex(decode.payload)).trim().substr(1);
+			}
+			console.log(code, 'code');
+			const token = this.token.idToken;
+			if (code) {
+				this.pairingComplete(code);
+				this.timeouts.push(setTimeout(() => {
+					this.pairEnd();
+				}, 2000));
+				this.pageEventCall(406);
+				this.timeouts.push(setTimeout(async () => {
+					const res = await this.putPairing(code);
+					if (res) {
+						console.log('激活成功', res.data.deviceId);
+						this.callBack({
+							type: 'success',
+							data: res.data.deviceId
+						});
+						this.pageEventCall(501);
+						this.shopSteps();
+					} else {
+						this.pageErrorCall(502);
+					}
+				}, 5000));
+			} else {
+				console.log('code异常');
+			}
+		} catch (e) {
+			console.log('activation报错', e);
+			//TODO handle the exception
+		}
 	}
 
 	/**
 	 * 连接wifi
 	 */
-	wiFiConnect() {
-
-	}
-
-
-	// return new Promise(resolve => {
-	// 		uni.startBluetoothDevicesDiscovery({
-	// 				allowDuplicatesKey: true,
-	// 				success: res => {
-	// 					// 监听检测到得设备
-	// 					uni.onBluetoothDeviceFound(() => {
-
-	// 					})
-	// 				});
-	// 		})
-	// });
-	// }
-
-
-	/**
-	 * 配网成功回调
-	 */
-	fairFinish = e => {
-		console.log(e, 'onPairFinish');
-		if (e.isSuccess === 'fail') {
-			this.stopPairing(); // 失败强制结束sdk
-		}
-		this.callBack({
-			type: e.isSuccess ? 'success' : 'fail',
-			data: e.deviceId
-		});
-	};
-
-
-	/**
-	 * 配网事件
-	 */
-	pairEvent = e => {
-		this.pageEventCall(e.eventType);
-	}
-
-	/**
-	 * 选择wifi
-	 */
-	selectWifi = e => {
-		console.log(e.wifiList, 'wifi信息');
-		this.pageEventCall(104);
-		this.callBack({
-			type: 'wifi',
-			data: e.wifiList
-		});
-	}
-
-	/**
-	 * 设备连接
-	 * @param {Object} cb
-	 */
-	async connect2(cb) {
-		this.callBack = n => cb(n); // 设置回调
-		// 获取token
-		this.pageEventCall(100);
-		const {
-			token: {
-				idToken
-			},
-			uid
-		} = await this.getToken();
-		// 获取token
-		this.pageEventCall(101);
-		console.log('开始设备配网');
-		console.log(this.vpModule, 'vpModule');
+	wifiConnect() {
+		console.log('开始连接wifi');
+		this.pageEventCall(401);
 		try {
-			// 配网成功监听
-			plus.globalEvent.addEventListener('onPairFinish', this.fairFinish);
-			// 配网事件监听
-			plus.globalEvent.addEventListener('onPairEvent', this.pairEvent);
-			// 选择wifi监听
-			plus.globalEvent.addEventListener('onWifiShouldSelect', this.selectWifi);
-			// 注册事件
-			cb({
-				type: 'event',
-				data: {
-					msg: this.connentMap[102],
-					code: 102
-				}
-			});
-			this.vpModule.startPairing(uid, idToken); // 开始配对
-			console.log('等待设备配网');
+			const Payload = {
+				ssid: this.wifiInfo.ssid.trim(),
+				pass: this.wifiInfo.pwd.trim()
+			};
+			const messageWifiCred = WifiCred.create(Payload),
+				bufferWifiCred = WifiCred.encode(messageWifiCred).finish(),
+				bufferToDeviceMessage = {
+					type: ToDeviceMessageType.CONNECT_WIFI,
+					payload: bufferWifiCred
+				},
+				messageToDeviceMessage = ToDeviceMessage.create(bufferToDeviceMessage),
+				bufferProto = ToDeviceMessage.encode(messageToDeviceMessage).finish();
+			console.log("wifi配置 ab2hex", ab2hex(bufferProto));
+			const buffer1 = hexToString(ab2hex(bufferProto)),
+				buffer = stringToBytes(buffer1);
+			this.sendData(buffer);
 		} catch (e) {
-			console.log('配网失败', e);
+			console.log(e, '连接wifi报错-----');
+		}
+	}
+
+
+	/**
+	 * 推送设备到云端
+	 */
+	sendCloudDetails() {
+		console.log('推送云端开始');
+		const cloudOptions = {
+			projectId: "",
+			httpUrl: "https://api.walabot-home.cn",
+			mqttUri: "",
+			mqttPort: "",
+			ntpUrl: "ntp.aliyun.com",
+			mqttClientId: "",
+			mqttUsername: "",
+			mqttPassword: "",
+			cloudType: 3,
+			cloudRegion: "",
+			cloudRegistry: "",
+		};
+		const messageCloudDetails = CloudDetails.create(cloudOptions),
+			bufferCloudOptions = CloudDetails.encode(messageCloudDetails).finish();
+		const bufferToDeviceMessage2 = {
+				type: ToDeviceMessageType.CLOUD_CONNECT,
+				payload: bufferCloudOptions,
+			},
+			messageToDeviceMessage2 = ToDeviceMessage.create(
+				bufferToDeviceMessage2
+			),
+			bufferProto2 = ToDeviceMessage.encode(messageToDeviceMessage2).finish();
+		const buffer2 = hexToString(ab2hex(bufferProto2)),
+			buffer = hex2ArrayBuffer(ab2hex(bufferProto2));
+		console.log('推送云端完成');
+		this.sendData(buffer);
+	}
+
+	/**
+	 * 云配对
+	 */
+	pair() {
+		try {
+			console.log('云配对开始')
+			const messagePair = Pair.create({
+					uid: this.token.uid
+				}),
+				bufferPair = Pair.encode(messagePair).finish();
+
+			const messageToDeviceMessage3 = ToDeviceMessage.create({
+					type: ToDeviceMessageType.PAIR_TO_PHONE,
+					payload: bufferPair,
+				}),
+				bufferProto3 = ToDeviceMessage.encode(messageToDeviceMessage3).finish();
+			const buffer3 = hexToString(ab2hex(bufferProto3)),
+				buffer = stringToBytes(buffer3);
+			this.sendData(buffer);
+		} catch (e) {
+			console.log('云配异常', e);
 			//TODO handle the exception
 		}
+
+	}
+
+	/**
+	 * 保存激活信息
+	 */
+	pairingComplete(code) {
+		try {
+			const messagePairCompl = PairingComplete.create({
+					uid: this.token.uid,
+					code: code
+				}),
+				bufferPairCompl = PairingComplete.encode(messagePairCompl).finish();
+
+			const bufferToDeviceMessage4 = {
+					type: ToDeviceMessageType.PAIR_TO_PHONE_COMPLETE,
+					payload: bufferPairCompl,
+				},
+				messageToDeviceMessage4 = ToDeviceMessage.create(
+					bufferToDeviceMessage4
+				);
+			const bufferProto4 = ToDeviceMessage.encode(messageToDeviceMessage4).finish(),
+				buffer4 = hexToString(ab2hex(bufferProto4)),
+				buffer = stringToBytes(buffer4);
+			this.sendData(buffer);
+		} catch (e) {
+			console.log('pairingComplete报错', e);
+			//TODO handle the exception
+		}
+
+	}
+
+	pairEnd() {
+		try {
+			const bufferToDeviceMessage5 = {
+					type: ToDeviceMessageType.DO_REBOOT_OPERATIONAL, // payload: ""
+				},
+				messageToDeviceMessage5 = ToDeviceMessage.create(
+					bufferToDeviceMessage5
+				),
+				bufferProto5 = ToDeviceMessage.encode(messageToDeviceMessage5).finish();
+
+			const buffer5 = hexToString(ab2hex(bufferProto5)),
+				buffer = stringToBytes(buffer5);
+			// console.log("Stage7: RebootDevice")
+			// console.log("Stage7：", buffer)
+			console.log("enMessage5-16hex", ab2hex(bufferProto5));
+			this.sendData(buffer);
+		} catch (e) {
+			//TODO handle the exception
+			console.log('pairEnd报错', e);
+		}
+
+	}
+
+	/**
+	 * 向设备推送信息
+	 * @param {Object} buffer
+	 */
+	sendData(buffer) {
+		console.log("发送的数据  buf2hex", buf2hex(buffer))
+		wx.writeBLECharacteristicValue({
+			deviceId: this.baseData.deviceId,
+			serviceId: this.baseData.serviceId,
+			characteristicId: this.baseData.WritecharacteristicId,
+			value: buffer,
+			success(res) {
+				console.log("发送数据成功：", JSON.stringify(res))
+			},
+			fail(res) {
+				console.log("发送数据失败", JSON.stringify(res))
+			}
+		})
 	}
 
 	/**
@@ -507,27 +770,25 @@ class VpActivation {
 	}
 
 	/**
-	 * 结束配网
+	 * 失败消息回调
 	 */
-	stopPairing() {
-		this.vpModule.stopPairing && this.vpModule.stopPairing();
-		console.log(typeof plus.globalEvent.removeEventListener, '结束配网');
-		// 配网成功监听
-		plus.globalEvent.removeEventListener('onPairFinish', this.fairFinish);
-		// 配网事件监听
-		plus.globalEvent.removeEventListener('onPairEvent', this.pairEvent);
-		// 选择wifi监听
-		plus.globalEvent.removeEventListener('onWifiShouldSelect', this.selectWifi);
-	}
-
-	/**
-	 * 连接wifi
-	 */
-	connectWifi(ssid, bssid, rssi, password) {
-		console.log(ssid, bssid, rssi, password, 'connectWifi');
-		this.pageEventCall(103);
-		this.vpModule.connectWifi(ssid, bssid, rssi, password);
+	pageErrorCall(code, msg = '') {
+		this.callBack({
+			type: 'fail',
+			data: {
+				msg: this.connentMap[code] + msg || '处理中...',
+				code
+			}
+		});
+		this.shopSteps(); // 失败需要停止流程
 	}
 }
 
-export const vpActivation = new VpActivation();
+
+let vp;
+try{
+	vp  = new VpActivation();
+}catch(e){
+	//TODO handle the exception
+}
+export const vpActivation = vp;

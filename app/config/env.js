@@ -27,7 +27,8 @@ export const env = {
 	device: {
 		email: 'elinker@elinker.cc',
 		password: '1234567890',
-		url: 'https://api.walabot-home.cn/authenticate'
+		url: 'https://api.walabot-home.cn/authenticate',
+		par: 'https://api.walabot-home.cn/pairing'
 	},
 	// 极光sdk
 	pushKey: '3c3f6b5746d37ea030455d83'

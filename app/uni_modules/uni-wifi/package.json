@@ -1,7 +1,7 @@
 {
   "id": "uni-wifi",
   "displayName": "uni-wifi",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "wifi管理",
   "keywords": [
     "wifi"

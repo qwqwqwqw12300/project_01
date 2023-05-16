@@ -22,15 +22,16 @@
 		<button @click="log">日志测试</button>
 		<button @click="apm">埋点测试</button>
 		<button @click="wifi">连接设备</button>
+		<button @click="stopPairing">停止连接</button>
 
 
 	</view>
 </template>
 <script>
-	const sdkModule = uni.requireNativePlugin("VPairSDKModule");
-	import {
-		push
-	} from '@/common/sdk/push.js';
+	const sdkModule = {};
+	// import {
+	// 	push
+	// } from '@/common/sdk/push.js';
 	import {
 		ifError
 	} from 'assert';
@@ -39,10 +40,10 @@
 		postDemo,
 		mergeDemo
 	} from '../../common/http/api';
-	// import { vpActivation } from '../../common/sdk/vp-activation';
-	import {
-		vpsdk
-	} from '../../common/sdk/vpsdk';
+	import { vpActivation } from '../../common/sdk/vp-activation';
+	// import {
+	// 	vpsdk
+	// } from '../../common/sdk/vpsdk';
 	import {
 		env
 	} from '../../config/env';
@@ -60,23 +61,26 @@
 			}
 		},
 		methods: {
-
+			stopPairing() {
+				vpActivation.shopSteps()
+			},
 			wifi() {
 				console.log('start------------')
-				// vpActivation.init((obj) => {
-				// 	try {
-				// 		console.log(obj, 'obj------------')
-				// 		if (obj.type === 'event') {
-				// 			this.msg = obj.data.msg;
-				// 		}
-				// 		if (obj.type === 'wifi') {
-				// 			vpActivation.connect(obj.data[0].ssid, '012345678')
-				// 		}
-				// 	} catch (e) {
-				// 		console.log(e, 'error111-------')
-				// 	}
+				vpActivation.init((obj) => {
+					try {
+						console.log(obj, 'obj------------')
+						if (obj.type === 'event') {
+							this.msg = obj.data.msg;
+						}
+						if (obj.type === 'wifi') {
+							console.log(obj.data, '查询到的wifi-----------')
+							vpActivation.connect(obj.data[0].ssid, '012345678')
+						}
+					} catch (e) {
+						console.log(e, 'error111-------')
+					}
 
-				// });
+				});
 
 
 			},

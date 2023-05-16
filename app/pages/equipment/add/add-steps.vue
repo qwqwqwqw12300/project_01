@@ -59,10 +59,12 @@
 		PostcreDevice,
 		PosteditDevice
 	} from '../../../common/http/api';
-
+	/*#ifdef APP-PLUS*/
 	import {
-		vpsdk
-	} from '../../../common/sdk/vpsdk.js';
+		vpActivation
+	} from '../../../common/sdk/vp-activation.js';
+	/*#endif*/
+	
 	import {
 		arrayAssign,
 		assignDeep,
@@ -73,35 +75,30 @@
 			title: '初始化',
 			desc: '点击按钮开始添加设备',
 			success: '初始化完成',
-			steps: [100, 101, 102, 105],
 			error: false
 		},
 		{
-			title: '创建设备',
+			title: '连接云端',
 			desc: '正在等待上一个步骤完成',
-			success: '设备创建完成',
-			steps: [1],
+			success: '连接云端成功',
 			error: false
 		},
 		{
-			title: '设置Wi-Fi',
+			title: '连接设备',
 			desc: '正在等待上一个步骤完成',
-			success: 'wifi已连接',
-			steps: [2, 8, 103, 104],
+			success: '设备已连接',
 			error: false
 		},
 		{
-			title: '注册设备',
+			title: '激活设备',
 			desc: '正在等待上一个步骤完成',
-			success: '设备注册完成',
-			steps: [3, 4, 5, 6],
+			success: '设备激活完成',
 			error: false
 		},
 		{
 			title: '添加成功',
 			desc: '正在等待上一个步骤完成',
 			success: '设备添加成功',
-			steps: [],
 			error: false
 		},
 	];
@@ -146,7 +143,7 @@
 				this.current = 0;
 				this.list = arrayAssign(DEFULT_STATUS);
 				const currentUrl = getCurPage(); // 页面退出不做操作
-				vpsdk.connect(res => {
+				vpActivation.init(res => {
 					if (!getCurPage().includes(currentUrl)) return;
 					const {
 						type,
@@ -157,12 +154,7 @@
 							const {
 								msg, code
 							} = data;
-							console.log(msg, code);
-							this.list.forEach((ele, index) => {
-								if (ele.steps.includes(code) && this.current < index) {
-									this.current = index;
-								};
-							});
+							this.current = Math.floor(code / 100) - 1;
 							this.list[this.current].desc = msg;
 							console.log(this.list[this.current].desc, 'this.list[this.current].desc');
 							break;
@@ -188,7 +180,9 @@
 							})
 							break;
 						default:
+							console.log('default----', res);
 							this.list[this.current].error = true;
+							this.list[this.current].desc = data.code + '-' + data.msg;
 							uni.showModal({
 								title: '设备添加失败，请重试'
 							});
@@ -207,7 +201,7 @@
 					bssid,
 					rssi
 				} = info.wifi;
-				vpsdk.connectWifi(ssid, bssid, rssi, info.pwd);
+				vpActivation.connect(ssid, info.pwd);
 			},
 
 			/**
@@ -254,7 +248,7 @@
 			},
 		},
 		beforeDestroy() {
-			vpsdk.stopPairing(); //  退出时强制停止sdk
+			vpActivation.shopSteps(); //  退出时强制停止sdk
 		}
 	}
 </script>
