@@ -113,7 +113,7 @@
 					deviceId,
 					humanId,
 					beginDate: this.dayTime[0],
-					endDate: this.dayTime.at(-1)
+					endDate: this.dayTime[this.dayTime.length-1]
 				}).then(res => {
 					const {
 						sleepSegmentationDataList,
