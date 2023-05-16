@@ -787,3 +787,10 @@ export const GetSleepDayData = (params) => http.get('/api/tWatch/listSleepByDay'
 export const GetSleepWeekData = (params) => http.get('/api/tWatch/listSleepByWeek', params, {
 	// showLoading: false
 });
+
+/**
+ * 睡眠质量
+ */
+export const GetDaySleepQuality = (params) => http.get('/api/tWatch/getDaySleepQuality', params, {
+	// showLoading: false
+});
