@@ -11,11 +11,22 @@
 			<app-echarts :option="option" id="myChart" class="echart-box"></app-echarts>
 		</view>
 		<view class="ui-time">
+			<div style="display: flex;flex-direction: column;"><text>{{ dayInfo.yesterday }}</text><text>20:00</text>
+			</div>
+			<text></text>
+			<text>22:00</text>
+			<text></text>
 			<text>00:00</text>
-			<text>06:00</text>
-			<text>12:00</text>
-			<text>18:00</text>
-			<text>23:59</text>
+			<text></text>
+			<text>02:00</text>
+			<text></text>
+			<text></text>
+			<text>05:00</text>
+			<text></text>
+			<text></text>
+			<text></text>
+			<div style="display: flex;flex-direction: column;"><text>{{ dayInfo.today }}</text><text>08:59</text></div>
+			<!-- 	<text>08:59</text> -->
 		</view>
 		<WatchDiv :text="'睡眠得分'" :content="sleepScore"></WatchDiv>
 		<view class="ui-content">
@@ -120,6 +131,15 @@
 			...mapState({
 				deviceInfo: state => state.deviceInfo
 			}),
+			dayInfo() {
+				const today = uni.$u.timeFormat(this.dayTime, 'mm/dd')
+				let day = new Date(this.dayTime)
+				const yesterday = day.setDate(day.getDate() - 1)
+				return {
+					today,
+					yesterday: uni.$u.timeFormat(yesterday, 'mm/dd')
+				}
+			}
 
 		},
 		created() {
@@ -162,7 +182,7 @@
 						clearSleepTime, //清醒时长
 						sleepScore
 					} = res.data
-					
+
 					this.sleepScore = sleepScore
 					//总时长
 					this.sleepList[0].hour = countTime[0]
@@ -201,7 +221,7 @@
 						series[index].push(['', st, et])
 
 					})
-					console.log(series, 'ssssssss--------------')
+					// series[0].push(['', '20:01', '21:00'])
 					this.logstatrt(series)
 				})
 			},
@@ -285,7 +305,7 @@
 						type: 'category',
 						// boundaryGap: false,
 						axisLabel: {
-							show: true
+							show: true,
 						},
 						axisTick: {
 							show: false
@@ -317,7 +337,19 @@
 			},
 			makeXAxis() {
 				const axis = []
-				for (let i = 0; i < 24; i++) {
+				// for (let i = 0; i < 24; i++) {
+				// 	for (let j = 0; j < 60; j++) {
+				// 		const str = (i >= 10 ? i : ('0' + i)) + ':' + (j >= 10 ? j : ('0' + j))
+				// 		axis.push(str)
+				// 	}
+				// }
+				for (let i = 20; i < 24; i++) {
+					for (let j = 0; j < 60; j++) {
+						const str = (i >= 10 ? i : ('0' + i)) + ':' + (j >= 10 ? j : ('0' + j))
+						axis.push(str)
+					}
+				}
+				for (let i = 0; i < 9; i++) {
 					for (let j = 0; j < 60; j++) {
 						const str = (i >= 10 ? i : ('0' + i)) + ':' + (j >= 10 ? j : ('0' + j))
 						axis.push(str)
