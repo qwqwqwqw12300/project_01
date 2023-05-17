@@ -76,7 +76,7 @@
 		},
 		data() {
 			return {
-				sleepScore: {},
+				sleepScore: '',
 				lengedList: [{
 					text: '浅睡',
 					color: '#EF7B8C'
