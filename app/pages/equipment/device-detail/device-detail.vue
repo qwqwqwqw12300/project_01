@@ -89,12 +89,11 @@
 		async onShow() {
 			await this.$store.dispatch('GetContactsList');
 			const familyId = this.deviceInfo.familyId
-			console.log(this.familyList, '4444444444---------')
 			const res = this.familyList.find(n => {
 				return familyId === n.familyId
 			})
 			this.deviceList = res.devices.map(n => {
-				n.shareFlag = res.devices.shareFlag
+				n.shareFlag = res.shareFlag
 				return n
 			})
 			this.current = this.deviceList.indexOf(this.deviceInfo)
@@ -141,7 +140,7 @@
 					return this.deviceInfo.familyId === n.familyId
 				})
 				this.deviceList = res.devices.map(n => {
-					n.shareFlag = res.devices.shareFlag
+					n.shareFlag = res.shareFlag
 					return n
 				})
 				this.deviceList = [...this.deviceList]
