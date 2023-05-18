@@ -24,7 +24,8 @@
 			</view>
 		</view>
 		<view class="ui-content">
-			<component ref="comRef" :is="tabKey" :key="tabKey" :deviceInfo="swiperData"></component>
+			<component ref="comRef" :is="tabKey" :key="tabKey" :deviceInfo="swiperData" @refresh="onRefresh">
+			</component>
 		</view>
 	</app-body>
 </template>
@@ -88,6 +89,7 @@
 		async onShow() {
 			await this.$store.dispatch('GetContactsList');
 			const familyId = this.deviceInfo.familyId
+			console.log(this.familyList, '4444444444---------')
 			const res = this.familyList.find(n => {
 				return familyId === n.familyId
 			})
@@ -95,7 +97,6 @@
 				n.shareFlag = res.devices.shareFlag
 				return n
 			})
-			this.shareFlag = res.shareFlag
 			this.current = this.deviceList.indexOf(this.deviceInfo)
 			this.swiperData = this.deviceList[this.current]
 			this.swiperKey = this.swiperData.type
@@ -106,7 +107,6 @@
 				tabKey: 'MsgList',
 				swiperKey: '',
 				deviceList: [],
-				shareFlag: '',
 				swiperData: {},
 			}
 		},
@@ -134,6 +134,19 @@
 						}
 					})
 				}
+			},
+			async onRefresh() {
+				const familyList = await this.$store.dispatch('getAllFamily');
+				const res = familyList.find(n => {
+					return this.deviceInfo.familyId === n.familyId
+				})
+				this.deviceList = res.devices.map(n => {
+					n.shareFlag = res.devices.shareFlag
+					return n
+				})
+				this.deviceList = [...this.deviceList]
+				this.swiperData = this.deviceList[this.current]
+				this.swiperKey = this.swiperData.type
 			}
 		}
 	}
