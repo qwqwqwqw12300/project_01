@@ -39,7 +39,7 @@
 					</view>
 					<view class="ui-right" @click="jumpUrl(item.text)">
 						<view style="margin-right: 20rpx;">参考值:{{item.value}}</view>
-						<u-icon name="arrow-right" size="22rpx"></u-icon>
+						<u-icon v-if="item.text !== '快速眼动'" name="arrow-right" size="22rpx"></u-icon>
 					</view>
 				</view>
 				<view class="ui-time">
@@ -123,6 +123,15 @@
 						hour: '0',
 						minutes: '0',
 						percent: '0'
+					},
+					{
+						color: '#8538E0',
+						title: '快速眼动',
+						text: '快速眼动',
+						value: '<10%',
+						hour: '0',
+						minutes: '0',
+						percent: '0'
 					}
 				]
 			}
@@ -158,6 +167,7 @@
 		},
 		methods: {
 			jumpUrl(name) {
+				if (name === '快速眼动') return
 				uni.navigateTo({
 					url: `/pages/health/sleep/info?name=${name}`
 				})
@@ -180,14 +190,15 @@
 						lightSleepTime,
 						clearHeadedDouble, //清醒百分百
 						clearSleepTime, //清醒时长
-						sleepScore
+						sleepScore,
+						remSleepDouble, //快速眼动
+						remSleepTime
 					} = res.data
 
 					this.sleepScore = sleepScore
 					//总时长
 					this.sleepList[0].hour = countTime[0]
 					this.sleepList[0].minutes = (countTime[1] % 60)
-
 					//深睡
 					this.sleepList[1].hour = deepSleepTime[0]
 					this.sleepList[1].minutes = deepSleepTime[1] % 60
@@ -200,6 +211,10 @@
 					this.sleepList[3].hour = clearSleepTime[0]
 					this.sleepList[3].minutes = clearSleepTime[1] % 60
 					this.sleepList[3].percent = clearHeadedDouble
+					//快速眼动
+					this.sleepList[4].hour = remSleepTime[0]
+					this.sleepList[4].minutes = remSleepTime[1] % 60
+					this.sleepList[4].percent = remSleepDouble
 					// this.sleepData = uni.$u.deepClone(res.data)
 					const series = [
 						[],
@@ -434,9 +449,10 @@
 
 	.ui-content {
 		width: 90%;
-		height: 728rpx;
+		// height: 728rpx;
 		margin: 0 auto;
 		margin-top: 20rpx !important;
+		padding-bottom: 20rpx !important;
 		background-color: #FFFFFF;
 		border-radius: 16rpx;
 
