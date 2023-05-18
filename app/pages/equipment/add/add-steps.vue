@@ -184,7 +184,8 @@
 							this.list[this.current].error = true;
 							this.list[this.current].desc = data.code + '-' + data.msg;
 							uni.showModal({
-								title: '设备添加失败，请重试'
+								title: '添加失败',
+								content: this.list[this.current].desc
 							});
 							this.connectStatic = 'init';
 							break;

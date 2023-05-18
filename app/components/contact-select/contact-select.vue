@@ -111,14 +111,14 @@
 		computed: {
 			findCheck: function() {
 				return function(item) {
-					return this.contactData.find(n => {
+					return this.contactData.length && this.contactData.find(n => {
 						return n.phone === item.phone
 					}).checked
 				}
 			},
 			findValue() {
 				return function(item) {
-					return this.contactData.find(n => {
+					return this.contactData.length && this.contactData.find(n => {
 						return n.phone === item.phone
 					}).phone
 				}

@@ -33,18 +33,20 @@ import {
 } from '@/common/utils/toBufUtils.js'
 
 
+
 class VpActivation {
 	/**连接事件字典**/
 	connentMap = {
 		// 权限检查
 		101: '正在检测系统权限',
-		102: '蓝牙已正常开启',
+		102: '蓝牙已正常开启,正在检测wifi状态',
 		103: 'wifi正常开启',
 		104: '获取wifi权限失败，请确认wifi已正常开启',
 		105: '获取蓝牙权限失败，请确认蓝牙已正常开启',
 		106: '权限检查成功, 正在获取设备wifi',
 		107: '正在查询设备wifi成功,请输入密码',
 		108: '获取当前连接的wifi失败，请确认手机已经连接上wifi网络',
+		109: 'wifi模组使用异常',
 		// token
 		200: '正在获取设备token',
 		201: '获取设备token成功',
@@ -69,6 +71,7 @@ class VpActivation {
 		404: '推送云端成功，正在进行用户配对',
 		405: '配对成功，正在激活设备',
 		406: '激活成功，正在同步云端',
+		407: '推送云端失败',
 		501: '激活设备成功',
 		502: '激活设备失败，请检查网络状态是否正常',
 		503: '设备连接超时，请检查设备状态后重试'
@@ -107,19 +110,25 @@ class VpActivation {
 	 * 初始化
 	 */
 	async init(cb) {
-		if(!isApp())return;
-		this.callBack = n => cb(n); // 设置回调
-		// 检测系统权限，判断蓝牙与wifi是否开启
-		this.pageEventCall(101);
-		if (!await this.bluetoothCheck()) return; // 检测蓝牙
-		if (!await this.wifiCheck()) return; // 检测wifi
-		const wifi = await this.getWifiList();
-		this.callBack({
-			type: 'wifi',
-			data: [{
-				ssid: wifi.SSID
-			}]
-		});
+		try {
+			if (!isApp()) return;
+			this.callBack = n => cb(n); // 设置回调
+			// 检测系统权限，判断蓝牙与wifi是否开启
+			this.pageEventCall(101);
+			if (!await this.bluetoothCheck()) return; // 检测蓝牙
+			if (!await this.wifiCheck()) return; // 检测wifi
+			const wifi = await this.getWifiList();
+			this.callBack({
+				type: 'wifi',
+				data: [{
+					ssid: wifi.SSID
+				}]
+			});
+		} catch (e) {
+			console.log(e, '初始化报错');
+		}
+
+
 	}
 
 	/**
@@ -151,14 +160,15 @@ class VpActivation {
 	 * 获取wifi列表
 	 */
 	getWifiList() {
+		const unknowKey = 'unknown ssid';
 		return new Promise(resolve => {
 			this.pageEventCall(106);
-			this.timeouts.push(setTimeout(() =>{
+			this.timeouts.push(setTimeout(() => {
 				uni.getConnectedWifi({ // start需要延迟获取列表
 					partialInfo: true,
 					success: data => {
 						console.log(data, 'data------');
-						if (data.wifi.SSID) {
+						if (data.wifi.SSID && !data.wifi.SSID.includes(unknowKey)) {
 							this.pageEventCall(107);
 							resolve(data.wifi)
 						} else {
@@ -170,7 +180,7 @@ class VpActivation {
 					}
 				})
 			}, 3000))
-			
+
 		})
 	}
 
@@ -223,24 +233,55 @@ class VpActivation {
 	 * 蓝牙权限检测
 	 */
 	bluetoothCheck() {
+		let count = 0;
+		const call = (resolve) => {
+			// 验证蓝牙权限
+			uni.openBluetoothAdapter({
+				success: async res => {
+					const state = await this.getBluetoothAdapterState();
+					state ? this.pageEventCall(102) : this.pageErrorCall(105);
+					resolve(state);
+					console.log(`========蓝牙模块校验结束${state}========`);
+				},
+				fail: err => {
+					if (count < 3) {
+						count++;
+						this.timeouts.push(setTimeout(() => { // 失败可能是权限没开，重试等待用户操作
+							call(resolve);
+						}, 3000))
+					} else {
+						this.pageErrorCall(105);
+						resolve(false);
+					}
+				}
+			});
+		};
 		return new Promise(resolve => {
 			console.log('========开始验证蓝牙========');
-			// 验证蓝牙权限
-			uni.openBluetoothAdapter();
-			console.log('========蓝牙模块启动成功========');
-			uni.getBluetoothAdapterState({
-				success: res => {
-					//如果res.avaliable==false 说明没打开蓝牙 反之则打开
-					console.log(res.available, '========蓝牙是否打开========');
-					this.pageEventCall(102);
-					resolve(res.available != false)
-				},
-				fail: error => {
-					this.pageErrorCall(105);
-					resolve(false);
-				}
-			})
+			call(resolve);
+
 		});
+	}
+
+	/**
+	 * 读取蓝牙状态
+	 */
+	getBluetoothAdapterState() {
+		return new Promise(resolve => {
+			this.timeouts.push(setTimeout(() => { // 初始化后需要延迟去查询
+				uni.getBluetoothAdapterState({
+					success: res => {
+						//如果res.avaliable==false 说明没打开蓝牙 反之则打开
+						console.log(res.available, '========蓝牙是否打开========');
+						resolve(res.available != false)
+					},
+					fail: error => {
+						resolve(false);
+					}
+				})
+			}, 1000));
+		});
+
 	}
 
 	/**
@@ -250,32 +291,33 @@ class VpActivation {
 		console.log('========开始验证wifi========');
 		let count = 3; // wifi和定位权限相关，因此需要多次尝试
 		const call = resolve => {
-			try{
+			try {
 				console.log(typeof uni.startWifi, 'uni.startWifi');
-				uni.startWifi({ // 验证wifi权限
-					success: res => {
-						this.pageEventCall(103);
-						resolve(true)
-					},
-					fail: err => {
-						if (count === 0) {
-							this.pageEventCall(104);
-							resolve(false)
-						} else {
-							count--;
-							this.timeouts.push(setTimeout(() => {
-								call(resolve)
-							}, 3000)); // 权限未开三秒后重试
-				
+				this.timeouts.push(setTimeout(() => {
+					uni.startWifi({ // 验证wifi权限
+						success: res => {
+							this.pageEventCall(103);
+							resolve(true)
+						},
+						fail: err => {
+							if (count === 0) {
+								this.pageErrorCall(104);
+								resolve(false)
+							} else {
+								count--;
+								this.timeouts.push(setTimeout(() => {
+									call(resolve)
+								}, 3000)); // 权限未开三秒后重试
+							}
 						}
-				
-					}
-				})
-			}catch(e){
+					})
+				}, 1000));
+			} catch (e) {
+				this.pageEventCall(108, e);
 				console.log(e, '-------');
 				//TODO handle the exception
 			}
-			
+
 		};
 		return new Promise(call);
 	}
@@ -438,8 +480,9 @@ class VpActivation {
 	 */
 	getBLEDeviceServices(deviceId) {
 		this.pageEventCall(307);
-		return new Promise(resolve => {
-			this.timeouts.push(setTimeout(() => { // 连接成功后需要延时一秒去读取服务
+		let count = 0;
+		const call = resolve => {
+			this.timeouts.push(setTimeout(() => {
 				uni.getBLEDeviceServices({
 					deviceId,
 					success: async data => {
@@ -449,6 +492,15 @@ class VpActivation {
 						if (service) {
 							console.log('搜寻主服务成功-----', service);
 							resolve(service)
+						} else {
+							if (count < 3) {
+								count++;
+								console.log(`主服务搜索失败，第${count}次重试`);
+								call(resolve);
+							} else {
+								this.pageErrorCall(309, '错误码');
+							}
+
 						}
 					},
 					fail: err => {
@@ -456,8 +508,11 @@ class VpActivation {
 							1))
 					}
 				})
-			}, 1000));
-		})
+			}, 1000))
+		}
+		return new Promise(resolve => {
+			call(resolve)
+		});
 	}
 
 	/**
@@ -511,8 +566,6 @@ class VpActivation {
 				}
 			})
 		});
-
-
 	}
 
 	/**
@@ -627,34 +680,39 @@ class VpActivation {
 	 * 推送设备到云端
 	 */
 	sendCloudDetails() {
-		console.log('推送云端开始');
-		const cloudOptions = {
-			projectId: "",
-			httpUrl: "https://api.walabot-home.cn",
-			mqttUri: "",
-			mqttPort: "",
-			ntpUrl: "ntp.aliyun.com",
-			mqttClientId: "",
-			mqttUsername: "",
-			mqttPassword: "",
-			cloudType: 3,
-			cloudRegion: "",
-			cloudRegistry: "",
-		};
-		const messageCloudDetails = CloudDetails.create(cloudOptions),
-			bufferCloudOptions = CloudDetails.encode(messageCloudDetails).finish();
-		const bufferToDeviceMessage2 = {
-				type: ToDeviceMessageType.CLOUD_CONNECT,
-				payload: bufferCloudOptions,
-			},
-			messageToDeviceMessage2 = ToDeviceMessage.create(
-				bufferToDeviceMessage2
-			),
-			bufferProto2 = ToDeviceMessage.encode(messageToDeviceMessage2).finish();
-		const buffer2 = hexToString(ab2hex(bufferProto2)),
-			buffer = hex2ArrayBuffer(ab2hex(bufferProto2));
-		console.log('推送云端完成');
-		this.sendData(buffer);
+		try {
+			console.log('推送云端开始');
+			const cloudOptions = {
+				projectId: "",
+				httpUrl: "https://api.walabot-home.cn",
+				mqttUri: "",
+				mqttPort: "",
+				ntpUrl: "ntp.aliyun.com",
+				mqttClientId: "",
+				mqttUsername: "",
+				mqttPassword: "",
+				cloudType: 3,
+				cloudRegion: "",
+				cloudRegistry: "",
+			};
+			const messageCloudDetails = CloudDetails.create(cloudOptions),
+				bufferCloudOptions = CloudDetails.encode(messageCloudDetails).finish();
+			const bufferToDeviceMessage2 = {
+					type: ToDeviceMessageType.CLOUD_CONNECT,
+					payload: bufferCloudOptions,
+				},
+				messageToDeviceMessage2 = ToDeviceMessage.create(
+					bufferToDeviceMessage2
+				),
+				bufferProto2 = ToDeviceMessage.encode(messageToDeviceMessage2).finish();
+			const buffer2 = hexToString(ab2hex(bufferProto2)),
+				buffer = hex2ArrayBuffer(ab2hex(bufferProto2));
+			console.log('推送云端完成');
+			this.sendData(buffer);
+		} catch (e) {
+			this.pageErrorCall(407, e);
+		}
+
 	}
 
 	/**
@@ -785,10 +843,4 @@ class VpActivation {
 }
 
 
-let vp;
-try{
-	vp  = new VpActivation();
-}catch(e){
-	//TODO handle the exception
-}
-export const vpActivation = vp;
+export const vpActivation = new VpActivation();;

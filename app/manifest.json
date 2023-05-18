@@ -342,7 +342,12 @@
                 }
             }
         },
-        "title" : "艾吉通"
+        "title" : "艾吉通",
+        "optimization" : {
+            "treeShaking" : {
+                "enable" : true
+            }
+        }
     },
     "_spaceID" : "mp-de69c45d-41a8-4182-a6fc-0f3f36bcf74d"
 }
