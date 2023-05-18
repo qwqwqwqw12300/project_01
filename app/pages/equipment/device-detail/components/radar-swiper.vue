@@ -21,6 +21,9 @@
 </template>
 
 <script>
+	import {
+		env
+	} from "@/config/env.js";
 	export default {
 		props: {
 			record: {
@@ -46,7 +49,7 @@
 			/**跳转设置页面**/
 			goSetting() {
 				if (this.record.shareFlag == 0) return uni.$u.toast('当前设备属于分享设备，不能配置')
-				if (this.record.onlineFlag != 1) return uni.$u.toast('您的设备已离线，暂时无法进行配置')
+				if (this.record.onlineFlag != 1 && env.mode === 'prod') return uni.$u.toast('您的设备已离线，暂时无法进行配置')
 				this.$store.commit('setDeviceInfo', this.record);
 				uni.navigateTo({
 					url: '/pages/equipment/setting/radar-setting'

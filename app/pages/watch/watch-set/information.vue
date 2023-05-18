@@ -76,14 +76,14 @@
 						name: '身高(厘米)',
 						min: 25,
 						max: 270,
-						step: 25,
+						step: 5,
 						value: 0
 					},
 					{
 						name: '体重(公斤)',
 						min: 25,
 						max: 200,
-						step: 25,
+						step: 5,
 						value: 0
 					}
 				],

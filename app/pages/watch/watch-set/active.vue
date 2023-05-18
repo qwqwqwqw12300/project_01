@@ -58,7 +58,7 @@
 						name: '体重',
 						min: 25,
 						max: 200,
-						step: 25,
+						step: 5,
 						value: 0
 					}
 				],

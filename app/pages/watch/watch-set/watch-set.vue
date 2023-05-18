@@ -57,6 +57,9 @@
 					title: '常用联系人',
 					url: '/pages/watch/watch-set/contacts',
 				}, {
+					title: '名称修改',
+					url: '/pages/watch/watch-set/name-edit'
+				},{
 					title: '一键同步',
 					url: 'synchronization'
 				}, {

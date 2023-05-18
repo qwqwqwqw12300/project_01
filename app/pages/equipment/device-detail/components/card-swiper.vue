@@ -19,9 +19,11 @@
 				</view>
 			</view>
 			<view class="device-set" :style="{width: type === 'set' ? '130rpx': '170rpx'}" @click="handleSet">
-				<u-icon :name="type === 'set' ? '/static/images/device-set.png': '/static/images/reStart.png'"
-					size="44rpx" style="margin-right: 6rpx;" />
-				{{ type === 'set'? '设置':'重启设备' }}
+				<template v-if="record.shareFlag  == '2'">
+					<u-icon :name="type === 'set' ? '/static/images/device-set.png': '/static/images/reStart.png'"
+						size="44rpx" style="margin-right: 6rpx;" />
+					{{ type === 'set'? '设置':'重启设备' }}
+				</template>
 			</view>
 		</view>
 	</view>
@@ -31,6 +33,9 @@
 	import {
 		PostRebootDevice
 	} from '@/common/http/api';
+	import {
+		env
+	} from "@/config/env.js";
 	export default {
 		props: {
 			record: {
@@ -67,7 +72,7 @@
 			handleSet() {
 				if (this.type === 'set') {
 					if (this.record.shareFlag == 0) return uni.$u.toast('当前设备属于分享设备，不能配置')
-					if(this.record.onlineFlag != 1) return uni.$u.toast('您的设备已离线，暂时无法进行配置') 
+					if (this.record.onlineFlag != 1 && env.mode === 'prod') return uni.$u.toast('您的设备已离线，暂时无法进行配置')
 					this.$store.commit('setDeviceInfo', this.record);
 					uni.navigateTo({
 						url: '/pages/card/card-set'

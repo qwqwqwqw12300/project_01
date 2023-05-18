@@ -634,6 +634,15 @@
 			}
 		},
 		{
+			"path": "pages/watch/watch-set/name-edit",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
 			"path": "pages/health/sleep/sleep",
 			"style": {
 				"navigationStyle": "custom",

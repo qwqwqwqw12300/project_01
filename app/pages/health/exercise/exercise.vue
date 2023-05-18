@@ -8,7 +8,7 @@
 			<exexcise-echart :options="options"></exexcise-echart>
 		</view>
 		<view class="day-title" v-if="type === 'week'">
-			<text>日平均数据</text>
+			<text>周平均数据</text>
 		</view>
 		<view class="ui-tab">
 			<scroll-view class="scroll" scroll-x>

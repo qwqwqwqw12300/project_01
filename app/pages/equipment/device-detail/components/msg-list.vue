@@ -150,6 +150,7 @@
 				this.pageOptions.pageNum = 1
 				this.triggered = true;
 				this.msgList = []
+				this.$emit('refresh')
 				this.handleInit()
 			}
 		}

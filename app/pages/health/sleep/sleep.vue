@@ -4,7 +4,9 @@
 		<view class="box">
 			<date-picker @onSelect="onSelect" @month="monthChange" :lightDot="monthData"></date-picker>
 		</view>
-		<component ref="comRef" :dayTime="searchDate" :is="tabKey"></component>
+		<view class="box-content">
+			<component ref="comRef" :dayTime="searchDate" :is="tabKey"></component>
+		</view>
 	</app-body>
 </template>
 
@@ -65,5 +67,9 @@
 
 	.ui-icon {
 		margin-left: 546rpx;
+	}
+	
+	.box-content{
+		padding-bottom: 30px;
 	}
 </style>

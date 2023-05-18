@@ -110,7 +110,6 @@
 				})
 			},
 			getDeviceLocation() {
-				console.log(56565656565656)
 				!this.isLoading && uni.showLoading({
 					title: '获取定位中'
 				})
@@ -127,7 +126,7 @@
 						return uni.hideLoading()
 					}
 					this.getLocation(res.data).then(info => {
-						console.log(info, '33333333333-----------')
+						const preTime = this.addressInfo.locateTimeFromCurrent
 						const {
 							latitude,
 							longitude,
@@ -141,12 +140,13 @@
 							locateTimeFromCurrent: res.data?.locateTimeFromCurrent,
 						}
 						console.log(this.isLoading, '455555555----')
+						
 						if (!this.isLoading) return uni.hideLoading()
 						console.log(this.addressInfo.locateTimeFromCurrent, res.data.locateTimeFromCurrent,
 							'00000000000000')
 						console.log(this.addressInfo.locateTimeFromCurrent == res.data
 							.locateTimeFromCurrent, 'oo----------')
-						if (this.addressInfo.locateTimeFromCurrent == res.data.locateTimeFromCurrent &&
+						if (preTime == res.data.locateTimeFromCurrent &&
 							this.time <=
 							3) {
 							console.log('进来了----------')

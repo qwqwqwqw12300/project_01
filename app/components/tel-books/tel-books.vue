@@ -89,10 +89,7 @@
 
 					}, error => {
 						reject()
-						uni.showToast({
-							title: '获取通讯录失败',
-							duration: 2000
-						})
+						uni.$u.toast('获取通讯录失败')
 					})
 				})
 			},
