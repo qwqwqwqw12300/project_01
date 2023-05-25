@@ -158,7 +158,7 @@
 			searchDatas() {
 				const searchData = [];
 				for (let i = 0; i < this.contactList.length; i++) {
-					if (this.contactList[i][this.formatName].indexOf(this.serachValue) !== -1) {
+					if (this.contactList[i][this.formatName] && this.contactList[i][this.formatName].indexOf(this.serachValue) !== -1) {
 						searchData.push({
 							oldData: this.contactList[i],
 							phone: this.contactList[i].phone,
