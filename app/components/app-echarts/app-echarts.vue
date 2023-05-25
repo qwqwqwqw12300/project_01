@@ -151,7 +151,7 @@
 				}
 
 				if (this.chart) {
-					this.chart.clear();
+					// this.chart.clear();
 					// 因App端，回调函数无法从renderjs外传递，故在此自定义设置相关回调函数
 					if (option) {
 						// const option = {};

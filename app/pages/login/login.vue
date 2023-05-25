@@ -29,16 +29,16 @@
 							:border="'none'" clearable></u--input>
 					</view>
 					<view class="ui-form-item">
-						<figure-code prefixIcon="../../static/images/login/code.png"
-							:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" size="4"
-							ref="codeRef"></figure-code>
-					</view>
-					<view class="ui-form-item">
 						<u-input prefixIcon="../../static/images/login/lock.png"
 							:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx"
 							v-model="loginForm.password" placeholder="请输入你的密码" :password="true" :border="'none'"
 							clearable>
 						</u-input>
+					</view>
+					<view class="ui-form-item">
+						<figure-code prefixIcon="../../static/images/login/code.png"
+							:prefixIconStyle="{height: '48rpx', width: '48rpx'}" fontSize="40rpx" size="4"
+							ref="codeRef"></figure-code>
 					</view>
 					<view class="ui-bot">
 						<text class="active" @click="register">免费注册</text>

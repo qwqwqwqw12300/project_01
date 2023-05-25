@@ -15,14 +15,23 @@
 					<view class="mova-box">
 						<movable-area :style="getStyle">
 							<template v-for="(item, index) of area">
-								<view :key="index + 'c'" class="ui-cell" @touchstart="touchstart($event, item, index)"
-									@touchmove.stop.prevent="touchMove($event, item, index)"
-									@touchend.stop.prevent="touchend($event, item)"
-									:class="{ active: item.active, hover: item.status === 'hover', edit: roomZones.length && activeZone.roomZoneId === item.roomZoneId }"
-									:style="cell" v-if="item.zoneType === targetZoneType">
-								</view>
-								<view :key="index + 'ec'" v-else :style="cell" class="ui-cell disable">
-								</view>
+								<template v-if="item.zoneType === targetZoneType">
+									<!-- 已经选择的区域 -->
+									<view :key="index + 'c'" class="ui-cell" v-if="item.active"
+										:class="{ active: item.active, hover: item.status === 'hover', edit: roomZones.length && activeZone.roomZoneId === item.roomZoneId }"
+										:style="cell"></view>
+									<!-- /已经选择的区域 -->
+									<!-- 可以操作的区域 -->
+									<view :key="index + 'c'" v-else class="ui-cell"
+										@touchstart="touchstart($event, item, index)"
+										@touchmove.stop.prevent="touchMove($event, item, index)"
+										@touchend.stop.prevent="touchend($event, item)"
+										:class="{  hover: item.status === 'hover'}" :style="cell"></view>
+									<!-- /可以操作的区域 -->
+								</template>
+								<!-- 其他区域 禁止点击-->
+								<view :key="index + 'ec'" v-else :style="cell" class="ui-cell disable"></view>
+								<!-- /其他区域 禁止点击-->
 							</template>
 
 							<movable-view :x="sizeInfo.x - 10"
@@ -112,7 +121,7 @@
 	import {
 		numberUtil
 	} from '../../../common/utils/numberUtil';
-	
+
 	import {
 		mapState
 	} from 'vuex';
@@ -127,7 +136,9 @@
 	import {
 		ZONE
 	} from '../../../config/db';
-	import { zoneMixin } from '@/common/mixin/zone.mixin.js';
+	import {
+		zoneMixin
+	} from '@/common/mixin/zone.mixin.js';
 	export default {
 		data() {
 			return {
@@ -150,7 +161,7 @@
 				targetZoneType: '2'
 			};
 		},
-		mixins:[zoneMixin],
+		mixins: [zoneMixin],
 		computed: {
 			...mapState({
 				deviceInfo: state => state.deviceInfo
@@ -277,16 +288,17 @@
 			 */
 			updateZone(zone) {
 				let {
-					x1 = 0, x2 = 0, y1 = 0, y2 = 0 } = zone;
+					x1 = 0, x2 = 0, y1 = 0, y2 = 0
+				} = zone;
 				const obj = Object.assign(assignDeep({}, zone), {
 					x1: x1 * this.cell.size,
 					x2: x2 * this.cell.size,
 					y1: y1 * this.cell.size,
-					y2: y2 * this.cell.size 
+					y2: y2 * this.cell.size
 				})
 				this.radarDevice(obj);
 			},
-			
+
 			/**
 			 * 触摸结束
 			 */
@@ -391,14 +403,21 @@
 			 * 删除子区域
 			 */
 			async deleteZone() {
-				const {
-					roomZoneId
-				} = this.activeZone;
-				// 已经保存过的
-				await PostRemRadarDevice({
-					roomZoneId
-				});
-				this.init();
+				uni.showModal({
+					title: '提示',
+					content: '是否确认删除该区域',
+					success: async res => {
+						const {
+							roomZoneId
+						} = this.activeZone;
+						// 已经保存过的
+						await PostRemRadarDevice({
+							roomZoneId
+						});
+						this.init();
+					}
+				})
+
 			},
 
 

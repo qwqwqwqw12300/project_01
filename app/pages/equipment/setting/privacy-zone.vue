@@ -15,12 +15,23 @@
 					<view class="mova-box">
 						<movable-area :style="getStyle">
 							<template v-for="(item, index) of area">
-								<view :key="index + 'c'" class="ui-cell" @touchstart="touchstart($event, item, index)"
-									@touchmove.stop.prevent="touchMove($event, item, index)"
-									@touchend.stop.prevent="touchend($event, item)"
-									:class="{ active: item.active, hover: item.status === 'hover', edit: roomZones.length && activeZone.roomZoneId === item.roomZoneId }"
-									:style="cell" v-if="item.zoneType === targetZoneType"></view>
+								<template v-if="item.zoneType === targetZoneType">
+									<!-- 已经选择的区域 -->
+									<view :key="index + 'c'" class="ui-cell" v-if="item.active"
+										:class="{ active: item.active, hover: item.status === 'hover', edit: roomZones.length && activeZone.roomZoneId === item.roomZoneId }"
+										:style="cell"></view>
+									<!-- /已经选择的区域 -->
+									<!-- 可以操作的区域 -->
+									<view :key="index + 'c'" v-else class="ui-cell"
+										@touchstart="touchstart($event, item, index)"
+										@touchmove.stop.prevent="touchMove($event, item, index)"
+										@touchend.stop.prevent="touchend($event, item)"
+										:class="{  hover: item.status === 'hover'}" :style="cell"></view>
+									<!-- /可以操作的区域 -->
+								</template>
+								<!-- 其他区域 禁止点击-->
 								<view :key="index + 'ec'" v-else :style="cell" class="ui-cell disable"></view>
+								<!-- /其他区域 禁止点击-->
 							</template>
 
 							<movable-view :x="sizeInfo.x - 10"
@@ -48,11 +59,11 @@
 								inputAlign="right" slot="right-icon"></u-input>
 						</u-cell>
 						<u-cell title="屏蔽区域长x宽（米）">
-							<view class="ui-zooe-size" slot="right-icon" @click="onSizeInput">
+							<view class="ui-zooe-size" slot="right-icon">
 								<!-- <u-input border="none" placeholder="请输入" @click="onSizeInput" type="number" readonly inputAlign="left" v-model="activeZone.height" clearable></u-input> -->
-								<text>{{activeZone.height}}</text>
-								<text>×</text>
 								<text>{{activeZone.width}}</text>
+								<text>×</text>
+								<text>{{activeZone.height}}</text>
 								<!-- <u-input border="none" placeholder="请输入" @click="onSizeInput" type="number"  readonly inputAlign="right" v-model="activeZone.width" clearable></u-input> -->
 							</view>
 						</u-cell>
@@ -337,17 +348,23 @@
 			 * 删除子区域
 			 */
 			async deleteZone() {
-				const {
-					roomZoneId
-				} = this.activeZone;
-				// 已经保存过的
-				await PostRemRadarDevice({
-					roomZoneId
+				uni.showModal({
+					title: '提示',
+					content: '是否确认删除该区域',
+					success: async res => {
+						if (res.confirm) {
+							const {
+								roomZoneId
+							} = this.activeZone;
+							// 已经保存过的
+							await PostRemRadarDevice({
+								roomZoneId
+							});
+							this.init();
+						}
+					}
 				});
-				this.init();
 			},
-
-
 
 			/**
 			 * 确认修改/添加
@@ -361,12 +378,12 @@
 					above,
 					stature
 				} = form;
-				console.log(width, height, 'width, height');
+				console.log(width, height,above, stature, 'width, height');
 				if (width > this.roomSize.roomLeft + this.roomSize.roomRight) {
 					this.clearCell();
 					return uni.$u.toast('区域超出检测范围，请重新选择');
 				}
-				width =  numberUtil.floatDiv(width, this.cell.size);
+				width = numberUtil.floatDiv(width, this.cell.size);
 				height = numberUtil.floatDiv(height, this.cell.size);
 				const {
 					roomZoneId
@@ -379,8 +396,8 @@
 				}
 				Object.assign(
 					form, {
-						z1: above,
-						z2: stature + above
+						z1: +above,
+						z2: (+stature) + (+above)
 					},
 					this.getAxisBySize(Math.min(...list), width, height)
 				);

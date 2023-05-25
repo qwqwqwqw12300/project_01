@@ -1,3 +1,10 @@
+<!--
+* @Date: 2023-05-25 11:19:13
+* @LastEditTime: 2023-05-25 11:19:13
+* @FilePath: /pages/equipment/setting/bed-rules.vue
+* @Description: 离床时间设置
+-->
+
 <template>
 	<app-body :bg="false">
 		<view class="ui-body">
@@ -23,14 +30,18 @@
 					</u-cell>
 				</u-cell-group>
 			</view>
-			<view class="ui-btn-group">
+			
+		<!-- 	<view class="ui-btn-group">
 				<view @click="deleteRule">删除规则</view>
 				<view @click="save">保存</view>
-			</view>
+			</view> -->
+		</view>
+		<view class="ui-btn">
+			<button class="default" @click="save">提交</button>
 		</view>
 		<u-calendar :show="calendarShow" mode="range" @confirm="calendarConfirm" @close="calendarShow = false">
 		</u-calendar>
-		<smh-time-range :isUnder="timeShow" @confrim="confrim" @cancel="timeShow = false"></smh-time-range>
+		<smh-time-range :tiem="defaultTime" :isUnder="timeShow" @confrim="confrim" @cancel="timeShow = false"></smh-time-range>
 	</app-body>
 </template>
 
@@ -70,10 +81,18 @@
 			/**日期信息**/
 			weekText() {
 				return wddkAbbreviation(this.form.week) || '请选择星期';
+			},
+			
+			/**
+			 * 获取默认时间
+			 */
+			defaultTime() {
+				const {startTime = '', endTime = ''} = this.form;
+				const start = startTime.split(':'), end = endTime.split(':');
+				return [...start, ...end];
 			}
 		},
 		onLoad(option) {
-
 			const cache = this.$getCache('bedRuleCache') || {};
 			console.log(cache, 'cache');
 			Object.assign(this.form, cache || {});
@@ -175,7 +194,6 @@
 		flex-direction: column;
 		position: relative;
 		background: #fff;
-		height: calc(100vh - 88rpx - var(--status-bar-height));
 	}
 
 	.ui-edit {
@@ -184,34 +202,8 @@
 		margin-top: 64rpx;
 	}
 
-	.ui-btn-group {
+	.ui-btn {
 		height: 100rpx;
-		width: 100%;
-		position: fixed;
-		bottom: 0;
-		display: flex;
-		align-items: center;
-		flex-direction: row;
-
-		&>view {
-			width: 50%;
-			height: 100%;
-			text-align: center;
-			line-height: 100rpx;
-			font-size: 36rpx;
-			@extend .active;
-
-			&:nth-child(1) {
-				background: #FFFFFF;
-				border-top: 1rpx solid #e2e2e2;
-				color: #E95656;
-			}
-
-			&:nth-child(2) {
-				background-image: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);
-				color: #FFFFFF;
-			}
-		}
-
+		padding: 30px 20px;
 	}
 </style>

@@ -34,12 +34,12 @@
 					</view>
 
 					<view class="wd-size">
-						<u-text text="宽×高" color="#444" size="30rpx"></u-text>
+						<u-text text="长×宽" color="#444" size="30rpx"></u-text>
 						<view class="ui-shape">
 							<view>
 								<text>长</text>
 								<view class="ui-input">
-									<u-input type="number" v-model="form.height" placeholder="请输入" fontSize="28rpx">
+									<u-input type="number" v-model="form.width" placeholder="请输入" fontSize="28rpx">
 										<template slot="suffix">
 											<text>米</text>
 										</template>
@@ -49,7 +49,7 @@
 							<view>
 								<text>宽</text>
 								<view class="ui-input">
-									<u-input type="number" v-model="form.width" placeholder="请输入" fontSize="28rpx">
+									<u-input type="number" v-model="form.height" placeholder="请输入" fontSize="28rpx">
 										<template slot="suffix">
 											<text>米</text>
 										</template>

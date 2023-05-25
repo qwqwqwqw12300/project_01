@@ -160,7 +160,7 @@
 						},
 						axisLine: {
 							show: false
-						},
+						}
 					},
 					yAxis: {
 						type: 'value',
@@ -177,13 +177,14 @@
 						},
 						splitLine: {
 							show: true,
-							lineStyle: {
-								type: 'disable'
-							}
+							
+							// lineStyle: {
+							// 	type: 'disable'
+							// }
 						},
 					},
 					series: [{
-						name: 'Union Ads',
+						name: '心跳值',
 						type: 'line',
 						stack: 'Total',
 						data,
@@ -205,17 +206,24 @@
 				this.count = 90; // 初始化展示数量
 				this.allCount = list.length; //  当前项长度
 				this.mapList = list.slice(0, this.count); // 实际渲染数组
-				this.interval = setInterval(() => {
+				let flag = true;
+				const animate = () => {
 					if (this.count == this.allCount) {
 						this.count = 90;
 						this.mapList = list.slice(0, this.count);
 						// return
 					} else {
-						this.mapList.shift()
-						this.mapList.push(list[++this.count])
+						if(flag) {
+							this.mapList.shift()
+							this.mapList.push(list[++this.count])
+						}
+					
 					}
-					this.setOption(this.mapList);
-				}, 30)
+					flag = !flag;
+					this.setOption(this.mapList, true);
+					requestAnimationFrame(animate);
+				}
+				animate();
 			},
 			handleBlur(id, val) {
 				PostAddElectrocardiogramReMake({
@@ -237,7 +245,6 @@
 	.ui-echart {
 		padding: 0 32rpx;
 		margin-top: 30rpx;
-
 		.myChart {
 			height: 500rpx;
 			// margin: 64rpx 32rpx 48rpx;
