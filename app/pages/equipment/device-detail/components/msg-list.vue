@@ -3,11 +3,19 @@
 		<scroll-view scroll-y="true" @scrolltolower="pageNext" refresher-background="transparent"
 			@refresherrefresh="onRefresh" :refresher-triggered="triggered" refresher-enabled :style="{ height: '100%' }"
 			class="ui-scroll">
-			<template v-if="msgList.length">
-				<msg-card @call="handleCall" v-for="(item, index) in msgList" :key="index" :msgInfo="item"></msg-card>
+			<template v-if="loading">
+				<view class="ui-loading">
+					<u-loading-icon mode="semicircle" :vertical="true" text="加载中" textSize="18"></u-loading-icon>
+				</view>
+			</template>
+			<template v-else-if="msgList.length">
+				<msg-card @call="handleCall" v-for="(item, index) in msgList" :key="(index+item.createTime)"
+					:msgInfo="item"></msg-card>
 				<u-loadmore marginBottom="30" dashed :status="loadmore" />
 			</template>
-			<u-empty v-else mode="list" text="暂无数据" marginTop="80rpx"></u-empty>
+			<view class="ui-empty" v-else>
+				<u-empty mode="list" text="暂无数据"></u-empty>
+			</view>
 		</scroll-view>
 		<u-action-sheet :actions="contactsList" :show="show" title="选择紧急联系人" round="10" cancelText="取消"
 			@close="show = false" @select="handleSelect"></u-action-sheet>
@@ -57,6 +65,8 @@
 				/**加载更多管理**/
 				loadmore: 'loadmore', // loadmore-加载更多 loading-加载中 nomore-没有更多
 				show: false,
+				/**是否初始化查询**/
+				loading: true,
 			}
 		},
 		watch: {
@@ -116,6 +126,7 @@
 				})
 			},
 			handleInit() {
+				this.loading = true;
 				this.loadmore = 'loadmore';
 				const {
 					familyId,
@@ -136,6 +147,7 @@
 					this.loadmore = res.total <= this.msgList.length ? 'nomore' : 'loadmore';
 				}).finally(() => {
 					this.triggered = false
+					this.loading = false
 				})
 			},
 
@@ -151,7 +163,7 @@
 				this.triggered = true;
 				this.msgList = []
 				this.$emit('refresh')
-				this.handleInit()
+				// this.handleInit()
 			}
 		}
 	}

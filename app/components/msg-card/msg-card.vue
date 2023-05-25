@@ -17,11 +17,13 @@
 				{{ msgDetail.deviceName || "未命名设备" }}
 			</text>
 			<view class="content">
-				<!-- {{item.content || '--'}} -->
-				<u-read-more :showHeight="60" :toggle="true" closeText="展开" openText="关闭"
+				<text>
+					{{msgDetail.content || '--'}}
+				</text>
+	<!-- 			<u-read-more :showHeight="60" :toggle="true" closeText="展开" openText="关闭"
 					@open="handleRead(msgDetail.msgId)">
 					<rich-text :nodes="$u.trim(msgDetail.content, 'all') || '--'"></rich-text>
-				</u-read-more>
+				</u-read-more> -->
 				<!-- 设备张三的雷达监测到有人摔倒、请及时处理 -->
 			</view>
 		</view>
@@ -176,6 +178,9 @@
 			padding: 14rpx 0;
 			font-size: 28rpx;
 			color: #353535;
+			// text{
+			// 	text-indent: 20rpx;
+			// }
 			// letter-spacing: 0;
 			// text-align: left;
 			// font-weight: 500;
