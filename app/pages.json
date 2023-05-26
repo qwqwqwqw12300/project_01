@@ -510,7 +510,15 @@
 					"titleNView": false
 				}
 			}
-		}, {
+		}, 	{
+			"path": "pages/card/name-edit",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},{
 			"path": "pages/equipment/info-interval",
 			"style": {
 				"navigationStyle": "custom",

@@ -40,6 +40,9 @@
 					title: '通讯录白名单',
 					url: '/pages/card/tel-books',
 				}, {
+					title: '设备名称修改',
+					url: '/pages/card/name-edit',
+				},{
 					title: '亲情号码',
 					url: '/pages/card/kinship-number'
 				}, {

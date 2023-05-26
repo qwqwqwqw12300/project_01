@@ -1,3 +1,4 @@
+<!-- 修改设备名称 -->
 <template>
 	<app-body :bg="false">
 		<view class="ui-logo">
