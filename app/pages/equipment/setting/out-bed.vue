@@ -407,14 +407,17 @@
 					title: '提示',
 					content: '是否确认删除该区域',
 					success: async res => {
-						const {
-							roomZoneId
-						} = this.activeZone;
-						// 已经保存过的
-						await PostRemRadarDevice({
-							roomZoneId
-						});
-						this.init();
+						if (res.confirm) {
+							const {
+								roomZoneId
+							} = this.activeZone;
+							// 已经保存过的
+							await PostRemRadarDevice({
+								roomZoneId
+							});
+							this.init();
+						}
+
 					}
 				})
 

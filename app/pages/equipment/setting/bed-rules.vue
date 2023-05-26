@@ -41,7 +41,7 @@
 		</view>
 		<u-calendar :show="calendarShow" mode="range" @confirm="calendarConfirm" @close="calendarShow = false">
 		</u-calendar>
-		<smh-time-range :tiem="defaultTime" :isUnder="timeShow" @confrim="confrim" @cancel="timeShow = false"></smh-time-range>
+		<smh-time-range :time="defaultTime" :isUnder="timeShow" @confrim="confrim" @cancel="timeShow = false"></smh-time-range>
 	</app-body>
 </template>
 
@@ -74,7 +74,7 @@
 					endTime: ''
 				},
 				calendarShow: false,
-				timeShow: false
+				timeShow: false,
 			};
 		},
 		computed: {
@@ -89,7 +89,8 @@
 			defaultTime() {
 				const {startTime = '', endTime = ''} = this.form;
 				const start = startTime.split(':'), end = endTime.split(':');
-				return [...start, ...end];
+				console.log([...start, '0', ...end], '[...start, ...end]')
+				return [...start, '0', ...end].map(ele => +ele);
 			}
 		},
 		onLoad(option) {

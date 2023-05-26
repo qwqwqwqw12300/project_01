@@ -40,7 +40,7 @@
 		</view>
 		<u-calendar :show="calendarShow" mode="range" @confirm="calendarConfirm" @close="calendarShow = false">
 		</u-calendar>
-		<smh-time-range :isUnder="timeShow" @confrim="confrim" @cancel="timeShow = false"></smh-time-range>
+		<smh-time-range :time="defaultTime" :isUnder="timeShow" @confrim="confrim" @cancel="timeShow = false"></smh-time-range>
 	</app-body>
 </template>
 
@@ -85,7 +85,17 @@
 			/**日期信息**/
 			weekText() {
 				return wddkAbbreviation(this.form.week) || '请选择星期';
+			},
+			/**
+			 * 获取默认时间
+			 */
+			defaultTime() {
+				const { startTime = '', endTime = '' } = this.form;
+				const start = startTime.split(':'), end = endTime.split(':');
+				console.log([...start, '0', ...end], '[...start, ...end]')
+				return [...start, '0', ...end].map(ele => +ele);
 			}
+			
 		},
 		methods: {
 			/**
