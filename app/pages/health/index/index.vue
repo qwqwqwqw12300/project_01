@@ -357,11 +357,13 @@
 				}).then(res => {
 					const {
 						sleepQuality,
-						sleepScore
+						sleepScore,
+						lastSleepTime
 					} = res.data
 					this.sleepMap = {
 						sleepQuality,
-						score: sleepScore || 0
+						score: sleepScore || 0,
+						date: uni.$u.timeFormat(lastSleepTime, 'mm月dd日')
 					}
 					console.log(res, '-----------------------')
 				})

@@ -8,7 +8,7 @@
 			<image class="ui-img-size3" src="/static/images/yueliang.png"></image>
 			<text class="ui-font-32 ui-mar-l-10">睡眠</text>
 			<view class="ui-font-3 ui-w-h-100  ui-mar-t-15" style="padding-left:20rpx">
-				{{ date }} <text style="margin-left: 14rpx">{{ sleepMap.sleepQuality }}</text>
+				{{ sleepMap.date }} <text style="margin-left: 14rpx">{{ sleepMap.sleepQuality }}</text>
 			</view>
 			<!-- <view style="margin-top: 10rpx;padding-left: 10rpx;">{{ sleepMap.sleepQuality }}</view> -->
 			<view class="ui-w-h-100 ui-f-start ui-mar-t-20">
