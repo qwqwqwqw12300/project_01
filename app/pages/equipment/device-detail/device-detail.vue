@@ -116,6 +116,7 @@
 					this.swiperData = this.deviceList[item.detail.current]
 					this.swiperKey = this.swiperData.type
 					this.tabKey = 'MsgList'
+					this.$store.commit('setDeviceInfo', this.swiperData);
 				}, 500)
 			},
 			handleTab(key) {
