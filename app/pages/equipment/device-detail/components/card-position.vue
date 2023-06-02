@@ -1,6 +1,12 @@
 <template>
 	<view class="ui-map">
-		<point-map :record="locationInfo"></point-map>
+		<template v-if="deviceInfo.status === '1'">
+			<point-map :record="locationInfo"></point-map>
+		</template>
+		<div class="list-empty" v-else>
+			<u-empty mode="wifi" text="设备已离线" icon="/static/images/no-wifi.png">
+			</u-empty>
+		</div>
 		<map v-show="false"></map>
 		<view class="ui-float">
 			<view class="float-item" @click="getNowLocation">
@@ -13,7 +19,8 @@
 				<!-- 	<text>轨迹</text> -->
 			</view>
 		</view>
-		<touch-popup :minHeight="0.12" :maxHeight="0.7" :touchHeight="64" radius="30rpx">
+		<touch-popup v-if="deviceInfo.status === '1'" :minHeight="0.12" :maxHeight="0.7" :touchHeight="64"
+			radius="30rpx">
 			<view class="map-position">
 				<text class="label">当前位置:</text>
 				<view class="content">
@@ -97,6 +104,7 @@
 			this.mapHeight = sysHeight - saveHeight - 400
 		},
 		mounted() {
+			if (this.deviceInfo.status !== '1') return
 			this.getDeviceLocation('last')
 
 		},
@@ -129,6 +137,7 @@
 				}
 			},
 			getNowLocation() {
+				if (this.deviceInfo.onlineFlag !== '1') return uni.$u.toast('您的设备已离线,无法进行定位')
 				this.getDeviceLocation('now')
 			},
 			getLocation(n) {
@@ -226,7 +235,8 @@
 							}
 							this.addressInfo = {
 								address,
-								locateTimeFromCurrent: res.data?.locateTimeFromCurrent ||  uni.$u.timeFormat(res.data.locateTime, 'yyyy-mm-dd hh:MM')
+								locateTimeFromCurrent: res.data?.locateTimeFromCurrent || uni.$u
+									.timeFormat(res.data.locateTime, 'yyyy-mm-dd hh:MM')
 							}
 							this.getHistoryLocation()
 						} catch (e) {

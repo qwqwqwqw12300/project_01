@@ -70,6 +70,7 @@
 		},
 		methods: {
 			getNowLocation() {
+				if (this.deviceInfo.onlineFlag !== '1') return uni.$u.toast('您的设备已离线,无法进行定位')
 				if (this.isLoading) return
 				uni.showLoading({
 					title: '获取定位中'
