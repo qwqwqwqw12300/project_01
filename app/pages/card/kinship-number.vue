@@ -115,6 +115,7 @@
 						if (!phoneValidator(list[i].phone)) return uni.$u.toast(`${list[i].buttonName}手机号不正确`)
 					}
 				}
+				if (!list[0].phoneName && !list[0].phone) return uni.$u.toast('请设置SOS紧急号码')
 				PostSetFamilyNumber({
 					deviceId: this.deviceInfo.deviceId,
 					buttonFroms: this.contactList,
