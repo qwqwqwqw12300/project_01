@@ -5,9 +5,16 @@
 			<app-logo color="#353535" text="紧急联系人设置"></app-logo>
 		</view>
 		<view class="ui-form">
-			<view class="ui-screen-icon " style="margin-right: 20rpx;" @click="familyShow = true">
-				<text>{{familyName}}</text>
-				<u-icon size="35rpx" :name="familyShow ? 'arrow-down-fill' : 'arrow-up-fill'"></u-icon>
+			<view class="ui-screen-icon " style="margin-right: 20rpx;">
+				<view class="ui-screen-icon-left">
+					<image src="@/static/images/add-home.png" mode=""></image>
+					<text>{{familyName}}</text>
+				</view>
+				<!-- <u-icon size="35rpx" :name="familyShow ? 'arrow-down-fill' : 'arrow-up-fill'"></u-icon> -->
+				<view class="ui-screen-icon-right" @click="familyShow = true">
+					<image src="@/static/images/contacts_switchover.png" mode=""></image>
+					<text>切换家庭</text>
+				</view>
 			</view>
 			<view class="ui-form-item" v-for="(item,index) in contactList" :key="item.orderNum">
 				<view class="item-title">
@@ -299,13 +306,28 @@
 
 	.ui-screen-icon {
 		height: 90rpx;
-		padding-left: 20rpx;
+		padding: 0 32rpx;
 		display: flex;
-		flex-direction: row;
+		justify-content: space-between;
 		align-items: center;
-
-		>text {
-			margin-left: 10rpx;
+		flex-direction: row;
+		
+		&-left, &-right {
+			display: flex;
+			align-items: center;
+			>image {
+				margin-right: 10rpx;
+				width: 32rpx;
+				height: 32rpx;
+			}
 		}
+		&-right {
+			>text {
+				color: #FEAE43;
+			}
+		}
+		// >text {
+		// 	margin-left: 10rpx;
+		// }
 	}
 </style>
