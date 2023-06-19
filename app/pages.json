@@ -503,6 +503,14 @@
 				}
 			}
 		}, {
+			"path": "pages/card/location-frequency",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		}, {
 			"path": "pages/card/info-guard",
 			"style": {
 				"navigationStyle": "custom",

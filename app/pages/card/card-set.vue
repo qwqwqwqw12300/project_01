@@ -37,14 +37,17 @@
 		data() {
 			return {
 				cellList: [{
+					title: '设备名称',
+					url: '/pages/card/name-edit',
+				}, {
 					title: '通讯录白名单',
 					url: '/pages/card/tel-books',
 				}, {
-					title: '设备名称修改',
-					url: '/pages/card/name-edit',
-				},{
 					title: '亲情号码',
 					url: '/pages/card/kinship-number'
+				}, {
+					title: '定位频率',
+					url: '/pages/card/location-frequency'
 				}, {
 					title: '设置电子围栏',
 					url: '/pages/card/enclosure/enclosure?type=set'

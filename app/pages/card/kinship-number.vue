@@ -24,7 +24,7 @@
 				</view>
 				<view class="item-input">
 					<view class="input-left">
-						<u--input v-model="item.phoneName" placeholder="请输入姓名" border="none" clearable></u--input>
+						<u--input v-model="item.phoneName" placeholder="请输入姓名" border="none" maxlength="8" clearable></u--input>
 					</view>
 					<view class="input-right">
 						<u--input v-model="item.phone" maxlength="11" type="number" placeholder="请输入手机号" border="none"
@@ -201,9 +201,11 @@
 				align-items: center;
 				justify-content: space-between;
 
-				.input-left,
+				.input-left {
+					width: 340rpx;
+				}
 				.input-right {
-					width: 200rpx;
+					width: 300rpx;
 				}
 
 			}

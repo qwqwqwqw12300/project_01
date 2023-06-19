@@ -794,3 +794,17 @@ export const GetSleepWeekData = (params) => http.get('/api/tWatch/listSleepByWee
 export const GetDaySleepQuality = (params) => http.get('/api/tWatch/getDaySleepQuality', params, {
 	// showLoading: false
 });
+
+/**
+ * 获取定位频率
+ */
+export const getLocationFrequency = (params) => http.get('/api/careCard/getLocationFrequency', params, {
+	// showLoading: false
+});
+
+/**
+ * 设置定位频率
+ */
+export const setLocationFrequency = (params) => http.post('/api/careCard/setLocationFrequency', params, {
+	// showLoading: false
+});
