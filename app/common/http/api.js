@@ -552,6 +552,13 @@ export const GetsetAddressBook = (params) => http.get('/api/careCard/track/point
 });
 
 /**
+ * 获取位置追踪1天内的轨迹
+ */
+export const GetOneDayPoints = (params) => http.get('/api/careCard/track/oneDayPoints', params, {
+	showLoading: false
+});
+
+/**
  * 获取位置追踪（最后一次）
  */
 export const GetLastPoint = (params) => http.get('/api/careCard/track/lastPoint', params, {

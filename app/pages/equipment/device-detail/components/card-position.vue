@@ -8,32 +8,35 @@
 			</u-empty>
 		</div>
 		<map v-show="false"></map>
+		<!-- 牵挂卡获取定位的页面的icon -->
 		<view class="ui-float">
 			<view class="float-item" @click="getNowLocation">
 				<u-icon name="/static/images/map-position.png" size="36px"></u-icon>
-				<!-- 	<text>定位</text> -->
+					<text>刷新</text>
 			</view>
 			<view class="float-line"></view>
 			<view class="float-item" @click="toJump">
 				<u-icon name="/static/images/map-track.png" size="30px"></u-icon>
-				<!-- 	<text>轨迹</text> -->
+					<text>足迹</text>
 			</view>
 		</view>
-		<touch-popup v-if="deviceInfo.status === '1'" :minHeight="0.12" :maxHeight="0.7" :touchHeight="64"
-			radius="30rpx">
-			<view class="map-position">
-				<text class="label">当前位置:</text>
-				<view class="content">
-					{{ addressInfo.address }}
+		<!-- <touch-popup v-if="deviceInfo.status === '1'" :minHeight="0.12" :maxHeight="0.7" :touchHeight="64"
+			radius="30rpx"> -->
+			<view class="bottom-info">
+				<view class="map-position">
+					<text class="label">当前位置:</text>
+					<view class="content">
+						{{ addressInfo.address }}
+					</view>
+				</view>
+				<view class="map-position border">
+					<text class="label">更新时间:</text>
+					<view class="content">
+						{{ addressInfo.locateTimeFromCurrent }}
+					</view>
 				</view>
 			</view>
-			<view class="map-position border">
-				<text class="label">更新时间:</text>
-				<view class="content">
-					{{ addressInfo.locateTimeFromCurrent }}
-				</view>
-			</view>
-			<template v-if="historyList.length">
+			<!-- <template v-if="historyList.length">
 				<view class="address-list">
 					<view class="list-item" v-for="(n, index) in historyList" :key="index" @click="mapMarker(n)">
 						<view class="list-item-label">
@@ -53,8 +56,8 @@
 			</view>
 			<view class="ui-btn">
 				<button class="default" @click="toJump">历史位置</button>
-			</view>
-		</touch-popup>
+			</view> -->
+		<!-- </touch-popup> -->
 	</view>
 </template>
 
@@ -401,4 +404,13 @@
 		// 	border-bottom: 2rpx solid #353535;
 		// }
 	}
+	.bottom-info {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		padding: 0 20rpx;
+		background-color: #ffffff;
+		box-sizing: border-box;
+	}	
 </style>

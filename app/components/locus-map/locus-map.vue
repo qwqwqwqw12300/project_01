@@ -26,13 +26,17 @@
 				handler(val) {
 					// if (val.length) {
 					// this.mapData.info = uni.$u.deepClone(val)
-					if(val && val.length) {
+					if (val && val.length) {
+						let list = val.map((item, index) => {
+							return [item.location[0], item.location[1]]
+						})
 						this.mapData = {
-							info: uni.$u.deepClone(val),
-							cur: uni.$u.deepClone(this.$store.getters.positionInfo) || {}
+							info: uni.$u.deepClone(list),
+							cur: uni.$u.deepClone(this.$store.getters.positionInfo) || {},
+							markersList: uni.$u.deepClone(val)
 						}
 					}
-				
+
 					// }
 				},
 				immediate: true,
@@ -69,6 +73,7 @@
 		data() {
 			return {
 				polyline: null,
+				Marker: null,
 				AMap: null,
 				map: null,
 				lineArr: [],
@@ -85,13 +90,14 @@
 					info,
 					cur
 				} = data
-				if(info && info.length && cur) {
+				if (info && info.length && cur) {
 					this.lineArr = this.deepClone(data)
 					// this.loadMap(this.init)
 					if (this.map) {
 						this.polyline && this.map.remove(this.polyline)
 						if (info.length) {
 							this.markLine()
+							// this.markers()
 						} else {
 							this.map.setCenter([cur.longitude, cur.latitude])
 						}
@@ -100,7 +106,7 @@
 						this.loadMap(this.init);
 					}
 				}
-				
+
 			},
 			/**
 			 * 初始化
@@ -121,13 +127,15 @@
 						center: center,
 						zoom: 13 //地图显示的缩放级别
 					})
-					info.length && this.markLine()
+					if(info.length) {
+						this.markLine()
+						// this.markers()
+					}
 				}, 100)
 				this.$ownerInstance.callMethod('onMsg', false)
 				// this.markLine()
 			},
 			markLine() {
-				// console.log(, '----------------')
 				this.polyline = new this.AMap.Polyline({
 					path: this.lineArr.info,
 					showDir: true,
@@ -150,6 +158,21 @@
 				// 缩放地图到合适的视野级别
 				this.map.setFitView([this.polyline])
 			},
+			markers() {
+				this.mapData.markersList.map((item, index) => {
+					this.Marker = new this.AMap.Marker({
+						map: this.map,
+						icon: new this.AMap.Icon({
+							// image: './static/images/starting_point.png',
+							image: item.icon,
+							size: new this.AMap.Size(32, 32), //图标大小
+							imageSize: new this.AMap.Size(32, 32)
+						}),
+						position: [item.location[0], item.location[1]],
+						offset: new AMap.Pixel(-13, -30)
+					})
+				})
+			},
 			deepClone(target) {
 				let copy_obj = [];
 
@@ -164,7 +187,7 @@
 					}
 					let obj = {};
 					if (Array.isArray(target)) {
-						obj = []; //处理target是数组的情况 
+						obj = []; //处理target是数组的情况
 					}
 					copy_obj.push({
 						target: target,
@@ -196,4 +219,4 @@
 		height: calc(100vh - 100px);
 		width: 100%;
 	}
-</style>
+</style>	
