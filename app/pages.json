@@ -759,6 +759,15 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/card/safety-guard",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 	"globalStyle": {
