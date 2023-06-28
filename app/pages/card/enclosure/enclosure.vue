@@ -1,8 +1,8 @@
 <template>
 	<app-body :bg="false" :needService="false" :bodyStyle="{backgroundColor:'#FFF'}">
-		<view style="margin-bottom: 50rpx;">
-			<app-logo color="#353535" text="设置电子围栏"></app-logo>
-		</view>
+		<!-- <view style="margin-bottom: 50rpx;">
+			<app-logo color="#353535" text="新增守护区域"></app-logo>
+		</view> -->
 		<view class="tab">
 			<view class="tab-box">
 				<text @tap="handleTab(item.key)" class="tab-item" :class="{'active': tabKey === item.key }"
@@ -33,7 +33,17 @@
 					name: '多边形'
 				}],
 				tabKey: 'circleMap',
+				urlLocation: {}
 			}
+		},
+		onReady() {
+			// 监听键盘高度变化，以便设置输入框的高度
+			uni.onKeyboardHeightChange(res => {
+				this.$refs.comRef.inputOffsetBottom = res.height
+				// if (res.height === 0) {
+				//   this.focus = false
+				// }
+			})
 		},
 		methods: {
 			handleTab(key) {
@@ -47,8 +57,7 @@
 	.tab {
 		position: absolute;
 		left: 32rpx;
-		// top: 800rpx;
-		bottom: 250rpx;
+		top: 800rpx;
 		z-index: 9;
 
 		.tab-box {

@@ -9,15 +9,17 @@
 				设置好家和学校的位置，当宝贝离开或到达时，您将收到通知(过小的安全区提醒，不在宝贝身边也能实时知道安全状态。域容易导致误报，请慎重选择，建议调整为200米以上)
 			</view>
 			<view class="guard">
-				<view class="guard-item" v-for="(item, index) in guardList" :key="index">
-					<image class="guard-item-img" :src="item.img" mode=""></image>
+				<view class="guard-item" v-for="(item, index) in guardList" :key="index" @tap.stop="toLocationGuard(item)">
+					<image class="guard-item-img" src="@/static/images/guar-map.png" mode=""></image>
 					<view class="guard-item-content">
-						<image class="guard-item-content-icon" :src="item.icon" mode=""></image>
+						<image class="guard-item-content-icon" src="@/static/images/add-home.png" mode=""></image>
 						<view class="guard-item-content-info">
 							<view class="guard-item-content-info-name">{{ item.name }}方圆{{ item.radius }}米</view>
-							<view class="guard-item-content-info-location">{{ item.location }}</view>
+							<view class="guard-item-content-info-location">{{ item.address }}</view>
 						</view>
-						<u-switch v-model="item.switch" activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)"></u-switch>
+						<u-icon name="trash" size="30" @tap.stop.native="delGuard(item)"></u-icon>
+						<u-switch v-model="item.fenceSwitch" activeColor="#FEAE43"
+							inactiveColor="rgb(230, 230, 230)" asyncChange @change="handleSwitch($event)"></u-switch>
 					</view>
 				</view>
 			</view>
@@ -29,39 +31,19 @@
 </template>
 
 <script>
-	// import {} from '@/common/http/api.js';
-
 	import {
-		mapState,
+		mapState
 	} from 'vuex';
+	import {
+		GetFenceInfo,
+		PostAddFence,
+		remGuard
+	} from '@/common/http/api';
 	export default {
 		data() {
 			return {
-				guardList: [{
-					// img: require('@/static/images/bluetooth.png'),
-					img: 'https://img2.baidu.com/it/u=2582324909,1978308042&fm=253&fmt=auto&app=138&f=JPEG?w=812&h=500',
-					icon: require('@/static/images/add-home.png'),
-					name: '家',
-					radius: '200',
-					location: '福州仓山区鹿玲路192号东方明珠大厦',
-					switch: true
-				}, {
-					// img: require('@/static/images/bluetooth.png'),
-					img: 'https://img2.baidu.com/it/u=2582324909,1978308042&fm=253&fmt=auto&app=138&f=JPEG?w=812&h=500',
-					icon: require('@/static/images/add-home.png'),
-					name: '家',
-					radius: '200',
-					location: '福州仓山区鹿玲路192号东方明珠大厦',
-					switch: true
-				}, {
-					// img: require('@/static/images/bluetooth.png'),
-					img: 'https://img2.baidu.com/it/u=2582324909,1978308042&fm=253&fmt=auto&app=138&f=JPEG?w=812&h=500',
-					icon: require('@/static/images/add-home.png'),
-					name: '家',
-					radius: '200',
-					location: '福州仓山区鹿玲路192号东方明珠大厦',
-					switch: true
-				}]
+				guardList: [],
+				a: 1
 			}
 		},
 		computed: {
@@ -69,11 +51,69 @@
 				deviceInfo: state => state.deviceInfo
 			}, )
 		},
+		// mounted() {
+		// 	this.getGuardList()
+		// },
+		onShow() {
+			this.getGuardList()
+		},
 		methods: {
-			toEnclosure() {
-				uni.navigateTo({
-					url: '/pages/card/enclosure/enclosure?type=set'
+			async getGuardList() {
+				let res = await GetFenceInfo({
+					deviceId: this.deviceInfo.deviceId
 				})
+				res.data.map((item, index) => {
+					if(item.fenceSwitch) {
+						item.fenceSwitch = true
+					} else {
+						item.fenceSwitch = false
+					}
+				})
+				this.guardList = res.data
+			},
+			toEnclosure() {
+				if (this.guardList.length >= 3) {
+					uni.showModal({
+						title: '提示',
+						content: '最多只能添加三个'
+					});
+					return
+				}
+				uni.navigateTo({
+					url: '/pages/card/enclosure/enclosure'
+				})
+			},
+			toLocationGuard(item) {
+				const {
+					province,
+					city,
+					district,
+					address,
+					latitude,
+					longitude
+				} = item
+				this.$store.dispatch('setUrlLocation', {
+					location: {
+						latitude,
+						longitude
+					},
+					province,
+					city,
+					district,
+					address
+				})
+				uni.navigateTo({
+					url: `/pages/card/enclosure/enclosure`
+				})
+			},
+			async delGuard(item) {
+				const res = await remGuard({ deviceId: this.deviceInfo.deviceId, deviceFenceId: item.deviceFenceId, fenceType: item.fenceType })
+				uni.$u.toast('删除成功')
+				this.getGuardList()
+			},
+			handleSwitch(e) {
+				e.stopPropagation()
+				console.log(e)
 			}
 		}
 	}
@@ -112,6 +152,7 @@
 				align-items: center;
 				padding: 26rpx 32rpx 32rpx 32rpx;
 				background-color: #ffffff;
+
 				&-icon {
 					width: 64rpx;
 					height: 64rpx;
@@ -119,6 +160,7 @@
 
 				&-info {
 					padding-left: 20rpx;
+
 					&-name {
 						width: 100%;
 						font-size: 32rpx;
@@ -136,6 +178,7 @@
 			}
 		}
 	}
+
 	.app-bottom {
 		position: fixed;
 		bottom: 0;
@@ -145,6 +188,7 @@
 		width: 100%;
 		height: 88rpx;
 		background-color: #f2f2f2;
+
 		&-btn {
 			width: 686rpx;
 			background-image: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);

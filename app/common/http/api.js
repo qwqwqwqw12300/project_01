@@ -815,3 +815,10 @@ export const getLocationFrequency = (params) => http.get('/api/careCard/getLocat
 export const setLocationFrequency = (params) => http.post('/api/careCard/setLocationFrequency', params, {
 	// showLoading: false
 });
+
+/**
+ * 删除区域守护
+ */
+export const remGuard = (params) => http.post('/api/fence/rem', params, {
+	// showLoading: false
+});

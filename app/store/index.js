@@ -39,6 +39,8 @@ const store = {
 		modal: null,
 		/**当前定位信息**/
 		positionInfo: {},
+		// 安全守护经纬度信息
+		urlLocation: {}
 	},
 	mutations: {
 
@@ -135,6 +137,13 @@ const store = {
 		 */
 		setPositionInfo(state, info) {
 			state.positionInfo = info;
+		},
+
+		/**
+		 * 安全守护位置
+		 */
+		setUrlLocation(state, info) {
+			state.urlLocation = info;
 		}
 	},
 	actions: {
@@ -268,8 +277,14 @@ const store = {
 				}
 
 			});
-		}
-
+		},
+		//保存数据
+		setUrlLocation({
+			commit
+		}, data) {
+			console.log(data, 'asdas')
+			commit('setUrlLocation', data)
+		},
 	},
 	getters: {
 		/**
@@ -306,6 +321,10 @@ const store = {
 		 * 当前定位信息
 		 */
 		positionInfo: state => state.positionInfo,
+		/**
+		 * 位置安全守护经纬度
+		 */
+		urlLocation: state => state.urlLocation,
 	}
 }
 

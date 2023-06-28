@@ -50,7 +50,7 @@
 					url: '/pages/card/location-frequency'
 				}, {
 					title: '设置电子围栏',
-					url: '/pages/card/enclosure/enclosure?type=set'
+					url: '/pages/card/safety-guard'
 				}, {
 					title: '位置守护',
 					url: '/pages/card/guard'
