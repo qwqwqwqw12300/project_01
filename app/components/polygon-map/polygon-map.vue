@@ -11,7 +11,7 @@
 		<view class="ui-float">
 			<view class="float-item" id="claear_action">
 				<u-icon name="/static/images/clear.png" size="32px"></u-icon>
-				<!-- <text>更新位置</text> -->
+				<text>重置</text>
 			</view>
 			<!-- 	<view class="float-line"></view> -->
 		</view>
@@ -291,7 +291,7 @@
 	.ui-float {
 		position: fixed;
 		right: 20rpx;
-		bottom: 400rpx;
+		bottom: 190rpx;
 		padding: 20rpx 20rpx;
 		background-color: #FFFFFF;
 		box-sizing: border-box;

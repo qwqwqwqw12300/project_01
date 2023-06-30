@@ -1,14 +1,14 @@
 <template>
 	<app-body :bg="false" :needService="false" :bodyStyle="{backgroundColor:'#FFF'}">
-		<!-- <view style="margin-bottom: 50rpx;">
+		<view class="app-head" style="margin-bottom: 50rpx;">
 			<app-logo color="#353535" text="新增守护区域"></app-logo>
-		</view> -->
-		<view class="tab">
-			<view class="tab-box">
-				<text @tap="handleTab(item.key)" class="tab-item" :class="{'active': tabKey === item.key }"
-					v-for="item in tabList" :key="item.key">
-					{{ item.name }}
-				</text>
+			<view class="tab">
+				<view class="tab-box">
+					<text @tap="handleTab(item.key)" class="tab-item" :class="{'active': tabKey === item.key }"
+						v-for="item in tabList" :key="item.key">
+						{{ item.name }}
+					</text>
+				</view>
 			</view>
 		</view>
 		<component ref="comRef" :is="tabKey"></component>
@@ -16,6 +16,9 @@
 </template>
 
 <script>
+	import {
+		mapState,
+	} from 'vuex';
 	import circleMap from './components/circle.vue'
 	import polygonMap from './components/polygon.vue'
 	export default {
@@ -32,18 +35,18 @@
 					key: 'polygonMap',
 					name: '多边形'
 				}],
-				tabKey: 'circleMap',
-				urlLocation: {}
+				tabKey: 'circleMap'
 			}
 		},
-		onReady() {
-			// 监听键盘高度变化，以便设置输入框的高度
-			uni.onKeyboardHeightChange(res => {
-				this.$refs.comRef.inputOffsetBottom = res.height
-				// if (res.height === 0) {
-				//   this.focus = false
-				// }
-			})
+		computed: {
+			...mapState({
+				deviceInfo: state => state.deviceInfo,
+				urlLocation: state => state.urlLocation
+			}, )
+		},
+		created() {
+			this.tabKey = this.urlLocation.fenceType === 'circle' ? 'circleMap' : this.urlLocation.fenceType ===
+				'polygon' ? 'polygonMap' : 'circleMap'
 		},
 		methods: {
 			handleTab(key) {
@@ -54,11 +57,24 @@
 </script>
 
 <style lang="scss" scoped>
+	.app-head {
+		margin-top: 60rpx;
+		margin-left: 32rpx;
+		margin-bottom: 20rpx !important;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.wd-logo {
+		margin: 0 !important;
+	}
+
 	.tab {
-		position: absolute;
-		left: 32rpx;
-		top: 800rpx;
-		z-index: 9;
+		// position: absolute;
+		// left: 32rpx;
+		// top: 800rpx;
+		// z-index: 9;
 
 		.tab-box {
 			width: 260rpx;

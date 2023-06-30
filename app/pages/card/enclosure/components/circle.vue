@@ -9,21 +9,21 @@
 		<!-- 安全距离 -->
 		<view class="slider">
 			<view class="slider-left">
-				<view class="slider-left-location" @tap="handleGetLocation">我的位置</view>
+				<view class="slider-left-location" @tap="handleGetLocation">位置</view>
 				<!-- <image class="slider-left_img" src="@/static/images/guard_home.png" mode=""></image> -->
 			</view>
 			<view class="slider-center">
 				<view class="slider-center_circle">
-					<u-slider @change="onSlider" max="500" step="10" v-model="mapInfo.sliderValue" activeColor="#eeaa3d"
-						blockColor="#eeaa3d" inactiveColor="#6c6c6c" />
+					<u-slider @change="onSlider" max="500" min="50" step="10" v-model="mapInfo.sliderValue"
+						activeColor="#eeaa3d" blockColor="#eeaa3d" inactiveColor="#6c6c6c" />
 				</view>
 				<view class="slider-center_text">
-					<view class="slider-center_text_name">安全距离</view>
+					<!-- <view class="slider-center_text_name">安全距离</view> -->
 					<view class="slider-center_text_num">{{mapInfo.sliderValue}}米</view>
 				</view>
 			</view>
 			<view class="slider-right">
-				<view class="slider-right-location" @tap="getEquipmentLastPoint">设备位置</view>
+				<view class="slider-right-location" @tap="getEquipmentLastPoint">设备</view>
 				<!-- <image class="slider-right_img" src="@/static/images/guard_home.png" mode=""></image> -->
 			</view>
 		</view>
@@ -124,13 +124,8 @@
 		GetFenceInfo,
 		GetLastPoint
 	} from '@/common/http/api.js';
+	import loadingIcon from '../../../../uni_modules/uview-ui/libs/config/props/loadingIcon';
 	export default {
-		props: {
-			urlLocation: {
-				type: Object,
-				default: () => {}
-			}
-		},
 		data() {
 			return {
 				siteInfo: '',
@@ -144,7 +139,6 @@
 				poiShow: false,
 				guardNameShow: false,
 				locationShow: true,
-				inputOffsetBottom: 0,
 				mapInfo: {
 					sliderValue: 200,
 					latitude: '',
@@ -154,7 +148,8 @@
 		},
 		computed: {
 			...mapState({
-				deviceInfo: state => state.deviceInfo
+				deviceInfo: state => state.deviceInfo,
+				urlLocation: state => state.urlLocation
 			}, ),
 			getMapIcon() {
 				return function(item) {
@@ -170,17 +165,8 @@
 				}
 			}
 		},
-		onReady() {
-			// 监听键盘高度变化，以便设置输入框的高度
-			uni.onKeyboardHeightChange(res => {
-				console.log(res, 'asdadaaaaaaaaa')
-				this.inputOffsetBottom = res.height
-				// if (res.height === 0) {
-				//   this.focus = false
-				// }
-			})
-		},
-		created() {
+		mounted() {
+			console.log(this.urlLocation, 'asdas')
 			this.handleInit()
 		},
 		methods: {
@@ -251,19 +237,22 @@
 				}, 500)
 			},
 			async handleInit() {
-				if (this.$store.getters.urlLocation && Object.keys(this.$store.getters.urlLocation).length) {
-					console.log(this.$store.getters.urlLocation, 'urlLocaiton')
+				console.log('进来了吗？')
+				// 判断是否是添加新的守护区域
+				if (this.urlLocation && Object.keys(this.urlLocation).length && this.urlLocation.location.longitude &&
+					this.urlLocation.latitude) {
+					console.log(this.urlLocation, 'urlLocaiton')
 					const {
 						longitude,
 						latitude
-					} = this.$store.getters.urlLocation.location
+					} = this.urlLocation.location
 
 					this.getSiteInfo({
 						longitude,
 						latitude
 					})
 					this.mapInfo = {
-						sliderValue: 200,
+						sliderValue: this.urlLocation.radius,
 						latitude,
 						longitude
 					}
@@ -271,32 +260,9 @@
 						longitude,
 						latitude
 					})
-					console.log(this.siteInfo , 'this.siteInfo 进行')
 					return
 				}
-				// 这边留着判断记得哦
-				GetFenceInfo({
-					deviceId: this.deviceInfo.deviceId,
-				}).then(res => {
-					if (!res.data.length) return this.handleGetLocation()
-					const data = res.data[0]
-					if (data.fenceType === 'circle') {
-						const {
-							longitude,
-							latitude,
-							radius,
-							address,
-						} = data
-						this.mapInfo = {
-							sliderValue: radius,
-							longitude,
-							latitude,
-						}
-						this.siteInfo = address
-					} else {
-						this.handleGetLocation()
-					}
-				})
+				this.handleGetLocation()
 			},
 			// 设置地图定位
 			mapMarker(data, name) {
@@ -314,11 +280,13 @@
 					}
 				} = data
 				// this.currentSelect = index
-				this.mapInfo = {
-					sliderValue: 200,
-					latitude,
-					longitude,
-				}
+				// this.mapInfo = {
+				// 	sliderValue: 200,
+				// 	latitude,
+				// 	longitude,
+				// }
+				this.mapInfo.longitude = loadingIcon
+				this.mapInfo.latitude = latitude
 				this.siteInfo = !name ? province + city + district + address : name
 			},
 			onSlider() {
@@ -357,6 +325,7 @@
 			 * 获取当前定位
 			 */
 			handleGetLocation() {
+				console.log('初始化11111111111111111111111111')
 				uni.showLoading({
 					title: '加载中'
 				})
@@ -418,10 +387,11 @@
 					} = res;
 					if (poiList && poiList.length) {
 						await poiList.map((item, index) => {
-							if (item.name === this.siteInfo) poiList.splice(index, 1)
+							if (item.location.longitude === Number(longitude)) {
+								poiList.splice(index, 1)
+							}
 						})
 						this.nearbyLocation = poiList
-						console.log(poiList, 'neanearbyLocation')
 						// this.poiList = (poiList.length > 4 ? poiList.slice(0, 4) : poiList).map((n, i) => {
 						// 	n.index = i
 						// 	return n
@@ -446,13 +416,15 @@
 					return uni.$u.toast('半径长度大于0')
 				}
 				PostAddFence({
-					fenceType: 'circle',
+					fenceType: this.urlLocation.fenceType ? this.urlLocation.fenceType : 'circle',
 					deviceNo: this.deviceInfo.no,
 					deviceId: this.deviceInfo.deviceId,
 					address,
 					longitude,
 					latitude,
 					radius: sliderValue + '',
+					name: this.guardName,
+					deviceFenceId: this.urlLocation.deviceFenceId ? this.urlLocation.deviceFenceId : ''
 				}).then(res => {
 					uni.navigateBack()
 					uni.$u.toast(res.msg)
@@ -613,7 +585,7 @@
 		position: absolute;
 		width: calc(100vw - 0rpx);
 		left: 40rpx;
-		top: 100rpx;
+		top: 220rpx;
 		z-index: 99;
 	}
 
@@ -630,7 +602,6 @@
 		&-left,
 		&-right {
 			&-location {
-				width: 156rpx;
 				padding: 13rpx 16rpx;
 				display: flex;
 				align-items: center;
@@ -694,9 +665,9 @@
 	// 搜索记录
 	.result {
 		width: 100%;
-		height: calc(100% - 185rpx);
+		height: calc(100% - 296rpx);
 		position: absolute;
-		top: 185rpx;
+		top: 296rpx;
 		left: 0;
 		background-color: #ffffff;
 		z-index: 99999;
@@ -820,5 +791,9 @@
 		font-size: 34rpx;
 		color: #353535;
 		font-weight: 550;
+	}
+
+	/deep/ uni-slider {
+		// margin: 20rpx 16rpx;
 	}
 </style>

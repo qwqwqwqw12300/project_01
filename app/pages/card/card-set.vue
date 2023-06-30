@@ -37,30 +37,36 @@
 		data() {
 			return {
 				cellList: [{
-					title: '设备名称',
-					url: '/pages/card/name-edit',
-				}, {
-					title: '通讯录白名单',
-					url: '/pages/card/tel-books',
-				}, {
-					title: '亲情号码',
-					url: '/pages/card/kinship-number'
-				}, {
-					title: '定位频率',
-					url: '/pages/card/location-frequency'
-				}, {
-					title: '设置电子围栏',
-					url: '/pages/card/safety-guard'
-				}, {
-					title: '位置守护',
-					url: '/pages/card/guard'
-				}, {
-					title: '时段禁用',
-					url: '/pages/card/time-interval'
-				}, {
-					title: '远程监听',
-					url: '/pages/card/monitor'
-				}]
+						title: '设备名称',
+						url: '/pages/card/name-edit',
+					}, {
+						title: '通讯录白名单',
+						url: '/pages/card/tel-books',
+					}, {
+						title: '亲情号码',
+						url: '/pages/card/kinship-number'
+					}, {
+						title: '定位频率',
+						url: '/pages/card/location-frequency'
+					}, {
+						title: '安全守护',
+						url: '/pages/card/safety-guard'
+					},
+					// {
+					// 	title: '位置守护',
+					// 	url: '/pages/card/guard'
+					// },
+					{
+						title: '时段禁用',
+						url: '/pages/card/time-interval'
+					}, {
+						title: '远程监听',
+						url: '/pages/card/monitor'
+					}, {
+						title: '立即关机',
+						url: '/pages/card/monitor'
+					}
+				]
 			}
 		},
 		computed: {
