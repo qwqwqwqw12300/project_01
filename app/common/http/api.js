@@ -822,3 +822,10 @@ export const setLocationFrequency = (params) => http.post('/api/careCard/setLoca
 export const remGuard = (params) => http.post('/api/fence/rem', params, {
 	// showLoading: false
 });
+
+/**
+ * 远程关机
+ */
+export const remoteShutDown = (params) => http.post('/api/careCard/remoteShutDown', params, {
+	// showLoading: false
+});

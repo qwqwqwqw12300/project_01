@@ -9,7 +9,7 @@
 		<!-- 安全距离 -->
 		<view class="slider">
 			<view class="slider-left">
-				<view class="slider-left-location" @tap="handleGetLocation">位置</view>
+				<view class="slider-left-location" @tap="handleGetLocation">手机</view>
 				<!-- <image class="slider-left_img" src="@/static/images/guard_home.png" mode=""></image> -->
 			</view>
 			<!-- <view class="slider-center">
@@ -40,7 +40,7 @@
 				<button class="location-bottom-btn" @tap="nextStep">下一步</button>
 			</view>
 		</view>
-		<u-popup :show="guardNameShow" @close="guardClose" mode="center" :zIndex="999999">
+		<u-popup :show="guardNameShow" @close="guardNameShow = false" mode="center" :zIndex="999999">
 			<view class="popup">
 				<view class="popup-title">请输入名称</view>
 				<u--input placeholder="请输入名称" border="surround" clearable v-model="guardName" :cursorSpacing="700"
@@ -82,6 +82,7 @@
 				poiList: [], //搜索地址
 				nearbyLocation: [],
 				search: '',
+				fenceType: 'polygon',
 				currentCity: '',
 				guardName: '',
 				loading: true,
@@ -162,7 +163,6 @@
 						this.loading = false;
 						this.poiShow = true
 						this.poiList = poiList;
-						console.log(this.poiList, 'aaaaaaaaa;;;;;sss;')
 						// if (poiList && poiList.length) {
 						// 	this.poiList = poiList;
 						// }
@@ -170,21 +170,22 @@
 				}, 500)
 			},
 			savepPoints(data) {
-				console.log(data, 'adddddddddddddddddddddddddddd')
 				this.points = data
+				console.log(this.points, '设置了points')
 			},
 			handleInit() {
 				// 判断是否是添加新的守护区域
-				if (this.urlLocation && Object.keys(this.urlLocation).length) {
+				if (this.urlLocation && this.urlLocation.fenceType === 'polygon') {
+					this.fenceType = this.urlLocation.fenceType
 					console.log(this.urlLocation, 'urlLocaiton')
 					this.points = this.pointsFormatting(this.urlLocation)
 					// const res = this.urlLocation.points.split(';').map(n => {
 					// 	return n.split(',')
 					// })
-					console.log('我是初始化呀', res)
+					console.log('我是初始化呀', this.points)
 					this.mapInfo = {
-						longitude: res[0][0],
-						latitude: res[0][1],
+						longitude: this.points[0][0],
+						latitude: this.points[0][1],
 						points: this.points
 					}
 					return
@@ -232,6 +233,7 @@
 
 			},
 			handleSubmit() {
+				console.log(this.urlLocation, 'locaiton我是url')
 				if (!this.guardName) return uni.$u.toast('请输入名称')
 				console.log(this.points, '--------')
 				const res = this.points.map(n => {
@@ -242,9 +244,11 @@
 					return `${longitude},${latitude}`
 				}).join(';')
 				PostAddFence({
-					fenceType: 'polygon',
+					fenceType: this.fenceType,
 					deviceNo: this.deviceInfo.no,
+					deviceFenceId: this.urlLocation.deviceFenceId,
 					deviceId: this.deviceInfo.deviceId,
+					name: this.guardName,
 					points: res,
 				}).then(res => {
 					uni.$u.toast(res.msg)
@@ -268,12 +272,25 @@
 			},
 			// 下一步
 			nextStep() {
+				console.log(this.points, '我在下一步')
+				if(!this.points.length) return uni.$u.toast('请先设置多边形点位')
+				if (this.urlLocation && this.urlLocation.fenceType === 'circle') {
+					uni.showModal({
+						title: '提示',
+						content: `您确定守护范围选择从圆形切换成多边形吗？`,
+						success: async res => {
+							if (res.confirm) {
+								this.fenceType = 'polygon'
+								this.guardNameShow = true
+							}
+						},
+						fail: res => {
+							this.fenceType = 'circle'
+						}
+					})
+					return
+				}
 				this.guardNameShow = true
-				// this.locationShow = false
-			},
-			guardClose() {
-				// this.locationShow = true
-				this.guardNameShow = false
 			},
 			// 设备位置
 			async getEquipmentLastPoint() {
@@ -339,7 +356,9 @@
 		left: 40rpx;
 		bottom: 190rpx;
 		z-index: 99;
-
+		&-left {
+			margin-right: 10rpx;
+		}
 		&-left,
 		&-right {
 			&-location {

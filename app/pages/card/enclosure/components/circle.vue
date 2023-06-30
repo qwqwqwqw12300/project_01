@@ -9,7 +9,7 @@
 		<!-- 安全距离 -->
 		<view class="slider">
 			<view class="slider-left">
-				<view class="slider-left-location" @tap="handleGetLocation">位置</view>
+				<view class="slider-left-location" @tap="handleGetLocation">手机</view>
 				<!-- <image class="slider-left_img" src="@/static/images/guard_home.png" mode=""></image> -->
 			</view>
 			<view class="slider-center">
@@ -53,7 +53,7 @@
 				<button class="location-bottom-btn" @tap="nextStep">下一步</button>
 			</view>
 		</view>
-		<u-popup :show="guardNameShow" @close="guardClose" mode="center" :zIndex="999999">
+		<u-popup :show="guardNameShow" @close="guardNameShow = false" mode="center" :zIndex="999999">
 			<view class="popup">
 				<view class="popup-title">请输入名称</view>
 				<u--input placeholder="请输入名称" border="surround" clearable v-model="guardName" :cursorSpacing="700"
@@ -139,6 +139,7 @@
 				poiShow: false,
 				guardNameShow: false,
 				locationShow: true,
+				fenceType: 'circle',
 				mapInfo: {
 					sliderValue: 200,
 					latitude: '',
@@ -237,10 +238,10 @@
 				}, 500)
 			},
 			async handleInit() {
-				console.log('进来了吗？')
+				console.log(this.urlLocation, '进来了吗？')
 				// 判断是否是添加新的守护区域
-				if (this.urlLocation && Object.keys(this.urlLocation).length && this.urlLocation.location.longitude &&
-					this.urlLocation.latitude) {
+				if (this.urlLocation && this.urlLocation.fenceType === 'circle') {
+					this.fenceType = this.urlLocation.fenceType
 					console.log(this.urlLocation, 'urlLocaiton')
 					const {
 						longitude,
@@ -251,6 +252,7 @@
 						longitude,
 						latitude
 					})
+					console.log(this.urlLocation.radius, 'this.urlLocation.radius')
 					this.mapInfo = {
 						sliderValue: this.urlLocation.radius,
 						latitude,
@@ -285,7 +287,7 @@
 				// 	latitude,
 				// 	longitude,
 				// }
-				this.mapInfo.longitude = loadingIcon
+				this.mapInfo.longitude = longitude
 				this.mapInfo.latitude = latitude
 				this.siteInfo = !name ? province + city + district + address : name
 			},
@@ -294,12 +296,20 @@
 			},
 			// 地图位置（经纬度）发生变化时触发
 			async mapChange(obj) {
+				// 位置发生变化后重新搜索附近的小区
+				const {
+					sliderValue,
+					latitude,
+					longitude
+				} = obj
 				this.getSiteInfo(obj)
 				const res = await this.getLocation(obj)
 				this.siteInfo = res
-				console.log(res, 'res我动了？？？？？？')
-				console.log(obj, 'obj我动了？？？？？？')
-				console.log(this.siteInfo, 'siteInfo我动了？？？？？？')
+				this.mapInfo = {
+					sliderValue,
+					latitude,
+					longitude
+				}
 			},
 			getLocation(obj) {
 				console.log(obj, '我是OBJ.......')
@@ -325,7 +335,6 @@
 			 * 获取当前定位
 			 */
 			handleGetLocation() {
-				console.log('初始化11111111111111111111111111')
 				uni.showLoading({
 					title: '加载中'
 				})
@@ -416,7 +425,7 @@
 					return uni.$u.toast('半径长度大于0')
 				}
 				PostAddFence({
-					fenceType: this.urlLocation.fenceType ? this.urlLocation.fenceType : 'circle',
+					fenceType: this.fenceType,
 					deviceNo: this.deviceInfo.no,
 					deviceId: this.deviceInfo.deviceId,
 					address,
@@ -445,13 +454,24 @@
 			},
 			// 下一步
 			nextStep() {
+				if (this.urlLocation && this.urlLocation.fenceType === 'polygon') {
+					uni.showModal({
+						title: '提示',
+						content: `您确定守护范围选择从多边形切换成圆形吗？`,
+						success: async res => {
+							if (res.confirm) {
+								this.fenceType = 'circle'
+								this.guardNameShow = true
+							}
+						},
+						fail: res => {
+							this.fenceType = 'polygon'
+							console.log(res, '我点击了取消')
+						}
+					})
+					return
+				}
 				this.guardNameShow = true
-				// this.locationShow = false
-			},
-			// 取消
-			guardClose() {
-				// this.locationShow = true
-				this.guardNameShow = false
 			},
 			async getEquipmentLastPoint() {
 				uni.showLoading({
