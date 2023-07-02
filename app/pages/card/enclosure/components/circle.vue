@@ -242,6 +242,7 @@
 				// 判断是否是添加新的守护区域
 				if (this.urlLocation && this.urlLocation.fenceType === 'circle') {
 					this.fenceType = this.urlLocation.fenceType
+					this.guardName = this.urlLocation.name
 					console.log(this.urlLocation, 'urlLocaiton')
 					const {
 						longitude,

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<polygon-map @sendMsg="savepPoints" :record="mapInfo"></polygon-map>
+		<polygon-map ref="polygonMap" @sendMsg="savepPoints" :record="mapInfo"></polygon-map>
 		<!-- 搜索 -->
 		<view class="search">
 			<u-search shape="square" actionText="" color="#e1805f" searchIconColor="#e1805f" placeholderColor="#e1805f"
@@ -68,12 +68,18 @@
 	} from 'vuex';
 	import {
 		isIos,
+		isApp
 	} from '@/common/utils/util';
 	import {
 		GetFenceInfo,
 		PostAddFence,
 		GetLastPoint
 	} from '@/common/http/api.js';
+	let mapSearch;
+	if (isApp()) mapSearch = weex.requireModule('mapSearch');
+	import {
+		log
+	} from '../../../../common/utils/log';
 	export default {
 		data() {
 			return {
@@ -160,6 +166,7 @@
 					}, ({
 						poiList
 					}) => {
+						console.log('关键字搜索到的地址', poiList)
 						this.loading = false;
 						this.poiShow = true
 						this.poiList = poiList;
@@ -174,9 +181,11 @@
 				console.log(this.points, '设置了points')
 			},
 			handleInit() {
+				console.log('我刚进来初始化的', this.urlLocation)
 				// 判断是否是添加新的守护区域
 				if (this.urlLocation && this.urlLocation.fenceType === 'polygon') {
 					this.fenceType = this.urlLocation.fenceType
+					this.guardName = this.urlLocation.name
 					console.log(this.urlLocation, 'urlLocaiton')
 					this.points = this.pointsFormatting(this.urlLocation)
 					// const res = this.urlLocation.points.split(';').map(n => {
@@ -191,7 +200,7 @@
 					return
 				}
 				this.handleGetLocation()
-			}, 
+			},
 			pointsFormatting(data) {
 				console.log('我是data', data)
 				return data && data.points.split(';').map(n => {
@@ -217,7 +226,7 @@
 							this.mapInfo = {
 								latitude,
 								longitude,
-								points: this.points ? this.points : ''
+								points: []
 							}
 							uni.hideLoading()
 						},
@@ -257,23 +266,25 @@
 					}, 500);
 				})
 			},
-			handleSelect(item, type) {
+			handleSelect(item) {
 				console.log(item, 'item嘿嘿俄黑')
-				console.log(type, 'type嘿嘿')
-				let name = !type ? '' : item.name
-				this.mapMarker(item, name)
 				let infoData = {
 					longitude: item.location.longitude,
 					latitude: item.location.latitude,
 					sliderValue: item.sliderValue
 				}
-				this.getSiteInfo(infoData)
+				this.mapInfo = {
+					longitude: item.location.longitude,
+					latitude: item.location.latitude,
+					points: this.points ? this.points : ''
+				}
+				console.log(this.points, 'item嘿嘿俄黑')
 				this.poiShow = false
 			},
 			// 下一步
 			nextStep() {
 				console.log(this.points, '我在下一步')
-				if(!this.points.length) return uni.$u.toast('请先设置多边形点位')
+				if (!this.points.length) return uni.$u.toast('请先设置多边形点位')
 				if (this.urlLocation && this.urlLocation.fenceType === 'circle') {
 					uni.showModal({
 						title: '提示',
@@ -309,15 +320,20 @@
 					this.mapInfo = {
 						latitude,
 						longitude,
-						points: this.points ? this.points : ''
+						points: []
 					}
+					// this.$refs.polygonMap.handleClear()
+					// this.$refs.polygonMap.beginPoints = []
+					// this.$refs.polygonMap.beginNum = 0
+					// this.$refs.polygonMap.beginMarks = []
+					console.log(this.$refs.polygonMap.maps, 'this.$refs.polygonMap.maps')
 					uni.hideLoading()
 				} catch (e) {
 					console.log(e, '抛出异常')
 					uni.hideLoading()
 					//TODO handle the exception
 				}
-			
+
 			}
 		}
 	}
@@ -334,7 +350,7 @@
 		font-weight: 550;
 	}
 
-.ui-btn {
+	.ui-btn {
 		margin-top: 20rpx;
 	}
 
@@ -356,9 +372,11 @@
 		left: 40rpx;
 		bottom: 190rpx;
 		z-index: 99;
+
 		&-left {
 			margin-right: 10rpx;
 		}
+
 		&-left,
 		&-right {
 			&-location {
@@ -488,6 +506,7 @@
 
 		&-bottom {
 			border-top: 1px solid #f2f2f2;
+
 			&-btn {
 				margin-top: 26rpx;
 				margin-bottom: 60rpx;

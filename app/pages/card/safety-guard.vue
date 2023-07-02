@@ -6,7 +6,7 @@
 		</view>
 		<view class="app-main">
 			<view class="tips">
-				设置好家和学校的位置，当宝贝离开或到达时，您将收到通知(过小的安全区提醒，不在宝贝身边也能实时知道安全状态。域容易导致误报，请慎重选择，建议调整为200米以上)
+				设置好安全守护位置，当被守护人离开或到达时，您都将收到通知（设定安全区范围过小，可能导致误报，请慎重选择设定！）
 			</view>
 			<view class="guard" v-if="guardList.length">
 				<view class="guard-item" v-for="(item, index) in guardList" :key="index" @tap="toLocationGuard(item)">
@@ -111,7 +111,8 @@ export default {
 				fenceType,
 				deviceNo,
 				radius,
-				points
+				points,
+				name
 			} = item
 			this.$store.dispatch('setUrlLocation', {
 				location: {
@@ -127,7 +128,8 @@ export default {
 				fenceType,
 				deviceNo,
 				radius: Number(radius),
-				points
+				points,
+				name
 			})
 			uni.navigateTo({
 				url: `/pages/card/enclosure/enclosure`
