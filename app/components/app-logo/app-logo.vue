@@ -41,6 +41,6 @@
 		flex-direction: row;
 		font-size: 50rpx;
 		font-weight: bold;
-		// color: #ffffff;
+		color: #ffffff;
 	}
 </style>

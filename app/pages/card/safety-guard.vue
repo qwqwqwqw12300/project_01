@@ -16,7 +16,8 @@
 							<image class="guard-item-content-info-icon" src="@/static/images/add-home.png" mode=""></image>
 							<view class="guard-item-content-info-text">
 								<view class="guard-item-content-info-text-title">
-									<view class="guard-item-content-info-text-title-name">{{ item.name }}</view>
+									<!-- <view class="guard-item-content-info-text-title-name">{{ item.name }}</view> -->
+									<u--text :text="item.name" :lines="1" size="16"></u--text>
 									<view v-if="item.fenceType === 'circle'"
 										class="guard-item-content-info-text-title-radius">方圆{{ item.radius }}米</view>
 								</view>

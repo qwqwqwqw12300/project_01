@@ -57,7 +57,7 @@
 			<view class="popup">
 				<view class="popup-title">请输入名称</view>
 				<u--input placeholder="请输入名称" border="surround" clearable v-model="guardName" :cursorSpacing="700"
-					:adjustPosition="true"></u--input>
+					:adjustPosition="true" maxlength="8"></u--input>
 				<view class="popup-btn">
 					<button class="popup-btn-cancel" @tap="guardNameShow = false">取消</button>
 					<button class="popup-btn-confirm" @tap="handleSubmit">确定</button>
@@ -167,7 +167,6 @@
 			}
 		},
 		mounted() {
-			console.log(this.urlLocation, 'asdas')
 			this.handleInit()
 		},
 		methods: {
@@ -182,40 +181,11 @@
 				});
 			},
 			searchChange(val) {
-				console.log(val, ';;;;;;')
 				if (!val) {
 					this.poiList = []
 					this.poiShow = false
 					return
 				}
-				// this.poiList = []
-				// 输入框为空的时候返回附近3000米内的关键字为"小区"的地点
-				// if(!val) {
-				// 	this.getLocationSearch().then(location => {
-				// 		this.currentCity = location.address.city
-				// 		console.log(location, 'location')
-				// 		let locations = {
-				// 			latitude: location.latitude,
-				// 			longitude: location.longitude
-				// 		}
-				// 			console.log(locations, '我是locations我是locations我是locations我是locations我是locations我是locations')
-				// 		mapSearch && mapSearch.poiSearchNearBy({
-				// 			point: locations,
-				// 			key: '小区'
-				// 		}, res => {
-				// 			console.log(res, '我是res,我是res,我是res,我是res,我是res,我是res,我是res,我是res,我是res,')
-				// 			const {
-				// 				poiList
-				// 			} = res;
-				// 			if (poiList && poiList.length) {
-				// 				this.poiList = poiList;
-				// 			}
-				// 			this.loading = false;
-				// 			// uni.hideLoading()
-				// 		})
-				// 	});
-				// 	return
-				// }
 				uni.$u.debounce(() => {
 					this.loading = true;
 					mapSearch && mapSearch.poiKeywordsSearch({
@@ -230,7 +200,6 @@
 						this.loading = false;
 						this.poiShow = true
 						this.poiList = poiList;
-						console.log(this.poiList, 'aaaaaaaaa;;;;;sss;')
 						// if (poiList && poiList.length) {
 						// 	this.poiList = poiList;
 						// }
@@ -238,12 +207,21 @@
 				}, 500)
 			},
 			async handleInit() {
-				console.log(this.urlLocation, '进来了吗？')
+				uni.getLocation({
+					geocode: true,
+					type: isIos() ? 'wgs84' : 'gcj02',
+					success: (res) => {
+						this.currentCity = res.address.city
+					},
+					false: (res) => {
+						console.log(res, 'error')
+						uni.hideLoading()
+					}
+				})
 				// 判断是否是添加新的守护区域
 				if (this.urlLocation && this.urlLocation.fenceType === 'circle') {
 					this.fenceType = this.urlLocation.fenceType
 					this.guardName = this.urlLocation.name
-					console.log(this.urlLocation, 'urlLocaiton')
 					const {
 						longitude,
 						latitude
@@ -253,7 +231,6 @@
 						longitude,
 						latitude
 					})
-					console.log(this.urlLocation.radius, 'this.urlLocation.radius')
 					this.mapInfo = {
 						sliderValue: this.urlLocation.radius,
 						latitude,
@@ -270,7 +247,6 @@
 			// 设置地图定位
 			mapMarker(data, name) {
 				name = name ? name : ''
-				console.log(name, '我叫name')
 				const {
 					province,
 					city,
@@ -313,7 +289,6 @@
 				}
 			},
 			getLocation(obj) {
-				console.log(obj, '我是OBJ.......')
 				const {
 					latitude,
 					longitude
@@ -441,8 +416,6 @@
 				})
 			},
 			handleSelect(item, type) {
-				console.log(item, 'item嘿嘿俄黑')
-				console.log(type, 'type嘿嘿')
 				let name = !type ? '' : item.name
 				this.mapMarker(item, name)
 				let infoData = {
@@ -467,7 +440,6 @@
 						},
 						fail: res => {
 							this.fenceType = 'polygon'
-							console.log(res, '我点击了取消')
 						}
 					})
 					return

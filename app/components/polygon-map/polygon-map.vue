@@ -7,7 +7,7 @@
 			</view>
 		</template>
 		<view v-show="!show" id="container" class="container"></view>
-		<view :mapData="mapData" :change:mapData="maps.loadData"></view>
+		<view :mapData="mapData" :change:mapData="maps.loadData" :clearData="clearData" :change:clearData="maps.clearChange"></view>
 		<view class="ui-float">
 			<view class="float-item" id="claear_action">
 				<u-icon name="/static/images/clear.png" size="32px"></u-icon>
@@ -26,20 +26,34 @@
 				type: Object,
 				default: () => {},
 			},
+			clear: {
+				type: Object,
+				default: () => {}
+			}
 		},
 		data() {
 			return {
 				show: false,
-				mapData: {
-
-				},
+				mapData: {},
+				clearData: {}
 			};
 		},
 		watch: {
 			record: {
 				handler(val) {
 					if (val) {
+						console.log('我是record,也是mapData', val)
 						this.mapData = uni.$u.deepClone(val)
+					}
+				},
+				deep: true,
+				immediate: true,
+			},
+			clear: {
+				handler(val) {
+					if (val) {
+						console.log('clear变动了', val)
+						this.clearData = uni.$u.deepClone(val)
 					}
 				},
 				deep: true,
@@ -55,6 +69,13 @@
 			},
 			onLoadMsg(val) {
 				this.show = val
+			},
+			onClear(val) {
+				this.$emit('clearChange', val)
+			},
+			init() {
+				console.log('初始化回调给父组件')
+				this.$emit('init')
 			}
 		}
 	}
@@ -110,16 +131,19 @@
 				} = this.mapInfo
 				this.AMap = AMap
 				setTimeout(() => {
+					console.log('初始化')
 					this.map = new AMap.Map('container', {
 						resizeEnable: true,
 						center: [longitude, latitude],
 						zoom: 13 //地图显示的缩放级别
 					});
+					this.mapMarker()
+					// this.$ownerInstance.callMethod('init')
 					if (points.length) {
 						this.polygon = this.createPolygon(points);
 						this.polygonEditor = this.createEditor(this.polygon);
 						this.map.setFitView()
-						this.sendMsg(this.beginPoints)
+						// this.sendMsg(this.beginPoints)
 					} else {
 						// 挂载点击事件
 						this.clickListener = this.map.on('click', this.mapOnClick);
@@ -128,7 +152,26 @@
 				}, 100)
 				this.$ownerInstance.callMethod('onLoadMsg', false)
 			},
-
+			mapMarker() {
+				const {
+					latitude,
+					longitude
+				} = this.mapData
+				const icon = new this.AMap.Icon({
+					size: new AMap.Size(40, 40), // 图标尺寸
+					image: 'static/images/mapSite.png', // Icon的图像
+					// imageOffset: new AMap.Pixel(-10, -10), // 图像相对展示区域的偏移量，适于雪碧图等
+					imageSize: new AMap.Size(40, 40) // 根据所设置的大小拉伸或压缩图片
+				})
+				this.marker = new AMap.Marker({
+					position: new AMap.LngLat(longitude, latitude),
+					offset: new AMap.Pixel(-20, -20),
+					icon,
+				})
+				this.map.add(this.marker)
+				this.map.setCenter([longitude, latitude]) //设置地图中心点
+				this.map.setFitView()
+			},
 			/**
 			 * @param {Object}地图点击，生成坐标点
 			 */
@@ -136,9 +179,7 @@
 				this.beginMarks.push(this.addMarker(e.lnglat));
 				this.beginPoints.push(e.lnglat);
 				this.beginNum++;
-				console.log(this.beginNum, this.beginPoints, '000000000--------------')
 				if (this.beginNum === 3) {
-					console.log(this.beginPoints, 'u---------------')
 					this.map.off('click', this.mapOnClick);; // 移除地图点击事件
 					this.polygon = this.createPolygon(this.beginPoints);
 					this.polygonEditor = this.createEditor(this.polygon);
@@ -221,7 +262,7 @@
 			},
 
 			clearMarks() {
-				this.map.remove(this.beginMarks);
+				this.beginMarks && this.map.remove(this.beginMarks);
 			},
 
 			/**
@@ -259,9 +300,7 @@
 				this.beginPoints = []
 				this.beginNum = 0
 				this.beginMarks = []
-				if (this.beginNum && this.beginNum < 3) {
-					return
-				}
+				if (this.beginNum && this.beginNum < 3) return
 				this.polygonEditor && this.polygonEditor.close();
 				this.polygon && this.map.remove(this.polygon)
 				this.clickListener = this.map.on('click', this.mapOnClick);
@@ -269,8 +308,12 @@
 				this.polygonEditor = this.createEditor(this.polygon);
 				this.sendMsg([])
 				// this.map.off('click', this.clickListener); // 移除地图点击事件
+			},
+			clearChange(val) {
+				console.log(val, '我开始清除了哦')
+				this.handleClear()
+				this.$ownerInstance.callMethod('onClear', {clear: false});
 			}
-
 		}
 	}
 </script>

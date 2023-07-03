@@ -1,7 +1,11 @@
 <template>
 	<app-body :bg="false" :needService="false" :bodyStyle="{backgroundColor:'#FFF'}">
 		<view class="app-head" style="margin-bottom: 50rpx;">
-			<app-logo color="#353535" text="守护区"></app-logo>
+			<!-- <app-logo color="#353535"> -->
+				<!-- <u--text :text="title" :lines="2" size="25"></u--text> -->
+				<!-- <view>{{ title }}</view> -->
+				<u--text :lines="1" :text="title" size="25"></u--text>
+			<!-- </app-logo> -->
 			<view class="tab">
 				<view class="tab-box">
 					<text @tap="handleTab(item.key)" class="tab-item" :class="{'active': tabKey === item.key }"
@@ -35,7 +39,8 @@
 					key: 'polygonMap',
 					name: '多边形'
 				}],
-				tabKey: 'circleMap'
+				tabKey: 'circleMap',
+				title: ''
 			}
 		},
 		computed: {
@@ -47,6 +52,7 @@
 		created() {
 			this.tabKey = this.urlLocation.fenceType === 'circle' ? 'circleMap' : this.urlLocation.fenceType ===
 				'polygon' ? 'polygonMap' : 'circleMap'
+			this.title = this.urlLocation.name ? `守护区-${this.urlLocation.name}` : '新增守护区'
 		},
 		methods: {
 			handleTab(key) {

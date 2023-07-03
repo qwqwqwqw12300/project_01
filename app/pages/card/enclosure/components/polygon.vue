@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<polygon-map ref="polygonMap" @sendMsg="savepPoints" :record="mapInfo"></polygon-map>
+		<polygon-map ref="polygonMap" @sendMsg="savepPoints" :record="mapInfo" :clear="clearInfo" @clearChange="saveClearSwitch" @init="handleInit"></polygon-map>
 		<!-- 搜索 -->
 		<view class="search">
 			<u-search shape="square" actionText="" color="#e1805f" searchIconColor="#e1805f" placeholderColor="#e1805f"
@@ -9,7 +9,7 @@
 		<!-- 安全距离 -->
 		<view class="slider">
 			<view class="slider-left">
-				<view class="slider-left-location" @tap="handleGetLocation">手机</view>
+				<view class="slider-left-location" @tap="mobileLocation">手机</view>
 				<!-- <image class="slider-left_img" src="@/static/images/guard_home.png" mode=""></image> -->
 			</view>
 			<!-- <view class="slider-center">
@@ -44,7 +44,7 @@
 			<view class="popup">
 				<view class="popup-title">请输入名称</view>
 				<u--input placeholder="请输入名称" border="surround" clearable v-model="guardName" :cursorSpacing="700"
-					:adjustPosition="true"></u--input>
+					:adjustPosition="true" maxlength="8"></u--input>
 				<view class="popup-btn">
 					<button class="popup-btn-cancel" @tap="guardNameShow = false">取消</button>
 					<button class="popup-btn-confirm" @tap="handleSubmit">确定</button>
@@ -95,11 +95,13 @@
 				poiShow: false,
 				guardNameShow: false,
 				locationShow: true,
+				clearInfo: {},
 				points: [],
 				mapInfo: {
 					longitude: '',
 					latitude: '',
-					points: []
+					points: [],
+					type: ''
 				}
 			}
 		},
@@ -121,40 +123,13 @@
 		},
 		methods: {
 			searchChange(val) {
-				console.log(val, ';;;;;;')
 				if (!val) {
 					this.poiList = []
-					this.poiShow = false
+					this.poiShow = true
 					return
 				}
 				// this.poiList = []
 				// 输入框为空的时候返回附近3000米内的关键字为"小区"的地点
-				// if(!val) {
-				// 	this.getLocationSearch().then(location => {
-				// 		this.currentCity = location.address.city
-				// 		console.log(location, 'location')
-				// 		let locations = {
-				// 			latitude: location.latitude,
-				// 			longitude: location.longitude
-				// 		}
-				// 			console.log(locations, '我是locations我是locations我是locations我是locations我是locations我是locations')
-				// 		mapSearch && mapSearch.poiSearchNearBy({
-				// 			point: locations,
-				// 			key: '小区'
-				// 		}, res => {
-				// 			console.log(res, '我是res,我是res,我是res,我是res,我是res,我是res,我是res,我是res,我是res,')
-				// 			const {
-				// 				poiList
-				// 			} = res;
-				// 			if (poiList && poiList.length) {
-				// 				this.poiList = poiList;
-				// 			}
-				// 			this.loading = false;
-				// 			// uni.hideLoading()
-				// 		})
-				// 	});
-				// 	return
-				// }
 				uni.$u.debounce(() => {
 					this.loading = true;
 					mapSearch && mapSearch.poiKeywordsSearch({
@@ -166,7 +141,6 @@
 					}, ({
 						poiList
 					}) => {
-						console.log('关键字搜索到的地址', poiList)
 						this.loading = false;
 						this.poiShow = true
 						this.poiList = poiList;
@@ -178,20 +152,28 @@
 			},
 			savepPoints(data) {
 				this.points = data
-				console.log(this.points, '设置了points')
 			},
 			handleInit() {
-				console.log('我刚进来初始化的', this.urlLocation)
+				uni.getLocation({
+					geocode: true,
+					type: isIos() ? 'wgs84' : 'gcj02',
+					success: (res) => {
+						this.currentCity = res.address.city
+					},
+					false: (res) => {
+						console.log(res, 'error')
+						uni.hideLoading()
+					}
+				})
 				// 判断是否是添加新的守护区域
 				if (this.urlLocation && this.urlLocation.fenceType === 'polygon') {
 					this.fenceType = this.urlLocation.fenceType
 					this.guardName = this.urlLocation.name
-					console.log(this.urlLocation, 'urlLocaiton')
 					this.points = this.pointsFormatting(this.urlLocation)
+					console.log('初始化有值的情况下进来了看看points' ,this.points)
 					// const res = this.urlLocation.points.split(';').map(n => {
 					// 	return n.split(',')
 					// })
-					console.log('我是初始化呀', this.points)
 					this.mapInfo = {
 						longitude: this.points[0][0],
 						latitude: this.points[0][1],
@@ -202,7 +184,6 @@
 				this.handleGetLocation()
 			},
 			pointsFormatting(data) {
-				console.log('我是data', data)
 				return data && data.points.split(';').map(n => {
 					return n.split(',')
 				})
@@ -242,23 +223,16 @@
 
 			},
 			handleSubmit() {
-				console.log(this.urlLocation, 'locaiton我是url')
+				console.log(this.points,'111111111111111111111')
 				if (!this.guardName) return uni.$u.toast('请输入名称')
-				console.log(this.points, '--------')
-				const res = this.points.map(n => {
-					const {
-						longitude,
-						latitude
-					} = n
-					return `${longitude},${latitude}`
-				}).join(';')
+				let submitData = this.pointsDataFormat(this.points)
 				PostAddFence({
 					fenceType: this.fenceType,
 					deviceNo: this.deviceInfo.no,
 					deviceFenceId: this.urlLocation.deviceFenceId,
 					deviceId: this.deviceInfo.deviceId,
 					name: this.guardName,
-					points: res,
+					points: submitData,
 				}).then(res => {
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
@@ -266,8 +240,26 @@
 					}, 500);
 				})
 			},
+			pointsDataFormat(data) {
+				let res
+				if(data[0][0]) {
+					res = data.map(n => {
+						let longitude = n[0]
+						let latitude = n[1]
+						return `${longitude},${latitude}`
+					}).join(';')
+				} else {
+					res = data.map(n => {
+						const {
+							longitude,
+							latitude
+						} = n
+						return `${longitude},${latitude}`
+					}).join(';')
+				}
+				return res
+			},
 			handleSelect(item) {
-				console.log(item, 'item嘿嘿俄黑')
 				let infoData = {
 					longitude: item.location.longitude,
 					latitude: item.location.latitude,
@@ -276,14 +268,13 @@
 				this.mapInfo = {
 					longitude: item.location.longitude,
 					latitude: item.location.latitude,
-					points: this.points ? this.points : ''
+					points: []
 				}
-				console.log(this.points, 'item嘿嘿俄黑')
+				this.clearInfo = {clear: true}
 				this.poiShow = false
 			},
 			// 下一步
 			nextStep() {
-				console.log(this.points, '我在下一步')
 				if (!this.points.length) return uni.$u.toast('请先设置多边形点位')
 				if (this.urlLocation && this.urlLocation.fenceType === 'circle') {
 					uni.showModal({
@@ -312,7 +303,6 @@
 					let res = await GetLastPoint({
 						deviceId: this.deviceInfo.deviceId
 					})
-					console.log(res)
 					const {
 						longitude,
 						latitude
@@ -320,13 +310,10 @@
 					this.mapInfo = {
 						latitude,
 						longitude,
-						points: []
+						points: [],
+						// type: 'add'
 					}
-					// this.$refs.polygonMap.handleClear()
-					// this.$refs.polygonMap.beginPoints = []
-					// this.$refs.polygonMap.beginNum = 0
-					// this.$refs.polygonMap.beginMarks = []
-					console.log(this.$refs.polygonMap.maps, 'this.$refs.polygonMap.maps')
+					this.clearInfo = {clear: true}
 					uni.hideLoading()
 				} catch (e) {
 					console.log(e, '抛出异常')
@@ -334,6 +321,14 @@
 					//TODO handle the exception
 				}
 
+			},
+			saveClearSwitch(val) {
+				this.clearInfo = val
+			},
+			mobileLocation() {
+				// this.mapInfo.type = 'add'
+				this.handleGetLocation()
+				this.clearInfo = {clear: true}
 			}
 		}
 	}
