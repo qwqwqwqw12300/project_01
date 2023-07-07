@@ -27,7 +27,7 @@
 				</view>
 			</scroll-view>
 		</view>
-		<u-popup :closeable="true" zIndex="99" :round="10" :show="showVisible" mode="center"
+		<u-popup :closeable="true" zIndex="99999" :round="10" :show="showVisible" mode="center"
 			@close="showVisible = false">
 			<view class="wd-content">
 				<scroll-view scroll-y class="uni-scroll">
