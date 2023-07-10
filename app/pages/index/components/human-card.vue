@@ -25,6 +25,25 @@
 						:value="getDevice(human).msgNum" absolute>
 					</u-badge>
 				</view>
+				<view class="wd-list-box active" v-if="getDevice(human).type === '3'"
+					@click="goDeciveDetails(getDevice(human))">
+					<image :src="getDeviceImg(getDevice(human).type)"></image>
+					<view class="wd-device-info">
+						<text>{{human.name || '未命名人员'}}</text>
+						<view class="wd-device-name">
+							<view class="wd-list-static" :class="{online: getDevice(human).onlineFlag === '1'}"></view>
+							<text class="wd-list-static-font" v-if="getDevice(human).onlineFlag === '1'">在线</text>
+							<text class="wd-list-static-font" v-else-if="getDevice(human).onlineFlag === '2'">休眠</text>
+							<text class="wd-list-static-font" v-else>离线</text>
+							<view class="wd-list-static" :class="{online: getDevice(human).onlineFlag === '1'}"></view>
+							<text class="wd-list-static-font" v-if="getDevice(human).deploymentState === '1'">蜂鸣</text>
+							<text class="wd-list-static-font" v-else>静音</text>
+						</view>
+					</view>
+					<u-badge v-if="getDevice(human).msgNum >= 1" color="#fff" :offset="[-1, 0]"
+						:value="getDevice(human).msgNum" absolute>
+					</u-badge>
+				</view>
 			</template>
 			<!-- 空人员 -->
 			<template v-else>
@@ -81,10 +100,9 @@
 			}),
 			getDeviceImg() {
 				return type => {
-					if (type === '1') {
-						return '/static/images/dzqgk.png';
-					}
-					return '/static/images/watch-device.png';
+					if (type === '1') return '/static/images/dzqgk.png';
+					if (type === '2') return '/static/images/watch-device.png';
+					if (type === '3') return '/static/images/add-sos.png';
 				}
 			}
 		},

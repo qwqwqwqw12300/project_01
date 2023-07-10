@@ -1,7 +1,7 @@
 <!-- 增加监护设备 -->
 <template>
 	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
-		<app-logo color="#353535" text="绑定电子牵挂卡"></app-logo>
+		<app-logo color="#353535" :text="title"></app-logo>
 		<view class="ui-scan">
 			<view class="scan-box">
 				<view class="box-bg" @click="handleScan">
@@ -47,9 +47,16 @@
 				cardInfo: {
 					deviceNo: '',
 					deviceName: '',
-					deviceType: "1"
-				}
+					deviceType: ""
+				},
+				title: '',
+				cardType: ''
 			}
+		},
+		onLoad(options) {
+			console.log(options, 'options')
+			this.cardType = options.type
+			this.title = options.type === 'card' ? '绑定电子牵挂卡' : 'SOS设备'
 		},
 		methods: {
 			handleScan() {
@@ -72,6 +79,7 @@
 					deviceNo,
 					deviceName
 				} = this.cardInfo
+				this.cardInfo.deviceType = this.cardType === 'card' ? '1' : '3'
 				if (!deviceNo) return uni.$u.toast('设备码不能为空')
 				if (!deviceName) return uni.$u.toast('设备名称不能为空')
 				PostcreDevice({
@@ -82,6 +90,7 @@
 						uni.navigateBack()
 					}, 1000)
 				})
+
 			}
 		}
 	}

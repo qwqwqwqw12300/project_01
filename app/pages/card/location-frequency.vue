@@ -57,17 +57,14 @@
 		},
 		methods: {
 			getPattern() {
-				console.log(this.deviceInfo, 'deviceInfodeviceInfo')
 				getLocationFrequency({
 					deviceId: this.deviceInfo.deviceId,
 				}).then(res => {
 					this.patternVal = res.data.frequency
-					console.log(res, 'asdasds')
-					console.log(this.patternVal, 'asdasds')
 				})
 			},
 			radioChange(e) {
-				console.log(e,'asdas')
+				this.patternVal = e
 				setLocationFrequency({
 					deviceId: this.deviceInfo.deviceId,
 					frequency: String(e)

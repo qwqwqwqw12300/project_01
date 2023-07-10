@@ -36,6 +36,8 @@
 	import WatchSwiper from './components/watch-swiper.vue'
 	import CardPosition from './components/card-position.vue'
 	import WatchPosition from './components/watch-position.vue'
+	import SosSwiper from './components/sos-swiper.vue'
+	import SosPosition from './components/sos-position.vue'
 	import MsgList from './components/msg-list.vue'
 	import RadarMonitor from './components/radar-monitor.vue'
 	import {
@@ -48,6 +50,8 @@
 			WatchSwiper,
 			CardPosition,
 			WatchPosition,
+			SosSwiper,
+			SosPosition,
 			MsgList,
 			RadarMonitor
 		},
@@ -62,7 +66,8 @@
 					return {
 						0: 'RadarSwiper',
 						1: 'CardSwiper',
-						2: 'WatchSwiper'
+						2: 'WatchSwiper',
+						3: 'SosSwiper'
 					} [type]
 				}
 			},
@@ -83,6 +88,10 @@
 					key: 'WatchPosition',
 					show: this.swiperKey === '2',
 					name: '获取定位'
+				}, {
+					key: 'SosAssociatedApparatus',
+					show: this.swiperKey === '3',
+					name: '关联设备'
 				}]
 			}
 		},
@@ -96,6 +105,7 @@
 				n.shareFlag = res.shareFlag
 				return n
 			})
+			console.log(this.deviceList, 'deviceList')
 			this.current = this.deviceList.indexOf(this.deviceInfo)
 			this.swiperData = this.deviceList[this.current]
 			this.swiperKey = this.swiperData.type

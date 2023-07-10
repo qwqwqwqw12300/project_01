@@ -33,6 +33,10 @@
 								<watch-card v-if="item.type === '2'" :device="item" @change="init"
 									:key="'watch' + index" @bind="bindingHuman($event, '2')" />
 								<!-- /4g手表设备 -->
+								<!-- SOS设备 -->
+								<sos-card v-if="item.type === '3'" :device="item" @change="init"
+									:key="'watch' + index" @bind="bindingHuman($event, '3')" />
+								<!-- /SOS设备 -->
 							</template>
 						</view>
 					</view>
@@ -59,7 +63,8 @@
 		relDevice,
 		getDeviceListState,
 		PostUpdateCareCardBind,
-		PostUpdateWatchBind
+		PostUpdateWatchBind,
+		updateGatewaydBind
 	} from '@/common/http/api.js';
 	import {
 		mapState,
@@ -83,6 +88,9 @@
 	import
 	WatchCard
 	from './components/watch-card.vue';
+	import
+	SosCard
+	from './components/sos-card.vue';
 	export default {
 		components: {
 			AppHandle,
@@ -90,7 +98,8 @@
 			SelectBind,
 			DzqgkCard,
 			SelectHuman,
-			WatchCard
+			WatchCard,
+			SosCard
 		},
 		data() {
 			return {
@@ -119,6 +128,7 @@
 						if (ele.shareFlag === '2') {
 							const items = list.filter(item => item.familyId === ele.familyId);
 							if (items.length)
+							console.log(items, 'items')
 								devices.push({
 									name: ele.name,
 									list: items
@@ -183,7 +193,7 @@
 			 */
 			bindHumanSubmit(form) {
 				if (form.familyId && form.humanId) {
-					const post = this.bindType === '1' ? PostUpdateCareCardBind : PostUpdateWatchBind;
+					const post = this.bindType === '1' ? PostUpdateCareCardBind : this.bindType === '2' ? PostUpdateWatchBind : updateGatewaydBind;
 					post({
 						...form,
 					}).then(res => {

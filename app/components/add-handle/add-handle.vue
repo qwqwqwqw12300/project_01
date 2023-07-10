@@ -37,13 +37,18 @@
 						{
 							name: '电子牵挂卡',
 							icon: '/static/images/dzqgk.png',
-							url: '/pages/card/add-card',
+							url: '/pages/card/add-card?type=card',
 							// url: '/pages/equipment/watch-detail/watch-detail',
 						},
 						{
 							name: '4G健康手表',
 							icon: '/static/images/watch.png',
 							url: '/pages/watch/add-watch'
+						},
+						{
+							name: 'SOS设备',
+							icon: '/static/images/add-sos.png',
+							url: '/pages/card/add-card?type=sos'
 						}
 					]
 				},

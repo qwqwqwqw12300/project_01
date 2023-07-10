@@ -214,7 +214,7 @@ export const setDevice = (params) => http.post('/api/device/setDevice', params);
 
 
 /**
- * 解绑设备
+ * 雷达波解绑设备
  */
 export const relDevice = (params) => http.post('/api/device/relDevice', params);
 
@@ -827,5 +827,26 @@ export const remGuard = (params) => http.post('/api/fence/rem', params, {
  * 远程关机
  */
 export const remoteShutDown = (params) => http.post('/api/careCard/remoteShutDown', params, {
+	// showLoading: false
+});
+
+/**
+ * SOS设备绑定
+ */
+export const updateGatewaydBind = (params) => http.post('/api/gateway/updateGatewaydBind', params, {
+	// showLoading: false
+});
+
+/**
+ * SOS设备解绑
+ */
+export const gatewayUnBind = (params) => http.post('/api/gateway/gatewayUnBind', params, {
+	// showLoading: false
+});
+
+/**
+ * 设置网关状态
+ */
+export const setGatewayState = (params) => http.post('/api/gateway/setGatewayState', params, {
 	// showLoading: false
 });
