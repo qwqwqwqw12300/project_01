@@ -13,14 +13,9 @@
 						<view class="pattern-item">
 							<view class="pattern-item_name">{{item.name}}</view>
 							<view class="pattern-item_info">{{item.info}}</view>
-							<view>
-								<u-checkbox-group @change="checkboxGroupChange">
-									<u-checkbox 
-										@change="checkboxChange" 
-										v-model="item.checked" 
-										v-for="(item, index) in [{name: '门磁和红外是否静音', type: '1'}]" :key="index" 
-										:name="item.name"
-									>{{item.name}}</u-checkbox>
+							<view v-if="item.type === '1' && patternVal === '1'" style="margin-top: 10rpx;">
+								<u-checkbox-group v-model="checked" @change="checkboxChange">
+									<u-checkbox  activeColor="red" name="门磁和红外是否静音" label="门磁和红外是否静音"></u-checkbox>
 								</u-checkbox-group>
 							</view>
 						</view>
@@ -42,6 +37,7 @@
 	export default {
 		data() {
 			return {
+				checked: [],
 				patternList: [{
 					name: '蜂鸣模式',
 					type: '1',
@@ -64,11 +60,19 @@
 			console.log(options.type)
 		},
 		methods: {
+			checkboxChange(e) {
+				this.checked = e
+				this.set()
+			},
 			radioChange(e) {
 				this.patternVal = e
+				this.set()
+			},
+			set() {
 				setGatewayState({
 					deviceId: this.deviceInfo.deviceId,
-					state: String(e) === '0' ? '00' : '02'
+					state: String(this.patternVal) === '0' ? '00' : '02',
+					doorMagneticSilence: this.checked.length && this.patternVal === '1' ? '1' : '0'
 				}).then(res => {
 					this.$store.dispatch('updateDevacesInfo');
 					uni.showToast({
