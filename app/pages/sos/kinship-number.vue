@@ -2,7 +2,7 @@
 <template>
 	<app-body :bg="false">
 		<view class="ui-logo">
-			<app-logo color="#353535" text="亲情号码"></app-logo>
+			<app-logo color="#353535" text="接警号码"></app-logo>
 		</view>
 		<view class="ui-form">
 			<view class="ui-form-item" v-for="(item,index) in contactList" :key="item.index">
@@ -24,10 +24,10 @@
 				</view>
 				<view class="item-input">
 					<view class="input-left">
-						<u--input v-model="item.phoneName" placeholder="请输入姓名" border="none" maxlength="8" clearable></u--input>
+						<u--input v-model="item.telName" placeholder="请输入姓名" border="none" maxlength="8" clearable></u--input>
 					</view>
 					<view class="input-right">
-						<u--input v-model="item.phone" maxlength="11" type="number" placeholder="请输入手机号" border="none"
+						<u--input v-model="item.telPhoneNumber" maxlength="11" type="number" placeholder="请输入手机号" border="none"
 							placeholderStyle="text-align:right;color: rgb(192, 196, 204);" clearable></u--input>
 					</view>
 				</view>
@@ -49,8 +49,8 @@
 
 <script>
 	import {
-		GetFamilyNumber,
-		PostSetFamilyNumber
+		getSosGatewayTelPhone,
+		setGatewayTelPhone
 	} from '@/common/http/api.js';
 	import {
 		phoneValidator
@@ -69,7 +69,6 @@
 			return {
 				index: 0,
 				contactDict: {
-					0: 'SOS',
 					1: '紧急联系人1',
 					2: '紧急联系人2',
 					3: '紧急联系人3',
@@ -84,41 +83,46 @@
 				this.$refs.telBookRef.show(true)
 			},
 			phoneSelect(data) {
+				console.log(data, 'dataa')
+				return
 				const {
-					phone,
-					name
+					telPhoneNumber,
+					telName
 				} = data[0]
-				this.contactList[this.index].phone = phone
-				this.contactList[this.index].phoneName = name
+				this.contactList[this.index].telPhoneNumber = phone
+				this.contactList[this.index].telName = name
 				this.contactList = [...this.contactList]
 			},
 			handleClear(item) {
-				item.phone = ''
-				item.phoneName = ''
+				item.telPhoneNumber = ''
+				item.telName = ''
 			},
 			handleInit() {
-				GetFamilyNumber({
+				getSosGatewayTelPhone({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
+					console.log(res.data, 'aaaaaaaaaaaaaaaa')
 					this.contactList = res.data.map(n => {
-						n.buttonName = this.contactDict[n.button]
+						n.buttonName = this.contactDict[n.telPhoneNo]
 						return n
 					})
 				})
-			},
+			}, 
 			handleSave() {
 				const list = uni.$u.deepClone(this.contactList)
 				for (let i = 0; i < list.length; i++) {
-					if (list[i].phoneName || list[i].phone) {
-						if (!list[i].phoneName) return uni.$u.toast(`${list[i].buttonName}姓名不能为空`)
-						if (!list[i].phone) return uni.$u.toast(`${list[i].buttonName}手机号不能为空`)
-						if (!phoneValidator(list[i].phone)) return uni.$u.toast(`${list[i].buttonName}手机号不正确`)
+					console.log(list[i].telName, 'aaaaaaaaaa')
+					console.log(!list[i].telName, 'aaaaaaaaaa')
+					if (list[i].telName || list[i].telPhoneNumber) {
+						if (!list[i].telName) return uni.$u.toast(`${list[i].buttonName}姓名不能为空`)
+						if (!list[i].telPhoneNumber) return uni.$u.toast(`${list[i].buttonName}手机号不能为空`)
+						if (!phoneValidator(list[i].telPhoneNumber)) return uni.$u.toast(`${list[i].buttonName}手机号不正确`)
 					}
 				}
-				if (!list[0].phoneName && !list[0].phone) return uni.$u.toast('请设置SOS紧急号码')
-				PostSetFamilyNumber({
+				if (!list[0].telName && !list[0].telPhoneNumber) return uni.$u.toast('请最少设置一个紧急联系人')
+				setGatewayTelPhone({
 					deviceId: this.deviceInfo.deviceId,
-					buttonFroms: this.contactList,
+					phoneList: this.contactList,
 				}).then(res => {
 					uni.$u.toast('保存成功')
 					setTimeout(() => {

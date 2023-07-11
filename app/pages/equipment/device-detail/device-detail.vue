@@ -53,7 +53,7 @@
 			SosSwiper,
 			SosPosition,
 			MsgList,
-			RadarMonitor
+			RadarMonitor,
 		},
 		computed: {
 			...mapState({
@@ -89,7 +89,7 @@
 					show: this.swiperKey === '2',
 					name: '获取定位'
 				}, {
-					key: 'SosAssociatedApparatus',
+					key: 'SosPosition',
 					show: this.swiperKey === '3',
 					name: '关联设备'
 				}]
@@ -105,7 +105,6 @@
 				n.shareFlag = res.shareFlag
 				return n
 			})
-			console.log(this.deviceList, 'deviceList')
 			this.current = this.deviceList.indexOf(this.deviceInfo)
 			this.swiperData = this.deviceList[this.current]
 			this.swiperKey = this.swiperData.type

@@ -850,3 +850,38 @@ export const gatewayUnBind = (params) => http.post('/api/gateway/gatewayUnBind',
 export const setGatewayState = (params) => http.post('/api/gateway/setGatewayState', params, {
 	// showLoading: false
 });
+
+/**
+ * 获取网关电话号码
+ */
+export const getSosGatewayTelPhone = (params) => http.get('/api/gateway/getSosGatewayTelPhone', params, {
+	// showLoading: false
+});
+
+/**
+ * 设置网关电话号码
+ */
+export const setGatewayTelPhone = (params) => http.post('/api/gateway/setGatewayTelPhone', params, {
+	// showLoading: false
+});
+
+/**
+ * 获取子设备列表
+ */
+export const getGatewaySubDevice = (params) => http.get(`/api/gateway/getGatewaySubDevice/${params.deviceId}`, {
+	// showLoading: false
+});
+
+/**
+ * 获取子设备列表
+ */
+export const delAccessoryDevice = (params) => http.post('/api/gateway/delAccessoryDevice', params, {
+	// showLoading: false
+});
+
+/**
+ * 获取设备详情
+ */
+export const getSosGatewayInfo = (params) => http.get(`/api/gateway/getSosGatewayInfo/${params.deviceId}`, {
+	// showLoading: false
+});

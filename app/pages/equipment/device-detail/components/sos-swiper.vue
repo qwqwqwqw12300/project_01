@@ -10,7 +10,7 @@
 						:class="[record.onlineFlag === '1' ? 'online' : 'offline']">{{getOnlineStatus}}</text>
 				</view>
 				<view class="status">
-					<u-icon name="/static/images/run-status.png" size="44rpx" style="margin-right: 6rpx;" />
+					<u-icon name="/static/images/bell.png" size="44rpx" style="margin-right: 6rpx;" />
 					<text>布防状态: {{ getStatus }}</text>
 				</view>
 				<view class="status">

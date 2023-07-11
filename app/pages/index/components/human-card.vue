@@ -35,7 +35,8 @@
 							<text class="wd-list-static-font" v-if="getDevice(human).onlineFlag === '1'">在线</text>
 							<text class="wd-list-static-font" v-else-if="getDevice(human).onlineFlag === '2'">休眠</text>
 							<text class="wd-list-static-font" v-else>离线</text>
-							<view class="wd-list-static" :class="{online: getDevice(human).onlineFlag === '1'}"></view>
+							<!-- <view class="wd-list-static" :class="{online: getDevice(human).onlineFlag === '4'}"></view> -->
+							<image src="@/static/images/bell.png" style="width: 36rpx;height: 36rpx;" mode=""></image>
 							<text class="wd-list-static-font" v-if="getDevice(human).deploymentState === '1'">蜂鸣</text>
 							<text class="wd-list-static-font" v-else>静音</text>
 						</view>
