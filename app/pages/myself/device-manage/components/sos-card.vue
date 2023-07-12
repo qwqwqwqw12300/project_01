@@ -104,7 +104,7 @@
 				this.$store.commit('setDeviceInfo', item);
 				// this.$setCache('setDevice', item);
 				uni.navigateTo({
-					url: '/pages/card/card-set'
+					url: '/pages/sos/sos-set'
 				})
 			},
 		},

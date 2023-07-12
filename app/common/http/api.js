@@ -845,11 +845,19 @@ export const gatewayUnBind = (params) => http.post('/api/gateway/gatewayUnBind',
 });
 
 /**
- * 设置网关状态
+ * 设置网关状态-按钮
  */
 export const setGatewayState = (params) => http.post('/api/gateway/setGatewayState', params, {
 	// showLoading: false
 });
+
+/**
+ * 设置网关状态
+ */
+export const setGatewayDeployment = (params) => http.post('/api/gateway/setGatewayDeployment', params, {
+	// showLoading: false
+});
+
 
 /**
  * 获取网关电话号码

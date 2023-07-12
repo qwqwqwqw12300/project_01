@@ -15,7 +15,7 @@
 							<view class="pattern-item_info">{{item.info}}</view>
 							<view v-if="item.type === '1' && patternVal === '1'" style="margin-top: 10rpx;">
 								<u-checkbox-group v-model="checked" @change="checkboxChange">
-									<u-checkbox  activeColor="red" name="门磁和红外是否静音" label="门磁和红外是否静音"></u-checkbox>
+									<u-checkbox  activeColor="red" name="1" label="门磁和红外是否静音"></u-checkbox>
 								</u-checkbox-group>
 							</view>
 						</view>
@@ -28,7 +28,7 @@
 
 <script>
 	import {
-		setGatewayState
+		setGatewayDeployment
 	} from '@/common/http/api.js';
 
 	import {
@@ -56,11 +56,18 @@
 			}, )
 		},
 		onLoad(options) {
+			if(options.type === '2') {
+				this.patternVal = '1'
+				this.checked = ['1']
+				return
+			}
 			this.patternVal = options.type
 			console.log(options.type)
+			console.log(this.deviceInfo, 'deviceInfo')
 		},
 		methods: {
 			checkboxChange(e) {
+				console.log(e, 'e')
 				this.checked = e
 				this.set()
 			},
@@ -69,10 +76,9 @@
 				this.set()
 			},
 			set() {
-				setGatewayState({
+				setGatewayDeployment({
 					deviceId: this.deviceInfo.deviceId,
-					state: String(this.patternVal) === '0' ? '00' : '02',
-					doorMagneticSilence: this.checked.length && this.patternVal === '1' ? '1' : '0'
+					deploymentState: (this.patternVal === '1' && !this.checked.length) ? '1' : (this.patternVal === '1' && this.checked.length) ? '2' : '0'
 				}).then(res => {
 					this.$store.dispatch('updateDevacesInfo');
 					uni.showToast({

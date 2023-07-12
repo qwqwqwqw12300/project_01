@@ -69,9 +69,9 @@
 			return {
 				index: 0,
 				contactDict: {
-					1: '紧急联系人1',
-					2: '紧急联系人2',
-					3: '紧急联系人3',
+					1: '接警号1',
+					2: '接警号2',
+					3: '接警号3',
 				},
 				contactList: [],
 			}
@@ -86,6 +86,7 @@
 				console.log(data, 'dataa')
 				return
 				const {
+					
 					telPhoneNumber,
 					telName
 				} = data[0]
@@ -101,18 +102,38 @@
 				getSosGatewayTelPhone({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
-					console.log(res.data, 'aaaaaaaaaaaaaaaa')
-					this.contactList = res.data.map(n => {
-						n.buttonName = this.contactDict[n.telPhoneNo]
-						return n
-					})
+					if(res.data && res.data.length) {
+						this.contactList = res.data.map(n => {
+							n.buttonName = this.contactDict[n.telPhoneNo]
+							return n
+						})
+						return
+					}
+					this.contactList = [
+						{
+							buttonName: '接警号1',
+							telPhoneNo: '1',
+							telName: '',
+							telPhoneNumber: ''
+						},
+						{
+							buttonName: '接警号2',
+							telPhoneNo: '2',
+							telName: '',
+							telPhoneNumber: ''
+						},
+						{
+							buttonName: '接警号3',
+							telPhoneNo: '3',
+							telName: '',
+							telPhoneNumber: ''
+						}
+					]
 				})
 			}, 
 			handleSave() {
 				const list = uni.$u.deepClone(this.contactList)
 				for (let i = 0; i < list.length; i++) {
-					console.log(list[i].telName, 'aaaaaaaaaa')
-					console.log(!list[i].telName, 'aaaaaaaaaa')
 					if (list[i].telName || list[i].telPhoneNumber) {
 						if (!list[i].telName) return uni.$u.toast(`${list[i].buttonName}姓名不能为空`)
 						if (!list[i].telPhoneNumber) return uni.$u.toast(`${list[i].buttonName}手机号不能为空`)

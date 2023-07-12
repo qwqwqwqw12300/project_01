@@ -62,6 +62,7 @@
 		},
 		methods: {
 			handleJump(item) {
+				console.log(this.deviceInfo, 'deviceInfo')
 				uni.navigateTo({
 					url: item.title === '网关状态' ? `${item.url}?type=${this.deviceInfo.deploymentState}` : item.url
 				})
