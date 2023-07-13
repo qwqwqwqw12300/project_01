@@ -2,7 +2,7 @@
 <template>
 	<view class="swiper-item">
 		<view class="item-box">
-			<image class="img" src="/static/images/add-sos.png"></image>
+			<image class="img" src="/static/images/sos/sos-equipment_1.png"></image>
 			<view class="device-info">
 				<view class="title">
 					<text class="name">{{record.name || '未命名设备'}}</text>

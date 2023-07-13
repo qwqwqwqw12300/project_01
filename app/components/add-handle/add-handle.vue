@@ -47,7 +47,7 @@
 						},
 						{
 							name: 'SOS设备',
-							icon: '/static/images/add-sos.png',
+							icon: '/static/images/sos/sos-equipment_1.png',
 							url: '/pages/card/add-card?type=sos'
 						}
 					]

@@ -12,11 +12,16 @@
 						@change="radioChange">
 						<view class="pattern-item">
 							<view class="pattern-item_name">{{item.name}}</view>
-							<view class="pattern-item_info">{{item.info}}</view>
-							<view v-if="item.type === '1' && patternVal === '1'" style="margin-top: 10rpx;">
-								<u-checkbox-group v-model="checked" @change="checkboxChange">
-									<u-checkbox  activeColor="red" name="1" label="门磁和红外是否静音"></u-checkbox>
-								</u-checkbox-group>
+							<!-- <view class="pattern-item_info">{{item.info}}</view> -->
+							<view class="pattern-item_info" v-if="item.type === '0' || item.type === '1'">
+								1、发生预警事件时，SOS智能网关会发出蜂鸣声；<br />
+								2、发生预警事件时，SOS智能网关依次拨打您设置的紧急电话；（有人接听即停止拨打，最多拨打3轮）；<br />
+								3、发生预警事件时，您将收到APP或短信广播通知。
+							</view>
+							<view class="pattern-item_info" v-if="item.type === '2' || item.type === '3'">
+								1、红外及门磁子设备发生预警事件时，SOS智能网关不发出蜂鸣声，且不拨打您设置的紧急电话；<br />
+								2、其它设备发生预警事件时，SOS智能网关不发出蜂鸣声，并依次拨打您设置的紧急电话；（有人接听即停止拨打，最多拨打3轮）；<br />
+								3、所有设备发生预警事件时，您将收到APP或短信广播通知。
 							</view>
 						</view>
 					</u-radio>
@@ -37,16 +42,19 @@
 	export default {
 		data() {
 			return {
-				checked: [],
 				patternList: [{
 					name: '蜂鸣模式',
-					type: '1',
-					info: '网关收到报警事件，主动播放警报声音'
+					type: '1'
 				}, {
 					name: '静音模式',
-					type: '0',
-					info: '网关收到报警事件，不播放警报声音'
-				}],
+					type: '0'
+				}, {
+					name: '居家蜂鸣模式',
+					type: '2'
+				}, {
+					name: '居家静音模式',
+					type: '3'
+				}, ],
 				patternVal: ''
 			}
 		},
@@ -56,21 +64,11 @@
 			}, )
 		},
 		onLoad(options) {
-			if(options.type === '2') {
-				this.patternVal = '1'
-				this.checked = ['1']
-				return
-			}
 			this.patternVal = options.type
 			console.log(options.type)
 			console.log(this.deviceInfo, 'deviceInfo')
 		},
 		methods: {
-			checkboxChange(e) {
-				console.log(e, 'e')
-				this.checked = e
-				this.set()
-			},
 			radioChange(e) {
 				this.patternVal = e
 				this.set()
@@ -78,7 +76,7 @@
 			set() {
 				setGatewayDeployment({
 					deviceId: this.deviceInfo.deviceId,
-					deploymentState: (this.patternVal === '1' && !this.checked.length) ? '1' : (this.patternVal === '1' && this.checked.length) ? '2' : '0'
+					deploymentState: this.patternVal
 				}).then(res => {
 					this.$store.dispatch('updateDevacesInfo');
 					uni.showToast({

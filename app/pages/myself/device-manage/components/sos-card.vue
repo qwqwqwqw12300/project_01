@@ -7,7 +7,7 @@
 				<text class="offline" v-else>离线</text>
 			</view>
 			<view class="device-info">
-				<image src="/static/images/add-sos.png"></image>
+				<image src="/static/images/sos/sos-equipment_1.png"></image>
 				<view class="detail">
 					<text class="name">{{ device.name || '未命名设备' }}</text>
 					<text class="position">

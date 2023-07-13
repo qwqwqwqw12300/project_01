@@ -103,7 +103,7 @@
 				return type => {
 					if (type === '1') return '/static/images/dzqgk.png';
 					if (type === '2') return '/static/images/watch-device.png';
-					if (type === '3') return '/static/images/add-sos.png';
+					if (type === '3') return '/static/images/sos/sos-equipment_1.png';
 				}
 			}
 		},

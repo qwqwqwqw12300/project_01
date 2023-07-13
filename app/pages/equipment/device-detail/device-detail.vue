@@ -24,7 +24,7 @@
 			</view>
 		</view>
 		<view class="ui-content">
-			<component ref="comRef" :is="tabKey" :key="tabKey" :deviceInfo="swiperData" @refresh="onRefresh">
+			<component ref="comRef" :is="tabKey" :key="tabKey" :list="sosPositionList" :deviceInfo="swiperData" @refresh="onRefresh">
 			</component>
 		</view>
 	</app-body>
@@ -40,6 +40,9 @@
 	import SosPosition from './components/sos-position.vue'
 	import MsgList from './components/msg-list.vue'
 	import RadarMonitor from './components/radar-monitor.vue'
+	import {
+		getGatewaySubDevice
+	} from '@/common/http/api';
 	import {
 		mapState,
 	} from 'vuex';
@@ -97,6 +100,7 @@
 		},
 		async onShow() {
 			await this.$store.dispatch('GetContactsList');
+			this.getList()
 			const familyId = this.deviceInfo.familyId
 			const res = this.familyList.find(n => {
 				return familyId === n.familyId
@@ -116,6 +120,7 @@
 				swiperKey: '',
 				deviceList: [],
 				swiperData: {},
+				sosPositionList: []
 			}
 		},
 		methods: {
@@ -156,6 +161,13 @@
 				this.deviceList = [...this.deviceList]
 				this.swiperData = this.deviceList[this.current]
 				this.swiperKey = this.swiperData.type
+			},
+			getList() {
+				getGatewaySubDevice({
+					deviceId: this.deviceInfo.deviceId,
+				}).then(res => {
+					this.sosPositionList = res.data
+				})
 			}
 		}
 	}

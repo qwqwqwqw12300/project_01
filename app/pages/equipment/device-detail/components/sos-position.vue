@@ -1,66 +1,90 @@
 <template>
 	<view class="app-main">
-		<!-- <view class="equipment" v-for="(item, index) in imgList" :style="{'padding-right': index === 3 || index % 3 ? '0' : '10rpx'}" :key="index">
+		<view class="equipment" v-for="(item, index) in imgList" :style="{'padding-right': index === 3 || index % 3 ? '0' : '10rpx'}" :key="index">
 			<image class="equipment-icon" :src="item.img" mode=""></image>
 			<view class="equipment-name">{{item.name}}</view>
-		</view> -->
+			<view>({{getNum(item.type)}})</view>
+		</view>
 	</view>
 </template>
 
 <script>
 	import {
-		GetLastPoint,
-		GetsetAddressBook,
-		GetNowLocation
-	} from '@/common/http/api';
+		mapState,
+	} from 'vuex';
 	export default {
-		data() {
-			return {
-				// imgList: [
-				// 	{
-				// 		img: require('@/static/images/sos/sos-equipment_1.png'),
-				// 		name: '4G网关'
-				// 	},
-				// 	{
-				// 		img: require('@/static/images/sos/sos-equipment_2.png'),
-				// 		name: '紧急按钮'
-				// 	},
-				// 	{
-				// 		img: require('@/static/images/sos/sos-equipment_3.png'),
-				// 		name: '门磁报警器'
-				// 	},
-				// 	{
-				// 		img: require('@/static/images/sos/sos-equipment_4.png'),
-				// 		name: '水侵报警器'
-				// 	},
-				// 	{
-				// 		img: require('@/static/images/sos/sos-equipment_5.png'),
-				// 		name: '声光警号'
-				// 	},
-				// 	{
-				// 		img: require('@/static/images/sos/sos-equipment_6.png'),
-				// 		name: '烟雾报警器'
-				// 	},
-				// 	{
-				// 		img: require('@/static/images/sos/sos-equipment_7.png'),
-				// 		name: '遥控器'
-				// 	},
-				// 	{
-				// 		img: require('@/static/images/sos/sos-equipment_8.png'),
-				// 		name: '红外报警器'
-				// 	},
-				// 	{
-				// 		img: require('@/static/images/sos/sos-equipment_9.png'),
-				// 		name: '紧急按钮'
-				// 	}
-				// ]
+		props: {
+			list: {
+				type: Array,
+				default: () => []
 			}
 		},
-		mounted() {
-			
+		data() {
+			return {
+				imgList: [
+					{
+						img: require('@/static/images/sos/sos-equipment_1.png'),
+						name: '紧急按钮',
+						type: '02'
+					},
+					// {
+					// 	img: require('@/static/images/sos/sos-equipment_2.png'),
+					// 	name: '4G网关'
+					// },
+					{
+						img: require('@/static/images/sos/sos-equipment_3.png'),
+						name: '门磁报警器',
+						type: '02'
+					},
+					{
+						img: require('@/static/images/sos/sos-equipment_4.png'),
+						name: '水侵报警器',
+						type: '08'
+					},
+					{
+						img: require('@/static/images/sos/sos-equipment_5.png'),
+						name: '燃气报警器',
+						type: '04'
+					},
+					{
+						img: require('@/static/images/sos/sos-equipment_6.png'),
+						name: '烟雾报警器',
+						type: '03'
+					},
+					{
+						img: require('@/static/images/sos/sos-equipment_7.png'),
+						name: '遥控器',
+						type: '06'
+					},
+					{
+						img: require('@/static/images/sos/sos-equipment_8.png'),
+						name: '红外报警器',
+						type: '01'
+					},
+					// {
+					// 	img: require('@/static/images/sos/sos-equipment_9.png'),
+					// 	name: 'SOS手环'
+					// }
+				]
+			}
+		},
+		onShow() {
+			this.getList();
 		},
 		computed: {
-			
+			...mapState({
+				deviceInfo: state => state.deviceInfo
+			}, ),
+			getNum() {
+				return function(type) {
+					this.list.map((item, index) => {
+						if(type === item.accessoryType) {
+							console.log(item.num, 'aaaaaaaaaa')
+							return item.num
+						}
+					})
+				}
+			}
 		},
 		methods: {
 			
@@ -70,6 +94,7 @@
 
 <style lang="scss" scoped>
 	.app-main {
+		height: 100%;
 		display: flex;
 		flex-wrap: wrap;
 	}
