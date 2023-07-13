@@ -41,7 +41,7 @@
 	import MsgList from './components/msg-list.vue'
 	import RadarMonitor from './components/radar-monitor.vue'
 	import {
-		getGatewaySubDevice
+		getGatewaySubDeviceNum
 	} from '@/common/http/api';
 	import {
 		mapState,
@@ -163,7 +163,7 @@
 				this.swiperKey = this.swiperData.type
 			},
 			getList() {
-				getGatewaySubDevice({
+				getGatewaySubDeviceNum({
 					deviceId: this.deviceInfo.deviceId,
 				}).then(res => {
 					this.sosPositionList = res.data

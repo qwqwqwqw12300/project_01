@@ -77,12 +77,15 @@
 			}, ),
 			getNum() {
 				return function(type) {
+					let num = 0
 					this.list.map((item, index) => {
+						console.log(item, 'asdasdasdasd')
 						if(type === item.accessoryType) {
 							console.log(item.num, 'aaaaaaaaaa')
-							return item.num
+							num = item.num
 						}
 					})
+					return num
 				}
 			}
 		},

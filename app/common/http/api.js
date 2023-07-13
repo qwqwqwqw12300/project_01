@@ -893,3 +893,10 @@ export const delAccessoryDevice = (params) => http.post('/api/gateway/delAccesso
 export const getSosGatewayInfo = (params) => http.get(`/api/gateway/getSosGatewayInfo/${params.deviceId}`, {
 	// showLoading: false
 });
+
+/**
+ * 获取设备详情
+ */
+export const getGatewaySubDeviceNum = (params) => http.get(`/api/gateway/getGatewaySubDeviceNum/${params.deviceId}`, {
+	// showLoading: false
+});
