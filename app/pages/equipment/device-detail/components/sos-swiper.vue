@@ -10,7 +10,8 @@
 						:class="[record.onlineFlag === '1' ? 'online' : 'offline']">{{getOnlineStatus}}</text>
 				</view>
 				<view class="status">
-					<u-icon name="/static/images/bell.png" size="44rpx" style="margin-right: 6rpx;" />
+					<u-icon v-if="this.record.deploymentState === '1' || this.record.deploymentState === '2'" name="/static/images/bell.png" size="44rpx" style="margin-right: 6rpx;" />
+					<u-icon v-else name="/static/images/sos/mute.png" size="44rpx" style="margin-right: 6rpx;" />
 					<text>布防状态: {{ getStatus }}</text>
 				</view>
 				<view class="status">
@@ -56,7 +57,9 @@
 			getStatus() {
 				return {
 					0: '静音',
-					1: '蜂鸣'
+					1: '蜂鸣',
+					2: '居家蜂鸣',
+					3: '居家静音'
 				} [this.record.deploymentState]
 			},
 			getOnlineStatus() {

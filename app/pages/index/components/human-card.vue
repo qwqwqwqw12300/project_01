@@ -36,8 +36,10 @@
 							<text class="wd-list-static-font" v-else-if="getDevice(human).onlineFlag === '2'">休眠</text>
 							<text class="wd-list-static-font" v-else>离线</text>
 							<!-- <view class="wd-list-static" :class="{online: getDevice(human).onlineFlag === '4'}"></view> -->
-							<image src="@/static/images/bell.png" style="width: 36rpx;height: 36rpx;" mode=""></image>
+							<image v-if="getDevice(human).deploymentState === '1' || getDevice(human).deploymentState === '2'" src="@/static/images/bell.png" style="width: 36rpx;height: 36rpx;" mode=""></image>
+							<image v-else src="@/static/images/sos/mute.png" style="width: 36rpx;height: 36rpx;" mode=""></image>
 							<text class="wd-list-static-font" v-if="getDevice(human).deploymentState === '1'">蜂鸣</text>
+							<text class="wd-list-static-font" v-else-if="getDevice(human).deploymentState === '2' || getDevice(human).deploymentState === '3'">居家</text>
 							<text class="wd-list-static-font" v-else>静音</text>
 						</view>
 					</view>
