@@ -245,6 +245,7 @@
 					_this.listData_c = res.data;
 				}
 			})
+			this.init();
 		},
 		computed: {
 			...mapState({
@@ -258,9 +259,6 @@
 					return 0
 				}
 			}
-		},
-		onShow() {
-			this.init();
 		},
 		methods: {
 			/**
@@ -280,8 +278,8 @@
 						return n.type === '2'
 					})
 					if (this.deviceList.length) {
-						this.current = 0
-						this.swiperData = this.deviceList[0]
+						// this.current = 0
+						this.swiperData = this.deviceList[this.current]
 						this.$store.commit('setDeviceInfo', this.swiperData)
 						this.pageShow = true;
 						this.fetchData();

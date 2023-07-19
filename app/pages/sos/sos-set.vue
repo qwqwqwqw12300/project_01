@@ -37,6 +37,9 @@
 		data() {
 			return {
 				cellList: [{
+					title: '设置手机号码',
+					url: '/pages/common/cell-phone',
+				},{
 					title: '设备名称',
 					url: '/pages/sos/name-edit',
 				}, {

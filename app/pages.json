@@ -822,8 +822,17 @@
 					"titleNView": false
 				}
 			}
-		}
-	],
+		},
+		{
+            "path" : "pages/common/cell-phone",
+            "style": {
+            	"navigationStyle": "custom",
+            	"app-plus": {
+            		"titleNView": false
+            	}
+            }
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",

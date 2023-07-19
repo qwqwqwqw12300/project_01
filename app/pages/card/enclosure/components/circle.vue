@@ -679,7 +679,7 @@
 		background-color: #ffffff;
 		width: 100%;
 		height: 550rpx;
-		z-index: 200;
+		z-index: 90;
 
 		&-list {
 			height: 400rpx;

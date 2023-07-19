@@ -19,7 +19,7 @@
 			</view>
 			<view class="ui-menu">
 				<!-- 房间 -->
-				<template v-if="list.length">
+				<template v-if="list.length || humanList.length">
 					<view class="ui-menu-item" v-for="(item, index) in list" :key="'room' + index">
 						<view class="item-box" @click="openRoomEdit(item)">
 							<template v-if="item.devices.length">
@@ -57,50 +57,51 @@
 							</view>
 						</view>
 					</view>
+					<!-- 人员 -->
+					<view class="ui-menu-item" v-for="(item, index) in humanList" :key="'human' + index">
+						<view class="item-box" @click="goEdit(item)">
+							<template v-if="item.devices && item.devices.length">
+								<view class="device-status">
+									<text class="online" v-if="getDevices(item).onlineFlag == 1">在线</text>
+									<text class="offline" v-else-if="getDevices(item).onlineFlag == 2">休眠</text>
+									<text class="offline" v-else>离线</text>
+								</view>
+								<view class="device-info">
+									<image
+										:src="getDevices(item).type == 1 ?'/static/images/dzqgk.png' : '/static/images/watch-device.png'">
+									</image>
+									<view class="detail">
+										<text class="name">{{ item.name }}</text>
+										<text class="position" v-if="item.devices.length">
+											{{ getDevices(item).name}}
+										</text>
+										<text class="position" v-else>
+											未绑定设备
+										</text>
+									</view>
+								</view>
+							</template>
+							<template v-else>
+								<view class="device-info">
+									<u-text :text="item.name || '未命名人员'" prefixIcon="../../static/images/add-person.png"
+										size="40rpx" :iconStyle="{height: '70rpx', width: '70rpx'}"></u-text>
+								</view>
+							</template>
+							<view class="device-action">
+								<text class="danger" @click.stop="deleteHuman(item.humanId)">删除</text>
+								<text class="warn" v-if="!item.devices || !item.devices.length"
+									@click.stop="binding(item, 'human')">绑定</text>
+								<text class="orange" v-else @click.stop="unbinding(getDevices(item))">解绑</text>
+							</view>
+						</view>
+					</view>
+					<!-- /人员 -->
 				</template>
 				<view class="list-empty" v-else>
 					<u-empty mode="list" text="暂无数据"></u-empty>
 				</view>
 				<!-- /房间 -->
-				<!-- 人员 -->
-				<view class="ui-menu-item" v-for="(item, index) in humanList" :key="'human' + index">
-					<view class="item-box" @click="goEdit(item)">
-						<template v-if="item.devices && item.devices.length">
-							<view class="device-status">
-								<text class="online" v-if="getDevices(item).onlineFlag == 1">在线</text>
-								<text class="offline" v-else-if="getDevices(item).onlineFlag == 2">休眠</text>
-								<text class="offline" v-else>离线</text>
-							</view>
-							<view class="device-info">
-								<image
-									:src="getDevices(item).type == 1 ?'/static/images/dzqgk.png' : '/static/images/watch-device.png'">
-								</image>
-								<view class="detail">
-									<text class="name">{{ item.name }}</text>
-									<text class="position" v-if="item.devices.length">
-										{{ getDevices(item).name}}
-									</text>
-									<text class="position" v-else>
-										未绑定设备
-									</text>
-								</view>
-							</view>
-						</template>
-						<template v-else>
-							<view class="device-info">
-								<u-text :text="item.name || '未命名人员'" prefixIcon="../../static/images/add-person.png"
-									size="40rpx" :iconStyle="{height: '70rpx', width: '70rpx'}"></u-text>
-							</view>
-						</template>
-						<view class="device-action">
-							<text class="danger" @click.stop="deleteHuman(item.humanId)">删除</text>
-							<text class="warn" v-if="!item.devices || !item.devices.length"
-								@click.stop="binding(item, 'human')">绑定</text>
-							<text class="orange" v-else @click.stop="unbinding(getDevices(item))">解绑</text>
-						</view>
-					</view>
-				</view>
-				<!-- /人员 -->
+				
 			</view>
 			<view class="ui-btn"><button class="default" @click="add">添加</button></view>
 			<room-pop ref="addRoom" :mode="roomMode" @update="handleInitList" />
@@ -114,7 +115,7 @@
 <script>
 	import {
 		PostDelRoom,
-		PostRoomList,
+		PostRoomList,  
 		PostEditRoom,
 		relDevice,
 		PostSelectTHumanListByFamilyId,

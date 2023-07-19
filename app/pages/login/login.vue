@@ -44,6 +44,13 @@
 						<text class="active" @click="register">免费注册</text>
 						<text class="active" @click="forgot">忘记密码？</text>
 					</view>
+					<view class="ui-agreement">
+						<u-checkbox-group v-model="radiovalue" @change="handleShowModal">
+							<u-checkbox :customStyle="{ marginRight: '8rpx' }" shape="square" activeColor="#fdbc2b"
+								size="30rpx" name="ag"></u-checkbox>
+						</u-checkbox-group>
+						<text @tap="userAgreement">同意《用户协议》</text>
+					</view>
 					<view class="ui-btn"><button @click="login" class="default">立即登录</button></view>
 				</view>
 			</u-transition>
@@ -75,11 +82,28 @@
 						<text class="active" @click="register">免费注册</text>
 						<text class="active" @click="forgot">忘记密码？</text>
 					</view>
+					<view class="ui-agreement">
+						<u-checkbox-group v-model="radiovalue" @change="handleShowModal">
+							<u-checkbox :customStyle="{ marginRight: '8rpx' }" shape="square" activeColor="#fdbc2b"
+								size="30rpx" name="ag"></u-checkbox>
+						</u-checkbox-group>
+						<text @tap="userAgreement">同意《用户协议》</text>
+					</view>
 					<view class="ui-btn"><button class="default" @click="loginBySms">立即登录</button></view>
 				</view>
 			</u-transition>
-
 			<!-- /验证码登录 -->
+			
+			<u-popup :closeable="true" zIndex="99" :round="10" :show="showVisible" mode="center"
+				@close="showVisible = false">
+				<view class="ui-content">
+					<scroll-view scroll-y class="uni-scroll">
+						<view v-html="content"></view>
+					</scroll-view>
+					<button @click="handleCancle" class="default" style="margin-top: 20rpx;">我已阅读</button>
+			
+				</view>
+			</u-popup>
 		</view>
 	</app-body>
 
@@ -89,7 +113,8 @@
 	import {
 		loginBySms,
 		PostLoginByPwd,
-		PsotSetJGInfo
+		PsotSetJGInfo,
+		PostUserAgreement
 	} from '@/common/http/api.js';
 	import {
 		isApp,
@@ -120,6 +145,9 @@
 				delay: 0,
 				/**页面初始化标志**/
 				initFlag: true,
+				radiovalue: [],
+				showVisible: false,
+				content: '',
 				loginForm: {
 					phone: '',
 					code: '',
@@ -165,9 +193,20 @@
 				if (!password) {
 					return uni.$u.toast('请填写密码')
 				}
+				console.log(this.loginForm.code, 'uuid')
+				console.log(this.$refs.codeRef.returnCodeData(), 'this.$refs.codeRef.returnCodeData()')
+				if(code.length !== 4) return uni.$u.toast('请输入四位图形验证码')
 				// if (code.length !== 6) {
 				// 	return uni.$u.toast('请填写正确的验证码')
 				// }
+				if (!this.radiovalue.includes('ag')) {
+					uni.showToast({
+						icon: 'none',
+						title: '请先勾选协议',
+						duration: 2000
+					});
+					return;
+				}
 				PostLoginByPwd({
 					phone,
 					password: rsaPassword,
@@ -186,7 +225,31 @@
 					this.$refs.codeRef.handleGetCaptcha();
 				})
 			},
-
+			/**
+			 * 取消用户协议弹窗
+			 */
+			handleCancle(){
+				this.radiovalue = []
+				this.radiovalue.push('ag')
+				this.showVisible = false
+			},
+			/**
+			 * 打开用户协议弹窗
+			 */
+			userAgreement() {
+				PostUserAgreement({}).then(res=>{
+					this.content = res.data.content
+				})
+				this.showVisible = true
+			},
+			/**
+			 * 点击单选框用户协议弹窗
+			 */
+			handleShowModal(){
+				if (!this.radiovalue.includes('ag')) {
+					this.userAgreement()
+				}
+			},
 			/**
 			 * 注册
 			 */
@@ -235,6 +298,14 @@
 					} = this.smsLoginForm
 					if (!phoneValidator(phone)) {
 						return uni.$u.toast('请填写正确的手机号码')
+					}
+					if (!this.radiovalue.includes('ag')) {
+						uni.showToast({
+							icon: 'none',
+							title: '请先勾选协议',
+							duration: 2000
+						});
+						return;
 					}
 					// if (code.length !== 6) {
 					// 	return uni.$u.toast('请填写正确的验证码')
@@ -352,5 +423,31 @@
 
 	.ui-nav {
 		background: unset !important;
+	}
+	.ui-agreement {
+		margin-top: 50rpx;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	
+		text {
+			font-size: 30rpx;
+			color: #fdbc2b;
+		}
+	}
+	.ui-content{
+		width: 600rpx;
+		height: 900rpx;
+		border-radius: 20rpx;
+		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
+		background-image: #fff;
+		padding: 100rpx 31rpx 53rpx 31rpx;
+		.uni-scroll{
+			width: 100%;
+			height: 820rpx;
+			word-wrap: break-word;
+			word-break: normal;
+			text-indent: 1em;
+		}
 	}
 </style>

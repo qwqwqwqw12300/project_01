@@ -22,220 +22,225 @@
 </template>
 
 <script>
-import {
-	mapState,
-} from 'vuex';
-import {
-	PostCareCardUnBind,
-	remoteShutDown
-} from '@/common/http/api';
-import DeviceSwiper from '@/pages/equipment/device-detail/components/card-swiper.vue'
-export default {
-	components: {
-		DeviceSwiper,
-	},
-	data() {
-		return {
-			cellList: [{
-				title: '设备名称',
-				url: '/pages/card/name-edit',
-			}, {
-				title: '通讯录白名单',
-				url: '/pages/card/tel-books',
-			}, {
-				title: '亲情号码',
-				url: '/pages/card/kinship-number'
-			}, {
-				title: '定位频率',
-				url: '/pages/card/location-frequency'
-			}, {
-				title: '安全守护',
-				url: '/pages/card/safety-guard'
-			},
-			// {
-			// 	title: '位置守护',
-			// 	url: '/pages/card/guard'
-			// },
-			{
-				title: '时段禁用',
-				url: '/pages/card/time-interval'
-			}, {
-				title: '远程监听',
-				url: '/pages/card/monitor'
-			}, {
-				title: '立即关机'
+	import {
+		mapState,
+	} from 'vuex';
+	import {
+		PostCareCardUnBind,
+		remoteShutDown
+	} from '@/common/http/api';
+	import DeviceSwiper from '@/pages/equipment/device-detail/components/card-swiper.vue'
+	export default {
+		components: {
+			DeviceSwiper,
+		},
+		data() {
+			return {
+				cellList: [{
+						title: '设置手机号码',
+						url: '/pages/common/cell-phone',
+					}, {
+						title: '设备名称',
+						url: '/pages/card/name-edit',
+					}, {
+						title: '通讯录白名单',
+						url: '/pages/card/tel-books',
+					}, {
+						title: '亲情号码',
+						url: '/pages/card/kinship-number'
+					}, {
+						title: '定位频率',
+						url: '/pages/card/location-frequency'
+					}, {
+						title: '安全守护',
+						url: '/pages/card/safety-guard'
+					},
+					// {
+					// 	title: '位置守护',
+					// 	url: '/pages/card/guard'
+					// },
+					{
+						title: '时段禁用',
+						url: '/pages/card/time-interval'
+					}, {
+						title: '远程监听',
+						url: '/pages/card/monitor'
+					}, {
+						title: '立即关机'
+					}
+				],
+				shutdownShow: false
 			}
-			],
-			shutdownShow: false
-		}
-	},
-	computed: {
-		...mapState({
-			deviceInfo: state => state.deviceInfo
-		},),
-	},
-	mounted() { },
-	methods: {
-		async handleJump(item) {
-			if (item.title === '立即关机') {
+		},
+		computed: {
+			...mapState({
+				deviceInfo: state => state.deviceInfo
+			}, ),
+		},
+		mounted() {},
+		methods: {
+			async handleJump(item) {
+				if (item.title === '立即关机') {
+					uni.showModal({
+						title: '提示',
+						content: `您正在执行关机操作，请确认`,
+						success: async res => {
+							if (res.confirm) {
+								const data = await remoteShutDown({
+									deviceId: this.deviceInfo.deviceId
+								})
+								console.log(data, 'data')
+								if (res.code === 200) {
+
+								}
+							}
+						}
+					})
+
+				}
+				uni.navigateTo({
+					url: item.url
+				})
+			},
+			unBind() {
 				uni.showModal({
 					title: '提示',
-					content: `您正在执行关机操作，请确认`,
-					success: async res => {
+					content: `是否确认解绑？`,
+					success: res => {
 						if (res.confirm) {
-							const data = await remoteShutDown({ deviceId: this.deviceInfo.deviceId })
-							console.log(data, 'data')
-							if (res.code === 200) {
-
-							}
+							const {
+								humanId,
+								deviceId: deviceId
+							} = this.deviceInfo
+							PostCareCardUnBind({
+								humanId,
+								deviceId
+							}).then(res => {
+								uni.$u.toast(res.msg)
+								setTimeout(() => {
+									uni.switchTab({
+										url: '/pages/index/index'
+									})
+								}, 1000)
+							})
 						}
 					}
 				})
-
 			}
-			uni.navigateTo({
-				url: item.url
-			})
-		},
-		unBind() {
-			uni.showModal({
-				title: '提示',
-				content: `是否确认解绑？`,
-				success: res => {
-					if (res.confirm) {
-						const {
-							humanId,
-							deviceId: deviceId
-						} = this.deviceInfo
-						PostCareCardUnBind({
-							humanId,
-							deviceId
-						}).then(res => {
-							uni.$u.toast(res.msg)
-							setTimeout(() => {
-								uni.switchTab({
-									url: '/pages/index/index'
-								})
-							}, 1000)
-						})
-					}
-				}
-			})
 		}
 	}
-}
 </script>
 
 <style lang="scss" scoped>
-::v-deep {
-	.u-cell .u-line {
-		margin: 0px !important;
+	::v-deep {
+		.u-cell .u-line {
+			margin: 0px !important;
+		}
 	}
-}
 
-.ui-card {
-	margin-top: 50rpx;
-	padding: 0 26rpx;
-}
+	.ui-card {
+		margin-top: 50rpx;
+		padding: 0 26rpx;
+	}
 
-.ui-detail {
-	margin-top: 52rpx;
-	padding: 0 32rpx;
+	.ui-detail {
+		margin-top: 52rpx;
+		padding: 0 32rpx;
 
-	.detail-box {
-		background-color: #fff;
-		border-radius: 16rpx;
-		padding: 32rpx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-
-		.device-img {
-			width: 150rpx;
-			height: 150rpx;
-		}
-
-		.device-info {
-			flex: 1;
-			align-self: flex-start !important;
-			padding-left: 10rpx;
-			padding-top: 10rpx;
-
-			.title {
-				color: #353535;
-				font-size: 34rpx;
-				font-weight: 500;
-				padding-left: 4rpx;
-				display: flex;
-				align-items: center;
-
-				.name {
-					max-width: 240rpx;
-					white-space: nowrap;
-					text-overflow: ellipsis;
-					overflow: hidden;
-				}
-
-				.line {
-					margin-left: 30rpx;
-					color: #fff;
-					font-size: 22rpx;
-					padding: 6rpx 12rpx;
-					// background-image: linear-gradient(90deg, #1EC862 0%, #13B98F 100%);
-					border-radius: 4px;
-				}
-			}
-
-			.status {
-				// height: 60rpx;
-				margin-top: 4rpx;
-				display: flex;
-				align-items: center;
-
-				text {
-					font-size: 26rpx;
-					color: #888888;
-				}
-			}
-		}
-
-		.device-set {
-			width: 180rpx;
+		.detail-box {
+			background-color: #fff;
+			border-radius: 16rpx;
+			padding: 32rpx;
 			display: flex;
-			color: #FEAE43;
-			font-size: 30rpx;
-			font-weight: 400;
+			align-items: center;
+			justify-content: space-between;
+
+			.device-img {
+				width: 150rpx;
+				height: 150rpx;
+			}
+
+			.device-info {
+				flex: 1;
+				align-self: flex-start !important;
+				padding-left: 10rpx;
+				padding-top: 10rpx;
+
+				.title {
+					color: #353535;
+					font-size: 34rpx;
+					font-weight: 500;
+					padding-left: 4rpx;
+					display: flex;
+					align-items: center;
+
+					.name {
+						max-width: 240rpx;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						overflow: hidden;
+					}
+
+					.line {
+						margin-left: 30rpx;
+						color: #fff;
+						font-size: 22rpx;
+						padding: 6rpx 12rpx;
+						// background-image: linear-gradient(90deg, #1EC862 0%, #13B98F 100%);
+						border-radius: 4px;
+					}
+				}
+
+				.status {
+					// height: 60rpx;
+					margin-top: 4rpx;
+					display: flex;
+					align-items: center;
+
+					text {
+						font-size: 26rpx;
+						color: #888888;
+					}
+				}
+			}
+
+			.device-set {
+				width: 180rpx;
+				display: flex;
+				color: #FEAE43;
+				font-size: 30rpx;
+				font-weight: 400;
+			}
 		}
 	}
-}
 
-.ui-cell {
-	margin-top: 20rpx;
-	padding: 0 32rpx;
+	.ui-cell {
+		margin-top: 20rpx;
+		padding: 0 32rpx;
 
-	.cell-box {
-		background-color: #fff;
-		border-radius: 16rpx;
+		.cell-box {
+			background-color: #fff;
+			border-radius: 16rpx;
+		}
 	}
-}
 
-.ui-button {
-	margin-top: 30rpx;
-	padding: 0 32rpx;
+	.ui-button {
+		margin-top: 30rpx;
+		padding: 0 32rpx;
 
-	button {
-		border-radius: 18rpx;
-		color: #FF4645;
-		font-size: 32rpx;
-		background: #FFFFFF;
+		button {
+			border-radius: 18rpx;
+			color: #FF4645;
+			font-size: 32rpx;
+			background: #FFFFFF;
+		}
 	}
-}
 
-.online {
-	background-image: linear-gradient(90deg, #1EC862 0%, #13B98F 100%);
-}
+	.online {
+		background-image: linear-gradient(90deg, #1EC862 0%, #13B98F 100%);
+	}
 
-.offline {
-	background-image: linear-gradient(90deg, #ff4800 0%, #FF7E00 100%);
-}
+	.offline {
+		background-image: linear-gradient(90deg, #ff4800 0%, #FF7E00 100%);
+	}
 </style>

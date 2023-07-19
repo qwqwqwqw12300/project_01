@@ -900,3 +900,10 @@ export const getSosGatewayInfo = (params) => http.get(`/api/gateway/getSosGatewa
 export const getGatewaySubDeviceNum = (params) => http.get(`/api/gateway/getGatewaySubDeviceNum/${params.deviceId}`, {
 	// showLoading: false
 });
+
+/**
+ * 设置设备电话号码
+ */
+export const setDevicePhone = (params) => http.put(`/api/device/setDevicePhone`, params, {
+	// showLoading: false
+});

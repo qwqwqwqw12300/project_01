@@ -265,6 +265,11 @@ const post = (url, options, process = {}) => request(url, options, process, 'POS
 const get = (url, options, process = {}) => request(url, options, process, 'GET');
 
 /**
+ * put请求
+ */
+const put = (url, options, process = {}) => request(url, options, process, 'PUT');
+
+/**
  * uoload
  */
 const upload = (url, options = {}) => request(url, options, process = {}, 'UPLOAD');
@@ -273,5 +278,6 @@ module.exports = {
 	post,
 	get,
 	upload,
-	merge
+	merge,
+	put
 };
