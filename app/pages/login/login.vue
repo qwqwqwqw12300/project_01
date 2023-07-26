@@ -153,6 +153,7 @@
 				radiovalue: [],
 				showVisible: false,
 				content: '',
+				interVal: null,
 				loginForm: {
 					phone: '',
 					code: '',
@@ -166,8 +167,6 @@
 					code: ''
 				},
 			};
-		},
-		mounted() {
 		},
 		methods: {
 			navClick({
@@ -198,9 +197,7 @@
 				if (!password) {
 					return uni.$u.toast('请填写密码')
 				}
-				console.log(this.loginForm.code, 'uuid')
-				console.log(this.$refs.codeRef.returnCodeData(), 'this.$refs.codeRef.returnCodeData()')
-				if(code.length !== 4) return uni.$u.toast('请输入四位图形验证码')
+				if (code.length !== 4) return uni.$u.toast('请输入四位图形验证码')
 				// if (code.length !== 6) {
 				// 	return uni.$u.toast('请填写正确的验证码')
 				// }
@@ -224,7 +221,10 @@
 						push.init(); // 推送服务初始化
 					}
 					setToken(res.token);
-					this.$store.dispatch('setJGInfo'); // 设置推送id
+					this.interVal = setInterval(() => {
+						this.$store.dispatch('setJGInfo')
+						if(this.$store.getters.interSwitch) clearInterval(this.interVal);
+					}, 1000)
 					this.$store.dispatch('getPushMsgState');
 					uni.switchTab({
 						url: '/pages/index/index'
@@ -236,7 +236,7 @@
 			/**
 			 * 取消用户协议弹窗
 			 */
-			handleCancle(){
+			handleCancle() {
 				this.radiovalue = []
 				this.radiovalue.push('ag')
 				this.showVisible = false
@@ -245,7 +245,7 @@
 			 * 打开用户协议弹窗
 			 */
 			userAgreement() {
-				PostUserAgreement({}).then(res=>{
+				PostUserAgreement({}).then(res => {
 					this.content = res.data.content
 				})
 				this.showVisible = true
@@ -253,7 +253,7 @@
 			/**
 			 * 点击单选框用户协议弹窗
 			 */
-			handleShowModal(e){
+			handleShowModal(e) {
 				if (!this.radiovalue.includes('ag')) {
 					this.userAgreement()
 				}
@@ -326,7 +326,10 @@
 						}
 						setToken(res.token);
 						this.$store.dispatch('getPushMsgState');
-						this.$store.dispatch('setJGInfo'); // 设置极光id
+						this.interVal = setInterval(() => {
+							this.$store.dispatch('setJGInfo')
+							if(this.$store.getters.interSwitch) clearInterval(this.interVal);
+						}, 1000)
 						uni.switchTab({
 							url: '/pages/index/index'
 						});
@@ -352,7 +355,7 @@
 			},
 			agreementTap(type) {
 				this.showVisible = false
-				if(!type) return this.radiovalue = []
+				if (!type) return this.radiovalue = []
 				this.radiovalue = ['ag']
 			},
 			closeChange() {
@@ -444,18 +447,20 @@
 	.ui-nav {
 		background: unset !important;
 	}
+
 	.ui-agreement {
 		margin-top: 38rpx;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-	
+
 		text {
 			font-size: 30rpx;
 			color: #fdbc2b;
 		}
 	}
-	.ui-content{
+
+	.ui-content {
 		width: 660rpx;
 		height: 900rpx;
 		border-radius: 20rpx;
@@ -463,30 +468,34 @@
 		border-bottom-right-radius: 0;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: #fff;
+
 		&-title {
 			padding: 22rpx 0;
 			font-weight: bold;
 			text-align: center;
 			font-size: 36rpx;
 		}
+
 		&-bottom {
 			width: 660rpx;
 			display: flex;
 			align-items: center;
 			line-height: 0;
+
 			button {
 				width: 50%;
 				border-radius: 0;
 			}
-			&-cancel {
-				
-			}
+
+			&-cancel {}
+
 			&-confirm {
 				border-left: 1px solid #e8e8e8;
 				color: #599FFF;
 			}
 		}
-		.uni-scroll-content{
+
+		.uni-scroll-content {
 			width: 100%;
 			height: 808rpx;
 			word-wrap: break-word;
@@ -496,6 +505,7 @@
 			padding: 0 31rpx 0 31rpx;
 		}
 	}
+
 	/deep/ .u-popup__content {
 		border-bottom-left-radius: 0 !important;
 		border-bottom-right-radius: 0 !important;

@@ -195,7 +195,10 @@
 					}).then(res => {
 						setToken(res.token);
 						this.$store.dispatch('getPushMsgState');
-						this.$store.dispatch('setJGInfo'); // 设置极光id
+						this.interVal = setInterval(() => {
+							this.$store.dispatch('setJGInfo')
+							if(this.$store.getters.interSwitch) clearInterval(this.interVal);
+						}, 1000)
 						uni.$u.toast('注册成功')
 						setTimeout(() => {
 							uni.switchTab({

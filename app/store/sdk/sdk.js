@@ -10,14 +10,18 @@ import {
 export default {
 	state: {
 		/**设备id**/
-		registrationId: ''
+		registrationId: '',
+		interSwitch: false
 	},
 	getters: {
-
+		interSwitch: state => state.interSwitch,
 	},
 	mutations: {
 		setRegistrationID(state, id) {
 			state.registrationId = id;
+		},
+		setInterSwitch(state, status) {
+			state.interSwitch = status
 		}
 	},
 	actions: {
@@ -30,12 +34,15 @@ export default {
 					id = this.registrationId;
 				} else {
 					id = await push.getRegistrationID();
-					ctx.commit('setRegistrationID', id);
 				}
-				PsotSetJGInfo({
-					registrationType: isIos() ? '1' : '0',
-					registrationId: id
-				});
+				if(id) {
+					ctx.commit('setRegistrationID', id);
+					PsotSetJGInfo({
+						registrationType: isIos() ? '1' : '0',
+						registrationId: id
+					});
+					ctx.commit('setInterSwitch', true)
+				}
 			});
 		},
 	}
