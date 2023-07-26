@@ -66,21 +66,25 @@
 					
 					title: '一键同步',
 					url: 'synchronization'
-				}, {
-					title: '自动定位',
-					value: '未开启',
-					url: 'position-auto'
-				}, {
+				},
+				// {
+				// 	title: '自动定位',
+				// 	value: '未开启',
+				// 	url: 'position-auto'
+				// },
+				{
 					title: '跌倒检测',
 					type: '1',
 					// url: '/pages/card/guard'
 				}, {
 					title: '活动设定',
 					url: '/pages/watch/watch-set/active'
-				}, {
-					title: '地理围栏',
-					url: '/pages/watch/enclosure/enclosure'
-				}, {
+				},
+				// {
+				// 	title: '地理围栏',
+				// 	url: '/pages/watch/enclosure/enclosure'
+				// },
+				{
 					title: '设备信息',
 					url: '/pages/watch/watch-set/watchInfo'
 				}]

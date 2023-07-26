@@ -11,14 +11,23 @@
 			<template v-if="getDeives(room).deviceId">
 				<!-- 雷达波设备 -->
 				<view class="wd-list-box active" @click="goDeciveDetails(getDeives(room))">
-					<image src="../../../static/images/leida-nm.png"></image>
+					<image v-if="getDeives(room).type === '3'" src="../../../static/images/sos/sos-equipment_1.png"></image>
+					<image v-else src="../../../static/images/leida-nm.png"></image>
 					<view class="wd-device-info">
 						<text>{{room.name || '未命名房间'}}</text>
 						<view class="wd-device-name">
 							<view class="wd-list-static" :class="{online: getDeives(room).onlineFlag === '1'}"></view>
 							<text class="wd-list-static-font">{{getDeives(room).onlineFlag==='1' ? '在线':'离线'}}</text>
-							<view class="wd-list-people" :class="{online: getDeives(room).hasPerson === '1'}"></view>
-							<text class="wd-list-static-font">{{getDeives(room).hasPerson==='1' ? '有人':'无人'}}</text>
+							<view class="wd-list-people" v-if="getDeives(room).type !== '3'" :class="{online: getDeives(room).hasPerson === '1'}"></view>
+							<text class="wd-list-static-font" v-if="getDeives(room).type !== '3'">{{getDeives(room).hasPerson==='1' ? '有人':'无人'}}</text>
+							
+							<view v-if="getDeives(room).type === '3'" style="display: flex;align-items: center;">
+								<image v-if="getDeives(room).deploymentState === '1' || getDeives(room).deploymentState === '2'" src="@/static/images/bell.png" style="width: 36rpx;height: 36rpx;" mode=""></image>
+								<image v-else src="@/static/images/sos/mute.png" style="width: 36rpx;height: 36rpx;" mode=""></image>
+								<text class="wd-list-static-font" v-if="getDeives(room).deploymentState === '1'">蜂鸣</text>
+								<text class="wd-list-static-font" v-else-if="getDeives(room).deploymentState === '2' || getDeives(room).deploymentState === '3'">居家</text>
+								<text class="wd-list-static-font" v-else>静音</text>
+							</view>
 						</view>
 					</view>
 					<u-badge v-if="getDeives(room).msgNum >= 1" color="#fff" :offset="[-1, 0]"
@@ -62,6 +71,9 @@
 				/**绑定信息**/
 				bindPayload: {},
 			};
+		},
+		mounted() {
+			console.log()
 		},
 		computed: {
 			...mapState({

@@ -65,6 +65,7 @@
 							<room-card :rooms="familyItem.rooms" :shareFlag="familyItem.shareFlag"
 								@confirm="handleInitList" />
 							<!-- 房间 -->
+							<!-- 人员 -->
 							<human-card :humans="familyItem.humans" :shareFlag="familyItem.shareFlag"
 								@confirm="handleInitList" />
 							<!-- 人员 -->

@@ -26,8 +26,8 @@
 		mapState,
 	} from 'vuex';
 	import {
-		gatewayUnBind,
-		remoteShutDown
+		remoteShutDown,
+		relDevice
 	} from '@/common/http/api';
 	import DeviceSwiper from '@/pages/equipment/device-detail/components/sos-swiper.vue'
 	export default {
@@ -77,12 +77,11 @@
 					success: res => {
 						if (res.confirm) {
 							const {
-								humanId,
 								deviceId: deviceId
 							} = this.deviceInfo
-							gatewayUnBind({
-								humanId,
-								deviceId
+							relDevice({
+								deviceId,
+								flag: '3'
 							}).then(res => {
 								uni.$u.toast(res.msg)
 								setTimeout(() => {

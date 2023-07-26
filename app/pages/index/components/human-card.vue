@@ -25,7 +25,7 @@
 						:value="getDevice(human).msgNum" absolute>
 					</u-badge>
 				</view>
-				<view class="wd-list-box active" v-if="getDevice(human).type === '3'"
+				<!-- <view class="wd-list-box active" v-if="getDevice(human).type === '3'"
 					@click="goDeciveDetails(getDevice(human))">
 					<image :src="getDeviceImg(getDevice(human).type)"></image>
 					<view class="wd-device-info">
@@ -35,18 +35,14 @@
 							<text class="wd-list-static-font" v-if="getDevice(human).onlineFlag === '1'">在线</text>
 							<text class="wd-list-static-font" v-else-if="getDevice(human).onlineFlag === '2'">休眠</text>
 							<text class="wd-list-static-font" v-else>离线</text>
-							<!-- <view class="wd-list-static" :class="{online: getDevice(human).onlineFlag === '4'}"></view> -->
-							<image v-if="getDevice(human).deploymentState === '1' || getDevice(human).deploymentState === '2'" src="@/static/images/bell.png" style="width: 36rpx;height: 36rpx;" mode=""></image>
-							<image v-else src="@/static/images/sos/mute.png" style="width: 36rpx;height: 36rpx;" mode=""></image>
-							<text class="wd-list-static-font" v-if="getDevice(human).deploymentState === '1'">蜂鸣</text>
-							<text class="wd-list-static-font" v-else-if="getDevice(human).deploymentState === '2' || getDevice(human).deploymentState === '3'">居家</text>
-							<text class="wd-list-static-font" v-else>静音</text>
+							<view class="wd-list-static" :class="{online: getDevice(human).onlineFlag === '4'}"></view>
+							
 						</view>
 					</view>
 					<u-badge v-if="getDevice(human).msgNum >= 1" color="#fff" :offset="[-1, 0]"
 						:value="getDevice(human).msgNum" absolute>
 					</u-badge>
-				</view>
+				</view> -->
 			</template>
 			<!-- 空人员 -->
 			<template v-else>

@@ -9,19 +9,19 @@
 // Android 应用签名: 22:5A:89:92:79:D0:68:41:45:0D:FE:9A:DE:94:73:81:5C:2A:8C:11
 
 <script>
-	import {
-		push
-	} from '@/common/sdk/push.js';
-	import {
-		isApp
-	} from '@/common/utils/util.js';
+	// import {
+	// 	push
+	// // } from '@/common/sdk/push.js';
+	// import {
+	// 	isApp
+	// } from '@/common/utils/util.js';
 
 	export default {
-		onLaunch: function() {
-			if (isApp()) {
-				push.init(); // 推送服务初始化
-			}
-		},
+		// onLaunch: function() {
+		// 	if (isApp()) {
+		// 		push.init(); // 推送服务初始化
+		// 	}
+		// },
 		onShow: function() {},
 		onHide: function() {}
 	}

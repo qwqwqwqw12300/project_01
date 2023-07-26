@@ -11,13 +11,13 @@
 				<view class="detail">
 					<text class="name">{{ device.name || '未命名设备' }}</text>
 					<text class="position">
-						{{ (device.humanName || '未绑定' )}}
+						{{ (device.roomName || '未绑定' )+ ' | ' + (device.location || '--')}}
 					</text>
 				</view>
 			</view>
 			<view class="device-action">
 				<text class="danger" @tap.stop="onDelete(device.deviceId)">删除</text>
-				<text class="warn" v-if="!device.humanId" @click.stop="binding(device)">绑定</text>
+				<text class="warn" v-if="!device.roomId" @click.stop="binding(device)">绑定</text>
 				<text class="orange" v-else @click.stop="unbinding(device)">解绑</text>
 			</view>
 		</view>
@@ -27,10 +27,10 @@
 <script>
 	import {
 		PostDeviceDel,
-		gatewayUnBind
+		relDevice
 	} from '../../../../common/http/api';
 	export default {
-		name: 'dzqgk-card',
+		name: 'device-card',
 		props: {
 			device: Object
 		},
@@ -66,7 +66,7 @@
 			 */
 			binding(item) {
 				const {
-					deviceId
+					deviceId,
 				} = item;
 				this.$emit('bind', deviceId)
 			},
@@ -75,17 +75,16 @@
 			 * 解绑
 			 */
 			unbinding({
-				deviceId,
-				humanId
+				deviceId
 			}) {
 				uni.showModal({
 					title: '提示',
-					content: '是否和人员解除绑定',
+					content: '是否和房间解除绑定',
 					success: res => {
 						if (res.confirm) {
-							gatewayUnBind({
+							relDevice({
 								deviceId,
-								humanId
+								flag: '3'
 							}).then(res => {
 								uni.$u.toast(res.msg);
 								setTimeout(() => {
@@ -112,6 +111,14 @@
 </script>
 
 <style lang="scss">
+	.online {
+		background-image: linear-gradient(90deg, #1EC862 0%, #13B98F 100%);
+	}
+
+	.offline {
+		background: #D4D4D4 !important;
+	}
+
 	.wd-menu-item {
 		background: #FFFFFF;
 		border-radius: 16px;
@@ -121,7 +128,7 @@
 		position: relative;
 
 		.item-box {
-			padding: 30rpx 20rpx;
+			padding: 20rpx 10rpx;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -138,14 +145,6 @@
 					padding: 4rpx 8rpx;
 					border-radius: 4px;
 				}
-			}
-
-			.online {
-				background-image: linear-gradient(90deg, #1EC862 0%, #13B98F 100%);
-			}
-
-			.offline {
-				background: #D4D4D4 !important;
 			}
 
 			.device-info {
@@ -171,10 +170,13 @@
 					}
 
 					.name {
-						width: 150rpx;
 						font-size: 32rpx;
 						color: #353535;
 						font-weight: 500;
+						width: 150rpx;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						overflow: hidden;
 					}
 
 					.position {

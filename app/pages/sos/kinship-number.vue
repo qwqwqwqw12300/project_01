@@ -76,7 +76,6 @@
 				contactList: [],
 			}
 		},
-		mounted() {},
 		methods: {
 			getContact(index) {
 				this.index = index

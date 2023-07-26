@@ -35,7 +35,7 @@
 								<!-- /4g手表设备 -->
 								<!-- SOS设备 -->
 								<sos-card v-if="item.type === '3'" :device="item" @change="init"
-									:key="'watch' + index" @bind="bindingHuman($event, '3')" />
+									:key="'watch' + index" @bind="binding" />
 								<!-- /SOS设备 -->
 							</template>
 						</view>

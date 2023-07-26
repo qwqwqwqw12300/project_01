@@ -47,25 +47,28 @@
 						</template>
 					</u-input>
 				</view>
-				<view class="ui-agreement">
-					<u-checkbox-group v-model="radiovalue" @change="handleShowModal">
-						<u-checkbox :customStyle="{ marginRight: '8rpx' }" shape="square" activeColor="#fdbc2b"
-							size="30rpx" name="ag"></u-checkbox>
-					</u-checkbox-group>
-					<text @tap="userAgreement">同意《用户协议》</text>
-				</view>
 				<view class="ui-btn"><button class="default" @click="register">注册</button></view>
 				<text class="ui-link active" @click="goLogin">老朋友？点此登录</text>
+				<view class="ui-agreement">
+					<u-checkbox-group v-model="radiovalue" @change="handleShowModal">
+						<u-checkbox :customStyle="{ marginRight: '8rpx' }" shape="circle" activeColor="#fdbc2b"
+							size="30rpx" name="ag"></u-checkbox>
+					</u-checkbox-group>
+					<text @tap="userAgreement">我已阅读并同意《用户协议与隐私政策》</text>
+				</view><strong></strong>
 			</u-form>
 		</view>
-		<u-popup :closeable="true" zIndex="99" :round="10" :show="showVisible" mode="center"
-			@close="showVisible = false">
+		<u-popup :closeable="true" zIndex="99" :round="10" :show="showVisible" mode="center" duration="0"
+			@close="closeChange">
 			<view class="ui-content">
-				<scroll-view scroll-y class="uni-scroll">
+				<view class="ui-content-title">艾吉通用户协议与隐私政策</view>
+				<scroll-view scroll-y class="uni-scroll-content">
 					<view v-html="content"></view>
 				</scroll-view>
-				<button @click="handleCancle" class="default" style="margin-top: 20rpx;">我已阅读</button>
-		
+				<view class="ui-content-bottom">
+					<button class="ui-content-bottom-cancel" @tap="agreementTap(false)">不同意</button>
+					<button class="ui-content-bottom-confirm" @tap="agreementTap(true)">同意</button>
+				</view>
 			</view>
 		</u-popup>
 	</app-body>
@@ -179,7 +182,7 @@
 					if (!this.radiovalue.includes('ag')) {
 						uni.showToast({
 							icon: 'none',
-							title: '请先勾选协议',
+							title: '为保障您的合法权益，请阅读并同意《用户协议与隐私政策》',
 							duration: 2000
 						});
 						return;
@@ -249,8 +252,16 @@
 			 * 重置验证码
 			 */
 			codeReset() {
-				console.log(12121);
 				this.$refs.codeRef.handleGetCaptcha();
+			},	
+			agreementTap(type) {
+				this.showVisible = false
+				if(!type) return this.radiovalue = []
+				this.radiovalue = ['ag']
+			},
+			closeChange() {
+				this.showVisible = false
+				this.radiovalue = []
 			}
 		}
 	};
@@ -300,7 +311,6 @@
 		}
 
 		.ui-agreement {
-			margin-top: 50rpx;
 			display: inline-flex;
 			align-items: center;
 			justify-content: center;
@@ -323,19 +333,49 @@
 		}
 	}
 	.ui-content{
-		width: 600rpx;
+		width: 660rpx;
 		height: 900rpx;
 		border-radius: 20rpx;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: #fff;
-		padding: 100rpx 31rpx 53rpx 31rpx;
-		.uni-scroll{
+		&-title {
+			padding: 22rpx 0;
+			font-weight: bold;
+			text-align: center;
+			font-size: 36rpx;
+		}
+		&-bottom {
+			width: 660rpx;
+			display: flex;
+			align-items: center;
+			line-height: 0;
+			button {
+				width: 50%;
+				border-radius: 0;
+			}
+			&-cancel {
+				
+			}
+			&-confirm {
+				border-left: 1px solid #e8e8e8;
+				color: #599FFF;
+			}
+		}
+		.uni-scroll-content{
 			width: 100%;
-			height: 820rpx;
+			height: 808rpx;
 			word-wrap: break-word;
 			word-break: normal;
 			text-indent: 1em;
+			box-sizing: border-box;
+			padding: 0 31rpx 0 31rpx;
 		}
+	}
+	/deep/ .u-popup__content {
+		border-bottom-left-radius: 0 !important;
+		border-bottom-right-radius: 0 !important;
 	}
 	
 </style>
