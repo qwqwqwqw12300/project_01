@@ -63,7 +63,7 @@
 							break;
 						case 'human': // 绑定房间
 							devices = state.devicesList.filter(ele => (!ele.humanId) && (ele.type === '1' || ele
-								.type === '2')); // 跌倒设备
+								.type === '2' || ele.type === '4')); // 跌倒设备
 							break;
 						default:
 							break;
@@ -82,7 +82,8 @@
 						0: '/static/images/leida-nm.png',
 						1: '/static/images/dzqkg.png',
 						2: '/static/images/watch-device.png',
-						3: '/static/images/sos/sos-equipment_1.png'
+						3: '/static/images/sos/sos-equipment_1.png',
+						4: '/static/images/watch-device.png'
 					} [val.type]
 				}
 			}

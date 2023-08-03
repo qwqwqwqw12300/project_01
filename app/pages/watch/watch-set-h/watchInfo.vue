@@ -13,12 +13,6 @@
 		<view class="ui-cell">
 			<view class="cell-box">
 				<u-cell-group>
-					<!-- <u-cell @tap="phoneEdit" title="设置手机号码" arrow-direction="right" isLink
-						titleStyle="font-size: 15px;color: #303133;">
-						<view slot="value" class="u-slot-value">
-							{{ phoneDeal(deviceData.simPhone || '') }}
-						</view>
-					</u-cell> -->
 					<u-cell title="IMEI号" titleStyle="font-size: 15px;color: #303133;">
 						<view slot="value" class="u-slot-value">
 							{{ deviceData.deviceNo }}
@@ -70,10 +64,10 @@
 			}
 		},
 		onLoad() {
-			this.handleInit()
+			// this.handleInit()
 		},
 		onShow() {
-			this.handleInit()
+			// this.handleInit()
 		},
 		methods: {
 			phoneEdit() {

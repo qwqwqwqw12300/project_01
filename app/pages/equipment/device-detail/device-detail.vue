@@ -40,6 +40,8 @@
 	import SosPosition from './components/sos-position.vue'
 	import MsgList from './components/msg-list.vue'
 	import RadarMonitor from './components/radar-monitor.vue'
+	import WatchSwiperH from './components/watch-swiper-h.vue'
+	import WatchPositionH from './components/watch-position-h.vue'
 	import {
 		getGatewaySubDeviceNum
 	} from '@/common/http/api';
@@ -57,6 +59,8 @@
 			SosPosition,
 			MsgList,
 			RadarMonitor,
+			WatchSwiperH,
+			WatchPositionH
 		},
 		computed: {
 			...mapState({
@@ -70,7 +74,8 @@
 						0: 'RadarSwiper',
 						1: 'CardSwiper',
 						2: 'WatchSwiper',
-						3: 'SosSwiper'
+						3: 'SosSwiper',
+						4: 'WatchSwiperH'
 					} [type]
 				}
 			},
@@ -95,6 +100,10 @@
 					key: 'SosPosition',
 					show: this.swiperKey === '3',
 					name: '关联设备'
+				}, {
+					key: 'WatchPositionH',
+					show: this.swiperKey === '4',
+					name: '获取定位'
 				}]
 			}
 		},

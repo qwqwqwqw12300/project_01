@@ -43,12 +43,17 @@
 						{
 							name: '4G健康手表',
 							icon: '/static/images/watch.png',
-							url: '/pages/watch/add-watch'
+							url: '/pages/watch/add-watch?type=2'
 						},
 						{
 							name: 'SOS设备',
 							icon: '/static/images/sos/sos-equipment_1.png',
 							url: '/pages/card/add-card?type=sos'
+						},
+						{
+							name: 'H102智能手表',
+							icon: '/static/images/watch.png',
+							url: '/pages/watch/add-watch?type=4'
 						}
 					]
 				},

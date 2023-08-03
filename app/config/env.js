@@ -2,18 +2,20 @@
  * @Author: zhanch
  * @Date: 2022-12-13 10:33:13
  * @FilePath: /config/env.js
- * @Description: 环境变量配置
+ * @Description: 环境变量配置 
  */
 export const env = {
 	/**应用模式 dev-开发模式 prod-生产模式**/
 	mode: 'prod',
 	/**服务器地址**/
 	// http://www.agetech.cc:7766
+	// basePath: 'http://192.168.1.107:8081',
 	basePath: 'http://www.agetech.cc',
 	// basePath: 'http://192.168.132.204:7766',
+	// basePath: uni.getStorageSync('appHost') || 'http://www.agetech.cc',
 	/**日志地址**/
 	log: '/api/logging',
-	/**版本更新地址**/
+	/**版本更新地址**/ 
 	appUpdateUrl: '',
 	/**协议地址**/
 	privacy: {},

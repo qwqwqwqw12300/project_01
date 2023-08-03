@@ -91,6 +91,7 @@
 				} else {
 					if (longitude && latitude) {
 						this.$ownerInstance.callMethod('onMsg', true)
+					console.log('哈哈哈哈我执行了1')
 						this.loadMap(this.init);
 					}
 				}
@@ -99,6 +100,7 @@
 			 * 初始化
 			 */
 			init(AMap) {
+					console.log('哈哈哈哈我执行了2')
 				const {
 					latitude,
 					longitude

@@ -218,7 +218,6 @@ export const setDevice = (params) => http.post('/api/device/setDevice', params);
  */
 export const relDevice = (params) => http.post('/api/device/relDevice', params);
 
-
 /**
  * 修改设备名称
  */
@@ -905,5 +904,40 @@ export const getGatewaySubDeviceNum = (params) => http.get(`/api/gateway/getGate
  * 设置设备电话号码
  */
 export const setDevicePhone = (params) => http.put(`/api/device/setDevicePhone`, params, {
+	// showLoading: false
+});
+
+/**
+ * H102手表设置设备跌倒检测开关
+ */
+export const updateFallCheck = (params) => http.post(`/api/aw/tWatch/updateFallCheck`, params, {
+	// showLoading: false
+});
+
+/**
+ * H102设备实时定位
+ */
+export const watchHLocation = (params) => http.post(`/api/aw/tWatch/location`, params, {
+	showLoading: false
+});
+
+/**
+ * H102数据同步
+ */
+export const watchHDataSync = (params) => http.post(`/api/aw/tWatch/dataSync`, params, {
+	// showLoading: false
+});
+
+/**
+ * H102下发通讯录
+ */
+export const watchHContactsSync = (params) => http.post(`/api/aw/tWatch/contactsSync`, params, {
+	// showLoading: false
+});
+
+/**
+ * H102设备数据间隔设置
+ */
+export const watchHDataFreq = (params) => http.post(`/api/aw/tWatch/dataFreq`, params, {
 	// showLoading: false
 });

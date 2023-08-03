@@ -37,6 +37,10 @@
 								<sos-card v-if="item.type === '3'" :device="item" @change="init"
 									:key="'watch' + index" @bind="binding" />
 								<!-- /SOS设备 -->
+								<!-- H102手表设备 -->
+								<watch-card-h v-if="item.type === '4'" :device="item" @change="init"
+									:key="'watch' + index" @bind="bindingHuman($event, '4')" />
+								<!-- /H102手表设备 -->
 							</template>
 						</view>
 					</view>
@@ -91,6 +95,9 @@
 	import
 	SosCard
 	from './components/sos-card.vue';
+	import
+	WatchCardH
+	from './components/watch-card-h.vue';
 	export default {
 		components: {
 			AppHandle,
@@ -99,7 +106,8 @@
 			DzqgkCard,
 			SelectHuman,
 			WatchCard,
-			SosCard
+			SosCard,
+			WatchCardH
 		},
 		data() {
 			return {

@@ -101,6 +101,7 @@
 							}
 						},
 						e => {
+							console.log('eeeeeeeeeeeeeeeeeeeeee', e)
 							resolve({
 								latitude,
 								longitude,
@@ -117,6 +118,7 @@
 				GetWatchTrack({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
+					console.log('最后一次定位', res)
 					if (!res.data.location?.latitude) {
 						this.addressInfo = {
 							latitude: '',
@@ -127,6 +129,7 @@
 						return uni.hideLoading()
 					}
 					this.getLocation(res.data).then(info => {
+					console.log('info地图', info)
 						const preTime = this.addressInfo.locateTimeFromCurrent
 						const {
 							latitude,

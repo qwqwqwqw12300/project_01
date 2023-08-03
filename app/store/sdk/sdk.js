@@ -1,7 +1,9 @@
 import {
 	PsotSetJGInfo
 } from "../../common/http/api";
-import { push } from "../../common/sdk/push";
+import {
+	push
+} from "../../common/sdk/push";
 import {
 	isIos,
 	isApp
@@ -35,12 +37,12 @@ export default {
 				} else {
 					id = await push.getRegistrationID();
 				}
-				if(id) {
+				if (id) {
 					ctx.commit('setRegistrationID', id);
 					PsotSetJGInfo({
 						registrationType: isIos() ? '1' : '0',
 						registrationId: id
-					});
+					})
 					ctx.commit('setInterSwitch', true)
 				}
 			});

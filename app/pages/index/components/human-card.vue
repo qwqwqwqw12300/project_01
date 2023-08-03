@@ -9,7 +9,7 @@
 	<view class="wd-card-box">
 		<view class="wd-list" v-for="human of humans" :key="'human' + human.humanId">
 			<template v-if="getDevice(human).deviceId">
-				<view class="wd-list-box active" v-if="getDevice(human).type === '1' || getDevice(human).type === '2'"
+				<view class="wd-list-box active" v-if="getDevice(human).type === '1' || getDevice(human).type === '2' || getDevice(human).type === '4'"
 					@click="goDeciveDetails(getDevice(human))">
 					<image :src="getDeviceImg(getDevice(human).type)"></image>
 					<view class="wd-device-info">
@@ -100,7 +100,7 @@
 			getDeviceImg() {
 				return type => {
 					if (type === '1') return '/static/images/dzqgk.png';
-					if (type === '2') return '/static/images/watch-device.png';
+					if (type === '2' || type === '4') return '/static/images/watch-device.png';
 					if (type === '3') return '/static/images/sos/sos-equipment_1.png';
 				}
 			}

@@ -831,7 +831,82 @@
             		"titleNView": false
             	}
             }
-        }
+        },
+		// h102手表设备设置
+		{
+			"path": "pages/watch/watch-set-h/watch-set",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/watch/watch-set-h/active",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/watch/watch-set-h/information",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/watch/watch-set-h/contacts",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		
+		},
+		{
+			"path": "pages/watch/watch-set-h/position-auto",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		
+		},
+		{
+			"path": "pages/watch/watch-set-h/watchInfo",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/watch/watch-set-h/phone-edit",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/watch/watch-set-h/name-edit",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

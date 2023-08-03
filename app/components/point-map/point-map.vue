@@ -33,6 +33,7 @@
 							latitude,
 							longitude
 						}
+						console.log('mapInfo我在这', this.mapInfo)
 					} else {
 						console.log(677777777)
 						const {
@@ -94,6 +95,7 @@
 				} = data
 				if (!latitude || !longitude) return
 				this.mapData = this.deepClone(data)
+				console.log('this.map', this.map)
 				if (this.map) {
 					this.marker && this.map.remove(this.marker)
 					if (type === 'add') {
@@ -102,20 +104,26 @@
 						this.map.setCenter([longitude, latitude]); //设置地图中心点
 					}
 				} else {
+					console.log('进入else0', this.mapData)
 					this.$ownerInstance.callMethod('onMsg', true);
+					console.log('进入else1', this.mapData)
 					this.loadMap(this.init);
+					console.log('进入else2', this.mapData)
 				}
 			},
 			/**
 			 * 初始化
 			 */
 			init(AMap) {
+				console.log('init初始化了')
+				console.log('this.mapData1', this.mapData)
 				this.AMap = AMap;
 				const {
 					latitude,
 					longitude,
 					type
 				} = this.mapData
+				console.log('this.mapData2', this.mapData)
 				this.map = new AMap.Map('container', {
 					resizeEnable: true,
 					center: [longitude, latitude],

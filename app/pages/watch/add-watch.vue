@@ -47,17 +47,32 @@
 				cardInfo: {
 					deviceNo: '',
 					deviceName: '',
-					deviceType: '2'
+					deviceType: ''
 				}
 			}
+		},
+		onLoad(options) {
+			console.log(options)
+			if(options && options.type) this.cardInfo.deviceType = options.type
 		},
 		methods: {
 			handleScan() {
 				uni.scanCode({
+					autoDecodeCharset: true,
 					// scanType: ['barCode', 'qrCode'],
 					success: res => {
+						/* h102手表下 */
+						if(this.cardInfo.deviceType === '4') {
+							let strData = JSON.stringify(res.result).replace(/u0000/g, '').replace(/\\/g, '').replace(/}/, '').replace(/{"dev_info":/, '')
+							let str = strData.substr(0, strData.length - 1).substr(1, strData.length - 1)
+							let objData = JSON.parse(str)
+							this.cardInfo.deviceNo = objData.imei
+							this.cardInfo.modeNo = objData.model
+							this.cardInfo.version = objData.version
+							return
+						}
 						const result = JSON.parse(res.result)
-						this.cardInfo.deviceNo = result.dev_info.imei
+						this.cardInfo.deviceNo = objData.imei
 					},
 					false: res => {
 						console.log(res, '00000000000000000000000')
@@ -67,10 +82,14 @@
 			handleSubmit() {
 				const {
 					deviceNo,
-					deviceName
-				} = this.cardInfo
+					deviceName,
+					modeNo,
+					version
+				} = this.cardInfo 
 				if (!deviceNo) return uni.$u.toast('设备码不能为空')
 				if (!deviceName) return uni.$u.toast('设备名称不能为空')
+				if (!modeNo) return uni.$u.toast('modeNo不能为空')
+				if (!version) return uni.$u.toast('version不能为空')
 				PostcreDevice({
 					...this.cardInfo
 				}).then(res => {

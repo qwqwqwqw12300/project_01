@@ -74,7 +74,8 @@
                 "dSYMs" : false,
                 "capabilities" : {
                     "entitlements" : {}
-                }
+                },
+                "idfa" : false
             },
             // "com.apple.developer.associated-domains": [
             // 	"applinks:static-mp-de69c45d-41a8-4182-a6fc-0f3f36bcf74d.next.bspapp.com"

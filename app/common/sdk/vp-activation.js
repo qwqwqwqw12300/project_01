@@ -160,28 +160,28 @@ class VpActivation {
 	 * 获取wifi列表
 	 */
 	getWifiList() {
-		const unknowKey = 'unknown ssid';
-		return new Promise(resolve => {
-			this.pageEventCall(106);
-			this.timeouts.push(setTimeout(() => {
-				uni.getConnectedWifi({ // start需要延迟获取列表
-					partialInfo: true,
-					success: data => {
-						console.log(data, 'data------');
-						if (data.wifi.SSID && !data.wifi.SSID.includes(unknowKey)) {
-							this.pageEventCall(107);
-							resolve(data.wifi)
-						} else {
-							this.pageErrorCall(108);
-						}
-					},
-					fail: error => {
-						this.pageErrorCall(108, (error.errCode || -1));
-					}
-				})
-			}, 3000))
+		// const unknowKey = 'unknown ssid';
+		// return new Promise(resolve => {
+		// 	this.pageEventCall(106);
+		// 	this.timeouts.push(setTimeout(() => {
+		// 		uni.getConnectedWifi({ // start需要延迟获取列表
+		// 			partialInfo: true,
+		// 			success: data => {
+		// 				console.log(data, 'data------');
+		// 				if (data.wifi.SSID && !data.wifi.SSID.includes(unknowKey)) {
+		// 					this.pageEventCall(107);
+		// 					resolve(data.wifi)
+		// 				} else {
+		// 					this.pageErrorCall(108);
+		// 				}
+		// 			},
+		// 			fail: error => {
+		// 				this.pageErrorCall(108, (error.errCode || -1));
+		// 			}
+		// 		})
+		// 	}, 3000))
 
-		})
+		// })
 	}
 
 	/**
@@ -288,38 +288,38 @@ class VpActivation {
 	 * wifi检测
 	 */
 	wifiCheck() {
-		console.log('========开始验证wifi========');
-		let count = 3; // wifi和定位权限相关，因此需要多次尝试
-		const call = resolve => {
-			try {
-				console.log(typeof uni.startWifi, 'uni.startWifi');
-				this.timeouts.push(setTimeout(() => {
-					uni.startWifi({ // 验证wifi权限
-						success: res => {
-							this.pageEventCall(103);
-							resolve(true)
-						},
-						fail: err => {
-							if (count === 0) {
-								this.pageErrorCall(104);
-								resolve(false)
-							} else {
-								count--;
-								this.timeouts.push(setTimeout(() => {
-									call(resolve)
-								}, 3000)); // 权限未开三秒后重试
-							}
-						}
-					})
-				}, 1000));
-			} catch (e) {
-				this.pageEventCall(108, e);
-				console.log(e, '-------');
-				//TODO handle the exception
-			}
+		// console.log('========开始验证wifi========');
+		// let count = 3; // wifi和定位权限相关，因此需要多次尝试
+		// const call = resolve => {
+		// 	try {
+		// 		console.log(typeof uni.startWifi, 'uni.startWifi');
+		// 		this.timeouts.push(setTimeout(() => {
+		// 			uni.startWifi({ // 验证wifi权限
+		// 				success: res => {
+		// 					this.pageEventCall(103);
+		// 					resolve(true)
+		// 				},
+		// 				fail: err => {
+		// 					if (count === 0) {
+		// 						this.pageErrorCall(104);
+		// 						resolve(false)
+		// 					} else {
+		// 						count--;
+		// 						this.timeouts.push(setTimeout(() => {
+		// 							call(resolve)
+		// 						}, 3000)); // 权限未开三秒后重试
+		// 					}
+		// 				}
+		// 			})
+		// 		}, 1000));
+		// 	} catch (e) {
+		// 		this.pageEventCall(108, e);
+		// 		console.log(e, '-------');
+		// 		//TODO handle the exception
+		// 	}
 
-		};
-		return new Promise(call);
+		// };
+		// return new Promise(call);
 	}
 
 	/**

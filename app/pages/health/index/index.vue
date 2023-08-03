@@ -7,7 +7,8 @@
 					<template v-if="deviceList.length">
 						<swiper-item v-for="(item,index) in deviceList" :key="item.deviceId">
 							<view :class="[current === index ? 'active' : 'noActive']">
-								<swiper-device :record="item"></swiper-device>
+								<swiper-device v-if="item.type !== '4'" :record="item"></swiper-device>
+								<swiper-device-h v-if="item.type === '4'" :record="item"></swiper-device-h>
 							</view>
 						</swiper-item>
 					</template>
@@ -123,6 +124,7 @@
 	import IndexDarg from "./components/index-darg.vue"
 	import * as echarts from '@/static/js/echarts.js';
 	import SwiperDevice from '@/pages/equipment/device-detail/components/watch-swiper.vue';
+	import SwiperDeviceH from '@/pages/equipment/device-detail/components/watch-swiper-h.vue';
 	import SleepCard from "./components/SleepCard.vue";
 	import XinLvCard from "./components/XinLvCard.vue";
 	import XueYaCard from "./components/XueYaCard.vue";
@@ -139,6 +141,7 @@
 	export default {
 		components: {
 			SwiperDevice,
+			SwiperDeviceH,
 			IndexDarg,
 			SleepCard,
 			XinLvCard,
@@ -275,8 +278,9 @@
 					pageSize: 10000
 				}).then(res => {
 					this.deviceList = res.rows.filter(n => {
-						return n.type === '2'
+						return n.type === '2' || n.type === '4'
 					})
+					console.log(this.deviceList, 'length')
 					if (this.deviceList.length) {
 						// this.current = 0
 						this.swiperData = this.deviceList[this.current]
