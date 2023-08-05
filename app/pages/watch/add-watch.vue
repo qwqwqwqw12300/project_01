@@ -1,7 +1,7 @@
 <!-- 增加手表设备 -->
 <template>
 	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
-		<app-logo color="#353535" text="绑定4G手表"></app-logo>
+		<app-logo color="#353535" :text="cardInfo.deviceType === '4' ? '绑定H102手表' : '绑定4G手表'"></app-logo>
 		<view class="ui-scan">
 			<view class="scan-box">
 				<view class="box-bg" @click="handleScan">
@@ -72,7 +72,7 @@
 							return
 						}
 						const result = JSON.parse(res.result)
-						this.cardInfo.deviceNo = objData.imei
+						this.cardInfo.deviceNo = result.dev_info.imei
 					},
 					false: res => {
 						console.log(res, '00000000000000000000000')
@@ -82,14 +82,24 @@
 			handleSubmit() {
 				const {
 					deviceNo,
-					deviceName,
-					modeNo,
-					version
+					deviceName
 				} = this.cardInfo 
-				if (!deviceNo) return uni.$u.toast('设备码不能为空')
-				if (!deviceName) return uni.$u.toast('设备名称不能为空')
-				if (!modeNo) return uni.$u.toast('modeNo不能为空')
-				if (!version) return uni.$u.toast('version不能为空')
+				switch (this.cardInfo.deviceType){
+					case '4': 
+						const {
+							modeNo,
+							version
+						} = this.cardInfo 
+						if (!deviceNo) return uni.$u.toast('设备码不能为空')
+						if (!deviceName) return uni.$u.toast('设备名称不能为空')
+						if (!modeNo) return uni.$u.toast('modeNo不能为空')
+						if (!version) return uni.$u.toast('version不能为空')
+						break;
+					case '2': 
+						if (!deviceNo) return uni.$u.toast('设备码不能为空')
+						if (!deviceName) return uni.$u.toast('设备名称不能为空')
+						break;
+				}
 				PostcreDevice({
 					...this.cardInfo
 				}).then(res => {
