@@ -22,16 +22,16 @@
 						<text></text>
 						{{ item.orderName }}
 					</view>
-					<view class="title-right" @tap="getContact(index)">
+					<view class="title-right" @tap="getContact(index)" v-if="item.shareFlag == '2'">
 						<u-icon name="/static/images/tel-book.png" size="44rpx"></u-icon>
 					</view>
 				</view>
 				<view class="item-input">
 					<view class="input-left">
-						<u--input v-model="item.name" placeholder="请输入姓名" border="none" clearable></u--input>
+						<u--input v-model="item.name" :disabled="item.shareFlag == '0'" placeholder="请输入姓名" border="none" clearable></u--input>
 					</view>
 					<view class="input-right">
-						<u--input v-model="item.phone" maxlength="11" type="number" placeholder="请输入手机号" border="none"
+						<u--input v-model="item.phone" :disabled="item.shareFlag == '0'" maxlength="11" type="number" placeholder="请输入手机号" border="none"
 							placeholderStyle="text-align:right;color: rgb(192, 196, 204);" clearable></u--input>
 					</view>
 				</view>
