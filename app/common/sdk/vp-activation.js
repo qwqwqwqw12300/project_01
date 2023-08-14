@@ -160,6 +160,8 @@ class VpActivation {
 	 * 获取wifi列表
 	 */
 	getWifiList() {
+		// #ifdef APP-PLUS
+		
 		const unknowKey = 'unknown ssid';
 		return new Promise(resolve => {
 			this.pageEventCall(106);
@@ -182,6 +184,7 @@ class VpActivation {
 			}, 3000))
 
 		})
+		// #endif
 	}
 
 	/**
@@ -288,6 +291,7 @@ class VpActivation {
 	 * wifi检测
 	 */
 	wifiCheck() {
+		// #ifdef APP-PLUS
 		console.log('========开始验证wifi========');
 		let count = 3; // wifi和定位权限相关，因此需要多次尝试
 		const call = resolve => {
@@ -320,6 +324,7 @@ class VpActivation {
 
 		};
 		return new Promise(call);
+		// #endif
 	}
 
 	/**

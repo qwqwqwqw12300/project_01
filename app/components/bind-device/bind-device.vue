@@ -80,7 +80,7 @@
 				return function(val) {
 					return {
 						0: '/static/images/leida-nm.png',
-						1: '/static/images/dzqkg.png',
+						1: '/static/images/dzqgk.png',
 						2: '/static/images/watch-device.png',
 						3: '/static/images/sos/sos-equipment_1.png',
 						4: '/static/images/watch-device.png'

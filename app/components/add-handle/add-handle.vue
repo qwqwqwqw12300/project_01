@@ -1,13 +1,15 @@
 <template>
 	<u-action-sheet :closeOnClickOverlay="true" :closeOnClickAction="true" :safeAreaInsetBottom="safeShow"
 		@close="closeHandle" :show="isShow" cancelText="取消">
-		<view>
-			<view @click="sheetSelect(item)" class="ui-sheet" v-for="(item, index) of addHandle.list"
-				:key="'sheet' + index">
-				<u-icon :name="item.icon" class="active" color="#fff" size="48rpx">
-				</u-icon>
-				<text>{{item.name}}</text>
-			</view>
+		<view class="list_box">
+			<scroll-view scroll-y="true" style="height: 610rpx;">
+				<view @click="sheetSelect(item)" class="items" v-for="(item, index) of addHandle.list"
+					:key="'sheet' + index">
+					<image :src="item.icon" class="active">
+					</image>
+					<view class="text">{{item.name}}</view>
+				</view>
+			</scroll-view>
 		</view>
 	</u-action-sheet>
 </template>
@@ -80,28 +82,44 @@
 </script>
 
 <style lang="scss">
-	.ui-sheet {
-		border-bottom: 1rpx solid #e2e2e2;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 120rpx;
-		width: 100%;
-
-		text {
+	.list_box{
+		background-color: rgb(234, 234, 236);
+		padding: 30rpx;
+		border-radius: 10px 10px 0 0;
+	}
+	.items {
+		background-color: #FFFFFF;
+		width: calc(50% - 10rpx);
+		display: inline-block;
+		text-align: center;
+		float: left;
+		border-radius: 20rpx;
+		padding: 25rpx 0;
+		margin-bottom: 20rpx;
+		.active{
+			margin: 0 auto;
+			width: 100rpx;
+			height: 100rpx;
+		}
+		.text {
 			margin-left: 20rpx;
-			font-size: 34rpx;
+			font-size: 32rpx;
 			color: #000000;
 			text-align: center;
 			line-height: 34rpx;
 			font-weight: 400;
 		}
 	}
-
+	.items:nth-child(2n+1){
+		margin-right: 20rpx;
+	}
 	::v-deep .u-action-sheet__cancel-text {
 		font-size: 36rpx;
 		color: #599FFF;
 		line-height: 36rpx;
 		font-weight: 500;
+	}
+	::v-deep .u-popup__content{
+		border-radius: 10px 10px 0 0;
 	}
 </style>
