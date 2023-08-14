@@ -248,6 +248,8 @@
 					_this.listData_c = res.data;
 				}
 			})
+		},
+		onShow() {
 			this.init();
 		},
 		computed: {
@@ -280,7 +282,6 @@
 					this.deviceList = res.rows.filter(n => {
 						return n.type === '2' || n.type === '4'
 					})
-					console.log(this.deviceList, 'length')
 					if (this.deviceList.length) {
 						// this.current = 0
 						this.swiperData = this.deviceList[this.current]
