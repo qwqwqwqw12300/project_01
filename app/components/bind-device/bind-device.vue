@@ -56,14 +56,14 @@
 		computed: {
 			...mapState({
 				devices: function(state) {
+					console.log('state',state.devicesList)
 					let devices = [];
 					switch (this.payload.type) {
 						case 'room': // 绑定房间
-							devices = state.devicesList.filter(ele => (!ele.roomId) && ele.type === '0' || ele.type === '3'); // 跌倒设备
+							devices = state.devicesList.filter(ele => (!ele.roomId) && (ele.type === '0' || ele.type === '3')); // 跌倒设备
 							break;
 						case 'human': // 绑定房间
-							devices = state.devicesList.filter(ele => (!ele.humanId) && (ele.type === '1' || ele
-								.type === '2' || ele.type === '4')); // 跌倒设备
+							devices = state.devicesList.filter(ele => (!ele.humanId) && (ele.type === '1' || ele.type === '2' || ele.type === '4')); // 跌倒设备
 							break;
 						default:
 							break;

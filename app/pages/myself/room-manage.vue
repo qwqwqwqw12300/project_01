@@ -29,7 +29,8 @@
 									<text class="offline" v-else>离线</text>
 								</view>
 								<view class="device-info">
-									<image src="/static/images/leida-nm.png"></image>
+									<image v-if="getDevices(item).type === '3'" src="/static/images/sos/sos-equipment_2.png"></image>
+									<image v-else src="/static/images/leida-nm.png"></image>
 									<view class="detail">
 										<text class="name">{{ item.name }}</text>
 										<text class="position" v-if="item.devices.length">

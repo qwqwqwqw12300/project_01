@@ -11,7 +11,7 @@
 			<template v-if="getDeives(room).deviceId">
 				<!-- 雷达波设备 -->
 				<view class="wd-list-box active" @click="goDeciveDetails(getDeives(room))">
-					<image v-if="getDeives(room).type === '3'" src="../../../static/images/sos/sos-equipment_1.png"></image>
+					<image v-if="getDeives(room).type === '3'" src="../../../static/images/sos/sos-equipment_2.png"></image>
 					<image v-else src="../../../static/images/leida-nm.png"></image>
 					<view class="wd-device-info">
 						<text>{{room.name || '未命名房间'}}</text>
@@ -73,7 +73,7 @@
 			};
 		},
 		mounted() {
-			console.log()
+			
 		},
 		computed: {
 			...mapState({
@@ -139,6 +139,7 @@
 					id: roomId,
 					type: 'room'
 				};
+				console.log('this.rooms',this.rooms)
 				this.$refs.roomCardBind.open();
 			},
 
