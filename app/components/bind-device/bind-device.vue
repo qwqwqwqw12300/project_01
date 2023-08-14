@@ -82,8 +82,8 @@
 						0: '/static/images/leida-nm.png',
 						1: '/static/images/dzqgk.png',
 						2: '/static/images/watch-device.png',
-						3: '/static/images/sos/sos-equipment_1.png',
-						4: '/static/images/watch-device.png'
+						3: '/static/images/sos/sos-equipment_2.png',
+						4: '/static/images/new-watch-device.png'
 					} [val.type]
 				}
 			}

@@ -29,8 +29,7 @@
 									<text class="offline" v-else>离线</text>
 								</view>
 								<view class="device-info">
-									<image v-if="getDevices(item).type === '3'" src="/static/images/sos/sos-equipment_2.png"></image>
-									<image v-else src="/static/images/leida-nm.png"></image>
+									<image :src="getImage(item.devices[0])"></image>
 									<view class="detail">
 										<text class="name">{{ item.name }}</text>
 										<text class="position" v-if="item.devices.length">
@@ -68,9 +67,7 @@
 									<text class="offline" v-else>离线</text>
 								</view>
 								<view class="device-info">
-									<image
-										:src="getDevices(item).type == 1 ?'/static/images/dzqgk.png' : '/static/images/watch-device.png'">
-									</image>
+									<image :src="getImage(item.devices[0])"></image>
 									<view class="detail">
 										<text class="name">{{ item.name }}</text>
 										<text class="position" v-if="item.devices.length">
@@ -183,6 +180,17 @@
 							break;
 					}
 					return pic;
+				}
+			},
+			getImage() {
+				return function(val) {
+					return {
+						0: '/static/images/leida-nm.png',
+						1: '/static/images/dzqgk.png',
+						2: '/static/images/watch-device.png',
+						3: '/static/images/sos/sos-equipment_2.png',
+						4: '/static/images/new-watch-device.png'
+					} [val.type]
 				}
 			}
 		},

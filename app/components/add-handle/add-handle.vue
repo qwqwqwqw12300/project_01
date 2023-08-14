@@ -49,12 +49,12 @@
 						},
 						{
 							name: 'SOS设备',
-							icon: '/static/images/sos/sos-equipment_1.png',
+							icon: '/static/images/sos/sos-equipment_2.png',
 							url: '/pages/card/add-card?type=sos'
 						},
 						{
 							name: 'H102智能手表',
-							icon: '/static/images/watch.png',
+							icon: '/static/images/new-watch-device.png',
 							url: '/pages/watch/add-watch?type=4'
 						}
 					]

@@ -2,7 +2,7 @@
 <template>
 	<view class="swiper-item">
 		<view class="item-box">
-			<image class="img" src="/static/images/watch-device.png"></image>
+			<image class="img" src="/static/images/new-watch-device.png"></image>
 			<view class="device-info">
 				<view class="title">
 					<text class="name">{{record.name || '未命名设备'}}</text>

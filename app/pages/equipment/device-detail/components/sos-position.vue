@@ -23,7 +23,7 @@
 			return {
 				imgList: [
 					{
-						img: require('@/static/images/sos/sos-equipment_1.png'),
+						img: require('@/static/images/sos/sos-equipment_2.png'),
 						name: '紧急按钮',
 						type: '02'
 					},
