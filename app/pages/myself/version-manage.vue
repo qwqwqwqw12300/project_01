@@ -3,19 +3,22 @@
 		<app-logo color="#353535" text="关于软件" ></app-logo>
 		<view class="ui-main">
 			<view>
-				<image class="ui-main-imageFir" src="@/static/images/ELINKER@3x.png" mode=""></image>
+				<image class="ui-main-imageFir" src="@/static/images/login-logo.png" mode=""></image>
 			</view>
-			<view>
+			<!-- <view>
 				<image class="ui-main-imageSec" src="@/static/images/H&V@3x.png" mode=""></image>
-			</view>
+			</view> -->
 			<view class="ui-main-font">
-				福建易联智慧科技有限公司
-			</view>
-			<view class="ui-main-font" style="margin-top: 32rpx;">
-				Version {{appVersion}}
+				艾吉通，守护您每一分钟！
 			</view>
 			<view class="ui-main-button">
 				<button class="ui-button default" @click="handleUpdate">检查更新</button>
+			</view>
+			<view class="Version">
+				福建易联智慧科技有限公司
+			</view>
+			<view class="Version" style="margin-top: 32rpx;">
+				Version {{appVersion}}
 			</view>
 		</view>
 	</app-body>
@@ -102,11 +105,20 @@
 			color: #353535;
 			letter-spacing: 0;
 			text-align: center;
+			font-weight: 600;
+		}
+		.Version{
+			margin-top: 132rpx;
+			font-family: PingFangSC-Regular;
+			font-size: 28rpx;
+			color: #353535;
+			letter-spacing: 0;
+			text-align: center;
 			font-weight: 400;
 		}
 		.ui-main-button {
 			margin-top: 130rpx;
-			margin-bottom: 163rpx;
+			// margin-bottom: 163rpx;
 			width: 600rpx;
 
 			.ui-button {
