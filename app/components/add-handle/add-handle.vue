@@ -89,7 +89,7 @@
 	}
 	.items {
 		background-color: #FFFFFF;
-		width: calc(50% - 10rpx);
+		width: calc(50% - 11rpx);
 		display: inline-block;
 		text-align: center;
 		float: left;

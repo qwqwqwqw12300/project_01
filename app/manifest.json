@@ -156,7 +156,7 @@
             "JG-JCore" : {
                 "JPUSH_APPKEY_IOS" : "877bbde18be4aa60bc76e442",
                 "JPUSH_CHANNEL_IOS" : "",
-                "JPUSH_APPKEY_ANDROID" : "3c3f6b5746d37ea030455d83",
+                "JPUSH_APPKEY_ANDROID" : "877bbde18be4aa60bc76e442",
                 "JPUSH_CHANNEL_ANDROID" : "",
                 "__plugin_info__" : {
                     "name" : "JG-JCore",
