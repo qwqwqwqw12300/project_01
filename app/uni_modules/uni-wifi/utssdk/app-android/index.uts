@@ -21,7 +21,6 @@ import Build from 'android.os.Build';
 import { UniWifiResult, GetConnectedWifiOptions, WifiConnectOption, WifiOption, UniWifiInfo } from "../interface.uts"
 
 
-
 /**
 	* 全局数据储存
 	*/
@@ -238,7 +237,59 @@ function zeroCountNum(source ?: string) : number {
 	return countNum
 }
 
+class AsyncConnectionThread extends Thread{
+	
+	mWifiManager : WifiManager | null = null;
+	
+	constructor(wifi:WifiManager){
+		super();
+		this.mWifiManager = wifi
+	}
+	override run(){
+		
+		let uniWifiInfo : UniWifiInfo = {
+			SSID: "",
+			secure: false,
+			signalStrength: 0,
+			frequency: 0,
+		}
+		
+		// BroadcastReceiver 中不能执行耗时任务，需要使用setTimeout
+		// @ts-ignore
+		let winfo = this.mWifiManager!.getConnectionInfo();
+		
+		while (winfo.bssid == null || zeroCountNum(winfo.bssid) > 4) {
+			Thread.sleep(1000)
+			winfo = this.mWifiManager!.getConnectionInfo();
+		}
+		
+		// 封装成数据对象
+		uniWifiInfo = wrapUniWifiInfoFromConnectInfo(winfo)
+		let res = {
+			errMsg: 'onWifiConnected:ok',
+			errCode: 0,
+			wifi: uniWifiInfo
+		}
+		// wifi状态可用了，分发当前的链接状态给已注册的监听集合
+		for (let perCallback in Global.onWifiConnectCallbackList) {
+			perCallback(res);
+		}
+		// 封装仅SSID 数据对象
+		var connectedWithPartialInfo = {
+			SSID: uniWifiInfo.SSID
+		}
+		for (let perCallback in Global.onWifiConnectWithPartialInfoCallbackList) {
+			perCallback(connectedWithPartialInfo);
+		}
+		
+	}
+	
+}
 
+
+	
+	
+	
 /**
 	* 自定义wifi变化广播监听器
 	*/
@@ -261,43 +312,8 @@ class CustomBroadcastReceiver extends BroadcastReceiver {
 			if (state == WifiManager.WIFI_STATE_ENABLED) {
 				// 获取当前的connectInfo 并且进行数据封装
 				// let uniWifiInfo = new UniWifiInfo(null)
-				let uniWifiInfo : UniWifiInfo = {
-					SSID: "",
-					secure: false,
-					signalStrength: 0,
-					frequency: 0,
-				}
 				//做一些异步操作
-				setTimeout(function () {
-					// BroadcastReceiver 中不能执行耗时任务，需要使用setTimeout
-					// @ts-ignore
-					let winfo = this.mWifiManager!.getConnectionInfo();
-
-					while (winfo.bssid == null || zeroCountNum(winfo.bssid) > 4) {
-						Thread.sleep(1000)
-						winfo = this.mWifiManager!.getConnectionInfo();
-					}
-
-					// 封装成数据对象
-					uniWifiInfo = wrapUniWifiInfoFromConnectInfo(winfo)
-					let res = {
-						errMsg: 'onWifiConnected:ok',
-						errCode: 0,
-						wifi: uniWifiInfo
-					}
-					// wifi状态可用了，分发当前的链接状态给已注册的监听集合
-					for (let perCallback in Global.onWifiConnectCallbackList) {
-						perCallback(res);
-					}
-					// 封装仅SSID 数据对象
-					var connectedWithPartialInfo = {
-						SSID: uniWifiInfo.SSID
-					}
-					for (let perCallback in Global.onWifiConnectWithPartialInfoCallbackList) {
-						perCallback(connectedWithPartialInfo);
-					}
-
-				}, 100);
+				new AsyncConnectionThread(this.mWifiManager!!).start()
 			}
 
 		}

@@ -121,6 +121,7 @@
 			this.current = this.deviceList.indexOf(this.deviceInfo)
 			this.swiperData = this.deviceList[this.current]
 			this.swiperKey = this.swiperData.type
+			console.log(this.deviceList, 'devedededede')
 		},
 		data() {
 			return {
@@ -159,7 +160,9 @@
 				}
 			},
 			async onRefresh() {
+				console.log(';111111111111111111111111111111111111111')
 				const familyList = await this.$store.dispatch('getAllFamily');
+				console.log('familyList', familyList)
 				const res = familyList.find(n => {
 					return this.deviceInfo.familyId === n.familyId
 				})

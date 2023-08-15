@@ -7,7 +7,7 @@
 					<template v-if="deviceList.length">
 						<swiper-item v-for="(item,index) in deviceList" :key="item.deviceId">
 							<view :class="[current === index ? 'active' : 'noActive']">
-								<swiper-device v-if="item.type != '4'" :record="item"></swiper-device>
+								<swiper-device v-if="item.type !== '4'" :record="item"></swiper-device>
 								<swiper-device-h v-if="item.type === '4'" :record="item"></swiper-device-h>
 							</view>
 						</swiper-item>
@@ -133,7 +133,8 @@
 	import {
 		GetCaiHongData,
 		getDeviceListState,
-		GetDaySleepQuality
+		GetDaySleepQuality,
+		healthDataList
 	} from '@/common/http/api.js'
 	import {
 		mapState,
@@ -276,7 +277,7 @@
 			init() {
 				// this.pageShow = false;
 				// this.loading = true;
-				getDeviceListState({
+				healthDataList({
 					pageSize: 10000
 				}).then(res => {
 					this.deviceList = res.rows.filter(n => {

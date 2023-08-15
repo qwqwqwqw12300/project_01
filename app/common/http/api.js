@@ -941,3 +941,10 @@ export const watchHContactsSync = (params) => http.post(`/api/aw/tWatch/contacts
 export const watchHDataFreq = (params) => http.post(`/api/aw/tWatch/dataFreq`, params, {
 	// showLoading: false
 });
+
+/**
+ * 健康数据
+ */
+export const healthDataList = (params) => http.post(`/api/device/healthDataList`, params, {
+	// showLoading: false
+});
