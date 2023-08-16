@@ -64,7 +64,7 @@
 			}
 		},
 		onLoad() {
-			// this.handleInit()
+			this.handleInit()
 		},
 		onShow() {
 			// this.handleInit()
