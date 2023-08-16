@@ -109,7 +109,7 @@
 		},
 		async onShow() {
 			await this.$store.dispatch('GetContactsList');
-			this.getList()
+			if(this.deviceInfo.type === '3') this.getList()
 			const familyId = this.deviceInfo.familyId
 			const res = this.familyList.find(n => {
 				return familyId === n.familyId
@@ -172,9 +172,11 @@
 				this.swiperKey = this.swiperData.type
 			},
 			getList() {
+				console.log('请求九宫格')
 				getGatewaySubDeviceNum({
 					deviceId: this.deviceInfo.deviceId,
 				}).then(res => {
+				console.log(res,'请求九宫格')
 					this.sosPositionList = res.data
 				})
 			}
