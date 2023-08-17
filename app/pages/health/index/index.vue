@@ -72,22 +72,28 @@
 								@touchend="AppLi_touchend(index)" v-if="item.isShow || isEdit">
 								<SleepCard v-if="item.type === '1'" :date="date" :sleepMap="sleepMap" :item="item"
 									:isEdit="isEdit" @iconClick="editCard"></SleepCard>
-								<XinLvCard v-if="item.type === '2' "
-									:date="fetchRes.HeartRateTime.substr(5,6) && fetchRes.HeartRateList.length !== 0? fetchRes.HeartRateTime.substr(5,6) : '暂无数据'"
-									:fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit"
-									@iconClick="editCard"></XinLvCard>
-								<XueYaCard v-if="item.type === '3'"
-									:date="fetchRes.BloodPressureTime.substr(5,6) && fetchRes.spMapList.length !== 0? fetchRes.BloodPressureTime.substr(5,6) : '暂无数据'"
-									:fetchRes="fetchRes" :option="xueYaOption" :item="item" :isEdit="isEdit"
-									@iconClick="editCard"></XueYaCard>
-								<XueYangCard v-if="item.type === '4'"
-									:date="fetchRes.BloodOxygenTime.substr(5,6) && fetchRes.tWatchBloodOxygen.length !== 0 ? fetchRes.BloodOxygenTime.substr(5,6) : '暂无数据'"
-									:fetchRes="fetchRes" :option="xueYangOption" :item="item" :isEdit="isEdit"
-									@iconClick="editCard"></XueYangCard>
-								<XinDianCard v-if="item.type === '5'"
-									:date="fetchRes.ElectrocardiogramTime.substr(5,6) && fetchRes.electrocardiogramMapList.length ? fetchRes.ElectrocardiogramTime.substr(5,6): '暂无数据'"
-									:fetchRes="fetchRes" :option="xinDianOption" :item="item" :isEdit="isEdit"
-									@iconClick="editCard"></XinDianCard>
+								<view class="">
+									<XinLvCard v-if="item.type === '2' "
+										:date="fetchRes.HeartRateTime.substr(5,6) && fetchRes.HeartRateList.length !== 0? fetchRes.HeartRateTime.substr(5,6) : '暂无数据'"
+										:fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit"
+										@iconClick="editCard"></XinLvCard>
+									<XueYaCard v-if="item.type === '3'"
+										:date="fetchRes.BloodPressureTime.substr(5,6) && fetchRes.spMapList.length !== 0? fetchRes.BloodPressureTime.substr(5,6) : '暂无数据'"
+										:fetchRes="fetchRes" :option="xueYaOption" :item="item" :isEdit="isEdit"
+										@iconClick="editCard"></XueYaCard>
+									<XueYangCard v-if="item.type === '4'"
+										:date="fetchRes.BloodOxygenTime.substr(5,6) && fetchRes.tWatchBloodOxygen.length !== 0 ? fetchRes.BloodOxygenTime.substr(5,6) : '暂无数据'"
+										:fetchRes="fetchRes" :option="xueYangOption" :item="item" :isEdit="isEdit"
+										@iconClick="editCard"></XueYangCard>
+									<XinDianCard v-if="item.type === '5'"
+										:date="fetchRes.ElectrocardiogramTime.substr(5,6) && fetchRes.electrocardiogramMapList.length ? fetchRes.ElectrocardiogramTime.substr(5,6): '暂无数据'"
+										:fetchRes="fetchRes" :option="xinDianOption" :item="item" :isEdit="isEdit"
+										@iconClick="editCard"></XinDianCard>
+									<TiWenCard v-if="item.type === '6'"
+										:date="fetchRes.Temperatures.substr(5,6) && fetchRes.tWatchTemperatures.length !== 0 ? fetchRes.Temperatures.substr(5,6) : '暂无数据'"
+										:fetchRes="fetchRes" :option="tiWenOption" :item="item" :isEdit="isEdit"
+										@iconClick="editCard"></TiWenCard>
+								</view>
 							</view>
 							<!-- 滑块 -->
 							<movable-view v-if="moviewShow" :animation="false" class="ui-mov-view ui-br-16" :x="moveX"
@@ -130,6 +136,7 @@
 	import XueYaCard from "./components/XueYaCard.vue";
 	import XueYangCard from "./components/XueYangCard.vue";
 	import XinDianCard from "./components/XinDianCard.vue"
+	import TiWenCard from "./components/TiWenCard.vue";
 	import {
 		GetCaiHongData,
 		getDeviceListState,
@@ -148,7 +155,8 @@
 			XinLvCard,
 			XueYaCard,
 			XueYangCard,
-			XinDianCard
+			XinDianCard,
+			TiWenCard
 		},
 		data() {
 			return {
@@ -160,11 +168,13 @@
 					tWatchBloodOxygen: [],
 					HeartRateList: [],
 					electrocardiogramMapList: [],
+					tWatchTemperatures:[],
 					sleepMap: 1,
 					HeartRateTime: '',
 					BloodPressureTime: '',
 					BloodOxygenTime: '',
-					ElectrocardiogramTime: ''
+					ElectrocardiogramTime: '',
+					Temperatures:'',
 				},
 				pageShow: false,
 				isEdit: false,
@@ -179,6 +189,7 @@
 				xueYangOption: {},
 				xinDianOption: {},
 				xinZangOption: {},
+				tiWenOption: {},
 				current: 0,
 				deviceList: [],
 				swiperData: {},
@@ -208,6 +219,11 @@
 					type: '5',
 					name: 'XinDianCard',
 					img: '../../../static/images/xindian_drag.svg',
+					isShow: true
+				}, {
+					type: '6',
+					name: 'TiWenCard',
+					img: '../../../static/images/xueya_drag.svg',
 					isShow: true
 				}],
 				// CheckAppId: null,
@@ -383,6 +399,7 @@
 				this.xueYaOptionHandle(res);
 				this.xueYangOptionHandle(res);
 				this.xinDianOptionHandle(res);
+				this.tiWenOptionHandle(res)
 				// this.xinZangOptionHandle(res);
 			},
 			/**
@@ -1118,10 +1135,191 @@
 				}
 			},
 			/**
+			 * 体温图表
+			 * @param {Object} res
+			 */
+			tiWenOptionHandle(res) {
+				const dateRes = res.data && res.data.Temperatures.slice(0, 4) + '-' + res.data.Temperatures.slice(5,
+						7) + '-' +
+					res.data.Temperatures.slice(8, 10);
+					console.log('tiWenOptionHandle',dateRes)
+				let arr = [];
+				if (res.data && res.data.tWatchTemperatures.length !== 0) {
+					arr = res.data.tWatchTemperatures;
+					console.log('tiWenOptionHandle',arr)
+				} else {
+					arr = [{
+							time: (dateRes ? dateRes : this.echartDate) + " 00:00:01",
+							value: "75"
+						},
+						{
+							time: (dateRes ? dateRes : this.echartDate) + " 02:00:00",
+							value: "109"
+						},
+						{
+							time: (dateRes ? dateRes : this.echartDate) + " 04:00:00",
+							value: "75"
+						},
+						{
+							time: (dateRes ? dateRes : this.echartDate) + " 06:00:00",
+							value: "109"
+						},
+						{
+							time: (dateRes ? dateRes : this.echartDate) + " 08:00:00",
+							value: "75"
+						},
+						{
+							time: (dateRes ? dateRes : this.echartDate) + " 10:00:00",
+							value: "109"
+						},
+						{
+							time: (dateRes ? dateRes : this.echartDate) + " 12:00:00",
+							value: "75"
+						},
+						{
+							time: (dateRes ? dateRes : this.echartDate) + " 14:00:00",
+							value: "109"
+						},
+						{
+							time: (dateRes ? dateRes : this.echartDate) + " 16:00:00",
+							value: "75"
+						},
+						{
+							time: (dateRes ? dateRes : this.echartDate) + " 18:00:00",
+							value: "109"
+						},
+						{
+							time: (dateRes ? dateRes : this.echartDate) + " 20:00:00",
+							value: "75"
+						},
+						{
+							time: (dateRes ? dateRes : this.echartDate) + " 22:00:00",
+							value: "109"
+						}
+					]
+				}
+				let resArr = [];
+				arr.forEach((item) => {
+					resArr.push([
+						item.dt,
+						item.tp
+					])
+				})
+				console.log('resarr', resArr)
+			
+				this.tiWenOption = {
+					notMerge: true,
+					backgroundColor: '#fff',
+					grid: {
+						left: '-15%',
+						right: '0',
+						bottom: '100%',
+						containLabel: true
+					},
+					xAxis: [{
+						show: false,
+						type: 'time',
+						// interval: 6 * 60 * 60 * 1000, // 设置x轴间隔为6小时
+						min: `${dateRes + ' 00:00:00'}`, // x轴起始时间
+						max: `${dateRes + ' 23:49:00'}`, // x轴结束时间
+						// boundaryGap: false,
+						axisTick: { //坐标轴刻度相关设置。
+							show: false,
+						},
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							},
+							formatter: function(val) {
+								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
+							}
+						},
+						splitLine: {
+							show: false
+						},
+						axisLine: {
+							lineStyle: {
+								color: 'rgb(238,238,238)',
+								width: 1
+							}
+						},
+					}, ],
+					yAxis: [{
+						show: false,
+						min: 0,
+						max: 100,
+						type: "value",
+						scale: true,
+						splitArea: {
+							show: true,
+							areaStyle: {
+								color: ['#f6f8fc', '#fff']
+							}
+						},
+						axisLabel: {
+							textStyle: {
+								color: "#666"
+							}
+						},
+						nameTextStyle: {
+							color: "#666",
+							fontSize: 12,
+							lineHeight: 40
+						},
+						// 分割线
+						splitLine: {
+							lineStyle: {
+								type: "dashed",
+								color: "#E9E9E9"
+							}
+						},
+						axisLine: {
+							show: false
+						},
+						axisTick: {
+							show: false
+						}
+					}],
+					series: [{
+						type: 'bar',
+						showSymbol: false,
+						itemStyle: {
+							color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+									offset: 0,
+										color: '#fff5c1'
+									},
+									{
+										offset: 0.5,
+										color: '#ff9945'
+									},
+									{
+										offset: 1,
+										color: '#FF7E23'
+									}
+							]),
+							barBorderRadius: [15, 15, 0, 0]
+						},
+						barWidth: '3', //---柱形宽度
+						barCategoryGap: '20%', //---柱形间距
+						data: resArr
+					}]
+				}
+			},
+			/**
 			 * 心电图表
 			 */
-			xinDianOptionHandle() {
-				var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
+			xinDianOptionHandle(res) {
+				const dateRes = res.data && res.data.ElectrocardiogramTime.slice(0, 4) + '-' + res.data.ElectrocardiogramTime.slice(5,
+						7) + '-' +
+					res.data.ElectrocardiogramTime.slice(8, 10);
+					console.log('tiWenOptionHandle',dateRes)
+				let data = [];
+				if (res.data && res.data.electrocardiogramMapList.length !== 0) {
+					arr = res.data.electrocardiogramMapList;
+				} else {
+					data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
+				}
+				
 				this.xinDianOption = {
 					grid: {
 						top: 0,

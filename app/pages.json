@@ -697,6 +697,17 @@
 				}
 			}
 		},
+		// 体温
+		{
+		    "path" : "pages/health/body-temperature/body-temperature",
+		    "style": {
+		    	"navigationStyle": "custom",
+		    	"app-plus": {
+		    		"titleNView": false
+		    	}
+		    }
+		    
+		},
 		{
 			"path": "pages/health/exercise/exercise",
 			"style": {
@@ -907,6 +918,7 @@
 				}
 			}
 		}
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

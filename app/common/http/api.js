@@ -632,7 +632,15 @@ export const GetListBloodOxygenByDay = (params) => http.get('/api/tWatch/listBlo
  * 查询周血氧数据
  */
 export const GetListBloodOxygenByWeek = (params) => http.get('/api/tWatch/listBloodOxygenByWeek', params, {});
+/**
+ * 查询日体温数据
+ */
+export const GetListBoayTmperatureByDay = (params) => http.get('/api/tWatch/listTemperatureByDay', params, {});
 
+/**
+ * 查询周体温数据
+ */
+export const GetListBoayTmperatureByWeek = (params) => http.get('/api/tWatch/listTemperatureByWeek', params, {});
 /**
  * 查询心电数据
  */

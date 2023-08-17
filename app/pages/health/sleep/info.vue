@@ -17,6 +17,7 @@
 		heartRate, //心率
 		bloodPressure, //血压
 		bloodOxygen, //血氧
+		bodyTemperature,//体温
 	} from '@/config/db';
 	export default {
 		data() {
@@ -28,6 +29,7 @@
 				'心率': heartRate,
 				'血压': bloodPressure,
 				'血氧': bloodOxygen,
+				'体温':bodyTemperature
 			}
 			return {
 				text: '',
