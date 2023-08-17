@@ -22,16 +22,16 @@
 			<template v-if="searchList.length">
 				<u-swipe-action>
 					<u-swipe-action-item :options="item.options" v-for="(item, index) in searchList" :key="index"
-						@click="handleDel(index,item)">
+						@click="(event) => handleDel(event, index, item)">
 						<view class="cell">
 							<view class="cell-box">
 								<view class="input">
-									<u--input v-model="item.name" maxlength="6" placeholder="请输入姓名" border="none"
+									<u--input v-model="item.name" maxlength="6" placeholder="请输入姓名" border="none" :color="item.sos ? 'red' : 'black'"
 										clearable>
 									</u--input>
 								</view>
 								<view class="input">
-									<u--input v-model="item.number" maxlength="11" type="number" placeholder="请输入手机号"
+									<u--input v-model="item.number" maxlength="11" type="number" placeholder="请输入手机号" :color="item.sos ? 'red' : 'black'"
 										border="none" clearable>
 									</u--input>
 								</view>
@@ -62,8 +62,8 @@
 <script>
 	import {
 		GetWatchAddressBook,
-		PostWatchDeleteAddressBook,
-		watchHContactsSync
+		watchHContactsSync,
+		PostWatchDeleteAddressBook
 	} from '@/common/http/api';
 	import {
 		phoneValidator
@@ -94,7 +94,8 @@
 				/** 展示的数据*/
 				mobileList: [],
 				/**筛选内容**/
-				searchValue: ''
+				searchValue: '',
+				sosText: true
 			}
 		},
 		methods: {
@@ -107,11 +108,18 @@
 					this.mobileList = res.data.map((n, index) => {
 						Object.assign(n, {
 							options: [{
-								text: '删除',
-								style: {
-									backgroundColor: '#f56c6c'
+									text: '删除',
+									style: {
+										backgroundColor: '#f56c6c'
+									}
+								},
+								{
+									text: n.sos ? '取消SOS' : '设置SOS',
+									style: {
+										backgroundColor: n.sos ? '#e1dbdd' : '#42e108'
+									}
 								}
-							}],
+							],
 							index
 						});
 						return n
@@ -130,7 +138,6 @@
 				}
 				const addressBooks = []
 				this.mobileList.forEach(item => {
-					console.log(item, 'item')
 					if (item.addressBookId != undefined) {
 						addressBooks.push({
 							name: item.name,
@@ -142,15 +149,14 @@
 						addressBooks.push({
 							name: item.name,
 							number: item.number,
-							sos: false
+							sos: item.sos
 						})
 					}
 				})
 				watchHContactsSync({
 					deviceId: this.deviceInfo.deviceId,
-					phone_book: addressBooks
+					watchSyncList: addressBooks
 				}).then(res => {
-					console.log(res, 'res')
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
 						this.initData()
@@ -162,43 +168,102 @@
 			},
 			//添加输入框
 			handleAdd() {
+				if(this.mobileList.length >= 8 ) return uni.$u.toast('最多只能设置八个常用联系人')
 				this.mobileList.push({
 					name: '',
 					number: '',
+					sos: false,
 					options: [{
 						text: '删除',
 						style: {
 							backgroundColor: '#f56c6c'
 						}
+					}, {
+						text: '设置SOS',
+						style: {
+							backgroundColor: '#42e108'
+						}
 					}],
 				})
 			},
 			//单个删除
-			handleDel(id, list) {
-				uni.showModal({
-					title: '提示',
-					content: '是否确认删除？',
-					success: res => {
-						console.log(res, 'res')
-						if (res.confirm) {
-							if (list.addressBookId != undefined) {
-								PostWatchDeleteAddressBook({
-									deviceId: this.deviceInfo.deviceId,
-									addressBookId: list.addressBookId,
-									phoneNumber: list.number
-								}).then(res => {
-									uni.$u.toast(res.msg)
-									setTimeout(() => {
-										this.initData()
-									}, 1000);
-								})
-							} else {
-								this.mobileList.splice(this.mobileList.findIndex((item, index) => index == id),
-									1)
+			handleDel(e, id, item) {
+				switch (e.index) {
+					case 0: {
+						uni.showModal({
+							title: '提示',
+							content: '是否确认删除？',
+							success: res => {
+								if (res.confirm) {
+									if (item.addressBookId != undefined) {
+										PostWatchDeleteAddressBook({
+											deviceId: this.deviceInfo.deviceId,
+											addressBookId: item.addressBookId,
+											phoneNumber: item.number,
+											sos: item.sos
+										}).then(res => {
+											uni.$u.toast(res.msg)
+											setTimeout(() => {
+												this.initData()
+											}, 1000);
+										})
+									} else {
+										this.mobileList.splice(this.mobileList.findIndex((item, index) =>
+												index == id),
+											1)
+									}
+								}
 							}
-						}
+						});
 					}
-				});
+					break;
+					case 1: {
+						let num = 0
+						this.mobileList.forEach(val => {
+							if(val.sos) num++
+						})
+						if(num >= 3 && !item.sos) return uni.$u.toast('最多只能设置三个紧急联系人')
+						uni.showModal({
+							title: '提示',
+							content: !item.sos ? '是否确认将该号码设置成紧急联系人？' : '是否取消此号码紧急联系人？',
+							success: res => {
+								if (res.confirm) {
+									item.sos = !item.sos
+									const addressBooks = []
+									this.mobileList.forEach(val => {
+										if (val.addressBookId != undefined) {
+											addressBooks.push({
+												name: val.name,
+												number: val.number,
+												addressBookId: val.addressBookId,
+												sos: val.sos
+											})
+										} else {
+											addressBooks.push({
+												name: val.name,
+												number: val.number,
+												sos: val.sos
+											})
+										}
+									})
+									watchHContactsSync({
+										deviceId: this.deviceInfo.deviceId,
+										watchSyncList: addressBooks
+									}).then(res => {
+										uni.$u.toast(res.msg)
+										setTimeout(() => {
+											this.initData()
+										}, 1000);
+										// setTimeout(() => {
+										// 	uni.navigateBack()
+										// }, 1000);
+									})
+								}
+							}
+						});
+					}
+					break;
+				}
 			},
 			openTelBooks() {
 				if (isApp()) {
@@ -207,7 +272,6 @@
 			},
 			//通讯录导入
 			phoneSelect(data) {
-				// console.log(data)
 				data.map(item => {
 					this.mobileList.push({
 						name: item.name,
@@ -216,6 +280,11 @@
 							text: '删除',
 							style: {
 								backgroundColor: '#f56c6c'
+							}
+						}, {
+							text: '设置SOS',
+							style: {
+								backgroundColor: '#42e108'
 							}
 						}],
 					})
