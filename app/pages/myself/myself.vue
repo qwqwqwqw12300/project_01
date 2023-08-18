@@ -41,7 +41,7 @@
 
 			<view class="ui-button">
 				<button @click="loginOut">
-					注销
+					退出登录
 				</button>
 			</view>
 
@@ -114,17 +114,17 @@
 				})
 			},
 			/**
-			 * 注销
+			 * 退出登录
 			 */
 			loginOut() {
 				uni.showModal({
 					title: '提示',
-					content: '是否确认注销',
+					content: '是否确认退出登录',
 					success: res => {
 						if (res.confirm) {
 							PostLoginOut({}).then(() => {
 								removeToken()
-								uni.$u.toast('注销成功')
+								uni.$u.toast('登出成功')
 								setTimeout(() => {
 									uni.reLaunch({
 										url: '/pages/login/login'

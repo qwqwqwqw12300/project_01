@@ -1,3 +1,23 @@
 {
-    "prompt" : "none"
+	"version": "1",
+
+	"prompt": "template",
+	"title": "服务协议和隐私方针",
+	"message": "　　欢迎使用艾吉通App。艾吉通非常重视您的隐私保护和个人信息保护。在使用App服务前，请认真阅读<a href='http://www.agecom.cn/newsinfo/6153859.html'>《用户服务协议、隐私政策》</a>，全部条款。你同意并接受全部条款后开始使用我们的服务<br/>",
+	"buttonAccept": "同意并继续",
+	"buttonRefuse": "不同意",
+	"hrefLoader": "default",
+	"styles": {
+		"backgroundColor": "#FFFFFF",
+		"borderRadius": "5px",
+		"title": {
+			"color": "#000000"
+		},
+		"buttonAccept": {
+			"color": "#000000"
+		},
+		"buttonRefuse": {
+			"color": "#000000"
+		}
+	}
 }

@@ -919,6 +919,16 @@
 			}
 		}
         
+        ,{
+            "path" : "pages/watch/safety-guard/safety-guard",
+           "style": {
+           	"navigationStyle": "custom",
+           	"app-plus": {
+           		"titleNView": false
+           	}
+           }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -85,6 +85,10 @@
 				// 	url: '/pages/watch/enclosure/enclosure'
 				// },
 				{
+					title:'安全守护',
+					url:'/pages/watch/safety-guard/safety-guard'
+				},
+				{
 					title: '设备信息',
 					url: '/pages/watch/watch-set-h/watchInfo'
 				}]

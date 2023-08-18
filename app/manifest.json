@@ -111,7 +111,7 @@
             },
             "splashscreen" : {
                 "androidStyle" : "common",
-                "useOriginalMsgbox" : false,
+                "useOriginalMsgbox" : true,
                 "android" : {
                     "hdpi" : "F:/养老项目/切图/图片/start_480.png",
                     "xhdpi" : "F:/养老项目/切图/图片/start_720.png",
@@ -353,3 +353,5 @@
     },
     "_spaceID" : "mp-de69c45d-41a8-4182-a6fc-0f3f36bcf74d"
 }
+/* 应用发布信息 *//* android打包配置 *//* ios打包配置 */
+

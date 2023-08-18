@@ -80,10 +80,10 @@
 					title: '活动设定',
 					url: '/pages/watch/watch-set/active'
 				},
-				// {
-				// 	title: '地理围栏',
-				// 	url: '/pages/watch/enclosure/enclosure'
-				// },
+				{
+					title: '地理围栏',
+					url: '/pages/watch/enclosure/enclosure'
+				},
 				{
 					title: '设备信息',
 					url: '/pages/watch/watch-set/watchInfo'

@@ -60,9 +60,13 @@ export const GetCaptchaImage = (params) => http.get('/api/captchaImage', params)
 export const PostLoginByPwd = (params) => http.post('/api/loginByPwd', params)
 
 /* 
- *注销*
+ *退出登录*
  */
 export const PostLoginOut = (params) => http.post('/api/loginOut', params)
+/* 
+ *注销*
+ */
+export const MemberCancel = (params) => http.post('/api/memberCancel', params)
 
 /* 
  *查看消息列表 *

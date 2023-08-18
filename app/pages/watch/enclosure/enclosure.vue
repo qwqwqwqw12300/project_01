@@ -1,14 +1,18 @@
 <template>
 	<app-body :bg="false" :needService="false" :bodyStyle="{backgroundColor:'#FFF'}">
-		<view style="margin-bottom: 50rpx;">
-			<app-logo color="#353535" text="设置电子围栏"></app-logo>
-		</view>
-		<view class="tab">
-			<view class="tab-box">
-				<text @tap="handleTab(item.key)" class="tab-item" :class="{'active': tabKey === item.key }"
-					v-for="item in tabList" :key="item.key">
-					{{ item.name }}
-				</text>
+		<view class="app-head" style="margin-bottom: 50rpx;">
+			<!-- <app-logo color="#353535"> -->
+				<!-- <u--text :text="title" :lines="2" size="25"></u--text> -->
+				<!-- <view>{{ title }}</view> -->
+				<u--text :lines="1" :text="title" size="25"></u--text>
+			<!-- </app-logo> -->
+			<view class="tab">
+				<view class="tab-box">
+					<text @tap="handleTab(item.key)" class="tab-item" :class="{'active': tabKey === item.key }"
+						v-for="item in tabList" :key="item.key">
+						{{ item.name }}
+					</text>
+				</view>
 			</view>
 		</view>
 		<component ref="comRef" :is="tabKey"></component>
@@ -16,6 +20,9 @@
 </template>
 
 <script>
+	import {
+		mapState,
+	} from 'vuex';
 	import circleMap from './components/circle.vue'
 	import polygonMap from './components/polygon.vue'
 	export default {
@@ -33,7 +40,19 @@
 					name: '多边形'
 				}],
 				tabKey: 'circleMap',
+				title: ''
 			}
+		},
+		computed: {
+			...mapState({
+				deviceInfo: state => state.deviceInfo,
+				urlLocation: state => state.urlLocation
+			}, )
+		},
+		created() {
+			this.tabKey = this.urlLocation.fenceType === 'circle' ? 'circleMap' : this.urlLocation.fenceType ===
+				'polygon' ? 'polygonMap' : 'circleMap'
+			this.title = this.urlLocation.name ? `守护区-${this.urlLocation.name}` : '新增守护区'
 		},
 		methods: {
 			handleTab(key) {
@@ -44,12 +63,24 @@
 </script>
 
 <style lang="scss" scoped>
+	.app-head {
+		margin-top: 60rpx;
+		margin-left: 32rpx;
+		margin-bottom: 20rpx !important;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.wd-logo {
+		margin: 0 !important;
+	}
+
 	.tab {
-		position: absolute;
-		left: 32rpx;
+		// position: absolute;
+		// left: 32rpx;
 		// top: 800rpx;
-		bottom: 250rpx;
-		z-index: 99;
+		// z-index: 9;
 
 		.tab-box {
 			width: 260rpx;
