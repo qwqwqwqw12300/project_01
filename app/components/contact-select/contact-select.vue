@@ -17,9 +17,9 @@
 						</view>
 						<view class="citys-item" v-for="(item, inx) in record.citys" :key="inx"
 							@click="contactTrigger(item)">
-							<checkbox v-if="!isSingle" class='round' :value="findValue(item)"
-								:checked="findCheck(item)" />
-							<text>{{ item.cityName }}</text>
+							<checkbox v-if="!isSingle" class='round' :value="item.oldData.phone"
+								:checked="item.checked" />
+							<text>{{ item.oldData.name }}</text>
 						</view>
 					</view>
 				</view>
@@ -27,8 +27,8 @@
 				<view class="tel-list" v-if="serachValue">
 					<view v-for="(item, index) in searchDatas" :key="index" class="select-row">
 						<view class="citys-item" :key="index" @click="contactTrigger(item)">
-							<checkbox v-if="!isSingle" class='round' :value="findValue(item)"
-								:checked="findCheck(item)" />
+							<checkbox v-if="!isSingle" class='round' :value="item.phone"
+								:checked="item.checked" />
 							<text>{{ item.name }}</text>
 						</view>
 					</view>
@@ -105,6 +105,7 @@
 			this.height = (height > 650 ? height : 650) - (this.isSingle ? 120 : 160)
 			// 初始化城市数据
 			this.contactList = this.obtainTels;
+			console.log(this.obtainTels)
 			this.initializationTel();
 			this.buildTelindexs();
 		},
@@ -149,6 +150,7 @@
 						});
 					}
 				}
+				console.log(this.handleTels)
 				return this.handleTels;
 			},
 			/**
@@ -166,6 +168,7 @@
 						});
 					}
 				}
+				console.log(searchData)
 				return searchData.map((n, i) => {
 					n.index = i
 					n.checked = false
@@ -309,19 +312,25 @@
 			 * @desc 勾选回调
 			 */
 			checkboxChange(val) {
+				console.log(val)
 				this.selectData = []
 				// this.selectData = val.detail.value
 				this.contactData.map(n => {
 					n.checked = false
 					return n
 				})
+				console.log(this.contactData)
 				val.detail.value.forEach(n => {
+					console.log(n)
 					const item = this.contactData.find(item => {
+						console.log(item)
 						return item.phone === n
 					})
 					this.$set(item, 'checked', true)
 					this.selectData.push(item.oldData)
+					console.log('item.oldData',item.oldData)
 				})
+				console.log(this.selectData)
 				this.contactData = [...this.contactData]
 			},
 			handleComplete() {

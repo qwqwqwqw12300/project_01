@@ -287,7 +287,7 @@
 				justify-content: space-between;
 
 				.input {
-					width: 240rpx;
+					width: 260rpx;
 				}
 			}
 		}

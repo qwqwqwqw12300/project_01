@@ -23,8 +23,6 @@
 		<button @click="apm">埋点测试</button>
 		<button @click="wifi">连接设备</button>
 		<button @click="stopPairing">停止连接</button>
-
-
 	</view>
 </template>
 <script>

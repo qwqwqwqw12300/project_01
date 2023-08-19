@@ -64,7 +64,7 @@
 
 <style lang="scss" scoped>
 	.app-head {
-		margin-top: 60rpx;
+		// margin-top: 60rpx;
 		margin-left: 32rpx;
 		margin-bottom: 20rpx !important;
 		display: flex;

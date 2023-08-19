@@ -28,7 +28,8 @@
 		},
 		methods: {
 			show(params) {
-				this.isSingle = params
+				console.log(params)
+				this.isSingle = false
 				// this.visible = true
 				this.getContact()
 			},

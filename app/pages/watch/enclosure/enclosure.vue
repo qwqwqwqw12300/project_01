@@ -1,6 +1,6 @@
 <template>
 	<app-body :bg="false" :needService="false" :bodyStyle="{backgroundColor:'#FFF'}">
-		<view class="app-head" style="margin-bottom: 50rpx;">
+		<view class="app-head">
 			<!-- <app-logo color="#353535"> -->
 				<!-- <u--text :text="title" :lines="2" size="25"></u--text> -->
 				<!-- <view>{{ title }}</view> -->
@@ -64,7 +64,7 @@
 
 <style lang="scss" scoped>
 	.app-head {
-		margin-top: 60rpx;
+		// margin-top: 60rpx;
 		margin-left: 32rpx;
 		margin-bottom: 20rpx !important;
 		display: flex;
