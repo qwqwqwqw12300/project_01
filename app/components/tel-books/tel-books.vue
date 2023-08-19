@@ -38,6 +38,7 @@
 			 */
 			phoneClick(data) {
 				this.$emit('select', data)
+				console.log('select', data)
 				this.visible = false
 			},
 			/**

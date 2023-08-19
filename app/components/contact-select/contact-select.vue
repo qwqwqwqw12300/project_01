@@ -105,7 +105,7 @@
 			this.height = (height > 650 ? height : 650) - (this.isSingle ? 120 : 160)
 			// 初始化城市数据
 			this.contactList = this.obtainTels;
-			console.log(this.obtainTels)
+			this.contactData = this.obtainTels
 			this.initializationTel();
 			this.buildTelindexs();
 		},
@@ -150,7 +150,6 @@
 						});
 					}
 				}
-				console.log(this.handleTels)
 				return this.handleTels;
 			},
 			/**
@@ -312,25 +311,23 @@
 			 * @desc 勾选回调
 			 */
 			checkboxChange(val) {
-				console.log(val)
 				this.selectData = []
 				// this.selectData = val.detail.value
 				this.contactData.map(n => {
 					n.checked = false
 					return n
 				})
-				console.log(this.contactData)
 				val.detail.value.forEach(n => {
-					console.log(n)
 					const item = this.contactData.find(item => {
-						console.log(item)
 						return item.phone === n
 					})
 					this.$set(item, 'checked', true)
-					this.selectData.push(item.oldData)
-					console.log('item.oldData',item.oldData)
+					let oldData = {
+						"name":item.name,
+						"phone":item.phone
+					}
+					this.selectData.push(oldData)
 				})
-				console.log(this.selectData)
 				this.contactData = [...this.contactData]
 			},
 			handleComplete() {

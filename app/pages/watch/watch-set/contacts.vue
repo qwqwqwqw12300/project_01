@@ -207,7 +207,7 @@
 			},
 			//通讯录导入
 			phoneSelect(data) {
-				// console.log(data)
+				console.log('data',data)
 				data.map(item => {
 					this.mobileList.push({
 						name: item.name,
@@ -220,6 +220,17 @@
 						}],
 					})
 				})
+				let arr = this.mobileList
+				for (var i = 0; i < arr.length; i++) {
+					for (var j = i+1; j < arr.length; j++) {
+						if(arr[i].number === arr[j].number){
+							arr.splice(j,1)
+							j--;
+						}
+					}
+				}
+				console.log('newarr',arr)
+				// this.mobileList = arr
 			},
 			/**
 			 * 搜索
