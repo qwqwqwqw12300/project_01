@@ -10,13 +10,14 @@
     <u-modal :show="modal.show" :title="modal.title" :content="modal.content" :showCancelButton="modal.showCancel"
       @confirm="modal.confirm" @cancel="modal.cancel" @close="modal.cancel">
     </u-modal>
-    <scroll-view :scroll-y="true" :class="{'wd-body-bg': bg}" class="wd-body" :style="bodyStyle">
+    <scroll-view :scroll-y="isScroll" :class="{'wd-body-bg': bg}" class="wd-body" :style="bodyStyle">
       <template v-if="!hideTitle">
         <!-- 需要返回头 -->
         <view class="wd-bg wd-fixed">
           <u-navbar :leftText="leftText" :safeAreaInsetTop="true" :autoBack="!back"
             :bgColor="titleColor || (bg ? 'transparent': '#fff')" :fixed="true" :leftIconColor="'#000'"
-            @leftClick="leftClick" :title="title" height="60px" />
+            @leftClick="leftClick" :title="title" height="60px" v-if="Navbar">
+          </u-navbar>
           <slot></slot>
         </view>
         <!-- /需要返回头 -->
@@ -88,6 +89,14 @@
       // 顶部标题
       title: {
         default: ''
+      },
+      //页面是否允许滑动
+      isScroll: {
+        default: true
+      },
+      //自己封装navbar
+      Navbar: {
+        default: true
       }
     },
     data() {
@@ -257,5 +266,17 @@
     background: url('../../static/images/service.png') no-repeat;
     background-size: cover;
     display: inline-block;
+  }
+
+  //编辑
+  .action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    text {
+      font-size: 26rpx;
+      color: #353535;
+    }
   }
 </style>

@@ -6,17 +6,21 @@
 -->
 
 <template>
-  <view id="roomMagege">
-    <app-body :bg="false" :title=familyInfo.name>
-      <view class="ui-logo">
-        <!-- <view class="logo-text">
+  <view id="roomMagege" style="font-weight: bold; ">
+    <u-navbar :safeAreaInsetTop="true" :fixed="true" :leftIconColor="'#000'" :title="familyInfo.name" height="60px"
+      :autoBack="true">
+      <view class="action" @click="openFamilyEdit" slot="right">
+        <u-icon name="/static/images/room-edit.png" size="28"></u-icon>
+        <text>编辑</text>
+      </view>
+    </u-navbar>
+    <app-body :bg="false" :Navbar="false">
+      <!-- <view class="ui-logo"> -->
+      <!-- <view class="logo-text">
 					{{ familyInfo.name }}
 				</view> -->
-        <view class="action" @click="openFamilyEdit">
-          <u-icon name="/static/images/room-edit.png" size="28"></u-icon>
-          <text>编辑</text>
-        </view>
-      </view>
+
+      <!-- </view> -->
       <view class="ui-menu">
         <!-- 房间 -->
         <template v-if="list.length || humanList.length">
@@ -394,17 +398,6 @@
       font-size: 52rpx;
       font-weight: bold;
     }
-
-    .action {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      text {
-        font-size: 26rpx;
-        color: #353535;
-      }
-    }
   }
 
   .ui-menu {
@@ -637,6 +630,22 @@
 
     button {
       border-radius: 0rpx !important;
+    }
+  }
+
+  //头部样式
+  /deep/ .u-navbar__content__title {
+    font-size: 20px;
+  }
+
+  .action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    text {
+      font-size: 26rpx;
+      color: #353535;
     }
   }
 </style>
