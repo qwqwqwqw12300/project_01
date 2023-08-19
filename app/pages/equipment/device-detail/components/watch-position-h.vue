@@ -37,6 +37,7 @@
 		isApp
 	} from '@/common/utils/util';
 	let mapSearch;
+	var timer;
 	if (isApp()) mapSearch = weex.requireModule('mapSearch');
 	export default {
 		props: {
@@ -57,6 +58,8 @@
 				},
 				isLoading: false,
 				time: 1,
+				control:false,
+				controltime:60
 			}
 		},
 		created() {
@@ -70,23 +73,56 @@
 		},
 		methods: {
 			getNowLocation() {
+				if(this.control === true){//控制重复点击
+					uni.showToast({
+						title:'请在'+this.controltime+'秒后重试',
+						icon:'loading'
+					})
+					return
+				}else{
+					this.control = true
+				}
 				if (this.deviceInfo.onlineFlag !== '1') return uni.$u.toast('您的设备已离线,无法进行定位')
 				if (this.isLoading) return
 				uni.showLoading({
 					title: '获取定位中'
 				})
+				this.countDown()
+				setTimeout(()=>{
+					this.control = false
+					this.controltime = this.controltime - 1
+				},60000)
 				watchHLocation({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					setTimeout(() => {
+						console.log('第一次获取')
 						this.isLoading = true
 						this.time = 1
 						this.getDeviceLocation()
-					}, 3000)
+						this.getSecondTime()
+					}, 30000)
 				}, err => {
 					uni.hideLoading()
 				})
 				// this.getDeviceLocation('now')
+			},
+			countDown(){
+			    this.controltime = this.controltime - 1;
+			    if(this.controltime == 0){
+			         this.controltime = 60
+			         clearTimeout(timer)
+			         return
+			     }
+			     timer = setTimeout(()=>{
+					 this.countDown()
+				 },1000);
+			},
+			getSecondTime(){
+				setTimeout(() => {
+					this.getDeviceLocation()
+					console.log('第二次获取')
+				}, 30000)
 			},
 			getLocation(n) {
 				const {
@@ -127,6 +163,7 @@
 						}
 						return uni.hideLoading()
 					}
+					
 					this.getLocation(res.data).then(info => {
 					console.log('info地图', info)
 						const preTime = this.addressInfo.locateTimeFromCurrent
@@ -156,7 +193,7 @@
 							setTimeout(() => {
 								this.time += 1
 								this.getDeviceLocation()
-							}, 3000)
+							}, 30000)
 
 						} else {
 							this.time = 1

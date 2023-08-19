@@ -10,7 +10,7 @@
 						:class="[record.onlineFlag === '1' ? 'online' : 'offline']">{{ getOnlineStatus }}</text>
 				</view>
 				<view class="status">
-					<view class="status-block">
+					<!-- <view class="status-block">
 						<template v-if="record.currentStatus === '0'">
 							<u-icon name="/static/images/link-sucess.png" size="20" style="margin-right: 6rpx;" />
 							<text>已连接</text>
@@ -19,7 +19,7 @@
 							<u-icon name="/static/images/link-false.png" size="20" style="margin-right: 6rpx;" />
 							<text>未连接</text>
 						</template>
-					</view>
+					</view> -->
 					<view class="status-block" style="margin-left:14rpx">
 						<u-icon name="/static/images/electricity.png" size="20" style="margin-right: 4rpx;" />
 						<text>电量:{{ record.currentPower || '--' }}</text>
