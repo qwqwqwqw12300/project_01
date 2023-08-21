@@ -88,13 +88,13 @@
                     },
                     "amap" : {
                         "__platform__" : [ "ios", "android" ],
-                        "appkey_ios" : "09011621e3a9b419d7d5c0700984c1f1",
+                        "appkey_ios" : "7921b56b1c3a4c0fce170ce8221afedf",
                         "appkey_android" : "90fc6dc080c94bfeafb0405f712daa13"
                     }
                 },
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "09011621e3a9b419d7d5c0700984c1f1",
+                        "appkey_ios" : "7921b56b1c3a4c0fce170ce8221afedf",
                         "appkey_android" : "90fc6dc080c94bfeafb0405f712daa13"
                     }
                 },
