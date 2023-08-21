@@ -37,10 +37,10 @@ export default {
 						downloadAddress,
 						content
 					} = versionInfo;
-					if (!versionCompare(content, versionInfo)) {
+					if (!versionCompare(currentVer,content)) {
 						if (this.versionType == 1) {
 							uni.showModal({
-								title: '发现新版本 ' + curVersion,
+								title: '发现新版本、是否立即更新？',
 								content: '请到App store进行升级',
 								showCancel: false
 							})
