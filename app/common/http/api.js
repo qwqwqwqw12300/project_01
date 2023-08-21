@@ -175,9 +175,7 @@ export const PostUserAgreement = (params) => http.post('/api/agreement/selectAgr
 /* 
  *查询版本*
  */
-export const PostVersionInfo = (params) => http.get('/api/version/selectVersionInfo', params, {
-	error: false
-})
+export const PostVersionInfo = (params) => http.get('/api/version/selectVersionInfo', params)
 
 /* 
  *修改密码

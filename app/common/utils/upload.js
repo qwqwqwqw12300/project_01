@@ -38,6 +38,14 @@ export default {
 						content
 					} = versionInfo;
 					if (!versionCompare(content, versionInfo)) {
+						if (this.versionType == 1) {
+							uni.showModal({
+								title: '发现新版本 ' + curVersion,
+								content: '请到App store进行升级',
+								showCancel: false
+							})
+							return
+						}
 						uni.showModal({
 							title: '',
 							content: '发现新版本、是否立即更新？',
@@ -48,10 +56,17 @@ export default {
 										status: false,
 										content
 									});
-									plus.runtime.openURL(downloadAddress,
-										error => {
-											console.log(error, '浏览器打开失败');
-										});
+									uni.downloadFile({
+										url: downloadAddress,
+										success: (res) => {
+											if (res.statusCode === 200) {
+												plus.runtime.install(res.tempFilePath, {}, () => {
+													plus.runtime.restart();
+												}, function(error) {
+												})
+											}
+										}
+									})
 								} else {
 									resolve({
 										status: true,
