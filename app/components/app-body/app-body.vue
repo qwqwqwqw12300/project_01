@@ -16,7 +16,7 @@
         <view class="wd-bg wd-fixed">
           <u-navbar :leftText="leftText" :safeAreaInsetTop="true" :autoBack="!back"
             :bgColor="titleColor || (bg ? 'transparent': '#fff')" :fixed="true" :leftIconColor="'#000'"
-            @leftClick="leftClick" :title="title" height="60px" v-if="Navbar">
+            @leftClick="leftClick" :title="title" height="60px" v-if="Navbar" class="navbar">
           </u-navbar>
           <slot></slot>
         </view>
@@ -250,6 +250,10 @@
     position: relative;
     // height: 100%;
     width: 100%;
+    // font-weight: bold;
+  }
+
+  .navbar {
     font-weight: bold;
   }
 
