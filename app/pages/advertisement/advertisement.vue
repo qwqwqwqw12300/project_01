@@ -40,11 +40,11 @@
 		},
 		mounted() {
 			this.initInfo();
-			upload.check().then(res => { // 检查更新
-				if (res.status) {
-					this.$store.dispatch('GetContactsList');
-				}
-			});
+			// upload.check().then(res => { // 检查更新，上架后开启
+			// 	if (res.status) {
+			// 		this.$store.dispatch('GetContactsList');
+			// 	}
+			// });
 		},
 		methods: {
 			/**

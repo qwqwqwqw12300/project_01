@@ -43,20 +43,21 @@
 							// url: '/pages/equipment/watch-detail/watch-detail',
 						},
 						{
-							name: '4G健康手表',
-							icon: '/static/images/watch.png',
-							url: '/pages/watch/add-watch?type=2'
+							name: '健康手表',
+							icon: '/static/images/new-watch-device.png',
+							url: '/pages/watch/add-watch'
+							// url: '/pages/watch/add-watch?type=2'
 						},
 						{
 							name: 'SOS设备',
 							icon: '/static/images/sos/sos-equipment_2.png',
 							url: '/pages/card/add-card?type=sos'
 						},
-						{
-							name: 'H102智能手表',
-							icon: '/static/images/new-watch-device.png',
-							url: '/pages/watch/add-watch?type=4'
-						}
+						// {
+						// 	name: 'H102智能手表',
+						// 	icon: '/static/images/new-watch-device.png',
+						// 	url: '/pages/watch/add-watch?type=4'
+						// }
 					]
 				},
 			}

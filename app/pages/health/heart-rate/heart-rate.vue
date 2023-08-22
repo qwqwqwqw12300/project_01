@@ -5,7 +5,7 @@
       <date-picker @onSelect="onSelect" @month="monthChange" :lightDot="monthData"></date-picker>
     </view>
     <view class="ui-echart">
-      <!-- 	<rate-echarts :timeOption="timeOption"></rate-echarts> -->
+      	<!-- <rate-echarts :timeOption="timeOption"></rate-echarts> -->
       <app-echarts :option="options" id="myChart" class="echart-box"></app-echarts>
     </view>
     <view class="ui-total">
@@ -91,15 +91,14 @@
             }
           },
           interval: 24 * 3600 * 1000,
-          min: '',
-          max: '130',
           // data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
         }, ],
         yAxis: [{
           type: "value",
+		  interval :45,
           scale: true,
           splitArea: {
-            show: true,
+            show: false,
             areaStyle: {
               color: ['#f6f8fc', '#fff']
             }
@@ -196,14 +195,13 @@
           // data: ['00:00', '06:00', '12:00', '18:00', '23:59']
           // splitNumber: 6,
           interval: 6 * 3600 * 1000,
-          min: '',
-          max: '130',
         }, ],
         yAxis: [{
           type: "value",
+		  interval :45,
           scale: true,
           splitArea: {
-            show: true,
+            show: false,
             areaStyle: {
               color: ['#f6f8fc', '#fff']
             }
@@ -216,7 +214,6 @@
           nameTextStyle: {
             color: "#666",
             fontSize: 12,
-            lineHeight: 40
           },
           // 分割线
           splitLine: {
@@ -380,6 +377,11 @@
           beginDate: options.value[0],
           endDate: options.value[6],
         }).then(res => {
+			if(!res.data.MapList){
+				this.weekOptions.series[0].data = []
+				this.options = this.weekOptions
+				return
+			}
           const {
             avg,
             max,
@@ -392,12 +394,15 @@
             return [new Date(n.time), n.value]
           })
           this.weekOptions.series[0].data = data
+		  
           this.weekOptions.xAxis[0].min = new Date(uni.$u.timeFormat(new Date(options.value[0]),
               'yyyy-mm-dd') +
             ' 00:00:00')
           this.weekOptions.xAxis[0].max = new Date(uni.$u.timeFormat(new Date(options.value[6]),
               'yyyy-mm-dd') +
             ' 00:00:00')
+			this.weekOptions.yAxis[0].min = '40'
+			this.weekOptions.yAxis[0].max = '220'
           this.options = this.weekOptions
         })
       },
@@ -411,6 +416,12 @@
           humanId,
           dayTime: options.value,
         }).then(res => {
+			console.log('GetListHeartRateByDay',res)
+			if(!res.data.MapList){
+				this.dayOptions.series[0].data = []
+				this.options = this.dayOptions
+				return
+			}
           const {
             avg,
             max,
@@ -429,6 +440,8 @@
             this.dayOptions.xAxis[0].max = new Date(uni.$u.timeFormat(new Date(options.value),
                 'yyyy-mm-dd') +
               ' 23:59:59')
+			  this.dayOptions.yAxis[0].min = '40'
+			  this.dayOptions.yAxis[0].max = '220'
             this.dayOptions.series[0].data = data
             this.options = this.dayOptions
           })

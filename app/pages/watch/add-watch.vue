@@ -1,7 +1,7 @@
 <!-- 增加手表设备 -->
 <template>
-	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
-		<app-logo color="#353535" :text="cardInfo.deviceType === '4' ? '绑定H102手表' : '绑定4G手表'"></app-logo>
+	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}" title="绑定手表">
+		<!-- <app-logo color="#353535" ></app-logo> -->
 		<view class="ui-scan">
 			<view class="scan-box">
 				<view class="box-bg" @click="handleScan">
@@ -16,8 +16,8 @@
 			<view class="code-box">
 				<text class="label">设备IMEI码</text>
 				<view class="input">
-					<u--input v-model="cardInfo.deviceNo" type="number" placeholder="请输入设备IMEI码" border="none"
-						clearable>
+					<u--input v-model="cardInfo.deviceNo" type="number" placeholder="设备IMEI码" border="none"
+						clearable :disabled="disabled">
 					</u--input>
 				</view>
 			</view>
@@ -47,13 +47,14 @@
 				cardInfo: {
 					deviceNo: '',
 					deviceName: '',
-					deviceType: ''
-				}
+					deviceType:''
+				},
+				disabled:true
 			}
 		},
 		onLoad(options) {
 			console.log(options)
-			if(options && options.type) this.cardInfo.deviceType = options.type
+			// if (options && options.type) this.cardInfo.deviceType = options.type
 		},
 		methods: {
 			handleScan() {
@@ -61,18 +62,23 @@
 					autoDecodeCharset: true,
 					// scanType: ['barCode', 'qrCode'],
 					success: res => {
-						/* h102手表下 */
-						if(this.cardInfo.deviceType === '4') {
-							let strData = JSON.stringify(res.result).replace(/u0000/g, '').replace(/\\/g, '').replace(/}/, '').replace(/{"dev_info":/, '')
-							let str = strData.substr(0, strData.length - 1).substr(1, strData.length - 1)
-							let objData = JSON.parse(str)
-							this.cardInfo.deviceNo = objData.imei
-							this.cardInfo.modeNo = objData.model
-							this.cardInfo.version = objData.version
+						/* 4G手表下 */
+						if (typeof JSON.parse(res.result) == 'object') {
+							const result = JSON.parse(res.result)
+							this.cardInfo.deviceNo = result.dev_info.imei
+							this.cardInfo.modeNo = result.dev_info.model
+							this.cardInfo.version = result.dev_info.version
+							this.cardInfo.deviceType = 2
 							return
 						}
-						const result = JSON.parse(res.result)
-						this.cardInfo.deviceNo = result.dev_info.imei
+						/* h102手表下 */
+						let strData = JSON.stringify(res.result).replace(/u0000/g, '').replace(/\\/g, '').replace(/}/, '').replace(/{"dev_info":/, '')
+						let str = strData.substr(0, strData.length - 1).substr(1, strData.length - 1)
+						let objData = JSON.parse(str)
+						this.cardInfo.deviceNo = objData.imei
+						this.cardInfo.modeNo = objData.model
+						this.cardInfo.version = objData.version
+						this.cardInfo.deviceType = 4
 					},
 					false: res => {
 						console.log(res, '00000000000000000000000')
@@ -82,27 +88,18 @@
 			handleSubmit() {
 				const {
 					deviceNo,
-					deviceName
-				} = this.cardInfo 
-				switch (this.cardInfo.deviceType){
-					case '4': 
-						const {
-							modeNo,
-							version
-						} = this.cardInfo 
-						if (!deviceNo) return uni.$u.toast('设备码不能为空')
-						if (!deviceName) return uni.$u.toast('设备名称不能为空')
-						if (!modeNo) return uni.$u.toast('modeNo不能为空')
-						if (!version) return uni.$u.toast('version不能为空')
-						break;
-					case '2': 
-						if (!deviceNo) return uni.$u.toast('设备码不能为空')
-						if (!deviceName) return uni.$u.toast('设备名称不能为空')
-						break;
-				}
+					deviceName,
+					modeNo,
+					version
+				} = this.cardInfo
+				if (!deviceNo) return uni.$u.toast('设备码不能为空')
+				if (!deviceName) return uni.$u.toast('设备名称不能为空')
+				if (!modeNo) return uni.$u.toast('modeNo不能为空')
+				if (!version) return uni.$u.toast('version不能为空')
 				PostcreDevice({
 					...this.cardInfo
 				}).then(res => {
+					console.log(res)
 					uni.$u.toast(res.msg)
 					setTimeout(() => {
 						uni.navigateBack()
@@ -180,5 +177,8 @@
 	.ui-btn {
 		padding: 0 32rpx;
 		margin-top: 100rpx;
+	}
+	.u-input{
+		background-color: #FFFFFF !important;
 	}
 </style>
