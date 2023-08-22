@@ -108,6 +108,7 @@
 			}
 		}
 	}
+
 </script>
 
 <style lang="scss" scoped>
@@ -178,6 +179,7 @@
 		padding: 0 32rpx;
 		margin-top: 100rpx;
 	}
+
 	.u-input{
 		background-color: #FFFFFF !important;
 	}

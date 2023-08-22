@@ -39,21 +39,27 @@
             </u-number-box>
           </view>
         </u-cell>
-        <u-cell title="生日" arrow-direction="right" isLink tleStyle="font-size: 15px;color: #303133;"
-          @click="showPicker = true">
+        <u-cell title="生日" arrow-direction="right" isLink tleStyle="font-size: 15px;color: #303133;">
           <view slot="value" class="u-slot-value">
-            {{defaultValue}}
+            <picker mode="date" value="YYYY-MM-DD" start="1900-01-01" end="2099-12-31" @change="onSelected">
+              <view class="uni-input">{{defaultValue}}</view>
+            </picker>
           </view>
         </u-cell>
+        <!-- <view class="uni-list-cell-db">
+          <picker mode="date" :value="YYYY-MM-DD" start="1900-01-01" end="2099-12-31" @change="bindDateChange">
+            <view class="uni-input">{{defaultValue}}</view>
+          </picker>
+        </view> -->
       </u-cell-group>
     </view>
     <view class="ui-confirm">
       <button class="ui-btn" @click="cancel">返回</button>
       <button class="default" @click="submit">保存</button>
     </view>
-    <time-picker :show="showPicker" format="yyyy-mm-dd" type="date" :value="defaultValue" :show-tips="true"
+    <!-- <time-picker :show="showPicker" format="yyyy-mm-dd" type="date" :value="defaultValue" :show-tips="true"
       :begin-text="'开始'" :end-text="'结束'" :show-seconds="false" @confirm="onSelected" @cancel="showPicker=false">
-    </time-picker>
+    </time-picker> -->
   </app-body>
 </template>
 
@@ -127,7 +133,7 @@
       },
       onSelected(e) {
         console.log(e, 'e')
-        this.defaultValue = e.value
+        this.defaultValue = e.detail.value
         this.showPicker = false
       },
       cancel() {
