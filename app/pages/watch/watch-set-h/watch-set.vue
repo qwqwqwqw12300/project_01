@@ -47,7 +47,7 @@
     GetFallCheckInfo,
     GetAutoLocationInfo,
     updateFallCheck,
-	PostSetForbidCheck,
+    PostSetForbidCheck,
     watchHDataSync
   } from '@/common/http/api';
   export default {
@@ -77,7 +77,7 @@
             title: '跌倒检测',
             type: '1',
             // url: '/pages/card/guard'
-          },{
+          }, {
             title: '拦截陌生来电',
             type: '1',
             // url: '/pages/card/guard'
@@ -93,10 +93,10 @@
             title: '安全守护',
             url: '/pages/watch/safety-guard/safety-guard'
           },
-		  {
-		    title: '抬腕亮屏',
-		    url: '/pages/watch/watch-set-h/watchBright'
-		  },
+          {
+            title: '抬腕亮屏',
+            url: '/pages/watch/watch-set-h/watchBright'
+          },
           {
             title: '设备信息',
             url: '/pages/watch/watch-set-h/watchInfo'
