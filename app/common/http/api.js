@@ -592,7 +592,10 @@ export const PostUpdateFallCheck = (params) => http.post('/api/tWatch/updateFall
  * 设置拦截陌生来电开关
  */
 export const PostSetForbidCheck = (params) => http.post('/api/aw/tWatch/setForbid', params, {});
-
+/**
+ * 设置抬腕亮屏功能
+ */
+export const PostSetLcdStatus = (params) => http.post('/api/aw/tWatch/lcdStatus', params, {});
 /**
  * 获取手表自动定位的状态
  */

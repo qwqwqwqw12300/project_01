@@ -95,7 +95,7 @@
           },
           {
             title: '抬腕亮屏',
-            url: '/pages/watch/watch-set-h/watchBright'
+            url: '/pages/watch/watch-set-h/watchBright',
           },
           {
             title: '设备信息',
@@ -157,7 +157,11 @@
           uni.navigateTo({
             url: `/pages/watch/watch-set/position-auto?obj=${obj}`
           })
-        } else {
+        } else if (url == '/pages/watch/watch-set-h/watchBright'){
+			uni.navigateTo({
+			  url:'/pages/watch/watch-set-h/watchBright?deviceId='+this.deviceInfo.deviceId
+			})
+		} else {
           uni.navigateTo({
             url
           })

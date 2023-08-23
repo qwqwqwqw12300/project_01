@@ -9,9 +9,9 @@ export const env = {
 	mode: 'prod',
 	/**服务器地址**/
 	// http://www.agetech.cc:7766
-	// basePath: 'http://192.168.1.109:8081',
-	basePath: 'http://www.agetech.cc',
-	// basePath: 'http://36.137.23.149:7766',
+	// basePath: 'http://192.168.1.114:8081',
+	// basePath: 'http://www.agetech.cc',
+	basePath: 'http://36.137.23.149:7766',
 	// basePath: uni.getStorageSync('appHost') || 'http://www.agetech.cc',
 	/**日志地址**/
 	log: '/api/logging',

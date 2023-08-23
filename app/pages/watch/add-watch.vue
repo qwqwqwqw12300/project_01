@@ -53,7 +53,6 @@
 			}
 		},
 		onLoad(options) {
-			console.log(options)
 			// if (options && options.type) this.cardInfo.deviceType = options.type
 		},
 		methods: {
@@ -62,23 +61,25 @@
 					autoDecodeCharset: true,
 					// scanType: ['barCode', 'qrCode'],
 					success: res => {
-						/* 4G手表下 */
-						if (typeof JSON.parse(res.result) == 'object') {
-							const result = JSON.parse(res.result)
-							this.cardInfo.deviceNo = result.dev_info.imei
-							this.cardInfo.modeNo = result.dev_info.model
-							this.cardInfo.version = result.dev_info.version
-							this.cardInfo.deviceType = 2
-							return
+						try {
+							/* h102手表下 */
+							let strData = JSON.stringify(res.result).replace(/u0000/g, '').replace(/\\/g, '').replace(/}/, '').replace(/{"dev_info":/, '')
+							let str = strData.substr(0, strData.length - 1).substr(1, strData.length - 1)
+							let objData = JSON.parse(str)
+							this.cardInfo.deviceNo = objData.imei
+							this.cardInfo.modeNo = objData.model
+							this.cardInfo.version = objData.version
+							this.cardInfo.deviceType = 4
+						} catch (err) {
+						   console.log(err)
+						   /* 4G手表下 */
+						   const result = JSON.parse(res.result)
+						   this.cardInfo.deviceNo = result.dev_info.imei
+						   this.cardInfo.modeNo = result.dev_info.model
+						   this.cardInfo.version = result.dev_info.version
+						   this.cardInfo.deviceType = 2
 						}
-						/* h102手表下 */
-						let strData = JSON.stringify(res.result).replace(/u0000/g, '').replace(/\\/g, '').replace(/}/, '').replace(/{"dev_info":/, '')
-						let str = strData.substr(0, strData.length - 1).substr(1, strData.length - 1)
-						let objData = JSON.parse(str)
-						this.cardInfo.deviceNo = objData.imei
-						this.cardInfo.modeNo = objData.model
-						this.cardInfo.version = objData.version
-						this.cardInfo.deviceType = 4
+						
 					},
 					false: res => {
 						console.log(res, '00000000000000000000000')
