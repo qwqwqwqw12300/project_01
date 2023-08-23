@@ -102,7 +102,7 @@
 				this.$store.commit('setDeviceInfo', item);
 				// this.$setCache('setDevice', item);
 				uni.navigateTo({
-					url: '/pages/watch/watch-set/watch-set'
+					url: '/pages/watch/watch-set-h/watch-set'
 				})
 			},
 		},

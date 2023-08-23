@@ -929,6 +929,19 @@
            }
             
         }
+        ,{
+            "path" : "pages/watch/watch-set-h/watchBright",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "抬腕亮屏设置",
+                "enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
