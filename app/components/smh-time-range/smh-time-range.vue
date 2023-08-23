@@ -9,7 +9,7 @@
 				<view class="hours" style="line-height:30px; text-align: center;" v-for="(item,index) in hoursList" :key="index">{{item}}</view>
 			</picker-view-column>
 			<picker-view-column>
-				<view class="minutes" style="line-height:30px; text-align: center;">00</view>
+				<view class="minutes" style="line-height:30px; text-align: center;" v-for="(item,index) in minutes" :key="index">{{item}}</view>
 			</picker-view-column>
 			<picker-view-column>
 				<view style="line-height:30px; text-align: center;">-</view>
@@ -18,7 +18,7 @@
 				<view class="hours" style="line-height:30px; text-align: center;" v-for="(item,index) in hoursList" :key="index">{{item}}</view>
 			</picker-view-column>
 			<picker-view-column>
-				<view class="minutes" style="line-height:30px; text-align: center;">00</view>
+				<view class="minutes" style="line-height:30px; text-align: center;" v-for="(item,index) in minutes" :key="index">{{item}}</view>
 			</picker-view-column>
 		</picker-view>
 	</view>
@@ -36,7 +36,7 @@
 			time:{
 				type: Array,
 				default: () => {
-					return ['15', '0', '0', '18','0'];
+					return [15, 0, 0, 18, 0];
 				}
 			},
 			isUnder: {
@@ -61,8 +61,8 @@
 		methods:{
 			confirm(){
 				let time = {
-					aboveTime: this.setVal(this.value[0]),
-					underTime: this.setVal(this.value[2])
+					aboveTime: this.setVal(this.value[0]) +":"+ this.setVal(this.value[1]),
+					underTime: this.setVal(this.value[3]) +":"+ this.setVal(this.value[4])
 				}
 				this.$emit("confrim", time)
 			},
@@ -72,16 +72,19 @@
 			},
 			cancel(){
 				let time = {
-					aboveTime: this.value[0],
-					underTime: this.value[2]
+					aboveTime: this.setVal(this.value[0]) +":"+ this.setVal(this.value[1]),
+					underTime: this.setVal(this.value[3]) +":"+ this.setVal(this.value[4])
 				}
 				this.$emit("cancel",time)
 			},
 			getime(e){
 				let val = e.detail.value
-				this.value[0] = parseInt(this.hoursList[val[0]])
-				this.value[1] = parseInt(val[1])
-				this.value[2] = parseInt(this.hoursList[val[3]])
+				this.value[0] = parseInt(this.hoursList[val[0]] )
+				this.value[1] = parseInt(this.minutes[val[1]] )
+				this.value[2] = parseInt(val[2])
+				this.value[3] = parseInt(this.hoursList[val[3]]) 
+				this.value[4] = parseInt(this.minutes[val[4]])
+				
 			},
 		}
 	}

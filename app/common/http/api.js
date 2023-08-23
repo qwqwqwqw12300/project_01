@@ -243,7 +243,6 @@ export const PostSetBatchMsgInfo = (params) => http.post('/api/message/setBatchM
  *获取房间列表
  */
 export const PostRoomList = (params) => http.post('/api/room/list', params)
-
 /* 
  *删除家庭
  */
