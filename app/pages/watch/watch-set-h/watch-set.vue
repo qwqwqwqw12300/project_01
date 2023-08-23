@@ -47,6 +47,7 @@
     GetFallCheckInfo,
     GetAutoLocationInfo,
     updateFallCheck,
+	PostSetForbidCheck,
     watchHDataSync
   } from '@/common/http/api';
   export default {

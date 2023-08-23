@@ -588,7 +588,10 @@ export const GetFallCheckInfo = (params) => http.get('/api/tWatch/getFallCheckIn
  * 设置手表跌倒检测开关
  */
 export const PostUpdateFallCheck = (params) => http.post('/api/tWatch/updateFallCheck', params, {});
-
+/**
+ * 设置拦截陌生来电开关
+ */
+export const PostSetForbidCheck = (params) => http.post('/api/aw/tWatch/setForbid', params, {});
 
 /**
  * 获取手表自动定位的状态
