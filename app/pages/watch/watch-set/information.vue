@@ -41,9 +41,13 @@
         </u-cell>
         <u-cell title="生日" arrow-direction="right" isLink tleStyle="font-size: 15px;color: #303133;">
           <view slot="value" class="u-slot-value">
-            <picker mode="date" value="YYYY-MM-DD" start="1900-01-01" end="2099-12-31" @change="onSelected">
+            <!-- <picker mode="date" value="YYYY-MM-DD" start="1900-01-01" end="2099-12-31" @change="onSelected">
               <view class="uni-input">{{defaultValue}}</view>
-            </picker>
+            </picker> -->
+            <u-datetime-picker :show="show" v-model="value1" mode="date" @confirm="onSelected" @cancel="show=false"
+              :minDate="-1577952000000">
+            </u-datetime-picker>
+            <u-button @click="show = true">{{defaultValue}}</u-button>
           </view>
         </u-cell>
         <!-- <view class="uni-list-cell-db">
@@ -109,7 +113,10 @@
         defaultValue: '',
         humanInfoId: '',
         /**成员名称**/
-        name: ''
+        name: '',
+        //生日
+        show: false,
+        value1: Number(new Date()),
       }
     },
     onLoad(params) {
@@ -133,8 +140,25 @@
       },
       onSelected(e) {
         console.log(e, 'e')
-        this.defaultValue = e.detail.value
-        this.showPicker = false
+        this.result(e.value, e.mode)
+        this.show = false
+      },
+      //把日期返回的数字转成生日
+      result(time, mode) {
+        const timeFormat = uni.$u.timeFormat,
+          toast = uni.$u.toast
+        switch (mode) {
+          case 'datetime':
+            return toast(timeFormat(time, 'yyyy-mm-dd hh:MM'))
+          case 'date':
+            return this.defaultValue = timeFormat(time, 'yyyy-mm-dd')
+          case 'year-month':
+            return toast(timeFormat(time, 'yyyy-mm'))
+          case 'time':
+            return toast(time)
+          default:
+            return ''
+        }
       },
       cancel() {
         uni.navigateBack()

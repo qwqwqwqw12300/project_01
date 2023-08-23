@@ -83,9 +83,10 @@
           humanId: this.deviceInfo.humanId
         }).then(res => {
           console.log(res, 'res')
-          this.cellList[0].value = res.data.calorie||200
-          this.cellList[1].value = res.data.stepNum||3000
-          this.cellList[2].value = res.data.weight||25
+          console.log(123);
+          this.cellList[0].value = res.data.calorie || 200
+          this.cellList[1].value = res.data.stepNum || 3000
+          this.cellList[2].value = res.data.weight || 25
           this.exerciseTargetId = res.data.exerciseTargetId
         })
       },
