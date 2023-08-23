@@ -22,7 +22,7 @@
             <view slot="value" class="u-slot-value">
               <text>{{item.value}}</text>
               <u-switch space="2" v-model="item.type" activeValue="1" inactiveValue="0" v-if="item.type"
-                @click.native.stop="handleSwitch(item.type)" size="20" activeColor="#FEAE43"
+                @click.native.stop="handleSwitch(item.type,item.title)" size="20" activeColor="#FEAE43"
                 inactiveColor="rgb(230, 230, 230)"></u-switch>
             </view>
           </u-cell>
@@ -76,6 +76,7 @@
           {
             title: '跌倒检测',
             type: '1',
+
             // url: '/pages/card/guard'
           }, {
             title: '拦截陌生来电',
@@ -95,7 +96,7 @@
           },
           {
             title: '抬腕亮屏',
-            url: '/pages/watch/watch-set-h/watchBright',
+            url: '/pages/watch/watch-set-h/watchBright'
           },
           {
             title: '设备信息',
@@ -116,7 +117,7 @@
           deviceId: this.deviceInfo.deviceId
         }).then(res => {
           this.cellList.forEach(item => {
-            if (item.type != undefined) {
+            if (item.type != undefined && item.title == '跌倒检测') {
               if (res.data) {
                 item.type = '1'
               } else {
@@ -157,33 +158,41 @@
           uni.navigateTo({
             url: `/pages/watch/watch-set/position-auto?obj=${obj}`
           })
-        } else if (url == '/pages/watch/watch-set-h/watchBright'){
-			uni.navigateTo({
-			  url:'/pages/watch/watch-set-h/watchBright?deviceId='+this.deviceInfo.deviceId
-			})
-		} else {
+        } else {
           uni.navigateTo({
             url
           })
         }
 
       },
-      handleSwitch(type) {
-        let fallCheck = type == '1' ? true : false
-        updateFallCheck({
-          deviceId: this.deviceInfo.deviceId,
-          fallCheck: fallCheck
-        }).then(res => {
-          uni.$u.toast(res.msg)
-          setTimeout(() => {
-            this.initData()
-          }, 1000)
-        }, err => {
-          uni.$u.toast(err.msg)
-          setTimeout(() => {
-            this.initData()
-          }, 1000)
-        })
+      handleSwitch(type, title) {
+        if (title == '跌倒检测') {
+          let fallCheck = type == '1' ? true : false
+          updateFallCheck({
+            deviceId: this.deviceInfo.deviceId,
+            fallCheck: fallCheck
+          }).then(res => {
+            uni.$u.toast(res.msg)
+            setTimeout(() => {
+              this.initData()
+            }, 1000)
+          }, err => {
+            uni.$u.toast(err.msg)
+            setTimeout(() => {
+              this.initData()
+            }, 1000)
+          })
+        } else {
+          let stopstrange = type == '1' ? true : false
+          PostSetForbidCheck({
+            deviceId: this.deviceInfo.deviceId,
+            forbid: stopstrange
+          }).then(res => {
+            uni.$u.toast(res.msg)
+          }, err => {
+            uni.$u.toast(err.msg)
+          })
+        }
       },
       unBind() {
         uni.showModal({
