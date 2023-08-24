@@ -22,17 +22,17 @@
             <text></text>
             {{ item.orderName }}
           </view>
-          <view class="title-right" @tap="getContact(index)" v-if="item.shareFlag == '2'">
+          <view class="title-right" @tap="getContact(index)" v-if="shareFlag == '2'">
             <u-icon name="/static/images/tel-book.png" size="44rpx"></u-icon>
           </view>
         </view>
         <view class="item-input">
           <view class="input-left">
-            <u--input v-model="item.name" :disabled="item.shareFlag == '0'" placeholder="请输入姓名" border="none" clearable>
+            <u--input v-model="item.name" :disabled="!shareFlag" placeholder="请输入姓名" border="none" clearable>
             </u--input>
           </view>
           <view class="input-right">
-            <u--input v-model="item.phone" :disabled="item.shareFlag == '0'" maxlength="11" type="number"
+            <u--input v-model="item.phone" :disabled="!shareFlag" maxlength="11" type="number"
               placeholder="请输入手机号" border="none" placeholderStyle="text-align:right;color: rgb(192, 196, 204);"
               clearable></u--input>
           </view>
@@ -102,7 +102,8 @@
         /**家庭列表是否展示**/
         familyShow: false,
         familyName: '',
-        contactList
+        contactList:[],
+		shareFlag:0
       }
     },
     computed: {
@@ -137,11 +138,13 @@
         GetMemberContactskList({
           familyId: familyId
         }).then(res => {
-          console.log(res, 'res')
+          console.log(res.data.sharFlag, 'resresresresres')
+		  this.shareFlag = res.data.sharFlag
           // console.log(res,'res-------------------------')
           this.contactList = contactList.map(item => {
             item.familyId = familyId
-            const data = res.rows.find(n => {
+			console.log(familyId,'familyIdfamilyIdfamilyId')
+            const data = res.data.tMemberContacts.find(n => {
               return n.orderNum === item.orderNum
             })
             return data != undefined ? {
@@ -198,12 +201,16 @@
     },
     onShow() {
       this.familyName = this.getFamilyList[0] && this.getFamilyList[0].text || '暂无家庭'
+	  console.log(this.getFamilyList)
       this.handleInit(this.getFamilyList[0].value)
     }
   }
 </script>
 
 <style lang="scss">
+	.u-input{
+		  background-color: #FFFFFF !important;
+	}
   .ui-logo {
     display: flex;
     align-items: flex-end;
@@ -263,7 +270,7 @@
       }
     }
   }
-
+  
   .ui-btn {
     width: 100%;
     position: fixed;

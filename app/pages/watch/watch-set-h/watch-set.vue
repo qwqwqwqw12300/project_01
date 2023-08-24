@@ -48,7 +48,8 @@
     GetAutoLocationInfo,
     updateFallCheck,
     PostSetForbidCheck,
-    watchHDataSync
+    watchHDataSync,
+	GetWatchInfo
   } from '@/common/http/api';
   export default {
     data() {
@@ -111,6 +112,10 @@
       }, ),
     },
     mounted() {},
+	onShow() {
+	  this.initData()
+	  this.GetWatchinfo()
+	},
     methods: {
       initData() {
         GetFallCheckInfo({
@@ -138,6 +143,22 @@
           })
         })
       },
+	  GetWatchinfo(){
+		GetWatchInfo({
+			deviceId:this.deviceInfo.deviceId
+		}).then(res =>{
+			console.log(res.data.aiWeiIntelligentWatchSettings.forbid)
+			this.cellList.forEach(item => {
+			  if (item.type != undefined && item.title == '拦截陌生来电') {
+			    if (res.data.aiWeiIntelligentWatchSettings.forbid) {
+			      item.type = '1'
+			    } else {
+			      item.type = '0'
+			    }
+			  }
+			})
+		})
+	  },
       handleJump(url) {
         if (url == 'synchronization') {
           uni.showModal({
@@ -158,7 +179,11 @@
           uni.navigateTo({
             url: `/pages/watch/watch-set/position-auto?obj=${obj}`
           })
-        } else {
+        }else if(url == '/pages/watch/watch-set-h/watchBright'){
+			uni.navigateTo({
+			  url: `/pages/watch/watch-set-h/watchBright?deviceId=${this.deviceInfo.deviceId}`
+			})
+		} else {
           uni.navigateTo({
             url
           })
@@ -182,15 +207,18 @@
               this.initData()
             }, 1000)
           })
-        } else {
+        } 
+		if(title == '拦截陌生来电'){
           let stopstrange = type == '1' ? true : false
           PostSetForbidCheck({
             deviceId: this.deviceInfo.deviceId,
             forbid: stopstrange
           }).then(res => {
             uni.$u.toast(res.msg)
+			this.GetWatchinfo()
           }, err => {
             uni.$u.toast(err.msg)
+			this.GetWatchinfo()
           })
         }
       },
@@ -220,9 +248,7 @@
         })
       }
     },
-    onShow() {
-      this.initData()
-    }
+    
   }
 </script>
 

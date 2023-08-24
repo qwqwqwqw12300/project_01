@@ -3,7 +3,7 @@
 		<view class="ui-form">
 			<view class="u-slot-value">
 				<text>抬腕亮屏</text>
-				<u-switch space="2" v-model="checks" activeValue="1" inactiveValue="0" @change="change" size="20"
+				<u-switch space="2" v-model="checks" activeValue="1" inactiveValue="0" size="20"
 					activeColor="#FEAE43" inactiveColor="rgb(230, 230, 230)"></u-switch>
 			</view>
 			<view class="u-slot-value" style="margin: 0;" @click="showtime">
@@ -14,7 +14,7 @@
 				</view>
 			</view>
 		</view>
-		<smh-time-ranges v-if="show" :time="['09','0','0','21','0']" @confrim="confrim"
+		<smh-time-ranges v-if="show" :time="timearr" @confrim="confrim"
 			@cancel="cancel"></smh-time-ranges>
 		<view class="ui-button">
 			<button @click="send" class="default">
@@ -30,6 +30,8 @@
 	} from 'vuex';
 	import {
 		PostSetLcdStatus,
+		GetDeviceInfo,
+		GetWatchInfo
 	} from '@/common/http/api.js';
 	export default {
 		data() {
@@ -38,12 +40,13 @@
 				aboveTime: '09',
 				underTime: '21',
 				show: false,
-				deviceId:''
+				deviceId: '',
+				timearr:['09','0','0','21','0']
 			}
 		},
 		onLoad(options) {
 			this.deviceId = options.deviceId
-			
+			this.GetWatchinfo()
 		},
 		methods: {
 			confrim(e) {
@@ -57,12 +60,29 @@
 			showtime() {
 				this.show = !this.show
 			},
+			GetWatchinfo() {
+				GetWatchInfo({
+					deviceId: this.deviceId
+				}).then(res => {
+					let obj = res.data.aiWeiIntelligentWatchSettings
+					console.log(obj.lcdSture)
+					this.timearr[0] = String(obj.lcdStureStar);
+					this.timearr[3] = String(obj.lcdStureEnd);
+					this.aboveTime = String(obj.lcdStureStar)
+					this.underTime = String(obj.lcdStureEnd);
+					if(obj.lcdSture){
+						this.checks = '1'
+					}else{
+						this.checks = '0'
+					}
+				})
+			},
 			send() {
 				PostSetLcdStatus({
 					deviceId: this.deviceId,
-					open: Boolean(this.checks),
-					startHour:this.aboveTime,
-					endHour:this.underTime
+					open: this.checks == '1'?true:false,
+					startHour: this.aboveTime,
+					endHour: this.underTime
 				}).then(res => {
 					uni.$u.toast(res.msg)
 				}, err => {
@@ -103,6 +123,6 @@
 		position: fixed;
 		left: 0;
 		bottom: 10px;
-		
+
 	}
 </style>
