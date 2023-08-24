@@ -1,4 +1,4 @@
 AppID：com.elinker.aijitong
 证书私钥密码：123456
-苹果开发者账号：elinker@129.com  
+苹果开发者账号：elinker@139.com  
 苹果开发者密码：Elk211227

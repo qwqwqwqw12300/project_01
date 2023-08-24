@@ -194,53 +194,54 @@
 						remSleepDouble, //快速眼动
 						remSleepTime
 					} = res.data
-
-					this.sleepScore = sleepScore
-					//总时长
-					this.sleepList[0].hour = countTime[0]
-					this.sleepList[0].minutes = (countTime[1] % 60)
-					//深睡
-					this.sleepList[1].hour = deepSleepTime[0]
-					this.sleepList[1].minutes = deepSleepTime[1] % 60
-					this.sleepList[1].percent = deepSleepDouble
-					//浅睡
-					this.sleepList[2].hour = lightSleepTime[0]
-					this.sleepList[2].minutes = lightSleepTime[1] % 60
-					this.sleepList[2].percent = lightSleepDouble
-					//清醒
-					this.sleepList[3].hour = clearSleepTime[0]
-					this.sleepList[3].minutes = clearSleepTime[1] % 60
-					this.sleepList[3].percent = clearHeadedDouble
-					//快速眼动
-					this.sleepList[4].hour = remSleepTime[0]
-					this.sleepList[4].minutes = remSleepTime[1] % 60
-					this.sleepList[4].percent = remSleepDouble
-					// this.sleepData = uni.$u.deepClone(res.data)
 					const series = [
 						[],
 						[],
 						[]
 					]
-					const data = res.data.segSleepList.filter(n => {
-						return n.slt !== '1'
-					})
-					console.log(data, '33333')
-					data.forEach(n => {
-						const st = uni.$u.timeFormat(n.st, 'hh:MM')
-						const et = uni.$u.timeFormat(n.et, 'hh:MM')
-						const index = {
-							'2': 0,
-							'3': 1,
-							'4': 2
-						} [n.slt]
-						series[index].push(['', st, et])
-
-					})
+					if(res.data.segSleepList){
+						this.sleepScore = sleepScore
+						//总时长
+						this.sleepList[0].hour = countTime[0]
+						this.sleepList[0].minutes = (countTime[1] % 60)
+						//深睡
+						this.sleepList[1].hour = deepSleepTime[0]
+						this.sleepList[1].minutes = deepSleepTime[1] % 60
+						this.sleepList[1].percent = deepSleepDouble
+						//浅睡
+						this.sleepList[2].hour = lightSleepTime[0]
+						this.sleepList[2].minutes = lightSleepTime[1] % 60
+						this.sleepList[2].percent = lightSleepDouble
+						//清醒
+						this.sleepList[3].hour = clearSleepTime[0]
+						this.sleepList[3].minutes = clearSleepTime[1] % 60
+						this.sleepList[3].percent = clearHeadedDouble
+						//快速眼动
+						this.sleepList[4].hour = remSleepTime[0]
+						this.sleepList[4].minutes = remSleepTime[1] % 60
+						this.sleepList[4].percent = remSleepDouble
+						// this.sleepData = uni.$u.deepClone(res.data)
+						
+						const data = res.data.segSleepList.filter(n => {
+							return n.slt !== '1'
+						})
+						data.forEach(n => {
+							const st = uni.$u.timeFormat(n.st, 'hh:MM')
+							const et = uni.$u.timeFormat(n.et, 'hh:MM')
+							const index = {
+								'2': 0,
+								'3': 1,
+								'4': 2
+							} [n.slt]
+							series[index].push(['', st, et])
+						})
+					}
 					// series[0].push(['', '20:01', '21:00'])
 					this.logstatrt(series)
 				})
 			},
 			logstatrt(series) {
+				console.log(555555555)
 				const types = ['浅睡', '深睡', '快速眼动']
 				// const series = [
 				// 	[
