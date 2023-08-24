@@ -99,7 +99,7 @@
 					notMerge: true,
 					tooltip: {
 						trigger: 'axis',
-						triggerOn: 'none',
+						triggerOn: 'click',
 					},
 					backgroundColor: '#fff',
 					grid: {
@@ -121,8 +121,8 @@
 						axisPointer: {
 							handle: {
 								show: true,
-								size: 8,
-								margin: 23
+								size: 14,
+								margin: 2
 							}
 						},
 						axisLabel: {
