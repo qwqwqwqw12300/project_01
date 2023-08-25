@@ -114,6 +114,7 @@
 			const res = this.familyList.find(n => {
 				return familyId === n.familyId
 			})
+			console.log('resresresres',res)
 			this.deviceList = res.devices.map(n => {
 				n.shareFlag = res.shareFlag
 				return n

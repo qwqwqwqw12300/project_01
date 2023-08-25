@@ -31,7 +31,7 @@ class Log {
 			basePath,
 			log
 		} = env;
-		console.log(basePath + log, 'baseUrl + log');
+		// console.log(basePath + log, 'baseUrl + log');
 		uni.request({
 			url: basePath + log,
 			data: options,

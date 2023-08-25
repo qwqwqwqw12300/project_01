@@ -254,7 +254,7 @@ const store = {
 		GetContactsList(ctx) {
 			return new Promise(resolve => {
 				GetContactsList({}).then(res => {
-					ctx.commit('setContactInfo', res.rows);
+					ctx.commit('setContactInfo', res.data.tMemberContacts);
 					resolve(true);
 				}, err => {
 					ctx.commit('setContactInfo', []);

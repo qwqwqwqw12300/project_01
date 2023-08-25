@@ -367,7 +367,13 @@
 			},
 
 			getMonthData(month) {
+				const {
+					deviceId,
+					humanId
+				} = this.deviceInfo
 				GetMonthDataFlag({
+					deviceId,
+					humanId,
 					yearMonth: month,
 					type: '6', //（ 1卡路里 2活动时长 3步数 4睡眠 5站立 6心率 7血压 8血氧 9心电）
 				}).then(res => {
