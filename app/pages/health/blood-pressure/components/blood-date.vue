@@ -141,6 +141,7 @@
 					tooltip: {
 						positionStatus: true,
 						trigger: 'axis',
+						triggerOn: 'click',
 					},
 					backgroundColor: '#fff',
 					legend: {
@@ -163,7 +164,17 @@
 						axisTick: {
 							show: false
 						},
+						axisPointer: {
+							handle: {
+								show: true,
+								size: 14,
+								margin: 2,
+								throttle: 5,
+								color: '#ffac4a'
+							}
+						},
 						axisLine: {
+							margin: 13,
 							lineStyle: {
 								color: 'rgb(238,238,238)',
 								width: 1
@@ -206,10 +217,14 @@
 					series: [{
 							name: '收缩压',
 							data: this.spMapList,
-							type: 'bar',
+							type: 'line',
 							showSymbol: false,
+							//虚线
+							lineStyle: {
+								type: 'dashed'
+							},
 							itemStyle: {
-								color: '#FF7E23'
+								color: '#FF7E23',
 							},
 							barWidth: '10', //---柱形宽度
 							barCategoryGap: '20%', //---柱形间距
@@ -217,8 +232,11 @@
 						{
 							name: '舒张压',
 							data: this.dpMapList,
-							type: 'bar',
+							type: 'line',
 							showSymbol: false,
+							lineStyle: {
+								type: 'dashed'
+							},
 							itemStyle: {
 								color: '#63DDBA'
 							},

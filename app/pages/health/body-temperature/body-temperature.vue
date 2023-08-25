@@ -106,7 +106,7 @@
 						left: '5%',
 						right: '5%',
 						bottom: '3%',
-						containLabel: true
+						containLabel: true,
 					},
 					xAxis: [{
 						type: 'time',
@@ -122,10 +122,13 @@
 							handle: {
 								show: true,
 								size: 14,
-								margin: 2
+								margin: 2,
+								throttle: 5,
+								color: '#ffac4a'
 							}
 						},
 						axisLabel: {
+							margin: 13,
 							textStyle: {
 								color: "#666"
 							},
