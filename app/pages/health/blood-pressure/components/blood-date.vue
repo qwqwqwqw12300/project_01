@@ -160,6 +160,7 @@
 						// interval: 6 * 3600 * 1000, // 间隔为6小时
 						min: `${this.time + ' 00:00:00'}`, // x轴起始时间
 						max: `${this.time + ' 23:04:00'}`, // x轴结束时间
+						// max: '23:05',
 						boundaryGap: false,
 						axisTick: {
 							show: false
