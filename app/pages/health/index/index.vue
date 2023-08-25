@@ -98,6 +98,7 @@
 										:fetchRes="fetchRes" :option="tiWenOption" :item="item" :isEdit="isEdit"
 										@iconClick="editCard">
 									</TiWenCard>
+									<YaLiCard v-if="item.type === '7'" :item="item" :option="tiWenOption"></YaLiCard>
 								</view>
 							</view>
 							<!-- 滑块 -->
@@ -142,6 +143,7 @@
 	import XueYangCard from "./components/XueYangCard.vue";
 	import XinDianCard from "./components/XinDianCard.vue"
 	import TiWenCard from "./components/TiWenCard.vue";
+	import YaLiCard from './components/YaLiCard.vue'
 	import {
 		GetCaiHongData,
 		getDeviceListState,
@@ -161,7 +163,8 @@
 			XueYaCard,
 			XueYangCard,
 			XinDianCard,
-			TiWenCard
+			TiWenCard,
+			YaLiCard
 		},
 		data() {
 			return {
@@ -229,6 +232,11 @@
 					type: '6',
 					name: 'TiWenCard',
 					img: '../../../static/images/xueya_drag.svg',
+					isShow: true
+				}, {
+					type: '7',
+					name: 'YaLiCard',
+					img: '',
 					isShow: true
 				}],
 				// CheckAppId: null,
