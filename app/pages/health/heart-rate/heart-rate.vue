@@ -205,8 +205,8 @@
 						show: false
 					},
 					// data: ['00:00', '06:00', '12:00', '18:00', '23:59'],
-					// min: '',
-					// max: '23:04',
+					// min: `${option.value + ' 00:00:00'}`, // x轴起始时间
+					// max: `${option.value + ' 23:49:00'}`, // x轴结束时间
 					// splitNumber: 6,
 					interval: 6 * 3600 * 1000, //时间间隔
 				}, ],
@@ -279,6 +279,8 @@
 						// [new Date('2023-3-27 12:00:00'), '3'],
 						// [new Date('2023-3-27 18:00:00'), '4'],
 						// [new Date('2023-3-27 23:59:59'), '5'],
+
+
 					]
 				}]
 			}
@@ -358,6 +360,8 @@
 		mounted() {
 			const month = uni.$u.timeFormat(new Date(), 'yyyy-mm')
 			this.getMonthData(month)
+			// this.handleDate(options)
+			// this.onSelect(val)
 		},
 		methods: {
 			onSelect(val) {
@@ -440,6 +444,12 @@
 					console.log('GetListHeartRateByDay', res)
 					if (!res.data.MapList) {
 						this.dayOptions.series[0].data = []
+						this.dayOptions.xAxis[0].min = new Date(uni.$u.timeFormat(new Date(options.value),
+							'yyyy-mm-dd') + ' 00:00:00')
+						this.dayOptions.xAxis[0].max = new Date(uni.$u.timeFormat(new Date(options.value),
+							'yyyy-mm-dd') + ' 23:59:59')
+						this.dayOptions.yAxis[0].min = '40'
+						this.dayOptions.yAxis[0].max = '220'
 						this.options = this.dayOptions
 						return
 					}
@@ -456,11 +466,9 @@
 					})
 					this.$nextTick(() => {
 						this.dayOptions.xAxis[0].min = new Date(uni.$u.timeFormat(new Date(options.value),
-								'yyyy-mm-dd') +
-							' 00:00:00')
+							'yyyy-mm-dd') + ' 00:00:00')
 						this.dayOptions.xAxis[0].max = new Date(uni.$u.timeFormat(new Date(options.value),
-								'yyyy-mm-dd') +
-							' 23:59:59')
+							'yyyy-mm-dd') + ' 23:59:59')
 						this.dayOptions.yAxis[0].min = '40'
 						this.dayOptions.yAxis[0].max = '220'
 						this.dayOptions.series[0].data = data
