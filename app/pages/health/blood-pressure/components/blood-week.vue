@@ -129,6 +129,12 @@
 					tooltip: {
 						positionStatus: true,
 						trigger: 'axis',
+						axisPointer: {
+							type: 'line',
+							lineStyle: {
+								type: 'dashed', //指示线为虚线
+							},
+						},
 					},
 					backgroundColor: '#fff',
 					legend: {
@@ -151,6 +157,15 @@
 						axisTick: {
 							show: false
 						},
+						axisPointer: {
+							handle: {
+								show: true,
+								size: 18,
+								margin: 2,
+								throttle: 5,
+								color: '#ffac4a'
+							}
+						},
 						axisLine: {
 							lineStyle: {
 								color: 'rgb(238,238,238)',
@@ -158,6 +173,7 @@
 							}
 						},
 						axisLabel: {
+							margin: 13,
 							textStyle: {
 								color: "#666"
 							},

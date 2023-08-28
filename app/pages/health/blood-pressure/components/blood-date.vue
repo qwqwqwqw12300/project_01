@@ -142,6 +142,12 @@
 						positionStatus: true,
 						trigger: 'axis',
 						triggerOn: 'click',
+						axisPointer: {
+							type: 'line',
+							lineStyle: {
+								type: 'dashed', //指示线为虚线
+							},
+						},
 					},
 					backgroundColor: '#fff',
 					legend: {
@@ -168,20 +174,20 @@
 						axisPointer: {
 							handle: {
 								show: true,
-								size: 14,
+								size: 18,
 								margin: 2,
 								throttle: 5,
 								color: '#ffac4a'
 							}
 						},
 						axisLine: {
-							margin: 13,
 							lineStyle: {
 								color: 'rgb(238,238,238)',
 								width: 1
 							}
 						},
 						axisLabel: {
+							margin: 13,
 							textStyle: {
 								color: "#666"
 							},

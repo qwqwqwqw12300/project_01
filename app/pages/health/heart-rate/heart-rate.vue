@@ -95,7 +95,7 @@
 				}, ],
 				yAxis: [{
 					type: "value",
-					interval: 45,
+					interval: 25,
 					scale: true,
 					splitArea: {
 						show: false,
@@ -164,6 +164,12 @@
 				tooltip: {
 					trigger: 'axis',
 					triggerOn: 'click',
+					axisPointer: {
+						type: 'line',
+						lineStyle: {
+							type: 'dashed', //指示线为虚线
+						},
+					},
 				},
 				backgroundColor: '#fff',
 				grid: {
@@ -182,7 +188,7 @@
 					axisPointer: {
 						handle: {
 							show: true,
-							size: 14,
+							size: 18,
 							margin: 2,
 							throttle: 5,
 							color: '#ffac4a'
@@ -197,7 +203,9 @@
 					},
 					axisLine: {
 						lineStyle: {
+							// type: 'solid',
 							color: 'rgb(238,238,238)',
+							// color: '#ffac4a',
 							width: 1
 						}
 					},
@@ -212,7 +220,7 @@
 				}, ],
 				yAxis: [{
 					type: "value",
-					interval: 45,
+					interval: 25,
 					scale: true,
 					splitArea: {
 						show: false,
@@ -252,7 +260,8 @@
 							color: 'rgba(255,89,89,1)',
 							lineStyle: {
 								color: "rgba(255,89,89,1)",
-								width: 1
+								width: 1,
+								// type: 'dashed'
 							},
 							areaStyle: {
 								color: {
@@ -427,7 +436,7 @@
 							'yyyy-mm-dd') +
 						' 00:00:00')
 					this.weekOptions.yAxis[0].min = '40'
-					this.weekOptions.yAxis[0].max = '220'
+					this.weekOptions.yAxis[0].max = '165'
 					this.options = this.weekOptions
 				})
 			},
@@ -449,7 +458,7 @@
 						this.dayOptions.xAxis[0].max = new Date(uni.$u.timeFormat(new Date(options.value),
 							'yyyy-mm-dd') + ' 23:59:59')
 						this.dayOptions.yAxis[0].min = '40'
-						this.dayOptions.yAxis[0].max = '220'
+						this.dayOptions.yAxis[0].max = '165'
 						this.options = this.dayOptions
 						return
 					}
@@ -470,7 +479,7 @@
 						this.dayOptions.xAxis[0].max = new Date(uni.$u.timeFormat(new Date(options.value),
 							'yyyy-mm-dd') + ' 23:59:59')
 						this.dayOptions.yAxis[0].min = '40'
-						this.dayOptions.yAxis[0].max = '220'
+						this.dayOptions.yAxis[0].max = '165'
 						this.dayOptions.series[0].data = data
 						this.options = this.dayOptions
 					})
