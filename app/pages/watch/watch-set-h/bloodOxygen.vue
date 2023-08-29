@@ -9,7 +9,7 @@
 			<view class="u-slot-value">
 				<text>设置血氧最低值</text>
 				<view class="arrow" style="border: 1px solid #ccc;">
-					<input class="input" type="number" v-model="lowOxygen" @blur="blurInput()">
+					<input class="input" type="number" v-model="lowOxygen">
 				</view>
 			</view>
 
@@ -34,8 +34,8 @@
 	export default {
 		data() {
 			return {
-				open: true,
-				lowOxygen: 80
+				open: '',
+				lowOxygen: 0
 			}
 		},
 		computed: {
@@ -64,17 +64,7 @@
 					this.lowOxygen = res.data.aiWeiIntelligentWatchSettings.spoAlarmVO.low
 				})
 			},
-			blurInput() {
-				// console.log('.........');
 
-				if (this.lowOxygen < 80) {
-					this.lowOxygen = 80
-				}
-				if (this.lowOxygen % 1 != 0) {
-					this.lowOxygen = Math.ceil(this.lowOxygen)
-				}
-
-			}
 		}
 	}
 </script>

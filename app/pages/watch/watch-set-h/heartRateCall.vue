@@ -9,26 +9,25 @@
 			<view class="u-slot-value">
 				<text>设置心率最高值</text>
 				<view class="arrow" style="border: 1px solid #ccc;">
-					<input class="input" type="number" v-model="highRate" @blur="blurInput()">
+					<input class="input" type="number" v-model="highRate">
 				</view>
 			</view>
 			<view class="u-slot-value">
 				<text>设置心率最低值</text>
 				<view class="arrow" style="border: 1px solid #ccc;">
-					<input class="input" type="number" v-model="lowRate" @blur="blurInput()">
+					<input class="input" type="number" v-model="lowRate">
 				</view>
 			</view>
 			<view class="u-slot-value">
 				<text>设置异常次数开始报警</text>
 				<view class="arrow" style="border: 1px solid #ccc;">
-					<input class="input" type="number" v-model="errorTime" @blur="blurInput()">
+					<input class="input" type="number" v-model="errorTime">
 				</view>
 			</view>
 			<view class="u-slot-value">
 				<text>设置报警间隔</text>
 				<view class="arrow" style="border: 1px solid #ccc;">
-					<input class="input" type="number" v-model="callTime" @blur="blurInput()"> <text
-						class="minute">分钟</text>
+					<input class="input" type="number" v-model="callTime"> <text class="minute">分钟</text>
 				</view>
 			</view>
 		</view>
@@ -52,11 +51,11 @@
 	export default {
 		data() {
 			return {
-				open: true,
-				highRate: 130,
-				lowRate: 50,
-				errorTime: 3,
-				callTime: 10
+				open: '',
+				highRate: 0,
+				lowRate: 0,
+				errorTime: 0,
+				callTime: 0
 			}
 		},
 		computed: {
@@ -94,24 +93,7 @@
 					this.callTime = res.data.aiWeiIntelligentWatchSettings.hralarmSettingVO.alarmInterval
 				})
 			},
-			blurInput() {
-				// console.log('.........');
-				if (this.highRate > 130) {
-					this.highRate = 130
-				}
-				if (this.lowRate < 50) {
-					this.lowRate = 50
-				}
-				if (this.highRate % 1 != 0) {
-					this.highRate = Math.ceil(this.highRate)
-				}
-				if (this.lowRate % 1 != 0) {
-					this.lowRate = Math.ceil(this.lowRate)
-				}
-				if (this.callTime % 1 != 0) {
-					this.callTime = Math.ceil(this.callTime)
-				}
-			}
+
 		}
 	}
 </script>
