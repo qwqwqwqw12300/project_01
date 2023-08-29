@@ -98,7 +98,7 @@
 										:fetchRes="fetchRes" :option="tiWenOption" :item="item" :isEdit="isEdit"
 										@iconClick="editCard">
 									</TiWenCard>
-									<YaLiCard v-if="item.type === '7'" :item="item" :option="tiWenOption"></YaLiCard>
+									<YaLiCard v-if="item.type === '7'" :item="item" :option="yaLiOption"></YaLiCard>
 								</view>
 							</view>
 							<!-- 滑块 -->
@@ -198,6 +198,7 @@
 				xinDianOption: {},
 				xinZangOption: {},
 				tiWenOption: {},
+				yaLiOption: {},
 				current: 0,
 				deviceList: [],
 				swiperData: {},
@@ -414,6 +415,7 @@
 				this.xueYangOptionHandle(res);
 				this.xinDianOptionHandle(res);
 				this.tiWenOptionHandle(res)
+				this.yaLiOptionHandle(res)
 				// this.xinZangOptionHandle(res);
 			},
 			/**
@@ -1153,171 +1155,191 @@
 			 * @param {Object} res
 			 */
 			tiWenOptionHandle(res) {
-				const dateRes = res.data && res.data.Temperatures.slice(0, 4) + '-' + res.data.Temperatures.slice(5,
-						7) + '-' +
-					res.data.Temperatures.slice(8, 10);
-				console.log('tiWenOptionHandle', dateRes)
+				// var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
 				let arr = [];
-				if (res.data && res.data.tWatchTemperatures.length !== 0) {
-					arr = res.data.tWatchTemperatures;
-					console.log('tiWenOptionHandle', arr)
+				if (res.data && res.data.HeartRateList.length !== 0) {
+					arr = res.data.HeartRateList;
 				} else {
 					arr = [{
-							time: (dateRes ? dateRes : this.echartDate) + " 00:00:01",
-							value: "75"
+							time: this.date + " 00:51:00",
+							value: "20"
 						},
 						{
-							time: (dateRes ? dateRes : this.echartDate) + " 02:00:00",
-							value: "109"
+							time: this.date + " 06:51:00",
+							value: "33"
 						},
 						{
-							time: (dateRes ? dateRes : this.echartDate) + " 04:00:00",
-							value: "75"
+							time: this.date + " 10:51:00",
+							value: "34"
 						},
 						{
-							time: (dateRes ? dateRes : this.echartDate) + " 06:00:00",
-							value: "109"
+							time: this.date + " 13:51:00",
+							value: "45"
 						},
 						{
-							time: (dateRes ? dateRes : this.echartDate) + " 08:00:00",
-							value: "75"
+							time: this.date + " 15:51:00",
+							value: "25"
 						},
 						{
-							time: (dateRes ? dateRes : this.echartDate) + " 10:00:00",
-							value: "109"
+							time: this.date + " 18:51:00",
+							value: "60"
 						},
 						{
-							time: (dateRes ? dateRes : this.echartDate) + " 12:00:00",
-							value: "75"
+							time: this.date + " 21:51:00",
+							value: "35"
 						},
 						{
-							time: (dateRes ? dateRes : this.echartDate) + " 14:00:00",
-							value: "109"
+							time: this.date + " 23:51:00",
+							value: "27"
 						},
-						{
-							time: (dateRes ? dateRes : this.echartDate) + " 16:00:00",
-							value: "75"
-						},
-						{
-							time: (dateRes ? dateRes : this.echartDate) + " 18:00:00",
-							value: "109"
-						},
-						{
-							time: (dateRes ? dateRes : this.echartDate) + " 20:00:00",
-							value: "75"
-						},
-						{
-							time: (dateRes ? dateRes : this.echartDate) + " 22:00:00",
-							value: "109"
-						}
 					]
 				}
 				let resArr = [];
 				arr.forEach((item) => {
-					resArr.push([
-						item.dt,
-						item.tp
-					])
+					resArr.push(item.value)
 				})
-				console.log('resarr', resArr)
-
 				this.tiWenOption = {
-					notMerge: true,
-					backgroundColor: '#fff',
 					grid: {
-						left: '-15%',
-						right: '0',
-						bottom: '100%',
-						containLabel: true
+						top: 0,
+						left: 0,
+						right: 0,
+						bottom: 0
 					},
-					xAxis: [{
+					xAxis: {
+						type: 'category',
+						boundaryGap: false,
+						show: false
+					},
+					yAxis: {
+						type: 'value',
 						show: false,
-						type: 'time',
-						// interval: 6 * 60 * 60 * 1000, // 设置x轴间隔为6小时
-						min: `${dateRes + ' 00:00:00'}`, // x轴起始时间
-						max: `${dateRes + ' 23:49:00'}`, // x轴结束时间
-						// boundaryGap: false,
-						axisTick: { //坐标轴刻度相关设置。
-							show: false,
-						},
-						axisLabel: {
-							textStyle: {
-								color: "#666"
-							},
-							formatter: function(val) {
-								return (uni.$u.timeFormat(new Date(val), 'hh:MM'))
-							}
-						},
-						splitLine: {
-							show: false
-						},
-						axisLine: {
-							lineStyle: {
-								color: 'rgb(238,238,238)',
-								width: 1
-							}
-						},
-					}, ],
-					yAxis: [{
-						show: false,
-						min: 0,
-						max: 100,
-						type: "value",
-						scale: true,
-						splitArea: {
-							show: true,
-							areaStyle: {
-								color: ['#f6f8fc', '#fff']
-							}
-						},
-						axisLabel: {
-							textStyle: {
-								color: "#666"
-							}
-						},
-						nameTextStyle: {
-							color: "#666",
-							fontSize: 12,
-							lineHeight: 40
-						},
-						// 分割线
-						splitLine: {
-							lineStyle: {
-								type: "dashed",
-								color: "#E9E9E9"
-							}
-						},
-						axisLine: {
-							show: false
-						},
-						axisTick: {
-							show: false
-						}
-					}],
+						boundaryGap: [0, '100%']
+					},
+
 					series: [{
-						type: 'bar',
-						showSymbol: false,
+						name: '折线数据',
+						type: 'line',
+						smooth: false,
+						// symbolSize:1,
+						symbol: 'none',
+						sampling: 'average',
 						itemStyle: {
-							color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-									offset: 0,
-									color: '#fff5c1'
-								},
-								{
-									offset: 0.5,
-									color: '#ff9945'
-								},
-								{
-									offset: 1,
-									color: '#FF7E23'
-								}
-							]),
-							barBorderRadius: [15, 15, 0, 0]
+							normal: {
+								color: 'rgb(29, 48, 62)' //折线颜色
+							}
 						},
-						barWidth: '3', //---柱形宽度
-						barCategoryGap: '20%', //---柱形间距
+						lineStyle: {
+							width: 1
+						},
+						areaStyle: {
+							normal: {
+								color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+									offset: 0,
+									color: 'rgba(29, 48, 62,0.5)' //渐变起始颜色
+								}, {
+									offset: 1,
+									color: 'rgba(29, 48, 62,0.1)' //渐变结束颜色
+								}])
+							}
+						},
 						data: resArr
 					}]
+				};
+			},
+			/**
+			 * 压力图表
+			 */
+			yaLiOptionHandle(res) {
+				// var data = [20, 60, 34, 25, 33, 46, 32, 35, 27, 28];
+				let arr = [];
+				if (res.data && res.data.tWatchPressures.length !== 0) {
+					arr = res.data.tWatchPressures;
+				} else {
+					arr = [{
+							time: this.date + " 00:51:00",
+							value: "20"
+						},
+						{
+							time: this.date + " 06:51:00",
+							value: "33"
+						},
+						{
+							time: this.date + " 10:51:00",
+							value: "34"
+						},
+						{
+							time: this.date + " 13:51:00",
+							value: "45"
+						},
+						{
+							time: this.date + " 15:51:00",
+							value: "25"
+						},
+						{
+							time: this.date + " 18:51:00",
+							value: "60"
+						},
+						{
+							time: this.date + " 21:51:00",
+							value: "35"
+						},
+						{
+							time: this.date + " 23:51:00",
+							value: "27"
+						},
+					]
 				}
+				let resArr = [];
+				arr.forEach((item) => {
+					resArr.push(item.value)
+				})
+				this.yaLiOption = {
+					grid: {
+						top: 0,
+						left: 0,
+						right: 0,
+						bottom: 0
+					},
+					xAxis: {
+						type: 'category',
+						boundaryGap: false,
+						show: false
+					},
+					yAxis: {
+						type: 'value',
+						show: false,
+						boundaryGap: [0, '100%']
+					},
+
+					series: [{
+						name: '折线数据',
+						type: 'line',
+						smooth: false,
+						// symbolSize:1,
+						symbol: 'none',
+						sampling: 'average',
+						itemStyle: {
+							normal: {
+								color: 'rgb(254, 233, 189)' //折线颜色
+							}
+						},
+						lineStyle: {
+							width: 1
+						},
+						areaStyle: {
+							normal: {
+								color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+									offset: 0,
+									color: 'rgba(254, 233, 189,0.5)' //渐变起始颜色
+								}, {
+									offset: 1,
+									color: 'rgba(254, 233, 189,0.1)' //渐变结束颜色
+								}])
+							}
+						},
+						data: resArr
+					}]
+				};
 			},
 			/**
 			 * 心电图表

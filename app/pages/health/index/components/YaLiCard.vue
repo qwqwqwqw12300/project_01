@@ -12,7 +12,7 @@
 				{{date}}
 			</view>
 			<view class="ui-w-h-100 ui-mar-t-20">
-				<app-echarts class="ui-echarts-size" :option="option" id="xueYangChart">
+				<app-echarts class="ui-echarts-size" :option="option" id="yaLiChart">
 				</app-echarts>
 				<!-- <image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image> -->
 			</view>
@@ -35,7 +35,9 @@
 						tWatchBloodOxygen: [],
 						HeartRateList: [],
 						electrocardiogramMapList: [],
-						sleepMap: ''
+						sleepMap: '',
+						tWatchPressures: [],
+						tWatchTemperatures: []
 					}
 				}
 			},
