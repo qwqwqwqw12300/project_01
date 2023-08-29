@@ -948,6 +948,17 @@
 				}
 			}
 
+		}, {
+			"path": "pages/watch/watch-set-h/heartRateCall",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				// "navigationBarTitleText": "抬腕亮屏设置"
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		}
 	],
 	"globalStyle": {

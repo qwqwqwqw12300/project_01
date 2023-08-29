@@ -956,6 +956,12 @@ export const watchHContactsSync = (params) => http.post(`/api/aw/tWatch/contacts
 export const watchHDataFreq = (params) => http.post(`/api/aw/tWatch/dataFreq`, params, {
 	// showLoading: false
 });
+/**
+ * 心率报警设置
+ */
+export const watchheartReteCall = (params) => http.post(`/api/aw/tWatch/hrAlarm`, params, {
+
+});
 
 /**
  * 健康数据

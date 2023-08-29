@@ -104,6 +104,9 @@
 						url: '/pages/watch/watch-set-h/watchBright'
 					},
 					{
+						title: '心率报警',
+						url: '/pages/watch/watch-set-h/heartRateCall'
+					}, {
 						title: '设备信息',
 						url: '/pages/watch/watch-set-h/watchInfo'
 					}
