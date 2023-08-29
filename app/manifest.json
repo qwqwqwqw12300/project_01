@@ -2,8 +2,8 @@
     "name" : "艾吉通",
     "appid" : "__UNI__040C111",
     "description" : "养老设备服务应用",
-    "versionName" : "1.0.2",
-    "versionCode" : 102,
+    "versionName" : "1.0.3",
+    "versionCode" : 103,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -81,7 +81,7 @@
                     "NSPhotoLibraryUsageDescription" : "该应用需要读取你的相册，以便为你编辑用户信息",
                     "NSPhotoLibraryAddUsageDescription" : "该应用需要读取你的相册，以便为你编辑用户信息",
                     "NSCameraUsageDescription" : "该应用需要你的相机，以便你拍摄上传用户信息",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "该应用需要你的地理位置，以便为你提供当前位置信息",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "如果我们获得用户位置（经纬度），应用内获取用户周边功能将被启用并将以高精度运行，承诺不保留用户隐私信息",
                     "NSContactsUsageDescription" : "该应用需要读取你的通讯录，以便为你编辑用户信息"
                 }
             },

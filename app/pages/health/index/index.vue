@@ -321,6 +321,7 @@
 					} else { // 没有数据
 						this.pageShow = false;
 						this.loading = false;
+						this.isRefresh = false;
 						this.logstatrt({});
 					}
 				})

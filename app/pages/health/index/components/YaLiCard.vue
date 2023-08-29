@@ -1,5 +1,5 @@
 <template>
-	<view class="ui-min-h-121 ui-padding-20" @click="jumpUrl('/pages/health/body-temperature/body-temperature')"
+	<view class="ui-min-h-121 ui-padding-20" @click="jumpUrl('/pages/health/pressure/pressure')"
 		style="position: relative;">
 		<image v-if="!item.isShow && isEdit" class="ui-img-size2 ui-pos-right" src="../../../../static/images/add.png"
 			@click.stop="iconClick()"></image>

@@ -44,11 +44,11 @@
 				</view>
 				<view class="ui-time">
 					<view>
-						<text class="ui-font">{{item.hour }}</text>
+						<text class="ui-font">{{item.hour||0}}</text>
 						<text class="ui-time-font">小时</text>
 					</view>
 					<view style="margin-left: 10rpx;">
-						<text class="ui-font">{{ item.minutes }}</text>
+						<text class="ui-font">{{ item.minutes||0}}</text>
 						<text class="ui-time-font">分钟</text>
 					</view>
 				</view>
@@ -235,7 +235,29 @@
 							} [n.slt]
 							series[index].push(['', st, et])
 						})
+					}else{
+						this.sleepScore = '0'
+						//总时长
+						this.sleepList[0].hour = '0'
+						this.sleepList[0].minutes = '0'
+						//深睡
+						this.sleepList[1].hour = '0'
+						this.sleepList[1].minutes = '0'
+						this.sleepList[1].percent = '0'
+						//浅睡
+						this.sleepList[2].hour = '0'
+						this.sleepList[2].minutes = '0'
+						this.sleepList[2].percent = '0'
+						//清醒
+						this.sleepList[3].hour = '0'
+						this.sleepList[3].minutes = '0'
+						this.sleepList[3].percent = '0'
+						//快速眼动
+						this.sleepList[4].hour = '0'
+						this.sleepList[4].minutes ='0'
+						this.sleepList[4].percent = '0'
 					}
+					
 					// series[0].push(['', '20:01', '21:00'])
 					this.logstatrt(series)
 				})

@@ -1,7 +1,7 @@
 <template>
-	<app-body :bg="false">
+	<app-body :bg="false" title="修改手机号">
 		<view class="ui-body">
-			<app-logo text="修改手机号"></app-logo>
+			<!-- <app-logo text="修改手机号"></app-logo> -->
 			<view class="ui-form">
 				<view class="ui-form-item">
 					<view class="title">
@@ -126,7 +126,9 @@
 		padding-bottom: 60rpx;
 		background-color: #ffffff;
 	}
-
+	/deep/.wd-fixed{
+		padding-top: 20px;
+	}
 	.ui-form {
 		margin-top: 80rpx;
 		padding: 0 44rpx;

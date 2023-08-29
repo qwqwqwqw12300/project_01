@@ -1,12 +1,12 @@
-<!-- 体温 -->
+<!-- 压力 -->
 <template>
-	<app-body titleColor="#F7F7F7" :bodyStyle="{background: '#F7F7F7' }" title="体温">
-		<!-- <app-logo text="体温" top="36rpx" iconUrl="/static/images/share@3x.png"></app-logo> -->
+	<app-body titleColor="#F7F7F7" :bodyStyle="{background: '#F7F7F7' }" title="压力">
+		<!-- <app-logo text="压力" top="36rpx" iconUrl="/static/images/share@3x.png"></app-logo> -->
 		<view class="ui-tab">
 			<date-picker @onSelect="onSelect" @month="monthChange" :lightDot="monthData"></date-picker>
 		</view>
 		<view class="ui-show">
-			<text>{{text}}℃</text>
+			<text>{{text}}</text>
 		</view>
 		<view class="ui-echart">
 			<app-echarts @click="handleClick" :option="options" id="myChart" class="echart-box"></app-echarts>
@@ -14,16 +14,16 @@
 		<view class="ui-total">
 			<view class="total-box">
 				<view class="cell">
-					<text class="title">体温</text>
+					<text class="title">压力</text>
 					<text class="value"></text>
 				</view>
 				<view class="cell" v-for="(item,index) in totalList" :key="index">
 					<text class="text">{{ item.title }}</text>
-					<text class="value">{{ item.num }}℃</text>
+					<text class="value">{{ item.num }}</text>
 				</view>
 			</view>
 		</view>
-		<health-info title="体温"></health-info>
+		<health-info title="压力"></health-info>
 	</app-body>
 </template>
 
@@ -31,8 +31,8 @@
 	import * as echarts from '@/static/js/echarts.js';
 	import {
 		GetMonthDataFlag,
-		GetListBoayTmperatureByDay,
-		GetListBoayTmperatureByWeek
+		GetListPressureByDay,
+		GetListPressureByWeek
 	} from '@/common/http/api';
 	import {
 		mapState,
@@ -48,15 +48,15 @@
 		data() {
 			return {
 				totalList: [{
-						num: 36,
+						num: 0,
 						title: '日平均值'
 					},
 					{
-						num: 36.5,
+						num:0,
 						title: '日最高值'
 					},
 					{
-						num: 36,
+						num: 0,
 						title: '日最低值'
 					}
 				],
@@ -150,7 +150,7 @@
 						max: '42',
 						scale: true,
 						splitArea: {
-							show: true,
+							show: false,
 							areaStyle: {
 								color: ['#f6f8fc', '#fff']
 							}
@@ -276,7 +276,7 @@
 			handleDate(option) {
 				console.log(option, 'option')
 				this.dataList = []
-				GetListBoayTmperatureByDay({
+				GetListPressureByDay({
 					deviceId: this.deviceInfo.deviceId,
 					dayTime: option.value,
 					humanId: this.deviceInfo.humanId
@@ -297,7 +297,7 @@
 			},
 			handleWeek(option) {
 				this.dataList = []
-				GetListBoayTmperatureByWeek({
+				GetListPressureByWeek({
 					deviceId: this.deviceInfo.deviceId,
 					beginDate: option.value[0],
 					endDate: option.value[6],

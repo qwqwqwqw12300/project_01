@@ -687,7 +687,7 @@
 				}
 			}
 		},
-		//
+		//血压
 		{
 			"path": "pages/health/blood-pressure/blood-pressure",
 			"style": {
@@ -708,6 +708,16 @@
 			}
 
 		},
+		// 压力
+		{
+			"path": "pages/health/pressure/pressure",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
 		{
 			"path": "pages/health/exercise/exercise",
 			"style": {
@@ -726,6 +736,7 @@
 				}
 			}
 		},
+		
 		{
 			"path": "pages/health/sleep/info",
 			"style": {
