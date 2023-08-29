@@ -6,28 +6,29 @@
 				<u-switch v-model="open" space="2" size="20" activeColor="#FEAE43"
 					inactiveColor="rgb(230, 230, 230)"></u-switch>
 			</view>
-			<view class="u-slot-value" @click="showtime">
+			<view class="u-slot-value">
 				<text>设置心率最高值</text>
 				<view class="arrow" style="border: 1px solid #ccc;">
-					<u-input v-model="highRate" border="false" />
+					<input class="input" type="number" v-model="highRate" @blur="blurInput()">
 				</view>
 			</view>
-			<view class="u-slot-value" @click="showtime">
+			<view class="u-slot-value">
 				<text>设置心率最低值</text>
 				<view class="arrow" style="border: 1px solid #ccc;">
-					<u-input v-model="lowRate" border="false" />
+					<input class="input" type="number" v-model="lowRate" @blur="blurInput()">
 				</view>
 			</view>
-			<view class="u-slot-value" @click="showtime">
+			<view class="u-slot-value">
 				<text>设置异常次数开始报警</text>
 				<view class="arrow" style="border: 1px solid #ccc;">
-					<u-input v-model="errorTime" border="false" />
+					<input class="input" type="number" v-model="errorTime" @blur="blurInput()">
 				</view>
 			</view>
-			<view class="u-slot-value" @click="showtime">
+			<view class="u-slot-value">
 				<text>设置报警间隔</text>
 				<view class="arrow" style="border: 1px solid #ccc;">
-					<u-input v-model="callTime" border="false" /> <text>分钟</text>
+					<input class="input" type="number" v-model="callTime" @blur="blurInput()"> <text
+						class="minute">分钟</text>
 				</view>
 			</view>
 		</view>
@@ -63,8 +64,11 @@
 				deviceInfo: state => state.deviceInfo
 			}, )
 		},
-		onLoad(options) {
-
+		// onLoad(options) {
+		// 	this.getSetting()
+		// },
+		created() {
+			this.getSetting()
 		},
 		methods: {
 			send() {
@@ -83,8 +87,30 @@
 				GetWatchInfo({
 					deviceId: this.deviceInfo.deviceId
 				}).then((res) => {
-					// this.open=res.aiWeiIntelligentWatchSettings
+					this.open = res.data.aiWeiIntelligentWatchSettings.hralarmSettingVO.open
+					this.highRate = res.data.aiWeiIntelligentWatchSettings.hralarmSettingVO.high
+					this.lowRate = res.data.aiWeiIntelligentWatchSettings.hralarmSettingVO.low
+					this.errorTime = res.data.aiWeiIntelligentWatchSettings.hralarmSettingVO.threshold
+					this.callTime = res.data.aiWeiIntelligentWatchSettings.hralarmSettingVO.alarmInterval
 				})
+			},
+			blurInput() {
+				// console.log('.........');
+				if (this.highRate > 130) {
+					this.highRate = 130
+				}
+				if (this.lowRate < 50) {
+					this.lowRate = 50
+				}
+				if (this.highRate % 1 != 0) {
+					this.highRate = Math.ceil(this.highRate)
+				}
+				if (this.lowRate % 1 != 0) {
+					this.lowRate = Math.ceil(this.lowRate)
+				}
+				if (this.callTime % 1 != 0) {
+					this.callTime = Math.ceil(this.callTime)
+				}
 			}
 		}
 	}
@@ -111,6 +137,11 @@
 		.arrow {
 			display: flex;
 			align-items: center;
+
+			// width: 60px;
+			.input {
+				width: 60px;
+			}
 		}
 	}
 
@@ -121,5 +152,13 @@
 		left: 0;
 		bottom: 10px;
 
+	}
+
+	/deep/ .uni-input-wrapper {
+		text-align: center;
+	}
+
+	/deep/ .minute {
+		width: 32px;
 	}
 </style>

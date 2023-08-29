@@ -52,7 +52,7 @@
 						title: '日平均值'
 					},
 					{
-						num:0,
+						num: 0,
 						title: '日最高值'
 					},
 					{
@@ -146,8 +146,8 @@
 					}, ],
 					yAxis: [{
 						type: "value",
-						min: '34',
-						max: '42',
+						min: '40',
+						max: '90',
 						scale: true,
 						splitArea: {
 							show: false,

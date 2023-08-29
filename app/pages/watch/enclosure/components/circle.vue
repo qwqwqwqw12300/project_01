@@ -122,7 +122,8 @@
 	import {
 		PostAddFence,
 		GetFenceInfo,
-		GetLastPoint
+		GetLastPoint,
+		GetWatchTrack
 	} from '@/common/http/api.js';
 	import loadingIcon from '../../../../uni_modules/uview-ui/libs/config/props/loadingIcon';
 	export default {
@@ -451,7 +452,7 @@
 					title: '加载中'
 				})
 				try {
-					let res = await GetLastPoint({
+					let res = await GetWatchTrack({
 						deviceId: this.deviceInfo.deviceId
 					})
 					const {
