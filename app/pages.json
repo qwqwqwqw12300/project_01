@@ -295,7 +295,7 @@
 					"titleNView": false
 				}
 			}
-		}, 
+		},
 		{
 			"path": "pages/myself/mobile/select-way",
 			"style": {
@@ -518,7 +518,7 @@
 					"titleNView": false
 				}
 			}
-		}, 	{
+		}, {
 			"path": "pages/card/name-edit",
 			"style": {
 				"navigationStyle": "custom",
@@ -526,7 +526,7 @@
 					"titleNView": false
 				}
 			}
-		},{
+		}, {
 			"path": "pages/equipment/info-interval",
 			"style": {
 				"navigationStyle": "custom",
@@ -699,14 +699,14 @@
 		},
 		// 体温
 		{
-		    "path" : "pages/health/body-temperature/body-temperature",
-		    "style": {
-		    	"navigationStyle": "custom",
-		    	"app-plus": {
-		    		"titleNView": false
-		    	}
-		    }
-		    
+			"path": "pages/health/body-temperature/body-temperature",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		},
 		{
 			"path": "pages/health/exercise/exercise",
@@ -835,17 +835,26 @@
 			}
 		},
 		{
-            "path" : "pages/common/cell-phone",
-            "style": {
-            	"navigationStyle": "custom",
-            	"app-plus": {
-            		"titleNView": false
-            	}
-            }
-        },
+			"path": "pages/common/cell-phone",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
 		// h102手表设备设置
 		{
 			"path": "pages/watch/watch-set-h/watch-set",
+			"style": {
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/watch/watch-set-h/location-frequency",
 			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
@@ -879,7 +888,7 @@
 					"titleNView": false
 				}
 			}
-		
+
 		},
 		{
 			"path": "pages/watch/watch-set-h/position-auto",
@@ -889,7 +898,7 @@
 					"titleNView": false
 				}
 			}
-		
+
 		},
 		{
 			"path": "pages/watch/watch-set-h/watchInfo",
@@ -918,31 +927,29 @@
 				}
 			}
 		}
-        
-        ,{
-            "path" : "pages/watch/safety-guard/safety-guard",
-           "style": {
-           	"navigationStyle": "custom",
-           	"app-plus": {
-           		"titleNView": false
-           	}
-           }
-            
-        }
-        ,{
-            "path" : "pages/watch/watch-set-h/watchBright",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "抬腕亮屏设置",
-                "enablePullDownRefresh": false,
+
+		, {
+			"path": "pages/watch/safety-guard/safety-guard",
+			"style": {
 				"navigationStyle": "custom",
 				"app-plus": {
 					"titleNView": false
 				}
-            }
-            
-        }
-    ],
+			}
+
+		}, {
+			"path": "pages/watch/watch-set-h/watchBright",
+			"style": {
+				"navigationBarTitleText": "抬腕亮屏设置",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
