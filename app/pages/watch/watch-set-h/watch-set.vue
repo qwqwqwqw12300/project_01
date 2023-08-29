@@ -106,7 +106,12 @@
 					{
 						title: '心率报警',
 						url: '/pages/watch/watch-set-h/heartRateCall'
-					}, {
+					},
+					{
+						title: '血氧报警',
+						url: '/pages/watch/watch-set-h/bloodOxygen'
+					},
+					{
 						title: '设备信息',
 						url: '/pages/watch/watch-set-h/watchInfo'
 					}

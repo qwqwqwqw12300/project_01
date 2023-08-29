@@ -736,7 +736,7 @@
 				}
 			}
 		},
-		
+
 		{
 			"path": "pages/health/sleep/info",
 			"style": {
@@ -965,6 +965,16 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false,
 				// "navigationBarTitleText": "抬腕亮屏设置"
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		}, {
+			"path": "pages/watch/watch-set-h/bloodOxygen",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
 				"app-plus": {
 					"titleNView": false
 				}
