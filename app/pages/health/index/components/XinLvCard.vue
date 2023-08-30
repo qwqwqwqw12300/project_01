@@ -198,7 +198,7 @@
 		}
 
 		.ui-mar-l-10 {
-			margin-left: 10rpx;
+			// margin-left: 10rpx;
 		}
 
 		.ui-mar-l-32 {

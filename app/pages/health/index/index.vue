@@ -69,18 +69,20 @@
 								v-for="(item,index) in listData_c" :key="index" :id="'appLi' + index"
 								:class="(hoverClass==='appLi'+index)?'select':''"
 								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
-								@touchend="AppLi_touchend(index)" v-if="item.isShow || isEdit">
+								@touchend="AppLi_touchend(index)" v-if="deviceList.length&&item.isShow ">
 								<SleepCard v-if="item.type === '1'" :date="date" :sleepMap="sleepMap" :item="item"
 									:isEdit="isEdit" @iconClick="editCard"></SleepCard>
-								<view class="" v-if="deviceList.length">
+
+
+								<view v-if="deviceList.length">
 									<XinLvCard v-if="item.type === '2' " :date="newDate? newDate.slice(5,-3) : '暂无数据'"
 										:fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit"
 										@iconClick="editCard" :heartRate="heartrate">
 									</XinLvCard>
 									<XueYaCard v-if="item.type === '3'"
-										:date="fetchRes.BloodPressureTime.substr(5,6) && fetchRes.spMapList.length !== 0? fetchRes.BloodPressureTime.substr(5,6) : '暂无数据'"
-										:fetchRes="fetchRes" :option="xueYaOption" :item="item" :isEdit="isEdit"
-										@iconClick="editCard">
+										:date="bloodpreDate? bloodpreDate.slice(5,-3) : '暂无数据'" :fetchRes="fetchRes"
+										:option="xueYaOption" :item="item" :isEdit="isEdit" @iconClick="editCard"
+										:bloodPresure="bloodpresure">
 									</XueYaCard>
 									<XueYangCard v-if="item.type === '4'"
 										:date="fetchRes.BloodOxygenTime.substr(5,6) && fetchRes.tWatchBloodOxygen.length !== 0 ? fetchRes.BloodOxygenTime.substr(5,6) : '暂无数据'"
@@ -97,8 +99,17 @@
 										:fetchRes="fetchRes" :option="tiWenOption" :item="item" :isEdit="isEdit"
 										@iconClick="editCard">
 									</TiWenCard>
-									<YaLiCard v-if="item.type === '7'" :item="item" :option="yaLiOption"></YaLiCard>
 								</view>
+								<YaLiCard v-if="item.type === '7'" :item="item" :option="yaLiOption"></YaLiCard>
+							</view>
+							<view class="ui-w-48 ui-white-bg ui-br-16 ui-f-wrap ui-mar-t-20 "
+								v-for="(item,index) in listData_d" :key="index" :id="'appLi' + index"
+								:class="(hoverClass==='appLi'+index)?'select':''"
+								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
+								@touchend="AppLi_touchend(index)" v-if="!deviceList.length&&item.isShow ">
+								<SleepCard v-if="item.type === '1'" :date="date" :sleepMap="sleepMap" :item="item"
+									:isEdit="isEdit" @iconClick="editCard"></SleepCard>
+								<YaLiCard v-if="item.type === '7'" :item="item" :option="yaLiOption"></YaLiCard>
 							</view>
 							<!-- 滑块 -->
 							<movable-view v-if="moviewShow" :animation="false" class="ui-mov-view ui-br-16" :x="moveX"
@@ -254,6 +265,17 @@
 					img: '',
 					isShow: true
 				}],
+				listData_d: [{
+					type: '1',
+					name: 'SleepCard',
+					img: '../../../static/images/sleep_drag.svg',
+					isShow: true
+				}, {
+					type: '7',
+					name: 'YaLiCard',
+					img: '',
+					isShow: true
+				}],
 				// CheckAppId: null,
 				deleteAppID: null, //触发删除的itemID
 				showDelete: false, //删除按钮状态
@@ -282,7 +304,9 @@
 					title: '骑行'
 				}],
 				heartrate: 0,
-				newDate: ''
+				newDate: '',
+				bloodpresure: 0,
+				bloodpreDate: ''
 			}
 		},
 		created() {
@@ -295,6 +319,7 @@
 					_this.listData_c = res.data;
 				}
 			})
+			// console.log(this.deviceList, '092131234124');
 		},
 
 		onShow() {
@@ -305,17 +330,22 @@
 
 		methods: {
 			getHeartRate() {
-				setTimeout(() => {
-					console.log(this.deviceInfo.humanId);
-					GetOneCaiHongData({
-						humanId: this.deviceInfo.humanId,
-						dayTime: '',
-						deviceId: this.deviceInfo.deviceId
-					}).then((res) => {
-						this.heartrate = (res.data.HeartRateList[0].value) * 1
-						this.newDate = res.data.HeartRateList[0].time
-					})
-				}, 300)
+				if (this.deviceList.length !== 0) {
+					setTimeout(() => {
+						console.log(this.deviceInfo.humanId);
+						GetOneCaiHongData({
+							humanId: this.deviceInfo.humanId,
+							dayTime: '',
+							deviceId: this.deviceInfo.deviceId
+						}).then((res) => {
+							this.heartrate = (res.data.HeartRateList[0].value) * 1
+							this.newDate = res.data.HeartRateList[0].time
+							this.bloodpresure = (res.data.spMapList[0].value) * 1
+							this.bloodpreDate = res.data.spMapList[0].time
+						})
+					}, 300)
+				}
+
 				// console.log('oooooooooooooo', this.deviceInfo);
 				// console.log('ddddddddddd', this.deviceInfo.humanId);
 				// GetOneCaiHongData({
