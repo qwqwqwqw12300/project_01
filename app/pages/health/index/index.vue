@@ -324,28 +324,26 @@
 
 		onShow() {
 			this.init();
-			this.getHeartRate()
+
 		},
 
 
 		methods: {
 			getHeartRate() {
-				// console.log('wwwwwwwwwwweeeeee');
-				if (this.deviceList.length) {
-					setTimeout(() => {
-						console.log(this.deviceInfo.humanId);
-						GetOneCaiHongData({
-							humanId: this.deviceInfo.humanId,
-							dayTime: '',
-							deviceId: this.deviceInfo.deviceId
-						}).then((res) => {
-							this.heartrate = (res.data.HeartRateList[0].value) * 1
-							this.newDate = res.data.HeartRateList[0].time
-							this.bloodpresure = (res.data.spMapList[0].value) * 1
-							this.bloodpreDate = res.data.spMapList[0].time
-						})
-					}, 300)
-				}
+				// console.log(this.deviceList.length, 'aaaaaaaaaa');
+				setTimeout(() => {
+					console.log(this.deviceInfo.humanId);
+					GetOneCaiHongData({
+						humanId: this.deviceInfo.humanId,
+						dayTime: '',
+						deviceId: this.deviceInfo.deviceId
+					}).then((res) => {
+						this.heartrate = (res.data.HeartRateList[0].value) * 1
+						this.newDate = res.data.HeartRateList[0].time
+						this.bloodpresure = (res.data.spMapList[0].value) * 1
+						this.bloodpreDate = res.data.spMapList[0].time
+					})
+				}, 300)
 
 				// console.log('oooooooooooooo', this.deviceInfo);
 				// console.log('ddddddddddd', this.deviceInfo.humanId);
@@ -379,6 +377,7 @@
 						this.$store.commit('setDeviceInfo', this.swiperData)
 						this.pageShow = true;
 						this.fetchData();
+						this.getHeartRate()
 					} else { // 没有数据
 						this.pageShow = false;
 						this.loading = false;
