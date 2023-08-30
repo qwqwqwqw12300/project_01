@@ -1,8 +1,21 @@
 <!-- 修改设备名称 -->
 <template>
-	<app-body :bg="false">
-		<input type="text" style="background-color: pink; height: 60px;" v-model="patternVal">
-		<button @click="save">保存</button>
+	<app-body :bg="false" title="定位频率">
+		<view class="ui-form">
+			<view class="u-slot-value">
+				<text>设置定位频率</text>
+				<view class="arrow" style="border: 1px solid #ccc;">
+					<input class="input" type="number" v-model="patternVal">
+				</view>
+			</view>
+
+		</view>
+
+		<view class="ui-button">
+			<button @click="save" class="default">
+				保存
+			</button>
+		</view>
 	</app-body>
 </template>
 
@@ -74,6 +87,8 @@
 					deviceId: this.deviceInfo.deviceId,
 					gpsAutoCheck: true,
 					gpsIntervalTime: this.patternVal * 1
+				}).then((res) => {
+					uni.$u.toast(res.msg)
 				})
 				// this.getPattern()
 			}
@@ -82,59 +97,48 @@
 </script>
 
 <style lang="scss" scoped>
-	.app-main {
-		width: calc(100% - 20rpx);
-		padding-top: 28rpx;
-		padding-left: 20rpx;
-		box-sizing: border-box;
+	.ui-logo {
+		margin-top: 20rpx;
+		background: #ffffff;
+		padding-bottom: 120rpx;
 	}
 
-	.tips {
-		padding: 20rpx 0;
-		border-bottom: 1px solid #b6b6b4;
+	.ui-form {
+		padding: 30rpx;
+		background: #ffffff;
 
-		&-text {
-			color: #7d7d7d;
-			font-size: 28rpx;
-		}
-	}
-
-	.pattern {
-		width: 100%;
-
-		&-item {
+		.u-slot-value {
 			display: flex;
-			flex-wrap: wrap;
-			margin-bottom: 10rpx;
-			padding: 20rpx 0;
-
-			&_name {
-				width: 100%;
-				padding-bottom: 4rpx;
-			}
-
-			&_info {
-				color: #b6b6b4;
-				font-size: 24rpx;
-			}
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 20px;
 		}
 
-		/deep/ .u-radio-group--row {
-			flex-wrap: wrap;
-		}
+		.arrow {
+			display: flex;
+			align-items: center;
 
-		/deep/ .u-radio-label--right {
-			width: 100%;
-			border-bottom: 1px solid #b6b6b4;
+			// width: 60px;
+			.input {
+				width: 60px;
+			}
 		}
 	}
 
-	/deep/ .u-navbar__content__right__text {
-		color: #fb7105;
-		font-size: 34rpx;
+	.ui-button {
+		width: calc(100% - 64rpx);
+		padding: 50rpx 32rpx;
+		position: fixed;
+		left: 0;
+		bottom: 10px;
+
 	}
 
-	/deep/ .u-radio-label--right {
-		display: flex;
+	/deep/ .uni-input-wrapper {
+		text-align: center;
+	}
+
+	/deep/ .minute {
+		width: 32px;
 	}
 </style>
