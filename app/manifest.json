@@ -2,8 +2,8 @@
     "name" : "艾吉通",
     "appid" : "__UNI__040C111",
     "description" : "养老设备服务应用",
-    "versionName" : "1.0.3",
-    "versionCode" : 103,
+    "versionName" : "1.0.4",
+    "versionCode" : 104,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
