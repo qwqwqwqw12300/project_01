@@ -629,7 +629,10 @@ export const GetListHeartRateByWeek = (params) => http.get('/api/tWatch/listHear
  *查询彩虹图数据 *
  */
 export const GetCaiHongData = (params) => http.get('/api/tWatch/rainbowDiagram', params, {});
-
+/* 
+ *查询单个彩虹图数据 *
+ */
+export const GetOneCaiHongData = (params) => http.get('/api/tWatch/rainbowSingleDiagram', params, {});
 /**
  * 查询日血氧数据
  */

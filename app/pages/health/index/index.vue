@@ -73,10 +73,9 @@
 								<SleepCard v-if="item.type === '1'" :date="date" :sleepMap="sleepMap" :item="item"
 									:isEdit="isEdit" @iconClick="editCard"></SleepCard>
 								<view class="" v-if="deviceList.length">
-									<XinLvCard v-if="item.type === '2' "
-										:date="fetchRes.HeartRateTime.substr(5,6) && fetchRes.HeartRateList.length !== 0? fetchRes.HeartRateTime.substr(5,6) : '暂无数据'"
+									<XinLvCard v-if="item.type === '2' " :date="newDate? newDate.slice(5,-3) : '暂无数据'"
 										:fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit"
-										@iconClick="editCard">
+										@iconClick="editCard" :heartRate="heartrate">
 									</XinLvCard>
 									<XueYaCard v-if="item.type === '3'"
 										:date="fetchRes.BloodPressureTime.substr(5,6) && fetchRes.spMapList.length !== 0? fetchRes.BloodPressureTime.substr(5,6) : '暂无数据'"
@@ -148,7 +147,8 @@
 		GetCaiHongData,
 		getDeviceListState,
 		GetDaySleepQuality,
-		healthDataList
+		healthDataList,
+		GetOneCaiHongData
 	} from '@/common/http/api.js'
 	import {
 		mapState,
@@ -165,6 +165,20 @@
 			XinDianCard,
 			TiWenCard,
 			YaLiCard
+		},
+		computed: {
+			...mapState({
+				/**所有家庭列表**/
+				familyList: state => state.familyList,
+				deviceInfo: state => state.deviceInfo
+			}, ),
+			moveViewSize() {
+				if (this.areaBoxInfo && this.areaBoxInfo.width) {
+					return this.areaBoxInfo.width / 1.2
+				} else {
+					return 0
+				}
+			}
 		},
 		data() {
 			return {
@@ -266,7 +280,9 @@
 					key: 'circling',
 					icon: '/static/images/cycling.png',
 					title: '骑行'
-				}]
+				}],
+				heartrate: 0,
+				newDate: ''
 			}
 		},
 		created() {
@@ -280,23 +296,36 @@
 				}
 			})
 		},
+
 		onShow() {
 			this.init();
+			this.getHeartRate()
 		},
-		computed: {
-			...mapState({
-				/**所有家庭列表**/
-				familyList: state => state.familyList,
-			}, ),
-			moveViewSize() {
-				if (this.areaBoxInfo && this.areaBoxInfo.width) {
-					return this.areaBoxInfo.width / 1.2
-				} else {
-					return 0
-				}
-			}
-		},
+
+
 		methods: {
+			getHeartRate() {
+				setTimeout(() => {
+					console.log(this.deviceInfo.humanId);
+					GetOneCaiHongData({
+						humanId: this.deviceInfo.humanId,
+						dayTime: '',
+						deviceId: this.deviceInfo.deviceId
+					}).then((res) => {
+						this.heartrate = (res.data.HeartRateList[0].value) * 1
+						this.newDate = res.data.HeartRateList[0].time
+					})
+				}, 300)
+				// console.log('oooooooooooooo', this.deviceInfo);
+				// console.log('ddddddddddd', this.deviceInfo.humanId);
+				// GetOneCaiHongData({
+				// 	humanId: this.deviceInfo.humanId,
+				// 	dayTime: '',
+				// 	deviceId: this.deviceInfo.deviceId
+				// }).then((res) => {
+				// 	this.heartrate = res.data.HeartRateList.value
+				// })
+			},
 			/**
 			 *下拉刷新
 			 **/
@@ -509,7 +538,9 @@
 						startAngle: 180,
 						center: ["50%", "70%"],
 						data: [{
-								value: this.maxDataArr[j] - resArr[j]["value"] > 0 ? resArr[j]["value"] : this
+								value: this.maxDataArr[j] - resArr[j]["value"] > 0 ? resArr[j][
+										"value"
+									] : this
 									.maxDataArr[j],
 								name: resArr[j]["name"],
 								label: {
@@ -519,7 +550,8 @@
 								},
 							},
 							{
-								value: this.maxDataArr[j] - resArr[j]["value"] > 0 ? this.maxDataArr[j] -
+								value: this.maxDataArr[j] - resArr[j]["value"] > 0 ? this
+									.maxDataArr[j] -
 									resArr[j]
 									["value"] : 0,
 								itemStyle: {
@@ -738,7 +770,8 @@
 			 * @param {Object} res
 			 */
 			xueYaOptionHandle(res) {
-				let dateRes = res.data && res.data.BloodPressureTime.slice(0, 4) + '-' + res.data.BloodPressureTime.slice(
+				let dateRes = res.data && res.data.BloodPressureTime.slice(0, 4) + '-' + res.data
+					.BloodPressureTime.slice(
 						5, 7) +
 					'-' + res.data.BloodPressureTime.slice(8, 10);
 				let spMapList = []
@@ -986,7 +1019,8 @@
 			 * @param {Object} res
 			 */
 			xueYangOptionHandle(res) {
-				const dateRes = res.data && res.data.BloodOxygenTime.slice(0, 4) + '-' + res.data.BloodOxygenTime.slice(5,
+				const dateRes = res.data && res.data.BloodOxygenTime.slice(0, 4) + '-' + res.data
+					.BloodOxygenTime.slice(5,
 						7) + '-' +
 					res.data.BloodOxygenTime.slice(8, 10);
 				let arr = [];
@@ -1531,7 +1565,8 @@
 					this.moveY = y - this.inBoxXY.y;
 					let setIng = false;
 					this.listData_c.forEach((item, idx) => {
-						if (this.moveX > item.x - 50 && this.moveX < item.x + 100 && this.moveY > item.y && this
+						if (this.moveX > item.x - 50 && this.moveX < item.x + 100 && this.moveY > item
+							.y && this
 							.moveY < item.y + 160) {
 							this.hoverClass = 'appLi' + idx
 							this.hoverClassIndex = idx;

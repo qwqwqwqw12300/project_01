@@ -6,8 +6,7 @@
 			<view class="device-info">
 				<view class="title">
 					<text class="name">{{record.name || '未命名设备'}}</text>
-					<text class="line"
-						:class="[record.onlineFlag === '1' ? 'online' : 'offline']">{{ getOnlineStatus }}</text>
+
 				</view>
 				<view class="status">
 					<!-- <view class="status-block">
@@ -21,12 +20,15 @@
 						</template>
 					</view> -->
 					<view class="status-block" style="margin-left:14rpx">
+						<text class="line"
+							:class="[record.onlineFlag === '1' ? 'online' : 'offline']">{{ getOnlineStatus }}</text>
 						<u-icon name="/static/images/electricity.png" size="20" style="margin-right: 4rpx;" />
 						<text>电量:{{ record.currentPower || '--' }}</text>
 					</view>
 				</view>
 				<view class="time">
-					最近更新时间：{{ record.updateTime || '----' }}
+					更新时间：{{ record.updateTime.slice(5,-3) || '----' }}
+
 				</view>
 			</view>
 			<view class="device-set" @click="jumpUrl">
@@ -106,8 +108,8 @@
 			.device-info {
 				flex: 1;
 				align-self: flex-start !important;
-				padding-left: 10rpx;
-				padding-top: 18rpx;
+				// padding-left: 10rpx;
+				padding-top: 6rpx;
 
 				.title {
 					color: #353535;
@@ -123,21 +125,9 @@
 						overflow: hidden;
 					}
 
-					.line {
-						margin-left: 30rpx;
-						color: #fff;
-						font-size: 22rpx;
-						padding: 6rpx 12rpx;
-						border-radius: 4px;
-					}
 
-					.online {
-						background-image: linear-gradient(90deg, #1EC862 0%, #13B98F 100%);
-					}
 
-					.offline {
-						background-image: linear-gradient(90deg, #ff4800 0%, #FF7E00 100%);
-					}
+
 				}
 
 				.status {
@@ -151,6 +141,24 @@
 					.status-block {
 						display: flex;
 						align-items: center;
+						margin-left: 0 !important;
+
+						.line {
+							// margin-left: 30rpx;
+							color: #fff;
+							font-size: 22rpx;
+							padding: 12rpx 12rpx;
+							border-radius: 4px;
+							margin-right: 10rpx;
+						}
+
+						.online {
+							background-image: linear-gradient(90deg, #1EC862 0%, #13B98F 100%);
+						}
+
+						.offline {
+							background-image: linear-gradient(90deg, #ff4800 0%, #FF7E00 100%);
+						}
 					}
 				}
 
@@ -168,6 +176,7 @@
 				color: #FEAE43;
 				font-size: 30rpx;
 				font-weight: 400;
+				// margin-left: 2rpx;
 			}
 		}
 	}

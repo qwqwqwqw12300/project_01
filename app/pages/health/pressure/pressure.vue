@@ -69,6 +69,7 @@
 		mounted() {
 			const month = uni.$u.timeFormat(new Date(), 'yyyy-mm')
 			this.getMonthData(month)
+			console.log('aaaaaaadsdadsad', this.deviceInfo);
 		},
 		methods: {
 			monthChange(date) {

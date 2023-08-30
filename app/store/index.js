@@ -122,6 +122,7 @@ const store = {
 		 * 设置紧急联系人
 		 */
 		setContactInfo(state, info) {
+			console.log(this.state.deviceInfo, '555555555555555555');
 			state.contactList = info;
 		},
 
