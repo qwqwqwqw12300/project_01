@@ -69,12 +69,12 @@
 								v-for="(item,index) in listData_c" :key="index" :id="'appLi' + index"
 								:class="(hoverClass==='appLi'+index)?'select':''"
 								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
-								@touchend="AppLi_touchend(index)" v-if="deviceList.length&&item.isShow ">
+								@touchend="AppLi_touchend(index)" v-if="deviceList.length&&item.isShow||item.isEdit ">
 								<SleepCard v-if="item.type === '1'" :date="date" :sleepMap="sleepMap" :item="item"
 									:isEdit="isEdit" @iconClick="editCard"></SleepCard>
 
 
-								<view v-if="deviceList.length">
+								<view>
 									<XinLvCard v-if="item.type === '2' " :date="newDate? newDate.slice(5,-3) : '暂无数据'"
 										:fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit"
 										@iconClick="editCard" :heartRate="heartrate">
@@ -330,7 +330,8 @@
 
 		methods: {
 			getHeartRate() {
-				if (this.deviceList.length !== 0) {
+				// console.log('wwwwwwwwwwweeeeee');
+				if (this.deviceList.length) {
 					setTimeout(() => {
 						console.log(this.deviceInfo.humanId);
 						GetOneCaiHongData({
