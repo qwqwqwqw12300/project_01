@@ -146,7 +146,7 @@
 					}, ],
 					yAxis: [{
 						type: "value",
-						min: '40',
+						min: '20',
 						max: '90',
 						scale: true,
 						splitArea: {

@@ -1,8 +1,8 @@
 <template>
-	<app-body :bg="false" title="心率报警设置">
+	<app-body :bg="false" title="血氧报警设置">
 		<view class="ui-form">
 			<view class="u-slot-value">
-				<text>心率报警</text>
+				<text>血氧报警</text>
 				<u-switch v-model="open" space="2" size="20" activeColor="#FEAE43"
 					inactiveColor="rgb(230, 230, 230)"></u-switch>
 			</view>

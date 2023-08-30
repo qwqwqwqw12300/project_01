@@ -649,6 +649,14 @@ export const GetListBoayTmperatureByDay = (params) => http.get('/api/tWatch/list
  */
 export const GetListBoayTmperatureByWeek = (params) => http.get('/api/tWatch/listTemperatureByWeek', params, {});
 /**
+ * 查询日压力数据
+ */
+export const GetListPressureByDay = (params) => http.get('/api/tWatch/listPressureByDay', params, {});
+/**
+ * 查询周压力数据
+ */
+export const GetListPressureByWeek = (params) => http.get('/api/tWatch/listPressureByWeek', params, {});
+/**
  * 查询心电数据
  */
 export const GetListElectrocardiogramByDay = (params) => http.get('/api/tWatch/listElectrocardiogramByDay', params, {});
