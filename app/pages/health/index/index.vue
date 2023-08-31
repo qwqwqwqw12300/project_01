@@ -82,7 +82,7 @@
 									<XueYaCard v-if="item.type === '3'"
 										:date="bloodpreDate? bloodpreDate.slice(5,-3) : '暂无数据'" :fetchRes="fetchRes"
 										:option="xueYaOption" :item="item" :isEdit="isEdit" @iconClick="editCard"
-										:bloodPresure="bloodpresure">
+										:HbloodPresure="hbloodpresure" :LbloodPresure="lbloodpresure">
 									</XueYaCard>
 									<XueYangCard v-if="item.type === '4'"
 										:date="bloodDate? bloodDate.slice(5,-3) : '暂无数据'" :fetchRes="fetchRes"
@@ -310,7 +310,8 @@
 				}],
 				heartrate: 0,
 				newDate: '',
-				bloodpresure: 0,
+				hbloodpresure: 0,
+				lbloodpresure: 0,
 				bloodpreDate: '',
 				temperature: 0,
 				TwDate: '',
@@ -353,8 +354,10 @@
 							.HeartRateList[0].value * 1
 						this.newDate = res.data.HeartRateList.length == 0 ? '' : res.data
 							.HeartRateList[0].time
-						this.bloodpresure = res.data.spMapList.length == 0 ? 0 : res.data
+						this.hbloodpresure = res.data.spMapList.length == 0 ? 0 : res.data
 							.spMapList[0].value * 1
+						this.lbloodpresure = res.data.dpMapList.length == 0 ? 0 : res.data.dpMapList[0]
+							.value * 1
 						this.bloodpreDate = res.data.spMapList.length == 0 ? '' : res.data
 							.spMapList[0].time
 						this.temperature = res.data.tWatchTemperatures.length == 0 ? 0 : res.data
