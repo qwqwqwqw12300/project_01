@@ -98,7 +98,7 @@
 						percent: ''
 					},
 					{
-						color: '#BF47CA',
+						color: '#8538E0',
 						title: '深睡 0%',
 						text: '深睡',
 						value: '10-40%',
@@ -107,7 +107,7 @@
 						percent: '0'
 					},
 					{
-						color: '#EF7B8C',
+						color: '#BF47CA',
 						title: '浅睡 0%',
 						text: '浅睡',
 						value: '45-80%',
@@ -116,6 +116,14 @@
 						percent: '0'
 					},
 					{
+						color: '#EF7B8C',
+						title: '快速眼动',
+						text: '快速眼动',
+						value: '<10%',
+						hour: '0',
+						minutes: '0',
+						percent: '0'
+					}, {
 						color: '#EFC356',
 						title: '清醒时长 0%',
 						text: '清醒',
@@ -124,15 +132,7 @@
 						minutes: '0',
 						percent: '0'
 					},
-					{
-						color: '#8538E0',
-						title: '快速眼动',
-						text: '快速眼动',
-						value: '<10%',
-						hour: '0',
-						minutes: '0',
-						percent: '0'
-					}
+
 				]
 			}
 		},
@@ -199,7 +199,7 @@
 						[],
 						[]
 					]
-					if(res.data.segSleepList){
+					if (res.data.segSleepList) {
 						this.sleepScore = sleepScore
 						//总时长
 						this.sleepList[0].hour = countTime[0]
@@ -207,21 +207,21 @@
 						//深睡
 						this.sleepList[1].hour = deepSleepTime[0]
 						this.sleepList[1].minutes = deepSleepTime[1] % 60
-						this.sleepList[1].percent = deepSleepDouble
+						this.sleepList[1].percent = deepSleepDouble * 100
 						//浅睡
 						this.sleepList[2].hour = lightSleepTime[0]
 						this.sleepList[2].minutes = lightSleepTime[1] % 60
-						this.sleepList[2].percent = lightSleepDouble
+						this.sleepList[2].percent = lightSleepDouble * 100
 						//清醒
 						this.sleepList[3].hour = clearSleepTime[0]
 						this.sleepList[3].minutes = clearSleepTime[1] % 60
-						this.sleepList[3].percent = clearHeadedDouble
+						this.sleepList[3].percent = clearHeadedDouble * 100
 						//快速眼动
 						this.sleepList[4].hour = remSleepTime[0]
 						this.sleepList[4].minutes = remSleepTime[1] % 60
-						this.sleepList[4].percent = remSleepDouble
+						this.sleepList[4].percent = (remSleepDouble * 100).toFixed(0)
 						// this.sleepData = uni.$u.deepClone(res.data)
-						
+
 						const data = res.data.segSleepList.filter(n => {
 							return n.slt !== '1'
 						})
@@ -235,7 +235,7 @@
 							} [n.slt]
 							series[index].push(['', st, et])
 						})
-					}else{
+					} else {
 						this.sleepScore = '0'
 						//总时长
 						this.sleepList[0].hour = '0'
@@ -254,10 +254,10 @@
 						this.sleepList[3].percent = '0'
 						//快速眼动
 						this.sleepList[4].hour = '0'
-						this.sleepList[4].minutes ='0'
+						this.sleepList[4].minutes = '0'
 						this.sleepList[4].percent = '0'
 					}
-					
+
 					// series[0].push(['', '20:01', '21:00'])
 					this.logstatrt(series)
 				})
