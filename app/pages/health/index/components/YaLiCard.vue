@@ -8,7 +8,7 @@
 		<view class="ui-f-start ui-f-wrap">
 			<div class="header" style="display: flex; justify-content: space-between; width: 100%;">
 				<text class="ui-font-32 ui-mar-l-10">压力</text>
-				<image class="ui-img-size3" src="/static/images/xueya.png"></image>
+				<image class="ui-img-size3" src="/static/images/yali.png"></image>
 			</div>
 			<text style="font-size: 25px; margin-top: 50rpx;">{{Presure}}</text>
 			<text class="bpm">pa</text>

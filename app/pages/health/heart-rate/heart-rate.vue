@@ -425,16 +425,16 @@
 					this.totalList[1].num = min
 					this.totalList[2].num = max
 					const data = res.data.MapList.map(n => {
-						return [new Date(n.time), n.value]
+						return [n.time, n.value]
 					})
 					this.weekOptions.series[0].data = data
 
-					this.weekOptions.xAxis[0].min = new Date(uni.$u.timeFormat(new Date(options.value[0]),
+					this.weekOptions.xAxis[0].min = uni.$u.timeFormat(new Date(options.value[0]),
 							'yyyy-mm-dd') +
-						' 00:00:00')
-					this.weekOptions.xAxis[0].max = new Date(uni.$u.timeFormat(new Date(options.value[6]),
+						' 00:00:00'
+					this.weekOptions.xAxis[0].max = uni.$u.timeFormat(new Date(options.value[6]),
 							'yyyy-mm-dd') +
-						' 00:00:00')
+						' 00:00:00'
 					this.weekOptions.yAxis[0].min = '40'
 					this.weekOptions.yAxis[0].max = '165'
 					this.options = this.weekOptions
@@ -453,10 +453,10 @@
 					console.log('GetListHeartRateByDay', res)
 					if (!res.data.MapList) {
 						this.dayOptions.series[0].data = []
-						this.dayOptions.xAxis[0].min = new Date(uni.$u.timeFormat(new Date(options.value),
-							'yyyy-mm-dd') + ' 00:00:00')
-						this.dayOptions.xAxis[0].max = new Date(uni.$u.timeFormat(new Date(options.value),
-							'yyyy-mm-dd') + ' 23:59:59')
+						this.dayOptions.xAxis[0].min = uni.$u.timeFormat(new Date(options.value),
+							'yyyy-mm-dd') + ' 00:00:00'
+						this.dayOptions.xAxis[0].max = uni.$u.timeFormat(new Date(options.value),
+							'yyyy-mm-dd') + ' 23:59:59'
 						this.dayOptions.yAxis[0].min = '40'
 						this.dayOptions.yAxis[0].max = '165'
 						this.options = this.dayOptions
@@ -471,17 +471,19 @@
 					this.totalList[1].num = min
 					this.totalList[2].num = max
 					const data = res.data.MapList.map(n => {
-						return [new Date(n.time), n.value]
+						return [n.time, n.value]
 					})
 					this.$nextTick(() => {
-						this.dayOptions.xAxis[0].min = new Date(uni.$u.timeFormat(new Date(options.value),
-							'yyyy-mm-dd') + ' 00:00:00')
-						this.dayOptions.xAxis[0].max = new Date(uni.$u.timeFormat(new Date(options.value),
-							'yyyy-mm-dd') + ' 23:59:59')
+						this.dayOptions.xAxis[0].min = uni.$u.timeFormat(new Date(options.value),
+							'yyyy-mm-dd') + ' 00:00:00'
+						this.dayOptions.xAxis[0].max = uni.$u.timeFormat(new Date(options.value),
+							'yyyy-mm-dd') + ' 23:59:59'
 						this.dayOptions.yAxis[0].min = '40'
 						this.dayOptions.yAxis[0].max = '165'
 						this.dayOptions.series[0].data = data
 						this.options = this.dayOptions
+						// console.log('打印啦啊啊啊啊啊啊啊啊啊啊啊啊啊', this.dayOptions);
+						console.log(data);
 					})
 				})
 			}

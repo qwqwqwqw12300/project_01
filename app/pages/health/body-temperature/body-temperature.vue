@@ -308,6 +308,7 @@
 					console.log(this.dataList, 'dataList')
 				})
 				this.dateFun(option)
+				console.log('aawwwww', this.options);
 			},
 			handleWeek(option) {
 				this.dataList = []

@@ -147,7 +147,7 @@
 							// margin-left: 30rpx;
 							color: #fff;
 							font-size: 22rpx;
-							padding: 12rpx 12rpx;
+							padding: 8rpx 8rpx;
 							border-radius: 4px;
 							margin-right: 10rpx;
 						}
