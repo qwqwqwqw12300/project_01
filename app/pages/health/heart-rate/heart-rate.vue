@@ -49,7 +49,8 @@
 	import {
 		GetMonthDataFlag,
 		GetListHeartRateByDay,
-		GetListHeartRateByWeek
+		GetListHeartRateByWeek,
+		GetMHeartRate
 	} from '@/common/http/api.js';
 	import {
 		mapState,
@@ -77,6 +78,7 @@
 						textStyle: {
 							color: "#666"
 						},
+						// formatter: 'week'
 						formatter: 'week'
 					},
 					// nameLocation: 'end',
@@ -158,7 +160,7 @@
 						}
 					},
 					data: []
-				}]
+				}, ]
 			}
 			const dayOptions = {
 				tooltip: {
@@ -405,6 +407,14 @@
 					deviceId,
 					humanId
 				} = this.deviceInfo
+				GetMHeartRate({
+					deviceId,
+					humanId,
+					beginDate: options.value[0],
+					endDate: options.value[6],
+				}).then(res => {
+
+				})
 				GetListHeartRateByWeek({
 					deviceId,
 					humanId,
@@ -438,6 +448,7 @@
 					this.weekOptions.yAxis[0].min = '40'
 					this.weekOptions.yAxis[0].max = '165'
 					this.options = this.weekOptions
+					console.log('dataaaaa', data);
 				})
 			},
 			handleDate(options) {

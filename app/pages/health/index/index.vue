@@ -89,19 +89,21 @@
 										:option="xueYangOption" :item="item" :isEdit="isEdit" @iconClick="editCard"
 										:bloodOxygen="bloodoxygen">
 									</XueYangCard>
-									<XinDianCard v-if="item.type === '5'"
+									<TiWenCard v-if="item.type === '5'" :date="TwDate? TwDate.slice(5,-3) : '暂无数据'"
+										:fetchRes="fetchRes" :option="tiWenOption" :item="item" :isEdit="isEdit"
+										@iconClick="editCard" :temperature="temperature">
+									</TiWenCard>
+									<YaLiCard v-if="item.type === '6'" :date="YlDate? YlDate.slice(5,-3) : '暂无数据'"
+										:item="item" :fetchRes="fetchRes" :option="yaLiOption" :isEdit="isEdit"
+										:Presure="presure"></YaLiCard>
+									<XinDianCard v-if="item.type === '7'"
 										:date="fetchRes.ElectrocardiogramTime.substr(5,6) && fetchRes.electrocardiogramMapList.length ? fetchRes.ElectrocardiogramTime.substr(5,6): '暂无数据'"
 										:fetchRes="fetchRes" :option="xinDianOption" :item="item" :isEdit="isEdit"
 										@iconClick="editCard">
 									</XinDianCard>
-									<TiWenCard v-if="item.type === '6'" :date="TwDate? TwDate.slice(5,-3) : '暂无数据'"
-										:fetchRes="fetchRes" :option="tiWenOption" :item="item" :isEdit="isEdit"
-										@iconClick="editCard" :temperature="temperature">
-									</TiWenCard>
+
 								</view>
-								<YaLiCard v-if="item.type === '7'" :date="YlDate? YlDate.slice(5,-3) : '暂无数据'"
-									:item="item" :fetchRes="fetchRes" :option="yaLiOption" :isEdit="isEdit"
-									:Presure="presure"></YaLiCard>
+
 							</view>
 							<view class="ui-w-48 ui-white-bg ui-br-16 ui-f-wrap ui-mar-t-20 "
 								v-for="(item,index) in listData_d" :key="index" :id="'appLi' + index"
@@ -231,41 +233,43 @@
 				date: '',
 				echartDate: '',
 				listData_c: [{
-					type: '1',
-					name: 'SleepCard',
-					img: '../../../static/images/sleep_drag.svg',
-					isShow: true
-				}, {
-					type: '2',
-					name: 'XinLvCard',
-					img: '../../../static/images/xinlv_drag.svg',
-					isShow: true
-				}, {
-					type: '3',
-					name: 'XueYaCard',
-					img: '../../../static/images/xueya_drag.svg',
-					isShow: true
-				}, {
-					type: '4',
-					name: 'XueYangCard',
-					img: '../../../static/images/xueyang_drag.svg',
-					isShow: true
-				}, {
-					type: '5',
-					name: 'XinDianCard',
-					img: '../../../static/images/xindian_drag.svg',
-					isShow: true
-				}, {
-					type: '6',
-					name: 'TiWenCard',
-					img: '../../../static/images/xueya_drag.svg',
-					isShow: true
-				}, {
-					type: '7',
-					name: 'YaLiCard',
-					img: '',
-					isShow: true
-				}],
+						type: '1',
+						name: 'SleepCard',
+						img: '../../../static/images/sleep_drag.svg',
+						isShow: true
+					}, {
+						type: '2',
+						name: 'XinLvCard',
+						img: '../../../static/images/xinlv_drag.svg',
+						isShow: true
+					}, {
+						type: '3',
+						name: 'XueYaCard',
+						img: '../../../static/images/xueya_drag.svg',
+						isShow: true
+					}, {
+						type: '4',
+						name: 'XueYangCard',
+						img: '../../../static/images/xueyang_drag.svg',
+						isShow: true
+					},
+					{
+						type: '5',
+						name: 'TiWenCard',
+						img: '../../../static/images/xueya_drag.svg',
+						isShow: true
+					}, {
+						type: '6',
+						name: 'YaLiCard',
+						img: '',
+						isShow: true
+					}, {
+						type: '7',
+						name: 'XinDianCard',
+						img: '../../../static/images/xindian_drag.svg',
+						isShow: true
+					}
+				],
 				listData_d: [{
 					type: '1',
 					name: 'SleepCard',
