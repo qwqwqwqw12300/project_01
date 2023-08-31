@@ -1,29 +1,36 @@
 <template>
-	<view class="ui-min-h-121 ui-padding-20"
-		@click="jumpUrl('/pages/health/blood-oxygen/blood-oxygen')" style="position: relative;">
-		<image v-if="!item.isShow && isEdit" class="ui-img-size2 ui-pos-right" src="../../../../static/images/add.png" @click.stop="iconClick()"></image>
-		<image v-if="item.isShow && isEdit" class="ui-img-size2 ui-pos-right" src="../../../../static/images/minus.png" @click.stop="iconClick()"></image>
+	<view class="ui-min-h-121 ui-padding-20" @click="jumpUrl('/pages/health/blood-oxygen/blood-oxygen')"
+		style="position: relative;">
+		<image v-if="!item.isShow && isEdit" class="ui-img-size2 ui-pos-right" src="../../../../static/images/add.png"
+			@click.stop="iconClick()"></image>
+		<image v-if="item.isShow && isEdit" class="ui-img-size2 ui-pos-right" src="../../../../static/images/minus.png"
+			@click.stop="iconClick()"></image>
 		<view class="ui-f-start ui-f-wrap">
-			<image class="ui-img-size3" src="/static/images/xueyang.png"></image>
-			<text class="ui-font-32 ui-mar-l-10">血氧</text>
-			<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-				{{date}}
-			</view>
-			<view class="ui-w-h-100 ui-mar-t-20">
+			<div class="header" style="display: flex; justify-content: space-between; width: 100%;">
+				<text class="ui-font-32 ui-mar-l-10">血氧</text>
+				<image class="ui-img-size3" src="/static/images/xueyang.png"></image>
+			</div>
+			<text style="font-size: 25px; margin-top: 50rpx;">{{bloodOxygen}}</text>
+			<!-- <text class="bpm">mmHg</text> -->
+
+			<!-- <view class="ui-w-h-100 ui-mar-t-20">
 				<app-echarts class="ui-echarts-size" :option="option" id="xueYangChart">
-				</app-echarts>
-				<!-- <image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image> -->
-			</view>
-			<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+				</app-echarts> -->
+			<!-- <image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image> -->
+			<!-- </view> -->
+			<!-- <view class="ui-f-between ui-w-h-100 ui-mar-t-10">
 				<text class="ui-font-22 ui-font-c-888">00:00</text>
 				<text class="ui-font-22 ui-font-c-888">24:00</text>
+			</view> -->
+			<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
+				{{date}}
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-export default {
+	export default {
 		props: {
 			fetchRes: {
 				type: Object,
@@ -37,18 +44,21 @@ export default {
 					}
 				}
 			},
-			date:{
-				type:String
+			date: {
+				type: String
 			},
-			option:{
-				type:Object
-			},
-			item:{
+			option: {
 				type: Object
 			},
-			isEdit:{
+			item: {
+				type: Object
+			},
+			isEdit: {
 				type: Boolean,
 				default: false
+			},
+			bloodOxygen: {
+				type: Number
 			}
 		},
 		data() {
@@ -56,26 +66,26 @@ export default {
 
 			}
 		},
-		methods:{
+		methods: {
 			jumpUrl(url) {
 				uni.navigateTo({
 					url: url
 				})
 			},
 			iconClick() {
-				this.$emit('iconClick',this.item.type);
+				this.$emit('iconClick', this.item.type);
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.ui-pos-right{
+	.ui-pos-right {
 		position: absolute;
 		right: 20rpx;
 		top: 20rpx;
 	}
-	
+
 	.max {
 		width: 500rpx;
 		height: 500rpx;
@@ -102,7 +112,7 @@ export default {
 		}
 
 		.ui-mar-t-15 {
-			margin-top: 15rpx;
+			margin-top: 44rpx;
 		}
 
 		.ui-mar-t-20 {
@@ -142,6 +152,14 @@ export default {
 			display: flex;
 			justify-content: flex-start;
 			align-items: center;
+
+			.bpm {
+				// color: red;
+				margin-top: 60rpx;
+				margin-left: 6rpx;
+				font-size: 12px;
+				color: #605f64;
+			}
 		}
 
 		.ui-t-box {
@@ -178,7 +196,7 @@ export default {
 		}
 
 		.ui-mar-l-10 {
-			margin-left: 10rpx;
+			// margin-left: 10rpx;
 		}
 
 		.ui-mar-l-32 {
@@ -279,7 +297,9 @@ export default {
 		}
 
 		.ui-padding-l-58 {
-			padding-left: 58rpx;
+			// padding-left: 58rpx;
+			font-size: 12px;
+			color: #5f5e63;
 		}
 
 		.ui-color-block1 {

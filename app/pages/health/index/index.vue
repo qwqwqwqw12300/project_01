@@ -85,22 +85,23 @@
 										:bloodPresure="bloodpresure">
 									</XueYaCard>
 									<XueYangCard v-if="item.type === '4'"
-										:date="fetchRes.BloodOxygenTime.substr(5,6) && fetchRes.tWatchBloodOxygen.length !== 0 ? fetchRes.BloodOxygenTime.substr(5,6) : '暂无数据'"
-										:fetchRes="fetchRes" :option="xueYangOption" :item="item" :isEdit="isEdit"
-										@iconClick="editCard">
+										:date="bloodDate? bloodDate.slice(5,-3) : '暂无数据'" :fetchRes="fetchRes"
+										:option="xueYangOption" :item="item" :isEdit="isEdit" @iconClick="editCard"
+										:bloodOxygen="bloodoxygen">
 									</XueYangCard>
 									<XinDianCard v-if="item.type === '5'"
 										:date="fetchRes.ElectrocardiogramTime.substr(5,6) && fetchRes.electrocardiogramMapList.length ? fetchRes.ElectrocardiogramTime.substr(5,6): '暂无数据'"
 										:fetchRes="fetchRes" :option="xinDianOption" :item="item" :isEdit="isEdit"
 										@iconClick="editCard">
 									</XinDianCard>
-									<TiWenCard v-if="item.type === '6'"
-										:date="fetchRes.Temperatures.substr(5,6) && fetchRes.tWatchTemperatures.length !== 0 ? fetchRes.Temperatures.substr(5,6) : '暂无数据'"
+									<TiWenCard v-if="item.type === '6'" :date="TwDate? TwDate.slice(5,-3) : '暂无数据'"
 										:fetchRes="fetchRes" :option="tiWenOption" :item="item" :isEdit="isEdit"
-										@iconClick="editCard">
+										@iconClick="editCard" :temperature="temperature">
 									</TiWenCard>
 								</view>
-								<YaLiCard v-if="item.type === '7'" :item="item" :option="yaLiOption"></YaLiCard>
+								<YaLiCard v-if="item.type === '7'" :date="YlDate? YlDate.slice(5,-3) : '暂无数据'"
+									:item="item" :fetchRes="fetchRes" :option="yaLiOption" :isEdit="isEdit"
+									:Presure="presure"></YaLiCard>
 							</view>
 							<view class="ui-w-48 ui-white-bg ui-br-16 ui-f-wrap ui-mar-t-20 "
 								v-for="(item,index) in listData_d" :key="index" :id="'appLi' + index"
@@ -306,7 +307,13 @@
 				heartrate: 0,
 				newDate: '',
 				bloodpresure: 0,
-				bloodpreDate: ''
+				bloodpreDate: '',
+				temperature: 0,
+				TwDate: '',
+				bloodoxygen: 0,
+				bloodDate: '',
+				presure: 0,
+				YlDate: ''
 			}
 		},
 		created() {
@@ -338,10 +345,26 @@
 						dayTime: '',
 						deviceId: this.deviceInfo.deviceId
 					}).then((res) => {
-						this.heartrate = (res.data.HeartRateList[0].value) * 1
-						this.newDate = res.data.HeartRateList[0].time
-						this.bloodpresure = (res.data.spMapList[0].value) * 1
-						this.bloodpreDate = res.data.spMapList[0].time
+						this.heartrate = res.data.HeartRateList.length == 0 ? 0 : res.data
+							.HeartRateList[0].value * 1
+						this.newDate = res.data.HeartRateList.length == 0 ? '' : res.data
+							.HeartRateList[0].time
+						this.bloodpresure = res.data.spMapList.length == 0 ? 0 : res.data
+							.spMapList[0].value * 1
+						this.bloodpreDate = res.data.spMapList.length == 0 ? '' : res.data
+							.spMapList[0].time
+						this.temperature = res.data.tWatchTemperatures.length == 0 ? 0 : res.data
+							.tWatchTemperatures[0].value * 1
+						this.TwDate = res.data.tWatchTemperatures.length == 0 ? '' : res.data
+							.tWatchTemperatures[0].time
+						this.bloodoxygen = res.data.tWatchBloodOxygen.length == 0 ? 0 : res.data
+							.tWatchBloodOxygen[0].value * 1
+						this.bloodDate = res.data.tWatchBloodOxygen.length == 0 ? '' : res.data
+							.tWatchBloodOxygen[0].time
+						this.presure = res.data.tWatchPressures.length == 0 ? 0 : res.data
+							.tWatchPressures[0].value * 1
+						this.YlDate = res.data.tWatchPressures.length == 0 ? '' : res.data
+							.tWatchPressures[0].time
 					})
 				}, 300)
 

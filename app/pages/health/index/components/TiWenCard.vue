@@ -6,19 +6,23 @@
 		<image v-if="item.isShow && isEdit" class="ui-img-size2 ui-pos-right" src="../../../../static/images/minus.png"
 			@click.stop="iconClick()"></image>
 		<view class="ui-f-start ui-f-wrap">
-			<image class="ui-img-size3" src="/static/images/xueya.png"></image>
-			<text class="ui-font-32 ui-mar-l-10">体温</text>
-			<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-				{{date}}
-			</view>
-			<view class="ui-w-h-100 ui-mar-t-20">
+			<div class="header" style="display: flex; justify-content: space-between; width: 100%;">
+				<text class="ui-font-32 ui-mar-l-10">体温</text>
+				<image class="ui-img-size3" src="/static/images/xueya.png"></image>
+			</div>
+			<text style="font-size: 25px; margin-top: 50rpx;">{{temperature}}</text>
+			<text class="bpm">℃</text>
+			<!-- <view class="ui-w-h-100 ui-mar-t-20">
 				<app-echarts class="ui-echarts-size" :option="option" id="tiWenChart">
-				</app-echarts>
-				<!-- <image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image> -->
-			</view>
-			<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
+				</app-echarts> -->
+			<!-- <image class="ui-img-size4" src="../../static/images/xueyangLine.png"></image> -->
+			<!-- </view> -->
+			<!-- <view class="ui-f-between ui-w-h-100 ui-mar-t-10">
 				<text class="ui-font-22 ui-font-c-888">00:00</text>
 				<text class="ui-font-22 ui-font-c-888">24:00</text>
+			</view> -->
+			<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
+				{{date}}
 			</view>
 		</view>
 	</view>
@@ -54,6 +58,9 @@
 			isEdit: {
 				type: Boolean,
 				default: false
+			},
+			temperature: {
+				type: Number
 			}
 		},
 		data() {
@@ -107,7 +114,7 @@
 		}
 
 		.ui-mar-t-15 {
-			margin-top: 15rpx;
+			margin-top: 44rpx;
 		}
 
 		.ui-mar-t-20 {
@@ -147,6 +154,14 @@
 			display: flex;
 			justify-content: flex-start;
 			align-items: center;
+
+			.bpm {
+				// color: red;
+				margin-top: 60rpx;
+				margin-left: 6rpx;
+				font-size: 12px;
+				color: #605f64;
+			}
 		}
 
 		.ui-t-box {
@@ -183,7 +198,7 @@
 		}
 
 		.ui-mar-l-10 {
-			margin-left: 10rpx;
+			// margin-left: 10rpx;
 		}
 
 		.ui-mar-l-32 {
@@ -284,7 +299,9 @@
 		}
 
 		.ui-padding-l-58 {
-			padding-left: 58rpx;
+			// padding-left: 58rpx;
+			font-size: 12px;
+			color: #5f5e63;
 		}
 
 		.ui-color-block1 {
