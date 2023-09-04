@@ -21,6 +21,25 @@
 				Version {{appVersion}}
 			</view>
 		</view>
+		<view class="renew_bg" v-show="hide" @click="hiderenew">
+			<view class="renew">
+				<image src="/static/images/renew.png" style="width: 300px;" mode="widthFix"></image>
+				<view class="renew_title">
+					发现新版本
+				</view>
+				<view class="renew_content">
+					发现新版本，请及时更新，避免影响使用
+				</view>
+				<view class="Progress_box">
+					<view class="Progress" v-show="Progress">
+						<view class="Progress_bar" :style="{ width: Progress}"></view>
+					</view>
+				</view>
+				<button @click.stop="download" :disabled="disabled">
+					立即更新
+				</button>
+			</view>
+		</view>
 	</app-body>
 </template>
 
@@ -37,7 +56,11 @@
 		data() {
 			return {
 				appVersion: '',
-				versionType: 0
+				versionType: 0,
+				Progress:0,
+				downloadUrl:'',
+				hide:false,
+				disabled:false
 			}
 		},
 		methods: {
@@ -46,39 +69,16 @@
 					this.appVersion = info.version
 				})
 				this.versionType = isIos ? '0' : '1'
-				// PostVersionInfo({
-				// 	versionType: isIos ? '0' : '1',
-				// }).then(res => {
-				// 	this.version = res.data.content
-				// })
 			},
 			handleUpdate() {
 				PostVersionInfo({
 					versionType: isIos ? '0' : '1',
 				}).then(res => {
-					console.log(res)
 					const curVersion = res.data.content
-					console.log('this.versionType', this.versionType)
 					const result = versionCompare(this.appVersion, curVersion)
 					if (!result) {
-						if (this.versionType == 1) {
-							uni.showModal({
-								title: '发现新版本 ' + curVersion,
-								content: '请到App store进行升级',
-								showCancel: false
-							})
-							return
-						}
-						uni.showModal({
-							title: '',
-							content: `发现新版本${curVersion}是否更新？`,
-							success: resl => {
-								if (resl.confirm) {
-									let downloadUrl = res.data.downloadAddress
-									this.download(downloadUrl)
-								}
-							}
-						});
+						this.downloadUrl = res.data.downloadAddress
+						this.hide = true
 					} else {
 						uni.showModal({
 							title: '',
@@ -87,16 +87,11 @@
 					}
 				})
 			},
-			download(downloadUrl) {
-				console.log(downloadUrl)
-				uni.showLoading({
-					title:'下载中'
-				})
-				uni.downloadFile({
-					url: downloadUrl,
+			download() {
+				const downloadTask = uni.downloadFile({
+					url: this.downloadUrl,
 					success: (res) => {
 						console.log(res)
-						uni.hideLoading()
 						if (res.statusCode === 200) {
 							plus.runtime.install(res.tempFilePath, {}, () => {
 								plus.runtime.restart();
@@ -116,6 +111,23 @@
 						}
 					}
 				})
+				downloadTask.onProgressUpdate((res) => {
+					this.disabled = true
+					this.Progress = res.progress*3+'px'
+					// console.log('下载进度' + res.progress);
+					// console.log('已经下载的数据长度' + res.totalBytesWritten);
+					// console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
+					// 满足测试条件，取消下载任务。
+					// if (res.progress == 100) {
+					// 	console.log('下载完啦！！！！！')
+					// }
+				});
+			},
+			hiderenew(){
+				if(this.Progress != 0){
+					return
+				}
+				this.hide = false
 			}
 		},
 		mounted() {
@@ -171,6 +183,82 @@
 				width: 100%;
 				height: 80rpx;
 				line-height: 80rpx;
+			}
+		}
+	}
+	.renew_bg{
+		width: 100%;
+		height: 100vh;
+		background-color: rgba(120, 120, 120, 0.6);
+		position: fixed;
+		left: 0;
+		top: 0;
+		.renew{
+			width: 300px;
+			height: 240rpx;
+			background-color: #FFFFFF;
+			border-radius: 10px;
+			position: absolute;
+			left: calc(50% - 150px);
+			top: calc(50vh - 200rpx);
+			padding: 30rpx 0;
+			padding-top: 110px;
+			image{
+				position: absolute !important;
+				top: -67px;
+				left: 0;
+			}
+			.renew_title{
+				text-align: center;
+				font-family: Inter;
+				font-size: 32rpx;
+				font-style: normal;
+				font-weight: 700;
+				line-height: normal;
+				margin: 0 20rpx;
+				margin-bottom: 30rpx;
+				background: -webkit-linear-gradient(#FF7602, #F8CFA9);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+			}
+			.renew_content{
+				color: #000000;
+				font-family: PingFang SC;
+				font-size: 24rpx;
+				font-style: normal;
+				font-weight: 400;
+				text-align: center;
+				margin: 0 20rpx;
+				margin-bottom: 30rpx;
+			}
+			button{
+				margin: 0 auto;
+				width: 260rpx;
+				height: 75rpx;
+				background: #FE9740;
+				color: #FFF;
+				text-align: center;
+				font-size: 24rpx;
+				font-style: normal;
+				font-weight: 400;
+				line-height: 75rpx;
+				border-radius: 20px !important;
+			}
+			button[disabled]{
+			 background: rgb(179, 179, 179) !important;
+			}
+			.Progress_box{
+				margin-bottom: 20rpx;
+				height: 2px;
+			}
+			.Progress{
+				margin-bottom: 10rpx;
+				height: 2px;
+				background-color: rgba(95, 95, 95, 0.2);
+				.Progress_bar{
+					background-color: #FEAE43;
+					height: 2px;
+				}
 			}
 		}
 	}

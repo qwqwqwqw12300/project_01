@@ -105,6 +105,26 @@ vb
       <!-- 下拉框 -->
       <AppHandle :isShow="isAddShow" @cancle="isAddShow = false"></AppHandle>
       <!-- /下拉框 -->
+	  
+	  <view class="renew_bg" v-show="hide" @click="hiderenew">
+	  	<view class="renew">
+			<image src="/static/images/renew.png" style="width: 300px;" mode="widthFix"></image>
+	  		<view class="renew_title">
+	  			发现新版本
+	  		</view>
+	  		<view class="renew_content">
+	  			发现新版本，请及时更新，避免影响使用
+	  		</view>
+	  		<view class="Progress_box">
+	  			<view class="Progress" v-show="Progress">
+	  				<view class="Progress_bar" :style="{ width: Progress}"></view>
+	  			</view>
+	  		</view>
+	  		<button @click.stop="download" :disabled="disabled">
+	  			立即更新
+	  		</button>
+	  	</view>
+	  </view>
     </app-body>
   </view>
 
@@ -115,8 +135,14 @@ vb
     getDeviceList,
     getFamilyList,
     GetReadInfo,
-    forIndex
+    forIndex,
+	PostVersionInfo
   } from '../../common/http/api';
+  import {
+  	versionCompare,
+  	isIos,
+  	isApp
+  } from '../../common/utils/util';
   import {
     mapState,
     mapActions,
@@ -153,7 +179,19 @@ vb
         /**轮询定时器**/
         timer: null,
         /**是否在加载状态**/
-        loading: true
+        loading: true,
+		// APP版本号
+		appVersion: '',
+		// 手机类型 安卓/ios
+		versionType: 0,
+		// 下载进度
+		Progress:0,
+		// 更新包下载地址
+		downloadUrl:'',
+		// 弹出框是否显示
+		hide:false,
+		// 下载按钮禁用
+		disabled:false
       }
     },
     computed: {
@@ -180,10 +218,13 @@ vb
       ...mapGetters(['filterDevice']),
     },
     onShow() {
-      this.handleInitList();
-      this.timer = setInterval(() => {
-        this.forIndexFun()
-      }, 1000 * 60)
+		// #ifdef APP-PLUS
+		this.handleUpdate();
+		// #endif
+		this.handleInitList();
+		this.timer = setInterval(() => {
+			this.forIndexFun()
+		}, 1000 * 60)
     },
     onHide() {
       this.timer && clearInterval(this.timer)
@@ -319,7 +360,69 @@ vb
         uni.navigateTo({
           url: `/pages/myself/room-manage?id=${item.familyId}`
         });
-      }
+      },
+	  // 检测更新
+	  // 获取线上版本号，对比
+	  handleUpdate() {
+		  //获取当前app版本号
+		  	plus.runtime.getProperty(plus.runtime.appid, (info) => {
+		  		this.appVersion = info.version
+		  	})
+		  		// 获取app类型
+		  	this.versionType = isIos ? '0' : '1'
+	  	PostVersionInfo({
+	  		versionType: isIos ? '0' : '1',
+	  	}).then(res => {
+	  		console.log(res)
+	  		const curVersion = res.data.content
+	  		const result = versionCompare(this.appVersion, curVersion)
+	  		if (!result) {
+	  			this.downloadUrl = res.data.downloadAddress
+	  			this.hide = true
+	  		}
+	  	})
+	  },
+	  download() {
+	  	const downloadTask = uni.downloadFile({
+	  		url: this.downloadUrl,
+	  		success: (res) => {
+	  			console.log(res)
+	  			if (res.statusCode === 200) {
+	  				plus.runtime.install(res.tempFilePath, {}, () => {
+	  					plus.runtime.restart();
+	  				}, function(error) {
+	  					uni.showToast({
+	  						title: '安装失败',
+	  						duration: 1500,
+	  						icon: "none"
+	  					});
+	  				})
+	  			}else{
+	  				uni.showToast({
+	  					title: '下载失败，请重试',
+	  					duration: 1500,
+	  					icon: "none"
+	  				});
+	  			}
+	  		}
+	  	})
+	  	downloadTask.onProgressUpdate((res) => {
+	  		this.disabled = true
+	  		this.Progress = res.progress*3+'px'
+	  		// console.log('已经下载的数据长度' + res.totalBytesWritten);
+	  		// console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
+	  		// 满足测试条件，取消下载任务。
+	  		// if (res.progress == 100) {
+	  		// 	console.log('下载完啦！！！！！')
+	  		// }
+	  	});
+	  },
+	  hiderenew(){
+		  if(this.Progress != 0){
+			  return
+		  }
+		  this.hide = false
+	  }
     }
   }
 </script>
@@ -547,5 +650,81 @@ vb
     align-items: center;
     height: 500px;
     width: 100%;
+  }
+  .renew_bg{
+  	width: 100%;
+  	height: 100vh;
+  	background-color: rgba(120, 120, 120, 0.6);
+  	position: fixed;
+  	left: 0;
+  	top: 0;
+  	.renew{
+  		width: 300px;
+  		height: 240rpx;
+  		background-color: #FFFFFF;
+  		border-radius: 10px;
+  		position: absolute;
+  		left: calc(50% - 150px);
+  		top: calc(50vh - 200rpx);
+  		padding: 30rpx 0;
+		padding-top: 110px;
+		image{
+			position: absolute !important;
+			top: -67px;
+			left: 0;
+		}
+  		.renew_title{
+  			text-align: center;
+  			font-family: Inter;
+  			font-size: 32rpx;
+  			font-style: normal;
+  			font-weight: 700;
+  			line-height: normal;
+  			margin: 0 20rpx;
+  			margin-bottom: 30rpx;
+			background: -webkit-linear-gradient(#FF7602, #F8CFA9);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+  		}
+  		.renew_content{
+  			color: #000000;
+  			font-family: PingFang SC;
+  			font-size: 24rpx;
+  			font-style: normal;
+  			font-weight: 400;
+  			text-align: center;
+  			margin: 0 20rpx;
+  			margin-bottom: 30rpx;
+  		}
+  		button{
+  			margin: 0 auto;
+  			width: 260rpx;
+  			height: 75rpx;
+  			background: #FE9740;
+  			color: #FFF;
+  			text-align: center;
+  			font-size: 24rpx;
+  			font-style: normal;
+  			font-weight: 400;
+			line-height: 75rpx;
+			border-radius: 20px !important;
+  		}
+  		button[disabled]{
+  		 background: rgb(179, 179, 179) !important;
+  		}
+  		.Progress_box{
+  			margin-bottom: 20rpx;
+  			height: 2px;
+  		}
+  		.Progress{
+  			margin-bottom: 10rpx;
+  			height: 2px;
+  			background-color: rgba(95, 95, 95, 0.2);
+  			.Progress_bar{
+  				background-color: #FEAE43;
+  				height: 2px;
+  			}
+  		}
+  	}
   }
 </style>

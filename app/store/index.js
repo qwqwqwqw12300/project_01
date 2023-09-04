@@ -159,32 +159,41 @@ const store = {
 				if (state.positionInfo.latitude && state.positionInfo.longitude) {
 					return resolve(state.positionInfo)
 				}
-				uni.getLocation({
-					geocode: true,
-					type: isIos() ? 'wgs84' : 'gcj02',
+				uni.showModal({
+					title:'提示',
+					content:'应用获得您的位置，应用内获取用户周边功能将被启用并将以高精度运行，承诺不保留用户隐私信息',
 					success: (res) => {
-						const {
-							latitude,
-							longitude,
-							address: {
-								province,
-								city,
-								district,
-								street
-							},
-						} = res
-						const info = {
-							latitude,
-							longitude,
-							address: province + city + district + street
+						if(res.confirm){
+							uni.getLocation({
+								geocode: true,
+								type: isIos() ? 'wgs84' : 'gcj02',
+								success: (res) => {
+									const {
+										latitude,
+										longitude,
+										address: {
+											province,
+											city,
+											district,
+											street
+										},
+									} = res
+									const info = {
+										latitude,
+										longitude,
+										address: province + city + district + street
+									}
+									commit('setPositionInfo', info);
+									resolve(info);
+								},
+								false: (res) => {
+									reject()
+								}
+							})
 						}
-						commit('setPositionInfo', info);
-						resolve(info);
-					},
-					false: (res) => {
-						reject()
 					}
 				})
+				
 			})
 		},
 		/**

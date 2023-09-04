@@ -52,7 +52,7 @@ class Log {
 			apmUser: store.state.userInfo.phone,
 			data: options
 		};
-		console.log('埋点信息=======', info);
+		// console.log('埋点信息=======', info);
 		this.log({
 			message: info
 		});
