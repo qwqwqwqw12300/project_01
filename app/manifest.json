@@ -215,8 +215,8 @@
                 "JPUSH_VIVO_APPID" : "105673501",
                 "JPUSH_MEIZU_APPKEY" : "",
                 "JPUSH_MEIZU_APPID" : "",
-                "JPUSH_XIAOMI_APPKEY" : "5212025533794",
-                "JPUSH_XIAOMI_APPID" : "2882303761520255794",
+                "JPUSH_XIAOMI_APPKEY" : "5942026996728",
+                "JPUSH_XIAOMI_APPID" : "2882303761520269728",
                 "__plugin_info__" : {
                     "name" : "JG-JPush",
                     "description" : "极光推送Hbuilder插件",
