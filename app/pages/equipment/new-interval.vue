@@ -6,21 +6,44 @@
 -->
 
 <template>
-	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
+	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}" title="新建禁用时段">
 		<view>
-			<app-logo color="#353535" text="新建禁用时段"></app-logo>
+			<!-- <app-logo color="#353535" text=""></app-logo> -->
 			<view class="ui-cell">
 				<u-cell-group>
 					<u-cell title="名称">
 						<u-input inputAlign="right" placeholder="请输入名称" border="none" slot="right-icon"
 							v-model="name"></u-input>
 					</u-cell>
-					<u-cell @tap="handleSelectStart" title="日期" arrow-direction="right" isLink>
+					<u-cell title="开始" arrow-direction="right" isLink>
 						<text slot="value" class="u-slot-value">
-							{{ defaultValue.length ? `${defaultValue[0]}  至 ${defaultValue[1]}` : '请选择'}}
+							<!-- {{ defaultValue.length ? `${defaultValue[0]}  至 ${defaultValue[1]}` : '请选择'}} -->
+							<picker mode="time" :value="starttime" start="00:00" end="24:00" @change="bindstarttime">
+								<view class="uni-input">{{starttime||'请选择'}}</view>
+							</picker>
+						</text>
+					</u-cell>
+					<u-cell title="结束" arrow-direction="right" isLink>
+						<text slot="value" class="u-slot-value">
+							<!-- {{ defaultValue.length ? `${defaultValue[0]}  至 ${defaultValue[1]}` : '请选择'}} -->
+							<picker mode="time" :value="endtime" start="00:00" end="24:00" @change="bindendtime">
+								<view class="uni-input">{{endtime||'请选择'}}</view>
+							</picker>
 						</text>
 					</u-cell>
 				</u-cell-group>
+			</view>
+			<view class="changeday">
+				<view class="typebtn" v-for="(item,index) in daylist" :class="item.act?'actitem':''"
+					@click="changetype(index)">
+					{{item.name}}
+				</view>
+			</view>
+			<view class="weeklist">
+				<view class="weekitem" v-for="(item,index) in week" :class="item.act?'actitem':''"
+					@click="changeweek(index)">
+					{{item.name}}
+				</view>
 			</view>
 			<view class="ui-btn">
 				<view class="btn-box">
@@ -37,15 +60,14 @@
 		    :end-text="'结束'" :show-seconds="true" @confirm="onSelected"  @cancel="showPicker=false">
 		</time-picker>
 		<smh-time-range :isUnder="timeShow" :time="defaultTime" @confrim="confrim" @cancel="cancel"></smh-time-range> -->
-		<time-picker :show="showPicker" format="yyyy-mm-dd hh:ii" type="rangetime" :value="defaultValue"
+		<!-- <time-picker :show="showPicker" format="yyyy-mm-dd hh:ii" type="rangetime" :value="defaultValue"
 			:show-tips="true" :begin-text="'开始'" :end-text="'结束'" :show-seconds="false" @confirm="onSelected"
 			@cancel="showPicker=false">
-		</time-picker>
+		</time-picker> -->
 	</app-body>
 </template>
 
 <script>
-	import timePicker from '@/components/term-picker/term-picker.vue';
 	import {
 		PostSetPeriodDisable
 	} from '@/common/http/api';
@@ -53,83 +75,156 @@
 		mapState,
 	} from 'vuex';
 	export default {
-		components: {
-			timePicker
-		},
 		data() {
 			return {
 				name: '',
 				//日期选择组件
-				showPicker: false,
-				defaultValue: ['2023-02-27 14:00', '2023-03-05 13:59'],
-				timeShow: false,
-				defaultTime: [0, 0, 0, 23, 59],
-				deviceInfo: ''
+				deviceInfo: '',
+				starttime: '',
+				endtime: '',
+				daylist: [{
+						name: '每天',
+						type: 'allday',
+						act: true
+					},
+					{
+						name: '工作日',
+						type: 'work',
+						act: false
+					},
+					{
+						name: '周末',
+						type: 'weekend',
+						act: false
+					}
+				],
+				week: [{
+						name: '日',
+						type: '7',
+						act: false
+					},
+					{
+						name: '一',
+						type: '1',
+						act: false
+					},
+					{
+						name: '二',
+						type: '2',
+						act: false
+					},
+					{
+						name: '三',
+						type: '3',
+						act: false
+					},
+					{
+						name: '四',
+						type: '4',
+						act: false
+					},
+					{
+						name: '五',
+						type: '5',
+						act: false
+					},
+					{
+						name: '六',
+						type: '6',
+						act: false
+					},
+				]
 			};
 		},
 		computed: {
-			pickTime() {
-				console.log('jinlai')
-				// return this.startTime ? `${moment(this.startTime).format('YYYY-MM-DD')}~${moment(this.endTime).format('YYYY-MM-DD')}`: ''
-			}
-		},
-		mounted() {
-			const newData = new Date()
-			const startTime = uni.$u.timeFormat(newData, 'yyyy-mm-dd hh:MM')
-			const endTime = uni.$u.timeFormat(new Date(newData.getTime() + 24 * 60 * 60 * 1000),
-				'yyyy-mm-dd hh:MM') //前一天
-			this.defaultValue = [startTime, endTime]
+
 		},
 		methods: {
-			handleSelectStart() {
-				this.showPicker = true
-			},
-			handleTime() {
-				this.timeShow = true
-			},
-			confrim(e) {
-				console.log(e) //确定事件 =>12:30-17:30
-				this.startTime = e.aboveTime
-				this.endTime = e.underTime
-				this.timeShow = false
-
-				// this.defaultTime = this.defaultTime.forEach(item=>{
-				// 	item = parseInt(item)
-				// })
-				console.log(this.defaultTime)
-			},
-			cancel(e) {
-				this.timeShow = false
-			},
-			onSelected(e) {
-				let date1 = new Date(e.value[0]) //要对比的时间
-				let date2 = new Date(); //获取当前时间对象
-				let num = 24 * 60 * 60 * 1000; //一天的毫秒数
-				let res = date2.getTime() - date1.getTime(); //两个时间的毫秒差
-				if (res > 0) {
-					if (res > num) {
-						uni.$u.toast('选择的时间已过期，请重新选择')
-					} else if (date1.getDate() != date2.getDate()) {
-						uni.$u.toast('选择的时间已过期，请重新选择')
+			changetype(index) {
+				for (var i = 0; i < this.daylist.length; i++) {
+					if (i == index) {
+						this.daylist[i].act = true
 					} else {
-						uni.$u.toast('选择的时间已过期，请重新选择')
+						this.daylist[i].act = false
 					}
-				}else{
-					this.defaultValue = [...e.value]
-					this.showPicker = false
 				}
-				
+				var type = this.daylist[index].type;
+				switch (type) {
+					case 'allday':
+						for (var i = 0; i < this.week.length; i++) {
+							if (this.daylist[index].act == true) {
+								this.week[i].act = true
+							} else {
+								this.week[i].act = false
+							}
+						}
+						break;
+					case 'work':
+						for (var i = 0; i < this.week.length; i++) {
+							if (this.daylist[index].act == true && this.week[i].type <= 5) {
+								this.week[i].act = true
+							} else {
+								console.log(this.week[i].name)
+								this.week[i].act = false
+							}
+						}
+						break;
+					case 'weekend':
+						for (var i = 0; i < this.week.length; i++) {
+							if (this.daylist[index].act == true && this.week[i].type >= 6) {
+								this.week[i].act = true
+							} else {
+								this.week[i].act = false
+							}
+						}
+						break;
+					default:
+						console.log('不满足上述所有case时, 执行默认')
+				}
+			},
+			changeweek(index) {
+				let arr = this.week
+				this.week[index].act = !this.week[index].act
+				this.daylist[0].act = false
+				this.daylist[1].act = false
+				this.daylist[2].act = false
+				if (arr[0].act == true && arr[1].act == true && arr[2].act == true && arr[3].act == true && arr[4].act == true && arr[5].act == true && arr[6].act == true) {
+					this.daylist[0].act = true
+					this.daylist[1].act = false
+					this.daylist[2].act = false
+					return
+				}
+				if (arr[0].act == false && arr[1].act == true && arr[2].act == true && arr[3].act == true && arr[4].act == true && arr[5].act == true && arr[6].act == false) {
+					this.daylist[0].act = false
+					this.daylist[1].act = true
+					this.daylist[2].act = false
+					return
+				}
+				if (arr[0].act == true && arr[1].act == false && arr[2].act == false && arr[3].act == false && arr[4].act == false && arr[5].act == false && arr[6].act == true) {
+					this.daylist[0].act = false
+					this.daylist[1].act = false
+					this.daylist[2].act = true
+					return
+				}
+			},
+			bindstarttime(e) {
+				this.starttime = e.detail.value
+			},
+			bindendtime(e) {
+				this.endtime = e.detail.value
 			},
 			handleCancel() {
 				uni.navigateBack()
 			},
 			handleSave() {
 				if (!this.name) return uni.$u.toast('名称不能为空')
+				if (!this.starttime) return uni.$u.toast('请选择开始时间')
+				if (!this.endtime) return uni.$u.toast('请选择结束时间')
 				PostSetPeriodDisable({
 					deviceId: this.deviceInfo.deviceId,
 					periodDisableTag: this.name,
-					beginTime: this.defaultValue[0],
-					endTime: this.defaultValue[1],
+					beginTime: this.starttime,
+					endTime: this.endtime,
 				}).then(res => {
 					console.log(res, 'res')
 					uni.$u.toast(res.msg)
@@ -168,6 +263,54 @@
 			background: #F7F7F7;
 			border: 1rpx solid rgba(136, 136, 136, 1);
 			border-radius: 8rpx;
+		}
+	}
+
+	.changeday {
+		display: flex;
+		justify-content: space-around;
+		margin-top: 24rpx;
+
+		.typebtn {
+			width: 154rpx;
+			height: 60rpx;
+			border-radius: 30px;
+			background: #D9D9D9;
+			color: #000;
+			font-family: PingFang SC;
+			font-size: 32rpx;
+			font-style: normal;
+			line-height: 60rpx;
+			text-align: center;
+		}
+
+		.actitem {
+			background: #FE963D;
+			color: white;
+		}
+	}
+
+	.weeklist {
+		display: flex;
+		justify-content: space-around;
+		margin-top: 40rpx;
+		padding: 0 30rpx;
+
+		.weekitem {
+			width: 50rpx;
+			height: 50rpx;
+			border-radius: 30px;
+			background: #D9D9D9;
+			line-height: 50rpx;
+			text-align: center;
+			font-family: PingFang SC;
+			font-size: 32rpx;
+			font-style: normal;
+		}
+
+		.actitem {
+			background: #FE963D;
+			color: white;
 		}
 	}
 

@@ -461,6 +461,7 @@
 					dayTime: '',
 					humanId,
 				}
+				this.getHeartRate();
 				GetCaiHongData(params).then(res => {
 					res.data.sleepMap = res.data.sleepMap ? res.data.sleepMap : 1; // 无数据默认显示1
 					this.logstatrt(res);

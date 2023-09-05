@@ -6,8 +6,8 @@
 -->
 
 <template>
-	<app-body>
-		<app-logo color="#353535" text="时段禁止"></app-logo>
+	<app-body title="时段禁止">
+		<!-- <app-logo color="#353535" text="时段禁止"></app-logo> -->
 		<CardTitle :title="'禁用运行中'" :content="'禁用时间拒绝所有电话和短信，但可查看时间和定位'"
 			:backGroundImg="'/static/images/prohibit-moving.png'"></CardTitle>
 		<view style="margin-top: 50rpx;padding-bottom: 50rpx;">
