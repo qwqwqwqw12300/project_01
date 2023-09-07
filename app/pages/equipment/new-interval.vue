@@ -85,7 +85,7 @@
 				daylist: [{
 						name: '每天',
 						type: 'allday',
-						act: true
+						act: false
 					},
 					{
 						name: '工作日',
@@ -184,7 +184,9 @@
 			},
 			changeweek(index) {
 				let arr = this.week
-				this.week[index].act = !this.week[index].act
+				if(index != undefined){
+					this.week[index].act = !this.week[index].act
+				}
 				this.daylist[0].act = false
 				this.daylist[1].act = false
 				this.daylist[2].act = false
@@ -220,11 +222,20 @@
 				if (!this.name) return uni.$u.toast('名称不能为空')
 				if (!this.starttime) return uni.$u.toast('请选择开始时间')
 				if (!this.endtime) return uni.$u.toast('请选择结束时间')
+				let periodtext = ''
+				for (var i = 0; i < this.week.length; i++) {
+					if(this.week[i].act){
+						periodtext += i+','
+					}
+				}
+				if(periodtext == '') return uni.$u.toast('请选择禁用周期')
+				periodtext = periodtext.substring(0,periodtext.length-1)
 				PostSetPeriodDisable({
 					deviceId: this.deviceInfo.deviceId,
 					periodDisableTag: this.name,
 					beginTime: this.starttime,
 					endTime: this.endtime,
+					period:periodtext
 				}).then(res => {
 					console.log(res, 'res')
 					uni.$u.toast(res.msg)

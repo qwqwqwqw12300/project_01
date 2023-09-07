@@ -221,28 +221,29 @@ export function arrayAssign(obj) {
  */
 export const versionCompare = (curV, reqV) => {
 	console.log(curV, reqV, 'vvv')
-	const arr1 = curV.toString().split('.')
-	const arr2 = reqV.toString().split('.')
-	//将两个版本号拆成数字
-	const minL = Math.min(arr1.length, arr2.length);
-	let pos = 0; //当前比较位
-	let diff = 0; //当前为位比较是否相等
-	let flag = true;
-	//逐个比较如果当前位相等则继续比较下一位
-	while (pos < minL) {
-		diff = parseInt(arr1[pos]) - parseInt(arr2[pos]);
-		if (diff == 0) {
-			pos++;
-			continue;
-		} else if (diff > 0) {
-			flag = true;
-			break;
-		} else {
-			flag = false;
-			break;
-		}
-	}
-	return flag;
+	const v1parts = curV.toString().split('.')
+	const v2parts = reqV.toString().split('.')
+	for (var i = 0; i < v1parts.length; ++i) {
+	    if (v2parts.length == i) {
+	      return 1;
+	    }
+	    
+	    if (v1parts[i] == v2parts[i]) {
+	      continue;
+	    }
+	    else if (v1parts[i] > v2parts[i]) {
+	      return 1;
+	    }
+	    else {
+	      return -1;
+	    }
+	  }
+	  
+	  if (v1parts.length != v2parts.length) {
+	    return -1;
+	  }
+	  
+	  return 0;
 }
 
 /**

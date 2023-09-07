@@ -6,8 +6,8 @@
 -->
 
 <template>
-	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}">
-		<app-logo color="#353535" text="编辑禁用时段"></app-logo>
+	<app-body :bg="false" :bodyStyle="{backgroundColor:'#FFF'}" title="编辑禁用时段">
+		<!-- <app-logo color="#353535" text="编辑禁用时段"></app-logo> -->
 		<view class="ui-cell">
 			<u-cell-group>
 				<u-cell title="名称">
@@ -78,6 +78,7 @@
 				enable: '',
 				starttime: '',
 				endtime: '',
+				period: '',
 				daylist: [{
 						name: '每天',
 						type: 'allday',
@@ -205,7 +206,9 @@
 			},
 			changeweek(index) {
 				let arr = this.week
-				this.week[index].act = !this.week[index].act
+				if(index != undefined){
+					this.week[index].act = !this.week[index].act
+				}
 				this.daylist[0].act = false
 				this.daylist[1].act = false
 				this.daylist[2].act = false
@@ -262,6 +265,33 @@
 			this.endtime = list.endTime
 			this.id = list.uuid
 			this.enable = list.enable
+			this.period = list.period
+			let arr = this.week
+			let periods = list.period.split(',')
+			for (var i = 0; i < periods.length; ++i) {
+				if(periods[i] == 0){
+					arr[0].act = true
+				}
+				if(periods[i] == 1){
+					arr[1].act = true
+				}
+				if(periods[i] == 2){
+					arr[2].act = true
+				}
+				if(periods[i] == 3){
+					arr[3].act = true
+				}
+				if(periods[i] == 4){
+					arr[4].act = true
+				}
+				if(periods[i] == 5){
+					arr[5].act = true
+				}
+				if(periods[i] == 6){
+					arr[6].act = true
+				}
+			}
+			this.changeweek()
 		}
 	};
 </script>
@@ -291,11 +321,12 @@
 			border-radius: 8rpx;
 		}
 	}
+
 	.changeday {
 		display: flex;
 		justify-content: space-around;
 		margin-top: 24rpx;
-	
+
 		.typebtn {
 			width: 154rpx;
 			height: 60rpx;
@@ -308,19 +339,19 @@
 			line-height: 60rpx;
 			text-align: center;
 		}
-	
+
 		.actitem {
 			background: #FE963D;
 			color: white;
 		}
 	}
-	
+
 	.weeklist {
 		display: flex;
 		justify-content: space-around;
 		margin-top: 40rpx;
 		padding: 0 30rpx;
-	
+
 		.weekitem {
 			width: 50rpx;
 			height: 50rpx;
@@ -332,12 +363,13 @@
 			font-size: 32rpx;
 			font-style: normal;
 		}
-	
+
 		.actitem {
 			background: #FE963D;
 			color: white;
 		}
 	}
+
 	.ui-btn {
 		width: 100%;
 		position: fixed;

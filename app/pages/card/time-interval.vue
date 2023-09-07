@@ -12,7 +12,7 @@
 			:backGroundImg="'/static/images/prohibit-moving.png'"></CardTitle>
 		<view style="margin-top: 50rpx;padding-bottom: 50rpx;">
 			<template v-if="list.length">
-				<view class="ui-cell" @click="toJump(item)" v-for="(item,index) in list" :key="index">
+				<view class="ui-cell" @click="toJump(item)" v-for="(item,index) in list" :key="index" style="height: 75px;">
 					<view class="ui-cell-content">
 						<view class="ui-cell-style">
 							<view class="ui-cell-title">{{item.periodDisableTag}}</view>
@@ -22,8 +22,8 @@
 						</view>
 						<view class="ui-cell-style">
 							<view class="ui-cell-font">
-								<view>{{item.beginTime}} 至 </view>
-								<view>{{item.endTime}}</view>
+								<view>{{item.beginTime}} 至 {{item.endTime}}</view>
+								<view>{{getperiodtext(item.period)}}</view>
 							</view>
 							<u-switch @click.native.stop="handleSwitch(item)" v-model="item.enable" activeValue="1"
 								inactiveValue="0" activeColor="#FEAE43" inactiveColor="rgb(138, 138, 138)" size="20">
@@ -75,12 +75,54 @@
 			console.log(this.deviceInfo, 'this.deviceInfo')
 		},
 		methods: {
+			getperiodtext(jsm){
+				if(!jsm) return
+				let periods = jsm.split(',')
+				let text = ''
+				if(periods.length == 7){
+					return '每天'
+				}
+				if(periods.length == 2&&periods[0] == 0&&periods[1] == 6){
+					return '周末'
+				}
+				if(periods.length == 5&&periods[0] == 1&&periods[1] == 2&&periods[2] == 3&&periods[3] == 4&&periods[4] == 5){
+					return '工作日'
+				}
+				for (let i = 0; i < periods.length; ++i) {
+					if(periods[i] == 0){
+						text+='周日，'
+					}
+					if(periods[i] == 1){
+						text+='周一，'
+					}
+					if(periods[i] == 2){
+						text+='周二，'
+					}
+					if(periods[i] == 3){
+						text+='周三，'
+					}
+					if(periods[i] == 4){
+						text+='周四，'
+					}
+					if(periods[i] == 5){
+						text+='周五，'
+					}
+					if(periods[i] == 6){
+						text+='周六，'
+					}
+				}
+				text = text.substring(0,text.length-1)
+				return text
+			},
 			initData() {
 				GetPeriodDisableList({
 					deviceId: this.deviceInfo.deviceId
 				}).then(res => {
 					console.log(res, 'res')
 					this.list = res.data
+					for (var i = 0; i < this.list.length; i++) {
+						
+					}
 				})
 			},
 			handleSwitch(item) {

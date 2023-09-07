@@ -24,44 +24,12 @@
 				lower-threshold="10">
 				<view class="ui-body">
 					<view class="ui-w-h-100">
-						<view class="ui-f-center ui-white-bg ui-br-16" style="padding:30rpx 30rpx 30rpx 0"
+						<!-- <view class="ui-f-center ui-white-bg ui-br-16" style="padding:30rpx 30rpx 30rpx 0"
 							@click="jumpUrl('/pages/health/exercise/exercise')">
 							<app-echarts style="height: 300rpx;width:600rpx" id="caiHongChart" :option="caiHongOption">
 							</app-echarts>
-							<view class="ui-f-center ui-f-wrap ui-w-60">
-								<view class="ui-f-start ui-f-wrap">
-									<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
-									<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
-									<view class="ui-text-box ui-mar-t-15">
-										<text class="ui-font-1">{{caiHongData[0]?caiHongData[0]:0}}</text>
-										<text class="ui-font-2">/{{maxDataArr[0]?maxDataArr[0]:0}}</text>
-									</view>
-								</view>
-								<!-- 								<view class="ui-w-47 ui-f-start ui-f-wrap">
-									<image class="ui-img-size6" src="@/static/images/timeclock.png"></image>
-									<text class="ui-font-24 ui-mar-l-10">活动(分)</text>
-									<view class="ui-text-box ui-mar-t-15">
-										<text class="ui-font-1">{{caiHongData[1]?caiHongData[1]:0}}</text>
-										<text class="ui-font-2">/{{maxDataArr[1]?maxDataArr[1]:0}}</text>
-									</view>
-								</view> -->
-								<view class="ui-f-start ui-mar-t-45 ui-f-wrap">
-									<image class="ui-img-size5" src="@/static/images/walk2.png"></image>
-									<text class="ui-font-24 ui-mar-l-10">行走<步></text>
-									<view class="ui-text-box ui-mar-t-15">
-										<text class="ui-font-1">{{caiHongData[2]?caiHongData[2]:0}}</text>
-										<text class="ui-font-2">/{{maxDataArr[2]?maxDataArr[2]:0}}</text>
-									</view>
-								</view>
-								<!-- 							<view class="ui-w-47 ui-f-start ui-mar-t-45 ui-f-wrap">
-									<image class="ui-img-size6" src="@/static/images/stand.png"></image>
-									<text class="ui-font-24 ui-mar-l-10">站立<分></text>
-									<view class="ui-text-box ui-mar-t-15 ui-f-center">
-										<text class="ui-font-2" style="font-size:30rpx">暂无数据</text>
-									</view>
-								</view> -->
-							</view>
-						</view>
+							
+						</view> -->
 						<movable-area class="ui-f-between ui-mar-t-10  ui-f-wrap ui-w-h-100" ref="areaBox" id="areaBox"
 							style="background-color: rgba(255,255,255,0);">
 							<!-- 这块只是循环出固定内容，监听其元素touch事件获取坐标 -->
@@ -70,8 +38,41 @@
 								:class="(hoverClass==='appLi'+index)?'select':''"
 								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
 								@touchend="AppLi_touchend(index)" v-if="deviceList.length&&item.isShow||item.isEdit ">
-								<SleepCard v-if="item.type === '1'" :date="date" :sleepMap="sleepMap" :item="item"
-									:isEdit="isEdit" @iconClick="editCard"></SleepCard>
+								<view class="ui-f-center ui-f-wrap ui-min-h-121 ui-padding-20"  v-if="item.type === '0'">
+									<view class="ui-f-start ui-f-wrap">
+										<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
+										<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
+										<view class="ui-text-box ui-mar-t-15">
+											<text class="ui-font-1">{{caiHongData[0]?caiHongData[0]:0}}</text>
+											<text class="ui-font-2">/{{maxDataArr[0]?maxDataArr[0]:0}}</text>
+										</view>
+									</view>
+									<!-- 								<view class="ui-w-47 ui-f-start ui-f-wrap">
+										<image class="ui-img-size6" src="@/static/images/timeclock.png"></image>
+										<text class="ui-font-24 ui-mar-l-10">活动(分)</text>
+										<view class="ui-text-box ui-mar-t-15">
+											<text class="ui-font-1">{{caiHongData[1]?caiHongData[1]:0}}</text>
+											<text class="ui-font-2">/{{maxDataArr[1]?maxDataArr[1]:0}}</text>
+										</view>
+									</view> -->
+									<view class="ui-f-start ui-f-wrap" style="margin-top: 15px;">
+										<image class="ui-img-size5" src="@/static/images/walk2.png"></image>
+										<text class="ui-font-24 ui-mar-l-10">行走<步></text>
+										<view class="ui-text-box ui-mar-t-15">
+											<text class="ui-font-1">{{caiHongData[2]?caiHongData[2]:0}}</text>
+											<text class="ui-font-2">/{{maxDataArr[2]?maxDataArr[2]:0}}</text>
+										</view>
+									</view>
+									<!-- 							<view class="ui-w-47 ui-f-start ui-mar-t-45 ui-f-wrap">
+										<image class="ui-img-size6" src="@/static/images/stand.png"></image>
+										<text class="ui-font-24 ui-mar-l-10">站立<分></text>
+										<view class="ui-text-box ui-mar-t-15 ui-f-center">
+											<text class="ui-font-2" style="font-size:30rpx">暂无数据</text>
+										</view>
+									</view> -->
+								</view>
+								<SleepCard v-if="item.type === '1'" :date="newDate? newDate.slice(5,-3) : '暂无数据'" :sleepMap="sleepMap" :item="item"
+									:isEdit="isEdit" @iconClick="editCard" :sleep="sleep"></SleepCard>
 
 
 								<view>
@@ -110,8 +111,8 @@
 								:class="(hoverClass==='appLi'+index)?'select':''"
 								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
 								@touchend="AppLi_touchend(index)" v-if="!deviceList.length&&item.isShow ">
-								<SleepCard v-if="item.type === '1'" :date="date" :sleepMap="sleepMap" :item="item"
-									:isEdit="isEdit" @iconClick="editCard"></SleepCard>
+								<SleepCard v-if="item.type === '1'" :date="newDate? newDate.slice(5,-3) : '暂无数据'" :sleepMap="sleepMap" :item="item"
+									:isEdit="isEdit" @iconClick="editCard" :sleep="sleep"></SleepCard>
 								<YaLiCard v-if="item.type === '7'" :item="item" :option="yaLiOption"></YaLiCard>
 							</view>
 							<!-- 滑块 -->
@@ -233,6 +234,11 @@
 				date: '',
 				echartDate: '',
 				listData_c: [{
+						type: '0',
+						name: 'motionCard',
+						img: '../../../static/images/sleep_drag.svg',
+						isShow: true
+					}, {
 						type: '1',
 						name: 'SleepCard',
 						img: '../../../static/images/sleep_drag.svg',
@@ -271,6 +277,11 @@
 					}
 				],
 				listData_d: [{
+					type: '0',
+					name: 'motionCard',
+					img: '../../../static/images/sleep_drag.svg',
+					isShow: true
+				}, {
 					type: '1',
 					name: 'SleepCard',
 					img: '../../../static/images/sleep_drag.svg',
@@ -309,6 +320,7 @@
 					title: '骑行'
 				}],
 				heartrate: 0,
+				sleep:[],
 				newDate: '',
 				hbloodpresure: 0,
 				lbloodpresure: 0,
@@ -350,6 +362,7 @@
 						dayTime: '',
 						deviceId: this.deviceInfo.deviceId
 					}).then((res) => {
+						this.sleep = res.data.tWatchSleep[0].value
 						this.heartrate = res.data.HeartRateList.length == 0 ? 0 : res.data
 							.HeartRateList[0].value * 1
 						this.newDate = res.data.HeartRateList.length == 0 ? '' : res.data

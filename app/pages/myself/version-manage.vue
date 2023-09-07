@@ -75,8 +75,8 @@
 					versionType: isIos ? '0' : '1',
 				}).then(res => {
 					const curVersion = res.data.content
-					const result = versionCompare(this.appVersion, curVersion)
-					if (!result) {
+					const result = versionCompare(curVersion,this.appVersion)
+					if (result == 1) {
 						this.downloadUrl = res.data.downloadAddress
 						this.hide = true
 					} else {

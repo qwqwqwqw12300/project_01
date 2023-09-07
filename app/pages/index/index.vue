@@ -218,13 +218,15 @@ vb
       ...mapGetters(['filterDevice']),
     },
     onShow() {
-		// #ifdef APP-PLUS
-		this.handleUpdate();
-		// #endif
 		this.handleInitList();
 		this.timer = setInterval(() => {
 			this.forIndexFun()
 		}, 1000 * 60)
+		// #ifdef APP-PLUS
+		setTimeout(()=>{
+			this.handleUpdate();
+		},1000)
+		// #endif
     },
     onHide() {
       this.timer && clearInterval(this.timer)
@@ -373,10 +375,9 @@ vb
 	  	PostVersionInfo({
 	  		versionType: isIos ? '0' : '1',
 	  	}).then(res => {
-	  		console.log(res)
 	  		const curVersion = res.data.content
-	  		const result = versionCompare(this.appVersion, curVersion)
-	  		if (!result) {
+	  		const result = versionCompare(curVersion,this.appVersion)
+	  		if (result == 1) {
 	  			this.downloadUrl = res.data.downloadAddress
 	  			this.hide = true
 	  		}
@@ -658,6 +659,7 @@ vb
   	position: fixed;
   	left: 0;
   	top: 0;
+	z-index: 999999;
   	.renew{
   		width: 300px;
   		height: 240rpx;

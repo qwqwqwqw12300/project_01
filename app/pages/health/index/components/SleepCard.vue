@@ -5,13 +5,15 @@
 		<image v-if="item.isShow && isEdit" class="ui-img-size2 ui-pos-right" src="../../../../static/images/minus.png"
 			@click.stop="iconClick()"></image>
 		<view class="ui-f-start ui-f-wrap">
-			<image class="ui-img-size3" src="/static/images/yueliang.png"></image>
-			<text class="ui-font-32 ui-mar-l-10">睡眠</text>
-			<view class="ui-font-3 ui-w-h-100  ui-mar-t-15" style="padding-left:20rpx">
-				{{ sleepMap.date }} <text style="margin-left: 14rpx">{{ sleepMap.sleepQuality }}</text>
+			<view class="header" style="display: flex; justify-content: space-between; width: 100%;">
+				<text class="ui-font-32 ui-mar-l-10">睡眠</text>
+				<image class="ui-img-size3" src="/static/images/yueliang.png"></image>
 			</view>
+			<!-- <view class="ui-font-3 ui-w-h-100  ui-mar-t-15" style="padding-left:20rpx"> -->
+				 <view style="font-size: 25px; margin-top: 50rpx;">{{ sleep.length?sleep[0]+':'+sleep[1]:0 }}</view>
+			<!-- </view> -->
 			<!-- <view style="margin-top: 10rpx;padding-left: 10rpx;">{{ sleepMap.sleepQuality }}</view> -->
-			<view class="ui-w-h-100 ui-f-start ui-mar-t-20">
+			<!-- <view class="ui-w-h-100 ui-f-start ui-mar-t-20">
 				<view class="ui-color-block1 ui-color-block1-width" v-if="sleepMap.score >= 0 "></view>
 				<view class="ui-color-block2 ui-color-block1-width ui-mar-l-10"
 					v-if="sleepMap.score > 50 || sleepMap.score===0"></view>
@@ -19,10 +21,9 @@
 					v-if="sleepMap.score > 70 || sleepMap.score===0"></view>
 				<view class="ui-color-block4 ui-color-block1-width ui-mar-l-10"
 					v-if="sleepMap.score > 90 || sleepMap.score===0 "></view>
-			</view>
-			<view class="ui-f-between ui-w-h-100 ui-mar-t-10">
-				<text class="ui-font-22 ui-font-c-888">差</text>
-				<text class="ui-font-22 ui-font-c-888">很好</text>
+			</view> -->
+			<view class="ui-f-between ui-w-h-100 ui-mar-t-45 ">
+				<text class="ui-font-22 ui-font-c-888">{{ date }}</text>
 			</view>
 		</view>
 	</view>
@@ -48,6 +49,9 @@
 			// },
 			sleepMap: {
 				type: Object
+			},
+			sleep: {
+				type: Array
 			},
 			date: {
 				type: String
