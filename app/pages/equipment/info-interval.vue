@@ -17,17 +17,13 @@
 				<u-cell title="开始" arrow-direction="right" isLink>
 					<text slot="value" class="u-slot-value">
 						<!-- {{ defaultValue.length ? `${defaultValue[0]}  至 ${defaultValue[1]}` : '请选择'}} -->
-						<picker mode="time" :value="starttime" start="00:00" end="24:00" @change="bindstarttime">
-							<view class="uni-input">{{starttime||'请选择'}}</view>
-						</picker>
+							<view class="uni-input" @click="showPop('start')">{{starttime||'请选择'}}</view>
 					</text>
 				</u-cell>
 				<u-cell title="结束" arrow-direction="right" isLink>
 					<text slot="value" class="u-slot-value">
 						<!-- {{ defaultValue.length ? `${defaultValue[0]}  至 ${defaultValue[1]}` : '请选择'}} -->
-						<picker mode="time" :value="endtime" start="00:00" end="24:00" @change="bindendtime">
-							<view class="uni-input">{{endtime||'请选择'}}</view>
-						</picker>
+						<view class="uni-input" @click="showPop('end')">{{endtime||'请选择'}}</view>
 					</text>
 				</u-cell>
 			</u-cell-group>
@@ -58,6 +54,7 @@
 			:show-tips="true" :begin-text="'开始'" :end-text="'结束'" :show-seconds="false" @confirm="onSelected"
 			@cancel="showPicker=false">
 		</time-picker> -->
+		<lingfeng-timepicker ref="timePop" :defaultData="defaultData" type="hour-minute" @change="timeChange"></lingfeng-timepicker>
 	</app-body>
 </template>
 
@@ -79,6 +76,10 @@
 				starttime: '',
 				endtime: '',
 				period: '',
+				changename:'',
+				defaultData:{
+				    startTime:'09:30'
+				},
 				daylist: [{
 						name: '每天',
 						type: 'allday',
@@ -141,6 +142,18 @@
 			// this.defaultValue = [startTime, endTime]
 		},
 		methods: {
+			showPop(type) {
+				this.changename = type
+				this.$refs.timePop.show();
+			},
+			timeChange(val) {
+				if(this.changename == 'start'){
+					this.starttime = val
+				}else{
+					this.endtime = val
+				}
+				console.log(val);
+			},
 			handleDel() {
 				const list = []
 				list.push(this.id)
@@ -206,7 +219,7 @@
 			},
 			changeweek(index) {
 				let arr = this.week
-				if(index != undefined){
+				if (index != undefined) {
 					this.week[index].act = !this.week[index].act
 				}
 				this.daylist[0].act = false
@@ -231,23 +244,27 @@
 					return
 				}
 			},
-			bindstarttime(e) {
-				this.starttime = e.detail.value
-			},
-			bindendtime(e) {
-				this.endtime = e.detail.value
-			},
+			
 			handleSave() {
 				if (!this.name) return uni.$u.toast('名称不能为空')
 				if (!this.starttime) return uni.$u.toast('请选择开始时间')
 				if (!this.endtime) return uni.$u.toast('请选择结束时间')
+				let periodtext = ''
+				for (var i = 0; i < this.week.length; i++) {
+					if (this.week[i].act) {
+						periodtext += i + ','
+					}
+				}
+				if (periodtext == '') return uni.$u.toast('请选择禁用周期')
+				periodtext = periodtext.substring(0, periodtext.length - 1)
 				PostSetPeriodDisable({
 					deviceId: this.deviceInfo.deviceId,
 					periodDisableTag: this.name,
 					beginTime: this.starttime,
 					endTime: this.endtime,
 					uuid: this.id,
-					enable: this.enable
+					enable: this.enable,
+					period: periodtext
 				}).then(res => {
 					console.log(res, 'res')
 					uni.$u.toast(res.msg)
@@ -269,25 +286,25 @@
 			let arr = this.week
 			let periods = list.period.split(',')
 			for (var i = 0; i < periods.length; ++i) {
-				if(periods[i] == 0){
+				if (periods[i] == 0) {
 					arr[0].act = true
 				}
-				if(periods[i] == 1){
+				if (periods[i] == 1) {
 					arr[1].act = true
 				}
-				if(periods[i] == 2){
+				if (periods[i] == 2) {
 					arr[2].act = true
 				}
-				if(periods[i] == 3){
+				if (periods[i] == 3) {
 					arr[3].act = true
 				}
-				if(periods[i] == 4){
+				if (periods[i] == 4) {
 					arr[4].act = true
 				}
-				if(periods[i] == 5){
+				if (periods[i] == 5) {
 					arr[5].act = true
 				}
-				if(periods[i] == 6){
+				if (periods[i] == 6) {
 					arr[6].act = true
 				}
 			}

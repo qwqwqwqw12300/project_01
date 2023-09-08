@@ -10,7 +10,7 @@
 				<text class="ui-font-32 ui-mar-l-10">血氧</text>
 				<image class="ui-img-size3" src="/static/images/xueyang.png"></image>
 			</div>
-			<text style="font-size: 25px; margin-top: 50rpx;">{{bloodOxygen}}</text>
+			<text style="font-size: 25px; margin-top: 50rpx;">{{bloodOxygen||'暂无数据'}}</text>
 			<!-- <text class="bpm">mmHg</text> -->
 
 			<!-- <view class="ui-w-h-100 ui-mar-t-20">

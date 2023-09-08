@@ -18,17 +18,13 @@
 					<u-cell title="开始" arrow-direction="right" isLink>
 						<text slot="value" class="u-slot-value">
 							<!-- {{ defaultValue.length ? `${defaultValue[0]}  至 ${defaultValue[1]}` : '请选择'}} -->
-							<picker mode="time" :value="starttime" start="00:00" end="24:00" @change="bindstarttime">
-								<view class="uni-input">{{starttime||'请选择'}}</view>
-							</picker>
+								<view class="uni-input" @click="showPop('start')">{{starttime||'请选择'}}</view>
 						</text>
 					</u-cell>
 					<u-cell title="结束" arrow-direction="right" isLink>
 						<text slot="value" class="u-slot-value">
 							<!-- {{ defaultValue.length ? `${defaultValue[0]}  至 ${defaultValue[1]}` : '请选择'}} -->
-							<picker mode="time" :value="endtime" start="00:00" end="24:00" @change="bindendtime">
-								<view class="uni-input">{{endtime||'请选择'}}</view>
-							</picker>
+							<view class="uni-input" @click="showPop('end')">{{endtime||'请选择'}}</view>
 						</text>
 					</u-cell>
 				</u-cell-group>
@@ -64,6 +60,7 @@
 			:show-tips="true" :begin-text="'开始'" :end-text="'结束'" :show-seconds="false" @confirm="onSelected"
 			@cancel="showPicker=false">
 		</time-picker> -->
+		<lingfeng-timepicker ref="timePop" :defaultData="defaultData" type="hour-minute" @change="timeChange"></lingfeng-timepicker>
 	</app-body>
 </template>
 
@@ -82,6 +79,10 @@
 				deviceInfo: '',
 				starttime: '',
 				endtime: '',
+				changename:'',
+				defaultData:{
+				    startTime:'09:30'
+				},
 				daylist: [{
 						name: '每天',
 						type: 'allday',
@@ -140,6 +141,18 @@
 
 		},
 		methods: {
+			showPop(type) {
+				this.changename = type
+				this.$refs.timePop.show();
+			},
+			timeChange(val) {
+				if(this.changename == 'start'){
+					this.starttime = val
+				}else{
+					this.endtime = val
+				}
+				console.log(val);
+			},
 			changetype(index) {
 				for (var i = 0; i < this.daylist.length; i++) {
 					if (i == index) {

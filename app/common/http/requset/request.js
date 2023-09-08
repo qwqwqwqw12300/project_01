@@ -61,11 +61,11 @@ const request = (url, options, process, method = 'POST') => {
 		isError = process.error !== false; // 是否使用统一报错
 	console.log('请求URL|入参：' + url + ' | ' + JSON.stringify(options || {}));
 	return new Promise((resolve, reject) => {
-		if (showLoading) uni.showLoading();
+		// if (showLoading) uni.showLoading();
 		requestMethod(_url, options, method).then(result => {
 			const handleData = resultHandle(result, isError);
 			handleData.type === 'success' ? resolve(result.data) : reject(result.data);
-			if (showLoading) uni.hideLoading();
+			// if (showLoading) uni.hideLoading();
 		}, error => {
 			log.apm({
 				url,
@@ -77,7 +77,7 @@ const request = (url, options, process, method = 'POST') => {
 				content: '当前网络不稳定，请重试'
 			});
 			reject(error);
-			if (showLoading) uni.hideLoading();
+			// if (showLoading) uni.hideLoading();
 
 		})
 	});

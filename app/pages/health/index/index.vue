@@ -38,7 +38,7 @@
 								:class="(hoverClass==='appLi'+index)?'select':''"
 								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
 								@touchend="AppLi_touchend(index)" v-if="deviceList.length&&item.isShow||item.isEdit ">
-								<view class="ui-f-center ui-f-wrap ui-min-h-121 ui-padding-20"  v-if="item.type === '0'">
+								<view class="ui-f-center ui-f-wrap ui-min-h-121 ui-padding-20" v-if="item.type === '0'">
 									<view class="ui-f-start ui-f-wrap">
 										<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
 										<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
@@ -71,34 +71,35 @@
 										</view>
 									</view> -->
 								</view>
-								<SleepCard v-if="item.type === '1'" :date="newDate? newDate.slice(5,-3) : '暂无数据'" :sleepMap="sleepMap" :item="item"
-									:isEdit="isEdit" @iconClick="editCard" :sleep="sleep"></SleepCard>
+								<SleepCard v-if="item.type === '1'" :date="newDate? newDate.slice(5,-3) : date"
+									:sleepMap="sleepMap" :item="item" :isEdit="isEdit" @iconClick="editCard"
+									:sleep="sleep"></SleepCard>
 
 
 								<view>
-									<XinLvCard v-if="item.type === '2' " :date="newDate? newDate.slice(5,-3) : '暂无数据'"
+									<XinLvCard v-if="item.type === '2' " :date="newDate? newDate.slice(5,-3) : date"
 										:fetchRes="fetchRes" :option="xinLvOption" :item="item" :isEdit="isEdit"
 										@iconClick="editCard" :heartRate="heartrate">
 									</XinLvCard>
 									<XueYaCard v-if="item.type === '3'"
-										:date="bloodpreDate? bloodpreDate.slice(5,-3) : '暂无数据'" :fetchRes="fetchRes"
+										:date="bloodpreDate? bloodpreDate.slice(5,-3) : date" :fetchRes="fetchRes"
 										:option="xueYaOption" :item="item" :isEdit="isEdit" @iconClick="editCard"
 										:HbloodPresure="hbloodpresure" :LbloodPresure="lbloodpresure">
 									</XueYaCard>
 									<XueYangCard v-if="item.type === '4'"
-										:date="bloodDate? bloodDate.slice(5,-3) : '暂无数据'" :fetchRes="fetchRes"
+										:date="bloodDate? bloodDate.slice(5,-3) : date" :fetchRes="fetchRes"
 										:option="xueYangOption" :item="item" :isEdit="isEdit" @iconClick="editCard"
 										:bloodOxygen="bloodoxygen">
 									</XueYangCard>
-									<TiWenCard v-if="item.type === '5'" :date="TwDate? TwDate.slice(5,-3) : '暂无数据'"
+									<TiWenCard v-if="item.type === '5'" :date="TwDate? TwDate.slice(5,-3) : date"
 										:fetchRes="fetchRes" :option="tiWenOption" :item="item" :isEdit="isEdit"
 										@iconClick="editCard" :temperature="temperature">
 									</TiWenCard>
-									<YaLiCard v-if="item.type === '6'" :date="YlDate? YlDate.slice(5,-3) : '暂无数据'"
+									<YaLiCard v-if="item.type === '6'" :date="YlDate? YlDate.slice(5,-3) : date"
 										:item="item" :fetchRes="fetchRes" :option="yaLiOption" :isEdit="isEdit"
 										:Presure="presure"></YaLiCard>
 									<XinDianCard v-if="item.type === '7'"
-										:date="fetchRes.ElectrocardiogramTime.substr(5,6) && fetchRes.electrocardiogramMapList.length ? fetchRes.ElectrocardiogramTime.substr(5,6): '暂无数据'"
+										:date="fetchRes.ElectrocardiogramTime.substr(5,6) && fetchRes.electrocardiogramMapList.length ? fetchRes.ElectrocardiogramTime.substr(5,6): date"
 										:fetchRes="fetchRes" :option="xinDianOption" :item="item" :isEdit="isEdit"
 										@iconClick="editCard">
 									</XinDianCard>
@@ -111,8 +112,42 @@
 								:class="(hoverClass==='appLi'+index)?'select':''"
 								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
 								@touchend="AppLi_touchend(index)" v-if="!deviceList.length&&item.isShow ">
-								<SleepCard v-if="item.type === '1'" :date="newDate? newDate.slice(5,-3) : '暂无数据'" :sleepMap="sleepMap" :item="item"
-									:isEdit="isEdit" @iconClick="editCard" :sleep="sleep"></SleepCard>
+								<view class="ui-f-center ui-f-wrap ui-min-h-121 ui-padding-20" v-if="item.type === '0'">
+									<view class="ui-f-start ui-f-wrap">
+										<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
+										<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
+										<view class="ui-text-box ui-mar-t-15">
+											<text class="ui-font-1">{{caiHongData[0]?caiHongData[0]:0}}</text>
+											<text class="ui-font-2">/{{maxDataArr[0]?maxDataArr[0]:0}}</text>
+										</view>
+									</view>
+									<!-- 								<view class="ui-w-47 ui-f-start ui-f-wrap">
+										<image class="ui-img-size6" src="@/static/images/timeclock.png"></image>
+										<text class="ui-font-24 ui-mar-l-10">活动(分)</text>
+										<view class="ui-text-box ui-mar-t-15">
+											<text class="ui-font-1">{{caiHongData[1]?caiHongData[1]:0}}</text>
+											<text class="ui-font-2">/{{maxDataArr[1]?maxDataArr[1]:0}}</text>
+										</view>
+									</view> -->
+									<view class="ui-f-start ui-f-wrap" style="margin-top: 15px;">
+										<image class="ui-img-size5" src="@/static/images/walk2.png"></image>
+										<text class="ui-font-24 ui-mar-l-10">行走<步></text>
+										<view class="ui-text-box ui-mar-t-15">
+											<text class="ui-font-1">{{caiHongData[2]?caiHongData[2]:0}}</text>
+											<text class="ui-font-2">/{{maxDataArr[2]?maxDataArr[2]:0}}</text>
+										</view>
+									</view>
+									<!-- 							<view class="ui-w-47 ui-f-start ui-mar-t-45 ui-f-wrap">
+										<image class="ui-img-size6" src="@/static/images/stand.png"></image>
+										<text class="ui-font-24 ui-mar-l-10">站立<分></text>
+										<view class="ui-text-box ui-mar-t-15 ui-f-center">
+											<text class="ui-font-2" style="font-size:30rpx">暂无数据</text>
+										</view>
+									</view> -->
+								</view>
+								<SleepCard v-if="item.type === '1'" :date="newDate? newDate.slice(5,-3) : date"
+									:sleepMap="sleepMap" :item="item" :isEdit="isEdit" @iconClick="editCard"
+									:sleep="sleep"></SleepCard>
 								<YaLiCard v-if="item.type === '7'" :item="item" :option="yaLiOption"></YaLiCard>
 							</view>
 							<!-- 滑块 -->
@@ -122,10 +157,10 @@
 								<image class="ui-w-h-100" :src="touchItem.img"></image>
 							</movable-view>
 						</movable-area>
-						<view class="ui-f-center ui-mar-t-45">
+						<!-- <view class="ui-f-center ui-mar-t-45">
 							<text class="ui-block-edit ui-font-center ui-br-16"
 								@click="tabEdit()">{{ isEdit ? "完成" : "编辑" }}</text>
-						</view>
+						</view> -->
 					</view>
 				</view>
 			</scroll-view>
@@ -320,7 +355,7 @@
 					title: '骑行'
 				}],
 				heartrate: 0,
-				sleep:[],
+				sleep: [],
 				newDate: '',
 				hbloodpresure: 0,
 				lbloodpresure: 0,
@@ -385,6 +420,9 @@
 							.tWatchPressures[0].value * 1
 						this.YlDate = res.data.tWatchPressures.length == 0 ? '' : res.data
 							.tWatchPressures[0].time
+						this.pageShow = true;
+						this.loading = false;
+						this.isRefresh = false;
 					})
 				}, 300)
 
@@ -403,7 +441,7 @@
 			 **/
 			pullDownRefresh() {
 				this.isRefresh = true;
-				this.init();
+				this.getHeartRate();
 			},
 			init() {
 				// this.pageShow = false;
@@ -475,36 +513,38 @@
 					humanId,
 				}
 				this.getHeartRate();
-				GetCaiHongData(params).then(res => {
-					res.data.sleepMap = res.data.sleepMap ? res.data.sleepMap : 1; // 无数据默认显示1
-					this.logstatrt(res);
-					// var tt = {
-					// 	data:this.fetchRes
-					// }
-					// this.logstatrt(tt);
-					this.fetchRes = res.data;
-					this.loading = false;
-					this.isRefresh = false;
-					console.log('fetchres', this.fetchRes)
-				})
-				GetDaySleepQuality({
-					deviceId,
-					humanId,
-					// dayTime: '2023-5-06'
-					dayTime: uni.$u.timeFormat(new Date(), 'yyyy-mm-dd')
-				}).then(res => {
-					const {
-						sleepQuality,
-						sleepScore,
-						lastSleepTime
-					} = res.data
-					this.sleepMap = {
-						sleepQuality,
-						score: sleepScore || 0,
-						date: uni.$u.timeFormat(lastSleepTime, 'mm月dd日')
-					}
-					console.log(res, '-----------------------')
-				})
+				this.loading = false;
+				this.isRefresh = false;
+				// GetCaiHongData(params).then(res => {
+				// 	res.data.sleepMap = res.data.sleepMap ? res.data.sleepMap : 1; // 无数据默认显示1
+				// 	this.logstatrt(res);
+				// 	// var tt = {
+				// 	// 	data:this.fetchRes
+				// 	// }
+				// 	// this.logstatrt(tt);
+				// 	this.fetchRes = res.data;
+				// 	this.loading = false;
+				// 	this.isRefresh = false;
+				// 	console.log('fetchres', this.fetchRes)
+				// })
+				// GetDaySleepQuality({
+				// 	deviceId,
+				// 	humanId,
+				// 	// dayTime: '2023-5-06'
+				// 	dayTime: uni.$u.timeFormat(new Date(), 'yyyy-mm-dd')
+				// }).then(res => {
+				// 	const {
+				// 		sleepQuality,
+				// 		sleepScore,
+				// 		lastSleepTime
+				// 	} = res.data
+				// 	this.sleepMap = {
+				// 		sleepQuality,
+				// 		score: sleepScore || 0,
+				// 		date: uni.$u.timeFormat(lastSleepTime, 'mm月dd日')
+				// 	}
+				// 	console.log(res, '-----------------------')
+				// })
 			},
 			jumpUrl(url) {
 				uni.navigateTo({

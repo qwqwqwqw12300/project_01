@@ -9,7 +9,7 @@
 			<image class="ui-img-size3" src="/static/images/xindian.png"></image>
 			<text class="ui-font-32 ui-mar-l-10">心电</text>
 			<view class="ui-font-3 ui-w-h-100 ui-padding-l-58 ui-mar-t-15">
-				{{date}}
+				{{date||'暂无数据'}}
 			</view>
 			<view class="ui-w-h-100 ui-mar-t-20">
 				<app-echarts class="ui-echarts-size" :option="option" id="xinDianChart">

@@ -5,7 +5,7 @@
 			<image class="img" src="/static/images/new-watch-device.png"></image>
 			<view class="device-info">
 				<view class="title">
-					<text class="name">{{record.name || '未命名设备'}}</text>
+					<text class="name">{{record.humanName || '未命名设备'}}</text>
 
 				</view>
 				<view class="status">

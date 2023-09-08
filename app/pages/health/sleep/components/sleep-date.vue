@@ -236,7 +236,7 @@
 						//深睡
 						this.sleepList[1].hour = deepSleepTime[0]
 						this.sleepList[1].minutes = deepSleepTime[1]
-						this.sleepList[1].percent = deepSleepDouble * 100
+						this.sleepList[1].percent = (deepSleepDouble * 100).toFixed(0)
 						if (this.sleepList[1].percent > 10 && this.sleepList[1].percent < 40) {
 							this.sleepList[1].type = 0
 						}
@@ -249,7 +249,7 @@
 						//浅睡
 						this.sleepList[2].hour = lightSleepTime[0]
 						this.sleepList[2].minutes = lightSleepTime[1]
-						this.sleepList[2].percent = lightSleepDouble * 100
+						this.sleepList[2].percent = (lightSleepDouble * 100).toFixed(0)
 						if (this.sleepList[2].percent > 45 && this.sleepList[2].percent < 80) {
 							this.sleepList[2].type = 0
 						}
@@ -259,30 +259,30 @@
 						if (this.sleepList[2].percent > 80) {
 							this.sleepList[2].type = 2
 						}
-						//清醒
-						this.sleepList[3].hour = clearSleepTime[0]
-						this.sleepList[3].minutes = clearSleepTime[1]
-						this.sleepList[3].percent = clearHeadedDouble * 100
-						if (this.sleepList[3].percent > 0 && this.sleepList[3].percent < 10) {
+						//快速眼动
+						this.sleepList[3].hour = remSleepTime[0]
+						this.sleepList[3].minutes = remSleepTime[1]
+						this.sleepList[3].percent = (remSleepDouble * 100).toFixed(0)
+						if (this.sleepList[3].percent > 15 && this.sleepList[3].percent < 25) {
 							this.sleepList[3].type = 0
 						}
-						if (this.sleepList[3].percent < 1) {
+						if (this.sleepList[3].percent < 15) {
 							this.sleepList[3].type = 1
 						}
-						if (this.sleepList[3].percent > 10) {
+						if (this.sleepList[3].percent > 25) {
 							this.sleepList[3].type = 2
 						}
-						//快速眼动
-						this.sleepList[4].hour = remSleepTime[0]
-						this.sleepList[4].minutes = remSleepTime[1]
-						this.sleepList[4].percent = (remSleepDouble * 100).toFixed(0)
-						if (this.sleepList[4].percent > 15 && this.sleepList[4].percent < 25) {
+						//清醒
+						this.sleepList[4].hour = clearSleepTime[0]
+						this.sleepList[4].minutes = clearSleepTime[1]
+						this.sleepList[4].percent = (clearHeadedDouble * 100).toFixed(0)
+						if (this.sleepList[4].percent > 1 && this.sleepList[4].percent < 10) {
 							this.sleepList[4].type = 0
 						}
-						if (this.sleepList[4].percent < 15) {
+						if (this.sleepList[4].percent < 1) {
 							this.sleepList[4].type = 1
 						}
-						if (this.sleepList[4].percent > 25) {
+						if (this.sleepList[4].percent > 10) {
 							this.sleepList[4].type = 2
 						}
 						// this.sleepData = uni.$u.deepClone(res.data)
@@ -366,7 +366,7 @@
 							show: true
 						},
 						encode: {
-							// x: [1, 2],
+							x: [1, 2],
 							// label: [0]
 						},
 						itemStyle: {

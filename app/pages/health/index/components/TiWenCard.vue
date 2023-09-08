@@ -10,8 +10,8 @@
 				<text class="ui-font-32 ui-mar-l-10">体温</text>
 				<image class="ui-img-size3" src="/static/images/tiwen.png"></image>
 			</div>
-			<text style="font-size: 25px; margin-top: 50rpx;">{{temperature}}</text>
-			<text class="bpm">℃</text>
+			<text style="font-size: 25px; margin-top: 50rpx;">{{temperature||'暂无数据'}}</text>
+			<text class="bpm" v-if="temperature">℃</text>
 			<!-- <view class="ui-w-h-100 ui-mar-t-20">
 				<app-echarts class="ui-echarts-size" :option="option" id="tiWenChart">
 				</app-echarts> -->
