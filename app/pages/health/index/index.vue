@@ -2159,4 +2159,8 @@
 		height: 500px;
 		width: 100%;
 	}
+
+	.health-index {
+		font-family: health-index-font;
+	}
 </style>

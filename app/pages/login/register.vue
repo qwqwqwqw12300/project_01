@@ -6,9 +6,9 @@
 -->
 
 <template>
-	<app-body :needService="false" :hideTitle="true">
+	<app-body :needService="false" title="注册账号">
 		<view class="ui-body">
-			<text class="ui-logo">注册账号</text>
+			<!-- <text class="ui-logo">注册账号</text> -->
 			<u-form class="ui-form">
 				<view class="ui-form-item">
 					<u-input placeholder="请输入手机号码" type="number" v-model="formParams.phone" maxlength="11"
@@ -47,8 +47,9 @@
 						</template>
 					</u-input>
 				</view>
-				<view class="ui-btn"><button class="default" @click="register">注册</button></view>
-				<text class="ui-link active" @click="goLogin">老朋友？点此登录</text>
+				<view class="ui-btn"><button class="default" @click="register" style="margin-bottom: 10px;">注册</button>
+				</view>
+				<!-- <text class="ui-link active" @click="goLogin">老朋友？点此登录</text> -->
 				<view class="ui-agreement">
 					<u-checkbox-group v-model="radiovalue" @change="handleShowModal">
 						<u-checkbox :customStyle="{ marginRight: '8rpx' }" shape="circle" activeColor="#fdbc2b"
@@ -111,14 +112,13 @@
 				content: '',
 			};
 		},
-		mounted() {
-		},
+		mounted() {},
 		methods: {
 			/**
 			 * 打开用户协议弹窗
 			 */
 			userAgreement() {
-				PostUserAgreement({}).then(res=>{
+				PostUserAgreement({}).then(res => {
 					this.content = res.data.content
 				})
 				// uni.navigateTo({
@@ -129,7 +129,7 @@
 			/**
 			 * 取消用户协议弹窗
 			 */
-			handleCancle(){
+			handleCancle() {
 				this.radiovalue = []
 				this.radiovalue.push('ag')
 				this.showVisible = false
@@ -137,7 +137,7 @@
 			/**
 			 * 点击单选框用户协议弹窗
 			 */
-			handleShowModal(){
+			handleShowModal() {
 				if (!this.radiovalue.includes('ag')) {
 					this.userAgreement()
 				}
@@ -197,7 +197,7 @@
 						this.$store.dispatch('getPushMsgState');
 						this.interVal = setInterval(() => {
 							this.$store.dispatch('setJGInfo')
-							if(this.$store.getters.interSwitch) clearInterval(this.interVal);
+							if (this.$store.getters.interSwitch) clearInterval(this.interVal);
 						}, 1000)
 						uni.$u.toast('注册成功')
 						setTimeout(() => {
@@ -256,10 +256,10 @@
 			 */
 			codeReset() {
 				this.$refs.codeRef.handleGetCaptcha();
-			},	
+			},
 			agreementTap(type) {
 				this.showVisible = false
-				if(!type) return this.radiovalue = []
+				if (!type) return this.radiovalue = []
 				this.radiovalue = ['ag']
 			},
 			closeChange() {
@@ -335,7 +335,8 @@
 			color: #0094ff;
 		}
 	}
-	.ui-content{
+
+	.ui-content {
 		width: 660rpx;
 		height: 900rpx;
 		border-radius: 20rpx;
@@ -343,30 +344,34 @@
 		border-bottom-right-radius: 0;
 		filter: drop-shadow(0 0 5rpx rgba(7, 5, 5, 0.34));
 		background-image: #fff;
+
 		&-title {
 			padding: 22rpx 0;
 			font-weight: bold;
 			text-align: center;
 			font-size: 36rpx;
 		}
+
 		&-bottom {
 			width: 660rpx;
 			display: flex;
 			align-items: center;
 			line-height: 0;
+
 			button {
 				width: 50%;
 				border-radius: 0;
 			}
-			&-cancel {
-				
-			}
+
+			&-cancel {}
+
 			&-confirm {
 				border-left: 1px solid #e8e8e8;
 				color: #599FFF;
 			}
 		}
-		.uni-scroll-content{
+
+		.uni-scroll-content {
 			width: 100%;
 			height: 808rpx;
 			word-wrap: break-word;
@@ -376,9 +381,9 @@
 			padding: 0 31rpx 0 31rpx;
 		}
 	}
+
 	/deep/ .u-popup__content {
 		border-bottom-left-radius: 0 !important;
 		border-bottom-right-radius: 0 !important;
 	}
-	
 </style>

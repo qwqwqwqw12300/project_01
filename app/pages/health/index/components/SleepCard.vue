@@ -10,7 +10,9 @@
 				<image class="ui-img-size3" src="/static/images/yueliang.png"></image>
 			</view>
 			<!-- <view class="ui-font-3 ui-w-h-100  ui-mar-t-15" style="padding-left:20rpx"> -->
-				 <view style="font-size: 25px; margin-top: 50rpx;">{{ sleep.length?sleep[0]+':'+sleep[1]:'暂无数据' }}</view>
+			<view style="font-size: 25px; margin-top: 50rpx;" class="health-index">
+				{{ sleep.length?sleep[0]+':'+sleep[1]:'暂无数据' }}
+			</view>
 			<!-- </view> -->
 			<!-- <view style="margin-top: 10rpx;padding-left: 10rpx;">{{ sleepMap.sleepQuality }}</view> -->
 			<!-- <view class="ui-w-h-100 ui-f-start ui-mar-t-20">
@@ -97,6 +99,15 @@
 </script>
 
 <style lang="scss" scoped>
+	// @font-face {
+	// 	font-family: 'health-index-font';
+	// 	src: url('@/static/ttf/DIN_Alternate_Bold.ttf');
+	// }
+
+	.health-index {
+		font-family: health-index-font;
+	}
+
 	.ui-pos-right {
 		position: absolute;
 		right: 20rpx;

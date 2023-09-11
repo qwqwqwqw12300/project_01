@@ -6,9 +6,9 @@
 -->
 
 <template>
-	<app-body :needService="false" :hideTitle="true">
+	<app-body :needService="false" :hideTitle="false" title="找回密码">
 		<view class="ui-body">
-			<text class="ui-logo">找回密码</text>
+			<!-- <text class="ui-logo">找回密码</text> -->
 			<view class="ui-form">
 				<view class="ui-form-item">
 					<!-- <u-text prefixIcon="phone" iconStyle="font-size: 30rpx" text="手机号码" color="#444" size="28rpx">
@@ -76,7 +76,7 @@
 					</u-input>
 				</view>
 				<view class="ui-btn"><button class="default" @click="reset">重置密码</button></view>
-				<text class="ui-link active" @click="goLogin">老朋友？点此登录</text>
+				<!-- <text class="ui-link active" @click="goLogin">老朋友？点此登录</text> -->
 			</view>
 		</view>
 	</app-body>
@@ -94,6 +94,9 @@
 	import {
 		env
 	} from '../../config/env';
+	import {
+		removeToken
+	} from '@/common/utils/auth.js';
 	export default {
 		data() {
 			return {
@@ -121,6 +124,7 @@
 				uni.navigateTo({
 					url: '/pages/login/login'
 				});
+				removeToken()
 			},
 
 			/**

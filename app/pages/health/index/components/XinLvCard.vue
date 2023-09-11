@@ -10,7 +10,7 @@
 				<text class="ui-font-32 ui-mar-l-10">心率</text>
 				<image class="ui-img-size3" src="/static/images/xinlv.png"></image>
 			</div>
-			<text style="font-size: 25px; margin-top: 50rpx;">{{heartRate||'暂无数据'}}</text>
+			<text style="font-size: 25px; margin-top: 50rpx;" class="health-index">{{heartRate||'暂无数据'}}</text>
 			<text class="bpm" v-if="heartRate">bpm</text>
 
 			<!-- <view class="ui-w-h-100 ui-mar-t-20">
@@ -82,6 +82,15 @@
 </script>
 
 <style lang="scss" scoped>
+	// @font-face {
+	// 	font-family: 'health-index-font';
+	// 	src: url('@/static/ttf/DIN_Alternate_Bold.ttf');
+	// }
+
+	.health-index {
+		font-family: health-index-font;
+	}
+
 	.ui-pos-right {
 		position: absolute;
 		right: 20rpx;
