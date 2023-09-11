@@ -39,10 +39,12 @@
 								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
 								@touchend="AppLi_touchend(index)" v-if="deviceList.length&&item.isShow||item.isEdit ">
 								<view class="ui-f-center ui-f-wrap ui-min-h-121 ui-padding-20" v-if="item.type === '0'">
-									<view class="ui-f-start ui-f-wrap">
-										<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
-										<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
-										<view class="ui-text-box ui-mar-t-15">
+									<view class="" style="width: 100%;">
+										<view class="ui-f-start">
+											<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
+											<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
+										</view>
+										<view class="ui-text-box ui-mar-t-15" style="text-align: right;">
 											<text class="ui-font-1">{{caiHongData[0]?caiHongData[0]:0}}</text>
 											<text class="ui-font-2">/{{maxDataArr[0]?maxDataArr[0]:0}}</text>
 										</view>
@@ -55,10 +57,12 @@
 											<text class="ui-font-2">/{{maxDataArr[1]?maxDataArr[1]:0}}</text>
 										</view>
 									</view> -->
-									<view class="ui-f-start ui-f-wrap" style="margin-top: 15px;">
-										<image class="ui-img-size5" src="@/static/images/walk2.png"></image>
-										<text class="ui-font-24 ui-mar-l-10">行走<步></text>
-										<view class="ui-text-box ui-mar-t-15">
+									<view class="" style="margin-top: 15px;width: 100%;">
+										<view class="ui-f-start">
+											<image class="ui-img-size5" src="@/static/images/walk2.png"></image>
+											<text class="ui-font-24 ui-mar-l-10">行走<步></text><br>
+										</view>
+										<view class="ui-text-box ui-mar-t-15" style="text-align: right;">
 											<text class="ui-font-1">{{caiHongData[2]?caiHongData[2]:0}}</text>
 											<text class="ui-font-2">/{{maxDataArr[2]?maxDataArr[2]:0}}</text>
 										</view>
@@ -113,10 +117,12 @@
 								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
 								@touchend="AppLi_touchend(index)" v-if="!deviceList.length&&item.isShow ">
 								<view class="ui-f-center ui-f-wrap ui-min-h-121 ui-padding-20" v-if="item.type === '0'">
-									<view class="ui-f-start ui-f-wrap">
-										<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
-										<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
-										<view class="ui-text-box ui-mar-t-15">
+									<view class="" style="width: 100%;">
+										<view class="ui-f-start">
+											<image class="ui-img-size2" src="@/static/images/xiaohao.png"></image>
+											<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
+										</view>
+										<view class="ui-text-box ui-mar-t-15" style="text-align: right;">
 											<text class="ui-font-1">{{caiHongData[0]?caiHongData[0]:0}}</text>
 											<text class="ui-font-2">/{{maxDataArr[0]?maxDataArr[0]:0}}</text>
 										</view>
@@ -129,10 +135,12 @@
 											<text class="ui-font-2">/{{maxDataArr[1]?maxDataArr[1]:0}}</text>
 										</view>
 									</view> -->
-									<view class="ui-f-start ui-f-wrap" style="margin-top: 15px;">
-										<image class="ui-img-size5" src="@/static/images/walk2.png"></image>
-										<text class="ui-font-24 ui-mar-l-10">行走<步></text>
-										<view class="ui-text-box ui-mar-t-15">
+									<view class="" style="margin-top: 15px;width: 100%;">
+										<view class="ui-f-start">
+											<image class="ui-img-size5" src="@/static/images/walk2.png"></image>
+											<text class="ui-font-24 ui-mar-l-10">行走<步></text><br>
+										</view>
+										<view class="ui-text-box ui-mar-t-15" style="text-align: right;">
 											<text class="ui-font-1">{{caiHongData[2]?caiHongData[2]:0}}</text>
 											<text class="ui-font-2">/{{maxDataArr[2]?maxDataArr[2]:0}}</text>
 										</view>
