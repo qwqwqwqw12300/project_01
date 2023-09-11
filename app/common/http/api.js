@@ -732,6 +732,10 @@ export const GetListExerciseDurationByWeek = (params) => http.get('/api/tWatch/l
  * 查询周心率最值
  */
 export const GetMHeartRate = (params) => http.get('/api/tWatch/v2/listHeartRateByWeek', params, {});
+/**
+ * 查询周血压最值
+ */
+export const GetMBloodPressure = (params) => http.get('/api/tWatch/v2/listHeartRateByWeek', params, {});
 /*
  * 获取手表信息
  */

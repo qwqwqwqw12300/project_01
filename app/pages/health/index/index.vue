@@ -45,8 +45,10 @@
 											<text class="ui-font-24 ui-mar-l-10">卡路里<千卡></text>
 										</view>
 										<view class="ui-text-box ui-mar-t-15" style="text-align: right;">
-											<text class="ui-font-1">{{caiHongData[0]?caiHongData[0]:0}}</text>
-											<text class="ui-font-2">/{{maxDataArr[0]?maxDataArr[0]:0}}</text>
+											<text class="ui-font-1"
+												style="font-size: 25px;">{{caiHongData[0]?caiHongData[0]:0}}</text>
+											<text class="ui-font-2"
+												style="font-size: 25px">/{{maxDataArr[0]?maxDataArr[0]:0}}</text>
 										</view>
 									</view>
 									<!-- 								<view class="ui-w-47 ui-f-start ui-f-wrap">
@@ -63,8 +65,10 @@
 											<text class="ui-font-24 ui-mar-l-10">行走<步></text><br>
 										</view>
 										<view class="ui-text-box ui-mar-t-15" style="text-align: right;">
-											<text class="ui-font-1">{{caiHongData[2]?caiHongData[2]:0}}</text>
-											<text class="ui-font-2">/{{maxDataArr[2]?maxDataArr[2]:0}}</text>
+											<text class="ui-font-1"
+												style="font-size: 25px">{{caiHongData[2]?caiHongData[2]:0}}</text>
+											<text class="ui-font-2"
+												style="font-size: 25px">/{{maxDataArr[2]?maxDataArr[2]:0}}</text>
 										</view>
 									</view>
 									<!-- 							<view class="ui-w-47 ui-f-start ui-mar-t-45 ui-f-wrap">
@@ -102,11 +106,11 @@
 									<YaLiCard v-if="item.type === '6'" :date="YlDate? YlDate.slice(5,-3) : date"
 										:item="item" :fetchRes="fetchRes" :option="yaLiOption" :isEdit="isEdit"
 										:Presure="presure"></YaLiCard>
-									<XinDianCard v-if="item.type === '7'"
+									<!-- <XinDianCard v-if="item.type === '7'"
 										:date="fetchRes.ElectrocardiogramTime.substr(5,6) && fetchRes.electrocardiogramMapList.length ? fetchRes.ElectrocardiogramTime.substr(5,6): date"
 										:fetchRes="fetchRes" :option="xinDianOption" :item="item" :isEdit="isEdit"
 										@iconClick="editCard">
-									</XinDianCard>
+									</XinDianCard> -->
 
 								</view>
 

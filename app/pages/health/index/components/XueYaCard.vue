@@ -10,8 +10,10 @@
 				<text class="ui-font-32 ui-mar-l-10">血压</text>
 				<image class="ui-img-size3" src="/static/images/xueya.png"></image>
 			</div>
-			<text style="font-size: 25px; margin-top: 50rpx;">{{HbloodPresure}}/{{LbloodPresure}}</text>
-			<text class="bpm">mmHg</text>
+			<text style="font-size: 25px; margin-top: 50rpx;"
+				v-if="HbloodPresure&&LbloodPresure">{{HbloodPresure}}/{{LbloodPresure}}</text>
+			<text style="font-size: 25px; margin-top: 50rpx;" v-else>暂无数据</text>
+			<text class="bpm" v-if="HbloodPresure&&LbloodPresure">mmHg</text>
 			<!-- <view class="ui-w-h-100 ui-f-between ui-mar-t-20">
 				<app-echarts class="ui-echarts-size" :option="option" id="xueYaChart">
 				</app-echarts> -->
