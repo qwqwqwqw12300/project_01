@@ -62,6 +62,9 @@
   import {
     env
   } from "@/config/env.js";
+  import {
+  	removeToken
+  } from '@/common/utils/auth.js';
   export default {
     data() {
       return {
@@ -78,6 +81,15 @@
       };
     },
     methods: {
+		/**
+		 * 跳转登录
+		 */
+		goLogin() {
+			uni.reLaunch({
+				url: '/pages/login/login'
+			});
+			removeToken()
+		},
       /**
        * 重置
        */
@@ -104,7 +116,7 @@
           ...submitForm
         }).then(res => {
           uni.$u.toast(res.msg)
-          this.handleCancel()
+          this.goLogin();
         })
       },
       /**

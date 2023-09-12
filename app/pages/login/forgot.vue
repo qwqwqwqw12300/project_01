@@ -121,7 +121,7 @@
 			 * 跳转登录
 			 */
 			goLogin() {
-				uni.navigateTo({
+				uni.reLaunch({
 					url: '/pages/login/login'
 				});
 				removeToken()
