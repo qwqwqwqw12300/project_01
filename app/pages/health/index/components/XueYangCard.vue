@@ -12,6 +12,7 @@
 			</div>
 			<text
 				style="font-size: 25px; margin-top: 50rpx;font-family: health-index-font;">{{bloodOxygen||'暂无数据'}}</text>
+			<text class="bpm" v-if="bloodOxygen">HbO2</text>
 			<!-- <text class="bpm">mmHg</text> -->
 
 			<!-- <view class="ui-w-h-100 ui-mar-t-20">

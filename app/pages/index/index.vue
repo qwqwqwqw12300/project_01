@@ -375,7 +375,7 @@ vb
 			// 检测更新
 			// 获取线上版本号，对比
 			handleUpdate() {
-				if(this.appVersion == ''){
+				if (this.appVersion == '') {
 					return
 				}
 				// 获取app类型

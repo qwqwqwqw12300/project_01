@@ -79,7 +79,7 @@
 										</view>
 									</view> -->
 								</view>
-								<SleepCard v-if="item.type === '1'" :date="newDate? newDate.slice(5,-3) : date"
+								<SleepCard v-if="item.type === '1'" :date="sleepDate? sleepDate.slice(5) : date"
 									:sleepMap="sleepMap" :item="item" :isEdit="isEdit" @iconClick="editCard"
 									:sleep="sleep"></SleepCard>
 
@@ -368,6 +368,7 @@
 				}],
 				heartrate: 0,
 				sleep: [],
+				sleepDate: '',
 				newDate: '',
 				hbloodpresure: 0,
 				lbloodpresure: 0,
@@ -409,29 +410,32 @@
 						dayTime: '',
 						deviceId: this.deviceInfo.deviceId
 					}).then((res) => {
-						this.sleep = res.data.tWatchSleep[0].value
-						this.heartrate = res.data.HeartRateList.length == 0 ? 0 : res.data
-							.HeartRateList[0].value * 1
-						this.newDate = res.data.HeartRateList.length == 0 ? '' : res.data
-							.HeartRateList[0].time
-						this.hbloodpresure = res.data.spMapList.length == 0 ? 0 : res.data
-							.spMapList[0].value * 1
-						this.lbloodpresure = res.data.dpMapList.length == 0 ? 0 : res.data.dpMapList[0]
-							.value * 1
-						this.bloodpreDate = res.data.spMapList.length == 0 ? '' : res.data
-							.spMapList[0].time
-						this.temperature = res.data.tWatchTemperatures.length == 0 ? 0 : res.data
-							.tWatchTemperatures[0].value * 1
-						this.TwDate = res.data.tWatchTemperatures.length == 0 ? '' : res.data
-							.tWatchTemperatures[0].time
-						this.bloodoxygen = res.data.tWatchBloodOxygen.length == 0 ? 0 : res.data
-							.tWatchBloodOxygen[0].value * 1
-						this.bloodDate = res.data.tWatchBloodOxygen.length == 0 ? '' : res.data
-							.tWatchBloodOxygen[0].time
-						this.presure = res.data.tWatchPressures.length == 0 ? 0 : res.data
-							.tWatchPressures[0].value * 1
-						this.YlDate = res.data.tWatchPressures.length == 0 ? '' : res.data
-							.tWatchPressures[0].time
+						this.caiHongOptionHandle(res)
+						this.sleep = res.data.tWatchSleep.value
+						this.sleepDate = res.data.tWatchSleep.time
+						// console.log(this.sleepDate, 'this.sleepDate');
+						this.heartrate = res.data
+							.tWatchHeartRate.value * 1
+						this.newDate = res.data
+							.tWatchHeartRate.time
+						this.hbloodpresure = res.data
+							.tWatchBloodPressure.minValue * 1
+						this.lbloodpresure = res.data.tWatchBloodPressure
+							.maxValue * 1
+						this.bloodpreDate = res.data
+							.tWatchBloodPressure.time
+						this.temperature = res.data
+							.tWatchTemperature.value * 1
+						this.TwDate = res.data
+							.tWatchTemperature.time
+						this.bloodoxygen = res.data
+							.tWatchBloodOxygen.value * 1
+						this.bloodDate = res.data
+							.tWatchBloodOxygen.time
+						this.presure = res.data
+							.tWatchPressure.value * 1
+						this.YlDate = res.data
+							.tWatchPressure.time
 						this.pageShow = true;
 						this.loading = false;
 						this.isRefresh = false;
@@ -594,7 +598,7 @@
 				// 	}
 				// ];
 				let data;
-				if (res.data) {
+				if (res.data.rainbowDiagram) {
 					data = res.data.rainbowDiagram;
 				} else {
 					data = [{
@@ -634,6 +638,7 @@
 						resArr[1] = data[i];
 					}
 				}
+				return;
 				console.log(resArr, 'resarr')
 				// data.foreach((item)=>{
 				// 	console.log(item)
