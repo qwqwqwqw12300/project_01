@@ -93,6 +93,7 @@
 						}
 					},
 					interval: 24 * 3600 * 1000,
+					// splitNumber: 7
 					// data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
 				}, ],
 				yAxis: [{
@@ -131,7 +132,7 @@
 					data: []
 				}],
 				series: [{
-					type: 'line',
+					type: 'bar',
 					showSymbol: false,
 					itemStyle: {
 						normal: {
@@ -413,7 +414,44 @@
 					beginDate: options.value[0],
 					endDate: options.value[6],
 				}).then(res => {
-
+					if (!res.data.MapList.length) {
+						console.log('假数据');
+						this.weekOptions.series[0].data = [{
+							time: "2023-09-04 08:41:00",
+							value: "78"
+						}, {
+							time: "2023-09-04 12:01:00",
+							value: "89"
+						}, {
+							time: "2023-09-05 00:01:00",
+							value: "72"
+						}, {
+							time: "2023-09-05 12:01:01",
+							value: "95"
+						}, {
+							time: "2023-09-06 09:01:00",
+							value: "95"
+						}, {
+							time: "2023-09-06 12:01:00",
+							value: "92"
+						}, {
+							time: "2023-09-07 08:51:00",
+							value: "92"
+						}, {
+							time: "2023-09-07 12:01:00",
+							value: "87"
+						}]
+						this.weekOptions.xAxis[0].min = uni.$u.timeFormat(new Date(options.value[0]),
+								'yyyy-mm-dd') +
+							' 00:00:00'
+						this.weekOptions.xAxis[0].max = uni.$u.timeFormat(new Date(options.value[6]),
+								'yyyy-mm-dd') +
+							' 00:00:00'
+						// this.weekOptions.xAxis[0].data = ['周一', '周二']
+						this.options = this.weekOptions
+						console.log(this.options);
+						return
+					}
 				})
 				GetListHeartRateByWeek({
 					deviceId,
@@ -421,11 +459,10 @@
 					beginDate: options.value[0],
 					endDate: options.value[6],
 				}).then(res => {
-					if (!res.data.MapList) {
-						this.weekOptions.series[0].data = []
-						this.options = this.weekOptions
-						return
-					}
+					// if (!res.data.MapList.length) {
+					// 	this.options = this.weekOptions
+					// 	return
+					// }
 					const {
 						avg,
 						max,
@@ -448,7 +485,7 @@
 					this.weekOptions.yAxis[0].min = '40'
 					this.weekOptions.yAxis[0].max = '165'
 					this.options = this.weekOptions
-					console.log('dataaaaa', data);
+					console.log('dataaaaa', this.options);
 				})
 			},
 			handleDate(options) {
