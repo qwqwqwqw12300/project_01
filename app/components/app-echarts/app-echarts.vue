@@ -161,15 +161,12 @@
 							if (!Array.isArray(option.xAxis)) option.xAxis = [option.xAxis];
 							option.xAxis.forEach(ele => {
 								const formatter = ele.axisLabel && ele.axisLabel.formatter;
-								// console.log('133', option.series[0].data.length);
-								// console.log('134', formatter);
 								if (formatter) {
 									ele.axisLabel.formatter = this.axisLabelFormatter(formatter)
-									console.log(ele.axisLabel.formatter, '...');
 								}
-
 							})
 						}
+
 						// 处理单条折线数据无法展示的问题
 						if (option.series) {
 							if (!Array.isArray(option.series)) option.series = [option.series];
@@ -240,10 +237,8 @@
 						}
 						break;
 					case 'week':
-						// if()
 						fn = (val, index) => {
-							console.log(new Date(val).getDay(), 'valvallllllllllll');
-							const weekArr = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+							const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六', ];
 							return index == 7 ? '' : weekArr[new Date(val).getDay()];
 						}
 						break;
