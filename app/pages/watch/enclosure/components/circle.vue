@@ -401,6 +401,18 @@
 				if (sliderValue === 0) {
 					return uni.$u.toast('半径长度大于0')
 				}
+				var newobj = {
+					fenceType: this.fenceType,
+					deviceNo: this.deviceInfo.no,
+					deviceId: this.deviceInfo.deviceId,
+					address,
+					longitude,
+					latitude,
+					radius: sliderValue + '',
+					name: this.guardName,
+					deviceFenceId: this.urlLocation.deviceFenceId ? this.urlLocation.deviceFenceId : ''
+				}
+				console.log('newobjnewobjnewobj',newobj)
 				PostAddFence({
 					fenceType: this.fenceType,
 					deviceNo: this.deviceInfo.no,
@@ -412,6 +424,7 @@
 					name: this.guardName,
 					deviceFenceId: this.urlLocation.deviceFenceId ? this.urlLocation.deviceFenceId : ''
 				}).then(res => {
+					console.log('PostAddFence',res)
 					uni.navigateBack()
 					uni.$u.toast(res.msg)
 				})

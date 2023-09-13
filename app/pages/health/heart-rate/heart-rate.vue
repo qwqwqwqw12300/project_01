@@ -9,7 +9,7 @@
 		</view>
 		<view class="ui-echart">
 			<!-- <rate-echarts :timeOption="timeOption"></rate-echarts> -->
-			<app-echarts :option="options" id="myChart" class="echart-box" @clickechart="clickEchart"></app-echarts>
+			<app-echarts :option="options" id="myChart" class="echart-box" @click="clickEchart"></app-echarts>
 		</view>
 		<view class="ui-total">
 			<view class="total-item" v-for="(item,index) in totalList" :key="index">
@@ -434,10 +434,10 @@
 			//点击图表获取值
 			clickEchart(val) {
 				console.log(val, 'val');
-				// const res = this.Data.find(item => {
-				// 	return item[0] == val
-				// })
-				// this.nowData = res[1]
+				const res = this.Data.find(item => {
+					return item[0] == val.value
+				})
+				this.nowData = res[1]
 			},
 			onSelect(val) {
 				val.type === 'date' ? this.handleDate(val) : this.handleWeek(val)

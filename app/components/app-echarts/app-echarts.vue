@@ -20,7 +20,9 @@
 			 * @param {Object} params
 			 */
 			onViewClick(params) {
+				console.log('paramsparamsparams',params)
 				this.$emit('click', params)
+				// this.$emit('clickechart', params.data[0])
 			}
 		}
 	}
@@ -132,8 +134,7 @@
 				this.chart = echarts.init(this.$el)
 				this.chart.on('click', params => {
 					console.log(params.data[0], 'params');
-					this.$emit('clickechart', params.data[0])
-					// this.onClick(params)
+					this.onClick(params)
 					// // 把点击事件的数据缓存
 					// this.clickData = params
 
@@ -262,9 +263,7 @@
 			 */
 			onClick(options) {
 				this.$ownerInstance.callMethod('onViewClick', {
-					value: options.data,
-					name: options.name,
-					seriesName: options.seriesName
+					value: options.data[0]
 				})
 			},
 
