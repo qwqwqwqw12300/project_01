@@ -239,7 +239,7 @@
 			}
 			const dayOptions = {
 				tooltip: {
-					showContent:false,
+					showContent: false,
 					trigger: 'axis',
 					// triggerOn: 'click',
 					axisPointer: {
@@ -341,7 +341,9 @@
 					type: 'line',
 					showSymbol: false,
 					symbolSize: 0.000001,
+					symbol: 'circle',
 					itemStyle: {
+						// color: "#6c50f3",
 						normal: {
 							color: 'rgba(255,89,89,1)',
 							lineStyle: {
