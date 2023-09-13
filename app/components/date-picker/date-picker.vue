@@ -38,6 +38,7 @@
 				this.tabKey = key
 			},
 			change(val) {
+				console.log('changechange');
 				uni.$u.debounce(() => {
 					this.$emit('onSelect', {
 						type: this.tabKey,

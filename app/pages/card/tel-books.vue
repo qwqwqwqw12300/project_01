@@ -1,8 +1,8 @@
 <template>
-	<app-body :bodyStyle="{background: 'rgb(247,247,247)' }" :bg="false">
+	<app-body :bodyStyle="{background: 'rgb(247,247,247)' }" :bg="false" title="通讯录白名单">
 		<view class="ui-navbar">
 			<view class="header">
-				<text class="title">通讯录白名单</text>
+				<!-- <text class="title">通讯录白名单</text> -->
 				<view class="action" @click="handleAdd">
 					<u-icon name="/static/images/add-contact.png" size="44rpx" style="margin-right: 6rpx;" />
 					添加

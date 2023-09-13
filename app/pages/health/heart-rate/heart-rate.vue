@@ -5,13 +5,16 @@
 			<date-picker @onSelect="onSelect" @month="monthChange" :lightDot="monthData"></date-picker>
 		</view>
 		<view class="ui-show">
-			<text>{{nowData}}bpm</text>
+			<text>{{nowDataMin}}
+				<text v-if="nowDataMax">-</text>
+				{{nowDataMax}}bpm</text>
 		</view>
+		<!-- <view>{{slideDataMin}}</view> -->
 		<view class="ui-echart">
 			<!-- <rate-echarts :timeOption="timeOption"></rate-echarts> -->
 			<app-echarts :option="options" id="myChart" class="echart-box" @click="clickEchart"></app-echarts>
 		</view>
-		<view class="ui-total">
+		<!-- <view class="ui-total">
 			<view class="total-item" v-for="(item,index) in totalList" :key="index">
 				<view class="item-data">
 					<text class="num">{{ item.num }}</text>
@@ -21,8 +24,8 @@
 					{{ item.title }}
 				</view>
 			</view>
-		</view>
-		<view class="ui-detail">
+		</view> -->
+		<!-- <view class="ui-detail">
 			<view class="title">
 				运动心率
 			</view>
@@ -42,7 +45,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 
 		<health-info title="心率"></health-info>
 	</app-body>
@@ -64,6 +67,7 @@
 				tooltip: {
 					// show: false,
 					trigger: 'axis',
+					showContent: false, //隐藏提示框
 					// axisPointer: {
 					// 	type: 'shadow'
 					// },
@@ -80,6 +84,23 @@
 					boundaryGap: false,
 					axisTick: { //坐标轴刻度相关设置。
 						show: false,
+					},
+					axisPointer: {
+						handle: {
+							show: true,
+							size: 18,
+							margin: 2,
+							throttle: 5,
+							color: '#ffac4a'
+						},
+						label: {
+							show: false,
+							formatter: (params) => { //滑动拿到实时的值
+								this.slideTime = echarts.format.formatTime('yyyy-MM-dd', params.value);
+								return echarts.format.formatTime('yyyy-MM-dd', params.value);
+							},
+							// backgroundColor: '#7581BD'
+						}
 					},
 					axisLabel: {
 						textStyle: {
@@ -219,7 +240,7 @@
 			const dayOptions = {
 				tooltip: {
 					trigger: 'axis',
-					triggerOn: 'click',
+					// triggerOn: 'click',
 					axisPointer: {
 						type: 'line',
 						lineStyle: {
@@ -242,6 +263,14 @@
 					},
 					//手柄
 					axisPointer: {
+						// label: {
+						// 	show: false,
+						// 	formatter: (params) => { //滑动拿到实时的值
+						// 		this.slideTime = echarts.format.formatTime('yyyy-MM-dd', params.value);
+						// 		return echarts.format.formatTime('yyyy-MM-dd', params.value);
+						// 	},
+						// 	// backgroundColor: '#7581BD'
+						// },
 						handle: {
 							show: true,
 							size: 18,
@@ -414,14 +443,24 @@
 
 				},
 				monthData: [],
-				nowData: '', //实时数据
-				Data: []
+				nowDataMax: '', //实时数据
+				nowDataMin: '',
+				Data: [],
+				slideTime: '' //手指滑动得到的数据（时间）
 			}
 		},
 		computed: {
 			...mapState({
 				deviceInfo: state => state.deviceInfo
 			}),
+			// slideDataMin: () => { //滑动获取到的最小值
+			// 	setTimeout(() => {
+			// 		const res = this.Data.find(item => {
+			// 			return item[0] == this.slideTime
+			// 		})
+			// 		return res[1]
+			// 	}, 3000)
+			// }
 
 		},
 		mounted() {
@@ -437,7 +476,8 @@
 				const res = this.Data.find(item => {
 					return item[0] == val.value
 				})
-				this.nowData = res[1]
+				this.nowDataMin = res[1]
+				this.nowDataMax = res[2]
 			},
 			onSelect(val) {
 				val.type === 'date' ? this.handleDate(val) : this.handleWeek(val)
@@ -467,6 +507,8 @@
 				})
 			},
 			handleWeek(options) {
+				this.nowDataMax = ''
+				this.nowDataMin = ''
 				const {
 					deviceId,
 					humanId
@@ -484,7 +526,7 @@
 						return [n.time, n.valueMax - n.valueMin]
 					})
 					this.Data = res.data.MapList.map(n => { //获取当前周的所有max值
-						return [n.time, n.valueMax]
+						return [n.time, n.valueMin, n.valueMax]
 					})
 					console.log(this.Data, 'Data');
 					// console.log(res.data.MapList[2], 'data');
@@ -502,46 +544,46 @@
 					// console.log('dataaaaa', data);
 					console.log(this.weekOptions, 'this.weekOptions');
 				})
-				GetListHeartRateByWeek({
-					deviceId,
-					humanId,
-					beginDate: options.value[0],
-					endDate: options.value[6],
-				}).then(res => {
-					//给假数据，使得没数据时不报错
-					// if (!res.data.MapList.length) {
-					// 	this.weekOptions.series[0].data = [
-					// 		[
-					// 			"2023-08-14 08:41:00",
-					// 			"78"
-					// 		],
-					// 		[
-					// 			"2023-08-14 09:41:00",
-					// 			"88"
-					// 		],
-					// 		[
-					// 			"2023-08-15 08:41:00",
-					// 			"78"
-					// 		],
-					// 		[
-					// 			"2023-08-15 09:41:00",
-					// 			"88"
-					// 		],
-					// 	]
-					// 	this.options = this.weekOptions
-					// 	console.log(this.weekOptions, 'this.weekOptions');
-					// 	return
-					// }
-					const {
-						avg,
-						max,
-						min
-					} = res.data
-					this.totalList[0].num = avg
-					this.totalList[1].num = min
-					this.totalList[2].num = max
+				// GetListHeartRateByWeek({
+				// 	deviceId,
+				// 	humanId,
+				// 	beginDate: options.value[0],
+				// 	endDate: options.value[6],
+				// }).then(res => {
+				// 	// 给假数据，使得没数据时不报错
+				// 	if (!res.data.MapList.length) {
+				// 		this.weekOptions.series[0].data = [
+				// 			[
+				// 				"2023-08-14 08:41:00",
+				// 				"78"
+				// 			],
+				// 			[
+				// 				"2023-08-14 09:41:00",
+				// 				"88"
+				// 			],
+				// 			[
+				// 				"2023-08-15 08:41:00",
+				// 				"78"
+				// 			],
+				// 			[
+				// 				"2023-08-15 09:41:00",
+				// 				"88"
+				// 			],
+				// 		]
+				// 		this.options = this.weekOptions
+				// 		console.log(this.weekOptions, 'this.weekOptions');
+				// 		return
+				// 	}
+				// 	const {
+				// 		avg,
+				// 		max,
+				// 		min
+				// 	} = res.data
+				// 	this.totalList[0].num = avg
+				// 	this.totalList[1].num = min
+				// 	this.totalList[2].num = max
 
-				})
+				// })
 			},
 			handleDate(options) {
 				const {

@@ -1,9 +1,9 @@
 <!-- 添加联系人 -->
 <template>
-	<app-body :bg="false">
-		<view class="ui-logo">
-			<app-logo color="#353535" text="亲情号码"></app-logo>
-		</view>
+	<app-body :bg="false" title="亲情号码">
+		<!-- <view class="ui-logo"> -->
+		<!-- <app-logo color="#353535" text="亲情号码"></app-logo> -->
+		<!-- </view> -->
 		<view class="ui-form">
 			<view class="ui-form-item" v-for="(item,index) in contactList" :key="item.index">
 				<view class="item-title">
@@ -24,7 +24,8 @@
 				</view>
 				<view class="item-input">
 					<view class="input-left">
-						<u--input v-model="item.phoneName" placeholder="请输入姓名" border="none" maxlength="8" clearable></u--input>
+						<u--input v-model="item.phoneName" placeholder="请输入姓名" border="none" maxlength="8"
+							clearable></u--input>
 					</view>
 					<view class="input-right">
 						<u--input v-model="item.phone" maxlength="11" type="number" placeholder="请输入手机号" border="none"
@@ -204,6 +205,7 @@
 				.input-left {
 					width: 340rpx;
 				}
+
 				.input-right {
 					width: 300rpx;
 				}

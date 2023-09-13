@@ -1,6 +1,6 @@
 <!-- 修改设备名称 -->
 <template>
-	<app-body :bg="false">
+	<app-body :bg="false" title="定位频率">
 		<view class="app-main">
 			<view class="tips">
 				<view class="tips-text">选择不同的定位模式，定位频率不同</view>

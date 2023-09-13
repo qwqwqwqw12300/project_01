@@ -3,8 +3,8 @@
 -->
 
 <template>
-	<app-body>
-		<app-logo color="#353535" text="远程监听"></app-logo>
+	<app-body title="安全守护">
+		<!-- <app-logo color="#353535" text="远程监听"></app-logo> -->
 		<CardTitle :title="'远程监听'" :content="'您可以实时获取设备环境声音'" :backGroundImg="'/static/images/long-range-monitor.png'">
 		</CardTitle>
 		<view class="ui-btn">

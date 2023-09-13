@@ -11,7 +11,7 @@
 			</view>
 			<!-- <view class="ui-font-3 ui-w-h-100  ui-mar-t-15" style="padding-left:20rpx"> -->
 			<view style="font-size: 25px; margin-top: 50rpx;" class="health-index">
-				{{ sleep.length?sleep[0]+':'+sleep[1]:'暂无数据' }}
+				{{ sleep.length?sleep[0]+'时'+sleep[1]+'分':'暂无数据' }}
 			</view>
 			<!-- </view> -->
 			<!-- <view style="margin-top: 10rpx;padding-left: 10rpx;">{{ sleepMap.sleepQuality }}</view> -->

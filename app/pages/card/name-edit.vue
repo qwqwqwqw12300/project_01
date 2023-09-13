@@ -1,8 +1,8 @@
 <!-- 修改设备名称 -->
 <template>
-	<app-body :bg="false">
+	<app-body :bg="false" title="修改设备名称">
 		<view class="ui-logo">
-			<app-logo color="#353535" text="修改设备名称"></app-logo>
+			<!-- <app-logo color="#353535" text="修改设备名称"></app-logo> -->
 		</view>
 		<view class="ui-form">
 			<u-form>
