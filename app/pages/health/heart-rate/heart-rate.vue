@@ -239,6 +239,7 @@
 			}
 			const dayOptions = {
 				tooltip: {
+					showContent:false,
 					trigger: 'axis',
 					// triggerOn: 'click',
 					axisPointer: {
