@@ -1,4 +1,3 @@
-!
 <template>
 	<view>
 		<view class="echarts" :prop="option" :change:prop="echarts.update"></view>
@@ -20,11 +19,12 @@
 			 * @param {Object} params
 			 */
 			onViewClick(params) {
-				console.log('paramsparamsparams',params)
+				console.log('paramsparamsparams', params)
 				this.$emit('click', params)
 				// this.$emit('clickechart', params.data[0])
 			}
-		}
+		},
+
 	}
 </script>
 
@@ -53,7 +53,7 @@
 						containLabel: true
 					},
 					toolbox: {},
-					xaxis: {
+					xAxis: {
 						boundaryGap: false,
 						axisTick: {
 							show: false
@@ -113,6 +113,9 @@
 				},
 			}
 		},
+		// onShow() {
+		// 	// this.update(this.option)
+		// },
 		mounted() {
 			if (typeof window.echarts === 'object') {
 				this.init()
@@ -146,6 +149,7 @@
 			 * @param {Object} obj
 			 */
 			update(options) {
+				console.log('更新噢噢噢噢');
 				const option = this.assignDeep({}, options)
 				if (option.isRender) {
 					option.series.forEach(n => {
@@ -164,11 +168,41 @@
 							if (!Array.isArray(option.xAxis)) option.xAxis = [option.xAxis];
 							option.xAxis.forEach(ele => {
 								const formatter = ele.axisLabel && ele.axisLabel.formatter;
-								if (formatter) {
+								if (formatter == 'week') {
 									console.log(formatter, 'formatter');
 									ele.axisLabel.formatter = this.axisLabelFormatter(formatter)
+								} else {
+									// console.log('else');
+									ele.axisLabel.formatter = (val, index) => {
+										if (index == 0) {
+											val = 1694534400000
+										}
+										if (index == 1) {
+											val = 1694556000000
+										}
+										if (index == 2) {
+											val = 1694577600000
+										}
+										if (index == 3) {
+											val = 1694599200000
+										}
+										if (index == 4) {
+											val = 1694620799000
+										}
+										if (index == 5) {
+											return
+										}
+
+										console.log('执行date', val);
+
+										const date = new Date(val);
+										const hour = date.getHours()
+										const minu = date.getMinutes();
+										return `${hour > 10 ? hour : 0 + hour}:${minu > 10 ? minu : '0'+minu}`;
+									}
 								}
 							})
+							console.log(option.xAxis, 'option.xAxis');
 						}
 
 						// 处理单条折线数据无法展示的问题
@@ -230,12 +264,12 @@
 			 * 设置Formatter
 			 */
 			axisLabelFormatter(type) {
-				console.log(type);
+				// console.log(type);
 				let fn;
 				switch (type) {
 					case 'date':
 						fn = val => {
-							console.log('执行date');
+							console.log('执行date', val);
 							const date = new Date(val);
 							const hour = date.getHours(),
 								minu = date.getMinutes();

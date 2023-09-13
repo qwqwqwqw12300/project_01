@@ -14,7 +14,7 @@
 			<!-- <rate-echarts :timeOption="timeOption"></rate-echarts> -->
 			<app-echarts :option="options" id="myChart" class="echart-box" @click="clickEchart"></app-echarts>
 		</view>
-		<!-- <view class="ui-total">
+		<view class="ui-total">
 			<view class="total-item" v-for="(item,index) in totalList" :key="index">
 				<view class="item-data">
 					<text class="num">{{ item.num }}</text>
@@ -24,7 +24,7 @@
 					{{ item.title }}
 				</view>
 			</view>
-		</view> -->
+		</view>
 		<!-- <view class="ui-detail">
 			<view class="title">
 				运动心率
@@ -301,7 +301,7 @@
 					// data: ['00:00', '06:00', '12:00', '18:00', '23:59'],
 					// min: `${option.value + ' 00:00:00'}`, // x轴起始时间
 					// max: `${option.value + ' 23:49:00'}`, // x轴结束时间
-					// splitNumber: 6,
+					// splitNumber: 4,
 					interval: 6 * 3600 * 1000, //时间间隔
 				}, ],
 				yAxis: [{
@@ -598,7 +598,7 @@
 					humanId,
 					dayTime: options.value,
 				}).then(res => {
-					// console.log('GetListHeartRateByDay', res)
+					// console.log('开始执行啊啊啊啊啊')
 					// console.log(options.value, 'options.value');
 					if (!res.data.MapList) {
 						this.dayOptions.series[0].data = []
