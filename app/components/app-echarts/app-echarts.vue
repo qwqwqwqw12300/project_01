@@ -131,7 +131,9 @@
 			init() {
 				this.chart = echarts.init(this.$el)
 				this.chart.on('click', params => {
-					this.onClick(params)
+					console.log(params.data[0], 'params');
+					this.$emit('clickechart', params.data[0])
+					// this.onClick(params)
 					// // 把点击事件的数据缓存
 					// this.clickData = params
 
@@ -162,6 +164,7 @@
 							option.xAxis.forEach(ele => {
 								const formatter = ele.axisLabel && ele.axisLabel.formatter;
 								if (formatter) {
+									console.log(formatter, 'formatter');
 									ele.axisLabel.formatter = this.axisLabelFormatter(formatter)
 								}
 							})
@@ -226,10 +229,12 @@
 			 * 设置Formatter
 			 */
 			axisLabelFormatter(type) {
+				console.log(type);
 				let fn;
 				switch (type) {
 					case 'date':
 						fn = val => {
+							console.log('执行date');
 							const date = new Date(val);
 							const hour = date.getHours(),
 								minu = date.getMinutes();
@@ -238,7 +243,8 @@
 						break;
 					case 'week':
 						fn = (val, index) => {
-							const weekArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六', ];
+							console.log('执行');
+							const weekArr = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
 							return index == 7 ? '' : weekArr[new Date(val).getDay()];
 						}
 						break;

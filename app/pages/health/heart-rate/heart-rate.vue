@@ -4,9 +4,12 @@
 		<view class="ui-tab">
 			<date-picker @onSelect="onSelect" @month="monthChange" :lightDot="monthData"></date-picker>
 		</view>
+		<view class="ui-show">
+			<text>{{nowData}}bpm</text>
+		</view>
 		<view class="ui-echart">
 			<!-- <rate-echarts :timeOption="timeOption"></rate-echarts> -->
-			<app-echarts :option="options" id="myChart" class="echart-box"></app-echarts>
+			<app-echarts :option="options" id="myChart" class="echart-box" @clickechart="clickEchart"></app-echarts>
 		</view>
 		<view class="ui-total">
 			<view class="total-item" v-for="(item,index) in totalList" :key="index">
@@ -59,7 +62,11 @@
 		data() {
 			const weekOptions = {
 				tooltip: {
-					trigger: 'axis'
+					// show: false,
+					trigger: 'axis',
+					// axisPointer: {
+					// 	type: 'shadow'
+					// },
 				},
 				backgroundColor: '#fff',
 				grid: {
@@ -131,7 +138,54 @@
 					data: []
 				}],
 				series: [{
-					type: 'line',
+					type: 'bar',
+					stack: 'Total',
+					silent: true,
+
+					showSymbol: false,
+					itemStyle: {
+
+						// normal: {
+						// 	color: 'rgba(255,89,89,1)',
+						// 	lineStyle: {
+						// 		color: "rgba(255,89,89,1)",
+						// 		width: 1
+						// 	},
+						// 	areaStyle: {
+						// 		color: {
+						// 			type: 'linear',
+						// 			x: 0,
+						// 			y: 0,
+						// 			x2: 0,
+						// 			y2: 1,
+						// 			colorStops: [{
+						// 				offset: 0,
+						// 				color: 'rgba(255,89,89,0.90)'
+						// 			}, {
+						// 				offset: 1,
+						// 				color: 'rgba(255,89,89,0.00)'
+						// 			}],
+						// 			global: false
+						// 		}
+						// 	}
+						// },
+						borderColor: 'transparent',
+						color: 'transparent',
+					},
+					emphasis: {
+						itemStyle: {
+							borderColor: 'transparent',
+							color: 'transparent'
+						}
+					},
+					data: []
+				}, {
+					type: 'bar',
+					stack: 'Total',
+					// label: {
+					// 	show: true,
+					// 	position: 'top'
+					// },
 					showSymbol: false,
 					itemStyle: {
 						normal: {
@@ -160,7 +214,7 @@
 						}
 					},
 					data: []
-				}, ]
+				}]
 			}
 			const dayOptions = {
 				tooltip: {
@@ -360,6 +414,8 @@
 
 				},
 				monthData: [],
+				nowData: '', //实时数据
+				Data: []
 			}
 		},
 		computed: {
@@ -375,6 +431,14 @@
 			// this.onSelect(val)
 		},
 		methods: {
+			//点击图表获取值
+			clickEchart(val) {
+				console.log(val, 'val');
+				// const res = this.Data.find(item => {
+				// 	return item[0] == val
+				// })
+				// this.nowData = res[1]
+			},
 			onSelect(val) {
 				val.type === 'date' ? this.handleDate(val) : this.handleWeek(val)
 			},
@@ -413,32 +477,19 @@
 					beginDate: options.value[0],
 					endDate: options.value[6],
 				}).then(res => {
-
-				})
-				GetListHeartRateByWeek({
-					deviceId,
-					humanId,
-					beginDate: options.value[0],
-					endDate: options.value[6],
-				}).then(res => {
-					if (!res.data.MapList) {
-						this.weekOptions.series[0].data = []
-						this.options = this.weekOptions
-						return
-					}
-					const {
-						avg,
-						max,
-						min
-					} = res.data
-					this.totalList[0].num = avg
-					this.totalList[1].num = min
-					this.totalList[2].num = max
-					const data = res.data.MapList.map(n => {
-						return [n.time, n.value]
+					const data1 = res.data.MapList.map(n => {
+						return [n.time, n.valueMin]
 					})
-					this.weekOptions.series[0].data = data
-
+					const data2 = res.data.MapList.map(n => {
+						return [n.time, n.valueMax - n.valueMin]
+					})
+					this.Data = res.data.MapList.map(n => { //获取当前周的所有max值
+						return [n.time, n.valueMax]
+					})
+					console.log(this.Data, 'Data');
+					// console.log(res.data.MapList[2], 'data');
+					this.weekOptions.series[0].data = data1
+					this.weekOptions.series[1].data = data2
 					this.weekOptions.xAxis[0].min = uni.$u.timeFormat(new Date(options.value[0]),
 							'yyyy-mm-dd') +
 						' 00:00:00'
@@ -448,7 +499,48 @@
 					this.weekOptions.yAxis[0].min = '40'
 					this.weekOptions.yAxis[0].max = '165'
 					this.options = this.weekOptions
-					console.log('dataaaaa', data);
+					// console.log('dataaaaa', data);
+					console.log(this.weekOptions, 'this.weekOptions');
+				})
+				GetListHeartRateByWeek({
+					deviceId,
+					humanId,
+					beginDate: options.value[0],
+					endDate: options.value[6],
+				}).then(res => {
+					//给假数据，使得没数据时不报错
+					// if (!res.data.MapList.length) {
+					// 	this.weekOptions.series[0].data = [
+					// 		[
+					// 			"2023-08-14 08:41:00",
+					// 			"78"
+					// 		],
+					// 		[
+					// 			"2023-08-14 09:41:00",
+					// 			"88"
+					// 		],
+					// 		[
+					// 			"2023-08-15 08:41:00",
+					// 			"78"
+					// 		],
+					// 		[
+					// 			"2023-08-15 09:41:00",
+					// 			"88"
+					// 		],
+					// 	]
+					// 	this.options = this.weekOptions
+					// 	console.log(this.weekOptions, 'this.weekOptions');
+					// 	return
+					// }
+					const {
+						avg,
+						max,
+						min
+					} = res.data
+					this.totalList[0].num = avg
+					this.totalList[1].num = min
+					this.totalList[2].num = max
+
 				})
 			},
 			handleDate(options) {
@@ -461,7 +553,8 @@
 					humanId,
 					dayTime: options.value,
 				}).then(res => {
-					console.log('GetListHeartRateByDay', res)
+					// console.log('GetListHeartRateByDay', res)
+					// console.log(options.value, 'options.value');
 					if (!res.data.MapList) {
 						this.dayOptions.series[0].data = []
 						this.dayOptions.xAxis[0].min = uni.$u.timeFormat(new Date(options.value),
@@ -478,10 +571,14 @@
 						max,
 						min
 					} = res.data
+					console.log('wdwdwdwdwdwdwdwdwdwdwd');
 					this.totalList[0].num = avg
 					this.totalList[1].num = min
 					this.totalList[2].num = max
-					const data = res.data.MapList.map(n => {
+					const data = res.data.MapList.map((n, index) => {
+						// if (index == 7) {
+						// 	return [n.time, '-']
+						// }
 						return [n.time, n.value]
 					})
 					this.$nextTick(() => {
@@ -503,6 +600,15 @@
 </script>
 
 <style lang="scss" scoped>
+	.ui-show {
+		margin-top: 20rpx;
+		text-align: center;
+		font-size: 72rpx;
+		color: #353535;
+		font-weight: 700;
+
+	}
+
 	.ui-tab {
 		margin-top: 64rpx;
 	}
