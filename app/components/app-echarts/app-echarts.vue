@@ -134,6 +134,7 @@
 			 * 初始化echarts
 			 */
 			init() {
+				console.log('initinitinit');
 				this.chart = echarts.init(this.$el)
 				this.chart.on('click', params => {
 					console.log(params.data[0], 'params');
@@ -203,6 +204,7 @@
 								}
 							})
 							console.log(option.xAxis, 'option.xAxis');
+							console.log('option.xAxis.axisLabel.formatter',option.xAxis);
 						}
 
 						// 处理单条折线数据无法展示的问题
