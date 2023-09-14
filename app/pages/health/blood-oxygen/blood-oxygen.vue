@@ -254,12 +254,56 @@
 						}
 					}],
 					series: [{
-						type: 'line',
+						type: 'bar',
+						stack: 'Total',
 						showSymbol: false,
 						itemStyle: {
-							color: '#36BFFF'
+							// normal: {
+							// 	lineStyle: {
+							// 		color: "#FF7E23",
+							// 		width: 1
+							// 	}
+							// },
+							borderColor: 'transparent',
+							color: 'transparent',
 						},
 						data: this.dataList
+					}, {
+						type: 'bar',
+						stack: 'Total',
+						// label: {
+						// 	show: true,
+						// 	position: 'top'
+						// },
+						showSymbol: false,
+						itemStyle: {
+							normal: {
+								color: 'rgba(255,89,89,1)',
+								barBorderRadius: 30,
+								lineStyle: {
+									color: "rgba(255,89,89,1)",
+									width: 1
+								},
+								areaStyle: {
+									color: {
+										type: 'linear',
+										x: 0,
+										y: 0,
+										x2: 0,
+										y2: 1,
+										colorStops: [{
+											offset: 0,
+											color: 'rgba(255,89,89,0.90)'
+										}, {
+											offset: 1,
+											color: 'rgba(255,89,89,0.00)'
+										}],
+										global: false
+									}
+								}
+							}
+						},
+						data: this.dataList2
 					}]
 				}
 			},
@@ -287,28 +331,31 @@
 			},
 			handleWeek(option) {
 				this.dataList = []
+				this.dataList2 = []
 				GetMBloodOxygen({
 					deviceId: this.deviceInfo.deviceId,
 					beginDate: option.value[0],
 					endDate: option.value[6],
 					humanId: this.deviceInfo.humanId
 				}).then(res => {
+
 					// this.totalList[0].num = res.data.oxMap.avgOx
 					// this.totalList[1].num = res.data.oxMap.maxOx
 					// this.totalList[2].num = res.data.oxMap.minOx
 					for (let i = 0; i < res.data.MapList.length; i++) {
 						this.dataList.push([
 							res.data.MapList[i].time,
-							res.data.oxMap.dataList[i].value
+							res.data.MapList[i].valueMin
 						])
 					}
-					for (let i = 0; i < res.data.oxMap.dataList.length; i++) {
-						this.dataList.push([
-							res.data.oxMap.dataList[i].time,
-							res.data.oxMap.dataList[i].value
+					for (let i = 0; i < res.data.MapList.length; i++) {
+						this.dataList2.push([
+							res.data.MapList[i].time,
+							res.data.MapList[i].valueMax - res.data.MapList[i].valueMin
 						])
 					}
 					// console.log(this.dataList, 'this.dataList')
+					console.log(this.dataList, 'res', this.dataList2);
 				})
 				this.weekFun(option)
 			},

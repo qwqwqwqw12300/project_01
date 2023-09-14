@@ -73,7 +73,7 @@
 					// 	type: 'shadow'
 					// },
 					formatter: (params) => {
-						return `最高${Number(params[0].data[1])+Number(params[1].data[1])}</br>最低${params[0].data[1]}`
+						return `最高:${Number(params[0].data[1])+Number(params[1].data[1])}</br>最低:${params[0].data[1]}`
 					},
 				},
 				backgroundColor: '#fff',

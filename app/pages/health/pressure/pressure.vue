@@ -32,7 +32,8 @@
 	import {
 		GetMonthDataFlag,
 		GetListPressureByDay,
-		GetListPressureByWeek
+		// GetListPressureByWeek
+		GetMPressure
 	} from '@/common/http/api';
 	import {
 		mapState,
@@ -61,7 +62,8 @@
 					}
 				],
 				options: {},
-				dataList: [],
+				dataList: [], //周压力min值
+				dataList2: [], //周压力max-min值
 				text: '0',
 				monthData: [],
 			}
@@ -207,7 +209,15 @@
 			weekFun(option) {
 				this.options = {
 					tooltip: {
-						trigger: 'axis'
+						show: true,
+						trigger: 'axis',
+						// triggerOn: 'click',
+						showContent: true, //隐藏提示框
+						// formatter: (params) => {
+						// 	console.log(params, 'paramsparamsparamsparamsparams');
+						// 	return `最高:${Number(params[0].data[1])+Number(params[1].data[1])}</br>最低:${params[0].data[1]}`
+						// },
+						formatter: '{a}'
 					},
 					backgroundColor: '#fff',
 					grid: {
@@ -265,13 +275,38 @@
 						}
 					}],
 					series: [{
-						type: 'line',
-						showSymbol: false,
-						itemStyle: {
-							color: '#36BFFF'
+							barWidth: '25%',
+							type: 'bar',
+							stack: 'Total',
+							showSymbol: false,
+							itemStyle: {
+								// normal: {
+								// 	lineStyle: {
+								// 		color: "#FF7E23",
+								// 		width: 1
+								// 	}
+								// },
+								borderColor: 'transparent',
+								color: 'transparent',
+							},
+							data: this.dataList
 						},
-						data: this.dataList
-					}]
+						{
+							type: 'bar',
+							stack: 'Total',
+							showSymbol: false,
+							itemStyle: {
+								normal: {
+									barBorderRadius: 30,
+									lineStyle: {
+										color: "#63DDBA",
+										width: 1
+									}
+								}
+							},
+							data: this.dataList2
+						}
+					]
 				}
 			},
 			handleDate(option) {
@@ -297,24 +332,32 @@
 				this.dateFun(option)
 			},
 			handleWeek(option) {
-				this.dataList = []
-				GetListPressureByWeek({
+				this.dataList = [],
+					this.dataList2 = []
+				GetMPressure({
 					deviceId: this.deviceInfo.deviceId,
 					beginDate: option.value[0],
 					endDate: option.value[6],
 					humanId: this.deviceInfo.humanId
 				}).then(res => {
-					this.totalList[0].num = res.data.avg
-					this.totalList[1].num = res.data.max
-					this.totalList[2].num = res.data.min
+					// this.totalList[0].num = res.data.avg
+					// this.totalList[1].num = res.data.max
+					// this.totalList[2].num = res.data.min
 					for (let i = 0; i < res.data.MapList.length; i++) {
 						this.dataList.push([
 							res.data.MapList[i].time,
-							res.data.MapList[i].value
+							res.data.MapList[i].valueMin
 						])
 					}
-					console.log(this.dataList, 'this.dataList')
+					for (let i = 0; i < res.data.MapList.length; i++) {
+						this.dataList2.push([
+							res.data.MapList[i].time,
+							res.data.MapList[i].valueMax - res.data.MapList[i].valueMin
+						])
+					}
+					// console.log(this.dataList, 'this.dataList')
 				})
+				console.log(option, 'optionoptionoptionoptionoption');
 				this.weekFun(option)
 			},
 			onSelect(val) {

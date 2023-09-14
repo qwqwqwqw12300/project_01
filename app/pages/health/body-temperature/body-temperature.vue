@@ -32,7 +32,8 @@
 	import {
 		GetMonthDataFlag,
 		GetListBoayTmperatureByDay,
-		GetListBoayTmperatureByWeek
+		// GetListBoayTmperatureByWeek
+		GetMTemperature
 	} from '@/common/http/api';
 	import {
 		mapState,
@@ -61,7 +62,8 @@
 					}
 				],
 				options: {},
-				dataList: [],
+				dataList: [], //周体温min
+				dataList2: [], //周体温max-min
 				text: '0',
 				monthData: [],
 			}
@@ -278,12 +280,35 @@
 						}
 					}],
 					series: [{
-						type: 'line',
+						barWidth: '25%',
+						type: 'bar',
+						stack: 'Total',
 						showSymbol: false,
 						itemStyle: {
-							color: '#36BFFF'
+							// normal: {
+							// 	lineStyle: {
+							// 		color: "#FF7E23",
+							// 		width: 1
+							// 	}
+							// },
+							borderColor: 'transparent',
+							color: 'transparent',
 						},
 						data: this.dataList
+					}, {
+						type: 'bar',
+						stack: 'Total',
+						data: this.dataList2,
+						showSymbol: false,
+						itemStyle: {
+							normal: {
+								barBorderRadius: 30,
+								lineStyle: {
+									color: "#63DDBA",
+									width: 1
+								}
+							}
+						},
 					}]
 				}
 			},
@@ -312,22 +337,29 @@
 			},
 			handleWeek(option) {
 				this.dataList = []
-				GetListBoayTmperatureByWeek({
+				this.dataList2 = []
+				GetMTemperature({
 					deviceId: this.deviceInfo.deviceId,
 					beginDate: option.value[0],
 					endDate: option.value[6],
 					humanId: this.deviceInfo.humanId
 				}).then(res => {
-					this.totalList[0].num = res.data.avg
-					this.totalList[1].num = res.data.max
-					this.totalList[2].num = res.data.min
+					// this.totalList[0].num = res.data.avg
+					// this.totalList[1].num = res.data.max
+					// this.totalList[2].num = res.data.min
 					for (let i = 0; i < res.data.MapList.length; i++) {
 						this.dataList.push([
 							res.data.MapList[i].time,
-							res.data.MapList[i].value
+							res.data.MapList[i].valueMin
 						])
 					}
-					console.log(this.dataList, 'this.dataList')
+					for (let i = 0; i < res.data.MapList.length; i++) {
+						this.dataList2.push([
+							res.data.MapList[i].time,
+							res.data.MapList[i].valueMax - res.data.MapList[i].valueMin
+						])
+					}
+					// console.log(this.dataList, 'this.dataList')
 				})
 				this.weekFun(option)
 			},
