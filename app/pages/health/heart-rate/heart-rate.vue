@@ -94,12 +94,13 @@
 							color: '#ffac4a'
 						},
 						label: {
-							show: false,
+							show: true,
 							formatter: (params) => { //滑动拿到实时的值
 								this.slideTime = echarts.format.formatTime('yyyy-MM-dd', params.value);
+								console.log(this.slideTime, 'aaaaaaaaaaaaaaaaaaaaaaa');
 								return echarts.format.formatTime('yyyy-MM-dd', params.value);
 							},
-							// backgroundColor: '#7581BD'
+							backgroundColor: '#7581BD'
 						}
 					},
 					axisLabel: {
@@ -264,14 +265,15 @@
 					},
 					//手柄
 					axisPointer: {
-						// label: {
-						// 	show: false,
-						// 	formatter: (params) => { //滑动拿到实时的值
-						// 		this.slideTime = echarts.format.formatTime('yyyy-MM-dd', params.value);
-						// 		return echarts.format.formatTime('yyyy-MM-dd', params.value);
-						// 	},
-						// 	// backgroundColor: '#7581BD'
-						// },
+						label: {
+							show: false,
+							formatter: (params) => { //滑动拿到实时的值
+								this.slideTime = echarts.format.formatTime('yyyy-MM-dd', params.value);
+								return this.slideTime = echarts.format.formatTime('yyyy-MM-dd', params
+									.value);
+							},
+							backgroundColor: '#7581BD'
+						},
 						handle: {
 							show: true,
 							size: 18,
