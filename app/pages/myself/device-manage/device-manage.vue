@@ -39,7 +39,7 @@
                 <!-- /SOS设备 -->
                 <!-- H102手表设备 -->
                 <watch-card-h v-if="item.type === '4'" :device="item" @change="init" :key="'watch' + index"
-                  @bind="bindingHuman($event, '4')" />
+                  @bind="bindingHuman($event, '2')" />
                 <!-- /H102手表设备 -->
               </template>
             </view>

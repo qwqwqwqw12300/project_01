@@ -49,13 +49,21 @@ vb
 									prefixIcon="../../static/images/index/home.png"></u-text>
 							</view>
 							<view class="ui-share-box">
+								<!-- 新增房间 -->
+								<u-text
+									@click="addRoom(familyItem)"
+									prefixIcon="../../static/images/index/add.png" size="28rpx" :align="'right'"
+									:block="false" :iconStyle="{
+									height: '36rpx', width: '36rpx'
+								}" text="添加" v-if="familyItem.shareFlag === '2'"></u-text>
+								<!-- /新增房间 -->
 								<u-text @click="editClick(familyItem)" prefixIcon="../../static/images/index/edit.png"
-									size="32rpx" :align="'right'" :block="false" :iconStyle="{
+									size="28rpx" :align="'right'" :block="false" :iconStyle="{
 									height: '40rpx', width: '40rpx'
 								}" text="编辑" v-if="familyItem.shareFlag === '2'"></u-text>
 								<u-text
 									@click="goPage('/pages/share/share?familyId='+ familyItem.familyId + '&name='+ familyItem.name)"
-									prefixIcon="../../static/images/index/share.png" size="32rpx" :align="'right'"
+									prefixIcon="../../static/images/index/share.png" size="28rpx" :align="'right'"
 									:block="false" :iconStyle="{
 									height: '40rpx', width: '40rpx'
 								}" text="分享" v-if="familyItem.shareFlag === '2'"></u-text>
@@ -71,14 +79,7 @@ vb
 							<human-card :humans="familyItem.humans" :shareFlag="familyItem.shareFlag"
 								@confirm="handleInitList" />
 							<!-- 人员 -->
-							<!-- 新增房间 -->
-							<view class="ui-list ui-list-add" v-if="familyItem.shareFlag == '2'">
-								<view class="ui-list-box" @click="addRoom(familyItem)">
-									<u-icon name="../../static/images/index/add.png" size="56rpx"></u-icon>
-									<text>添加</text>
-								</view>
-							</view>
-							<!-- /新增房间 -->
+							
 						</view>
 					</view>
 					<!-- 添加 -->
@@ -544,7 +545,7 @@ vb
 			font-weight: bold;
 
 			.ui-share-box {
-				width: 250rpx;
+				width: 360rpx;
 				display: flex;
 				align-items: center;
 				flex-direction: row;
