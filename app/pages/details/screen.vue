@@ -96,6 +96,11 @@
 						value: '2',
 						icon: 'watch',
 						text: '4g智能手表'
+					},
+					{
+						value: '4',
+						icon: 'new-watch-device',
+						text: '健康手表'
 					}
 
 				],
@@ -269,7 +274,9 @@
 			&:nth-child(2) {
 				margin: 20rpx 30rpx 0 30rpx;
 			}
-
+			&:nth-child(5) {
+				margin: 20rpx 30rpx 0 30rpx;
+			}
 			&.select {
 				color: #fff;
 				background-image: linear-gradient(90deg, #FFB24D 0%, #FD913B 100%);

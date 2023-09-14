@@ -154,33 +154,36 @@
 				this.points = data
 			},
 			handleInit() {
-				uni.getLocation({
-					geocode: true,
-					type: isIos() ? 'wgs84' : 'gcj02',
-					success: (res) => {
-						this.currentCity = res.address.city
-					},
-					false: (res) => {
-						console.log(res, 'error')
-						uni.hideLoading()
+				
+					// 判断是否是添加新的守护区域
+					if (this.urlLocation && this.urlLocation.fenceType === 'polygon') {
+						this.fenceType = this.urlLocation.fenceType
+						this.guardName = this.urlLocation.name
+						this.points = this.pointsFormatting(this.urlLocation)
+						console.log('初始化有值的情况下进来了看看points' ,this.points)
+						uni.getLocation({
+							geocode: true,
+							type: isIos() ? 'wgs84' : 'gcj02',
+							success: (res) => {
+								this.currentCity = res.address.city
+								this.mapInfo = {
+									longitude: res.longitude,
+									latitude: res.latitude,
+									points: this.points
+								}
+							},
+							false: (res) => {
+								console.log(res, 'error')
+								uni.hideLoading()
+							}
+						})
+						// const res = this.urlLocation.points.split(';').map(n => {
+						// 	return n.split(',')
+						// })
+						
+						return
 					}
-				})
-				// 判断是否是添加新的守护区域
-				if (this.urlLocation && this.urlLocation.fenceType === 'polygon') {
-					this.fenceType = this.urlLocation.fenceType
-					this.guardName = this.urlLocation.name
-					this.points = this.pointsFormatting(this.urlLocation)
-					console.log('初始化有值的情况下进来了看看points' ,this.points)
-					// const res = this.urlLocation.points.split(';').map(n => {
-					// 	return n.split(',')
-					// })
-					this.mapInfo = {
-						longitude: this.points[0][0],
-						latitude: this.points[0][1],
-						points: this.points
-					}
-					return
-				}
+				
 				this.handleGetLocation()
 			},
 			pointsFormatting(data) {
@@ -200,13 +203,10 @@
 						geocode: true,
 						type: isIos() ? 'wgs84' : 'gcj02',
 						success: (res) => {
-							const {
-								latitude,
-								longitude,
-							} = res
+							this.currentCity = res.address.city
 							this.mapInfo = {
-								latitude,
-								longitude,
+								latitude:res.latitude,
+								longitude:res.longitude,
 								points: []
 							}
 							uni.hideLoading()

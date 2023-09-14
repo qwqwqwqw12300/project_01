@@ -1,21 +1,29 @@
 <!-- 修改设备名称 -->
 <template>
 	<app-body :bg="false" title="定位频率">
-		<view class="ui-form">
-			<view class="u-slot-value">
-				<text>设置定位频率</text>
-				<view class="arrow" style="border: 1px solid #ccc;">
-					<input class="input" type="number" v-model="patternVal">
-				</view>
+		<view class="app-main">
+			<view class="tips">
+				<view class="tips-text">选择不同的定位模式，定位频率不同</view>
+				<view class="tips-text">高频率定位，定位点更多，运动轨迹更细致</view>
 			</view>
-
+			<view class="pattern">
+				<u-radio-group v-model="patternVal" iconPlacement="right">
+					<u-radio v-for="(item, index) in patternList" :key="index" :name="item.type" activeColor="#fb7105"
+						@change="radioChange">
+						<view class="pattern-item">
+							<view class="pattern-item_name">{{item.name}}</view>
+							<view class="pattern-item_info">{{item.info}}</view>
+						</view>
+					</u-radio>
+				</u-radio-group>
+			</view>
 		</view>
 
-		<view class="ui-button">
+		<!-- <view class="ui-button">
 			<button @click="save" class="default">
 				保存
 			</button>
-		</view>
+		</view> -->
 	</app-body>
 </template>
 
@@ -79,10 +87,12 @@
 				}).then(res => {
 					// 		this.patternVal = res.data.frequency
 					// console.log(res);
-					this.patternVal = res.data.aiWeiIntelligentWatchSettings.autoLocate.gpsIntervalTime
+					this.patternVal = String(res.data.aiWeiIntelligentWatchSettings.autoLocate.gpsIntervalTime)
+					console.log(this.patternVal)
 				})
 			},
-			save() {
+			radioChange(e) {
+				this.patternVal = e
 				watchHDataFreq({
 					deviceId: this.deviceInfo.deviceId,
 					gpsAutoCheck: true,
@@ -90,39 +100,66 @@
 				}).then((res) => {
 					uni.$u.toast(res.msg)
 				})
-				// this.getPattern()
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.ui-logo {
-		margin-top: 20rpx;
-		background: #ffffff;
-		padding-bottom: 120rpx;
+	.app-main {
+		width: calc(100% - 20rpx);
+		padding-top: 28rpx;
+		padding-left: 20rpx;
+		box-sizing: border-box;
 	}
 
-	.ui-form {
-		padding: 30rpx;
-		background: #ffffff;
+	.tips {
+		padding: 20rpx 0;
+		border-bottom: 1px solid #b6b6b4;
 
-		.u-slot-value {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			margin-bottom: 20px;
+		&-text {
+			color: #7d7d7d;
+			font-size: 28rpx;
 		}
+	}
 
-		.arrow {
+	.pattern {
+		width: 100%;
+
+		&-item {
 			display: flex;
-			align-items: center;
+			flex-wrap: wrap;
+			margin-bottom: 10rpx;
+			padding: 20rpx 0;
 
-			// width: 60px;
-			.input {
-				width: 60px;
+			&_name {
+				width: 100%;
+				padding-bottom: 4rpx;
+			}
+
+			&_info {
+				color: #b6b6b4;
+				font-size: 24rpx;
 			}
 		}
+
+		/deep/ .u-radio-group--row {
+			flex-wrap: wrap;
+		}
+
+		/deep/ .u-radio-label--right {
+			width: 100%;
+			border-bottom: 1px solid #b6b6b4;
+		}
+	}
+
+	/deep/ .u-navbar__content__right__text {
+		color: #fb7105;
+		font-size: 34rpx;
+	}
+
+	/deep/ .u-radio-label--right {
+		display: flex;
 	}
 
 	.ui-button {

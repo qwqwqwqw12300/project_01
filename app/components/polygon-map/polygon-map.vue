@@ -44,6 +44,7 @@
 					if (val) {
 						console.log('我是record,也是mapData', val)
 						this.mapData = uni.$u.deepClone(val)
+						console.log(this.mapData)
 					}
 				},
 				deep: true,
@@ -115,6 +116,7 @@
 					longitude,
 					points
 				} = val
+				console.log('valvalvalval',val);
 				if (latitude && longitude) {
 					this.$ownerInstance.callMethod('onLoadMsg', true)
 					this.loadMap(this.init)
