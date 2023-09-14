@@ -16,6 +16,9 @@
   } from '@/common/http/api.js';
   import date from './components/sleep-date.vue'
   import week from './components/sleep-week.vue'
+  import {
+  	mapState,
+  } from 'vuex';
   export default {
     components: {
       week,
@@ -32,6 +35,11 @@
       const month = uni.$u.timeFormat(new Date(), 'yyyy-mm')
       this.getMonthData(month)
     },
+	computed: {
+		...mapState({
+			deviceInfo: state => state.deviceInfo
+		}),
+	},
     methods: {
       monthChange(date) {
         const month = uni.$u.timeFormat(date, 'yyyy-mm')
@@ -39,7 +47,12 @@
       },
 
       getMonthData(month) {
+		  const {
+		  	deviceId,
+		  	humanId,
+		  } = this.deviceInfo
         GetMonthDataFlag({
+			deviceId,
           yearMonth: month,
           type: '4', //（ 1卡路里 2活动时长 3步数 4睡眠 5站立 6心率 7血压 8血氧 9心电）
         }).then(res => {

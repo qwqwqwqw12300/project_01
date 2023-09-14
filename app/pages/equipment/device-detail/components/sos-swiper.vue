@@ -20,7 +20,7 @@
 				</view>
 			</view>
 			<view class="device-set" :style="{width: type === 'set' ? '130rpx': '170rpx'}" @click="handleSet">
-				<template>
+				<template v-if="record.shareFlag  == 2">
 					<u-icon v-if="type === 'set'" :name="'/static/images/device-set.png'"
 						size="44rpx" style="margin-right: 6rpx;" />
 					{{ type === 'set'? '设置':'' }}

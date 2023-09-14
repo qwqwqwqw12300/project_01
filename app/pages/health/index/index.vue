@@ -38,8 +38,8 @@
 								</view>
 								<view class="ui-text-box ui-mar-t-15" style="text-align: left;padding: 0;">
 									<text class="ui-font-1"
-										style="font-size: 25px;">{{caiHongData[0]?caiHongData[0]:0}}</text>
-										<text class="ui-font-2" style="font-size: 17px">/{{maxDataArr[0]?maxDataArr[0]:0}}千卡</text>
+										style="font-size: 25px;">{{calorie.value?calorie.value:0}}</text>
+										<text class="ui-font-2" style="font-size: 17px">/{{calorie.maxValue?calorie.maxValue:0}}千卡</text>
 								</view>
 							</view>
 							<!-- 								<view class="ui-w-47 ui-f-start ui-f-wrap">
@@ -57,8 +57,8 @@
 								</view>
 								<view class="ui-text-box ui-mar-t-15" style="text-align: left;padding-left: 5rpx;">
 									<text class="ui-font-1"
-										style="font-size: 25px">{{caiHongData[2]?caiHongData[2]:0}}</text>
-										<text class="ui-font-2" style="font-size: 17px">/{{maxDataArr[2]?maxDataArr[2]:0}}步</text>
+										style="font-size: 25px">{{stepNum.value?stepNum.value:0}}</text>
+										<text class="ui-font-2" style="font-size: 17px">/{{stepNum.maxValue?stepNum.maxValue:0}}步</text>
 								</view>
 							</view>
 							<!-- 							<view class="ui-w-47 ui-f-start ui-mar-t-45 ui-f-wrap">
@@ -335,7 +335,9 @@
 				bloodoxygen: 0,
 				bloodDate: '',
 				presure: 0,
-				YlDate: ''
+				YlDate: '',
+				calorie:{},
+				stepNum:{}
 			}
 		},
 		created() {
@@ -367,7 +369,9 @@
 						dayTime: '',
 						deviceId: this.deviceInfo.deviceId
 					}).then((res) => {
-						this.caiHongOptionHandle(res)
+						// this.caiHongOptionHandle(res)
+						this.stepNum = res.data.stepNum
+						this.calorie = res.data.calorie
 						this.sleep = res.data.tWatchSleep.value
 						this.sleepDate = res.data.tWatchSleep.time
 						// console.log(this.sleepDate, 'this.sleepDate');

@@ -15,6 +15,9 @@
 	} from '@/common/http/api.js';
 	import date from './components/blood-date.vue'
 	import week from './components/blood-week.vue'
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
 		components: {
 			week,
@@ -27,6 +30,11 @@
 				monthData: [],
 			}
 		},
+		computed: {
+			...mapState({
+				deviceInfo: state => state.deviceInfo
+			}),
+		},
 		created() {
 			const month = uni.$u.timeFormat(new Date(), 'yyyy-mm')
 			this.getMonthData(month)
@@ -38,7 +46,12 @@
 			},
 
 			getMonthData(month) {
+				const {
+					deviceId,
+					humanId,
+				} = this.deviceInfo
 				GetMonthDataFlag({
+					deviceId,
 					yearMonth: month,
 					type: '7', //（ 1卡路里 2活动时长 3步数 4睡眠 5站立 6心率 7血压 8血氧 9心电）
 				}).then(res => {

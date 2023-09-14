@@ -19,7 +19,7 @@
 				</view>
 			</view>
 			<view class="device-set" :style="{width: type === 'set' ? '130rpx': '170rpx'}" @click="handleSet">
-				<template v-if="record.shareFlag  == '2'">
+				<template v-if="record.shareFlag  == 2">
 					<u-icon :name="type === 'set' ? '/static/images/device-set.png': '/static/images/reStart.png'"
 						size="44rpx" style="margin-right: 6rpx;" />
 					{{ type === 'set'? '设置':'重启设备' }}
