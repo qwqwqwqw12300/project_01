@@ -5,11 +5,14 @@
 		<view class="ui-tab">
 			<date-picker @onSelect="onSelect" @month="monthChange" :lightDot="monthData"></date-picker>
 		</view>
-		<view class="ui-show">
-			<text>{{text}}℃</text>
+		<view class="ui-show" v-if="WEEK">
+			<text>{{nowDataMin}}
+				<text v-if="nowDataMax">-</text>
+				{{nowDataMax}}°C</text>
 		</view>
 		<view class="ui-echart">
-			<app-echarts @click="handleClick" :option="options" id="myChart" class="echart-box"></app-echarts>
+			<app-echarts @click="handleClick" :option="options" id="myChart" class="echart-box"
+				@Cclick="clickEchart"></app-echarts>
 		</view>
 		<!-- <view class="ui-total">
 			<view class="total-box">
@@ -66,6 +69,10 @@
 				dataList2: [], //周体温max-min
 				text: '0',
 				monthData: [],
+				nowDataMax: '', //实时数据
+				nowDataMin: '',
+				Data: [],
+				WEEK: false
 			}
 		},
 		mounted() {
@@ -73,6 +80,14 @@
 			this.getMonthData(month)
 		},
 		methods: {
+			clickEchart(val) {
+				console.log(val, 'val');
+				const res = this.Data.find(item => {
+					return item[0] == val.value
+				})
+				this.nowDataMin = res[1]
+				this.nowDataMax = res[2]
+			},
 			monthChange(date) {
 				const month = uni.$u.timeFormat(date, 'yyyy-mm')
 				this.getMonthData(month)
@@ -317,6 +332,7 @@
 				}
 			},
 			handleDate(option) {
+				this.WEEK = false
 				console.log(option, 'option')
 				this.dataList = []
 				GetListBoayTmperatureByDay({
@@ -340,6 +356,7 @@
 				console.log('aawwwww', this.options);
 			},
 			handleWeek(option) {
+				this.WEEK = true
 				this.dataList = []
 				this.dataList2 = []
 				GetMTemperature({
@@ -351,6 +368,9 @@
 					// this.totalList[0].num = res.data.avg
 					// this.totalList[1].num = res.data.max
 					// this.totalList[2].num = res.data.min
+					this.Data = res.data.MapList.map(n => { //获取当前周的所有max值
+						return [n.time, n.valueMin, n.valueMax]
+					})
 					for (let i = 0; i < res.data.MapList.length; i++) {
 						this.dataList.push([
 							res.data.MapList[i].time,
