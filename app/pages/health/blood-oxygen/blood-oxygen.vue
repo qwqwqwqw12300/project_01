@@ -32,7 +32,8 @@
 	import {
 		GetMonthDataFlag,
 		GetListBloodOxygenByDay,
-		GetListBloodOxygenByWeek
+		// GetListBloodOxygenByWeek,
+		GetMBloodOxygen
 	} from '@/common/http/api';
 	import {
 		mapState,
@@ -61,7 +62,8 @@
 					}
 				],
 				options: {},
-				dataList: [],
+				dataList: [], //血氧最小值
+				dataList2: [], //血氧max-min
 				text: '0',
 				monthData: [],
 			}
@@ -285,22 +287,28 @@
 			},
 			handleWeek(option) {
 				this.dataList = []
-				GetListBloodOxygenByWeek({
+				GetMBloodOxygen({
 					deviceId: this.deviceInfo.deviceId,
 					beginDate: option.value[0],
 					endDate: option.value[6],
 					humanId: this.deviceInfo.humanId
 				}).then(res => {
-					this.totalList[0].num = res.data.oxMap.avgOx
-					this.totalList[1].num = res.data.oxMap.maxOx
-					this.totalList[2].num = res.data.oxMap.minOx
+					// this.totalList[0].num = res.data.oxMap.avgOx
+					// this.totalList[1].num = res.data.oxMap.maxOx
+					// this.totalList[2].num = res.data.oxMap.minOx
+					for (let i = 0; i < res.data.MapList.length; i++) {
+						this.dataList.push([
+							res.data.MapList[i].time,
+							res.data.oxMap.dataList[i].value
+						])
+					}
 					for (let i = 0; i < res.data.oxMap.dataList.length; i++) {
 						this.dataList.push([
 							res.data.oxMap.dataList[i].time,
 							res.data.oxMap.dataList[i].value
 						])
 					}
-					console.log(this.dataList, 'this.dataList')
+					// console.log(this.dataList, 'this.dataList')
 				})
 				this.weekFun(option)
 			},

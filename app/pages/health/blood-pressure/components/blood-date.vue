@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- <app-echarts :option="option" id="myChart" class="myChart"></app-echarts> -->
-		<view class="ui-content">
+		<!-- <view class="ui-content">
 			<view class="ui-title" v-for="(item,index) in list" :key="index">
 				<view class="ui-title-content">
 					<view class="ui-circle" :style="{backgroundColor:item.color}"></view>
@@ -12,7 +12,7 @@
 					<text class="ui-content-font">mmHg</text>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<app-echarts :option="option" @click="handleClick" id="myChart" class="myChart"></app-echarts>
 		<view class="ui-statistics">
 			<view class="statistics-box">

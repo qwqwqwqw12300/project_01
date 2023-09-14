@@ -4,11 +4,11 @@
 		<view class="ui-tab">
 			<date-picker @onSelect="onSelect" @month="monthChange" :lightDot="monthData"></date-picker>
 		</view>
-		<view class="ui-show">
+		<!-- <view class="ui-show">
 			<text>{{nowDataMin}}
 				<text v-if="nowDataMax">-</text>
 				{{nowDataMax}}bpm</text>
-		</view>
+		</view> -->
 		<!-- <view>{{slideDataMin}}</view> -->
 		<view class="ui-echart">
 			<!-- <rate-echarts :timeOption="timeOption"></rate-echarts> -->
@@ -65,9 +65,10 @@
 		data() {
 			const weekOptions = {
 				tooltip: {
-					// show: false,
+					show: true,
 					trigger: 'axis',
-					showContent: false, //隐藏提示框
+					// triggerOn: 'click',
+					showContent: true, //隐藏提示框
 					// axisPointer: {
 					// 	type: 'shadow'
 					// },
@@ -94,10 +95,10 @@
 							color: '#ffac4a'
 						},
 						label: {
-							show: true,
+							show: false,
 							formatter: (params) => { //滑动拿到实时的值
 								this.slideTime = echarts.format.formatTime('yyyy-MM-dd', params.value);
-								console.log(this.slideTime, 'aaaaaaaaaaaaaaaaaaaaaaa');
+								// console.log(this.slideTime, 'aaaaaaaaaaaaaaaaaaaaaaa');
 								return echarts.format.formatTime('yyyy-MM-dd', params.value);
 							},
 							backgroundColor: '#7581BD'
@@ -163,6 +164,7 @@
 					type: 'bar',
 					stack: 'Total',
 					silent: true,
+					barWidth: '25%', //柱形图宽度
 
 					showSymbol: false,
 					itemStyle: {
@@ -191,13 +193,16 @@
 						// 		}
 						// 	}
 						// },
+
+						borderRadius: 20,
 						borderColor: 'transparent',
 						color: 'transparent',
+
 					},
 					emphasis: {
 						itemStyle: {
-							borderColor: 'transparent',
-							color: 'transparent'
+							// borderColor: 'transparent',
+							// color: 'transparent'
 						}
 					},
 					data: []
@@ -212,6 +217,7 @@
 					itemStyle: {
 						normal: {
 							color: 'rgba(255,89,89,1)',
+							barBorderRadius: 30,
 							lineStyle: {
 								color: "rgba(255,89,89,1)",
 								width: 1
@@ -240,7 +246,7 @@
 			}
 			const dayOptions = {
 				tooltip: {
-					showContent: false,
+					showContent: true,
 					trigger: 'axis',
 					// triggerOn: 'click',
 					axisPointer: {
@@ -269,7 +275,7 @@
 							show: false,
 							formatter: (params) => { //滑动拿到实时的值
 								this.slideTime = echarts.format.formatTime('yyyy-MM-dd', params.value);
-								return this.slideTime = echarts.format.formatTime('yyyy-MM-dd', params
+								return echarts.format.formatTime('yyyy-MM-dd', params
 									.value);
 							},
 							backgroundColor: '#7581BD'

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- <app-echarts :option="option" id="myChart" class="myChart"></app-echarts> -->
-		<view class="ui-content">
+		<!-- <view class="ui-content">
 			<view class="ui-title" v-for="(item,index) in list" :key="index">
 				<view class="ui-title-content">
 					<view class="ui-circle" :style="{backgroundColor:item.color}"></view>
@@ -12,9 +12,9 @@
 					<text class="ui-content-font">mmHg</text>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<app-echarts :option="option" @click="handleClick" id="myChart" class="myChart"></app-echarts>
-		<view class="ui-statistics">
+		<!-- <view class="ui-statistics">
 			<view class="statistics-box">
 				<view class="ui-date-title">周统计</view>
 				<view class="ui-window">
@@ -27,14 +27,15 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 
 <script>
 	import * as echarts from '@/static/js/echarts.js';
 	import {
-		GetListBloodPressureByWeek
+		// GetListBloodPressureByWeek
+		GetMBloodPressure
 	} from '@/common/http/api';
 	import {
 		mapState,
@@ -96,29 +97,29 @@
 				option.seriesName == '收缩压' ? this.list[0].value = option.value[1] : this.list[1].value = option.value[1]
 			},
 			logstatrt() {
-				this.spMapList = []
-				this.dpMapList = []
-				GetListBloodPressureByWeek({
+				this.spMapList = [] //血压min值
+				this.dpMapList = [] //血压max-min值
+				GetMBloodPressure({
 					beginDate: this.time[0],
 					endDate: this.time[6],
 					deviceId: this.deviceInfo.deviceId,
 					humanId: this.deviceInfo.humanId
 				}).then(res => {
 					console.log(res, 'res')
-					this.list[0].value = res.data.spAvg
-					this.list[1].value = res.data.dpAvg
-					this.dateList[0].value = res.data.spAvg
-					this.dateList[1].value = res.data.dpAvg
-					for (let i = 0; i < res.data.spMapList.length; i++) {
+					// this.list[0].value = res.data.spAvg
+					// this.list[1].value = res.data.dpAvg
+					// this.dateList[0].value = res.data.spAvg
+					// this.dateList[1].value = res.data.dpAvg
+					for (let i = 0; i < res.data.MapList.length; i++) {
 						this.spMapList.push([
-							res.data.spMapList[i].time,
-							res.data.spMapList[i].value
+							res.data.MapList[i].time,
+							res.data.MapList[i].valueMin
 						])
 					}
-					for (let i = 0; i < res.data.dpMapList.length; i++) {
+					for (let i = 0; i < res.data.MapList.length; i++) {
 						this.dpMapList.push([
-							res.data.dpMapList[i].time,
-							res.data.dpMapList[i].value
+							res.data.MapList[i].time,
+							res.data.MapList[i].valueMax - res.data.MapList[i].valueMin
 						])
 					}
 				})
@@ -219,28 +220,32 @@
 						}
 					},
 					series: [{
+							barWidth: '25%',
 							name: '收缩压',
-							type: 'line',
+							type: 'bar',
 							stack: 'Total',
 							data: this.spMapList,
 							showSymbol: false,
 							itemStyle: {
-								normal: {
-									lineStyle: {
-										color: "#FF7E23",
-										width: 1
-									}
-								}
+								// normal: {
+								// 	lineStyle: {
+								// 		color: "#FF7E23",
+								// 		width: 1
+								// 	}
+								// },
+								borderColor: 'transparent',
+								color: 'transparent',
 							},
 						},
 						{
 							name: '舒张压',
-							type: 'line',
+							type: 'bar',
 							stack: 'Total',
 							data: this.dpMapList,
 							showSymbol: false,
 							itemStyle: {
 								normal: {
+									barBorderRadius: 30,
 									lineStyle: {
 										color: "#63DDBA",
 										width: 1

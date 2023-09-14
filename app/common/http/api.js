@@ -736,6 +736,10 @@ export const GetMHeartRate = (params) => http.get('/api/tWatch/v2/listHeartRateB
  * 查询周血压最值
  */
 export const GetMBloodPressure = (params) => http.get('/api/tWatch/v2/listHeartRateByWeek', params, {});
+/**
+ * 查询周血氧最值
+ */
+export const GetMBloodOxygen = (params) => http.get('/api/tWatch/v2/listBloodOxygenByWeek', params, {});
 /*
  * 获取手表信息
  */
