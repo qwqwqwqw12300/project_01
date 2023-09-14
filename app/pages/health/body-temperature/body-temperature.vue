@@ -11,7 +11,7 @@
 		<view class="ui-echart">
 			<app-echarts @click="handleClick" :option="options" id="myChart" class="echart-box"></app-echarts>
 		</view>
-		<view class="ui-total">
+		<!-- <view class="ui-total">
 			<view class="total-box">
 				<view class="cell">
 					<text class="title">体温</text>
@@ -22,7 +22,7 @@
 					<text class="value">{{ item.num }}℃</text>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<health-info title="体温"></health-info>
 	</app-body>
 </template>
@@ -215,6 +215,10 @@
 				this.options = {
 					tooltip: {
 						trigger: 'axis',
+						formatter: (params) => {
+							console.log(params, 'paramsparamsparamsparamsparams');
+							return `最高:${Number(params[0].data[1])+Number(params[1].data[1])}</br>最低:${params[0].data[1]}`
+						},
 						axisPointer: {
 							type: 'line',
 							lineStyle: {

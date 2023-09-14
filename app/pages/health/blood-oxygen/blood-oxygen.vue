@@ -11,7 +11,7 @@
 		<view class="ui-echart">
 			<app-echarts @click="handleClick" :option="options" id="myChart" class="echart-box"></app-echarts>
 		</view>
-		<view class="ui-total">
+		<!-- <view class="ui-total">
 			<view class="total-box">
 				<view class="cell">
 					<text class="title">运动心率</text>
@@ -22,7 +22,7 @@
 					<text class="value">{{ item.num }}</text>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<health-info title="血氧"></health-info>
 	</app-body>
 </template>
