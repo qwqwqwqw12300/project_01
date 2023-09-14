@@ -149,6 +149,7 @@
 					},
 					tooltip: {
 						positionStatus: true,
+						showContent: false,
 						trigger: 'axis',
 						axisPointer: {
 							type: 'line',

@@ -5,13 +5,16 @@
 		<view class="ui-tab">
 			<date-picker @onSelect="onSelect" @month="monthChange" :lightDot="monthData"></date-picker>
 		</view>
-		<view class="ui-show">
-			<text>{{text}}</text>
+		<view class="ui-show" v-if="WEEK">
+			<text>{{nowDataMin}}
+				<text v-if="nowDataMax">-</text>
+				{{nowDataMax}}pa</text>
 		</view>
 		<view class="ui-echart">
-			<app-echarts @click="handleClick" :option="options" id="myChart" class="echart-box"></app-echarts>
+			<app-echarts @click="handleClick" :option="options" id="myChart" class="echart-box"
+				@Cclick="clickEchart"></app-echarts>
 		</view>
-		<view class="ui-total">
+		<!-- <view class="ui-total">
 			<view class="total-box">
 				<view class="cell">
 					<text class="title">压力</text>
@@ -22,7 +25,7 @@
 					<text class="value">{{ item.num }}</text>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<health-info title="压力"></health-info>
 	</app-body>
 </template>
@@ -66,6 +69,10 @@
 				dataList2: [], //周压力max-min值
 				text: '0',
 				monthData: [],
+				nowDataMax: '', //实时数据
+				nowDataMin: '',
+				Data: [],
+				WEEK: false
 			}
 		},
 		mounted() {
@@ -74,6 +81,14 @@
 			console.log('aaaaaaadsdadsad', this.deviceInfo);
 		},
 		methods: {
+			clickEchart(val) {
+				// console.log(val, 'val');
+				const res = this.Data.find(item => {
+					return item[0] == val.value
+				})
+				this.nowDataMin = res[1]
+				this.nowDataMax = res[2]
+			},
 			monthChange(date) {
 				const month = uni.$u.timeFormat(date, 'yyyy-mm')
 				this.getMonthData(month)
@@ -217,7 +232,7 @@
 						show: true,
 						trigger: 'axis',
 						// triggerOn: 'click',
-						showContent: true, //隐藏提示框
+						showContent: false, //隐藏提示框
 						// formatter: (params) => {
 						// 	console.log(params, 'paramsparamsparamsparamsparams');
 						// 	return `最高:${Number(params[0].data[1])+Number(params[1].data[1])}</br>最低:${params[0].data[1]}`
@@ -315,6 +330,7 @@
 				}
 			},
 			handleDate(option) {
+				this.WEEK = false
 				console.log(option, 'option')
 				this.dataList = []
 				GetListPressureByDay({
@@ -337,6 +353,7 @@
 				this.dateFun(option)
 			},
 			handleWeek(option) {
+				this.WEEK = true
 				this.dataList = [],
 					this.dataList2 = []
 				GetMPressure({
@@ -345,6 +362,9 @@
 					endDate: option.value[6],
 					humanId: this.deviceInfo.humanId
 				}).then(res => {
+					this.Data = res.data.MapList.map(n => { //获取当前周的所有max值
+						return [n.time, n.valueMin, n.valueMax]
+					})
 					// this.totalList[0].num = res.data.avg
 					// this.totalList[1].num = res.data.max
 					// this.totalList[2].num = res.data.min

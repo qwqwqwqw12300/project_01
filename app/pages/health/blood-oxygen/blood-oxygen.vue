@@ -216,7 +216,8 @@
 			weekFun(option) {
 				this.options = {
 					tooltip: {
-						trigger: 'axis'
+						trigger: 'axis',
+						showContent: false,
 					},
 					backgroundColor: '#fff',
 					grid: {
