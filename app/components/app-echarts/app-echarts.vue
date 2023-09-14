@@ -20,7 +20,7 @@
 			 */
 			onViewClick(params) {
 				// console.log('paramsparamsparams', params)
-				// this.$emit('click', params)
+				this.$emit('Cclick', params)
 				// this.$emit('clickechart', params.data[0])
 			}
 		},
@@ -136,12 +136,12 @@
 			init() {
 				console.log('initinitinit');
 				this.chart = echarts.init(this.$el)
-				// this.chart.on('click', params => {
-				// 	console.log(params.data[0], 'params');
-				// 	this.onClick(params)
-				// 	// // 把点击事件的数据缓存
-				// 	// this.clickData = params
-				// })
+				this.chart.on('click', params => {
+					console.log(params.data[0], 'params');
+					this.onClick(params)
+					// // 把点击事件的数据缓存
+					// this.clickData = params
+				})
 				// this.chart.on('mousemove', (params) => {
 				// 	console.log(params, '滑动获取到底');
 				// })

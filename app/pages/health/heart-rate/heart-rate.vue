@@ -4,17 +4,17 @@
 		<view class="ui-tab">
 			<date-picker @onSelect="onSelect" @month="monthChange" :lightDot="monthData"></date-picker>
 		</view>
-		<!-- <view class="ui-show">
+		<view class="ui-show" v-if="WEEK">
 			<text>{{nowDataMin}}
 				<text v-if="nowDataMax">-</text>
 				{{nowDataMax}}bpm</text>
-		</view> -->
+		</view>
 		<!-- <view>{{slideDataMin}}</view> -->
 		<view class="ui-echart">
 			<!-- <rate-echarts :timeOption="timeOption"></rate-echarts> -->
-			<app-echarts :option="options" id="myChart" class="echart-box" @click="clickEchart"></app-echarts>
+			<app-echarts :option="options" id="myChart" class="echart-box" @Cclick="clickEchart"></app-echarts>
 		</view>
-		<view class="ui-total">
+		<!-- <view class="ui-total">
 			<view class="total-item" v-for="(item,index) in totalList" :key="index">
 				<view class="item-data">
 					<text class="num">{{ item.num }}</text>
@@ -24,7 +24,7 @@
 					{{ item.title }}
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<!-- <view class="ui-detail">
 			<view class="title">
 				运动心率
@@ -68,7 +68,7 @@
 					show: true,
 					trigger: 'axis',
 					// triggerOn: 'click',
-					showContent: true, //隐藏提示框
+					showContent: false, //隐藏提示框
 					// axisPointer: {
 					// 	type: 'shadow'
 					// },
@@ -91,7 +91,7 @@
 					},
 					axisPointer: {
 						handle: {
-							show: true,
+							show: false,
 							size: 18,
 							margin: 2,
 							throttle: 5,
@@ -460,7 +460,8 @@
 				nowDataMax: '', //实时数据
 				nowDataMin: '',
 				Data: [],
-				slideTime: '' //手指滑动得到的数据（时间）
+				slideTime: '', //手指滑动得到的数据（时间）
+				WEEK: false
 			}
 		},
 		computed: {
@@ -521,6 +522,7 @@
 				})
 			},
 			handleWeek(options) {
+				this.WEEK = true
 				this.nowDataMax = ''
 				this.nowDataMin = ''
 				const {
@@ -600,6 +602,7 @@
 				// })
 			},
 			handleDate(options) {
+				this.WEEK = false
 				const {
 					deviceId,
 					humanId

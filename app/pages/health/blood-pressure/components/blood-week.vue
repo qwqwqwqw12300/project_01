@@ -13,7 +13,13 @@
 				</view>
 			</view>
 		</view> -->
-		<app-echarts :option="option" @click="handleClick" id="myChart" class="myChart"></app-echarts>
+		<view class="ui-show">
+			<text>{{nowDataMin}}
+				<text v-if="nowDataMax">-</text>
+				{{nowDataMax}}mmHg</text>
+		</view>
+		<app-echarts :option="option" @click="handleClick" id="myChart" class="myChart"
+			@Cclick="clickEchart"></app-echarts>
 		<!-- <view class="ui-statistics">
 			<view class="statistics-box">
 				<view class="ui-date-title">周统计</view>
@@ -77,7 +83,10 @@
 					}
 				],
 				spMapList: [], //收缩压
-				dpMapList: [], //舒张压
+				dpMapList: [], //舒张压,
+				nowDataMax: '', //实时数据
+				nowDataMin: '',
+				Data: [],
 			}
 		},
 		watch: {
@@ -92,6 +101,14 @@
 			}
 		},
 		methods: {
+			clickEchart(val) {
+				console.log(val, 'val');
+				const res = this.Data.find(item => {
+					return item[0] == val.value
+				})
+				this.nowDataMin = res[1]
+				this.nowDataMax = res[2]
+			},
 			handleClick(option) {
 				console.log(option, 'option')
 				option.seriesName == '收缩压' ? this.list[0].value = option.value[1] : this.list[1].value = option.value[1]
@@ -110,6 +127,9 @@
 					// this.list[1].value = res.data.dpAvg
 					// this.dateList[0].value = res.data.spAvg
 					// this.dateList[1].value = res.data.dpAvg
+					this.Data = res.data.MapList.map(n => { //获取当前周的所有max值
+						return [n.time, n.valueMin, n.valueMax]
+					})
 					for (let i = 0; i < res.data.MapList.length; i++) {
 						this.spMapList.push([
 							res.data.MapList[i].time,
@@ -261,6 +281,15 @@
 </script>
 
 <style lang="scss" scoped>
+	.ui-show {
+		margin-top: 20rpx;
+		text-align: center;
+		font-size: 72rpx;
+		color: #353535;
+		font-weight: 700;
+
+	}
+
 	.ui-content {
 		width: 80%;
 		margin: 0 auto;
