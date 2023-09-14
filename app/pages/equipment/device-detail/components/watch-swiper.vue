@@ -1,37 +1,49 @@
 <!--  手表设备设置卡片 -->
 <template>
-	<view class="swiper-item">
-		<view class="item-box">
-			<image class="img" src="/static/images/watch-device.png"></image>
-			<view class="device-info">
-				<view class="title">
-					<text class="name">{{record.humanName || '未命名设备'}}</text>
-					<text class="line"
-						:class="[record.onlineFlag === '1' ? 'online' : 'offline']">{{ getOnlineStatus }}</text>
-				</view>
-				<view class="status">
-					<!-- <view class="status-block">
-						<template v-if="record.currentStatus === '0'">
-							<u-icon name="/static/images/link-sucess.png" size="20" style="margin-right: 6rpx;" />
-							<text>已连接</text>
-						</template>
-						<template v-else>
-							<u-icon name="/static/images/link-false.png" size="20" style="margin-right: 6rpx;" />
-							<text>未连接</text>
-						</template>
-					</view> -->
-					<view class="status-block" style="margin-left:14rpx">
-						<u-icon name="/static/images/electricity.png" size="20" style="margin-right: 4rpx;" />
-						<text>电量:{{ record.currentPower || '--' }}</text>
+	<view class="">
+		<view class="swiper-item" v-if="record.humanName">
+			<view class="item-box">
+				<image class="img" src="/static/images/watch-device.png"></image>
+				<view class="device-info">
+					<view class="title">
+						<text class="name">{{record.humanName || '未命名设备'}}</text>
+						<text class="line"
+							:class="[record.onlineFlag === '1' ? 'online' : 'offline']">{{ getOnlineStatus }}</text>
+					</view>
+					<view class="status">
+						<!-- <view class="status-block">
+							<template v-if="record.currentStatus === '0'">
+								<u-icon name="/static/images/link-sucess.png" size="20" style="margin-right: 6rpx;" />
+								<text>已连接</text>
+							</template>
+							<template v-else>
+								<u-icon name="/static/images/link-false.png" size="20" style="margin-right: 6rpx;" />
+								<text>未连接</text>
+							</template>
+						</view> -->
+						<view class="status-block" style="margin-left:14rpx">
+							<u-icon name="/static/images/electricity.png" size="20" style="margin-right: 4rpx;" />
+							<text>电量:{{ record.currentPower || '--' }}</text>
+						</view>
+					</view>
+					<view class="time">
+						最近更新时间：{{ record.updateTime || '----' }}
 					</view>
 				</view>
-				<view class="time">
-					最近更新时间：{{ record.updateTime || '----' }}
+				<view class="device-set" @click="jumpUrl" v-if="record.shareFlag  == 2">
+					<u-icon name="/static/images/device-set.png" size="44rpx" style="margin-right: 4rpx;">
+					</u-icon>配置
 				</view>
 			</view>
-			<view class="device-set" @click="jumpUrl" v-if="record.shareFlag  == 2">
-				<u-icon name="/static/images/device-set.png" size="44rpx" style="margin-right: 4rpx;">
-				</u-icon>配置
+		</view>
+		<view class="swiper-item1" v-if="!record.humanName">
+			<view class="tipsbox">
+				<view class="tips">
+					暂未绑定智能设备
+				</view>
+				<view class="goview" @click="toadd">
+					设备绑定<uni-icons type="right" size="14" color="#599FFF" />
+				</view>
 			</view>
 		</view>
 	</view>
@@ -77,12 +89,49 @@
 				uni.navigateTo({
 					url: '/pages/watch/watch-set/watch-set'
 				})
+			},
+			toadd(){
+				uni.navigateTo({
+					url:'/pages/myself/device-manage/device-manage'
+				})
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.swiper-item1{
+		display: block;
+		height: 200rpx;
+		// margin: 0 6rpx;
+		background-color: #fff;
+		padding: 30rpx 20rpx;
+		border-radius: 20rpx;
+		box-sizing: border-box;
+		box-shadow: 0px 2px 20px 0px rgba(220, 205, 180, 0.5);
+		.tipsbox{
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			.tips{
+				color: #000;
+				text-align: right;
+				font-family: PingFang SC;
+				font-size: 28rpx;
+				font-style: normal;
+				font-weight: 400;
+			}
+			.goview{
+				color: #599FFF;
+				text-align: right;
+				font-family: PingFang SC;
+				font-size: 28rpx;
+				font-style: normal;
+				font-weight: 400;
+			}
+		}
+	}
 	.swiper-item {
 		display: block;
 		height: 250rpx;

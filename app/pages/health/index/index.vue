@@ -119,7 +119,7 @@
 								:class="(hoverClass==='appLi'+index)?'select':''"
 								@touchstart="AppLi_touchstart(index,$event)" @touchmove="AppLi_touchmove"
 								@touchend="AppLi_touchend(index)" v-if="!deviceList.length&&item.isShow ">
-								<SleepCard v-if="item.type === '1'" :date="newDate? newDate.slice(5,-3) : date"
+								<SleepCard v-if="item.type === '1'" :date="newDate? newDate.slice(5,-3) : ''"
 									:sleepMap="sleepMap" :item="item" :isEdit="isEdit" @iconClick="editCard"
 									:sleep="sleep"></SleepCard>
 								<YaLiCard v-if="item.type === '7'" :item="item" :option="yaLiOption"></YaLiCard>
@@ -281,11 +281,6 @@
 					}
 				],
 				listData_d: [{
-					type: '0',
-					name: 'motionCard',
-					img: '../../../static/images/sleep_drag.svg',
-					isShow: true
-				}, {
 					type: '1',
 					name: 'SleepCard',
 					img: '../../../static/images/sleep_drag.svg',

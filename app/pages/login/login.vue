@@ -44,7 +44,7 @@
 						<text class="active" @click="register">免费注册</text>
 						<text class="active" @click="forgot">忘记密码？</text>
 					</view>
-					<view class="ui-btn"><button @click="login" class="default">立即登录</button></view>
+					<view class="ui-btn"><button @click="login" :disabled="loginbtn" class="default">立即登录</button></view>
 					<view class="ui-agreement">
 						<u-checkbox-group v-model="radiovalue" @change="handleShowModal">
 							<u-checkbox :customStyle="{ marginRight: '8rpx' }" shape="circle" activeColor="#fdbc2b"
@@ -82,7 +82,7 @@
 						<text class="active" @click="register">免费注册</text>
 						<text class="active" @click="forgot">忘记密码？</text>
 					</view>
-					<view class="ui-btn"><button class="default" @tap="loginBySms">立即登录</button></view>
+					<view class="ui-btn"><button class="default" @tap="loginBySms" :disabled="loginbtn">立即登录</button></view>
 					<view class="ui-agreement">
 						<u-checkbox-group v-model="radiovalue" @change="handleShowModal">
 							<u-checkbox :customStyle="{ marginRight: '8rpx' }" shape="circle" activeColor="#fdbc2b"
@@ -136,6 +136,7 @@
 	export default {
 		data() {
 			return {
+				loginbtn:false,
 				/**登录模式列表**/
 				navList: [{
 						name: '账号密码登录'
@@ -182,6 +183,7 @@
 			 * 登录
 			 */
 			login() {
+				this.loginbtn = true
 				const {
 					phone,
 					password
@@ -230,6 +232,7 @@
 						url: '/pages/index/index'
 					});
 				}, err => {
+					this.loginbtn = false
 					this.$refs.codeRef.handleGetCaptcha();
 				})
 			},
@@ -298,6 +301,7 @@
 			 * 短信登录
 			 */
 			loginBySms() {
+				this.loginbtn = true
 				console.log(this.smsLoginForm, 'this.smsLoginForm.uuid');
 				if (this.smsLoginForm.uuid) {
 					const {
@@ -334,6 +338,7 @@
 							url: '/pages/index/index'
 						});
 					}, () => {
+						this.loginbtn = false
 						this.$refs.sms.reset();
 					});
 				}
