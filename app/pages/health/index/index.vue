@@ -435,7 +435,8 @@
 						this.pageShow = false;
 						this.loading = false;
 						this.isRefresh = false;
-						this.logstatrt({});
+						// this.logstatrt({});
+						this.getHeartRate()
 					}
 				})
 			},

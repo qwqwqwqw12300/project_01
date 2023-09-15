@@ -10,7 +10,8 @@
 			</view>
 			<view class="guard" v-if="guardList.length">
 				<view class="guard-item" v-for="(item, index) in guardList" :key="index" @tap="toLocationGuard(item)">
-					<image class="guard-item-img" src="@/static/images/guar-map.png" mode=""></image>
+					<image v-if="item.fenceType == 'circle'" class="guard-item-img" src="@/static/images/guar-map.png" mode=""></image>
+					<image v-if="item.fenceType == 'polygon'" class="guard-item-img" src="@/static/images/block_map.png" mode=""></image>
 					<view class="guard-item-content">
 						<view class="guard-item-content-info">
 							<image class="guard-item-content-info-icon" src="@/static/images/add-home.png" mode="">

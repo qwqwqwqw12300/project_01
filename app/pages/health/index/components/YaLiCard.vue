@@ -30,6 +30,9 @@
 </template>
 
 <script>
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
 		props: {
 			fetchRes: {
@@ -68,11 +71,23 @@
 
 			}
 		},
+		computed: {
+			...mapState({
+				deviceInfo: state => state.deviceInfo
+			}),
+		
+		},
 		methods: {
 			jumpUrl(url) {
-				uni.navigateTo({
-					url: url
-				})
+				const {
+					deviceId
+				} = this.deviceInfo
+				if(deviceId){
+					uni.navigateTo({
+						url: url
+					})
+				}
+				
 			},
 			iconClick() {
 				this.$emit('iconClick', this.item.type);

@@ -38,6 +38,7 @@ export default {
 					id = await push.getRegistrationID();
 				}
 				if (id) {
+					console.log(id,'上传设置极光推送设备id')
 					ctx.commit('setRegistrationID', id);
 					PsotSetJGInfo({
 						registrationType: isIos() ? '1' : '0',

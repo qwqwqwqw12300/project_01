@@ -35,6 +35,9 @@
 	import {
 		GetDaySleepQuality,
 	} from '@/common/http/api.js';
+	import {
+		mapState,
+	} from 'vuex';
 	export default {
 		props: {
 			// fetchRes: {
@@ -70,7 +73,11 @@
 				default: false
 			}
 		},
+		
 		computed: {
+			...mapState({
+				deviceInfo: state => state.deviceInfo
+			}),
 			sleepScore() {
 				return {
 
@@ -87,9 +94,15 @@
 		},
 		methods: {
 			jumpUrl(url) {
-				uni.navigateTo({
-					url: url
-				})
+				const {
+					deviceId
+				} = this.deviceInfo
+				if(deviceId){
+					uni.navigateTo({
+						url: url
+					})
+				}
+				
 			},
 			iconClick() {
 				this.$emit('iconClick', this.item.type);
