@@ -54,6 +54,9 @@
 				type: String,
 				/**add 添加家庭 edit 修改家庭**/
 				default: 'add'
+			},
+			id: {
+
 			}
 		},
 		data() {
@@ -62,11 +65,12 @@
 				form: {
 					familyName: '', //家庭名称
 					address: '', //家庭地址
-					detailedAddress: '' //详细地址
+					detailedAddress: '', //详细地址,
+					familyId: ''
 				}
 			};
 		},
-		mounted(options) {},
+
 		methods: {
 			close() {
 				this.form = {}
@@ -98,7 +102,8 @@
 				}
 				const handle = this.mode === 'add' ? PostAddFamily : PostEditFamily;
 				handle({
-					...this.form
+					...this.form,
+					familyId: this.id
 				}).then(res => {
 					uni.$u.toast(res.msg);
 					this.close();
