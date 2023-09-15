@@ -24,18 +24,16 @@
             "Bluetooth" : {},
             "Contacts" : {},
             "Camera" : {},
-            "LivePusher" : {},
             "Barcode" : {},
             "Maps" : {},
-            "Geolocation" : {}
+            "Geolocation" : {},
+            "Push" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
             /* android打包配置 */
             "android" : {
                 "permissions" : [
-                    "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_LOCATION_EXTRA_COMMANDS\"/>",
@@ -45,10 +43,8 @@
                     "<uses-permission android:name=\"android.permission.BLUETOOTH_ADMIN\"/>",
                     "<uses-permission android:name=\"android.permission.BLUETOOTH_PRIVILEGED\"/>",
                     "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
-                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
                     "<uses-permission android:name=\"android.permission.INSTALL_PACKAGES\"/>",
                     "<uses-permission android:name=\"android.permission.INTERNET\"/>",
@@ -57,7 +53,6 @@
                     "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
                     "<uses-permission android:name=\"android.permission.REQUEST_INSTALL_PACKAGES\"/>",
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
@@ -109,9 +104,7 @@
                         "appkey_android" : "8a6adfa4b8cde09fdb6eb698ce81b3f5"
                     }
                 },
-                "push" : {
-                    "unipush" : null
-                },
+                "push" : {},
                 "ad" : {},
                 "share" : {
                     "weixin" : {
@@ -181,8 +174,8 @@
             "JG-JCore" : {
                 "JPUSH_APPKEY_ANDROID" : "32584e1e7f8ea63f0316833d",
                 "JPUSH_APPKEY_IOS" : "32584e1e7f8ea63f0316833d",
-                "JPUSH_CHANNEL_ANDROID" : "developer-default",
-                "JPUSH_CHANNEL_IOS" : "developer-default",
+                "JPUSH_CHANNEL_ANDROID" : "",
+                "JPUSH_CHANNEL_IOS" : "",
                 "__plugin_info__" : {
                     "name" : "极光推送 JCore 官方 SDK",
                     "description" : "极光推送 JCore 官方 SDK HBuilder 插件版本",
@@ -219,7 +212,7 @@
             },
             "JG-JPush" : {
                 "JPUSH_ADVERTISINGID_IOS" : "",
-                "JPUSH_DEFAULTINITJPUSH_IOS" : "true",
+                "JPUSH_DEFAULTINITJPUSH_IOS" : "",
                 "JPUSH_GOOGLE_API_KEY" : "",
                 "JPUSH_GOOGLE_APP_ID" : "",
                 "JPUSH_GOOGLE_PROJECT_ID" : "",
@@ -227,7 +220,7 @@
                 "JPUSH_GOOGLE_STORAGE_BUCKET" : "",
                 "JPUSH_HONOR_APPID" : "104412433",
                 "JPUSH_HUAWEI_APPID" : "109071837",
-                "JPUSH_ISPRODUCTION_IOS" : "true",
+                "JPUSH_ISPRODUCTION_IOS" : "",
                 "JPUSH_MEIZU_APPID" : "152143",
                 "JPUSH_MEIZU_APPKEY" : "f16715040d7c4f7e98818b55dd5f45b0",
                 "JPUSH_OPPO_APPID" : "31299729",
