@@ -50,10 +50,8 @@ vb
 							</view>
 							<view class="ui-share-box">
 								<!-- 新增房间 -->
-								<u-text
-									@click="addRoom(familyItem)"
-									prefixIcon="../../static/images/index/add.png" size="28rpx" :align="'right'"
-									:block="false" :iconStyle="{
+								<u-text @click="addRoom(familyItem)" prefixIcon="../../static/images/index/add.png"
+									size="28rpx" :align="'right'" :block="false" :iconStyle="{
 									height: '36rpx', width: '36rpx'
 								}" text="添加" v-if="familyItem.shareFlag === '2'"></u-text>
 								<!-- /新增房间 -->
@@ -79,7 +77,7 @@ vb
 							<human-card :humans="familyItem.humans" :shareFlag="familyItem.shareFlag"
 								@confirm="handleInitList" />
 							<!-- 人员 -->
-							
+
 						</view>
 					</view>
 					<!-- 添加 -->

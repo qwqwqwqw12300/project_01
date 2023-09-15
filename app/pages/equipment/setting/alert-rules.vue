@@ -6,9 +6,9 @@
 -->
 
 <template>
-	<app-body :bg="false">
+	<app-body :bg="false" title="无人预警规则">
 		<view class="ui-body">
-			<app-logo :text="'无人预警规则'"></app-logo>
+			<!-- <app-logo :text="'无人预警规则'"></app-logo> -->
 			<view class="ui-edit">
 				<u-cell-group>
 					<u-cell title="规则名称">
@@ -40,7 +40,8 @@
 		</view>
 		<u-calendar :show="calendarShow" mode="range" @confirm="calendarConfirm" @close="calendarShow = false">
 		</u-calendar>
-		<smh-time-range :time="defaultTime" :isUnder="timeShow" @confrim="confrim" @cancel="timeShow = false"></smh-time-range>
+		<smh-time-range :time="defaultTime" :isUnder="timeShow" @confrim="confrim"
+			@cancel="timeShow = false"></smh-time-range>
 	</app-body>
 </template>
 
@@ -90,12 +91,15 @@
 			 * 获取默认时间
 			 */
 			defaultTime() {
-				const { startTime = '', endTime = '' } = this.form;
-				const start = startTime.split(':'), end = endTime.split(':');
+				const {
+					startTime = '', endTime = ''
+				} = this.form;
+				const start = startTime.split(':'),
+					end = endTime.split(':');
 				console.log([...start, '0', ...end], '[...start, ...end]')
 				return [...start, '0', ...end].map(ele => +ele);
 			}
-			
+
 		},
 		methods: {
 			/**

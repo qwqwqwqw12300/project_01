@@ -153,7 +153,6 @@
 			 * @param {Object} obj
 			 */
 			update(options) {
-				console.log('更新噢噢噢噢');
 				const option = this.assignDeep({}, options)
 				if (option.isRender) {
 					option.series.forEach(n => {
@@ -197,7 +196,6 @@
 											return
 										}
 
-										console.log('执行date', val);
 
 										const date = new Date(val);
 										const hour = date.getHours()
@@ -206,8 +204,6 @@
 									}
 								}
 							})
-							console.log(option.xAxis, 'option.xAxis');
-							console.log('option.xAxis.axisLabel.formatter', option.xAxis);
 						}
 
 						// 处理单条折线数据无法展示的问题
@@ -274,7 +270,6 @@
 				switch (type) {
 					case 'date':
 						fn = val => {
-							console.log('执行date', val);
 							const date = new Date(val);
 							const hour = date.getHours(),
 								minu = date.getMinutes();
@@ -283,7 +278,6 @@
 						break;
 					case 'week':
 						fn = (val, index) => {
-							console.log('执行');
 							const weekArr = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
 							return index == 7 ? '' : weekArr[new Date(val).getDay()];
 						}

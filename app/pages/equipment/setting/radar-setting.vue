@@ -6,9 +6,9 @@
 -->
 
 <template>
-	<app-body :bg="false">
+	<app-body :bg="false" title="设置跌倒检测器">
 		<view class="ui-form">
-			<app-logo text="设置跌倒检测器" color="#353535"></app-logo>
+			<!-- <app-logo text="设置跌倒检测器" color="#353535"></app-logo> -->
 			<view class="ui-edit">
 				<u-cell-group>
 					<u-cell title="设备名称">
@@ -448,6 +448,10 @@
 </script>
 
 <style lang="scss">
+	/deep/ .wd-fixed {
+		padding-top: 0;
+	}
+
 	.ui-form {
 		background: #fff;
 

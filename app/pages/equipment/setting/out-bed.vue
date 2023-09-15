@@ -6,11 +6,11 @@
 -->
 
 <template>
-	<app-body :bg="false">
+	<app-body :bg="false" title="离床预警">
 		<!-- <app-logo text="子区域设置"></app-logo> -->
 		<view id="setting">
 			<view class="ui-set-box">
-				<app-logo text="离床预警"></app-logo>
+				<!-- <app-logo text="离床预警"></app-logo> -->
 				<view class="ui-movable">
 					<view class="mova-box">
 						<movable-area :style="getStyle">

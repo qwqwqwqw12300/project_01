@@ -6,11 +6,11 @@
 -->
 
 <template>
-	<app-body :bg="false">
+	<app-body :bg="false" title="隐私区域设置">
 		<!-- <app-logo text="子区域设置"></app-logo> -->
 		<view id="setting">
 			<view class="ui-set-box">
-				<app-logo text="隐私区域设置" color="#353535"></app-logo>
+				<!-- <app-logo text="隐私区域设置" color="#353535"></app-logo> -->
 				<view class="ui-movable">
 					<view class="mova-box">
 						<movable-area :style="getStyle">
@@ -378,7 +378,7 @@
 					above,
 					stature
 				} = form;
-				console.log(width, height,above, stature, 'width, height');
+				console.log(width, height, above, stature, 'width, height');
 				if (width > this.roomSize.roomLeft + this.roomSize.roomRight) {
 					this.clearCell();
 					return uni.$u.toast('区域超出检测范围，请重新选择');
