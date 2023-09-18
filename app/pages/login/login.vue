@@ -173,6 +173,7 @@
 			navClick({
 				index
 			}) {
+				this.loginbtn = false
 				this.initFlag = false;
 				this.navActive = index;
 				setTimeout(() => {
@@ -194,12 +195,17 @@
 					uuid
 				} = this.$refs.codeRef.returnCodeData()
 				if (!phoneValidator(phone)) {
+					this.loginbtn = false
 					return uni.$u.toast('请填写正确的手机号码')
 				}
 				if (!password) {
+					this.loginbtn = false
 					return uni.$u.toast('请填写密码')
 				}
-				if (code.length !== 4) return uni.$u.toast('请输入四位图形验证码')
+				if (code.length !== 4){
+					this.loginbtn = false
+					return uni.$u.toast('请输入四位图形验证码')
+				} 
 				// if (code.length !== 6) {
 				// 	return uni.$u.toast('请填写正确的验证码')
 				// }
@@ -209,6 +215,7 @@
 						title: '为保障您的合法权益，请阅读并同意《用户协议与隐私政策》',
 						duration: 2000
 					});
+					this.loginbtn = false
 					return;
 				}
 				PostLoginByPwd({
@@ -309,9 +316,11 @@
 						code
 					} = this.smsLoginForm
 					if (!phoneValidator(phone)) {
+						this.loginbtn = false
 						return uni.$u.toast('请填写正确的手机号码')
 					}
 					if (!this.radiovalue.includes('ag')) {
+						this.loginbtn = false
 						uni.showToast({
 							icon: 'none',
 							title: '为保障您的合法权益，请阅读并同意《用户协议与隐私政策》',
