@@ -72,7 +72,7 @@
 				nowDataMax: '', //实时数据
 				nowDataMin: '',
 				Data: [],
-				WEEK: false
+				WEEK: false,
 			}
 		},
 		mounted() {
@@ -133,7 +133,7 @@
 					},
 					xAxis: [{
 						type: 'time',
-						// interval: 6 * 60 * 60 * 1000, // 设置x轴间隔为6小时
+						interval: 6 * 60 * 60 * 1000, // 设置x轴间隔为6小时
 						min: `${option.value + ' 00:00:00'}`, // x轴起始时间
 						max: `${option.value + ' 23:49:00'}`, // x轴结束时间
 						// boundaryGap: false,
@@ -203,24 +203,37 @@
 						}
 					}],
 					series: [{
-						type: 'line',
+						type: 'bar',
 						showSymbol: false,
 						itemStyle: {
-							color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-									offset: 0,
-									color: '#83bff6'
-								},
-								{
-									offset: 0.5,
-									color: '#188df0'
-								},
-								{
-									offset: 1,
-									color: '#188df0'
+							normal: {
+								barBorderRadius: 30,
+								color: function(params) {
+									if (params.value[1] > 0 && params.value[1] <= 30) {
+										return "#11c5fa";
+									} else if (params.value[1] > 30 && params.value[1] <= 60) {
+										return "#01b87f";
+									} else if (params.value[1] > 60 && params.value[1] <= 80) {
+										return "#f8a03f";
+									}
+									return "#f6514f";
 								}
-							])
+							},
+							// color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+							// 		offset: 0,
+							// 		color: '#83bff6'
+							// 	},
+							// 	{
+							// 		offset: 0.5,
+							// 		color: '#188df0'
+							// 	},
+							// 	{
+							// 		offset: 1,
+							// 		color: '#188df0'
+							// 	}
+							// ])
 						},
-						barWidth: '5', //---柱形宽度
+						barWidth: '6', //---柱形宽度
 						barCategoryGap: '20%', //---柱形间距
 						data: this.dataList
 					}]
