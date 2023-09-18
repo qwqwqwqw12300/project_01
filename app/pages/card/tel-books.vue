@@ -203,14 +203,16 @@
 					})
 				})
 				let arr = this.options4
-				for (var i = 0; i < arr.length; i++) {
+				
+				for (var i = 0; i < arr.length-1; i++) {
 					for (var j = i + 1; j < arr.length; j++) {
-						if (arr[i].number === arr[j].number) {
+						if (arr[i].phoneNumber === arr[j].phoneNumber) {
 							arr.splice(j, 1)
 							j--;
 						}
 					}
 				}
+				
 			}
 		},
 		onShow() {

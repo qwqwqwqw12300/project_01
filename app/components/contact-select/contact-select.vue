@@ -13,7 +13,7 @@
 					<view v-for="(record, index) in sortItems" :key="index" v-show="record.isCity" class="select-row">
 						<view class="citys-item-letter"
 							:id="'city-letter-' + (record.name === '#' ? '0' : record.name)">
-							{{ record.name }}
+							{{ record.name }}{{index+1}}
 						</view>
 						<view class="citys-item" v-for="(item, inx) in record.citys" :key="inx"
 							@click="contactTrigger(item)">
