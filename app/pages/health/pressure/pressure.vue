@@ -26,7 +26,7 @@
 				</view>
 			</view>
 		</view> -->
-		<view class="pressureImage">
+		<view class="pressureImage" v-if="!WEEK">
 			<text>温馨提示</text>
 			<view class="" style="text-align: center;">
 				<image src="../../../static/images/pressureImage.png" mode="widthFix"></image>
