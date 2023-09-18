@@ -31,7 +31,7 @@
 			<view class="" style="text-align: center;">
 				<image src="../../../static/images/pressureImage.png" mode="widthFix"></image>
 			</view>
-			<text style="font-size: 13px;">压力值由心率变异性计算而来，得分越高，压力值越大。</text>
+			<text style="font-size: 13px; color: grey">压力值由心率变异性计算而来，得分越高，压力值越大。</text>
 		</view>
 		<health-info title="压力"></health-info>
 	</app-body>
