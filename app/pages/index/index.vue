@@ -227,6 +227,7 @@ vb
 				this.forIndexFun()
 			}, 1000 * 60)
 			// #ifdef APP-PLUS
+			plus.push.clear()
 			//获取当前app版本号
 			plus.runtime.getProperty(plus.runtime.appid, (info) => {
 				this.appVersion = info.version
