@@ -26,6 +26,13 @@
 				</view>
 			</view>
 		</view> -->
+		<view class="pressureImage">
+			<text>温馨提示</text>
+			<view class="" style="text-align: center;">
+				<image src="../../../static/images/pressureImage.png" mode="widthFix"></image>
+			</view>
+			<text style="font-size: 13px;">压力值由心率变异性计算而来，得分越高，压力值越大。</text>
+		</view>
 		<health-info title="压力"></health-info>
 	</app-body>
 </template>
@@ -407,6 +414,14 @@
 </script>
 
 <style lang="scss" scoped>
+	.pressureImage {
+		background-color: #fff;
+		padding: 16rpx;
+		margin: 0 16px;
+		margin-top: 10px;
+		border-radius: 10px;
+	}
+
 	.ui-show {
 		margin-top: 20rpx;
 		text-align: center;
