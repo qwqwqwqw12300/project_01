@@ -93,6 +93,9 @@
 				}, {
 					title: '版本管理',
 					url: '/pages/myself/version-manage'
+				}, {
+					title: '在线客服',
+					url: '/pages/service/customer-service'
 				}]
 			}
 		},

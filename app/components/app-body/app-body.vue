@@ -30,9 +30,9 @@
 				<!-- /不需要返回头 -->
 			</template>
 			<!-- 智能客服 -->
-			<view class="wd-service" v-if="needService" @touchmove.prevent="onMove" @touchstart="onStart"
+			<!-- <view class="wd-service" v-if="needService" @touchmove.prevent="onMove" @touchstart="onStart"
 				@click="goService" :style="{top: serviceTop + 'px'}">
-			</view>
+			</view> -->
 			<!-- 智能客服 -->
 		</scroll-view>
 	</view>
