@@ -18,12 +18,15 @@
 			</view>
 			<view class="wd-input">
 				<text class="wd-input-font">家庭地址(必填)</text>
-				<u-input v-model="form.address" placeholder="请输入家庭地址" border="surround" clearable>
-					<template slot="suffix">
+				<view class="">
+					{{form.address}}
+					<image class="wd-input-image" src="@/static/images/position@3x.png" @click="goMap"></image>
+				</view>
+				<!-- <u-input v-model="" placeholder="请输入家庭地址" border="surround" clearable> -->
+					<!-- <template slot="suffix"> -->
 						<!-- <u-icon name="map-fill" class="active" @click="goMap" size="38rpx"></u-icon> -->
-						<image class="wd-input-image" src="@/static/images/position@3x.png" @click="goMap"></image>
-					</template>
-				</u-input>
+					<!-- </template> -->
+				<!-- </u-input> -->
 			</view>
 			<view class="wd-input">
 				<text class="wd-input-font">具体楼栋/单元</text>
@@ -109,8 +112,17 @@
 				}
 				const handle = this.mode === 'add' ? PostAddFamily : PostEditFamily;
 				handle({
-					...this.form,
-					familyId: this.id
+					familyName:this.form.familyName,
+					address:this.form.address,
+					address_name:this.form.address_name,
+					latitude:this.form.latitude,
+					longitude:this.form.longitude,
+					province:this.form.province,
+					city:this.form.city,
+					district:this.form.district,
+					familyId: this.id,
+					detailedAddress:this.form.detailedAddress,
+					name:this.form.name
 				}).then(res => {
 					uni.$u.toast(res.msg);
 					this.close();
@@ -128,22 +140,29 @@
 			 */
 			goMap() {
 				uni.$on('searchData', res => {
+					console.log('resresresres',res)
 					const {
 						province,
 						city,
 						district,
 						address,
-						name
+						name,
+						longitude,
+						latitude
 					} = res
-					this.form.address = province + city + district + address + name;
+					this.form.address = province + city + district + address
+					this.form.address_name = address
 					this.form.province = province
 					this.form.city = city
 					this.form.district = district
+					this.form.longitude = res.location.longitude
+					this.form.latitude = res.location.latitude
+					this.form.name = name
 					this.form = {
 						...this.form
 					};
 					
-					console.log(this.form)
+					console.log(this.form,'this.formthis.formthis.form')
 				});
 				uni.navigateTo({
 					url: '/pages/equipment/search'
