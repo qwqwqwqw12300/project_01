@@ -120,6 +120,9 @@
 				this.options = {
 					notMerge: true,
 					tooltip: {
+						textStyle: {
+							// color: '#188df0'
+						},
 						trigger: 'axis',
 						triggerOn: 'click',
 						axisPointer: {
@@ -176,8 +179,8 @@
 					}, ],
 					yAxis: [{
 						type: "value",
-						min: '34',
-						max: '42',
+						min: '35',
+						max: '39',
 						scale: true,
 						splitArea: {
 							show: true,
@@ -225,7 +228,31 @@
 									offset: 1,
 									color: '#188df0'
 								}
-							])
+							]),
+							normal: {
+								lineStyle: {
+									color: "#188df0",
+									width: 1,
+									// type: 'dashed'
+								},
+								areaStyle: {
+									color: {
+										type: 'linear',
+										x: 0,
+										y: 0,
+										x2: 0,
+										y2: 1,
+										colorStops: [{
+											offset: 0,
+											color: '#188df0'
+										}, {
+											offset: 1,
+											color: '#188df0'
+										}],
+										global: false
+									}
+								}
+							}
 						},
 						barWidth: '5', //---柱形宽度
 						barCategoryGap: '20%', //---柱形间距
