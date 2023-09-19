@@ -80,6 +80,7 @@
 				nowDataMin: '',
 				Data: [],
 				WEEK: false,
+				color: ''
 			}
 		},
 		mounted() {
@@ -129,13 +130,14 @@
 					notMerge: true,
 					tooltip: {
 						trigger: 'axis',
-						triggerOn: 'click',
+						// triggerOn: 'click',
 					},
 					backgroundColor: '#fff',
 					grid: {
 						left: '5%',
 						right: '5%',
 						bottom: '3%',
+						top: '10%',
 						containLabel: true,
 					},
 					xAxis: [{
@@ -213,19 +215,8 @@
 						type: 'bar',
 						showSymbol: false,
 						itemStyle: {
-							normal: {
-								barBorderRadius: 30,
-								color: function(params) {
-									if (params.value[1] > 0 && params.value[1] <= 30) {
-										return "#11c5fa";
-									} else if (params.value[1] > 30 && params.value[1] <= 60) {
-										return "#01b87f";
-									} else if (params.value[1] > 60 && params.value[1] <= 80) {
-										return "#f8a03f";
-									}
-									return "#f6514f";
-								}
-							},
+							barBorderRadius: 30,
+
 							// color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
 							// 		offset: 0,
 							// 		color: '#83bff6'
@@ -257,13 +248,14 @@
 						// 	console.log(params, 'paramsparamsparamsparamsparams');
 						// 	return `最高:${Number(params[0].data[1])+Number(params[1].data[1])}</br>最低:${params[0].data[1]}`
 						// },
-						formatter: '{a}'
+						// formatter: '{a}'
 					},
 					backgroundColor: '#fff',
 					grid: {
 						left: '5%',
 						right: '5%',
 						bottom: '3%',
+						top: '10%',
 						containLabel: true
 					},
 					xAxis: [{
@@ -287,7 +279,10 @@
 								width: 1
 							}
 						},
-					}, ],
+						splitLine: {
+							show: false
+						}
+					}],
 					yAxis: [{
 						type: "value",
 						axisLabel: {
@@ -303,7 +298,7 @@
 						// 分割线
 						splitLine: {
 							lineStyle: {
-								type: "dashed",
+								// type: "dashed",
 								color: "#E9E9E9"
 							}
 						},
@@ -337,6 +332,7 @@
 							showSymbol: false,
 							itemStyle: {
 								normal: {
+									color: '#63DDBA',
 									barBorderRadius: 30,
 									lineStyle: {
 										color: "#63DDBA",
@@ -362,16 +358,30 @@
 					this.totalList[1].num = res.data.max
 					this.totalList[2].num = res.data.min
 					for (let i = 0; i < res.data.MapList.length; i++) {
-						this.dataList.push([
-							res.data.MapList[i].time,
-							res.data.MapList[i].value
-						])
+						if (res.data.MapList[i].value > 0 && res.data.MapList[i].value <= 30) {
+							this.color = '#11c5fa'
+						} else if (res.data.MapList[i].value > 30 && res.data.MapList[i].value <= 60) {
+							this.color = "#01b87f";
+						} else if (res.data.MapList[i].value > 60 && res.data.MapList[i].value <= 80) {
+							this.color = "#f8a03f";
+						} else {
+							this.color = "#f6514f";
+						}
+						const aa = {
+							value: [res.data.MapList[i].time, res.data.MapList[i].value],
+							itemStyle: {
+								color: this.color
+							}
+						}
+						this.dataList.push(
+							aa
+						)
 					}
 					this.text = this.dataList[0] ? this.dataList[0][1] : 0;
 					const length = res.data.MapList.length
 					this.options.xAxis[0].axisPointer.value = res.data.MapList[length - 1].time
-					console.log(this.dataList, 'dataList')
 				})
+
 				this.dateFun(option)
 			},
 			handleWeek(option) {
