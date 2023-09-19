@@ -10,11 +10,12 @@
 				<u-search @change="searchChange" placeholder="请输入地址信息" @custom="back" :showAction="true" actionText="取消"
 					v-model="search"></u-search>
 			</view>
-				<view class="mapbox">
-					<map :longitude="longitude" :latitude="latitude" scale="16"></map>
-				</view>
+			<view class="mapbox">
+				<map id="popMap" @tap='mapClick' :longitude="longitude" :latitude="latitude" scale="16"
+					:markers="covers"></map>
+			</view>
 		</view>
-		
+
 		<view class="ui-site-gloup ui-loading" v-if="loading">
 			<u-loading-icon text="查询中..." :vertical="true" mode="semicircle"></u-loading-icon>
 		</view>
@@ -24,7 +25,9 @@
 					<u-icon name="map" size="15"></u-icon>
 					<text>{{item.name}}</text>
 				</view>
-				<text style="font-size: 26rpx;">{{getAddress(item)}}</text>
+				<view class="">
+					<text style="font-size: 26rpx;">{{getAddress(item)}}</text>
+				</view>
 			</view>
 		</view>
 		<view class="ui-site-gloup empty" v-else>
@@ -48,9 +51,18 @@
 				currentCity: '',
 				poiList: [],
 				loading: true,
-				longitude:0,
-				latitude:0
+				longitude: 0,
+				latitude: 0,
+				covers: [{
+					latitude: 0,
+					longitude: 0,
+					iconPath: '../../static/images/mapSite2x.png',
+					fontSize: 80, //一般要定义大小要不出不来图片
+				}]
 			}
+		},
+		mounted() {
+			this.mapClick()
 		},
 		computed: {
 			getAddress: function() {
@@ -72,12 +84,55 @@
 			handleSelect(val) {
 				this.longitude = val.location.longitude
 				this.latitude = val.location.latitude
+				this.covers[0].latitude = val.location.latitude
+				this.covers[0].longitude = val.location.longitude
+				console.log('searchData', val)
 				uni.$emit('searchData', val);
-				setTimeout(()=>{
+				setTimeout(() => {
 					uni.navigateBack();
-				},1500)
+				}, 1500)
 			},
-
+			// 拖动地图
+			mapClick() {
+				let that = this;
+				var maps = uni.createMapContext("popMap", this).$getAppMap();
+				maps.onclick = function(point) {
+					that.longitude = point.longitude
+					that.latitude = point.latitude
+					that.covers = [];
+					that.covers = [{
+						latitude: point.latitude,
+						longitude: point.longitude,
+						iconPath: '../../static/images/mapSite2x.png',
+						fontSize: 80, //一般要定义大小要不出不来图片
+					}]
+					mapSearch && mapSearch.poiSearchNearBy({
+						point: point,
+						key: '小区'
+					}, res => {
+						const {
+							poiList
+						} = res;
+						if (poiList && poiList.length) {
+							that.poiList = poiList;
+						}
+					})
+					// let pages = getCurrentPages()
+					// let prevPage = pages[pages.length - 2]
+					// let currentLocat = that.longitude + ',' + that.latitude
+					// prevPage.$vm.getMapValue(currentLocat)
+					// setTimeout(res => {
+					// 	uni.navigateBack({
+					// 		delta: 1 // 返回的页面数
+					// 	})
+					// }, 1000)
+				}
+				// this.covers = [{
+				// 	latitude: e.target.latitude,
+				// 	longitude: e.target.longitude,
+				// 	iconPath: '../../static/images/mapSite2x.png'
+				// }]
+			},
 			back() {
 				uni.$off('searchData');
 				uni.navigateBack();
@@ -102,6 +157,8 @@
 						this.poiList = poiList;
 						this.longitude = poiList[0].location.longitude
 						this.latitude = poiList[0].location.latitude
+						this.covers[0].latitude = poiList[0].location.latitude
+						this.covers[0].longitude = poiList[0].location.longitude
 						// if (poiList && poiList.length) {
 						// 	this.poiList = poiList;
 						// }
@@ -142,9 +199,11 @@
 				// uni.showLoading({
 				// 	title: '加载中'
 				// })
-				console.log('locationlocation',location)
+				console.log('locationlocation', location)
 				this.longitude = location.longitude
 				this.latitude = location.latitude
+				this.covers[0].latitude = location.latitude
+				this.covers[0].longitude = location.longitude
 				this.currentCity = location.address.city
 				mapSearch && mapSearch.poiSearchNearBy({
 					point: location,
@@ -184,12 +243,13 @@
 		padding-top: calc(var(--status-bar-height) + 20rpx);
 		width: calc(100% - 60rpx);
 		background-color: #fff;
-		
-		.searchbox{
+
+		.searchbox {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 		}
+
 		.map-icon {
 			display: flex;
 			align-items: center;
@@ -216,10 +276,12 @@
 	.ui-loading {
 		margin-top: 200rpx;
 	}
-	.mapbox{
+
+	.mapbox {
 		margin-top: 30rpx;
 	}
-	uni-map{
+
+	uni-map {
 		width: 100%;
 		height: 150px;
 	}
