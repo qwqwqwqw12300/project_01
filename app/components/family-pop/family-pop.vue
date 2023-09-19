@@ -66,11 +66,18 @@
 					familyName: '', //家庭名称
 					address: '', //家庭地址
 					detailedAddress: '', //详细地址,
-					familyId: ''
-				}
+					familyId: '',
+					province:'',
+					city:'',
+					district:'',
+				},
 			};
 		},
-
+		onShow() {
+			if(this.mode == 'edit'){
+				this.open()
+			}
+		},
 		methods: {
 			close() {
 				this.form = {}
@@ -129,9 +136,14 @@
 						name
 					} = res
 					this.form.address = province + city + district + address + name;
+					this.form.province = province
+					this.form.city = city
+					this.form.district = district
 					this.form = {
 						...this.form
 					};
+					
+					console.log(this.form)
 				});
 				uni.navigateTo({
 					url: '/pages/equipment/search'

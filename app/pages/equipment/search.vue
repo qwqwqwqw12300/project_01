@@ -1,22 +1,30 @@
 <template>
 	<view class="ui-pop-box">
 		<!-- mapSearch模块需要页面有地图组件才能正常初始化 -->
-		<map v-show="false"></map>
 		<view class="ui-u-search">
-			<view class="map-icon" @click="cityPicker">
-				<u-icon name="map" size="20"></u-icon>
-				<text>{{ currentCity }}</text>
+			<view class="searchbox">
+				<view class="map-icon" @click="cityPicker">
+					<u-icon name="map" size="20"></u-icon>
+					<text>{{ currentCity }}</text>
+				</view>
+				<u-search @change="searchChange" placeholder="请输入地址信息" @custom="back" :showAction="true" actionText="取消"
+					v-model="search"></u-search>
 			</view>
-			<u-search @change="searchChange" placeholder="请输入地址信息" @custom="back" :showAction="true" actionText="取消"
-				v-model="search"></u-search>
+				<view class="mapbox">
+					<map :longitude="longitude" :latitude="latitude" scale="16"></map>
+				</view>
 		</view>
+		
 		<view class="ui-site-gloup ui-loading" v-if="loading">
 			<u-loading-icon text="查询中..." :vertical="true" mode="semicircle"></u-loading-icon>
 		</view>
 		<view class="ui-site-gloup" v-else-if="poiList.length">
 			<view class="ui-item active" v-for="(item, index) of poiList" :key="index" @tap="handleSelect(item)">
-				<u-text prefixIcon="map" iconStyle="font-size: 19px" :text="item.name"></u-text>
-				<text>{{getAddress(item)}}</text>
+				<view class="" style="display: flex;align-items: center;justify-content: left;">
+					<u-icon name="map" size="15"></u-icon>
+					<text>{{item.name}}</text>
+				</view>
+				<text style="font-size: 26rpx;">{{getAddress(item)}}</text>
 			</view>
 		</view>
 		<view class="ui-site-gloup empty" v-else>
@@ -39,7 +47,9 @@
 				search: '',
 				currentCity: '',
 				poiList: [],
-				loading: true
+				loading: true,
+				longitude:0,
+				latitude:0
 			}
 		},
 		computed: {
@@ -60,8 +70,12 @@
 			 * 选择搜索结果
 			 */
 			handleSelect(val) {
+				this.longitude = val.location.longitude
+				this.latitude = val.location.latitude
 				uni.$emit('searchData', val);
-				uni.navigateBack();
+				setTimeout(()=>{
+					uni.navigateBack();
+				},1500)
 			},
 
 			back() {
@@ -86,6 +100,8 @@
 					}) => {
 						this.loading = false;
 						this.poiList = poiList;
+						this.longitude = poiList[0].location.longitude
+						this.latitude = poiList[0].location.latitude
 						// if (poiList && poiList.length) {
 						// 	this.poiList = poiList;
 						// }
@@ -126,6 +142,9 @@
 				// uni.showLoading({
 				// 	title: '加载中'
 				// })
+				console.log('locationlocation',location)
+				this.longitude = location.longitude
+				this.latitude = location.latitude
 				this.currentCity = location.address.city
 				mapSearch && mapSearch.poiSearchNearBy({
 					point: location,
@@ -136,6 +155,7 @@
 					} = res;
 					if (poiList && poiList.length) {
 						this.poiList = poiList;
+						console.log(this.poiList)
 					}
 					this.loading = false;
 					// uni.hideLoading()
@@ -164,20 +184,23 @@
 		padding-top: calc(var(--status-bar-height) + 20rpx);
 		width: calc(100% - 60rpx);
 		background-color: #fff;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-
+		
+		.searchbox{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
 		.map-icon {
 			display: flex;
 			align-items: center;
 			margin-right: 20rpx;
+			font-size: 28rpx;
 		}
 
 	}
 
 	.ui-site-gloup {
-		margin-top: calc(40rpx + var(--status-bar-height));
+		margin-top: calc(40rpx + 400rpx);
 
 		&.empty {
 			padding-top: 200rpx;
@@ -192,5 +215,12 @@
 
 	.ui-loading {
 		margin-top: 200rpx;
+	}
+	.mapbox{
+		margin-top: 30rpx;
+	}
+	uni-map{
+		width: 100%;
+		height: 150px;
 	}
 </style>
