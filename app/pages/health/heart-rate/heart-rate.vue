@@ -274,13 +274,14 @@
 					},
 					//手柄
 					axisPointer: {
+						value: '',
 						label: {
 							show: false,
-							formatter: (params) => { //滑动拿到实时的值
-								this.slideTime = echarts.format.formatTime('yyyy-MM-dd', params.value);
-								return echarts.format.formatTime('yyyy-MM-dd', params
-									.value);
-							},
+							// formatter: (params) => { //滑动拿到实时的值
+							// 	this.slideTime = echarts.format.formatTime('yyyy-MM-dd', params.value);
+							// 	return echarts.format.formatTime('yyyy-MM-dd', params
+							// 		.value);
+							// },
 							backgroundColor: '#7581BD'
 						},
 						handle: {
@@ -603,6 +604,8 @@
 			},
 			handleDate(options) {
 				this.WEEK = false
+
+				console.log(this.dayOptions, 'this.dayOptionsthis.dayOptions');
 				const {
 					deviceId,
 					humanId
@@ -630,7 +633,7 @@
 						max,
 						min
 					} = res.data
-					console.log('wdwdwdwdwdwdwdwdwdwdwd');
+					// console.log('wdwdwdwdwdwdwdwdwdwdwd', res.data);
 					this.totalList[0].num = avg
 					this.totalList[1].num = min
 					this.totalList[2].num = max
@@ -648,6 +651,9 @@
 						this.dayOptions.yAxis[0].min = '40'
 						this.dayOptions.yAxis[0].max = '165'
 						this.dayOptions.series[0].data = data
+						const length = res.data.MapList.length
+						this.dayOptions.xAxis[0].axisPointer.value = res.data.MapList[length - 1]
+							.time //定位手柄的位置
 						this.options = this.dayOptions
 						// console.log('打印啦啊啊啊啊啊啊啊啊啊啊啊啊啊', this.dayOptions);
 						console.log(data);

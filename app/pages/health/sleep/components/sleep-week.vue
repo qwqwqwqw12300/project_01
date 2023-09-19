@@ -208,7 +208,7 @@
 						},
 						axisPointer: {
 							handle: {
-								show: true,
+								show: false,
 								size: 18,
 								margin: 2,
 								throttle: 5,

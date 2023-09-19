@@ -115,8 +115,8 @@
 					// humanId:'117'
 				}).then(res => {
 					console.log(res, 'res')
-					this.list[0].value = res.data.spAvg
-					this.list[1].value = res.data.dpAvg
+					// this.list[0].value = res.data.spAvg
+					// this.list[1].value = res.data.dpAvg
 					this.dateList[0].value = res.data.spAvg
 					this.dateList[1].value = res.data.dpAvg
 					this.dateList[2].value = res.data.maxSp
@@ -133,6 +133,12 @@
 							res.data.dpMapList[i].value
 						])
 					}
+					console.log(this.option, 'dddddddd');
+					const length = res.data.spMapList.length
+					this.option.xAxis.axisPointer.value = res.data.spMapList[length - 1]
+						.time //定位手柄的位置
+					// console.log(this.spMapList, 'this.spMapListthis.spMapList');
+					// console.log(this.dpMapList, 'this.dpMapListthis.dpMapList');
 				})
 				this.option = {
 					title: {
@@ -172,6 +178,7 @@
 							show: false
 						},
 						axisPointer: {
+							value: '',
 							handle: {
 								show: true,
 								size: 18,

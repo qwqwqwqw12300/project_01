@@ -147,6 +147,7 @@
 						},
 						//手柄
 						axisPointer: {
+							value: '',
 							handle: {
 								show: true,
 								size: 18,
@@ -355,6 +356,9 @@
 							res.data.MapList[i].value
 						])
 					}
+					console.log(this.options);
+					const length = res.data.MapList.length
+					this.options.xAxis[0].axisPointer.value = res.data.MapList[length - 1].time
 					this.text = this.dataList[0] ? this.dataList[0][1] : 0;
 					console.log(this.dataList, 'dataList')
 				})

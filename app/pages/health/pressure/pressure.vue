@@ -368,6 +368,8 @@
 						])
 					}
 					this.text = this.dataList[0] ? this.dataList[0][1] : 0;
+					const length = res.data.MapList.length
+					this.options.xAxis[0].axisPointer.value = res.data.MapList[length - 1].time
 					console.log(this.dataList, 'dataList')
 				})
 				this.dateFun(option)
