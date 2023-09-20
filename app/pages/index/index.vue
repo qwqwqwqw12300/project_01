@@ -222,12 +222,15 @@ vb
 			...mapGetters(['filterDevice']),
 		},
 		onShow() {
+			// #ifdef APP-PLUS
+			plus.push.clear()
+			plus.runtime.setBadgeNumber(0);
+			// #endif
 			this.handleInitList();
 			this.timer = setInterval(() => {
 				this.forIndexFun()
 			}, 1000 * 60)
 			// #ifdef APP-PLUS
-			plus.push.clear()
 			//获取当前app版本号
 			plus.runtime.getProperty(plus.runtime.appid, (info) => {
 				this.appVersion = info.version

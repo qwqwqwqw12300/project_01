@@ -23,7 +23,12 @@
 		// 	}
 		// },
 		onShow: function() {},
-		onHide: function() {}
+		onHide: function() {},
+		mounted() {
+			// #ifdef APP-PLUS
+			plus.runtime.setBadgeNumber(0);
+			// #endif
+		}
 	}
 </script>
 
