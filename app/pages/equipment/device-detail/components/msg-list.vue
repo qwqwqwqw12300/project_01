@@ -8,12 +8,14 @@
 					<u-loading-icon mode="semicircle" :vertical="true" text="加载中" textSize="18"></u-loading-icon>
 				</view>
 			</template>
-			<template v-else-if="msgList.length">
-				<msg-card @call="handleCall" v-for="(item, index) in msgList" :key="(index+item.createTime)"
-					:msgInfo="item"></msg-card>
-				<u-loadmore marginBottom="30" dashed :status="loadmore" />
+			<template>
+				<view v-if="msgList.length">
+					<msg-card @call="handleCall" v-for="(item, index) in msgList" :key="(index+item.createTime)"
+						:msgInfo="item"></msg-card>
+					<u-loadmore marginBottom="30" dashed :status="loadmore" />
+				</view>
 			</template>
-			<view class="ui-empty" v-else>
+			<view class="ui-empty" v-if="!msgList.length&&!loading">
 				<u-empty mode="list" text="暂无数据"></u-empty>
 			</view>
 		</scroll-view>
@@ -52,7 +54,7 @@
 					item.name = `${obj[item.orderNum]} ${item.name}`
 					return item
 				})
-				
+
 			},
 		},
 		data() {
@@ -153,6 +155,7 @@
 			},
 
 			pageNext() {
+				console.log('打印咯');
 				if (this.loadmore === 'nomore') return;
 				this.loadmore = 'loading';
 				this.pageOptions.pageNum++
