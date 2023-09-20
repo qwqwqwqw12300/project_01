@@ -1,8 +1,8 @@
 <template>
-	<app-body :bg="false" title="抬腕亮屏设置">
+	<app-body :bg="false" title="休眠模式设置">
 		<view class="ui-form">
 			<view class="u-slot-value">
-				<text>抬腕亮屏</text>
+				<text>休眠模式</text>
 				<u-switch space="2" v-model="checks" activeValue="1" inactiveValue="0" size="20" activeColor="#FEAE43"
 					inactiveColor="rgb(230, 230, 230)"></u-switch>
 			</view>
@@ -36,8 +36,8 @@
 		data() {
 			return {
 				checks: '1',
-				aboveTime: '',
-				underTime: '',
+				aboveTime: '09',
+				underTime: '21',
 				show: false,
 				deviceId: '',
 				timearr: ['09', '0', '0', '21', '0']
@@ -49,14 +49,12 @@
 		},
 		methods: {
 			confrim(e) {
-				console.log(e);
 				this.aboveTime = e.aboveTime;
 				this.underTime = e.underTime
 				this.showtime()
 			},
 			cancel(e) {
 				console.log(e) //取消事件 =>12:30-17:30
-				this.show = false
 			},
 			showtime() {
 				this.show = !this.show
@@ -67,11 +65,10 @@
 				}).then(res => {
 					let obj = res.data.aiWeiIntelligentWatchSettings
 					console.log(obj.lcdSture)
-					console.log(typeof obj.lcdStureStar, 'obj.lcdStureStar');
-					this.timearr[0] = String(obj.lcdStureStar)
+					this.timearr[0] = String(obj.lcdStureStar);
 					this.timearr[3] = String(obj.lcdStureEnd);
-					this.aboveTime = obj.lcdStureStar > 10 ? String(obj.lcdStureStar) : '0' + (obj.lcdStureStar);
-					this.underTime = obj.lcdStureEnd > 10 ? String(obj.lcdStureEnd) : '0' + (obj.lcdStureEnd);
+					this.aboveTime = String(obj.lcdStureStar)
+					this.underTime = String(obj.lcdStureEnd);
 					if (obj.lcdSture) {
 						this.checks = '1'
 					} else {

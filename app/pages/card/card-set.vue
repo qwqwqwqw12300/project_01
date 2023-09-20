@@ -62,6 +62,10 @@
 					{
 						title: '时段禁用',
 						url: '/pages/card/time-interval'
+					},
+					{
+						title: '休眠模式',
+						url: '/pages/card/sleepMode'
 					}, {
 						title: '远程监听',
 						url: '/pages/card/monitor'
