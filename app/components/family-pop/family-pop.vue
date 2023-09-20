@@ -18,14 +18,29 @@
 			</view>
 			<view class="wd-input">
 				<text class="wd-input-font">家庭地址(必填)</text>
-				<view class="">
-					{{form.address}}
-					<image class="wd-input-image" src="@/static/images/position@3x.png" @click="goMap"></image>
+				<view class="addressbox">
+					<view class="" style="width: 90%;padding-left: 10rpx;" v-if="form.address">
+						<view class="addname">
+							{{form.communityName}}
+						</view>
+						<view class="address">
+							{{form.address}}
+						</view>
+					</view>
+					<image class="wd-input-image" src="@/static/images/position@3x.png" v-if="form.address"
+						@click="goMap"></image>
+					<view class="" @click="goMap" style="width: 90%;padding-left: 10rpx;display: flex;align-items: center;padding-left: 10px;" v-if="!form.address">
+						<view class="address">
+							点击选择地址
+						</view>
+						<image class="wd-input-image" src="@/static/images/position@3x.png" style="margin-left: 10px;" ></image>
+					</view>
+
 				</view>
 				<!-- <u-input v-model="" placeholder="请输入家庭地址" border="surround" clearable> -->
-					<!-- <template slot="suffix"> -->
-						<!-- <u-icon name="map-fill" class="active" @click="goMap" size="38rpx"></u-icon> -->
-					<!-- </template> -->
+				<!-- <template slot="suffix"> -->
+				<!-- <u-icon name="map-fill" class="active" @click="goMap" size="38rpx"></u-icon> -->
+				<!-- </template> -->
 				<!-- </u-input> -->
 			</view>
 			<view class="wd-input">
@@ -70,14 +85,18 @@
 					address: '', //家庭地址
 					detailedAddress: '', //详细地址,
 					familyId: '',
-					province:'',
-					city:'',
-					district:'',
+					province: '',
+					city: '',
+					district: '',
+					communityName: '',
+					latitude: '',
+					longitude: '',
+					address_name: ''
 				},
 			};
 		},
 		onShow() {
-			if(this.mode == 'edit'){
+			if (this.mode == 'edit') {
 				this.open()
 			}
 		},
@@ -112,17 +131,17 @@
 				}
 				const handle = this.mode === 'add' ? PostAddFamily : PostEditFamily;
 				handle({
-					familyName:this.form.familyName,
-					address:this.form.address,
-					address_name:this.form.address_name,
-					latitude:this.form.latitude,
-					longitude:this.form.longitude,
-					province:this.form.province,
-					city:this.form.city,
-					district:this.form.district,
+					familyName: this.form.familyName,
+					address: this.form.address,
+					address_name: this.form.address_name,
+					latitude: this.form.latitude,
+					longitude: this.form.longitude,
+					province: this.form.province,
+					city: this.form.city,
+					district: this.form.district,
 					familyId: this.id,
-					detailedAddress:this.form.detailedAddress,
-					name:this.form.name
+					detailedAddress: this.form.detailedAddress,
+					communityName: this.form.communityName
 				}).then(res => {
 					uni.$u.toast(res.msg);
 					this.close();
@@ -140,7 +159,7 @@
 			 */
 			goMap() {
 				uni.$on('searchData', res => {
-					console.log('resresresres',res)
+					console.log('resresresres', res)
 					const {
 						province,
 						city,
@@ -157,12 +176,12 @@
 					this.form.district = district
 					this.form.longitude = res.location.longitude
 					this.form.latitude = res.location.latitude
-					this.form.name = name
+					this.form.communityName = name
 					this.form = {
 						...this.form
 					};
-					
-					console.log(this.form,'this.formthis.formthis.form')
+
+					console.log(this.form, 'this.formthis.formthis.form')
 				});
 				uni.navigateTo({
 					url: '/pages/equipment/search'
@@ -198,6 +217,23 @@
 		.wd-input-image {
 			width: 48rpx;
 			height: 48rpx;
+		}
+
+		.addressbox {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			.addname {
+				font-size: 28rpx;
+				font-weight: 600;
+				margin-bottom: 5rpx;
+			}
+
+			.address {
+				font-size: 26rpx;
+				font-weight: 400;
+			}
 		}
 
 		&>view {

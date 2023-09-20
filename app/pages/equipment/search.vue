@@ -86,7 +86,6 @@
 				this.latitude = val.location.latitude
 				this.covers[0].latitude = val.location.latitude
 				this.covers[0].longitude = val.location.longitude
-				console.log('searchData', val)
 				uni.$emit('searchData', val);
 				setTimeout(() => {
 					uni.navigateBack();
@@ -199,7 +198,6 @@
 				// uni.showLoading({
 				// 	title: '加载中'
 				// })
-				console.log('locationlocation', location)
 				this.longitude = location.longitude
 				this.latitude = location.latitude
 				this.covers[0].latitude = location.latitude

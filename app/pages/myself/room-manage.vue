@@ -301,6 +301,7 @@
 			 * 编辑家庭信息
 			 */
 			openFamilyEdit() {
+				console.log(this.familyInfo,'this.familyInfothis.familyInfothis.familyInfo')
 				this.$refs.addFamily.open(
 					assignDeep({}, {
 						...this.familyInfo,
