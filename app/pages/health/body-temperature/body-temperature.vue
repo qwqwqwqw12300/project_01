@@ -216,22 +216,23 @@
 						type: 'line',
 						showSymbol: false,
 						itemStyle: {
-							color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-									offset: 0,
-									color: '#83bff6'
-								},
-								{
-									offset: 0.5,
-									color: '#188df0'
-								},
-								{
-									offset: 1,
-									color: '#188df0'
-								}
-							]),
+							// color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+							// 		offset: 0,
+							// 		color: '#83bff6'
+							// 	},
+							// 	{
+							// 		offset: 0.5,
+							// 		color: '#188df0'
+							// 	},
+							// 	{
+							// 		offset: 1,
+							// 		color: '#188df0'
+							// 	}
+							// ]),
 							normal: {
+								color: 'rgba(54, 191, 255,1)',
 								lineStyle: {
-									color: "#188df0",
+									color: "rgba(54, 191, 255,1)",
 									width: 1,
 									// type: 'dashed'
 								},
@@ -244,10 +245,10 @@
 										y2: 1,
 										colorStops: [{
 											offset: 0,
-											color: '#188df0'
+											color: 'rgba(54, 191, 255,0.90)'
 										}, {
 											offset: 1,
-											color: '#188df0'
+											color: 'rgba(54, 191, 255,0.00)'
 										}],
 										global: false
 									}

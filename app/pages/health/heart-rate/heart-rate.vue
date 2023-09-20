@@ -65,16 +65,17 @@
 		data() {
 			const weekOptions = {
 				tooltip: {
-					show: true,
+					show: false,
 					trigger: 'axis',
 					// triggerOn: 'click',
-					showContent: false, //隐藏提示框
+					// showContent: true, //隐藏提示框
 					// axisPointer: {
 					// 	type: 'shadow'
 					// },
-					formatter: (params) => {
-						return `最高:${Number(params[0].data[1])+Number(params[1].data[1])}</br>最低:${params[0].data[1]}`
-					},
+					// formatter: (params) => {
+					// 	console.log(params, 'tooltip');
+					// 	return params.data
+					// },
 				},
 				backgroundColor: '#fff',
 				grid: {
@@ -98,13 +99,13 @@
 							color: '#ffac4a'
 						},
 						label: {
-							show: false,
-							formatter: (params) => { //滑动拿到实时的值
-								this.slideTime = echarts.format.formatTime('yyyy-MM-dd', params.value);
-								// console.log(this.slideTime, 'aaaaaaaaaaaaaaaaaaaaaaa');
-								return echarts.format.formatTime('yyyy-MM-dd', params.value);
-							},
-							backgroundColor: '#7581BD'
+							// show: true,
+							// formatter: (params) => { //滑动拿到实时的值
+							// 	this.slideTime = echarts.format.formatTime('yyyy-MM-dd', params.value);
+							// 	// console.log(this.slideTime, 'aaaaaaaaaaaaaaaaaaaaaaa');
+							// 	return echarts.format.formatTime('yyyy-MM-dd', params.value);
+							// },
+							// backgroundColor: '#7581BD'
 						}
 					},
 					axisLabel: {
@@ -171,32 +172,6 @@
 
 					showSymbol: false,
 					itemStyle: {
-
-						// normal: {
-						// 	color: 'rgba(255,89,89,1)',
-						// 	lineStyle: {
-						// 		color: "rgba(255,89,89,1)",
-						// 		width: 1
-						// 	},
-						// 	areaStyle: {
-						// 		color: {
-						// 			type: 'linear',
-						// 			x: 0,
-						// 			y: 0,
-						// 			x2: 0,
-						// 			y2: 1,
-						// 			colorStops: [{
-						// 				offset: 0,
-						// 				color: 'rgba(255,89,89,0.90)'
-						// 			}, {
-						// 				offset: 1,
-						// 				color: 'rgba(255,89,89,0.00)'
-						// 			}],
-						// 			global: false
-						// 		}
-						// 	}
-						// },
-
 						borderRadius: 20,
 						borderColor: 'transparent',
 						color: 'transparent',
@@ -358,9 +333,9 @@
 					itemStyle: {
 						// color: "#6c50f3",
 						normal: {
-							color: 'rgba(255,89,89,1)',
+							color: 'rgba(255, 89, 89,1)',
 							lineStyle: {
-								color: "rgba(255,89,89,1)",
+								color: "rgba(255, 89, 89,1)",
 								width: 1,
 								// type: 'dashed'
 							},
@@ -373,10 +348,10 @@
 									y2: 1,
 									colorStops: [{
 										offset: 0,
-										color: 'rgba(255,89,89,0.90)'
+										color: 'rgba(255, 89, 89,0.90)'
 									}, {
 										offset: 1,
-										color: 'rgba(255,89,89,0.00)'
+										color: 'rgba(255, 89, 89,0.00)'
 									}],
 									global: false
 								}
